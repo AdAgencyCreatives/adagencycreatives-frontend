@@ -16,7 +16,7 @@ const FeaturedCities = () => {
       </div>
 
       <div className="sectionContent featured-cities">
-        <div className="row">
+        <div className="row gx-3">
           <div className="col-4">
             <div className="job-city-banner ">
               <a href="#">
@@ -36,8 +36,78 @@ const FeaturedCities = () => {
               </a>
             </div>
           </div>
-          <div className="col-4"></div>
-          <div className="col-4"></div>
+          <div className="col-4">
+            <div className="job-city-banner job-banner-small  ">
+              <a href="#">
+                <div className="city-banner-inner">
+                  <div
+                    className="bg-banner"
+                    style={{ backgroundImage: `url(${LosAngeles})` }}
+                  ></div>
+                  <div className="inner">
+                    <h4 className="title">Los Angeles </h4>
+
+                    <div className="number">
+                      <span>0</span> jobs
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div className="job-city-banner job-banner-small ">
+              <a href="#">
+                <div className="city-banner-inner">
+                  <div
+                    className="bg-banner"
+                    style={{ backgroundImage: `url(${Newyork})` }}
+                  ></div>
+                  <div className="inner">
+                    <h4 className="title">New York </h4>
+
+                    <div className="number">
+                      <span>2</span> jobs
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div className="col-4">
+            <div className="job-city-banner job-banner-small ">
+              <a href="#">
+                <div className="city-banner-inner">
+                  <div
+                    className="bg-banner"
+                    style={{ backgroundImage: `url(${Chicago})` }}
+                  ></div>
+                  <div className="inner">
+                    <h4 className="title">Chicago </h4>
+
+                    <div className="number">
+                      <span>0</span> jobs
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div className="job-city-banner job-banner-small ">
+              <a href="#">
+                <div className="city-banner-inner">
+                  <div
+                    className="bg-banner"
+                    style={{ backgroundImage: `url(${Miami})` }}
+                  ></div>
+                  <div className="inner">
+                    <h4 className="title">Miami </h4>
+
+                    <div className="number">
+                      <span>0</span> jobs
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </>

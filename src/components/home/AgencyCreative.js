@@ -1,8 +1,27 @@
 import Nathan from "../../assets/images/NathanWalker_ProfilePic-150x150.jpg";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
+import { useEffect } from "react";
+import { useRef } from "react";
+import { PaginationStyle } from "../../styles/PaginationStyle";
 
 const AgencyCreatives = () => {
+  const swiperElRef = useRef(null);
+
+  useEffect(() => {
+    const params = {
+      injectStyles: [PaginationStyle],
+      // pagination: {
+      //   clickable: true,
+      //   renderBullet: function (index, className) {
+      //     return '<span class="' + className + '">' + (index + 1) + "</span>";
+      //   },
+      // },
+    };
+    Object.assign(swiperElRef.current, params);
+
+    swiperElRef.current.initialize();
+  });
   return (
     <>
       <div className="sectionHeader">
@@ -14,9 +33,12 @@ const AgencyCreatives = () => {
       {/* Slides */}
       <div className="sectionContent">
         <swiper-container
+          ref={swiperElRef}
+          init="false"
           navigation="true"
           slides-per-view="3"
           space-between="30"
+          loop="true"
         >
           {Array.apply(11, { length: 10 }).map((value, index) => {
             return (

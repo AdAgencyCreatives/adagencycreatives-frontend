@@ -3,12 +3,7 @@ import Gather from "../assets/images/Gather.png";
 import Mentoring from "../assets/images/Mentoring.png";
 import Money from "../assets/images/make-money-white.png";
 import Employer from "../assets/images/david-and-goliath.png";
-import Spotlight from "../assets/images/Creative-Spotlight-No-Background-600x600.png";
-import {
-  IoSearchOutline,
-  IoLocationOutline,
-  IoChevronForwardOutline,
-} from "react-icons/io5";
+import { IoSearchOutline, IoLocationOutline } from "react-icons/io5";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 // core version + navigation, pagination modules:
 import { register } from "swiper/element/bundle";
@@ -20,12 +15,12 @@ import AdAgencies from "../components/home/AdAgencies";
 import MentorResources from "../components/home/MentorResources";
 import PublicationResources from "../components/home/PublicationResources";
 import FeaturedCities from "../components/home/FeaturedCities";
+import SpotlightCreative from "../components/home/SpotlightCreative";
 
 register();
 
 const Home = () => {
   const candidateSlides = 5;
-  const spotlightSlides = 7;
   const jobSlides = 3;
   const swiperElRef = useRef(null);
 
@@ -116,56 +111,10 @@ const Home = () => {
         </div>
       </div>
       <div className="creative-section">
-        
         <AgencyCreatives />
 
         {/* Spotlighting Creatives Section */}
-        <div className="sectionHeader">
-          <h1 className="sectionTitle">Spotlighting Creatives</h1>
-          <div className="browseAll">
-            browse all <MdKeyboardDoubleArrowRight />
-          </div>
-        </div>
-
-        {/* Slides */}
-
-        <div className="sectionContent full-width">
-          <swiper-container
-            ref={swiperElRef}
-            navigation="true"
-            pagination={pagination}
-            modules={[Pagination]}
-            slides-per-view="4"
-            space-between="30"
-          >
-            {Array.apply(11, { length: spotlightSlides }).map(
-              (value, index) => {
-                return (
-                  <swiper-slide key={`slide${index}`}>
-                    <div className="sliderContent spotlight-slider">
-                      <img
-                        src={Spotlight}
-                        className="spotlight-image"
-                        width={150}
-                        height={150}
-                      />
-                      <div className="date">July 10, 2023</div>
-                      <a className="spotlight-meta">
-                        Creative Director Art, Brant Herzer
-                      </a>
-                      <div className="watch-link">
-                        <a href="#">
-                          Watch
-                          <IoChevronForwardOutline />
-                        </a>
-                      </div>
-                    </div>
-                  </swiper-slide>
-                );
-              }
-            )}
-          </swiper-container>
-        </div>
+        <SpotlightCreative />
 
         {/* Creative Jobs Section */}
         <div className="sectionHeader">
@@ -204,7 +153,9 @@ const Home = () => {
                     <a href="#" className="employer-logo">
                       <img src={Employer} width={150} height={150} />
                     </a>
-                    <h3 className="employer-title"><a href="#">David&Goliath</a></h3>
+                    <h3 className="employer-title">
+                      <a href="#">David&Goliath</a>
+                    </h3>
                     <h3 className="job-title">Junior Copywriter</h3>
                     <div className="job-location location">
                       <IoLocationOutline />
@@ -217,14 +168,24 @@ const Home = () => {
             })}
           </swiper-container>
         </div>
-          
+
+        <FeaturedCities />
+
         <AdAgencies />
 
         <MentorResources />
 
         <PublicationResources />
-
-        <FeaturedCities />
+      </div>
+      <div className="contact-section">
+        <h3 className="title">
+          Do you have a feedback or want to become a contributor?
+        </h3>
+        <div className="contact-btn">
+          <a href="#">
+            <span>Contact Us</span>
+          </a>
+        </div>
       </div>
     </div>
   );
