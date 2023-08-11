@@ -1,0 +1,571 @@
+h1.bannerHeading {
+    font-size: 61px;
+    margin: 0;
+    color: white;
+    font-weight: 400;
+
+}
+
+.banner {
+    text-align: center;
+    background: black;
+}
+
+p.subHeading {
+    font-size: 20px;
+    margin: 0px;
+    color: white;
+}
+
+.searchArea {
+    padding: 20px;
+    max-width: 700px;
+    margin: auto;
+    box-sizing: border-box;
+}
+
+p.searchHeader {
+    color: rgb(211, 161, 31);
+    font-size: 26px;
+    margin: 0;
+}
+
+.popularSearch p {
+    font-size: 20px;
+    margin: 0px;
+    font-weight: 300;
+    color: white;
+}
+
+.popularSearch a {
+    color: white;
+    text-decoration: none;
+}
+
+.popularSearch {
+    margin-top: 5px;
+}
+
+input.searchInput {
+    padding-left: 45px;
+    height: 60px;
+    box-sizing: border-box;
+    font-family: 'JOST';
+    border: none;
+    font-weight: 300;
+    font-size: 20px;
+    color: black;
+    width: 100%;
+}
+
+input.searchInput:focus {
+    box-shadow: none
+}
+
+.searchBox {
+    border: 1px solid;
+    border-radius: 8px;
+    text-align: left;
+    padding: 5px;
+    background: white;
+}
+
+input.searchInput::placeholder {
+    color: black;
+}
+
+
+
+button.searchBtn {
+    background: rgb(119, 119, 119);
+    color: white;
+    text-transform: uppercase;
+    font-size: 20px;
+    border-radius: 8px;
+    letter-spacing: 3px;
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+
+button.searchBtn:hover {
+    background: rgb(211, 161, 31);
+    color: black;
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    -o-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+button.searchBtn {
+    background: rgb(119, 119, 119);
+    color: white;
+    text-transform: uppercase;
+    font-size: 20px;
+    border-radius: 8px;
+    letter-spacing: 3px;
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+
+button.searchBtn:hover {
+    background: rgb(211, 161, 31);
+    color: black;
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    -o-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+.searchIcon {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+}
+
+.featureBox * {
+    display: block;
+}
+
+.featureImg {
+    margin: auto;
+}
+
+.featureTitle {
+    color: rgb(211, 161, 31);
+    font-size: 30px;
+}
+
+.featureDesc {
+    color: white;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.about-content h5 {
+    font-size: 26px;
+    font-weight: 400;
+    margin-top: 21px;
+    margin-bottom: 26px;
+}
+
+.section.about h1 {
+    font-weight: 400;
+}
+
+.section {
+    padding-top: 36px;
+}
+
+/* Creative Section Styles */
+
+.creative-section {
+    background: black;
+    margin-bottom: 50px;
+}
+
+.creative-section .sectionHeader {
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    align-items: center;
+    border: 3px solid white;
+}
+
+.creative-section .sectionTitle {
+    font-size: 36px;
+    font-weight: 400;
+}
+
+.browseAll {
+    font-size: 20px;
+    letter-spacing: 3px;
+    -webkit-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
+    transition: color 0.3s ease;
+}
+
+.browseAll:hover {
+    color: rgb(211, 161, 31);
+}
+
+.browseAll>a {
+    text-decoration: none;
+    color: white;
+}
+
+.sectionContent {
+    margin-top: 20px;
+    padding: 0 50px 20px;
+}
+
+
+img.candidateLogo {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+}
+
+swiper-slide {
+    text-align: center;
+}
+
+img.sliderImage {
+    width: 200px;
+    background: black;
+    margin: auto;
+}
+
+swiper-slide {
+    text-align: center;
+}
+
+
+.sliderContent {
+    position: relative;
+    text-align: center;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.agencies-slider {
+    min-height: 380px;
+
+}
+
+.agencyName {
+    font-size: 18px;
+}
+
+.position {
+    font-size: 16px;
+}
+
+.location {
+    display: flex;
+    align-items: center;
+}
+
+.location svg {
+    margin-right: 5px;
+}
+
+.location>* {
+    font-size: 20px;
+    color: rgb(105, 105, 105);
+    font-weight: 300;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 12px;
+    text-decoration: none;
+}
+
+.profileLink {
+    background: black;
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    width: 90%;
+    border-radius: 8px;
+    display: flex;
+    margin: 20px auto 0;
+    position: absolute;
+    bottom: 40px;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
+}
+
+.profileLink:hover {
+    background-color: #D9D9D9;
+}
+
+.profileLink:hover a {
+    color: #D3A11F !important;
+}
+
+.profileLink a {
+    color: white;
+    text-decoration: none;
+    width: 100%;
+    flex: 1
+}
+
+
+/* Spotlight Section */
+
+.spotlight-slider {
+    min-height: 260px;
+}
+
+img.spotlight-image {
+    width: 40%;
+    height: auto;
+}
+
+.spotlight-slider .date {
+    font-size: 14px;
+    color: rgb(105, 105, 105);
+    font-weight: 300;
+}
+
+.spotlight-meta {
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    color: black;
+    margin-top: 18px;
+    color: rgb(211, 161, 31);
+}
+
+.watch-link {
+    font-size: 14px;
+    font-weight: 300;
+    margin-top: 10px;
+    position: relative;
+}
+
+.watch-link>* {
+    font-size: 14px;
+    font-weight: 300;
+    color: black;
+    text-decoration: none;
+}
+
+.sectionContent.full-width {
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+.sliderContent.spotlight-slider {
+    padding: 10px;
+}
+
+.watch-link a:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 1px;
+    display: block;
+    background: #666666;
+    -webkit-transition: all 0.4s ease-in-out 0s;
+    -o-transition: all 0.4s ease-in-out 0s;
+    transition: all 0.4s ease-in-out 0s;
+}
+
+.spotlight-slider:hover a:after {
+    width: 100%;
+    left: 0;
+}
+
+/* Jobs Section */
+
+
+.sliderContent.job-slider {
+    min-height: 320px;
+}
+
+a.employer-logo img {
+    width: 90px;
+    height: auto;
+}
+
+.employer-logo {
+    margin-bottom: 10px;
+}
+
+.employer-title {
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.employer-title a {
+    color: black;
+    text-decoration: none;
+}
+
+.employer-title:hover a {
+    color: #D3A11F
+}
+
+.job-title {
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+
+.left-badge {
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+
+.featured {
+    display: inline-block;
+    color: #090070;
+    background: rgba(9, 0, 112, .15);
+    padding: 7px 20px;
+    font-size: 13px;
+    margin-bottom: 10px;
+    border-radius: 0 30px 30px 0 !important;
+    font-weight: 300;
+}
+
+.right-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: black;
+    font-size: 13px;
+    font-weight: 300;
+    padding: 6px 20px;
+    border-radius: 50px;
+}
+
+.right-badge a {
+    color: white;
+    text-decoration: none;
+}
+
+
+/* Ad Agencies Section */
+
+.open-jobs-btn {
+    background: black;
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    width: 100%;
+    border-radius: 8px;
+    display: flex;
+    margin: 20px auto 0;
+    bottom: 40px;
+    height: 55px;
+    justify-content: center;
+    align-items: center;
+}
+
+.open-jobs-btn:hover {
+    background-color: #D9D9D9;
+}
+
+.open-jobs-btn:hover a {
+    color: #D3A11F !important;
+}
+
+.open-jobs-btn a {
+    color: white;
+    text-decoration: none;
+    width: 100%;
+    flex: 1
+}
+
+.adagencies-slider .employer-title {
+    font-size: 25px;
+    font-weight: 400;
+    margin-bottom: 0px;
+    margin-top: 10px;
+}
+
+/* Mentor Section */
+
+.mentors-section {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 20px 20px;
+    gap: 10px;
+}
+
+.mentor img {
+    width: 100%;
+    height: auto;
+    filter: brightness(100%) contrast(100%) saturate(100%) blur(0px) hue-rotate(0deg);
+    transition-duration: 0.3s;
+    border-style: solid;
+    border-width: 4px 4px 4px 4px;
+    border-color: white;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.mentor {
+    display: flex;
+}
+
+.mentor img:hover {
+    transform: scale(1.1);
+}
+
+/* Publications Section */
+.publications-slider a {
+    display: flex;
+}
+
+.sectionContent.publication-section {
+    background: white;
+}
+
+/* Cities Section */
+
+.city-banner-inner .bg-banner {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-transition: all 0.2s ease-in-out 0s;
+    -o-transition: all 0.2s ease-in-out 0s;
+    transition: all 0.2s ease-in-out 0s;
+    background-size: cover;
+}
+
+.city-banner-inner {
+    height: 623px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+}
+
+.city-banner-inner .inner {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    padding: 25px 30px;
+    color: white;
+}
+
+.city-banner-inner .title {
+    font-size: 18px;
+    margin: 0 0 2px;
+    position: relative;
+    display: inline-block;
+}
+
+.city-banner-inner .number {
+    font-size: 14px;
+}
+
+.city-banner-inner:hover .bg-banner {
+    -webkit-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    -o-transform: scale(1.05);
+    transform: scale(1.05);
+}
