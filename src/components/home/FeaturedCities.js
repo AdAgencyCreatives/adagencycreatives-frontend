@@ -17,7 +17,7 @@ const FeaturedCities = () => {
 
       <div className="sectionContent featured-cities">
         <div className="row gx-3">
-          <div className="col-4">
+          <div className="col-12 col-md-4">
             <div className="job-city-banner ">
               <a href="#">
                 <div className="city-banner-inner">
@@ -36,7 +36,7 @@ const FeaturedCities = () => {
               </a>
             </div>
           </div>
-          <div className="col-4">
+          <div className="col-12 col-md-4">
             <div className="job-city-banner job-banner-small  ">
               <a href="#">
                 <div className="city-banner-inner">
@@ -72,7 +72,7 @@ const FeaturedCities = () => {
               </a>
             </div>
           </div>
-          <div className="col-4">
+          <div className="col-12 col-md-4">
             <div className="job-city-banner job-banner-small ">
               <a href="#">
                 <div className="city-banner-inner">

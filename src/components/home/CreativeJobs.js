@@ -1,22 +1,16 @@
-import Nathan from "../../assets/images/NathanWalker_ProfilePic-150x150.jpg";
+import Employer from "../../assets/images/david-and-goliath.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
-import { useEffect } from "react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { PaginationStyle } from "../../styles/PaginationStyle";
 
-const AgencyCreatives = () => {
+const CreativeJobs = () => {
   const swiperElRef = useRef(null);
+  const jobSlides = 3;
 
   useEffect(() => {
     const params = {
       injectStyles: [PaginationStyle],
-      // pagination: {
-      //   clickable: true,
-      //   renderBullet: function (index, className) {
-      //     return '<span class="' + className + '">' + (index + 1) + "</span>";
-      //   },
-      // },
       breakpoints: {
         500: {
           slidesPerView: 2,
@@ -25,22 +19,25 @@ const AgencyCreatives = () => {
         768: {
           slidesPerView: 3,
           spaceBetween: 30,
-        }
+        },
       },
     };
     Object.assign(swiperElRef.current, params);
 
     swiperElRef.current.initialize();
   });
+
   return (
     <>
       <div className="sectionHeader">
-        <h1 className="sectionTitle">Agency Creatives</h1>
+        <h1 className="sectionTitle">Creative Jobs</h1>
         <div className="browseAll">
           browse all <MdKeyboardDoubleArrowRight />
         </div>
       </div>
+
       {/* Slides */}
+
       <div className="sectionContent">
         <swiper-container
           ref={swiperElRef}
@@ -48,27 +45,33 @@ const AgencyCreatives = () => {
           navigation="true"
           slides-per-view="1"
           space-between="30"
-          loop="true"
+          centeredSlides="true"
         >
-          {Array.apply(11, { length: 10 }).map((value, index) => {
+          {Array.apply(11, { length: jobSlides }).map((value, index) => {
             return (
               <swiper-slide key={`slide${index}`}>
-                <div className="sliderContent agencies-slider">
-                  <img
-                    src={Nathan}
-                    className="candidateLogo"
-                    width={150}
-                    height={150}
-                  />
-                  <div className="agencyName">Nathan Walker</div>
-                  <div className="position">Design Lead</div>
+                <div className="sliderContent job-slider p-3 p-md-4">
+                  <div className="left-badge">
+                    <div className="featured">
+                      <span>Featured</span>
+                    </div>
+                  </div>
+                  <div className="right-badge">
+                    <a href="#">
+                      <span>Full-Time</span>
+                    </a>
+                  </div>
+                  <a href="#" className="employer-logo">
+                    <img src={Employer} width={150} height={150} />
+                  </a>
+                  <h3 className="employer-title">
+                    <a href="#">David&Goliath</a>
+                  </h3>
+                  <h3 className="job-title">Junior Copywriter</h3>
                   <div className="job-location location">
                     <IoLocationOutline />
-                    <a href="#">Austin,</a>
-                    <a href="#">Texas</a>
-                  </div>
-                  <div className="profileLink">
-                    <a href="#">View Profile</a>
+                    <a href="#">Los Angeles,</a>
+                    <a href="#">California</a>
                   </div>
                 </div>
               </swiper-slide>
@@ -80,4 +83,4 @@ const AgencyCreatives = () => {
   );
 };
 
-export default AgencyCreatives;
+export default CreativeJobs;

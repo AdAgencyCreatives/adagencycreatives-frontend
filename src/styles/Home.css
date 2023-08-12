@@ -156,6 +156,28 @@ button.searchBtn:hover {
     padding-top: 36px;
 }
 
+.featureBox:hover .featureImg {
+    -webkit-animation: updown .8s ease-in-out 0s infinite;
+    animation: updown .8s ease-in-out 0s infinite;
+}
+
+@keyframes updown {
+
+    50% {
+        -webkit-transform: translateY(-10px);
+        -ms-transform: translateY(-10px);
+        -o-transform: translateY(-10px);
+        transform: translateY(-10px);
+    }
+
+    0%, 100% {
+        -webkit-transform: translateY(0px);
+        -ms-transform: translateY(0px);
+        -o-transform: translateY(0px);
+        transform: translateY(0px);
+    }
+}
+
 /* Creative Section Styles */
 
 .creative-section {
@@ -375,6 +397,10 @@ img.spotlight-image {
     min-height: 320px;
 }
 
+.job-slider .location>* {
+    font-size: 18px;
+}
+
 a.employer-logo img {
     width: 90px;
     height: auto;
@@ -506,6 +532,25 @@ a.employer-logo img {
     transform: scale(1.1);
 }
 
+@media (max-width:768px) {
+    .mentors-section {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .mentor {
+        width: 30%;
+    }
+
+}
+
+@media (max-width:400px) {
+    .mentor {
+        width: 75%;
+        margin-bottom: 20px;
+    }
+}
+
 /* Publications Section */
 .publications-slider a {
     display: flex;
@@ -606,6 +651,12 @@ a.employer-logo img {
     transition: all .3s ease-in-out .3s;
 }
 
+@media screen and (max-width:800px) {
+    .city-banner-inner {
+        max-height: 300px
+    }
+}
+
 
 /* Contact Section */
 
@@ -620,7 +671,7 @@ a.employer-logo img {
 }
 
 .contact-section .title {
-    font-size: 2.2rem;
+    font-size: 36px;
 }
 
 .contact-btn {
@@ -648,4 +699,26 @@ a.employer-logo img {
 
 .contact-btn a:hover {
     background: #d3a11f;
+}
+
+@media (max-width:768px) {
+    .contact-section {
+        padding: 60px 40px 60px 40px;
+    }
+
+    .contact-section .title {
+        font-size: 27px;
+    }
+}
+
+@media (max-width:500px) {
+    .contact-section {
+        background-position: bottom center;
+        background-size: contain;
+    }
+
+    .contact-section .title {
+        font-size: 32px;
+        font-weight: 400;
+    }
 }

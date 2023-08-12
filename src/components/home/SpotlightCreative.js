@@ -9,24 +9,24 @@ const SpotlightCreative = () => {
   const swiperElRef = useRef(null);
   const spotlightSlides = 7;
 
-  const pagination = {
-    clickable: true,
-    renderBullet: function (index, className) {
-      console.log("cc");
-      return '<span class="' + className + '">' + (index + 1) + "</span>";
-    },
-  };
-
   useEffect(() => {
     const params = {
-      injectStyles: [
-        PaginationStyle + BulletStyle
-      ],
+      injectStyles: [PaginationStyle + BulletStyle],
       pagination: {
         clickable: true,
         // renderBullet: function (index, className) {
         //   return '<span class="' + className + '">' + (index + 1) + "</span>";
         // },
+      },
+      breakpoints: {
+        500: {
+          slidesPerView: 2,
+          // spaceBetween: 20,
+        },
+        768: {
+          slidesPerView: 4,
+          spaceBetween: 30,
+        },
       },
     };
     Object.assign(swiperElRef.current, params);
@@ -49,8 +49,7 @@ const SpotlightCreative = () => {
           ref={swiperElRef}
           init="false"
           navigation="true"
-          pagination={pagination}
-          slides-per-view="4"
+          slides-per-view="1"
           space-between="30"
         >
           {Array.apply(11, { length: spotlightSlides }).map((value, index) => {

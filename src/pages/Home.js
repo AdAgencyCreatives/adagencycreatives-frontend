@@ -2,12 +2,9 @@ import "../styles/Home.css";
 import Gather from "../assets/images/Gather.png";
 import Mentoring from "../assets/images/Mentoring.png";
 import Money from "../assets/images/make-money-white.png";
-import Employer from "../assets/images/david-and-goliath.png";
 import { IoSearchOutline, IoLocationOutline } from "react-icons/io5";
-import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 // core version + navigation, pagination modules:
 import { register } from "swiper/element/bundle";
-import { Pagination } from "swiper/modules";
 import { useEffect, useRef } from "react";
 import "swiper/css/pagination";
 import AgencyCreatives from "../components/home/AgencyCreative";
@@ -16,24 +13,11 @@ import MentorResources from "../components/home/MentorResources";
 import PublicationResources from "../components/home/PublicationResources";
 import FeaturedCities from "../components/home/FeaturedCities";
 import SpotlightCreative from "../components/home/SpotlightCreative";
+import CreativeJobs from "../components/home/CreativeJobs";
 
 register();
 
 const Home = () => {
-  const candidateSlides = 5;
-  const jobSlides = 3;
-  const swiperElRef = useRef(null);
-
-  const pagination = {
-    clickable: true,
-    renderBullet: function (index, className) {
-      console.log("cc");
-      return '<span class="' + className + '">' + (index + 1) + "</span>";
-    },
-  };
-
-  useEffect(() => {});
-
   return (
     <div className="main">
       <div className="banner">
@@ -45,7 +29,7 @@ const Home = () => {
           <p className="searchHeader">Search Creative Jobs</p>
           <div className="searchBox">
             <div className="row">
-              <div className="col-8 position-relative">
+              <div className="col-md-8 col-12 position-relative">
                 {/* <SearchOutline color={"#00000"} width="25px" className="searchIcon" /> */}
                 <IoSearchOutline size={26} className="searchIcon" />
                 <input
@@ -66,9 +50,9 @@ const Home = () => {
             </p>
           </div>
         </div>
-        <div className="featuresContainer container">
+        <div className="featuresContainer container mt-3">
           <div className="row">
-            <div className="featureBox col">
+            <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
               <img src={Gather} className="featureImg" />
               <span className="featureTitle">Gather</span>
               <span className="featureDesc">
@@ -77,14 +61,14 @@ const Home = () => {
                 community
               </span>
             </div>
-            <div className="featureBox col">
+            <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
               <img src={Mentoring} className="featureImg" />
               <span className="featureTitle">Inspire</span>
               <span className="featureDesc">
                 Mentors and <br /> resources
               </span>
             </div>
-            <div className="featureBox col">
+            <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
               <img src={Money} className="featureImg" />
               <span className="featureTitle">Do Cool $#*t!</span>
               <span className="featureDesc">
@@ -117,57 +101,7 @@ const Home = () => {
         <SpotlightCreative />
 
         {/* Creative Jobs Section */}
-        <div className="sectionHeader">
-          <h1 className="sectionTitle">Creative Jobs</h1>
-          <div className="browseAll">
-            browse all <MdKeyboardDoubleArrowRight />
-          </div>
-        </div>
-
-        {/* Slides */}
-
-        <div className="sectionContent">
-          <swiper-container
-            ref={swiperElRef}
-            navigation="true"
-            pagination={pagination}
-            modules={[Pagination]}
-            slides-per-view="3"
-            space-between="30"
-            centeredSlides="true"
-          >
-            {Array.apply(11, { length: jobSlides }).map((value, index) => {
-              return (
-                <swiper-slide key={`slide${index}`}>
-                  <div className="sliderContent job-slider">
-                    <div className="left-badge">
-                      <div className="featured">
-                        <span>Featured</span>
-                      </div>
-                    </div>
-                    <div className="right-badge">
-                      <a href="#">
-                        <span>Full-Time</span>
-                      </a>
-                    </div>
-                    <a href="#" className="employer-logo">
-                      <img src={Employer} width={150} height={150} />
-                    </a>
-                    <h3 className="employer-title">
-                      <a href="#">David&Goliath</a>
-                    </h3>
-                    <h3 className="job-title">Junior Copywriter</h3>
-                    <div className="job-location location">
-                      <IoLocationOutline />
-                      <a href="#">Los Angeles,</a>
-                      <a href="#">California</a>
-                    </div>
-                  </div>
-                </swiper-slide>
-              );
-            })}
-          </swiper-container>
-        </div>
+        <CreativeJobs />
 
         <FeaturedCities />
 
@@ -178,13 +112,18 @@ const Home = () => {
         <PublicationResources />
       </div>
       <div className="contact-section">
-        <h3 className="title">
-          Do you have a feedback or want to become a contributor?
-        </h3>
-        <div className="contact-btn">
-          <a href="#">
-            <span>Contact Us</span>
-          </a>
+        <div className="row">
+          <div className="text-center text-sm-start col-xs-12 col-sm-8 col-md-12">
+            <h3 className="title">
+              Do you have a feedback or want to become a contributor?
+            </h3>
+            <div className="contact-btn">
+              <a href="#">
+                <span>Contact Us</span>
+              </a>
+            </div>
+          </div>
+          <div className="col"></div>
         </div>
       </div>
     </div>

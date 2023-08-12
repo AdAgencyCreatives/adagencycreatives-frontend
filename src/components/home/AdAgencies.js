@@ -11,6 +11,16 @@ const AdAgencies = () => {
   useEffect(() => {
     const params = {
       injectStyles: [PaginationStyle],
+      breakpoints: {
+        500: {
+          slidesPerView: 2,
+          // spaceBetween: 20,
+        },
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 30,
+        }
+      },
     };
     Object.assign(swiperElRef.current, params);
 
@@ -31,7 +41,7 @@ const AdAgencies = () => {
           ref={swiperElRef}
           init="false"
           navigation="true"
-          slides-per-view="3"
+          slides-per-view="1"
           space-between="30"
           loop="true"
         >

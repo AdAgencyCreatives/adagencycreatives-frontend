@@ -29,7 +29,8 @@ const PublicationResources = () => {
         background:#d9d9d9;
         opacity:1;
       }
-      ` + BulletStyle,
+      ` +
+          BulletStyle,
       ],
       pagination: {
         clickable: true,
@@ -37,11 +38,20 @@ const PublicationResources = () => {
         //   return '<span class="' + className + '">' + (index + 1) + "</span>";
         // },
       },
+      breakpoints: {
+        500: {
+          slidesPerView: 3,
+          // spaceBetween: 20,
+        },
+        768: {
+          slidesPerView: 4,
+        },
+      },
       on: {
         init: function () {
           // do something
         },
-      }
+      },
     };
     Object.assign(swiperElRef.current, params);
 
@@ -99,7 +109,7 @@ const PublicationResources = () => {
       <div className="sectionContent publication-section">
         <swiper-container
           navigation="true"
-          slides-per-view="4"
+          slides-per-view="1"
           // free-mode="true"
           space-between="10"
           ref={swiperElRef}
