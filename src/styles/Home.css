@@ -1,3 +1,7 @@
+.main{
+    margin-bottom: 50px;
+}
+
 h1.bannerHeading {
     font-size: 61px;
     margin: 0;
@@ -9,6 +13,7 @@ h1.bannerHeading {
 .banner {
     text-align: center;
     background: black;
+    padding: 30px 0;
 }
 
 p.subHeading {
@@ -175,6 +180,13 @@ button.searchBtn:hover {
         -ms-transform: translateY(0px);
         -o-transform: translateY(0px);
         transform: translateY(0px);
+    }
+}
+
+@media (max-width:600px){
+    h1.bannerHeading {
+        font-size: 50px;
+        margin:20px 0;
     }
 }
 
