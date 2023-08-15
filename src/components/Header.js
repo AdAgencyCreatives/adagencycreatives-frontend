@@ -21,7 +21,7 @@ import { AiOutlineUser, AiOutlineBell, AiOutlineClose } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
 
 const drawerWidth = "85%";
-const navItems = ["Home", "Agencies", "Contact"];
+const navItems = ["Home", "Creatives", "Agencies", "Contact"];
 
 function Header(props) {
   const { window } = props;
@@ -60,7 +60,7 @@ function Header(props) {
           {navItems.map((item) => (
             <ListItem key={item} disablePadding>
               <ListItemButton href="#" className="drawer-menu-link">
-                <ListItemText primary={item} disableTypography="true" />
+                <ListItemText primary={item} disableTypography={false} />
               </ListItemButton>
             </ListItem>
           ))}

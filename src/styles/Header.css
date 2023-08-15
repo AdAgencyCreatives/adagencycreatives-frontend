@@ -56,10 +56,6 @@ a:hover {
 }
 
 /* Drawer Styles */
-svg path {
-    stroke-width: 1;
-}
-
 .drawer-menu-link {
     color: rgb(151, 151, 151);
     font-size: 17px;
@@ -72,10 +68,6 @@ svg path {
 
 .drawer-box {
     padding: 20px;
-}
-
-svg path {
-    stroke-width: 1;
 }
 
 .drawer-menu-link {

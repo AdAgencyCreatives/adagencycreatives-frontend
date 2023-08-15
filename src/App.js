@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Header from "./components/Header";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Footer from "./components/Footer";
+import Creatives from "./pages/Creatives";
 
 const theme = createTheme({
   typography: {
@@ -24,7 +25,8 @@ function App() {
     <ThemeProvider theme={theme}>
       <div className="App">
         <Header />
-        <Home />
+        {/* <Home /> */}
+        <Creatives />
         <Footer />
       </div>
     </ThemeProvider>

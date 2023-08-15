@@ -33,7 +33,14 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.dark-container {
+  padding: 50px 0;
+  background: black;
+  margin-bottom: 10px;
 }

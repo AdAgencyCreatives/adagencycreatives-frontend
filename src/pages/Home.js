@@ -2,7 +2,7 @@ import "../styles/Home.css";
 import Gather from "../assets/images/Gather.png";
 import Mentoring from "../assets/images/Mentoring.png";
 import Money from "../assets/images/make-money-white.png";
-import { IoSearchOutline, IoLocationOutline } from "react-icons/io5";
+import { IoSearchOutline } from "react-icons/io5";
 // core version + navigation, pagination modules:
 import { register } from "swiper/element/bundle";
 import { useEffect, useRef } from "react";
