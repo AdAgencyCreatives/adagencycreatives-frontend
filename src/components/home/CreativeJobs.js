@@ -28,7 +28,7 @@ const CreativeJobs = () => {
   });
 
   return (
-    <>
+    <div id="jobs">
       <div className="sectionHeader">
         <h1 className="sectionTitle">Creative Jobs</h1>
         <div className="browseAll">
@@ -79,7 +79,7 @@ const CreativeJobs = () => {
           })}
         </swiper-container>
       </div>
-    </>
+    </div>
   );
 };
 

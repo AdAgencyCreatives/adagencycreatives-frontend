@@ -33,7 +33,7 @@ const AgencyCreatives = () => {
     swiperElRef.current.initialize();
   });
   return (
-    <>
+    <div id="creatives">
       <div className="sectionHeader">
         <h1 className="sectionTitle">Agency Creatives</h1>
         <div className="browseAll">
@@ -76,7 +76,7 @@ const AgencyCreatives = () => {
           })}
         </swiper-container>
       </div>
-    </>
+    </div>
   );
 };
 

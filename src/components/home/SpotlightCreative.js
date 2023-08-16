@@ -34,7 +34,7 @@ const SpotlightCreative = () => {
     swiperElRef.current.initialize();
   });
   return (
-    <>
+    <div id="spotlight">
       <div className="sectionHeader">
         <h1 className="sectionTitle">Spotlighting Creatives</h1>
         <div className="browseAll">
@@ -78,7 +78,7 @@ const SpotlightCreative = () => {
           })}
         </swiper-container>
       </div>
-    </>
+    </div>
   );
 };
 

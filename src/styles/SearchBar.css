@@ -1,0 +1,32 @@
+.search-box {
+    display: flex;
+    margin-bottom: 100px;
+}
+
+.search-bar {
+    flex: 1;
+}
+
+input.search-input {
+    padding: 14px;
+    font-size: 20px;
+    border-radius: 8px;
+    border: none;
+    padding-left: 25px;
+}
+
+.search-btn button {
+    background: var(--color-primary);
+    color: white;
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.search-btn button:hover {
+    color: black;
+    background: var(--color-primary);
+    border: 1px solid black;
+}

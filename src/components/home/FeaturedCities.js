@@ -7,7 +7,7 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 const FeaturedCities = () => {
   return (
-    <>
+    <div id="cities">
       <div className="sectionHeader">
         <h1 className="sectionTitle">Featured Cities</h1>
         <div className="browseAll">
@@ -110,7 +110,7 @@ const FeaturedCities = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

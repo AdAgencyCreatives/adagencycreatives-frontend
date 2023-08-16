@@ -26,6 +26,14 @@ a:hover {
     color: black;
 }
 
+a.active>.menu-link-btn {
+    color: var(--color-primary);
+}
+
+.nav-item {
+    display: inline-block;
+}
+
 .right-menu .post-job-link {
     border-style: solid;
     border-width: 2px 2px 2px 2px;
@@ -95,10 +103,70 @@ a:hover {
     text-align: center;
     transition: background 0.5s ease;
     font-size: 21px;
-    margin:0px 20px;
+    margin: 0px 20px;
 }
 
 .drawer-box .social:hover {
     background: var(--color-primary);
     color: white;
+}
+
+
+.has-children:hover .dropdown-menu {
+    -webkit-transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    border-top: 2px solid black;
+    border-radius: 0;
+    left: 0;
+}
+
+.dropdown-menu {
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-transition: all 0.2s ease-in-out 0s;
+    -o-transition: all 0.2s ease-in-out 0s;
+    transition: all 0.2s ease-in-out 0s;
+    -webkit-transform: rotateX(-90deg);
+    -ms-transform: rotateX(-90deg);
+    -o-transform: rotateX(-90deg);
+    transform: rotateX(-90deg);
+    left: 0;
+}
+
+ul.dropdown-list {
+    list-style-type: none;
+    min-width: 200px;
+    padding: 0;
+    padding-top: 15px;
+}
+
+ul.dropdown-list li a {
+    text-decoration: none;
+    font-size: 20px;
+    color: black;
+    width: 100%;
+    padding: 7px 30px;
+    display: block;
+}
+
+ul.dropdown-list li a:hover {
+    color: var(--color-primary)
+}
+
+.has-children {
+    position: relative;
+}
+
+ul.dropdown-list:before {
+    border-width: 7px;
+    border-style: solid;
+    border-color: transparent transparent black;
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 40px;
 }

@@ -98,7 +98,7 @@ const PublicationResources = () => {
   ];
 
   return (
-    <>
+    <div id="publications">
       <div className="sectionHeader">
         <h1 className="sectionTitle">Publication Resources</h1>
         <div className="browseAll">
@@ -134,7 +134,7 @@ const PublicationResources = () => {
           })}
         </swiper-container>
       </div>
-    </>
+    </div>
   );
 };
 

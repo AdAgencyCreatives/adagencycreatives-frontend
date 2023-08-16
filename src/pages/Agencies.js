@@ -1,8 +1,8 @@
-import Nathan from "../assets/images/NathanWalker_ProfilePic-150x150.jpg";
+import Mischief from "../assets/images/Mischief-1.png";
 import { IoLocationOutline } from "react-icons/io5";
 import SearchBar from "../components/SearchBar";
 
-const Creatives = () => {
+const Agencies = () => {
   return (
     <div className="dark-container">
       <div className="container p-md-0 px-5">
@@ -11,22 +11,20 @@ const Creatives = () => {
           {Array.apply(11, { length: 10 }).map((value, index) => {
             return (
               <div className="col-md-4 col-sm-3 col-12" key={`ag-${index}`}>
-                <div className="sliderContent agencies-slider">
-                  <img
-                    src={Nathan}
-                    className="candidateLogo"
-                    width={150}
-                    height={150}
-                  />
-                  <div className="agencyName">Nathan Walker</div>
-                  <div className="position">Design Lead</div>
+                <div className="sliderContent adagencies-slider">
+                  <a href="#" className="employer-logo">
+                    <img src={Mischief} width={150} height={150} />
+                  </a>
+                  <h3 className="employer-title">
+                    <a href="#">Mischief</a>
+                  </h3>
                   <div className="job-location location">
                     <IoLocationOutline />
                     <a href="#">Austin,</a>
                     <a href="#">Texas</a>
                   </div>
-                  <div className="profileLink">
-                    <a href="#">View Profile</a>
+                  <div className="open-jobs-btn">
+                    <a href="#">Open Jobs - 0</a>
                   </div>
                 </div>
               </div>
@@ -38,4 +36,4 @@ const Creatives = () => {
   );
 };
 
-export default Creatives;
+export default Agencies;

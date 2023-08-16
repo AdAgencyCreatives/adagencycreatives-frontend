@@ -26,7 +26,7 @@ const MentorResources = () => {
     },
   ];
   return (
-    <>
+    <div id="mentors">
       <div className="sectionHeader">
         <h1 className="sectionTitle">Mentor Resources</h1>
         <div className="browseAll">
@@ -45,7 +45,7 @@ const MentorResources = () => {
           );
         })}
       </div>
-    </>
+    </div>
   );
 };
 

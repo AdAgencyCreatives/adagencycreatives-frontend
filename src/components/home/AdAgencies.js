@@ -28,7 +28,7 @@ const AdAgencies = () => {
   });
 
   return (
-    <>
+    <div id="agencies">
       <div className="sectionHeader">
         <h1 className="sectionTitle">Advertising Agencies</h1>
         <div className="browseAll">
@@ -69,7 +69,7 @@ const AdAgencies = () => {
           })}
         </swiper-container>
       </div>
-    </>
+    </div>
   );
 };
 

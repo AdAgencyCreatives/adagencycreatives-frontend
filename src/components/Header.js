@@ -12,16 +12,35 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Logo from "../assets/images/logo.png";
-import { Grid, Link } from "@mui/material";
+import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { AiOutlineUser, AiOutlineBell, AiOutlineClose } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
+import { NavLink,Link } from "react-router-dom";
+import ScrollToHash from "./ScrollToHash";
 
 const drawerWidth = "85%";
-const navItems = ["Home", "Creatives", "Agencies", "Contact"];
+const navItems = [
+  {
+    name: "Home",
+    link: "/",
+    children: [
+      { name: "About", link: "#about" },
+      { name: "Creatives", link: "#creatives" },
+      { name: "Spotlight", link: "#spotlight" },
+      { name: "Jobs", link: "#jobs" },
+      { name: "Agencies", link: "#agencies" },
+      { name: "Mentors", link: "#mentors" },
+      { name: "Publications", link: "#publications" },
+      { name: "Feedback", link: "#feedback" },
+    ],
+  },
+  { name: "Creatives", link: "/creatives" },
+  { name: "Agencies", link: "/agencies" },
+  { name: "Contact", link: "/contact" },
+];
 
 function Header(props) {
   const { window } = props;
@@ -33,6 +52,7 @@ function Header(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle}>
+      <ScrollToHash />
       <Grid
         container
         justifyContent="space-between"
@@ -41,7 +61,7 @@ function Header(props) {
         sx={{ paddingY: 3, paddingX: 1 }}
       >
         <Grid item xs={8}>
-          <Link className="site-logo">
+          <Link className="site-logo" to="/">
             <img className="" src={Logo} alt="Adagency Creatives" />
           </Link>
         </Grid>
@@ -58,9 +78,9 @@ function Header(props) {
       <Box className="drawer-box">
         <List>
           {navItems.map((item) => (
-            <ListItem key={item} disablePadding>
+            <ListItem key={item.name} disablePadding>
               <ListItemButton href="#" className="drawer-menu-link">
-                <ListItemText primary={item} disableTypography={false} />
+                <ListItemText primary={item.name} disableTypography={false} />
               </ListItemButton>
             </ListItem>
           ))}
@@ -98,7 +118,6 @@ function Header(props) {
       <CssBaseline />
       <AppBar
         elevation={0}
-        position="sticky"
         component="nav"
         sx={{ backgroundColor: "#fff", padding: { sm: "10px 0", xs: "0" } }}
       >
@@ -143,9 +162,34 @@ function Header(props) {
               </Box>
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
                 {navItems.map((item) => (
-                  <StyledButton href="#" key={item} color="link">
-                    {item}
-                  </StyledButton>
+                  <div
+                    key={item.name}
+                    className={`nav-item ${item.children && "has-children"}`}
+                  >
+                    <NavLink to={item.link}>
+                      <StyledButton
+                        color="link"
+                        className={`menu-link-btn ${
+                          item.children && "dropdown-toggle"
+                        }`}
+                      >
+                        {item.name}
+                      </StyledButton>
+                    </NavLink>
+                    {item.children && item.children.length > 0 && (
+                      <div className="dropdown-menu show">
+                        <ul className="dropdown-list">
+                          {item.children.map(({ name, link }) => (
+                            <li key={name}>
+                              <NavLink to={link} className={() => ""}>
+                                {name}
+                              </NavLink>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}{" "}
+                  </div>
                 ))}
                 <Button
                   href="#"
@@ -162,6 +206,7 @@ function Header(props) {
           </Grid>
         </Toolbar>
       </AppBar>
+      <Toolbar />
       <Box component="nav">
         <Drawer
           container={container}

@@ -5,7 +5,6 @@ import Money from "../assets/images/make-money-white.png";
 import { IoSearchOutline } from "react-icons/io5";
 // core version + navigation, pagination modules:
 import { register } from "swiper/element/bundle";
-import { useEffect, useRef } from "react";
 import "swiper/css/pagination";
 import AgencyCreatives from "../components/home/AgencyCreative";
 import AdAgencies from "../components/home/AdAgencies";
@@ -79,7 +78,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="section about text-center">
+      <div className="section about text-center" id="about">
         <h1>About Us</h1>
         <div className="about-content">
           <h5>Ad Agency Creatives is a</h5>
@@ -95,7 +94,7 @@ const Home = () => {
         </div>
       </div>
       <div className="creative-section">
-        <AgencyCreatives />
+        <AgencyCreatives/>
 
         {/* Spotlighting Creatives Section */}
         <SpotlightCreative />
@@ -111,7 +110,7 @@ const Home = () => {
 
         <PublicationResources />
       </div>
-      <div className="contact-section">
+      <div className="contact-section" id="feedback">
         <div className="row">
           <div className="text-center text-sm-start col-xs-12 col-sm-8 col-md-12">
             <h3 className="title">
