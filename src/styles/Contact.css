@@ -1,0 +1,29 @@
+.form-inp {
+    padding: 15px;
+    border: none;
+    margin-bottom: 30px;
+    border-radius: 3px;
+    font-size: 15px;
+}
+
+.contact-form {
+    margin-top: 3em;
+}
+
+button.submit-btn {
+    background: var(--color-primary);
+    color: white;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: none;
+    transition: all 0.2s ease-in;
+}
+
+button.submit-btn:hover {
+    background: white;
+    color: black;
+}

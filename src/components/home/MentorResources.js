@@ -1,6 +1,5 @@
 import Design from "../../assets/images/Design.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
-import { IoLocationOutline } from "react-icons/io5";
 
 const MentorResources = () => {
   const mentors = [
@@ -25,6 +24,7 @@ const MentorResources = () => {
       url: "#",
     },
   ];
+  
   return (
     <div id="mentors">
       <div className="sectionHeader">
