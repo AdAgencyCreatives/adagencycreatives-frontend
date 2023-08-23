@@ -1,0 +1,113 @@
+.filters {
+    background: #eee;
+    border-radius: 8px;
+    padding: 26px 30px 30px;
+}
+
+.jobs-filter-title {
+    color: #D3A11F;
+    font-size: 24px;
+    margin-bottom: 18px;
+}
+
+.filter-label {
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.filter-item {
+    margin-bottom: 30px;
+}
+
+.job-item {
+    -webkit-transition: all 0.35s ease-in-out 0s;
+    -o-transition: all 0.35s ease-in-out 0s;
+    transition: all 0.35s ease-in-out 0s;
+    position: relative;
+    margin-bottom: 30px;
+    background: #fff;
+    border: 1px solid #ECEDF2;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    padding: 30px;
+}
+
+.job-item .employer-logo {
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    width: 50px;
+    height: 50px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    justify-content: center;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+}
+
+.job-item .employer-logo img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.job-list-content {
+    float: left;
+    display: block;
+}
+
+.job-item .inner-left {
+    flex: 1;
+    display: flex;
+    gap: 20px;
+}
+
+.job-item .job-title a {
+    color: black;
+    text-decoration: none;
+}
+
+.job-item .job-title {
+    font-size: 36px;
+    font-weight: 400;
+}
+
+.job-category a, .job-deadline {
+    text-decoration: none;
+    color: #696969;
+    font-size: 20px;
+}
+
+.job-metas {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.category-job, .job-deadline {
+    flex: 50%;
+}
+
+.btn-apply {
+    border-style: solid;
+    border-width: 2px 2px 2px 2px;
+    border-color: black;
+    padding: 8px 10px !important;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    margin: 0 10px;
+    background: black;
+    color: var(--color-primary);
+}

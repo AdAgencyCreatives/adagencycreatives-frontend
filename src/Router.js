@@ -1,4 +1,4 @@
-import { createBrowserRouter, useRouteError } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import Home from "./pages/Home";
 import Creatives from "./pages/Creatives";
@@ -7,6 +7,8 @@ import SpotlightCreatives from "./pages/SpotlightCreatives";
 import MentorResources from "./pages/MentorResources";
 import Publications from "./pages/Publications";
 import Contact from "./pages/Contact";
+import Community from "./pages/Community";
+import Jobs from "./pages/Jobs";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +22,11 @@ export const router = createBrowserRouter([
       {
         path: "/creatives",
         element: <Creatives />,
+      },
+
+      {
+        path: "/community",
+        element: <Community />,
       },
 
       {
@@ -42,6 +49,11 @@ export const router = createBrowserRouter([
       {
         path: "/contact",
         element: <Contact />,
+      },
+
+      {
+        path: "/creative-jobs",
+        element: <Jobs />,
       },
     ],
   },

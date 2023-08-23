@@ -18,37 +18,31 @@ import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { AiOutlineUser, AiOutlineBell, AiOutlineClose } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
-import { NavLink,Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import ScrollToHash from "./ScrollToHash";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { navItems } from "../nav/NavItems";
 
 const drawerWidth = "85%";
-const navItems = [
-  {
-    name: "Home",
-    link: "/",
-    children: [
-      { name: "About", link: "#about" },
-      { name: "Creatives", link: "#creatives" },
-      { name: "Spotlight", link: "#spotlight" },
-      { name: "Jobs", link: "#jobs" },
-      { name: "Agencies", link: "#agencies" },
-      { name: "Mentors", link: "#mentors" },
-      { name: "Publications", link: "#publications" },
-      { name: "Feedback", link: "#feedback" },
-    ],
-  },
-  { name: "Creatives", link: "/creatives" },
-  { name: "Agencies", link: "/agencies" },
-  { name: "Contact", link: "/contact" },
-];
 
 function Header(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [childLink, setChildLink] = useState("hashLink");
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+
+  let location = useLocation();
+
+  useEffect(() => {
+    const path = location.pathname;
+    if (path !== "/") {
+      setChildLink("link");
+    }
+  }, [location]);
 
   const drawer = (
     <Box onClick={handleDrawerToggle}>
@@ -179,10 +173,13 @@ function Header(props) {
                     {item.children && item.children.length > 0 && (
                       <div className="dropdown-menu show">
                         <ul className="dropdown-list">
-                          {item.children.map(({ name, link }) => (
-                            <li key={name}>
-                              <NavLink to={link} className={() => ""}>
-                                {name}
+                          {item.children.map((child) => (
+                            <li key={child.name}>
+                              <NavLink
+                                to={child[childLink]}
+                                className={() => ""}
+                              >
+                                {child.name}
                               </NavLink>
                             </li>
                           ))}

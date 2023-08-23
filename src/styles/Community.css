@@ -1,0 +1,41 @@
+@font-face {
+    font-family: 'Alta';
+    src: url(../assets/fonts/Alta_Typeface/Alta_regular.otf) format('opentype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Alta';
+    src: url(../assets/fonts/Alta_Typeface/Alta_light.otf) format('opentype');
+    font-weight: light;
+}
+
+@font-face {
+    font-family: 'Alta';
+    src: url(../assets/fonts/Alta_Typeface/Alta_caption.otf) format('opentype');
+    font-weight: bold;
+}
+
+.community-title {
+    color: white;
+    font-family: 'Alta';
+    font-size: 61px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.community-subtitle {
+    font-size: 20px;
+    color: white;
+    text-align: center;
+    font-weight: 400;
+}
+
+.wall-options {
+    background: #eeeeee;
+    border-radius: 8px 8px 0 0;
+    padding: 15px 25px;
+    border-bottom: 1px solid #f6f6f6;
+    display: flex;
+    gap: 10px;
+}

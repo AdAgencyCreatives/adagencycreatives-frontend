@@ -36,7 +36,7 @@ const MentorResources = () => {
         <div className="row g-5 mt-3">
           {mentors.map((item, index) => {
             return (
-              <div className="col-sm-6">
+              <div className="col-sm-6" key={`m_${index}`}>
                 <div
                   className={
                     "mentor justify-content-center" +
@@ -44,7 +44,6 @@ const MentorResources = () => {
                       ? " justify-content-sm-end"
                       : " justify-content-sm-start")
                   }
-                  key={`m_${index}`}
                 >
                   <a href={item.url}>
                     <img src={item.image} height={150} width={150} />
