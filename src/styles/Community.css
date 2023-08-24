@@ -31,6 +31,67 @@
     font-weight: 400;
 }
 
+.post-form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.status-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar img {
+    height: 40px;
+    width: 40px;
+    border-radius: 40px;
+}
+
+.status-box .textarea {
+    flex: 1;
+}
+
+.status-input {
+    background: rgb(250, 250, 250);
+    border-radius: 50px;
+    resize: none;
+    border: none;
+    font-size: 16px;
+}
+
+.status-input:focus {
+    box-shadow: none;
+    border: 2px solid var(--color-primary);
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    background: #dddddd;
+    margin: 20px 0;
+}
+
+.status-options {
+    display: flex;
+    gap: 15px;
+    cursor: pointer;
+}
+
+.status-options .item {
+    font-size: 20px;
+    padding: 6px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    display: flex;
+}
+
+.status-options .item:hover {
+    background: #d3a11fab;
+}
+
+
 .wall-options {
     background: #eeeeee;
     border-radius: 8px 8px 0 0;
@@ -38,4 +99,116 @@
     border-bottom: 1px solid #f6f6f6;
     display: flex;
     gap: 10px;
+}
+
+.community-sidebar {
+    background: white;
+    border-radius: 5px;
+}
+
+.sidebar-menu {
+    padding: 10px;
+}
+
+.sidebar-menu .menu-container {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-menu li.menu-item {
+    margin-bottom: 10px;
+}
+
+.sidebar-menu li.menu-item a {
+    align-items: center;
+    display: flex;
+    gap: 5px;
+    text-decoration: none;
+    color: black;
+    width: 100%;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: all 0.2s ease-in;
+}
+
+.sidebar-menu li.menu-item:hover a {
+    background: var(--color-primary);
+    color: white;
+}
+
+.sidebar-menu li.menu-item svg path {
+    stroke-width: 40px;
+}
+
+.postlist {
+    margin: 30px 0;
+}
+
+.post-item {
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.post-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+img.post-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.post-meta {
+    flex: 1;
+}
+
+.post-username {
+    font-weight: 500;
+}
+
+.post-time {
+    display: flex;
+    color: rgb(125, 129, 132);
+    font-size: 10px;
+    align-items: center;
+}
+
+.post-time svg {
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.post-action {
+    cursor: pointer;
+}
+
+.action-dropdown ul {
+    list-style: none;
+    border: 1px solid #f1f1f1;
+    padding: 10px;
+    position: absolute;
+    background: white;
+    border-radius: 5px;
+    width: 120px;
+    font-size: 15px;
+}
+
+.action-dropdown li:hover {
+    color: var(--color-primary);
+}
+
+.action-dropdown {
+    transition: all 0.3s ease;
+}
+
+.post-content {
+    margin-top: 20px;
+}
+
+.post-body img {
+    border-radius: 5px;
 }

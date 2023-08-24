@@ -1,5 +1,7 @@
-import '../styles/Community.css';
-import CreatePost from '../components/community/CreatePost';
+import "../styles/Community.css";
+import CreatePost from "../components/community/CreatePost";
+import LeftSidebar from "../components/community/LeftSidebar";
+import PostList from "../components/community/PostList";
 
 const Community = () => {
   return (
@@ -9,8 +11,16 @@ const Community = () => {
         Creatives only. Ask for help. Offer or solicit advice. Share. Chat.
         Inspire. Tell jokes.
       </h2>
-      <div className="container">
-        <CreatePost />
+      <div className="container-fluid mt-4">
+        <div className="row">
+          <div className="col-2">
+            <LeftSidebar />
+          </div>
+          <div className="col-8">
+            <CreatePost />
+            <PostList />
+          </div>
+        </div>
       </div>
     </div>
   );

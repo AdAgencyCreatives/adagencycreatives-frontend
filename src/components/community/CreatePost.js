@@ -1,50 +1,32 @@
-import {
-  IoChatbubbleEllipsesSharp,
-  IoCameraSharp,
-  IoImagesSharp,
-  IoCloudDownloadSharp,
-  IoVideocamSharp,
-  IoVolumeHigh,
-} from "react-icons/io5";
+import { IoCameraOutline, IoImageOutline } from "react-icons/io5";
+import { FiCamera, FiImage, FiPaperclip } from "react-icons/fi";
+import Nathan from "../../assets/images/NathanWalker_ProfilePic-150x150.jpg";
 
 const CreatePost = () => {
   return (
     <div className="post-form">
-      <div class="wall-options">
-        <div class="wall-opts-item">
-          <IoChatbubbleEllipsesSharp />
-          <span>Status</span>
+      <div className="status-box">
+        <div className="user-avatar">
+          <img src={Nathan} />
         </div>
-
-        <div class="wall-opts-item">
-          <IoCameraSharp />
-          <span>Photo</span>
+        <div className="textarea">
+          <textarea
+            className="status-input form-control"
+            rows={1}
+            placeholder="What's on your mind?"
+          ></textarea>
         </div>
-
-        <div class="wall-opts-item">
-          <IoImagesSharp />
-          <span>GIF</span>
+      </div>
+      <div className="divider"></div>
+      <div className="status-options">
+        <div className="item">
+          <FiCamera />
         </div>
-
-        <div class="wall-opts-item">
-          <IoCloudDownloadSharp />
-          <span>File</span>
+        <div className="item">
+          <FiImage />
         </div>
-
-        <div class="wall-opts-item">
-          <IoVideocamSharp />
-          <span>Video</span>
-        </div>
-
-        <div class="wall-opts-item">
-          <IoVolumeHigh />
-          <span>Audio</span>
-        </div>
-
-        <div class="wall-opts-item wall-opts-show-all">
-          <div class="youzify-wall-form-show-all">
-            <i class="fas fa-ellipsis-h"></i>
-          </div>
+        <div className="item">
+          <FiPaperclip />
         </div>
       </div>
     </div>
