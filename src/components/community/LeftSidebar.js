@@ -8,6 +8,7 @@ import {
   IoSettingsOutline,
   IoTrendingUpOutline,
 } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const LeftSidebar = () => {
   return (
@@ -22,13 +23,13 @@ const LeftSidebar = () => {
           </li>
 
           <li className="menu-item">
-            <a href="#">
+            <Link to="/community-members">
               <IoPersonOutline />
               <div className="item-name">Members</div>
-            </a>
+            </Link>
           </li>
           <li className="menu-item">
-            <a href="#">
+            <a href="/username/friends">
               <IoPeopleOutline />
               <div className="item-name">Friends</div>
             </a>

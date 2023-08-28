@@ -9,6 +9,8 @@ import Publications from "./pages/Publications";
 import Contact from "./pages/Contact";
 import Community from "./pages/Community";
 import Jobs from "./pages/Jobs";
+import CommunityMembers from "./pages/CommunityMembers";
+import Friends from "./pages/User/Friends";
 
 export const router = createBrowserRouter([
   {
@@ -54,6 +56,15 @@ export const router = createBrowserRouter([
       {
         path: "/creative-jobs",
         element: <Jobs />,
+      },
+
+      {
+        path: "/community-members",
+        element: <CommunityMembers />,
+      },
+      {
+        path: "/:username/friends",
+        element: <Friends />,
       },
     ],
   },
