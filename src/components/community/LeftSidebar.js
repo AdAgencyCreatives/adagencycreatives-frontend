@@ -8,6 +8,8 @@ import {
   IoSettingsOutline,
   IoTrendingUpOutline,
 } from "react-icons/io5";
+import { HiOutlineUserGroup } from "react-icons/hi2";
+
 import { Link } from "react-router-dom";
 
 const LeftSidebar = () => {
@@ -32,6 +34,12 @@ const LeftSidebar = () => {
             <a href="/username/friends">
               <IoPeopleOutline />
               <div className="item-name">Friends</div>
+            </a>
+          </li>
+          <li className="menu-item">
+            <a href="/username/groups">
+              <HiOutlineUserGroup />
+              <div className="item-name">Groups</div>
             </a>
           </li>
           <li className="menu-item">

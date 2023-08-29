@@ -1,0 +1,121 @@
+.user-profile-header {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+
+    .username {
+        color: var(--color-primary);
+        font-size: 22px;
+        font-weight: 500;
+    }
+
+    .user-avatar img {
+        height: 160px;
+        width: 160px;
+        border: 8px solid white;
+        border-radius: 50%;
+    }
+
+    .member-title-location {
+        padding: 0 50px;
+    }
+
+    .candidate-location svg {
+        margin-right: 5px;
+    }
+
+    .user-statistics a {
+        color: white;
+    }
+
+    .user-details {
+        flex: 1;
+    }
+
+    .user-actions {
+        margin-top: 20px;
+    }
+
+    .user-actions {
+        button {
+            background: #d3a11f;
+            color: white;
+            margin: 0 5px;
+        }
+
+        button.btn-outline {
+            background: white;
+            color: var(--color-primary);
+        }
+
+        button:hover {
+            background: #c99715;
+            color: white;
+        }
+
+        button.btn-outline:hover {
+            background: #f1eaea;
+            color: var(--color-primary);
+        }
+    }
+
+
+    .user-statistics {
+        ul {
+            margin: 0;
+        }
+
+        li {
+            padding: 0 20px;
+            text-align: center;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+
+        .snumber {
+            font-size: 26px;
+            font-weight: 400;
+            line-height: 24px;
+            margin-bottom: 5px;
+            font-family: Poppins, Open sans, sans-serif;
+        }
+
+        .sdescription {
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 22px;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+        }
+    }
+}
+
+p.user-count {
+    color: #8c8fa0;
+    font-size: 13px;
+}
+
+.user-pagination {
+    display: flex;
+    gap: 5px;
+    color: white;
+
+
+    .page {
+        background: white;
+        color: #404040;
+        height: 17px;
+        width: 17px;
+        text-align: center;
+        padding: 6px;
+        font-size: 12px;
+        box-sizing: content-box;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .page.current {
+        background: transparent;
+        color: white;
+    }
+}

@@ -76,7 +76,6 @@
 .status-options {
     display: flex;
     gap: 15px;
-    cursor: pointer;
 }
 
 .status-options .item {
@@ -134,10 +133,6 @@
 .sidebar-menu li.menu-item:hover a {
     background: var(--color-primary);
     color: white;
-}
-
-.sidebar-menu li.menu-item svg path {
-    stroke-width: 40px;
 }
 
 .postlist {

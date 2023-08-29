@@ -1,0 +1,35 @@
+.image-upload-modal {
+    padding: 0;
+
+    .image-picker-header {
+        padding: 15px 20px;
+        border-bottom: 1px solid #8c8c8c33;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-close {
+        font-size: 32px;
+        display: flex;
+        cursor: pointer;
+    }
+
+    .image-picker-body {
+        background: rgb(245, 247, 249);
+        display: flex;
+        justify-content: center;
+        flex: 1;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-upload-img {
+        background: var(--color-primary);
+        width: 150px;
+        color: white;
+        /* padding: 5px 30px; */
+        border-radius: 20px;
+    }
+}

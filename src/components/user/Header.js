@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import AdAgencyLogo from "../../assets/images/AdAgency.png";
-import { IoLocationOutline } from "react-icons/io5";
+import { IoLocationOutline, IoMailOpen, IoPersonAdd } from "react-icons/io5";
 
 const Header = ({ username }) => {
   return (
-    <div className="user-profile-header">
+    <div className="user-profile-header mb-5">
       <div className="user-avatar">
         <img src={AdAgencyLogo} />
       </div>
@@ -17,6 +17,10 @@ const Header = ({ username }) => {
             <span class="restrict-location-search">Dallas</span>,
             <span class="restrict-location-search">Texas</span>
           </div>
+        </div>
+        <div className="user-actions">
+          <button className="btn"><IoPersonAdd /> Add Friend</button>
+          <button className="btn btn-outline"><IoMailOpen /> Message</button>
         </div>
       </div>
       <div class="user-statistics">
