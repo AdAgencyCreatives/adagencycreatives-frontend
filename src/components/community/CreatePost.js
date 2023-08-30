@@ -10,7 +10,7 @@ import Divider from "../Divider";
 import ImagePicker from "./Modals/ImagePicker";
 
 const CreatePost = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [showPicker, setShowPicker] = useState(false);

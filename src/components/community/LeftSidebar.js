@@ -18,10 +18,10 @@ const LeftSidebar = () => {
       <div className="sidebar-menu">
         <ul className="menu-container">
           <li className="menu-item">
-            <a href="#">
+            <Link to="#">
               <IoHomeOutline />
               <div className="item-name">Home</div>
-            </a>
+            </Link>
           </li>
 
           <li className="menu-item">
@@ -31,50 +31,50 @@ const LeftSidebar = () => {
             </Link>
           </li>
           <li className="menu-item">
-            <a href="/username/friends">
+            <Link to="/username/friends">
               <IoPeopleOutline />
               <div className="item-name">Friends</div>
-            </a>
+            </Link>
           </li>
           <li className="menu-item">
-            <a href="/username/groups">
+            <Link to="/groups">
               <HiOutlineUserGroup />
               <div className="item-name">Groups</div>
-            </a>
+            </Link>
           </li>
           <li className="menu-item">
-            <a href="#">
+            <Link to="/messages">
               <IoFileTrayOutline />
               <div className="item-name">Messages</div>
-            </a>
+            </Link>
           </li>
           <li className="menu-item">
-            <a href="#">
+            <Link to="#">
               <IoNotificationsOutline />
               <div className="item-name">Notifications</div>
-            </a>
+            </Link>
           </li>
         </ul>
         <hr class="hr" />
 
         <ul className="menu-container">
           <li className="menu-item">
-            <a href="#">
+            <Link to="#">
               <IoBookmarkOutline />
               <div className="item-name">Bookmarks</div>
-            </a>
+            </Link>
           </li>
           <li className="menu-item">
-            <a href="#">
+            <Link to="#">
               <IoTrendingUpOutline />
               <div className="item-name">Activities</div>
-            </a>
+            </Link>
           </li>
           <li className="menu-item">
-            <a href="#">
+            <Link to="#">
               <IoSettingsOutline />
               <div className="item-name">Settings</div>
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

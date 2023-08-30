@@ -42,8 +42,7 @@ input.search-community-members:focus-visible{
 }
 
 .members-count {
-    display: flex;
-    gap: 10px;
+    display: inline-block;
     align-items: center;
     font-size: 13px;
     font-weight: 600;

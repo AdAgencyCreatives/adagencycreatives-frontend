@@ -1,0 +1,48 @@
+.page-groups {
+
+    .search-bar {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    input.search-community-members {
+        border-radius: 5px;
+    }
+
+    .group-info {
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 10px;
+        font-weight: 400;
+        color: #898989;
+    }
+
+    .join-group {
+        margin-top: 30px;
+        width: 100%;
+    }
+
+    .group-btn {
+        background: black;
+        color: white;
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        font-weight: 500;
+        box-shadow: none;
+        border: 1px solid;
+    }
+
+    .group-btn.leave-group {
+        background: transparent;
+        border-color: #ebe4e4;
+        color: #898989;
+    }
+}

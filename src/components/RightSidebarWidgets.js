@@ -1,44 +1,27 @@
+import Calendar from "react-calendar";
+import 'react-calendar/dist/Calendar.css';
+import '../styles/RightSidebarWidgets.scss';
+
 const RightSidebarWidgets = () => {
   return (
     <div className="right-sidebar">
       <div className="widgets">
+
+        {/* Calendar */}
         <div className="widget">
           <div className="widget-header">
-            <div className="widget-title">Groups</div>
+            <div className="widget-title">Upcoming Events</div>
           </div>
           <div className="widget-content">
-            <div className="content">
-              <div className="item-options" id="members-list-options">
-                <a
-                  href="https://adagencycreatives.com/community-members/"
-                  id="newest-members"
-                  className=""
-                >
-                  Newest
-                </a>
-                <span className="bp-separator" role="separator">
-                  |
-                </span>
-                <a
-                  href="https://adagencycreatives.com/community-members/"
-                  id="recently-active-members"
-                  className=""
-                >
-                  Active
-                </a>
+            <Calendar />
+          </div>
+        </div>
 
-                <span className="bp-separator" role="separator">
-                  |
-                </span>
-                <a
-                  href="https://adagencycreatives.com/community-members/"
-                  id="popular-members"
-                  className="selected"
-                >
-                  Popular
-                </a>
-              </div>
-            </div>
+        <div className="widget">
+          <div className="widget-header">
+            <div className="widget-title">Welcome New Members</div>
+          </div>
+          <div className="widget-content">
             <div className="content">
               <ul
                 id="members-list"
@@ -179,41 +162,9 @@ const RightSidebarWidgets = () => {
 
         <div className="widget">
           <div className="widget-header">
-            <div className="widget-title">Creatives</div>
+            <div className="widget-title">Trending Post</div>
           </div>
           <div className="widget-content">
-            <div className="content">
-              <div className="item-options" id="members-list-options">
-                <a
-                  href="https://adagencycreatives.com/community-members/"
-                  id="newest-members"
-                  className=""
-                >
-                  Newest
-                </a>
-                <span className="bp-separator" role="separator">
-                  |
-                </span>
-                <a
-                  href="https://adagencycreatives.com/community-members/"
-                  id="recently-active-members"
-                  className=""
-                >
-                  Active
-                </a>
-
-                <span className="bp-separator" role="separator">
-                  |
-                </span>
-                <a
-                  href="https://adagencycreatives.com/community-members/"
-                  id="popular-members"
-                  className="selected"
-                >
-                  Popular
-                </a>
-              </div>
-            </div>
             <div className="content">
               <ul
                 id="members-list"

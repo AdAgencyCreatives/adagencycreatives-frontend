@@ -32,12 +32,12 @@ const Header = ({ username }) => {
             </Link>
           </li>
 
-          <li>
+          {/* <li>
             <Link to={username}>
               <div class="snumber">257</div>
               <h3 class="sdescription">Views</h3>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </div>
     </div>

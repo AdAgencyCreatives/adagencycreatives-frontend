@@ -1,33 +1,33 @@
-import { IoEarth, IoLocationOutline } from "react-icons/io5";
+import { FaPencil,FaEarthAmericas, FaRightToBracket } from "react-icons/fa6";
 import Nathan from "../assets/images/NathanWalker_ProfilePic-150x150.jpg";
-import "../styles/CommunityMembers.css";
+import "../styles/Groups.scss";
 import { Link } from "react-router-dom";
 
-const CommunityMembers = () => {
+const Groups = () => {
   return (
-    <div className="dark-container page-community-members">
+    <div className="dark-container page-groups">
       <div className="container p-md-0 px-5">
         <h1 className="display-5 fw-normal mb-5 text-white text-center">
-          Creatives Directory
+          Groups Directory
         </h1>
         <div className="search-bar">
           <input
             className="search-community-members"
             placeholder="Search by name"
           />
-          <button className="clear-btn">Clear</button>
+          {/* <button className="clear-btn">Clear</button> */}
         </div>
-        {/* <div className="members-header">
-          <Link to="" className="text-dark">
+        <div className="members-header">
+          <Link to="create" className="text-dark">
             <div className="members-count">
-              <IoEarth color="#a4a4a4" />
-              <span>All Members</span>
-              <span className="count-number">340</span>
+              <FaPencil color="#a4a4a4" />
+              <span className="m-2">Create a Group</span>
+              {/* <span className="count-number">340</span> */}
             </div>
           </Link>
-        </div> */}
+        </div>
         <div className="row g-4">
-          {Array.apply(11, { length: 10 }).map((value, index) => {
+          {Array.apply(null, { length: 5 }).map((value, index) => {
             return (
               <div className="col-md-4 col-sm-3 col-12" key={`ag-${index}`}>
                 <div className="sliderContent">
@@ -37,11 +37,12 @@ const CommunityMembers = () => {
                     width={150}
                     height={150}
                   />
-                  <div className="agencyName">Uriel Sanchez</div>
-                  <div className="job-location location">
-                    <IoLocationOutline />
-                    <a href="#">Austin,</a>
-                    <a href="#">Texas</a>
+                  <div className="agencyName ">Creative Directors</div>
+                  <div className="group-info">
+                    <FaEarthAmericas color="#a4a4a4" /> Public Group
+                  </div>
+                  <div className="join-group">
+                    <button className="group-btn"><FaRightToBracket /> Join Group </button>
                   </div>
                 </div>
               </div>
@@ -53,4 +54,4 @@ const CommunityMembers = () => {
   );
 };
 
-export default CommunityMembers;
+export default Groups;

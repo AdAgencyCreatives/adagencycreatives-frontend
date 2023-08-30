@@ -75,7 +75,7 @@ const media = [
   { value: 150, label: "360 Activation" },
   { value: 117, label: "Bilingual" },
   { value: 147, label: "Branding" },
-  { value: 148, label: "Conecpts" },
+  { value: 148, label: "Concepts" },
   { value: 149, label: "Digital" },
 ];
 
