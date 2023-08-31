@@ -1,43 +1,66 @@
-import AgencySpy from "../assets/images/AgencySpy.png";
 import "../styles/Publications.css";
+import aaa from "../assets/images/publications/AAA.png";
+import adage from "../assets/images/publications/adage.png";
+import adsworld from "../assets/images/publications/adsworld.png";
+import adweek from "../assets/images/publications/adweek.png";
+import adweekagency from "../assets/images/publications/adweekagency.png";
+import aiga from "../assets/images/publications/aiga.png";
+import ca from "../assets/images/publications/ca.png";
+import campaign from "../assets/images/publications/campaign.png";
+import howdesign from "../assets/images/publications/howdesign.png";
+import littleblack from "../assets/images/publications/littleblack.png";
+import muse from "../assets/images/publications/muse.png";
+import thedrum from "../assets/images/publications/thedrum.png";
 
 const Publications = () => {
   const publications = [
     {
-      image: AgencySpy,
-      url: "#",
+      image: aaa,
+      url: "https://www.aaaa.org/",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: adweek,
+      url: "https://www.adweek.com/",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: adsworld,
+      url: "https://www.adsoftheworld.com",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: howdesign,
+      url: "https://howdesignlive.com",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: adage,
+      url: "https://adage.com",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: aiga,
+      url: "https://www.aiga.org",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: ca,
+      url: "https://www.commarts.com",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: muse,
+      url: "https://musebycl.io",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: littleblack,
+      url: "https://www.lbbonline.com",
+    },
+    {
+      image: adweekagency,
+      url: "https://www.adweek.com/agencyspy/",
+    },
+    {
+      image: campaign,
+      url: "https://www.campaignlive.com",
+    },
+    {
+      image: thedrum,
+      url: "https://www.thedrum.com",
     },
   ];
 
@@ -48,10 +71,10 @@ const Publications = () => {
         <p className="page-subtitle">
           Get in the know through the advertising industry trades.
         </p>
-        <div className="row g-5 mt-3">
+        <div className="row gy-md-1 gy-5 mt-3">
           {publications.map((item, index) => {
             return (
-              <div className="col-md-6" key={"pub-"+index}>
+              <div className="col-md-4 col-sm-6" key={"pub-"+index}>
                 <div className={
                     "text-center" +
                     ((index + 1) % 2
@@ -62,8 +85,8 @@ const Publications = () => {
                     <img
                       src={item.image}
                       className="publication-image"
-                      width={300}
-                      height={300}
+                      width={150}
+                      height={150}
                     />
                   </a>
                 </div>

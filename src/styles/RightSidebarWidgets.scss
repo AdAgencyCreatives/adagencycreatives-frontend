@@ -56,11 +56,11 @@
 
     .item-list li.vcard .item-title a {
         color: black;
-        font-size: 14px;
+        font-size: 15px;
     }
 
-    .item-list li.vcard .item-meta {
-        font-size: 12px;
+    .item-list li.vcard .item-meta a {
+        font-size: 13px;
         color: #959595;
     }
 
@@ -69,6 +69,40 @@
         padding: 5px;
         border: none;
         font-size: 15px;
+
+        background: black;
+        color: white;
+        border-radius: 5px;
+
+        button {
+            color: white;
+        }
+
+        .react-calendar__tile--now {
+            background: var(--color-primary);
+        }
+
+        .react-calendar__navigation button:enabled:hover,
+        .react-calendar__navigation button:enabled:focus,
+        .react-calendar__tile:enabled:hover,
+        .react-calendar__tile:enabled:focus {
+            background: var(--color-primary);
+        }
+
+        button.react-calendar__navigation__label {
+            font-size: 1.13rem;
+            padding: 0;
+            line-height: 1.1em;
+        }
+
+        button.react-calendar__navigation__arrow {
+            padding: 0px;
+        }
+
+        .react-calendar__tile--active {
+            background: #d3a11f;
+        }
     }
+
 
 }

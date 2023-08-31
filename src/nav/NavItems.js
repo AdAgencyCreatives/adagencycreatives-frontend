@@ -22,7 +22,7 @@ export const navItems = [
     ],
   },
   { name: "Creatives", link: "/creatives" },
-  { name: "Social Community", link: "/community" },
+  { name: "The Lounge", link: "/community" },
   { name: "Agencies", link: "/agencies" },
   { name: "Contact", link: "/contact" },
 ];

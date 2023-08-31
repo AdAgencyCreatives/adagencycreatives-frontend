@@ -130,7 +130,7 @@
     transition: all 0.2s ease-in;
 }
 
-.sidebar-menu li.menu-item:hover a {
+.sidebar-menu li.menu-item:hover a,.sidebar-menu li.menu-item a.active {
     background: var(--color-primary);
     color: white;
 }

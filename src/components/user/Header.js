@@ -23,7 +23,7 @@ const Header = ({ username }) => {
           <button className="btn btn-outline"><IoMailOpen /> Message</button>
         </div>
       </div>
-      <div class="user-statistics">
+      {/* <div class="user-statistics">
         <ul>
           <li>
             <Link to={`${username}/comments`}>
@@ -32,14 +32,14 @@ const Header = ({ username }) => {
             </Link>
           </li>
 
-          {/* <li>
+          <li>
             <Link to={username}>
               <div class="snumber">257</div>
               <h3 class="sdescription">Views</h3>
             </Link>
-          </li> */}
+          </li>
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 };

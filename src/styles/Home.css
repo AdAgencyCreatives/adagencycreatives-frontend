@@ -1,4 +1,4 @@
-.main{
+.main {
     margin-bottom: 50px;
 }
 
@@ -183,10 +183,10 @@ button.searchBtn:hover {
     }
 }
 
-@media (max-width:600px){
+@media (max-width:600px) {
     h1.bannerHeading {
         font-size: 50px;
-        margin:20px 0;
+        margin: 20px 0;
     }
 }
 
@@ -567,12 +567,22 @@ a.employer-logo img {
 /* Publications Section */
 .publications-slider a {
     display: flex;
+    justify-content: center;
 }
 
 .sectionContent.publication-section {
-    background: white;
     padding: 0px 10px;
 }
+
+.publications-slider {
+    text-align: center;
+}
+
+img.publication-image {
+    object-fit: none;
+    width: 100%;
+}
+
 
 /* Cities Section */
 

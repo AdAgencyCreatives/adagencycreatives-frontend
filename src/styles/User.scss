@@ -90,6 +90,22 @@
     }
 }
 
+.friends-list {
+    .user-actions {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+
+        button {
+            background: black;
+            color: white;
+        }
+    }
+}
+
+
 p.user-count {
     color: #8c8fa0;
     font-size: 13px;

@@ -1,99 +1,67 @@
-import AgencySpy from "../../assets/images/AgencySpy.png";
+import aaa from "../../assets/images/publications/AAA.png";
+import adage from "../../assets/images/publications/adage.png";
+import adsworld from "../../assets/images/publications/adsworld.png";
+import adweek from "../../assets/images/publications/adweek.png";
+import adweekagency from "../../assets/images/publications/adweekagency.png";
+import aiga from "../../assets/images/publications/aiga.png";
+import ca from "../../assets/images/publications/ca.png";
+import campaign from "../../assets/images/publications/campaign.png";
+import howdesign from "../../assets/images/publications/howdesign.png";
+import littleblack from "../../assets/images/publications/littleblack.png";
+import muse from "../../assets/images/publications/muse.png";
+import thedrum from "../../assets/images/publications/thedrum.png";
+
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
-import { IoLocationOutline } from "react-icons/io5";
-import { useEffect, useRef } from "react";
-import { BulletStyle, PaginationStyle } from "../../styles/PaginationStyle";
 
 const PublicationResources = () => {
-  const swiperElRef = useRef(null);
-
-  useEffect(() => {
-    const params = {
-      injectStyles: [
-        PaginationStyle +
-          `
-      :host{
-        --swiper-navigation-sides-offset: 0px;
-      }
-      .swiper-button-prev,.swiper-button-next{
-        background-color:#d9d9d9;
-        width: 45px;
-        height: 45px;
-      }
-      .swiper-button-prev svg,.swiper-button-next svg{
-        height: 15px;
-        stroke-width: 2px;
-        stroke: black;
-      }
-      .swiper-button-next:hover,.swiper-button-prev:hover {
-        background:#d9d9d9;
-        opacity:1;
-      }
-      ` +
-          BulletStyle,
-      ],
-      pagination: {
-        clickable: true,
-        // renderBullet: function (index, className) {
-        //   return '<span class="' + className + '">' + (index + 1) + "</span>";
-        // },
-      },
-      breakpoints: {
-        500: {
-          slidesPerView: 3,
-          // spaceBetween: 20,
-        },
-        768: {
-          slidesPerView: 4,
-        },
-      },
-      on: {
-        init: function () {
-          // do something
-        },
-      },
-    };
-    Object.assign(swiperElRef.current, params);
-
-    swiperElRef.current.initialize();
-  });
-
   const publications = [
     {
-      image: AgencySpy,
-      url: "#",
+      image: aaa,
+      url: "https://www.aaaa.org/",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: adweek,
+      url: "https://www.adweek.com/",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: adsworld,
+      url: "https://www.adsoftheworld.com",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: howdesign,
+      url: "https://howdesignlive.com",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: adage,
+      url: "https://adage.com",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: aiga,
+      url: "https://www.aiga.org",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: ca,
+      url: "https://www.commarts.com",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: muse,
+      url: "https://musebycl.io",
     },
     {
-      image: AgencySpy,
-      url: "#",
+      image: littleblack,
+      url: "https://www.lbbonline.com",
+    },
+    {
+      image: adweekagency,
+      url: "https://www.adweek.com/agencyspy/",
+    },
+    {
+      image: campaign,
+      url: "https://www.campaignlive.com",
+    },
+    {
+      image: thedrum,
+      url: "https://www.thedrum.com",
     },
   ];
 
@@ -101,38 +69,29 @@ const PublicationResources = () => {
     <div id="publications">
       <div className="sectionHeader">
         <h1 className="sectionTitle">Publication Resources</h1>
-        <div className="browseAll">
-          browse all <MdKeyboardDoubleArrowRight />
-        </div>
       </div>
       {/* Slides */}
       <div className="sectionContent publication-section">
-        <swiper-container
-          navigation="true"
-          slides-per-view="1"
-          // free-mode="true"
-          space-between="10"
-          ref={swiperElRef}
-          init="false"
-          loop="true"
-        >
-          {publications.map((item, index) => {
-            return (
-              <swiper-slide key={`slide${index}`}>
-                <div className="publications-slider">
-                  <a href={item.url}>
-                    <img
-                      src={item.image}
-                      className="publication-image w-100 h-auto"
-                      width={150}
-                      height={150}
-                    />
-                  </a>
+        <div className="container">
+          <div className="row gy-md-1 gy-5 align-items-center">
+            {publications.map((item, index) => {
+              return (
+                <div className="col-md-4 col-sm-6" key={`pb${index}`}>
+                  <div className="publications-slider">
+                    <a href={item.url} target="_blank">
+                      <img
+                        src={item.image}
+                        className="publication-image"
+                        width={100}
+                        height={100}
+                      />
+                    </a>
+                  </div>
                 </div>
-              </swiper-slide>
-            );
-          })}
-        </swiper-container>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );

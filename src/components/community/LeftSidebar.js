@@ -10,7 +10,7 @@ import {
 } from "react-icons/io5";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const LeftSidebar = () => {
   return (
@@ -18,63 +18,63 @@ const LeftSidebar = () => {
       <div className="sidebar-menu">
         <ul className="menu-container">
           <li className="menu-item">
-            <Link to="#">
+            <NavLink to="/community">
               <IoHomeOutline />
               <div className="item-name">Home</div>
-            </Link>
+            </NavLink>
           </li>
 
           <li className="menu-item">
-            <Link to="/community-members">
+            <NavLink to="/community-members">
               <IoPersonOutline />
               <div className="item-name">Members</div>
-            </Link>
+            </NavLink>
           </li>
           <li className="menu-item">
-            <Link to="/username/friends">
+            <NavLink to="/username/friends">
               <IoPeopleOutline />
               <div className="item-name">Friends</div>
-            </Link>
+            </NavLink>
           </li>
           <li className="menu-item">
-            <Link to="/groups">
+            <NavLink to="/groups">
               <HiOutlineUserGroup />
               <div className="item-name">Groups</div>
-            </Link>
+            </NavLink>
           </li>
           <li className="menu-item">
-            <Link to="/messages">
+            <NavLink to="/messages">
               <IoFileTrayOutline />
               <div className="item-name">Messages</div>
-            </Link>
+            </NavLink>
           </li>
           <li className="menu-item">
-            <Link to="#">
+            <NavLink to="/notifications">
               <IoNotificationsOutline />
               <div className="item-name">Notifications</div>
-            </Link>
+            </NavLink>
           </li>
         </ul>
         <hr class="hr" />
 
         <ul className="menu-container">
           <li className="menu-item">
-            <Link to="#">
+            <NavLink to="/bookmarks">
               <IoBookmarkOutline />
               <div className="item-name">Bookmarks</div>
-            </Link>
+            </NavLink>
           </li>
           <li className="menu-item">
-            <Link to="#">
+            <NavLink to="activities">
               <IoTrendingUpOutline />
               <div className="item-name">Activities</div>
-            </Link>
+            </NavLink>
           </li>
           <li className="menu-item">
-            <Link to="#">
+            <NavLink to="/settings">
               <IoSettingsOutline />
               <div className="item-name">Settings</div>
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </div>
