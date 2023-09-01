@@ -1,6 +1,9 @@
 .chat-container {
 
-    min-height: 100vh;
+    // min-height: 100vh;
+    border-radius: 5px;
+    background: white;
+    padding: 2px;
 
     .users-box {
         background: white;
@@ -11,6 +14,14 @@
 
     .box-header {
         border-bottom: 1px solid #e7e7e7;
+
+
+        .header-top {
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
         .message-tabs {
             display: flex;
@@ -70,9 +81,47 @@
         cursor: pointer;
     }
 
+    .new-chat-box {
+        .users-list {
+            .item {
+                display: flex;
+                gap: 10px;
+                cursor: pointer;
+                padding: 10px 0 0px 10px;
+            }
+
+            .username {
+                font-weight: 500;
+            }
+
+            .user-meta {
+                color: rgba(0, 0, 0, 0.6);
+                font-size: 12px;
+                font-weight: 400;
+            }
+
+            .user-details {
+                flex: 1;
+                border-bottom: 1px solid #e7e7e7;
+                padding-bottom: 5px;
+            }
+
+            .item:hover {
+                background: #e7e7e7;
+            }
+
+            .item:hover .user-details {
+                border-color: #cbcbcb;
+            }
+        }
+    }
+
     ul.users-list {
         list-style: none;
         padding: 0;
+        max-height: 350px;
+        overflow: auto;
+        margin: 0;
 
         li {
             padding: 20px;
@@ -127,7 +176,6 @@
 
     }
 
-
     .chat-box {
         background: #fff;
         position: relative;
@@ -136,7 +184,8 @@
     .chat-area {
         overflow: auto;
         height: 100%;
-        padding: 20px 15px 70px 20px;
+        padding: 20px 15px 40px 20px;
+        max-height: 318px;
     }
 
 
@@ -180,38 +229,126 @@
         }
     }
 
+    .new-chat-box {
+        .title {
+            padding: 15px;
+            font-weight: 500;
+            border-bottom: 1px solid #e7e7e7;
+        }
+
+        .search-users .form-control {
+            margin: auto;
+            border: 2px solid white;
+            border-radius: 30px;
+            transition: all 0.2s ease;
+            font-size: 15px;
+        }
+
+        .search-users {
+            padding: 5px 15px;
+            border-bottom: 1px solid #e7e7e7;
+        }
+
+        .search-users .form-control:focus {
+            border: 2px solid;
+        }
+
+    }
+
     .chat-footer {
-        position: absolute;
         display: flex;
-        align-items: center;
+        padding-bottom: 20px;
         width: 100%;
-        padding: 5px 15px;
-        margin: auto;
         border-top: 1px solid gainsboro;
-        bottom: 0;
+        flex-wrap: wrap;
+        position: relative;
 
+        .message-box {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
 
-        input.message {
-            border-radius: 50px;
-            border: none;
+            input.message {
+                border-radius: 50px;
+                border: none;
+            }
+
+            .user-avatar img {
+                border-radius: 50%;
+            }
+
+            .message-input {
+                flex: 1;
+                max-width: 100%;
+            }
+
+            .message {
+                min-height: 100px;
+                max-width: 100%;
+                background: rgb(243, 242, 240);
+                padding: 10px;
+                border-radius: 5px;
+                font-size: 15px;
+            }
+
+            [contenteditable=true]:empty:before {
+                color: #9b9999;
+            }
+
+            .message:focus {
+                box-shadow: none;
+            }
         }
 
-        .user-avatar img {
-            border-radius: 50%;
+        aside.EmojiPickerReact.epr-main {
+            position: absolute;
+            top: 0;
+            --epr-emoji-fullsize: 35px;
         }
 
-        button.send-message {
-            color: var(--color-primary);
+        .EmojiPickerReact li.epr-emoji-category>.epr-emoji-category-label {
+            font-size: 15px;
+        }
+
+
+        .EmojiPickerReact .epr-search-container input.epr-search {
+            font-size: 13px;
+        }
+
+        .message-actions {
+            border-top: 1px solid gainsboro;
+            display: flex;
+            width: 100%;
+            padding: 20px 15px 0px;
             font-size: 20px;
-            transform: rotateZ(313deg);
-        }
+            color: #646363;
+            align-items: center;
 
-        .message-input {
-            flex: 1;
-        }
+            svg {
+                cursor: pointer;
+                border-radius: 50px;
+                padding: 10px;
+                box-sizing: content-box;
 
-        input.message:focus {
-            box-shadow: none;
+                &:hover {
+                    background: #f1f1f1;
+                }
+            }
+
+            .send-message {
+                font-size: 20px;
+                flex: 1;
+                text-align: right;
+
+                button {
+                    background-color: var(--color-primary);
+                    color: white;
+                }
+            }
+
+
+
         }
 
     }

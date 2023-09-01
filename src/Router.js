@@ -13,6 +13,8 @@ import CommunityMembers from "./pages/CommunityMembers";
 import Friends from "./pages/User/Friends";
 import Groups from "./pages/Groups";
 import Messages from "./pages/Messages";
+import Notifications from "./pages/Notifications";
+import About from "./pages/About";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +40,10 @@ export const router = createBrowserRouter([
         element: <Agencies />,
       },
 
+      {
+        path: "/about",
+        element: <About />,
+      },
       {
         path: "/spotlighting-creatives",
         element: <SpotlightCreatives />,
@@ -75,6 +81,10 @@ export const router = createBrowserRouter([
       {
         path: "/messages",
         element: <Messages />,
+      },
+      {
+        path: "/notifications",
+        element: <Notifications />,
       },
     ],
   },

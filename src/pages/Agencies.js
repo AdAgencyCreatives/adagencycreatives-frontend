@@ -6,6 +6,8 @@ const Agencies = () => {
   return (
     <div className="dark-container">
       <div className="container p-md-0 px-5">
+        <h1 className="community-title text-white text-center mb-4">Agencies</h1>
+
         <SearchBar />
         <div className="row g-4">
           {Array.apply(11, { length: 10 }).map((value, index) => {

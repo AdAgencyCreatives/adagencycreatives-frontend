@@ -6,10 +6,15 @@ import {
   IoSearchOutline,
   IoSend,
 } from "react-icons/io5";
+import { FaPaperclip, FaRegEdit, FaRegSmile } from "react-icons/fa";
+import EmojiPicker, { Emoji } from "emoji-picker-react";
+
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import Avatar from "../assets/images/user1.jpg";
 import "../styles/Chat.scss";
 import { useState } from "react";
+import ContentEditable from "react-contenteditable";
+import NewChat from "./chat/NewChat";
 
 const Chat = () => {
   const tabs = {
@@ -24,6 +29,24 @@ const Chat = () => {
         avatar: Avatar,
         username: "John Doe",
         time: "3:10PM",
+        message: "Lorem ipsum dolor sit amet, consectetur",
+      },
+      {
+        avatar: Avatar,
+        username: "John Doe",
+        time: "4:20PM",
+        message: "Lorem ipsum dolor sit amet, consectetur",
+      },
+      {
+        avatar: Avatar,
+        username: "John Doe",
+        time: "4:20PM",
+        message: "Lorem ipsum dolor sit amet, consectetur",
+      },
+      {
+        avatar: Avatar,
+        username: "John Doe",
+        time: "4:20PM",
         message: "Lorem ipsum dolor sit amet, consectetur",
       },
       {
@@ -58,6 +81,15 @@ const Chat = () => {
   };
   const [search, setSearch] = useState();
   const [tab, setTab] = useState("messages");
+  const [chatBox, setChatBox] = useState("list");
+  const [showPicker, setShowPicker] = useState(false);
+  const [content, setContent] = useState("");
+
+
+  const selectEmoji = (emojiData) => {
+    setContent((prev) => (prev += emojiData.emoji));
+    setShowPicker(false);
+  };
 
   return (
     <div className="chat-container">
@@ -65,10 +97,12 @@ const Chat = () => {
         <div className="col-md-4 col-12">
           <div className="users-box">
             <div className="box-header">
-              {/* <div className="box-title">Direct Messages</div>
-              <div className="new-chat">
-                <IoAdd />
-              </div> */}
+              <div className="header-top d-flex justify-space-between">
+                <div className="box-title">Messaging</div>
+                <div className="new-chat">
+                  <FaRegEdit onClick={() => setChatBox("new")} />
+                </div>
+              </div>
               <div className="message-search-box">
                 <IoSearchOutline />
                 <input
@@ -81,19 +115,19 @@ const Chat = () => {
               </div>
               <div className="message-tabs">
                 <div
-                  className={"tab" + ((tab == "messages") ? " active": "")}
+                  className={"tab" + (tab == "messages" ? " active" : "")}
                   onClick={() => setTab("messages")}
                 >
                   <IoFileTrayOutline /> Messages
                 </div>
                 <div
-                  className={"tab" + ((tab == "friends") ? " active": "")}
+                  className={"tab" + (tab == "friends" ? " active" : "")}
                   onClick={() => setTab("friends")}
                 >
                   <IoPeopleOutline /> Friends
                 </div>
                 <div
-                  className={"tab" + ((tab == "groups") ? " active": "")}
+                  className={"tab" + (tab == "groups" ? " active" : "")}
                   onClick={() => setTab("groups")}
                 >
                   <HiOutlineUserGroup /> Groups
@@ -103,7 +137,7 @@ const Chat = () => {
             <div className="box-content">
               <ul className="users-list">
                 {tabs[tab].map((item) => (
-                  <li className="">
+                  <li className="" onClick={() => setChatBox("list")}>
                     <img src={Avatar} height={40} width={40} />
                     <div className="user-details">
                       <div className="username">{item.username}</div>
@@ -118,56 +152,132 @@ const Chat = () => {
         </div>
         <div className="col-md-8 col-12">
           <div className="chat-box">
-            <div className="chat-area">
-              <div className="chat-item">
-                <img
-                  src={Avatar}
-                  height={35}
-                  width={35}
-                  className="chat-avatar"
-                />
-                <div className="details">
-                  <div className="sender">
-                    John Doe<span className="time">1:40pm</span>
+            <div className="chat-top">
+              {chatBox == "new" ? (
+                <NewChat />
+              ) : (
+                <div className="chat-area">
+                  <div className="chat-item">
+                    <img
+                      src={Avatar}
+                      height={35}
+                      width={35}
+                      className="chat-avatar"
+                    />
+                    <div className="details">
+                      <div className="sender">
+                        John Doe<span className="time">1:40pm</span>
+                      </div>
+                      <div className="text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      </div>
+                    </div>
                   </div>
-                  <div className="text">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  <div className="chat-item">
+                    <img
+                      src={Avatar}
+                      height={35}
+                      width={35}
+                      className="chat-avatar"
+                    />
+                    <div className="details">
+                      <div className="sender">
+                        John Doe<span className="time">1:40pm</span>
+                      </div>
+                      <div className="text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="chat-item">
+                    <img
+                      src={Avatar}
+                      height={35}
+                      width={35}
+                      className="chat-avatar"
+                    />
+                    <div className="details">
+                      <div className="sender">
+                        John Doe<span className="time">1:40pm</span>
+                      </div>
+                      <div className="text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="chat-item">
+                    <img
+                      src={Avatar}
+                      height={35}
+                      width={35}
+                      className="chat-avatar"
+                    />
+                    <div className="details">
+                      <div className="sender">
+                        John Doe<span className="time">1:40pm</span>
+                      </div>
+                      <div className="text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="chat-item">
-                <img
-                  src={Avatar}
-                  height={35}
-                  width={35}
-                  className="chat-avatar"
-                />
-                <div className="details">
-                  <div className="sender">
-                    John Doe<span className="time">1:40pm</span>
-                  </div>
-                  <div className="text">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
             <div className="chat-footer">
-              <div className="message-input">
-                <input
-                  className="message form-control"
-                  placeholder="Enter your message"
-                />
+              <div className="message-box">
+                <div className="message-input">
+                  <ContentEditable
+                    className="message"
+                    placeholder="Enter your message..."
+                    html={content}
+                  />
+                </div>
               </div>
-              <button className="btn send-message">
-                <IoSend />
-              </button>
+              <div className="message-actions">
+                <FaRegSmile onClick={() => setShowPicker((val) => !val)} />
+                {showPicker && (
+                  <EmojiPicker
+                    previewConfig={{ showPreview: false }}
+                    skinTonesDisabled={true}
+                    height={250}
+                    suggestedEmojisMode=""
+                    categories={[
+                      "smileys_people",
+                      "animals_nature",
+                      "food_drink",
+                      "travel_places",
+                      "activities",
+                      "objects",
+                      "symbols",
+                      "flags",
+                    ]}
+                    onEmojiClick={selectEmoji}
+                  />
+                )}
+                <FaPaperclip />
+                <div className="send-message">
+                  <button className="btn btn-send">Send</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

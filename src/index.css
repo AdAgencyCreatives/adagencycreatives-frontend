@@ -22,6 +22,24 @@ a {
   text-decoration: none;
 }
 
+[contenteditable=true]:empty:before {
+  content: attr(placeholder);
+  display: block;
+  color: #858585;
+  cursor: text;
+}
+
+[contenteditable=true]:focus-visible {
+  outline: none;
+  border:0px
+}
+
+.form-control:focus{
+  outline:none;
+  border:none;
+  box-shadow: none;
+}
+
 :root {
   --color-primary: #d3a11f;
 }
