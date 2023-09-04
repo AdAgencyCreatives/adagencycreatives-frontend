@@ -1,0 +1,37 @@
+.profile-sidebar {
+    padding: 30px;
+    background: #eee !important;
+    border-radius: 8px;
+
+
+    .item {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+
+    .text {
+        font-size: 16px;
+        font-weight: 500;
+        color: #202124;
+    }
+
+    .value {
+        font-size: 20px;
+    }
+
+    .title {
+        margin-bottom: 18px;
+    }
+
+    .btn-dark:hover {
+        background-color: rgba(0, 0, 0, 0.07);
+        border-color: transparent;
+
+        a {
+            color: var(--color-primary) !important;
+
+        }
+    }
+}

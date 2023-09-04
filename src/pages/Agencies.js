@@ -1,12 +1,15 @@
 import Mischief from "../assets/images/Mischief-1.png";
 import { IoLocationOutline } from "react-icons/io5";
 import SearchBar from "../components/SearchBar";
+import { Link } from "react-router-dom";
 
 const Agencies = () => {
   return (
     <div className="dark-container">
       <div className="container p-md-0 px-5">
-        <h1 className="community-title text-white text-center mb-4">Agencies</h1>
+        <h1 className="community-title text-white text-center mb-4">
+          Agencies
+        </h1>
 
         <SearchBar />
         <div className="row g-4">
@@ -14,11 +17,13 @@ const Agencies = () => {
             return (
               <div className="col-md-4 col-sm-3 col-12" key={`ag-${index}`}>
                 <div className="sliderContent adagencies-slider">
-                  <a href="#" className="employer-logo">
+                  <Link to="/agency/username" className="employer-logo">
                     <img src={Mischief} width={150} height={150} />
-                  </a>
+                  </Link>
                   <h3 className="employer-title">
-                    <a href="#">Mischief</a>
+                    <Link to="/agency/username" className="text-dark">
+                      Mischief
+                    </Link>
                   </h3>
                   <div className="job-location location">
                     <IoLocationOutline />
@@ -26,7 +31,7 @@ const Agencies = () => {
                     <a href="#">Texas</a>
                   </div>
                   <div className="open-jobs-btn">
-                    <a href="#">Open Jobs - 0</a>
+                    <Link to="/agency/username">Open Jobs - 0</Link>
                   </div>
                 </div>
               </div>

@@ -81,7 +81,7 @@ const Publications = () => {
                       ? " text-md-end"
                       : " text-md-start")
                   }>
-                  <a href={item.url}>
+                  <a href={item.url} target="_blank">
                     <img
                       src={item.image}
                       className="publication-image"

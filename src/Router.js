@@ -15,6 +15,7 @@ import Groups from "./pages/Groups";
 import Messages from "./pages/Messages";
 import Notifications from "./pages/Notifications";
 import About from "./pages/About";
+import Profile from "./pages/User/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -85,6 +86,16 @@ export const router = createBrowserRouter([
       {
         path: "/notifications",
         element: <Notifications />,
+      },
+
+      {
+        path: "/agency/:username",
+        element: <Profile />,
+      },
+
+      {
+        path: "/creative/:username",
+        element: <Profile />,
       },
     ],
   },

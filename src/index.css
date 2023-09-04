@@ -43,3 +43,9 @@ a {
 :root {
   --color-primary: #d3a11f;
 }
+
+@media (min-width: 1200px){
+  .container{
+    max-width: 1240px;
+  }
+}

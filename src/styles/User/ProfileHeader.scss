@@ -1,0 +1,67 @@
+.profile-header {
+
+    background: #f6f6f6;
+    padding: 68px 0;
+
+    .cat-link {
+        color: rgb(105, 105, 105);
+        font-size: 20px;
+        margin-left: 10px;
+
+        &:hover {
+            color: black;
+        }
+    }
+
+    .open-jobs {
+        background: rgba(0, 0, 0, 0.15);
+        display: inline-block;
+        font-size: 20px;
+        margin-top: 10px;
+        padding: 5px 20px;
+        border-radius: 30px;
+    }
+
+    .position {
+        display: flex;
+        align-items: center;
+    }
+
+    .avatar {
+
+        &.rounded img {
+            border-radius: 50px;
+        }
+
+        &.employer img {
+            border-radius: 5px;
+        }
+    }
+
+    .meta {
+        margin-left: 15px;
+        float: left;
+    }
+
+    .username {
+        font-size: 26px;
+    }
+
+    .job-location.location>* {
+        margin-top: 5px;
+        font-size: 17px;
+    }
+
+    span.featured-text {
+        font-size: 13px;
+        color: rgb(9, 0, 112);
+    }
+
+    .actions {
+        display: flex;
+        justify-content: end;
+        gap: 10px;
+    }
+
+
+}

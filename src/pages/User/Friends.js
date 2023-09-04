@@ -51,10 +51,10 @@ const Friends = () => {
 
                       <div className="user-actions">
                         <button className="btn">
-                          <IoPersonAdd /> Add Friend
+                          <IoPersonAdd />
                         </button>
                         <button className="btn btn-outline">
-                          <IoMailOpen /> Message
+                          <IoMailOpen />
                         </button>
                       </div>
                     </div>

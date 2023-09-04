@@ -61,7 +61,10 @@
 
     .item-list li.vcard .item-meta a {
         font-size: 13px;
-        color: #959595;
+        background: black;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
     }
 
     .react-calendar {
@@ -69,7 +72,7 @@
         padding: 5px;
         border: none;
         font-size: 15px;
-
+        width: 100%;
         background: black;
         color: white;
         border-radius: 5px;
