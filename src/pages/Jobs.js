@@ -1,6 +1,8 @@
 import Select from "react-select";
 import "../styles/Jobs.css";
 import { useState } from "react";
+import { Tooltip } from "@mui/material";
+import { IoStar } from "react-icons/io5";
 
 const job_titles = [
   { value: 150, label: "3D Designer" },
@@ -254,7 +256,24 @@ const Jobs = () => {
                             Full-Time
                           </a>
                         </div>
-                        <span className="urgent">Urgent</span>
+                        <Tooltip title="Featured">
+                          <button className="btn p-0 border-0 me-2">
+                            <IoStar
+                              size={20}
+                              color="black"
+                              className="icon-rounded"
+                            />
+                          </button>
+                        </Tooltip>
+                        <Tooltip title="Urgent">
+                          <button className="btn p-0 border-0">
+                            <IoStar
+                              size={20}
+                              color="#d3a11f"
+                              className="icon-rounded"
+                            />
+                          </button>
+                        </Tooltip>
                       </div>
                     </div>
                   </div>
@@ -317,7 +336,24 @@ const Jobs = () => {
                             Full-Time
                           </a>
                         </div>
-                        <span className="urgent">Urgent</span>
+                        <Tooltip title="Featured">
+                          <button className="btn p-0 border-0 me-2">
+                            <IoStar
+                              size={20}
+                              color="black"
+                              className="icon-rounded"
+                            />
+                          </button>
+                        </Tooltip>
+                        <Tooltip title="Urgent">
+                          <button className="btn p-0 border-0">
+                            <IoStar
+                              size={20}
+                              color="#d3a11f"
+                              className="icon-rounded"
+                            />
+                          </button>
+                        </Tooltip>
                       </div>
                     </div>
                   </div>
@@ -381,7 +417,24 @@ const Jobs = () => {
                             Full-Time
                           </a>
                         </div>
-                        <span className="urgent">Urgent</span>
+                        <Tooltip title="Featured">
+                          <button className="btn p-0 border-0 me-2">
+                            <IoStar
+                              size={20}
+                              color="black"
+                              className="icon-rounded"
+                            />
+                          </button>
+                        </Tooltip>
+                        <Tooltip title="Urgent">
+                          <button className="btn p-0 border-0">
+                            <IoStar
+                              size={20}
+                              color="#d3a11f"
+                              className="icon-rounded"
+                            />
+                          </button>
+                        </Tooltip>
                       </div>
                     </div>
                   </div>

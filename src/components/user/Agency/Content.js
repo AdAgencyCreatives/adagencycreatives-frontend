@@ -1,5 +1,8 @@
+import { Link } from "react-router-dom";
 import ppk from "../../../assets/images/ppk.png";
 import "../../../styles/User/ProfileContent.scss";
+import { Tooltip } from "@mui/material";
+import { IoStar } from "react-icons/io5";
 
 const Content = () => {
   return (
@@ -24,9 +27,9 @@ const Content = () => {
                 <div className="job-list-content">
                   <div className="title-wrapper flex-middle-sm">
                     <h2 className="job-title">
-                      <a href="#" rel="bookmark">
+                      <Link to="/job/160over90" rel="bookmark">
                         160over90
-                      </a>
+                      </Link>
                     </h2>
                   </div>
                   <div className="job-metas">
@@ -44,26 +47,38 @@ const Content = () => {
                         Full-Time
                       </a>
                     </div>
-                    <span className="urgent">Urgent</span>
+                    <Tooltip title="Featured">
+                      <button className="btn p-0 border-0 me-2">
+                        <IoStar
+                          size={20}
+                          color="black"
+                          className="icon-rounded"
+                        />
+                      </button>
+                    </Tooltip>
+                    <Tooltip title="Urgent">
+                      <button className="btn p-0 border-0">
+                        <IoStar
+                          size={20}
+                          color="#d3a11f"
+                          className="icon-rounded"
+                        />
+                      </button>
+                    </Tooltip>
                   </div>
                 </div>
               </div>
               <div className="ali-right">
                 <div className="flex-middle">
-                  <a
-                    className="btn-follow btn-action-job btn-add-job-shortlist"
-                    data-job_id="4545"
-                    data-nonce="a33de480b9"
-                  >
+                  <a className="btn-follow btn-action-job btn-add-job-shortlist">
                     <i className="flaticon-bookmark"></i>
                   </a>
                   <a
                     href="https://www.linkedin.com/jobs/view/3649027671/?alternateChannel=search&amp;refId=w7BE3gGca8PklL6PqfKYw&amp;trackingId=rgVKVC9elfj17yZ4bPTusg"
                     target="_blank"
-                    rel="nofollow, noindex"
                     className="btn btn-apply btn-apply-job-external "
                   >
-                    Apply Now<i className="next flaticon-right-arrow"></i>
+                    Apply Now
                   </a>
                 </div>
               </div>
@@ -106,26 +121,38 @@ const Content = () => {
                         Full-Time
                       </a>
                     </div>
-                    <span className="urgent">Urgent</span>
+                    <Tooltip title="Featured">
+                      <button className="btn p-0 border-0 me-2">
+                        <IoStar
+                          size={20}
+                          color="black"
+                          className="icon-rounded"
+                        />
+                      </button>
+                    </Tooltip>
+                    <Tooltip title="Urgent">
+                      <button className="btn p-0 border-0">
+                        <IoStar
+                          size={20}
+                          color="#d3a11f"
+                          className="icon-rounded"
+                        />
+                      </button>
+                    </Tooltip>
                   </div>
                 </div>
               </div>
               <div className="ali-right">
                 <div className="flex-middle">
-                  <a
-                    className="btn-follow btn-action-job btn-add-job-shortlist"
-                    data-job_id="4545"
-                    data-nonce="a33de480b9"
-                  >
+                  <a className="btn-follow btn-action-job btn-add-job-shortlist">
                     <i className="flaticon-bookmark"></i>
                   </a>
                   <a
                     href="https://www.linkedin.com/jobs/view/3649027671/?alternateChannel=search&amp;refId=w7BE3gGca8PklL6PqfKYw&amp;trackingId=rgVKVC9elfj17yZ4bPTusg"
                     target="_blank"
-                    rel="nofollow, noindex"
                     className="btn btn-apply btn-apply-job-external "
                   >
-                    Apply Now<i className="next flaticon-right-arrow"></i>
+                    Apply Now
                   </a>
                 </div>
               </div>
@@ -169,26 +196,38 @@ const Content = () => {
                         Full-Time
                       </a>
                     </div>
-                    <span className="urgent">Urgent</span>
+                    <Tooltip title="Featured">
+                      <button className="btn p-0 border-0 me-2">
+                        <IoStar
+                          size={20}
+                          color="black"
+                          className="icon-rounded"
+                        />
+                      </button>
+                    </Tooltip>
+                    <Tooltip title="Urgent">
+                      <button className="btn p-0 border-0">
+                        <IoStar
+                          size={20}
+                          color="#d3a11f"
+                          className="icon-rounded"
+                        />
+                      </button>
+                    </Tooltip>
                   </div>
                 </div>
               </div>
               <div className="ali-right">
                 <div className="flex-middle">
-                  <a
-                    className="btn-follow btn-action-job btn-add-job-shortlist"
-                    data-job_id="4545"
-                    data-nonce="a33de480b9"
-                  >
+                  <a className="btn-follow btn-action-job btn-add-job-shortlist">
                     <i className="flaticon-bookmark"></i>
                   </a>
                   <a
                     href="https://www.linkedin.com/jobs/view/3649027671/?alternateChannel=search&amp;refId=w7BE3gGca8PklL6PqfKYw&amp;trackingId=rgVKVC9elfj17yZ4bPTusg"
                     target="_blank"
-                    rel="nofollow, noindex"
                     className="btn btn-apply btn-apply-job-external "
                   >
-                    Apply Now<i className="next flaticon-right-arrow"></i>
+                    Apply Now
                   </a>
                 </div>
               </div>

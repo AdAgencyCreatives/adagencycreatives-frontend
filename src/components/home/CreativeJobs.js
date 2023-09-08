@@ -1,8 +1,9 @@
 import Employer from "../../assets/images/david-and-goliath.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
-import { IoLocationOutline } from "react-icons/io5";
+import { IoLocationOutline, IoStar } from "react-icons/io5";
 import { useEffect, useRef } from "react";
 import { PaginationStyle } from "../../styles/PaginationStyle";
+import { Tooltip } from "@mui/material";
 
 const CreativeJobs = () => {
   const swiperElRef = useRef(null);
@@ -52,9 +53,24 @@ const CreativeJobs = () => {
               <swiper-slide key={`slide${index}`}>
                 <div className="sliderContent job-slider p-3 p-md-4">
                   <div className="left-badge">
-                    <div className="featured">
-                      <span>Featured</span>
-                    </div>
+                    <Tooltip title="Featured">
+                      <button className="btn p-0 border-0">
+                        <IoStar
+                          size={20}
+                          color="black"
+                          className="icon-rounded"
+                        />
+                      </button>
+                    </Tooltip>
+                    <Tooltip title="Urgent">
+                      <button className="btn p-0 border-0">
+                        <IoStar
+                          size={20}
+                          color="#d3a11f"
+                          className="icon-rounded"
+                        />
+                      </button>
+                    </Tooltip>
                   </div>
                   <div className="right-badge">
                     <a href="#">

@@ -15,7 +15,7 @@ const Agencies = () => {
         <div className="row g-4">
           {Array.apply(11, { length: 10 }).map((value, index) => {
             return (
-              <div className="col-md-4 col-sm-3 col-12" key={`ag-${index}`}>
+              <div className="col-md-4 col-sm-6 col-12" key={`ag-${index}`}>
                 <div className="sliderContent adagencies-slider">
                   <Link to="/agency/username" className="employer-logo">
                     <img src={Mischief} width={150} height={150} />

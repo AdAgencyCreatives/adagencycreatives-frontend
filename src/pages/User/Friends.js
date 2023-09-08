@@ -29,8 +29,8 @@ const Friends = () => {
             <div className="row g-4">
               {Array.apply(11, { length: 10 }).map((value, index) => {
                 return (
-                  <div className="col-md-4 col-sm-3 col-12" key={`ag-${index}`}>
-                    <div className="sliderContent friends-list">
+                  <div className="col-md-4 col-sm-6 col-12" key={`ag-${index}`}>
+                    <div className="sliderContent members-list">
                       <Link to="">
                         <img
                           src={Nathan}

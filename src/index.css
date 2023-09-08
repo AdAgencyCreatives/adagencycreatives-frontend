@@ -12,6 +12,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  scroll-margin-top: 80px;
+  scroll-snap-stop: 80px;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -40,8 +45,35 @@ a {
   box-shadow: none;
 }
 
+.btn-dark{
+  background-color: black;
+  color: white;
+}
+
+.btn-dark.btn-outline{
+  border: 1px solid white;
+}
+
+.btn.btn-hover-primary:hover{
+  background-color: var(--color-primary);
+  color: black;
+}
+
 :root {
   --color-primary: #d3a11f;
+}
+
+
+@media (min-width: 576px){
+  .container{
+    max-width: 650px;
+  }
+}
+
+@media (min-width: 800px){
+  .container{
+    max-width: 900px;
+  }
 }
 
 @media (min-width: 1200px){

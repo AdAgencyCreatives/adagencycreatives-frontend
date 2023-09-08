@@ -19,8 +19,8 @@ const Header = ({ username }) => {
           </div>
         </div>
         <div className="user-actions">
-          <button className="btn"><IoPersonAdd /> Add Friend</button>
-          <button className="btn btn-outline"><IoMailOpen /> Message</button>
+          <button className="btn btn-dark btn-outline"><IoPersonAdd /> Add Friend</button>
+          <button className="btn btn-dark btn-outline"><IoMailOpen /> Message</button>
         </div>
       </div>
       {/* <div class="user-statistics">

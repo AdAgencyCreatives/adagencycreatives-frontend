@@ -39,7 +39,11 @@ function Header(props) {
 
   useEffect(() => {
     const path = location.pathname;
-    if (path !== "/") {
+    console.log(path)
+    if (path == "/") {
+      setChildLink("hashLink");
+    }
+    else{
       setChildLink("link");
     }
   }, [location]);
@@ -131,7 +135,7 @@ function Header(props) {
               sx={{ textAlign: "right", padding: "10px" }}
               className="right-menu"
             >
-              <Box sx={{ display: { sm: "none" } }}>
+              <Box sx={{ display: { md: "none" } }}>
                 <IconButton href="#" color="primary">
                   <AiOutlineUser />
                 </IconButton>
@@ -156,7 +160,7 @@ function Header(props) {
                   </a>
                 </IconButton>
               </Box>
-              <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              <Box sx={{ display: { xs: "none", md: "block" } }}>
                 {navItems.map((item) => (
                   <div
                     key={item.name}
@@ -216,7 +220,7 @@ function Header(props) {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: "block", sm: "none" },
+            display: { sm: "block", md: "none" },
             "& .MuiDrawer-paper": {
               //boxSizing: "border-box",
               width: drawerWidth,

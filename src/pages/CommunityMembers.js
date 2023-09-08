@@ -1,4 +1,4 @@
-import { IoEarth, IoLocationOutline } from "react-icons/io5";
+import { IoEarth, IoLocationOutline, IoMailOpen, IoPersonAdd } from "react-icons/io5";
 import Nathan from "../assets/images/NathanWalker_ProfilePic-150x150.jpg";
 import "../styles/CommunityMembers.css";
 import { Link } from "react-router-dom";
@@ -35,8 +35,8 @@ const CommunityMembers = () => {
             <div className="row g-4 px-md-1 px-5">
               {Array.apply(11, { length: 10 }).map((value, index) => {
                 return (
-                  <div className="col-md-4 col-sm-3 col-12" key={`ag-${index}`}>
-                    <div className="sliderContent">
+                  <div className="col-md-4 col-sm-6 col-12" key={`ag-${index}`}>
+                    <div className="sliderContent members-list">
                       <img
                         src={Nathan}
                         className="candidateLogo"
@@ -48,6 +48,14 @@ const CommunityMembers = () => {
                         <IoLocationOutline />
                         <a href="#">Austin,</a>
                         <a href="#">Texas</a>
+                      </div>
+                      <div className="user-actions">
+                        <button className="btn">
+                          <IoPersonAdd />
+                        </button>
+                        <button className="btn btn-outline">
+                          <IoMailOpen />
+                        </button>
                       </div>
                     </div>
                   </div>

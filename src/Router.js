@@ -16,6 +16,7 @@ import Messages from "./pages/Messages";
 import Notifications from "./pages/Notifications";
 import About from "./pages/About";
 import Profile from "./pages/User/Profile";
+import JobDescription from "./pages/JobDescription";
 
 export const router = createBrowserRouter([
   {
@@ -92,10 +93,13 @@ export const router = createBrowserRouter([
         path: "/agency/:username",
         element: <Profile />,
       },
-
       {
         path: "/creative/:username",
         element: <Profile />,
+      },
+      {
+        path: "/job/:job",
+        element: <JobDescription /> ,
       },
     ],
   },

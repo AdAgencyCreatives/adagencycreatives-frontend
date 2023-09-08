@@ -443,11 +443,13 @@ a.employer-logo img {
     margin-bottom: 15px;
 }
 
-
 .left-badge {
     position: absolute;
     top: 10px;
-    left: 0;
+    left: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    width: min-content;
 }
 
 .featured {

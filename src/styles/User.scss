@@ -38,25 +38,15 @@
 
     .user-actions {
         button {
-            background: #d3a11f;
-            color: white;
             margin: 0 5px;
-        }
-
-        button.btn-outline {
-            background: white;
-            color: var(--color-primary);
         }
 
         button:hover {
             background: #c99715;
             color: white;
+            border-color: #c99715;
         }
 
-        button.btn-outline:hover {
-            background: #f1eaea;
-            color: var(--color-primary);
-        }
     }
 
 
@@ -90,7 +80,7 @@
     }
 }
 
-.friends-list {
+.members-list {
     .user-actions {
         margin-top: 20px;
         display: flex;
