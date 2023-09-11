@@ -17,11 +17,11 @@ const Community = () => {
           <div className="col-md-2 mb-4 mb-md-0">
             <LeftSidebar />
           </div>
-          <div className="col-md-7">
+          <div className="col-md-7 order-md-2 order-3">
             <CreatePost />
             <PostList />
           </div>
-          <div className="col-md-3">
+          <div className="col-md-3 order-md-3 order-2">
             <RightSidebarWidgets />
           </div>
         </div>

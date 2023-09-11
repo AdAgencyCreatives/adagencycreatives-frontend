@@ -38,6 +38,10 @@
                     color: var(--color-primary);
                 }
             }
+
+            @media (max-width:768px) {
+                font-size: 15px;
+            }
         }
 
         .message-search-box {
@@ -154,7 +158,6 @@
             .message-time {
                 color: rgb(125, 129, 132);
                 font-size: 10px;
-                align-self: flex-start;
                 display: flex;
                 align-items: center;
 
@@ -179,6 +182,21 @@
     .chat-box {
         background: #fff;
         position: relative;
+
+        .chat-mobile-top {
+            padding: 10px;
+            align-items: center;
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid rgba(140, 140, 140, 0.2);
+            box-shadow: 0px 1px 0px rgba(140, 140, 140, 0.2);
+        }
+
+        .name {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
     }
 
     .chat-area {
@@ -353,4 +371,9 @@
 
     }
 
+    @media (max-width:768px){
+        .mobile-hide{
+            display: none;
+        }
+    }
 }

@@ -20,6 +20,7 @@
         padding: 0 50px;
     }
 
+
     .candidate-location svg {
         margin-right: 5px;
     }
@@ -34,6 +35,9 @@
 
     .user-actions {
         margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
     }
 
     .user-actions {
@@ -123,5 +127,35 @@ p.user-count {
     .page.current {
         background: transparent;
         color: white;
+    }
+}
+
+
+
+@media (max-width:400px) {
+    .user-profile-header {
+
+        .user-avatar img{
+            height: 100px;
+            width: 100px;
+        }
+
+        .username,
+        .member-title-loa {
+            font-size: 17px;
+        }
+
+        .member-title-location {
+            padding: 0px;
+        }
+
+        .user-actions {
+            button {
+                font-size: 12px;
+                padding: 5px;
+                margin: 0px;
+            }
+
+        }
     }
 }

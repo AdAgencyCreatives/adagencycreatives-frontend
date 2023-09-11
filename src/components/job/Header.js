@@ -48,6 +48,16 @@ const Header = () => {
               </div>
               <div className="tags">
                 <div className="badge">Full-Time</div>
+                <Tooltip title="Featured">
+                  <button className="btn p-0 border-0">
+                    <IoStar size={20} className="icon-rounded star-badge featured" />
+                  </button>
+                </Tooltip>
+                <Tooltip title="Urgent">
+                  <button className="btn p-0 border-0">
+                    <IoStar size={20} className="icon-rounded star-badge urgent" />
+                  </button>
+                </Tooltip>
               </div>
             </div>
             <div className="col-md-4">
@@ -55,20 +65,6 @@ const Header = () => {
                 <button className="btn btn-dark btn-hover-primary px-5 py-3">
                   Apply Now
                 </button>
-                <Tooltip title="Featured">
-                  <button className="btn p-0 border-0">
-                    <IoStar size={20} color="black" className="icon-rounded" />
-                  </button>
-                </Tooltip>
-                <Tooltip title="Urgent">
-                  <button className="btn p-0 border-0">
-                    <IoStar
-                      size={20}
-                      color="#d3a11f"
-                      className="icon-rounded"
-                    />
-                  </button>
-                </Tooltip>
               </div>
             </div>
           </div>

@@ -13,22 +13,17 @@
         }
     }
 
-    .icon-rounded {
-        background: white;
-        border-radius: 50px;
-        padding: 5px;
-        box-sizing: content-box;
-    }
-
     .tags{
         margin-top: 10px;
+        display: flex;
+        gap:10px;
     }
 
     .badge {
         background: black;
         font-size: 13px;
         font-weight: 300;
-        padding: 6px 20px;
+        padding: 8px 20px;
         border-radius: 50px;
     }
 

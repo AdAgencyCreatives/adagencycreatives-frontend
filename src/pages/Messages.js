@@ -7,10 +7,10 @@ const Messages = () => {
 
         <div className="container-fluid mt-4">
           <div className="row gy-3">
-            <div className="col-md-2">
+            <div className="col-lg-2">
               <LeftSidebar />
             </div>
-            <div className="col-md-10">
+            <div className="col-lg-10">
               <Chat />
             </div>
           </div>

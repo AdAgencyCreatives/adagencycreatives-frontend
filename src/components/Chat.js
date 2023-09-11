@@ -5,6 +5,7 @@ import {
   IoPeopleOutline,
   IoSearchOutline,
   IoSend,
+  IoArrowBack,
 } from "react-icons/io5";
 import { FaPaperclip, FaRegEdit, FaRegSmile } from "react-icons/fa";
 import EmojiPicker, { Emoji } from "emoji-picker-react";
@@ -84,18 +85,30 @@ const Chat = () => {
   const [chatBox, setChatBox] = useState("list");
   const [showPicker, setShowPicker] = useState(false);
   const [content, setContent] = useState("");
-
+  const [userListMobile, setUserListMobile] = useState("");
+  const [chatBoxMobile, setChatBoxMobile] = useState("mobile-hide");
 
   const selectEmoji = (emojiData) => {
     setContent((prev) => (prev += emojiData.emoji));
     setShowPicker(false);
   };
 
+  const handleItemClick = () => {
+    setChatBox("list");
+    setUserListMobile("mobile-hide");
+    setChatBoxMobile("");
+  };
+
+  const handleBackButton = () => {
+    setUserListMobile("");
+    setChatBoxMobile("mobile-hide");
+  };
+
   return (
     <div className="chat-container">
       <div className="row g-0">
         <div className="col-md-4 col-12">
-          <div className="users-box">
+          <div className={`users-box ${userListMobile}`}>
             <div className="box-header">
               <div className="header-top d-flex justify-space-between">
                 <div className="box-title">Messaging</div>
@@ -137,13 +150,15 @@ const Chat = () => {
             <div className="box-content">
               <ul className="users-list">
                 {tabs[tab].map((item) => (
-                  <li className="" onClick={() => setChatBox("list")}>
+                  <li className="" onClick={handleItemClick}>
                     <img src={Avatar} height={40} width={40} />
                     <div className="user-details">
-                      <div className="username">{item.username}</div>
+                      <div className="d-flex justify-content-between align-items-center">
+                        <div className="username">{item.username}</div>{" "}
+                        <div className="message-time unread">{item.time}</div>
+                      </div>
                       <div className="user-message">{item.message}</div>
                     </div>
-                    <div className="message-time unread">{item.time}</div>
                   </li>
                 ))}
               </ul>
@@ -151,7 +166,11 @@ const Chat = () => {
           </div>
         </div>
         <div className="col-md-8 col-12">
-          <div className="chat-box">
+          <div className={`chat-box ${chatBoxMobile}`}>
+            <div className="chat-mobile-top d-md-none d-flex">
+              <IoArrowBack size={20} onClick={handleBackButton} />
+              <div className="name">John Doe</div>
+            </div>
             <div className="chat-top">
               {chatBox == "new" ? (
                 <NewChat />
@@ -197,7 +216,7 @@ const Chat = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="chat-item">
                     <img
                       src={Avatar}
@@ -218,7 +237,7 @@ const Chat = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="chat-item">
                     <img
                       src={Avatar}
