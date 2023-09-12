@@ -1,0 +1,64 @@
+.agency-page-dashboard {
+
+
+    .page-title {
+        font-size: 30px;
+        color: black;
+        text-align: left;
+        text-transform: none;
+        margin-bottom: 40px;
+    }
+
+    .inner-header {
+        border: 1px solid #ECEDF2;
+        background: #ffffff;
+        padding: 30px;
+        -webkit-box-shadow: 0 6px 15px 0 rgba(64, 79, 104, 0.05);
+        box-shadow: 0 6px 15px 0 rgba(64, 79, 104, 0.05);
+        border-radius: 8px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        -ms-border-radius: 8px;
+        -o-border-radius: 8px;
+        color: #202124;
+    }
+
+    .list-item {
+        column-gap: 18px;
+        display: flex;
+        align-items: center;
+
+
+        .icon {
+            color: #D3A11F;
+            background: rgba(211, 161, 30, 0.1);
+            font-size: 30px;
+            line-height: 70px;
+            width: 70px;
+            height: 70px;
+            text-align: center;
+            border-radius: 8px;
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            -ms-border-radius: 8px;
+            -o-border-radius: 8px;
+            display: inline-block;
+        }
+
+        .number-count {
+            color: #D3A11F;
+            font-weight: 500;
+            line-height: 1;
+            font-size: 30px;
+            margin-bottom: 10px;
+            text-align: right;
+        }
+
+        span {
+            font-size: 20px;
+            text-align: right;
+            display: block;
+        }
+    }
+
+}

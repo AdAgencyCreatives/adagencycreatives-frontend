@@ -1,0 +1,66 @@
+.agency-sidebar {
+    background: rgb(238, 238, 238);
+    padding: 20px 15px;
+
+    .user-logo img {
+        border-radius: 50%;
+        height: 90px;
+        width: 90px;
+    }
+
+    .sidebar-top {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .title {
+        margin: 0;
+
+        a {
+            font-size: 18px;
+            color: black;
+        }
+    }
+
+    .employer-location {
+        margin-bottom: 5px;
+
+        a {
+            font-size: 18px;
+            color: rgb(105, 105, 105);
+        }
+    }
+
+
+    .sidebar-menu {
+        padding: 0px;
+        .menu li a {
+            padding: 10px 20px 9px;
+            background: white;
+            color: black;
+            font-size: 20px;
+            display: inline-block;
+            width: 100%;
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            -ms-border-radius: 8px;
+            -o-border-radius: 8px;
+            border-radius: 8px;
+        }
+    }
+
+    ul.menu {
+        list-style: none;
+        padding: 0;
+    }
+
+    .menu li {
+        margin-bottom: 10px;
+    }
+
+    .sidebar-menu .menu li a:hover {
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+}
