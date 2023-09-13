@@ -1,0 +1,36 @@
+.agency-dashboard-container {
+    background: #f6f6f6;
+
+    .page-title {
+        font-size: 30px;
+        color: black;
+        text-align: left;
+        text-transform: none;
+        margin-bottom: 40px;
+    }
+}
+
+.card {
+    padding: 20px;
+    margin-bottom: 30px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ECEDF2;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    -webkit-box-shadow: 0 6px 15px 0 rgba(64, 79, 104, 0.05);
+    box-shadow: 0 6px 15px 0 rgba(64, 79, 104, 0.05);
+    border-radius: 8px;
+
+    .card-title {
+        font-size: 18px;
+        margin: 0 0 25px;
+    }
+
+    .card-body {
+        padding: 0
+    }
+}

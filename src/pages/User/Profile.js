@@ -25,7 +25,7 @@ const Profile = () => {
   return (
     <>
       <div className="profile-header">
-        {page == "creative" ? <CreativeHeader /> : <AgencyHeader />}
+        {page === "creative" ? <CreativeHeader /> : <AgencyHeader />}
       </div>
       <div className="profile-content mt-5">
         <div className="container">
@@ -42,11 +42,11 @@ const Profile = () => {
                   painting.
                 </p>
               </div>
-              {page == "creative" ? <CreativeContent /> : <AgencyContent />}
+              {page === "creative" ? <CreativeContent /> : <AgencyContent />}
             </div>
             <div className="col-md-4">
               <div className="profile-sidebar">
-                {page == "creative" ? <CreativeSidebar /> : <AgencySidebar />}
+                {page === "creative" ? <CreativeSidebar /> : <AgencySidebar />}
               </div>
             </div>
           </div>

@@ -1,0 +1,42 @@
+.profile-edit-form {
+    input[type=text] {
+        padding: 15px 15px 15px 15px;
+        color: #000000;
+        background-color: #F6F6F6;
+        border: 1px solid #F0F5F7;
+        -webkit-transition: all 0.3s ease-in-out 0s;
+        -o-transition: all 0.3s ease-in-out 0s;
+        transition: all 0.3s ease-in-out 0s;
+    }
+
+
+    input[type=text]:focus {
+        border: 1px solid black;
+        background: #fff;
+        outline: none;
+    }
+
+
+    label {
+        font-size: 20px;
+    }
+
+    span.required {
+        color: red;
+    }
+
+    .editorWrapper {
+        border: 1px solid #d8d8d8;
+    }
+
+    .editorBody {
+        padding: 0 10px;
+        min-height: 250px;
+    }
+
+    .editorToolbar {
+        background: #f6f7f7;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+}

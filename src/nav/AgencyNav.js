@@ -1,6 +1,6 @@
 export const agencyNav = [
-  { name: "Job Dashboard", link: "/" },
-  { name: "Profile", link: "/creatives" },
+  { name: "Job Dashboard", link: "/dashboard" },
+  { name: "Profile", link: "/profile" },
   { name: "Job Messages", link: "/community" },
   { name: "My Jobs", link: "/agencies" },
   { name: "My Applicants", link: "/contact" },

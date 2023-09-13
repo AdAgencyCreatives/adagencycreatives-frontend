@@ -39,7 +39,6 @@ function Header(props) {
 
   useEffect(() => {
     const path = location.pathname;
-    console.log(path)
     if (path == "/") {
       setChildLink("hashLink");
     }

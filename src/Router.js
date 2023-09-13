@@ -100,12 +100,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "/job/:job",
-        element: <JobDescription /> ,
+        element: <JobDescription />,
       },
 
       {
-        path: "/dashboard",
-        element: <Agency /> ,
+        path: "/:page",
+        element: <Agency />
       },
     ],
   },
