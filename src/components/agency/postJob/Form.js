@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "../../../styles/AgencyDashboard/Profile.scss";
 import Select from "react-select";
 import { EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
@@ -7,7 +6,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Logo from "../../../assets/images/NathanWalker_ProfilePic-150x150.jpg";
 import { FiPaperclip, FiTrash2 } from "react-icons/fi";
 
-const Profile = () => {
+const Form = () => {
   const states = [
     { value: 150, label: "Alabama" },
     { value: 117, label: "Alaska" },
@@ -81,25 +80,19 @@ const Profile = () => {
 
   const fields = [
     {
-      label: "Your Logo",
-      required: true,
+      label: "Agency Logo only upload if it’s different from your profile logo",
+      required: false,
       type: "image",
       name: "_employer_featured_image",
     },
     {
-      label: "Company Name",
+      label: "Agency Job Title",
       required: true,
       type: "text",
       name: "_employer_title",
     },
     {
-      label: "Company Website",
-      required: true,
-      type: "text",
-      name: "_employer_website",
-    },
-    {
-      label: "Location",
+      label: "Job Location (State / Major City)",
       required: true,
       type: "dropdown",
       name: "_employer_location1",
@@ -115,7 +108,14 @@ const Profile = () => {
       placeholder: "Select City",
     },
     {
-      label: "Company LinkedIn",
+      label: "Employment Type",
+      type: "dropdown",
+      name: "_employer_location2",
+      data: cities,
+      placeholder: "Select City",
+    },
+    {
+      label: "Salary Range",
       required: true,
       type: "text",
       name: "linkedinlink",
@@ -175,12 +175,11 @@ const Profile = () => {
       name: "_employer_profile_url",
     },
   ];
-
   return (
-    <div className="agency-page-profile">
-      <h3 className="page-title">Edit Profile</h3>
+    <div className="agency-page-postjob">
+      <h3 className="page-title">Post a New Job</h3>
       <div className="card">
-        <h4 className="text-uppercase mb-4">Edit Profile</h4>
+        <h4 className="text-uppercase mb-4">Opportunity Details</h4>
         <div className="profile-edit-form">
           <div className="row gx-3 gy-5 align-items-end">
             {fields.map((field) => {
@@ -296,7 +295,7 @@ const Profile = () => {
           </div>
           <div className="submit-btn mt-4">
             <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2">
-              Save Profile
+              Save & Preview
             </button>
           </div>
         </div>
@@ -305,4 +304,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Form;

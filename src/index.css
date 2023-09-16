@@ -59,8 +59,22 @@ a {
   color: black;
 }
 
+.btn-secondary{
+  background-color: var(--color-secondary);
+  color: black;
+  border-color: var(--color-secondary);
+}
+
+.btn-secondary:hover{
+  background-color: #d9d9d9;
+  border-color: #d9d9d9;
+  color: #000;
+}
+
+
 :root {
   --color-primary: #d3a11f;
+  --color-secondary: #ededed;
 }
 
 

@@ -1,5 +1,5 @@
 import Design from "../assets/images/Design.png";
-import "../styles/MentorResources.css";
+import "../styles/MentorResources.scss";
 
 const MentorResources = () => {
   const mentors = [

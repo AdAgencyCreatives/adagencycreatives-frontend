@@ -1,0 +1,31 @@
+.page-mentors {
+    .mentor img:hover {
+        transform: none;
+    }
+
+    .page-title {
+        color: var(--color-primary);
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 60px;
+        font-weight: 400;
+    }
+
+    .page-subtitle {
+        color: white;
+        text-align: center;
+        font-size: 20px;
+        margin-top: 20px;
+    }
+
+
+    @media (max-width: 768px) {
+        .mentor {
+            width: 100%;
+        }
+
+        .page-title {
+            font-size: 45px;
+        }
+    }
+}

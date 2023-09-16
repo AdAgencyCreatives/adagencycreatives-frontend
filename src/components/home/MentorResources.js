@@ -1,26 +1,30 @@
-import Design from "../../assets/images/Design.png";
+import portfolio from "../../assets/images/portfolio.jpg";
+import business from "../../assets/images/business.jpg";
+import tech from "../../assets/images/tech.jpg";
+import copy from "../../assets/images/copy.jpg";
+import inspire from "../../assets/images/inspire.jpg";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 const MentorResources = () => {
   const mentors = [
     {
-      image: Design,
+      image: portfolio,
       url: "#",
     },
     {
-      image: Design,
+      image: business,
       url: "#",
     },
     {
-      image: Design,
+      image: tech,
       url: "#",
     },
     {
-      image: Design,
+      image: copy,
       url: "#",
     },
     {
-      image: Design,
+      image: inspire,
       url: "#",
     },
   ];

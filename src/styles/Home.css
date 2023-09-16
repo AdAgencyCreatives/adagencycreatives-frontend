@@ -530,9 +530,10 @@ a.employer-logo img {
 
 .mentor {
     display: flex;
+    transition: all 0.2s ease;
 }
 
-.mentor img:hover {
+.publications-slider img:hover,.mentor img:hover {
     transform: scale(1.1);
 }
 
@@ -558,7 +559,6 @@ a.employer-logo img {
 /* Publications Section */
 .publications-slider a {
     display: flex;
-    justify-content: center;
 }
 
 .sectionContent.publication-section {
@@ -570,8 +570,17 @@ a.employer-logo img {
 }
 
 img.publication-image {
+    width: 200px;
     object-fit: none;
-    width: 100%;
+    transition: all 0.2s ease;
+}
+
+.publication-section .row > div:nth-child(3n-1) .publications-slider a {
+    justify-content: center;
+}
+
+.publication-section .row > div:nth-child(3n) .publications-slider a {
+    justify-content: end;
 }
 
 
@@ -671,6 +680,13 @@ img.publication-image {
     }
 }
 
+@media (max-width:768px){
+    
+.publication-section .publications-slider a {
+    justify-content: center !important;
+}
+
+}
 
 /* Contact Section */
 

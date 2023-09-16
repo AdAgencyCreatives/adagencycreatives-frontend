@@ -72,7 +72,7 @@ const PublicationResources = () => {
       </div>
       {/* Slides */}
       <div className="sectionContent publication-section">
-        <div className="container">
+        <div className="container-fluid px-3 py-4">
           <div className="row gy-md-1 gy-5 align-items-center">
             {publications.map((item, index) => {
               return (
@@ -83,7 +83,7 @@ const PublicationResources = () => {
                         src={item.image}
                         className="publication-image"
                         width={100}
-                        height={100}
+                        height={120}
                       />
                     </a>
                   </div>
