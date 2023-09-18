@@ -1,16 +1,18 @@
 import Dashboard from "./Dashboard";
 import Profile from "./Profile";
+import PostJob from "./PostJob";
+import MyJobs from "./MyJobs";
 import Sidebar from "../../../components/agency/Sidebar";
 import "../../../styles/AgencyDashboard/index.scss";
 import { useParams } from "react-router-dom";
-import PostJob from "./PostJob";
 
 const Agency = () => {
   const { page } = useParams();
   const components = {
-    dashboard: <Dashboard />,
-    profile: <Profile />,
+    "dashboard": <Dashboard />,
+    "profile": <Profile />,
     "post-a-job": <PostJob />,
+    "my-jobs": <MyJobs />,
   };
 
   return (

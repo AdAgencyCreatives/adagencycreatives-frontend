@@ -54,20 +54,18 @@ const CreativeJobs = () => {
                 <div className="sliderContent job-slider p-3 p-md-4">
                   <div className="left-badge">
                     <Tooltip title="Featured">
-                      <button className="btn p-0 border-0">
+                      <button className="btn p-0 border-0 me-2">
                         <IoStar
-                          size={20}
-                          color="black"
-                          className="icon-rounded"
+                          size={15}
+                          className="icon-rounded star-badge featured"
                         />
                       </button>
                     </Tooltip>
                     <Tooltip title="Urgent">
-                      <button className="btn p-0 border-0">
+                      <button className="btn p-0 border-0 me-2">
                         <IoStar
-                          size={20}
-                          color="#d3a11f"
-                          className="icon-rounded"
+                          size={15}
+                          className="icon-rounded star-badge urgent"
                         />
                       </button>
                     </Tooltip>

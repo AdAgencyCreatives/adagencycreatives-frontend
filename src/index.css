@@ -36,62 +36,74 @@ a {
 
 [contenteditable=true]:focus-visible {
   outline: none;
-  border:0px
+  border: 0px
 }
 
-.form-control:focus{
-  outline:none;
-  border:none;
+.form-control:focus {
+  outline: none;
+  border: none;
   box-shadow: none;
 }
 
-.btn-dark{
+.btn-dark {
   background-color: black;
   color: white;
 }
 
-.btn-dark.btn-outline{
+.btn-dark.btn-outline {
   border: 1px solid white;
 }
 
-.btn.btn-hover-primary:hover{
-  background-color: var(--color-primary);
-  color: black;
+.btn.btn-hover-primary:hover {
+  background-color: var(--color-primary) !important;
+  color: black !important;
 }
 
-.btn-secondary{
+.btn-secondary {
   background-color: var(--color-secondary);
   color: black;
   border-color: var(--color-secondary);
 }
 
-.btn-secondary:hover{
+
+.btn-gray {
+  background-color: var(--color-gray);
+  color: white;
+  border-color: var(--color-gray);
+}
+
+
+.btn-secondary:hover {
   background-color: #d9d9d9;
   border-color: #d9d9d9;
   color: #000;
 }
 
+.ls-3{
+  letter-spacing: 3px;
+}
 
 :root {
   --color-primary: #d3a11f;
   --color-secondary: #ededed;
+  --color-gray: #777777
 }
 
 
-@media (min-width: 576px){
-  .container{
+@media (min-width: 576px) {
+  .container {
     max-width: 650px;
   }
 }
 
-@media (min-width: 800px){
-  .container{
+@media (min-width: 800px) {
+  .container {
     max-width: 900px;
   }
 }
 
-@media (min-width: 1200px){
-  .container{
+@media (min-width: 1200px) {
+  .container {
     max-width: 1240px;
   }
 }

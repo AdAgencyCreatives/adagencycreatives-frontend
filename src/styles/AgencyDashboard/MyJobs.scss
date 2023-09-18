@@ -1,0 +1,73 @@
+.agency-page-myjobs {
+    table.job-table {
+        width: 100%;
+
+        thead {
+            background-color: #eee !important;
+        }
+
+        th {
+            white-space: nowrap;
+            border: none;
+            font-weight: 500;
+            font-size: 16px;
+            padding: 10px 15px;
+        }
+
+        tbody>tr {
+            border-bottom: 1px solid #ECEDF2;
+        }
+
+        td {
+            vertical-align: middle;
+            padding: 10px 15px;
+            border: none;
+        }
+
+        .job-table-info-content-title {
+            font-size: 18px;
+            margin: 0px;
+            word-wrap: break-word;
+            max-width: 100%;
+            font-weight: 400;
+        }
+
+        .job-metas * {
+            color: #696969;
+        }
+
+        .title-wrapper {
+            margin-bottom: 5px;
+        }
+
+        .nowrap {
+            white-space: nowrap;
+        }
+
+        .action-button a {
+            color: var(--color-primary);
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            width: 30px;
+            border-radius: 8px;
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            -ms-border-radius: 8px;
+            -o-border-radius: 8px;
+            display: inline-block;
+            background-color: #ededed;
+            -webkit-transition: all 0.3s ease-in-out 0s;
+            -o-transition: all 0.3s ease-in-out 0s;
+            transition: all 0.3s ease-in-out 0s;
+            font-size: 16px;
+            position: relative;
+        }
+
+        .action-button {
+            display: flex;
+            gap: 5px;
+        }
+
+    }
+}

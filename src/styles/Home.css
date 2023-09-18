@@ -452,6 +452,10 @@ a.employer-logo img {
     width: min-content;
 }
 
+.left-badge button{
+    margin-bottom: 5px;
+}
+
 .right-badge {
     position: absolute;
     top: 10px;

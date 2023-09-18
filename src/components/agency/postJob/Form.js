@@ -6,7 +6,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Logo from "../../../assets/images/NathanWalker_ProfilePic-150x150.jpg";
 import { FiPaperclip, FiTrash2 } from "react-icons/fi";
 
-const Form = () => {
+const Form = ({ setJobStatus }) => {
   const states = [
     { value: 150, label: "Alabama" },
     { value: 117, label: "Alaska" },
@@ -84,12 +84,14 @@ const Form = () => {
       required: false,
       type: "image",
       name: "_employer_featured_image",
+      column: "12",
     },
     {
       label: "Agency Job Title",
       required: true,
       type: "text",
       name: "_employer_title",
+      column: "12",
     },
     {
       label: "Job Location (State / Major City)",
@@ -99,6 +101,7 @@ const Form = () => {
       data: states,
       callback: changeState,
       placeholder: "Select State",
+      column: "6",
     },
     {
       label: "",
@@ -106,75 +109,237 @@ const Form = () => {
       name: "_employer_location2",
       data: cities,
       placeholder: "Select City",
+      column: "6",
     },
     {
       label: "Employment Type",
       type: "dropdown",
       name: "_employer_location2",
       data: cities,
-      placeholder: "Select City",
+      placeholder: "Contract",
+      column: "6",
     },
     {
       label: "Salary Range",
       required: true,
       type: "text",
       name: "linkedinlink",
+      placeholder: "if required by your state",
+      column: "6",
     },
     {
-      label: "Contact Email",
-      required: true,
-      type: "text",
-      name: "_employer_email",
+      label: "Industry Experience",
+      type: "dropdown",
+      name: "_employer_location2",
+      data: cities,
+      placeholder: "select up to three",
+      column: "6",
     },
     {
-      label: "Contact First Name",
-      required: true,
-      type: "text",
-      name: "employer-contact-firstname",
+      label: "Media Experience",
+      type: "dropdown",
+      name: "_employer_location2",
+      data: cities,
+      placeholder: "select up to three",
+      column: "6",
     },
     {
-      label: "Contact Last Name",
+      label: "Years Experience",
+      type: "dropdown",
+      name: "_employer_location2",
+      data: cities,
+      placeholder: "select one",
+      column: "6",
+    },
+    {
+      label: "Job Post Expires",
       required: true,
       type: "text",
       name: "employer-contact-lastname",
+      column: "6",
     },
     {
-      label: "Contact Phone Number *",
-      required: true,
-      type: "text",
-      name: "_employer_phone",
-    },
-    {
-      label: "About Your Company",
+      label: "Remote Opportunity",
       required: true,
       type: "editor",
       name: "_employer_description",
+      column: "12",
     },
     {
-      label: "Industry Specialty",
+      label: "Hybrid Opportunity",
       required: true,
-      type: "dropdown",
-      name: "_employer_category",
-    },
-    {
-      label: "Company Size",
-      required: true,
-      type: "text",
-      name: "_employer_company_size",
-    },
-    {
-      label: "Show Company Profile",
-      required: true,
-      type: "dropdown",
+      type: "radio",
       name: "_employer_show_profile",
+      column: "6",
     },
     {
       label: "Your Ad Agency Creatives Profile URL",
       required: true,
-      type: "text",
+      type: "radio",
       name: "_employer_profile_url",
+      column: "6",
+    },
+    {
+      label: "How do creatives apply?",
+      required: true,
+      type: "dropdown",
+      name: "_employer_category",
+      placeholder: "internal or external application",
+      column: "6",
+    },
+    {
+      label: "External Job Application Link",
+      required: true,
+      type: "text",
+      name: "_employer_company_size",
+      placeholder: "applicants use this link",
+      column: "6",
     },
   ];
+
+  const getFormField = function (field) {
+    switch (field.type) {
+      case "image":
+        return (
+          <>
+            <label htmlFor={field.name} className="form-label">
+              {field.label}
+              {field.required && <span className="required">*</span>}
+            </label>
+            <input
+              type="hidden"
+              class="input-text"
+              name="_employer_featured_image"
+              value=""
+            />
+            <div className="row align-items-center upload-box">
+              <div className="col-2">
+                <img src={Logo} />
+              </div>
+              <div className="col-3">
+                <button className="btn btn-secondary w-100 mb-2 text-uppercase">
+                  <FiPaperclip /> Upload
+                </button>
+                <button className="btn btn-secondary w-100 text-uppercase">
+                  <FiTrash2 /> Remove
+                </button>
+              </div>
+            </div>
+          </>
+        );
+      case "text":
+        return (
+          <>
+            <label htmlFor={field.name} className="form-label">
+              {field.label}
+              {field.required && <span className="required">*</span>}
+            </label>
+            <input type="text" className="form-control" />
+          </>
+        );
+      case "radio":
+        return (
+          <>
+            <label htmlFor={field.name} className="form-label">
+              {field.label}
+              {field.required && <span className="required">*</span>}
+            </label>
+            <br />
+            <div class="form-check">
+              <input
+                type="radio"
+                className="form-check-input me-2"
+                name={field.name}
+                value={1}
+              />
+              <label class="form-check-label" for={field.name}>
+                Yes
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                type="radio"
+                className="form-check-input me-2"
+                name={field.name}
+                value={0}
+              />
+              <label class="form-check-label" for={field.name}>
+                No
+              </label>
+            </div>
+          </>
+        );
+      case "dropdown":
+        return (
+          <>
+            <label htmlFor={field.name} className="form-label">
+              {field.label}
+              {field.required && <span className="required">*</span>}
+            </label>
+            <Select
+              options={field.data}
+              onChange={field.callback}
+              placeholder={field.placeholder}
+              styles={{
+                control: (baseStyles) => ({
+                  ...baseStyles,
+                  padding: "11px",
+                  backgroundColor: "#F6F6F6",
+                  border: "none",
+                }),
+                valueContainer: (baseStyles) => ({
+                  ...baseStyles,
+                  padding: "0px",
+                  fontSize: 20,
+                }),
+                singleValue: (baseStyles) => ({
+                  ...baseStyles,
+                  color: "#696969",
+                }),
+                // control:(baseStyles) => ({
+                //   ...baseStyles,
+                //   backgroundColor:"#F6F6F6",
+                //   borderColor:"white"
+                // }),
+              }}
+            />
+          </>
+        );
+
+      case "editor":
+        return (
+          <>
+            <label htmlFor={field.name} className="form-label">
+              {field.label}
+              {field.required && <span className="required">*</span>}
+            </label>
+            {isMounted && (
+              <Editor
+                editorState={editorState}
+                toolbarClassName="editorToolbar"
+                wrapperClassName="editorWrapper"
+                editorClassName="editorBody"
+                toolbar={{
+                  options: [
+                    "inline",
+                    "blockType",
+                    "fontSize",
+                    "list",
+                    "textAlign",
+                    "link",
+                  ],
+                }}
+                onEditorStateChange={(newState) => {
+                  console.log(newState);
+                  setEditorState(newState);
+                }}
+              />
+            )}
+          </>
+        );
+    }
+  };
+
   return (
     <div className="agency-page-postjob">
       <h3 className="page-title">Post a New Job</h3>
@@ -183,118 +348,18 @@ const Form = () => {
         <div className="profile-edit-form">
           <div className="row gx-3 gy-5 align-items-end">
             {fields.map((field) => {
-              switch (field.type) {
-                case "image":
-                  return (
-                    <div className="col-12" key={field.name}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      <input
-                        type="hidden"
-                        class="input-text"
-                        name="_employer_featured_image"
-                        value=""
-                      />
-                      <div className="row align-items-center upload-box">
-                        <div className="col-2">
-                          <img src={Logo} />
-                        </div>
-                        <div className="col-3">
-                          <button className="btn btn-secondary w-100 mb-2 text-uppercase">
-                            <FiPaperclip /> Upload
-                          </button>
-                          <button className="btn btn-secondary w-100 text-uppercase">
-                            <FiTrash2 /> Remove
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                case "text":
-                  return (
-                    <div className="col-6" key={field.name}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  );
-                case "dropdown":
-                  return (
-                    <div className="col-6" key={field.name}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      <Select
-                        options={field.data}
-                        onChange={field.callback}
-                        placeholder={field.placeholder}
-                        styles={{
-                          control: (baseStyles) => ({
-                            ...baseStyles,
-                            padding: "11px",
-                            backgroundColor: "#F6F6F6",
-                            border: "none",
-                          }),
-                          valueContainer: (baseStyles) => ({
-                            ...baseStyles,
-                            padding: "0px",
-                            fontSize: 20,
-                          }),
-                          singleValue: (baseStyles) => ({
-                            ...baseStyles,
-                            color: "#696969",
-                          }),
-                          // control:(baseStyles) => ({
-                          //   ...baseStyles,
-                          //   backgroundColor:"#F6F6F6",
-                          //   borderColor:"white"
-                          // }),
-                        }}
-                      />
-                    </div>
-                  );
-
-                case "editor":
-                  return (
-                    <div className="col-12" key={field.name}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      {isMounted && (
-                        <Editor
-                          editorState={editorState}
-                          toolbarClassName="editorToolbar"
-                          wrapperClassName="editorWrapper"
-                          editorClassName="editorBody"
-                          toolbar={{
-                            options: [
-                              "inline",
-                              "blockType",
-                              "fontSize",
-                              "list",
-                              "textAlign",
-                              "link",
-                            ],
-                          }}
-                          onEditorStateChange={(newState) => {
-                            console.log(newState);
-                            setEditorState(newState);
-                          }}
-                        />
-                      )}
-                    </div>
-                  );
-              }
+              return (
+                <div className={`col-${field.column}`} key={field.name}>
+                  {getFormField(field)}
+                </div>
+              );
             })}
           </div>
           <div className="submit-btn mt-4">
-            <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2">
+            <button
+              className="btn btn-dark btn-hover-primary border-0 px-3 py-2"
+              onClick={() => setJobStatus("preview")}
+            >
               Save & Preview
             </button>
           </div>

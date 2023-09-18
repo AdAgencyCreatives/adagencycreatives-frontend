@@ -2,7 +2,7 @@ export const agencyNav = [
   { name: "Job Dashboard", link: "/dashboard" },
   { name: "Profile", link: "/profile" },
   { name: "Job Messages", link: "/community" },
-  { name: "My Jobs", link: "/agencies" },
+  { name: "My Jobs", link: "/my-jobs" },
   { name: "My Applicants", link: "/contact" },
   { name: "Post a Job", link: "/post-a-job" },
   { name: "Creatives Shortlist", link: "/contact" },
