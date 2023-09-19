@@ -9,7 +9,7 @@ import {
 import jobLogo from "../../assets/images/job.png";
 import "../../styles/User/ProfileHeader.scss";
 import { Link } from "react-router-dom";
-import { IconButton, Tooltip } from "@mui/material";
+import Tooltip from "../Tooltip";
 
 const Header = () => {
   return (
@@ -48,12 +48,12 @@ const Header = () => {
               </div>
               <div className="tags">
                 <div className="badge">Full-Time</div>
-                <Tooltip title="Featured">
+                <Tooltip title="Featured" type="featured">
                   <button className="btn p-0 border-0">
                     <IoStar size={20} className="icon-rounded star-badge featured" />
                   </button>
                 </Tooltip>
-                <Tooltip title="Urgent">
+                <Tooltip title="Urgent" type="urgent">
                   <button className="btn p-0 border-0">
                     <IoStar size={20} className="icon-rounded star-badge urgent" />
                   </button>

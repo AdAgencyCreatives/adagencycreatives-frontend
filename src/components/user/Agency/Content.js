@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import ppk from "../../../assets/images/ppk.png";
 import "../../../styles/User/ProfileContent.scss";
-import { Tooltip } from "@mui/material";
 import { IoStar } from "react-icons/io5";
+import Tooltip from "../../Tooltip"
 
 const Content = () => {
   return (
@@ -48,7 +48,7 @@ const Content = () => {
                           Full-Time
                         </a>
                       </div>
-                      <Tooltip title="Featured">
+                      <Tooltip title="Featured" type="featured">
                         <button className="btn p-0 border-0 me-2">
                           <IoStar
                             size={20}
@@ -56,7 +56,7 @@ const Content = () => {
                           />
                         </button>
                       </Tooltip>
-                      <Tooltip title="Onsite">
+                      <Tooltip title="Onsite" type="onsite">
                         <button className="btn p-0 border-0">
                           <IoStar
                             size={20}
@@ -129,7 +129,7 @@ const Content = () => {
                           Full-Time
                         </a>
                       </div>
-                      <Tooltip title="Urgent">
+                      <Tooltip title="Urgent" type="urgent">
                         <button className="btn p-0 border-0 me-2">
                           <IoStar
                             size={20}
@@ -137,7 +137,7 @@ const Content = () => {
                           />
                         </button>
                       </Tooltip>
-                      <Tooltip title="Hybrid">
+                      <Tooltip title="Hybrid" type="hybrid">
                         <button className="btn p-0 border-0">
                           <IoStar
                             size={20}
@@ -210,7 +210,7 @@ const Content = () => {
                           Full-Time
                         </a>
                       </div>
-                      <Tooltip title="Featured">
+                      <Tooltip title="Featured" type="featured">
                         <button className="btn p-0 border-0 me-2">
                           <IoStar
                             size={20}
@@ -218,7 +218,7 @@ const Content = () => {
                           />
                         </button>
                       </Tooltip>
-                      <Tooltip title="Remote">
+                      <Tooltip title="Remote" type="remote">
                         <button className="btn p-0 border-0">
                           <IoStar
                             size={20}

@@ -3,7 +3,7 @@ export const agencyNav = [
   { name: "Profile", link: "/profile" },
   { name: "Job Messages", link: "/community" },
   { name: "My Jobs", link: "/my-jobs" },
-  { name: "My Applicants", link: "/contact" },
+  { name: "My Applicants", link: "/applicant-jobs" },
   { name: "Post a Job", link: "/post-a-job" },
   { name: "Creatives Shortlist", link: "/contact" },
   { name: "Packages", link: "/contact" },

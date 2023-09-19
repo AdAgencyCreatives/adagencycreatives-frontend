@@ -3,7 +3,7 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoLocationOutline, IoStar } from "react-icons/io5";
 import { useEffect, useRef } from "react";
 import { PaginationStyle } from "../../styles/PaginationStyle";
-import { Tooltip } from "@mui/material";
+import Tooltip from "../Tooltip";
 
 const CreativeJobs = () => {
   const swiperElRef = useRef(null);
@@ -53,7 +53,7 @@ const CreativeJobs = () => {
               <swiper-slide key={`slide${index}`}>
                 <div className="sliderContent job-slider p-3 p-md-4">
                   <div className="left-badge">
-                    <Tooltip title="Featured">
+                    <Tooltip title="Featured" type="featured">
                       <button className="btn p-0 border-0 me-2">
                         <IoStar
                           size={15}
@@ -61,7 +61,7 @@ const CreativeJobs = () => {
                         />
                       </button>
                     </Tooltip>
-                    <Tooltip title="Urgent">
+                    <Tooltip title="Urgent" type="urgent">
                       <button className="btn p-0 border-0 me-2">
                         <IoStar
                           size={15}

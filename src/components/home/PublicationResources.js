@@ -1,15 +1,15 @@
-import aaa from "../../assets/images/publications/AAA.png";
-import adage from "../../assets/images/publications/adage.png";
-import adsworld from "../../assets/images/publications/adsworld.png";
-import adweek from "../../assets/images/publications/adweek.png";
-import adweekagency from "../../assets/images/publications/adweekagency.png";
-import aiga from "../../assets/images/publications/aiga.png";
-import ca from "../../assets/images/publications/ca.png";
-import campaign from "../../assets/images/publications/campaign.png";
-import howdesign from "../../assets/images/publications/howdesign.png";
-import littleblack from "../../assets/images/publications/littleblack.png";
-import muse from "../../assets/images/publications/muse.png";
-import thedrum from "../../assets/images/publications/thedrum.png";
+import aaa from "../../assets/images/publications/aaa.jpeg";
+import adage from "../../assets/images/publications/adage.jpeg";
+import adsworld from "../../assets/images/publications/adsworld.jpeg";
+import adweek from "../../assets/images/publications/adweek.jpeg";
+import adweekagency from "../../assets/images/publications/adweekagency.jpeg";
+import aiga from "../../assets/images/publications/aiga.jpeg";
+import ca from "../../assets/images/publications/ca.jpeg";
+import campaign from "../../assets/images/publications/campaign.jpeg";
+import howdesign from "../../assets/images/publications/howdesign.jpeg";
+import littleblack from "../../assets/images/publications/littleblack.jpeg";
+import muse from "../../assets/images/publications/muse.jpeg";
+import thedrum from "../../assets/images/publications/thedrum.jpeg";
 
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 

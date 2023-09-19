@@ -5,6 +5,7 @@ import MyJobs from "./MyJobs";
 import Sidebar from "../../../components/agency/Sidebar";
 import "../../../styles/AgencyDashboard/index.scss";
 import { useParams } from "react-router-dom";
+import ApplicantJobs from "../../../components/agency/dashboard/ApplicantJobs";
 
 const Agency = () => {
   const { page } = useParams();
@@ -13,6 +14,7 @@ const Agency = () => {
     "profile": <Profile />,
     "post-a-job": <PostJob />,
     "my-jobs": <MyJobs />,
+    "applicant-jobs": <ApplicantJobs />,
   };
 
   return (
