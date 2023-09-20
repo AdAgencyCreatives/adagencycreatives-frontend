@@ -6,6 +6,8 @@ import Sidebar from "../../../components/agency/Sidebar";
 import "../../../styles/AgencyDashboard/index.scss";
 import { useParams } from "react-router-dom";
 import ApplicantJobs from "../../../components/agency/dashboard/ApplicantJobs";
+import ChangePassword from "./ChangePassword";
+import DeleteProfile from "./DeleteProfile";
 
 const Agency = () => {
   const { page } = useParams();
@@ -15,6 +17,8 @@ const Agency = () => {
     "post-a-job": <PostJob />,
     "my-jobs": <MyJobs />,
     "applicant-jobs": <ApplicantJobs />,
+    "change-password": <ChangePassword />,
+    "delete-profile": <DeleteProfile />,
   };
 
   return (

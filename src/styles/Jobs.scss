@@ -90,7 +90,7 @@
     border-radius: 50px;
     padding: 5px;
     box-sizing: content-box;
-    color:white;
+    color: white;
 
     &.featured {
         background-color: #daa520;
@@ -356,9 +356,8 @@ input.form-check-input {
         font-size: 15px;
     }
 
-    .job-type,
-    .urgent {
-        margin: 5px 0px;
+    .job-type {
+        margin: 5px 15px 5px 0px;
     }
 
     .btn-apply {

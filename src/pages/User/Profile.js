@@ -12,7 +12,7 @@ const Profile = () => {
   let location = useLocation();
 
   const path = location.pathname;
-  console.log(path)
+  console.log(path);
   let page;
   if (path.indexOf("creative") !== -1) {
     page = "creative";
@@ -42,9 +42,12 @@ const Profile = () => {
                   painting.
                 </p>
               </div>
+              <div className="profile-sidebar d-md-none">
+                {page === "creative" ? <CreativeSidebar /> : <AgencySidebar />}
+              </div>
               {page === "creative" ? <CreativeContent /> : <AgencyContent />}
             </div>
-            <div className="col-md-4">
+            <div className="col-md-4 d-none d-md-flex">
               <div className="profile-sidebar">
                 {page === "creative" ? <CreativeSidebar /> : <AgencySidebar />}
               </div>

@@ -1,45 +1,55 @@
-import Design from "../assets/images/Design.png";
 import "../styles/MentorResources.scss";
+import portfolio from "../assets/images/portfolio.jpg";
+import business from "../assets/images/business.jpg";
+import tech from "../assets/images/tech.jpg";
+import copy from "../assets/images/copy.jpg";
+import inspire from "../assets/images/inspire.jpg";
+import art from "../assets/images/art.jpg";
 
 const MentorResources = () => {
   const mentors = [
     {
-      image: Design,
+      image: copy,
       url: "#",
     },
     {
-      image: Design,
+      image: art,
       url: "#",
     },
     {
-      image: Design,
+      image: portfolio,
       url: "#",
     },
     {
-      image: Design,
+      image: inspire,
       url: "#",
     },
     {
-      image: Design,
+      image: business,
+      url: "#",
+    },
+    {
+      image: tech,
       url: "#",
     },
   ];
 
   return (
     <div className="dark-container page-mentors mb-0 mt-4">
-      <div className="container p-md-0 px-5">
+      <div className="container-fluid">
         <h1 className="page-title">Mentor Resources</h1>
         <p className="page-subtitle">
-          Dedicated to the creatives out there giving back to our industry.<br />
+          Dedicated to the creatives out there giving back to our industry.
+          <br />
           Click on a topic below.
         </p>
-        <div className="row g-5 mt-3">
+        <div className="row gy-5 mt-3">
           {mentors.map((item, index) => {
             return (
-              <div className="col-sm-6" key={`m_${index}`}>
+              <div className="col-sm-4" key={`m_${index}`}>
                 <div
                   className={
-                    "mentor justify-content-center" +
+                    "mentor justify-content-center text-center" +
                     ((index + 1) % 2
                       ? " justify-content-sm-end"
                       : " justify-content-sm-start")

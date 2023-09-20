@@ -7,8 +7,8 @@ export const agencyNav = [
   { name: "Post a Job", link: "/post-a-job" },
   { name: "Creatives Shortlist", link: "/contact" },
   { name: "Packages", link: "/contact" },
-  { name: "Change Password", link: "/contact" },
+  { name: "Change Password", link: "/change-password" },
   { name: "Contact", link: "/contact" },
-  { name: "Delete Profile", link: "/contact" },
+  { name: "Delete Profile", link: "/delete-profile" },
   { name: "Logout", link: "/contact" },
 ];

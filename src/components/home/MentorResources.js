@@ -3,7 +3,7 @@ import business from "../../assets/images/business.jpg";
 import tech from "../../assets/images/tech.jpg";
 import copy from "../../assets/images/copy.jpg";
 import inspire from "../../assets/images/inspire.jpg";
-import art from "../../assets/images/art.png";
+import art from "../../assets/images/art.jpg";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 const MentorResources = () => {
@@ -26,6 +26,10 @@ const MentorResources = () => {
     },
     {
       image: inspire,
+      url: "#",
+    },
+    {
+      image: art,
       url: "#",
     }
   ];

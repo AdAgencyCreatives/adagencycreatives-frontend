@@ -14,6 +14,8 @@ const CustomTooltip = styled(({ className, type, ...props }) => (
 ))(({ theme,type }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: colors[type],
+    fontSize:13,
+    fontWeight:300
   },
 }));
 

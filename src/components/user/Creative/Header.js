@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <div className="container">
       <div className="row align-items-center justify-content-between">
-        <div className="col-12 d-flex align-items-center">
+        <div className="col-12 d-flex align-items-top">
           <div className="avatar rounded">
             <img src={Jeff} height={100} width={100} />
           </div>

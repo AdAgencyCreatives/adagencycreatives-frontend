@@ -195,6 +195,7 @@ button.searchBtn:hover {
 .creative-section {
     background: black;
     margin-bottom: 50px;
+    padding-top:20px;
 }
 
 .creative-section .sectionHeader {
@@ -575,6 +576,7 @@ a.employer-logo img {
 
 img.publication-image {
     width: 100%;
+    max-width: 410px;
     object-fit: cover;
     transition: all 0.2s ease;
 }

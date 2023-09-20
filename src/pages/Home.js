@@ -116,7 +116,7 @@ const Home = () => {
           <div className="row">
             <div className="text-center text-sm-start col-xs-12 col-sm-8 col-md-12">
               <h3 className="title">
-                Do you have a feedback or want to become a contributor?
+                Do you have feedback or want to become a contributor?
               </h3>
               <div className="contact-btn">
                 <a href="#">

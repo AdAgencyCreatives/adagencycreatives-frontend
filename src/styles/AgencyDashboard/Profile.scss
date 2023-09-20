@@ -1,6 +1,6 @@
 .profile-edit-form {
-    input[type=text] {
-        padding: 15px 15px 15px 15px;
+    input:not([type=submit]) {
+        padding: 14px;
         color: #000000;
         background-color: #F6F6F6;
         border: 1px solid #F0F5F7;
