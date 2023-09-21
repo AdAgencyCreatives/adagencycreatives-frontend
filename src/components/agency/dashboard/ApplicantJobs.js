@@ -10,7 +10,7 @@ import {
   TfiPlus,
 } from "react-icons/tfi";
 import { Link } from "react-router-dom";
-import AddNotesModal from "./AddNotesModal";
+import AddNotesModal from "./Modals/AddNotesModal";
 import { useState } from "react";
 
 const ApplicantJobs = () => {

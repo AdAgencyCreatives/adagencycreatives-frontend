@@ -9,7 +9,19 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 const MentorResources = () => {
   const mentors = [
     {
+      image: copy,
+      url: "#",
+    },
+    {
+      image: art,
+      url: "#",
+    },
+    {
       image: portfolio,
+      url: "#",
+    },
+    {
+      image: inspire,
       url: "#",
     },
     {
@@ -20,18 +32,6 @@ const MentorResources = () => {
       image: tech,
       url: "#",
     },
-    {
-      image: copy,
-      url: "#",
-    },
-    {
-      image: inspire,
-      url: "#",
-    },
-    {
-      image: art,
-      url: "#",
-    }
   ];
   
   return (

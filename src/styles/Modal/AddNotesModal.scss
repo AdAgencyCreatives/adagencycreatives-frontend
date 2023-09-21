@@ -25,13 +25,19 @@
         flex-direction: column;
         justify-content: center;
 
-        textarea {
+        textarea,
+        input {
             color: #000000;
             background-color: #F6F6F6;
             padding: 15px 15px 15px 15px;
             resize: none;
             height: auto;
             font-size: 20px;
+
+            &::placeholder {
+                color: #999999;
+
+            }
         }
 
         label {

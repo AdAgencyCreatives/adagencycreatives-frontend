@@ -32,9 +32,6 @@
             font-weight: 400;
         }
 
-        .job-metas * {
-            color: #696969;
-        }
 
         .title-wrapper {
             margin-bottom: 5px;
@@ -70,4 +67,9 @@
         }
 
     }
+}
+
+.job-metas * {
+    color: #696969;
+    font-size: 20px;
 }

@@ -27,6 +27,14 @@ a {
   text-decoration: none;
 }
 
+a.link-dark {
+  color: black !important;
+}
+
+a.link-dark:hover {
+  color: var(--color-primary) !important;
+}
+
 [contenteditable=true]:empty:before {
   content: attr(placeholder);
   display: block;
@@ -79,7 +87,7 @@ a {
   color: #000;
 }
 
-.ls-3{
+.ls-3 {
   letter-spacing: 3px;
 }
 

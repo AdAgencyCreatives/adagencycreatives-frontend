@@ -195,7 +195,7 @@ button.searchBtn:hover {
 .creative-section {
     background: black;
     margin-bottom: 50px;
-    padding-top:20px;
+    padding-top: 20px;
 }
 
 .creative-section .sectionHeader {
@@ -205,6 +205,7 @@ button.searchBtn:hover {
     padding: 15px 20px;
     align-items: center;
     border: 3px solid white;
+    flex-wrap: wrap;
 }
 
 .creative-section .sectionTitle {
@@ -453,7 +454,7 @@ a.employer-logo img {
     width: min-content;
 }
 
-.left-badge button{
+.left-badge button {
     margin-bottom: 5px;
 }
 
@@ -538,7 +539,7 @@ a.employer-logo img {
     transition: all 0.2s ease;
 }
 
-.publications-slider img:hover,.mentor img:hover {
+.publications-slider img:hover, .mentor img:hover {
     transform: scale(1.1);
 }
 
@@ -581,11 +582,11 @@ img.publication-image {
     transition: all 0.2s ease;
 }
 
-.publication-section .row > div:nth-child(3n-1) .publications-slider a {
+.publication-section .row>div:nth-child(3n-1) .publications-slider a {
     justify-content: center;
 }
 
-.publication-section .row > div:nth-child(3n) .publications-slider a {
+.publication-section .row>div:nth-child(3n) .publications-slider a {
     justify-content: end;
 }
 
@@ -686,11 +687,11 @@ img.publication-image {
     }
 }
 
-@media (max-width:768px){
-    
-.publication-section .publications-slider a {
-    justify-content: center !important;
-}
+@media (max-width:768px) {
+
+    .publication-section .publications-slider a {
+        justify-content: center !important;
+    }
 
 }
 
@@ -756,5 +757,10 @@ img.publication-image {
     .contact-section .title {
         font-size: 32px;
         font-weight: 400;
+    }
+
+    .creative-section .sectionHeader {
+        justify-content: center;
+        gap:0px 10px;
     }
 }

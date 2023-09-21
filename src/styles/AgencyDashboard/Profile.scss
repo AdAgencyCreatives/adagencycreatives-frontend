@@ -1,5 +1,5 @@
 .profile-edit-form {
-    input:not([type=submit]) {
+    input:not([type=radio],[type=submit]) {
         padding: 14px;
         color: #000000;
         background-color: #F6F6F6;

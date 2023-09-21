@@ -1,7 +1,7 @@
 import { Modal } from "@mui/material";
-import "../../../styles/Modal/AddNotesModal.scss";
+// import "../../../styles/Modal/AddNotesModal.scss";
 
-const AddNotesModal = ({ open, handleClose }) => {
+const Message = ({ open, handleClose }) => {
   return (
     <Modal
       open={open}
@@ -14,30 +14,30 @@ const AddNotesModal = ({ open, handleClose }) => {
         <div className="addnote-body">
           <div className="job-apply-email-form-wrapper">
             <div className="inner">
-              <h3 className="text-center">
-                <span>Add Note</span>
-              </h3>
+              <p className="text-center" style={{fontSize:20,marginBottom:30,fontWeight:400}}>Send Message to "Phil Neves"</p>
 
-              <form className="create-meeting-form" method="post">
+              <form className="private-message-form" method="post">
                 <div className="form-group">
-                  <label>Message</label>
+                  <input
+                    className="form-control mb-4"
+                    name="subject"
+                    placeholder="Subject"
+                    required="required"
+                  />
+                </div>
+                <div className="form-group">
                   <textarea
                     className="form-control"
                     name="message"
                     placeholder="Message"
                     required="required"
+                    rows={4}
                   ></textarea>
                 </div>
-                <input type="hidden" name="action" />
-                <input type="hidden" name="application_id" />
                 <button className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3">
-                  Add Note
+                  Send Message
                 </button>
               </form>
-
-              <div className="notes-list-item">
-                <p>You currently have no notes entered.</p>
-              </div>
             </div>
           </div>
         </div>
@@ -46,4 +46,4 @@ const AddNotesModal = ({ open, handleClose }) => {
   );
 };
 
-export default AddNotesModal;
+export default Message;

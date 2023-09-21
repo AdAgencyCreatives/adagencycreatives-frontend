@@ -1,7 +1,7 @@
 import Single from "../../../assets/images/Single-Job-2-300x300.png";
 import Multiple from "../../../assets/images/Multiple-Jobs-2-300x300.png";
 import Premium from "../../../assets/images/Premium-Job-1-300x300.png";
-import '../../../styles/AgencyDashboard/Packages.scss'
+import '../../../styles/AgencyDashboard/PackagesList.scss'
 
 const Packages = ({setPackage}) => {
   const packages = [
