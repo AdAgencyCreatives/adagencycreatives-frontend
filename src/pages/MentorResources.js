@@ -5,12 +5,13 @@ import tech from "../assets/images/tech.jpg";
 import copy from "../assets/images/copy.jpg";
 import inspire from "../assets/images/inspire.jpg";
 import art from "../assets/images/art.jpg";
+import { Link } from "react-router-dom";
 
 const MentorResources = () => {
   const mentors = [
     {
       image: copy,
-      url: "#",
+      url: "/copywriting-mentors",
     },
     {
       image: art,
@@ -55,9 +56,9 @@ const MentorResources = () => {
                       : " justify-content-sm-start")
                   }
                 >
-                  <a href={item.url}>
+                  <Link to={item.url}>
                     <img src={item.image} height={150} width={150} />
-                  </a>
+                  </Link>
                 </div>
               </div>
             );

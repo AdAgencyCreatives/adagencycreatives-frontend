@@ -75,6 +75,16 @@ const MyResume = () => {
     { value: 149, label: "Executive 15+ years" },
   ];
 
+  const strengths = [];
+
+  const employment_type = [
+    { value: 150, label: "Full-Time" },
+    { value: 117, label: "Part-Time" },
+    { value: 147, label: "Freelance" },
+    { value: 148, label: "Contract" },
+    { value: 149, label: "Internship" },
+  ];
+
   const [cities, setCities] = useState([]);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [isMounted, setIsMounted] = useState(false);
@@ -119,13 +129,6 @@ const MyResume = () => {
       column: "6",
     },
     {
-      label: "About Me and Why Advertising",
-      required: true,
-      type: "editor",
-      name: "_employer_description",
-      column: "12",
-    },
-    {
       label: "Industry Experience",
       type: "dropdown",
       required: true,
@@ -162,6 +165,23 @@ const MyResume = () => {
       column: "6",
     },
     {
+      label: "Character Strengths",
+      required: true,
+      type: "dropdown",
+      name: "_employer_location1",
+      data: strengths,
+      placeholder: "Select strengths",
+      column: "6",
+    },
+    {
+      label: "Employment Type",
+      required: true,
+      type: "dropdown",
+      name: "_employer_location1",
+      data: employment_type,
+      column: "6",
+    },
+    {
       label: "Open to Relocation",
       required: true,
       type: "radio",
@@ -175,11 +195,59 @@ const MyResume = () => {
       name: "_employer_profile_url",
       column: "6",
     },
+
+    {
+      label: "About Me and Why Advertising",
+      required: true,
+      type: "editor",
+      name: "_employer_description",
+      column: "12",
+    },
+
+    {
+      label: "Education",
+      required: false,
+      type: "repeater",
+      name: "_employer_description",
+      column: "12",
+      items: [
+        {
+          label: "Degree Program",
+          type: "input",
+          name: "_employer_title",
+        },
+        {
+          label: "College or Institution",
+          type: "input",
+          name: "_employer_title",
+        },
+        {
+          label: "Completion Date",
+          type: "input",
+          name: "_employer_title",
+        },
+      ],
+    },
+  ];
+
+  const portfolio = [
+    {
+      label: "Upload up to 5 samples of your best work. A sneak peak.",
+      required: true,
+      type: "upload",
+      name: "_employer_featured_image",
+    },
+    {
+      label: "Upload your resume here.",
+      required: true,
+      type: "upload",
+      name: "_employer_featured_image",
+    },
   ];
 
   const getFormField = function (field) {
     switch (field.type) {
-      case "image":
+      case "upload":
         return (
           <>
             <label htmlFor={field.name} className="form-label">
@@ -197,10 +265,10 @@ const MyResume = () => {
                 <img src={Logo} />
               </div>
               <div className="col-3">
-                <button className="btn btn-secondary w-100 mb-2 text-uppercase">
+                <button className="btn btn-secondary w-90 mb-2 text-uppercase">
                   <FiPaperclip /> Upload
                 </button>
-                <button className="btn btn-secondary w-100 text-uppercase">
+                <button className="btn btn-secondary w-90 text-uppercase">
                   <FiTrash2 /> Remove
                 </button>
               </div>
@@ -317,11 +385,36 @@ const MyResume = () => {
             )}
           </>
         );
+
+      case "repeater":
+        return (
+          <>
+            <label htmlFor={field.name} className="form-label">
+              {field.label}
+              {field.required && <span className="required">*</span>}
+            </label>
+            <div className="repeater-field" field-id="1">
+              <div className="title">{field.label} 1</div>
+              {field.items.map((item, index) => (
+                <div className="row align-items-start">
+                  <div className="col-2">{item.label}</div>
+                  <div className="col-10">
+                    {item.type == "input" ? (
+                      <input className="form-control" name={item.name} />
+                    ) : (
+                      <textarea className="form-control"></textarea>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        );
     }
   };
 
   return (
-    <div className="agency-page-my-resume">
+    <div className="agency-page-my-resume mb-5">
       <h3 className="page-title">Edit Resume</h3>
       <div className="card">
         <h4 className="text-uppercase mb-4">Qualifications</h4>
@@ -341,13 +434,24 @@ const MyResume = () => {
       <div className="card">
         <h4 className="text-uppercase mb-4">Portfolio</h4>
         <div className="profile-edit-form">
-          <div className="row gx-3 gy-5 align-items-end"></div>
-          <div className="submit-btn mt-4">
-            {/* <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2">
-              Save Resume
-            </button> */}
+          <div className="row gx-3 gy-5 align-items-end">
+            {portfolio.map((field) => {
+              return (
+                <div className={`col-${field.column}`} key={field.name}>
+                  {getFormField(field)}
+                </div>
+              );
+            })}
           </div>
         </div>
+      </div>
+      <div className="submit-btn mt-4">
+        <button
+          className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 text-uppercase"
+          style={{ fontSize: 20 }}
+        >
+          Save Resume
+        </button>
       </div>
     </div>
   );

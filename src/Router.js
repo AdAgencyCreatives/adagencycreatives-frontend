@@ -19,6 +19,7 @@ import Profile from "./pages/User/Profile";
 import JobDescription from "./pages/JobDescription";
 import Agency from "./pages/User/Agency";
 import Checkout from "./pages/Cart/Checkout";
+import CopyWriting from "./pages/Mentor/CopyWriting";
 
 export const router = createBrowserRouter([
   {
@@ -110,8 +111,13 @@ export const router = createBrowserRouter([
       },
 
       {
+        path: "/copywriting-mentors",
+        element: <CopyWriting />,
+      },
+
+      {
         path: "/:page",
-        element: <Agency />
+        element: <Agency />,
       },
     ],
   },
