@@ -67,7 +67,6 @@ const Profile = () => {
 
   useEffect(() => {
     setIsMounted(true);
-    console.log("mounted");
     return () => {
       setIsMounted(false);
     };
@@ -139,7 +138,7 @@ const Profile = () => {
       name: "employer-contact-lastname",
     },
     {
-      label: "Contact Phone Number *",
+      label: "Contact Phone Number",
       required: true,
       type: "text",
       name: "_employer_phone",
@@ -194,15 +193,15 @@ const Profile = () => {
                       </label>
                       <input
                         type="hidden"
-                        class="input-text"
+                        className="input-text"
                         name="_employer_featured_image"
                         value=""
                       />
                       <div className="row align-items-center upload-box">
-                        <div className="col-2">
-                          <img src={Logo} />
+                        <div className="col-md-2 col-sm-4 col-12">
+                          <img src={Logo} className="w-100"/>
                         </div>
-                        <div className="col-3">
+                        <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                           <button className="btn btn-secondary w-100 mb-2 text-uppercase">
                             <FiPaperclip /> Upload
                           </button>
@@ -215,7 +214,7 @@ const Profile = () => {
                   );
                 case "text":
                   return (
-                    <div className="col-6" key={field.name}>
+                    <div className="col-sm-6" key={field.name}>
                       <label htmlFor={field.name} className="form-label">
                         {field.label}
                         {field.required && <span className="required">*</span>}
@@ -225,7 +224,7 @@ const Profile = () => {
                   );
                 case "dropdown":
                   return (
-                    <div className="col-6" key={field.name}>
+                    <div className="col-sm-6" key={field.name}>
                       <label htmlFor={field.name} className="form-label">
                         {field.label}
                         {field.required && <span className="required">*</span>}

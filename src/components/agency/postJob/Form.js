@@ -213,10 +213,10 @@ const Form = ({ setJobStatus }) => {
               value=""
             />
             <div className="row align-items-center upload-box">
-              <div className="col-2">
-                <img src={Logo} />
+              <div className="col-md-2 col-sm-4 col-12">
+                <img src={Logo} className="w-100" />
               </div>
-              <div className="col-3">
+              <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                 <button className="btn btn-secondary w-100 mb-2 text-uppercase">
                   <FiPaperclip /> Upload
                 </button>
@@ -349,7 +349,7 @@ const Form = ({ setJobStatus }) => {
           <div className="row gx-3 gy-5 align-items-end">
             {fields.map((field) => {
               return (
-                <div className={`col-${field.column}`} key={field.name}>
+                <div className={`col-sm-${field.column}`} key={field.name}>
                   {getFormField(field)}
                 </div>
               );

@@ -11,6 +11,7 @@ export const navItems = [
         link: "/spotlighting-creatives",
       },
       { name: "Jobs", hashLink: "#jobs", link: "/creative-jobs" },
+      { name: "Cities", hashLink: "#cities", link: "/creative-jobs" },
       { name: "Agencies", hashLink: "#agencies", link: "/agencies" },
       { name: "Mentors", hashLink: "#mentors", link: "/mentoring-resources" },
       {

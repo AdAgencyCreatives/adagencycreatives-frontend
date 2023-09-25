@@ -38,7 +38,7 @@ const Packages = ({setPackage}) => {
         <div className="row">
           {packages.map((item,index) => {
             return (
-              <div className="col-4" key={index}>
+              <div className="col-md-4" key={index}>
                 <div className="package-container">
                   <div className="title">{item.title}</div>
                   <div className="price">${item.price.toFixed(2)}</div>

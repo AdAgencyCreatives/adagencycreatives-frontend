@@ -1,10 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import { EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Logo from "../../../assets/images/NathanWalker_ProfilePic-150x150.jpg";
-import { FiPaperclip, FiTrash2 } from "react-icons/fi";
+import {
+  FiChevronDown,
+  FiChevronUp,
+  FiPaperclip,
+  FiTrash2,
+  FiX,
+} from "react-icons/fi";
+import "../../../styles/AgencyDashboard/MyResume.scss";
 
 const MyResume = () => {
   const states = [
@@ -88,10 +95,10 @@ const MyResume = () => {
   const [cities, setCities] = useState([]);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [isMounted, setIsMounted] = useState(false);
+  const repeaterRef = useRef(null);
 
   useEffect(() => {
     setIsMounted(true);
-    console.log("mounted");
     return () => {
       setIsMounted(false);
     };
@@ -103,7 +110,7 @@ const MyResume = () => {
     }
   };
 
-  const qualifications = [
+  const [qualifications, setQualifications] = useState([
     {
       label: "Your Title",
       required: true,
@@ -123,7 +130,7 @@ const MyResume = () => {
       label: "Years of Experience",
       type: "dropdown",
       required: true,
-      name: "experience",
+      name: "y_experience",
       data: experience,
       placeholder: "",
       column: "6",
@@ -141,7 +148,7 @@ const MyResume = () => {
       label: "Media Experience",
       type: "dropdown",
       required: true,
-      name: "experience",
+      name: "m_experience",
       data: experience,
       placeholder: "",
       column: "6",
@@ -168,7 +175,7 @@ const MyResume = () => {
       label: "Character Strengths",
       required: true,
       type: "dropdown",
-      name: "_employer_location1",
+      name: "_employer_strenghts",
       data: strengths,
       placeholder: "Select strengths",
       column: "6",
@@ -177,7 +184,7 @@ const MyResume = () => {
       label: "Employment Type",
       required: true,
       type: "dropdown",
-      name: "_employer_location1",
+      name: "_employer_type",
       data: employment_type,
       column: "6",
     },
@@ -208,27 +215,71 @@ const MyResume = () => {
       label: "Education",
       required: false,
       type: "repeater",
-      name: "_employer_description",
+      name: "_employer_education",
       column: "12",
       items: [
         {
-          label: "Degree Program",
-          type: "input",
-          name: "_employer_title",
-        },
-        {
-          label: "College or Institution",
-          type: "input",
-          name: "_employer_title",
-        },
-        {
-          label: "Completion Date",
-          type: "input",
-          name: "_employer_title",
+          showDropdown: false,
+          data: [
+            {
+              label: "Degree Program",
+              type: "input",
+              name: "_employer_title",
+            },
+            {
+              label: "College or Institution",
+              type: "input",
+              name: "_employer_title",
+            },
+            {
+              label: "Completion Date",
+              type: "input",
+              name: "_employer_title",
+            },
+          ],
         },
       ],
     },
-  ];
+    {
+      label: "Experience",
+      required: false,
+      type: "repeater",
+      name: "_employer_experience",
+      column: "12",
+      items: [
+        {
+          showDropdown: false,
+          data: [
+            {
+              label: "Title",
+              type: "input",
+              name: "_employer_title",
+            },
+            {
+              label: "Start Date",
+              type: "input",
+              name: "_employer_title",
+            },
+            {
+              label: "End Date",
+              type: "input",
+              name: "_employer_title",
+            },
+            {
+              label: "Company",
+              type: "input",
+              name: "_employer_title",
+            },
+            {
+              label: "Description",
+              type: "textarea",
+              name: "_employer_title",
+            },
+          ],
+        },
+      ],
+    },
+  ]);
 
   const portfolio = [
     {
@@ -241,9 +292,106 @@ const MyResume = () => {
       label: "Upload your resume here.",
       required: true,
       type: "upload",
-      name: "_employer_featured_image",
+      name: "_employer_resume",
     },
   ];
+
+  const addRepeaterField = (field) => {
+    let newQualifications = [...qualifications];
+    newQualifications.forEach((item) => {
+      if (item.name == field.name) {
+        item.items.push(Object.assign({}, item.items[0]));
+      }
+    });
+    setQualifications(newQualifications);
+  };
+
+  const toggleDropdown = (field, index) => {
+    console.log("toggling");
+    let newQualifications = [...qualifications];
+    newQualifications.forEach((item) => {
+      if (item.name == field.name) {
+        item.items[index].showDropdown = !item.items[index].showDropdown;
+      }
+    });
+    setQualifications(newQualifications);
+  };
+
+  const deleteDropdown = (field, index) => {
+    let newQualifications = [...qualifications];
+    newQualifications.forEach((item) => {
+      if (item.name == field.name) {
+        console.log(item.items);
+        item.items.splice(index, 1);
+        console.log(item.items);
+      }
+    });
+    setQualifications(newQualifications);
+  };
+
+  const RepeaterField = ({ field }) => (
+    <div className="repeater-container">
+      {field.items.map((item, index) => (
+        <div
+          className="repeater-field"
+          field-id={index + 1}
+          key={`repeater${index}`}
+        >
+          <div
+            className="close-btn"
+            onClick={() => deleteDropdown(field, index)}
+          >
+            <FiX />
+          </div>
+          <div
+            className="toggle-btn"
+            onClick={() => toggleDropdown(field, index)}
+          >
+            {item.showDropdown ? <FiChevronUp /> : <FiChevronDown />}
+          </div>
+          <div className="title" onClick={() => toggleDropdown(field, index)}>
+            {field.label} {index + 1}
+          </div>
+          {item.showDropdown && (
+            <div className="field-dropdown">
+              {item.data.map((child, index) => (
+                <div className="row align-items-start" key={`child${index}`}>
+                  <div className="col-sm-3">
+                    <label>{child.label}</label>
+                  </div>
+                  <div className="col-sm-9">
+                    {child.type == "input" ? (
+                      <input
+                        className="form-control"
+                        name={child.name}
+                        type="text"
+                      />
+                    ) : (
+                      <textarea className="form-control" rows={5}></textarea>
+                    )}
+                  </div>
+                </div>
+              ))}
+              <div className="text-end">
+                <button
+                  className="btn btn-secondary w-90 mb-2 text-uppercase ls-3 px-4"
+                  onClick={() => deleteDropdown(field, index)}
+                >
+                  Remove {field.label}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+      <button
+        className="btn btn-secondary w-90 mb-2 text-uppercase ls-3 mt-4 py-3 px-4"
+        onClick={() => addRepeaterField(field)}
+      >
+        Add Another {field.label}
+      </button>
+    </div>
+  );
 
   const getFormField = function (field) {
     switch (field.type) {
@@ -256,15 +404,15 @@ const MyResume = () => {
             </label>
             <input
               type="hidden"
-              class="input-text"
+              className="input-text"
               name="_employer_featured_image"
               value=""
             />
             <div className="row align-items-center upload-box">
-              <div className="col-2">
-                <img src={Logo} />
+              <div className="col-md-2 col-sm-4 col-12">
+                <img src={Logo} className="w-100" />
               </div>
-              <div className="col-3">
+              <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                 <button className="btn btn-secondary w-90 mb-2 text-uppercase">
                   <FiPaperclip /> Upload
                 </button>
@@ -293,25 +441,25 @@ const MyResume = () => {
               {field.required && <span className="required">*</span>}
             </label>
             <br />
-            <div class="form-check">
+            <div className="form-check">
               <input
                 type="radio"
                 className="form-check-input me-2"
                 name={field.name}
                 value={1}
               />
-              <label class="form-check-label" for={field.name}>
+              <label className="form-check-label" htmlFor={field.name}>
                 Yes
               </label>
             </div>
-            <div class="form-check">
+            <div className="form-check">
               <input
                 type="radio"
                 className="form-check-input me-2"
                 name={field.name}
                 value={0}
               />
-              <label class="form-check-label" for={field.name}>
+              <label className="form-check-label" htmlFor={field.name}>
                 No
               </label>
             </div>
@@ -388,27 +536,13 @@ const MyResume = () => {
 
       case "repeater":
         return (
-          <>
+          <div className="repeater-field" ref={repeaterRef}>
             <label htmlFor={field.name} className="form-label">
               {field.label}
               {field.required && <span className="required">*</span>}
             </label>
-            <div className="repeater-field" field-id="1">
-              <div className="title">{field.label} 1</div>
-              {field.items.map((item, index) => (
-                <div className="row align-items-start">
-                  <div className="col-2">{item.label}</div>
-                  <div className="col-10">
-                    {item.type == "input" ? (
-                      <input className="form-control" name={item.name} />
-                    ) : (
-                      <textarea className="form-control"></textarea>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </>
+            <RepeaterField field={field} />
+          </div>
         );
     }
   };
@@ -422,7 +556,7 @@ const MyResume = () => {
           <div className="row gx-3 gy-5 align-items-end">
             {qualifications.map((field) => {
               return (
-                <div className={`col-${field.column}`} key={field.name}>
+                <div className={`col-sm-${field.column}`} key={field.name}>
                   {getFormField(field)}
                 </div>
               );

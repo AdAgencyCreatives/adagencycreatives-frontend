@@ -118,6 +118,7 @@ function Header(props) {
       <AppBar
         elevation={0}
         component="nav"
+        id="top-nav-fixed"
         sx={{ backgroundColor: "#fff", padding: { sm: "10px 0", xs: "0" } }}
       >
         <Toolbar>

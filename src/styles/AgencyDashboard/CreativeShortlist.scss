@@ -114,4 +114,11 @@
         display: flex;
         gap: 10px;
     }
+
+    @media (max-width: 650px){
+        .ali-right{
+            margin-left: 123px;
+            margin-top: 10px;
+        }
+    }
 }

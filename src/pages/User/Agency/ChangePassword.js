@@ -23,7 +23,7 @@ const ChangePassword = () => {
       <h3 className="page-title">Change Password</h3>
       <div className="card">
         <div className="row">
-          <div className="col-8">
+          <div className="col-sm-8">
             <div className="profile-edit-form">
               <div className="form-group position-relative mb-4">
                 <label htmlFor="oldPassword" className="form-label">

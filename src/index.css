@@ -13,9 +13,9 @@ body {
 }
 
 * {
-  scroll-margin-top: 80px;
-  scroll-snap-stop: 80px;
+  /* scroll-margin-top: 86px; */
 }
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

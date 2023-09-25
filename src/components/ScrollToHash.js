@@ -21,12 +21,19 @@ const ScrollToHash = () => {
 
   useEffect(() => {
     if (hashElement) {
-      hashElement.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "nearest",
-
+      const headerHeight = document.querySelector("#top-nav-fixed").offsetHeight;
+      const targetPosition = hashElement.getBoundingClientRect().top + window.scrollY - headerHeight;
+  
+      window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
       });
+      // hashElement.scrollIntoView({
+      //   behavior: "smooth",
+      //   block: "center",
+      //   inline: "nearest",
+
+      // });
     }
   }, [hashElement]);
 

@@ -24,7 +24,7 @@ const CreativeShortlist = () => {
         {Array.apply(null, { length: 2 }).map((value, index) => {
           return (
             <div class="candidate-list candidate-archive-layout">
-              <div class="d-flex align-items-center">
+              <div class="d-flex align-items-center flex-wrap">
                 <div class="candidate-info">
                   <div class="d-flex align-items-center gap-4">
                     <div class="candidate-logo">

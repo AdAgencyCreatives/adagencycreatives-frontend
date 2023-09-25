@@ -23,7 +23,7 @@ const DeleteProfile = () => {
       <h3 className="page-title">Delete Profile</h3>
       <div className="card">
         <div className="row">
-          <div className="col-8">
+          <div className="col-sm-8">
             <div className="profile-edit-form">
               <p style={{ fontSize: 18, fontWeight: 500,marginBottom:0 }}>
                 Are you sure you want to delete your profile?
