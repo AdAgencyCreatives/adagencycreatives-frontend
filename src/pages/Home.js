@@ -13,10 +13,13 @@ import PublicationResources from "../components/home/PublicationResources";
 import FeaturedCities from "../components/home/FeaturedCities";
 import SpotlightCreative from "../components/home/SpotlightCreative";
 import CreativeJobs from "../components/home/CreativeJobs";
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
 
 register();
 
 const Home = () => {
+
   return (
     <div className="main">
       <div className="banner">

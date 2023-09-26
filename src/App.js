@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Footer from "./components/Footer";
 import { Outlet, ScrollRestoration } from "react-router-dom";
+import { Provider as AuthProvider } from "./context/AuthContext";
 
 const theme = createTheme({
   typography: {
@@ -21,6 +22,7 @@ const theme = createTheme({
 
 function App() {
   return (
+    <AuthProvider>
       <ThemeProvider theme={theme}>
         <div className="App">
           <ScrollRestoration />
@@ -29,6 +31,7 @@ function App() {
           <Footer />
         </div>
       </ThemeProvider>
+    </AuthProvider>
   );
 }
 

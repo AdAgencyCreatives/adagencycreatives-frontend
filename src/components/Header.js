@@ -23,6 +23,7 @@ import ScrollToHash from "./ScrollToHash";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { navItems } from "../nav/NavItems";
+import AuthModal from "./modals/AuthModal";
 
 const drawerWidth = "85%";
 
@@ -30,6 +31,9 @@ function Header(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [childLink, setChildLink] = useState("hashLink");
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const handleOpen = () => setAuthModalOpen(true);
+  const handleClose = () => setAuthModalOpen(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -41,8 +45,7 @@ function Header(props) {
     const path = location.pathname;
     if (path == "/") {
       setChildLink("hashLink");
-    }
-    else{
+    } else {
       setChildLink("link");
     }
   }, [location]);
@@ -113,125 +116,133 @@ function Header(props) {
   `;
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar
-        elevation={0}
-        component="nav"
-        id="top-nav-fixed"
-        sx={{ backgroundColor: "#fff", padding: { sm: "10px 0", xs: "0" } }}
-      >
-        <Toolbar>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item md={4} xs={6}>
-              <Link className="site-logo">
-                <img className="" src={Logo} alt="Adagency Creatives" />
-              </Link>
-            </Grid>
-            <Grid
-              item
-              md={8}
-              xs={6}
-              sx={{ textAlign: "right", padding: "10px" }}
-              className="right-menu"
-            >
-              <Box sx={{ display: { md: "none" } }}>
-                <IconButton href="#" color="primary">
-                  <AiOutlineUser />
-                </IconButton>
-
-                <IconButton href="#" color="primary">
-                  <AiOutlineBell />
-                </IconButton>
-
-                <IconButton
-                  aria-label="open drawer"
-                  edge="start"
-                  onClick={handleDrawerToggle}
-                  sx={{ p: 0, ml: 1, textAlign: "right" }}
-                >
-                  <a
-                    href="#navbar-offcanvas"
-                    className="btn-showmenu flex-column d-flex text-end align-items-end"
-                  >
-                    <span className="inner1"></span>
-                    <span className="inner2"></span>
-                    <span className="inner3"></span>
-                  </a>
-                </IconButton>
-              </Box>
-              <Box sx={{ display: { xs: "none", md: "block" } }}>
-                {navItems.map((item) => (
-                  <div
-                    key={item.name}
-                    className={`nav-item ${item.children && "has-children"}`}
-                  >
-                    <NavLink to={item.link}>
-                      <StyledButton
-                        color="link"
-                        className={`menu-link-btn ${
-                          item.children && "dropdown-toggle"
-                        }`}
-                      >
-                        {item.name}
-                      </StyledButton>
-                    </NavLink>
-                    {item.children && item.children.length > 0 && (
-                      <div className="dropdown-menu show">
-                        <ul className="dropdown-list">
-                          {item.children.map((child) => (
-                            <li key={child.name}>
-                              <NavLink
-                                to={child[childLink]}
-                                className={() => ""}
-                              >
-                                {child.name}
-                              </NavLink>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}{" "}
-                  </div>
-                ))}
-                <Button
-                  href="#"
-                  sx={{ backgroundColor: "#000", color: "white" }}
-                  className="post-job-link"
-                >
-                  Post A Job
-                </Button>
-                <Button href="#" color="link" className="login-btn">
-                  Login/Register
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
-        </Toolbar>
-      </AppBar>
-      <Toolbar />
-      <Box component="nav">
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { sm: "block", md: "none" },
-            "& .MuiDrawer-paper": {
-              //boxSizing: "border-box",
-              width: drawerWidth,
-              background: "black",
-            },
-          }}
+    <>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar
+          elevation={0}
+          component="nav"
+          id="top-nav-fixed"
+          sx={{ backgroundColor: "#fff", padding: { sm: "10px 0", xs: "0" } }}
         >
-          {drawer}
-        </Drawer>
+          <Toolbar>
+            <Grid container justifyContent="space-between" alignItems="center">
+              <Grid item md={4} xs={6}>
+                <Link className="site-logo">
+                  <img className="" src={Logo} alt="Adagency Creatives" />
+                </Link>
+              </Grid>
+              <Grid
+                item
+                md={8}
+                xs={6}
+                sx={{ textAlign: "right", padding: "10px" }}
+                className="right-menu"
+              >
+                <Box sx={{ display: { md: "none" } }}>
+                  <IconButton href="#" color="primary">
+                    <AiOutlineUser />
+                  </IconButton>
+
+                  <IconButton href="#" color="primary">
+                    <AiOutlineBell />
+                  </IconButton>
+
+                  <IconButton
+                    aria-label="open drawer"
+                    edge="start"
+                    onClick={handleDrawerToggle}
+                    sx={{ p: 0, ml: 1, textAlign: "right" }}
+                  >
+                    <a
+                      href="#navbar-offcanvas"
+                      className="btn-showmenu flex-column d-flex text-end align-items-end"
+                    >
+                      <span className="inner1"></span>
+                      <span className="inner2"></span>
+                      <span className="inner3"></span>
+                    </a>
+                  </IconButton>
+                </Box>
+                <Box sx={{ display: { xs: "none", md: "block" } }}>
+                  {navItems.map((item) => (
+                    <div
+                      key={item.name}
+                      className={`nav-item ${item.children && "has-children"}`}
+                    >
+                      <NavLink to={item.link}>
+                        <StyledButton
+                          color="link"
+                          className={`menu-link-btn ${
+                            item.children && "dropdown-toggle"
+                          }`}
+                        >
+                          {item.name}
+                        </StyledButton>
+                      </NavLink>
+                      {item.children && item.children.length > 0 && (
+                        <div className="dropdown-menu show">
+                          <ul className="dropdown-list">
+                            {item.children.map((child) => (
+                              <li key={child.name}>
+                                <NavLink
+                                  to={child[childLink]}
+                                  className={() => ""}
+                                >
+                                  {child.name}
+                                </NavLink>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}{" "}
+                    </div>
+                  ))}
+                  <Button
+                    href="#"
+                    sx={{ backgroundColor: "#000", color: "white" }}
+                    className="post-job-link"
+                  >
+                    Post A Job
+                  </Button>
+                  <Button
+                    href="#"
+                    color="link"
+                    className="login-btn"
+                    onClick={() => setAuthModalOpen(true)}
+                  >
+                    Login/Register
+                  </Button>
+                </Box>
+              </Grid>
+            </Grid>
+          </Toolbar>
+        </AppBar>
+        <Toolbar />
+        <Box component="nav">
+          <Drawer
+            container={container}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              display: { sm: "block", md: "none" },
+              "& .MuiDrawer-paper": {
+                //boxSizing: "border-box",
+                width: drawerWidth,
+                background: "black",
+              },
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Box>
       </Box>
-    </Box>
+      <AuthModal open={authModalOpen} handleClose={handleClose} />
+    </>
   );
 }
 

@@ -1,0 +1,94 @@
+.auth-modal {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+
+    .auth-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+
+    .auth-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        textarea,
+        input {
+            color: #000000;
+            background-color: #F6F6F6;
+            padding: 15px 15px 15px 15px;
+            resize: none;
+            height: auto;
+            font-size: 20px;
+
+            &::placeholder {
+                color: #999999;
+
+            }
+        }
+
+        label {
+            font-size: 20px;
+        }
+
+        .notes-list-item {
+            font-size: 20px;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 15px;
+            border-bottom: 3px solid #f6f6f6;
+        }
+
+        ul.role-tabs.nav.nav-tabs {
+            border: 0;
+            padding: 0;
+            margin: 0 0 30px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            -webkit-align-items: center;
+            -ms-align-items: center;
+            -moz-align-items: center;
+            gap: 20px;
+
+            li {
+                flex: 1;
+                width: 100%;
+                cursor: pointer;
+                border-radius: 8px;
+                -webkit-border-radius: 8px;
+                -moz-border-radius: 8px;
+                -ms-border-radius: 8px;
+                -o-border-radius: 8px;
+                -webkit-transition: all 0.3s ease-in-out 0s;
+                -o-transition: all 0.3s ease-in-out 0s;
+                transition: all 0.3s ease-in-out 0s;
+                padding: 11px 15px;
+                margin: 0;
+                color: #999;
+                background-color: transparent;
+                border: 2px solid #999;
+                font-size: 20px;
+                font-weight: 300;
+            }
+
+            li.active,
+            li:hover {
+                background: var(--color-primary);
+                color: white;
+                border-color: var(--color-primary);
+            }
+
+        }
+
+    }
+
+}

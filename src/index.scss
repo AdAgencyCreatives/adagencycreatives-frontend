@@ -12,10 +12,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  /* scroll-margin-top: 86px; */
-}
-
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -94,7 +90,8 @@ a.link-dark:hover {
 :root {
   --color-primary: #d3a11f;
   --color-secondary: #ededed;
-  --color-gray: #777777
+  --color-gray: #777777;
+  --bs-primary-rgb: 211, 161, 131;
 }
 
 
