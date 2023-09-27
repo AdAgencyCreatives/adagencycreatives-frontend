@@ -1,10 +1,35 @@
 import { Dialog } from "@mui/material";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IoCloseOutline, IoEye, IoEyeOff } from "react-icons/io5";
 import "../../styles/Modal/AuthModal.scss";
+import { Context as AuthContext } from "../../context/AuthContext";
 
 const LoginModal = ({ open, handleClose, setModal }) => {
   const [show, setShow] = useState(false);
+  const { state, signin } = useContext(AuthContext);
+  const { formMessage } = state;
+  const [message, setMessage] = useState(null);
+  const [formData, setFormData] = useState({ email: "", password: "" });
+
+  useEffect(() => {
+    if (formMessage) {
+      setMessage({
+        class: formMessage.type == "success" ? "info" : "warning",
+        content: formMessage.message,
+      });
+    } else {
+      setMessage(null);
+    }
+  }, [formMessage]);
+
+  const handleChange = (key, value) => {
+    setFormData({ ...formData, [key]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    signin(formData);
+  };
 
   return (
     <Dialog
@@ -29,7 +54,12 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                   <IoCloseOutline size={30} />
                 </button>
               </div>
-              <form className="private-message-form" method="post">
+              {message && (
+                <div class={`alert alert-${message.class}`}>
+                  {message.content}
+                </div>
+              )}
+              <form className="login-form" onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label className="form-label">Email</label>
                   <input
@@ -37,6 +67,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                     name="email"
                     placeholder="Email"
                     required="required"
+                    onChange={(e) => handleChange("email", e.target.value)}
                   />
                 </div>
                 <div className="form-group position-relative mb-4">
@@ -47,6 +78,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                     type={show ? "text" : "password"}
                     className="form-control"
                     placeholder="Password"
+                    onChange={(e) => handleChange("password", e.target.value)}
                   />
                   <div className="showToggle">
                     {show ? (
@@ -83,7 +115,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                   className="text-center mt-4"
                   style={{ fontSize: 20, fontWeight: 300 }}
                 >
-                  Do you need to create an account?{" "}
+                  Do you need to create an account?
                   <a
                     href="#"
                     style={{ fontWeight: "bold", color: "black" }}

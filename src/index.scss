@@ -1,3 +1,10 @@
+:root {
+  --color-primary: #d3a11f;
+  --color-secondary: #ededed;
+  --color-gray: #777777;
+  --bs-primary-rgb: 211, 161, 131;
+}
+
 @font-face {
   font-family: 'Jost';
   src: url(assets/fonts/Jost/Jost-VariableFont_wght.ttf) format('truetype');
@@ -87,13 +94,21 @@ a.link-dark:hover {
   letter-spacing: 3px;
 }
 
-:root {
-  --color-primary: #d3a11f;
-  --color-secondary: #ededed;
-  --color-gray: #777777;
-  --bs-primary-rgb: 211, 161, 131;
+.alert{
+  font-size: 20px;
+  font-weight: 300;
 }
 
+.alert-warning {
+  background: #000;
+  color: var(--color-primary);
+}
+
+.alert-info {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
 
 @media (min-width: 576px) {
   .container {

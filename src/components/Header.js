@@ -24,6 +24,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { navItems } from "../nav/NavItems";
 import AuthModal from "./modals/AuthModal";
+import { Context as AuthContext } from "../context/AuthContext";
 
 const drawerWidth = "85%";
 
@@ -38,6 +39,7 @@ function Header(props) {
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+
 
   let location = useLocation();
 
