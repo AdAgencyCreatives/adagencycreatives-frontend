@@ -63,8 +63,15 @@ const RegisterModal = ({ open, handleClose, setModal }) => {
         label: "Portfolio Site *",
         required: true,
         type: "text",
-        name: "portfolio",
+        name: "portfolio_site",
         placeholder: "Portfolio Site *",
+      },
+      {
+        label: "",
+        type: "hidden",
+        name: "linkedin_profile",
+        placeholder: "LinkedIn Profile *",
+        value:" "
       },
     ],
     agency: [
@@ -72,22 +79,22 @@ const RegisterModal = ({ open, handleClose, setModal }) => {
         label: "Company Name*",
         required: true,
         type: "text",
-        name: "company",
+        name: "agency_name",
         placeholder: "Company Name *",
       },
       {
-        label: "Company First Name*",
+        label: "Contact First Name*",
         required: true,
         type: "text",
         name: "first_name",
-        placeholder: "Company First Name *",
+        placeholder: "Contact First Name *",
       },
       {
-        label: "Company Last Name*",
+        label: "Contact Last Name*",
         required: true,
         type: "text",
         name: "last_name",
-        placeholder: "Company Last Name *",
+        placeholder: "Contact Last Name *",
       },
       {
         label: "Email*",
@@ -114,8 +121,15 @@ const RegisterModal = ({ open, handleClose, setModal }) => {
         label: "LinkedIn Profile *",
         required: true,
         type: "text",
-        name: "linkedin",
+        name: "linkedin_profile",
         placeholder: "LinkedIn Profile *",
+      },
+      {
+        label: "",
+        type: "hidden",
+        name: "portfolio_site",
+        placeholder: "Portfolio Site *",
+        value:" "
       },
     ],
   });
@@ -128,7 +142,8 @@ const RegisterModal = ({ open, handleClose, setModal }) => {
     setFields(updatedFields);
   };
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
     signup(fields[tab], tab);
   };
 
@@ -202,70 +217,74 @@ const RegisterModal = ({ open, handleClose, setModal }) => {
                 </li>
               </ul>
               {message && (
-                <div class={`alert alert-${message.class}`}>
+                <div className={`alert alert-${message.class}`}>
                   {message.content}
                 </div>
               )}
-
-              {fields[tab].map((field, index) => (
-                <div className="form-group position-relative" key={field.name}>
-                  <label className="form-label">{field.label}</label>
-                  <input
-                    key={tab + field.name}
-                    className="form-control mb-4"
-                    name={field.name}
-                    placeholder={field.placeholder}
-                    type={
-                      field.type == "password"
-                        ? show[field.name]
-                          ? "text"
-                          : "password"
-                        : "text"
-                    }
-                    required="required"
-                    value={field.value || ""}
-                    onChange={(e) =>
-                      handleInputChange(tab, index, e.target.value)
-                    }
-                  />
-                  {field.type == "password" && (
-                    <div className="showToggle">
-                      {show[field.name] ? (
-                        <IoEye onClick={() => toggleShow(field.name, false)} />
-                      ) : (
-                        <IoEyeOff
-                          onClick={() => toggleShow(field.name, true)}
-                        />
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
-
-              <div className="d-flex align-items-center justify-content-between mb-2">
-                <div className="d-flex">
-                  <input
-                    type="checkbox"
-                    className="me-2"
-                    name="remember"
-                    id="remember"
-                  />
-                  <label
-                    className="form-check-label"
-                    style={{ fontSize: 18 }}
-                    htmlFor="remember"
+              <form id="register-form" onSubmit={handleFormSubmit}>
+                {fields[tab].map((field, index) => (
+                  <div
+                    className="form-group position-relative"
+                    key={field.name}
                   >
-                    You accept our <a href="#">Terms and Conditions</a> and{" "}
-                    <a href="#">Privacy Policy</a>
-                  </label>
+                    <label className="form-label">{field.label}</label>
+                    <input
+                      key={tab + field.name}
+                      className="form-control mb-4"
+                      name={field.name}
+                      placeholder={field.placeholder}
+                      type={
+                        field.type == "password"
+                          ? show[field.name]
+                            ? "text"
+                            : "password"
+                          : field.type
+                      }
+                      required="required"
+                      value={field.value || ""}
+                      onChange={(e) =>
+                        handleInputChange(tab, index, e.target.value)
+                      }
+                    />
+                    {field.type == "password" && (
+                      <div className="showToggle">
+                        {show[field.name] ? (
+                          <IoEye
+                            onClick={() => toggleShow(field.name, false)}
+                          />
+                        ) : (
+                          <IoEyeOff
+                            onClick={() => toggleShow(field.name, true)}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+
+                <div className="d-flex align-items-center justify-content-between mb-2">
+                  <div className="d-flex">
+                    <input
+                      type="checkbox"
+                      className="me-2"
+                      name="remember"
+                      id="remember"
+                      required
+                    />
+                    <label
+                      className="form-check-label"
+                      style={{ fontSize: 18 }}
+                      htmlFor="remember"
+                    >
+                      You accept our <a href="#">Terms and Conditions</a> and
+                      <a href="#">Privacy Policy</a>
+                    </label>
+                  </div>
                 </div>
-              </div>
-              <button
-                className="btn btn-gray btn-hover-primary text-capitalize ls-3 w-100 mt-3 p-3"
-                onClick={handleFormSubmit}
-              >
-                Register Now
-              </button>
+                <button className="btn btn-gray btn-hover-primary text-capitalize ls-3 w-100 mt-3 p-3">
+                  Register Now
+                </button>
+              </form>
             </div>
           </div>
         </div>

@@ -1,12 +1,13 @@
 import api from "../api/api";
 import createDataContext from "./createDataContext";
+import { useCookies } from "react-cookie";
 
-const state = { isSignedIn: false, formMessage: null };
+const state = { isSignedIn: false, formMessage: null, token: null };
 
 const authReducer = (state, action) => {
   switch (action.type) {
     case "set_token":
-      return state;
+      return { ...state, token: action.payload };
 
     case "set_form_message":
       return { ...state, formMessage: action.payload };
@@ -48,8 +49,8 @@ const getRegisterSuccessMessage = () => {
 };
 
 const getLoginSuccessMessage = () => {
-  return "Login Successful"
-}
+  return "Login Successful";
+};
 
 const setErrorMessage = (dispatch, message) => {
   dispatch({
@@ -65,7 +66,7 @@ const signup = (dispatch) => {
       const formData = prepareFields(data);
       formData.role = role;
       const response = await api.post("/users", formData);
-      if (formData.password != formData.cpassword) {
+      if (formData.password !== formData.cpassword) {
         setErrorMessage(dispatch, "The passwords do not match");
         return;
       }
@@ -84,6 +85,7 @@ const signin = (dispatch) => {
     resetFormMessage(dispatch)();
     try {
       const response = await api.post("/login", data);
+      setToken(dispatch)(response.data.token);
       dispatch({
         type: "set_form_message",
         payload: { type: "success", message: getLoginSuccessMessage() },
@@ -93,6 +95,18 @@ const signin = (dispatch) => {
     }
   };
 };
+
+const setToken = (dispatch) => {
+  return (token) => {
+    if (token) {
+      dispatch({
+        type: "set_token",
+        payload: token,
+      });
+    }
+  };
+};
+
 
 const prepareFields = (data) => {
   const formData = data.reduce((obj, item) => {
@@ -104,6 +118,6 @@ const prepareFields = (data) => {
 
 export const { Context, Provider } = createDataContext(
   authReducer,
-  { signup, signin, resetFormMessage },
+  { signup, signin, resetFormMessage, setToken },
   state
 );

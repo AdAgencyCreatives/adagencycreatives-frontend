@@ -1,13 +1,24 @@
-import Employer from "../../assets/images/david-and-goliath.png";
+import Placeholder from "../../assets/images/placeholder.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoLocationOutline, IoStar } from "react-icons/io5";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { PaginationStyle } from "../../styles/PaginationStyle";
 import Tooltip from "../Tooltip";
+import { Context as JobsContext } from "../../context/JobsContext";
+import { Link } from "react-router-dom";
 
 const CreativeJobs = () => {
   const swiperElRef = useRef(null);
   const jobSlides = 3;
+
+  const {
+    state: { jobs },
+    getJobs,
+  } = useContext(JobsContext);
+
+  useEffect(() => {
+    getJobs();
+  }, []);
 
   useEffect(() => {
     const params = {
@@ -48,49 +59,71 @@ const CreativeJobs = () => {
           space-between="30"
           centeredSlides="true"
         >
-          {Array.apply(11, { length: jobSlides }).map((value, index) => {
-            return (
-              <swiper-slide key={`slide${index}`}>
-                <div className="sliderContent job-slider p-3 p-md-4">
-                  <div className="left-badge">
-                    <Tooltip title="Featured" type="featured">
-                      <button className="btn p-0 border-0 me-2">
-                        <IoStar
-                          size={15}
-                          className="icon-rounded star-badge featured"
-                        />
-                      </button>
-                    </Tooltip>
-                    <Tooltip title="Urgent" type="urgent">
-                      <button className="btn p-0 border-0 me-2">
-                        <IoStar
-                          size={15}
-                          className="icon-rounded star-badge urgent"
-                        />
-                      </button>
-                    </Tooltip>
+          {jobs &&
+            jobs.map((item, index) => {
+              return (
+                <swiper-slide key={`slide${index}`}>
+                  <div className="sliderContent job-slider p-3 p-md-4">
+                    <div className="left-badge">
+                      {item.priority.is_featured && (
+                        <Tooltip title="Featured" type="featured">
+                          <button className="btn p-0 border-0 me-2">
+                            <IoStar
+                              size={15}
+                              className="icon-rounded star-badge featured"
+                            />
+                          </button>
+                        </Tooltip>
+                      )}
+                      {item.priority.is_urgent && (
+                        <Tooltip title="Urgent" type="urgent">
+                          <button className="btn p-0 border-0 me-2">
+                            <IoStar
+                              size={15}
+                              className="icon-rounded star-badge urgent"
+                            />
+                          </button>
+                        </Tooltip>
+                      )}
+                    </div>
+                    <div className="right-badge">
+                      <Link
+                        to={`/job-type/${item.employment_type.toLowerCase()}`}
+                      >
+                        <span>{item.employment_type}</span>
+                      </Link>
+                    </div>
+                    <Link to={`/job/`} className="employer-logo">
+                      <img
+                        src={item.agency.logo}
+                        width={150}
+                        height={150}
+                        onError={(e) => {
+                          e.target.src = Placeholder;
+                        }}
+                      />
+                    </Link>
+                    <h3 className="employer-title">
+                      <Link to={`/agency`}>{item.agency.name}</Link>
+                    </h3>
+                    <h3 className="job-title">
+                      <Link to={`/job/`} className="link-dark">{item.title}</Link>
+                    </h3>
+                    {item.location && (
+                      <div className="job-location location">
+                        <IoLocationOutline />
+                        <Link to={`/creative-location/${item.location.state}`}>
+                          {item.location.state},
+                        </Link>
+                        <Link to={`/creative-location/${item.location.city}`}>
+                          {item.location.city}
+                        </Link>
+                      </div>
+                    )}
                   </div>
-                  <div className="right-badge">
-                    <a href="#">
-                      <span>Full-Time</span>
-                    </a>
-                  </div>
-                  <a href="#" className="employer-logo">
-                    <img src={Employer} width={150} height={150} />
-                  </a>
-                  <h3 className="employer-title">
-                    <a href="#">David&Goliath</a>
-                  </h3>
-                  <h3 className="job-title">Junior Copywriter</h3>
-                  <div className="job-location location">
-                    <IoLocationOutline />
-                    <a href="#">Los Angeles,</a>
-                    <a href="#">California</a>
-                  </div>
-                </div>
-              </swiper-slide>
-            );
-          })}
+                </swiper-slide>
+              );
+            })}
         </swiper-container>
       </div>
     </div>

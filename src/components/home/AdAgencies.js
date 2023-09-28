@@ -1,12 +1,22 @@
-import Mischief from "../../assets/images/Mischief-1.png";
+import Placeholder from "../../assets/images/placeholder.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { PaginationStyle } from "../../styles/PaginationStyle";
+import { Context as AgenciesContext } from "../../context/AgenciesContext";
+import { Link } from "react-router-dom";
 
 const AdAgencies = () => {
-
   const swiperElRef = useRef(null);
+
+  const {
+    state: { agencies },
+    getAgencies,
+  } = useContext(AgenciesContext);
+
+  useEffect(() => {
+    getAgencies();
+  }, []);
 
   useEffect(() => {
     const params = {
@@ -19,7 +29,7 @@ const AdAgencies = () => {
         768: {
           slidesPerView: 3,
           spaceBetween: 30,
-        }
+        },
       },
     };
     Object.assign(swiperElRef.current, params);
@@ -45,28 +55,42 @@ const AdAgencies = () => {
           space-between="30"
           loop="true"
         >
-          {Array.apply(11, { length: 10 }).map((value, index) => {
-            return (
-              <swiper-slide key={`slide${index}`}>
-                <div className="sliderContent adagencies-slider">
-                  <a href="#" className="employer-logo">
-                    <img src={Mischief} width={150} height={150} />
-                  </a>
-                  <h3 className="employer-title">
-                    <a href="#">Mischief</a>
-                  </h3>
-                  <div className="job-location location">
-                    <IoLocationOutline />
-                    <a href="#">Austin,</a>
-                    <a href="#">Texas</a>
+          {agencies &&
+            agencies.map((item, index) => {
+              return (
+                <swiper-slide key={`slide${index}`}>
+                  <div className="sliderContent adagencies-slider">
+                    <Link to={`/agency`} className="employer-logo">
+                      <img
+                        src={item.logo || Placeholder}
+                        width={150}
+                        height={150}
+                        onError={(e) => {
+                          e.target.src = Placeholder;
+                        }}
+                      />
+                    </Link>
+                    <h3 className="employer-title">
+                      <Link to={`/agency`}>{item.name}</Link>
+                    </h3>
+                    {item.location && (
+                      <div className="job-location location">
+                        <IoLocationOutline />
+                        <Link to={`/creative-location/${item.location.state}`}>
+                          {item.location.state},
+                        </Link>
+                        <Link to={`/creative-location/${item.location.city}`}>
+                          {item.location.city}
+                        </Link>
+                      </div>
+                    )}
+                    <div className="open-jobs-btn">
+                      <a href="#">Open Jobs - 0</a>
+                    </div>
                   </div>
-                  <div className="open-jobs-btn">
-                    <a href="#">Open Jobs - 0</a>
-                  </div>
-                </div>
-              </swiper-slide>
-            );
-          })}
+                </swiper-slide>
+              );
+            })}
         </swiper-container>
       </div>
     </div>

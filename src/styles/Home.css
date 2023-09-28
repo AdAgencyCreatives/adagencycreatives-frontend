@@ -219,10 +219,11 @@ button.searchBtn:hover {
     -webkit-transition: color 0.3s ease;
     -o-transition: color 0.3s ease;
     transition: color 0.3s ease;
+    color: white;
 }
 
 .browseAll:hover {
-    color: rgb(211, 161, 31);
+    color: rgb(211, 161, 31) !important
 }
 
 .browseAll>a {
@@ -423,11 +424,13 @@ a.employer-logo img {
 
 .employer-logo {
     margin-bottom: 10px;
+    height: 90px;
 }
 
 .employer-title {
     font-size: 18px;
     margin-bottom: 12px;
+    font-weight: 400;
 }
 
 .employer-title a {
@@ -761,6 +764,6 @@ img.publication-image {
 
     .creative-section .sectionHeader {
         justify-content: center;
-        gap:0px 10px;
+        gap: 0px 10px;
     }
 }

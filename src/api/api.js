@@ -10,6 +10,7 @@ api.defaults.headers.common['Accept'] = "application/json";
 api.interceptors.response.use(
     response => {
       // Do something with the response data
+      console.log(response)
       return response;
     },
     error => {

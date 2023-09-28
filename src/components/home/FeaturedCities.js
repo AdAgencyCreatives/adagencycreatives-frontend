@@ -4,6 +4,7 @@ import LosAngeles from "../../assets/images/Los-Angeles-1.png";
 import Dallas from "../../assets/images/Dallas-e1681932281853.png";
 import Chicago from "../../assets/images/Chicago-Nights-1-1.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const FeaturedCities = () => {
   return (
@@ -19,7 +20,7 @@ const FeaturedCities = () => {
         <div className="row gx-3">
           <div className="col-12 col-md-4">
             <div className="job-city-banner ">
-              <a href="#">
+              <Link to={`/job-location/dallas`}>
                 <div className="city-banner-inner">
                   <div
                     className="bg-banner"
@@ -33,12 +34,12 @@ const FeaturedCities = () => {
                     </div>
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
           <div className="col-12 col-md-4">
             <div className="job-city-banner job-banner-small  ">
-              <a href="#">
+              <Link to={`/job-location/los-angeles`}>
                 <div className="city-banner-inner">
                   <div
                     className="bg-banner"
@@ -52,10 +53,10 @@ const FeaturedCities = () => {
                     </div>
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
             <div className="job-city-banner job-banner-small ">
-              <a href="#">
+              <Link to={`/job-location/new-york`}>
                 <div className="city-banner-inner">
                   <div
                     className="bg-banner"
@@ -69,12 +70,12 @@ const FeaturedCities = () => {
                     </div>
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
           <div className="col-12 col-md-4">
             <div className="job-city-banner job-banner-small ">
-              <a href="#">
+              <Link to={`/job-location/chicago`}>
                 <div className="city-banner-inner">
                   <div
                     className="bg-banner"
@@ -88,10 +89,10 @@ const FeaturedCities = () => {
                     </div>
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
             <div className="job-city-banner job-banner-small ">
-              <a href="#">
+              <Link to={`/job-location/miami`}>
                 <div className="city-banner-inner">
                   <div
                     className="bg-banner"
@@ -105,7 +106,7 @@ const FeaturedCities = () => {
                     </div>
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

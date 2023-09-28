@@ -43,7 +43,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
         <div className="auth-body">
           <div className="job-apply-email-form-wrapper">
             <div className="inner">
-              <div class="d-flex align-items-center justify-content-between mb-4">
+              <div className="d-flex align-items-center justify-content-between mb-4">
                 <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
                   Login
                 </h3>
@@ -55,7 +55,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                 </button>
               </div>
               {message && (
-                <div class={`alert alert-${message.class}`}>
+                <div className={`alert alert-${message.class}`}>
                   {message.content}
                 </div>
               )}
@@ -88,7 +88,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                     )}
                   </div>
                 </div>
-                <div class="d-flex align-items-center justify-content-between mb-2">
+                <div className="d-flex align-items-center justify-content-between mb-2">
                   <div className="d-flex">
                     <input
                       type="checkbox"
@@ -97,7 +97,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                       id="remember"
                     />
                     <label
-                      class="form-check-label"
+                      className="form-check-label"
                       style={{ fontSize: 18 }}
                       htmlFor="remember"
                     >

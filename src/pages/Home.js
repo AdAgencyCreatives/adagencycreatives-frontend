@@ -14,12 +14,14 @@ import FeaturedCities from "../components/home/FeaturedCities";
 import SpotlightCreative from "../components/home/SpotlightCreative";
 import CreativeJobs from "../components/home/CreativeJobs";
 import { useContext } from "react";
-import AuthContext from "../context/AuthContext";
+import { Context as AuthContext } from "../context/AuthContext";
 
 register();
 
 const Home = () => {
+  const { token } = useContext(AuthContext).state;
 
+  console.log(token);
   return (
     <div className="main">
       <div className="banner">
