@@ -269,6 +269,7 @@ swiper-slide {
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
+    animation: fade-in .3s linear;
 }
 
 .agencies-slider {
@@ -332,7 +333,10 @@ swiper-slide {
     color: white;
     text-decoration: none;
     width: 100%;
-    flex: 1
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -362,11 +366,16 @@ img.spotlight-image {
     color: rgb(211, 161, 31);
 }
 
+.spotlight-meta:hover{
+    color: #000;
+}
+
 .watch-link {
     font-size: 14px;
     font-weight: 300;
     margin-top: 10px;
     position: relative;
+    color: black
 }
 
 .watch-link>* {
@@ -387,7 +396,12 @@ img.spotlight-image {
     padding: 10px;
 }
 
-.watch-link a:after {
+.watch-link>div {
+    display: inline;
+    position: relative;
+}
+
+.watch-link div:after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -401,7 +415,7 @@ img.spotlight-image {
     transition: all 0.4s ease-in-out 0s;
 }
 
-.spotlight-slider:hover a:after {
+.spotlight-slider:hover .watch-link>div:after {
     width: 100%;
     left: 0;
 }

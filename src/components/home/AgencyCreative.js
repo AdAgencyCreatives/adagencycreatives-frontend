@@ -4,19 +4,12 @@ import { IoLocationOutline } from "react-icons/io5";
 import { useContext, useEffect } from "react";
 import { useRef } from "react";
 import { PaginationStyle } from "../../styles/PaginationStyle";
-import { Context as CreativesContext } from "../../context/CreativesContext";
 import { Link } from "react-router-dom";
+import useCreatives from "../../hooks/useCreatives";
 
 const AgencyCreatives = () => {
   const swiperElRef = useRef(null);
-  const {
-    state: { creatives },
-    getCreatives,
-  } = useContext(CreativesContext);
-
-  useEffect(() => {
-    getCreatives();
-  }, []);
+  const creatives = useCreatives();
 
   useEffect(() => {
     const params = {

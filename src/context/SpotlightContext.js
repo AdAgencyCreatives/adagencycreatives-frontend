@@ -2,20 +2,20 @@ import api from "../api/api";
 import createDataContext from "./createDataContext";
 
 api.defaults.headers.common["Authorization"] =
-  "Bearer 2|q52keLEZTFkJVwMcKQhGpaEbVTXCXsGyyWVtZC6Y0db02524";
+  "Bearer 8|Gzdh4rjnn9cCa86aNj83yhJh3wUmxp0KmgFE64JGf8c00a62";
 
-const state = { creatives: null, nextPage: null, loading: false };
+const state = { screatives: null, nextPage: null, loading: false };
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "set_creatives":
+    case "set_screatives":
       return {
-        creatives: action.payload.data,
+        screatives: action.payload.data,
         nextPage: action.payload.links.next,
       };
-    case "load_creatives":
+    case "load_screatives":
       return {
-        creatives: [...state.creatives, ...action.payload.data],
+        screatives: [...state.screatives, ...action.payload.data],
         nextPage: action.payload.links.next,
       };
     case "set_loading":
@@ -28,19 +28,19 @@ const reducer = (state, action) => {
   }
 };
 
-const getCreatives = (dispatch) => {
+const getSCreatives = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/creatives");
+      const response = await api.get("/creative_spotlight");
       dispatch({
-        type: "set_creatives",
+        type: "set_screatives",
         payload: response.data,
       });
     } catch (error) {}
   };
 };
 
-const loadCreatives = (dispatch) => {
+const loadSCreatives = (dispatch) => {
   return async (page) => {
     dispatch({
       type: "set_loading",
@@ -49,7 +49,7 @@ const loadCreatives = (dispatch) => {
     try {
       const response = await api.get(page);
       dispatch({
-        type: "load_creatives",
+        type: "load_screatives",
         payload: response.data,
       });
       dispatch({
@@ -62,6 +62,6 @@ const loadCreatives = (dispatch) => {
 
 export const { Context, Provider } = createDataContext(
   reducer,
-  { getCreatives, loadCreatives },
+  { getSCreatives, loadSCreatives },
   state
 );

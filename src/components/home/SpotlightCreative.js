@@ -1,11 +1,22 @@
 import Spotlight from "../../assets/images/Creative-Spotlight-No-Background-600x600.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoChevronForwardOutline } from "react-icons/io5";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useRef } from "react";
 import { BulletStyle, PaginationStyle } from "../../styles/PaginationStyle";
+import { Link } from "react-router-dom";
+import { Context as CreativesContext } from "../../context/SpotlightContext";
 
 const SpotlightCreative = () => {
+  const {
+    state: { screatives },
+    getSCreatives,
+  } = useContext(CreativesContext);
+
+  useEffect(() => {
+    getSCreatives();
+  }, []);
+
   const swiperElRef = useRef(null);
   const spotlightSlides = 7;
 
@@ -37,8 +48,10 @@ const SpotlightCreative = () => {
     <div id="spotlight">
       <div className="sectionHeader">
         <h1 className="sectionTitle">Spotlighting Creatives</h1>
-        <div className="browseAll">
-          browse all <MdKeyboardDoubleArrowRight />
+        <div>
+          <Link className="browseAll" to="spotlighting-creatives">
+            browse all <MdKeyboardDoubleArrowRight />
+          </Link>
         </div>
       </div>
 
@@ -52,30 +65,31 @@ const SpotlightCreative = () => {
           slides-per-view="1"
           space-between="30"
         >
-          {Array.apply(11, { length: spotlightSlides }).map((value, index) => {
-            return (
-              <swiper-slide key={`slide${index}`}>
-                <div className="sliderContent spotlight-slider">
-                  <img
-                    src={Spotlight}
-                    className="spotlight-image"
-                    width={150}
-                    height={150}
-                  />
-                  <div className="date">July 10, 2023</div>
-                  <a className="spotlight-meta">
-                    Creative Director Art, Brant Herzer
-                  </a>
-                  <div className="watch-link">
-                    <a href="#">
-                      Watch
-                      <IoChevronForwardOutline />
-                    </a>
+          {screatives &&
+            screatives.map((item, index) => {
+              return (
+                <swiper-slide key={`slide${index}`}>
+                  <div className="sliderContent spotlight-slider">
+                    <Link to={item.url}>
+                      <img
+                        src={Spotlight}
+                        className="spotlight-image"
+                        width={150}
+                        height={150}
+                      />
+                      <div className="date">{item.created_at}</div>
+                      <div className="spotlight-meta">{item.title}</div>
+                      <div className="watch-link">
+                        <div className="">
+                          Watch
+                          <IoChevronForwardOutline />
+                        </div>
+                      </div>
+                    </Link>
                   </div>
-                </div>
-              </swiper-slide>
-            );
-          })}
+                </swiper-slide>
+              );
+            })}
         </swiper-container>
       </div>
     </div>

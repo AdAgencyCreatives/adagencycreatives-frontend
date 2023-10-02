@@ -25,21 +25,32 @@ import { useEffect, useState } from "react";
 import { navItems } from "../nav/NavItems";
 import AuthModal from "./modals/AuthModal";
 import { Context as AuthContext } from "../context/AuthContext";
+import Placeholder from "../assets/images/NathanWalker_ProfilePic-150x150.jpg";
+import { agencyNav, creativeNav } from "../nav/AgencyNav";
 
 const drawerWidth = "85%";
 
 function Header(props) {
   const { window } = props;
+  const { state } = React.useContext(AuthContext);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [childLink, setChildLink] = useState("hashLink");
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const handleOpen = () => setAuthModalOpen(true);
   const handleClose = () => setAuthModalOpen(false);
 
+  const [loggedInNav, setLoggedInNav] = useState(agencyNav);
+
+  useEffect(() => {
+    if (state.token !== null) {
+      console.log(state.role);
+      setLoggedInNav(state.role == "creative" ? creativeNav : agencyNav);
+    }
+  }, [state.token]);
+
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
-
 
   let location = useLocation();
 
@@ -166,17 +177,26 @@ function Header(props) {
                     </a>
                   </IconButton>
                 </Box>
-                <Box sx={{ display: { xs: "none", md: "block" } }}>
+                <Box
+                  sx={{
+                    display: { xs: "none", md: "flex" },
+                    alignItems: "center",
+                    justifyContent: "end",
+                    flexWrap:"wrap"
+                  }}
+                >
                   {navItems.map((item) => (
                     <div
                       key={item.name}
-                      className={`nav-item ${item.children && "has-children"}`}
+                      className={`nav-item${
+                        item.children ? " has-children" : ""
+                      }`}
                     >
                       <NavLink to={item.link}>
                         <StyledButton
                           color="link"
                           className={`menu-link-btn ${
-                            item.children && "dropdown-toggle"
+                            item.children ? " dropdown-toggle" : ""
                           }`}
                         >
                           {item.name}
@@ -197,7 +217,7 @@ function Header(props) {
                             ))}
                           </ul>
                         </div>
-                      )}{" "}
+                      )}
                     </div>
                   ))}
                   <Button
@@ -207,14 +227,37 @@ function Header(props) {
                   >
                     Post A Job
                   </Button>
-                  <Button
-                    href="#"
-                    color="link"
-                    className="login-btn"
-                    onClick={() => setAuthModalOpen(true)}
-                  >
-                    Login/Register
-                  </Button>
+                  {state.token ? (
+                    <div className="nav-item has-children">
+                      <div className="logged-in-menu">
+                        <img
+                          src={Placeholder}
+                          height="50"
+                          width="50"
+                          className="avatar-rounded rounded-circle"
+                        />
+                        <div className="username">Test User</div>
+                      </div>
+                      <div className="dropdown-menu logged-in-dropdown show">
+                        <ul className="dropdown-list">
+                          {loggedInNav.map((item, index) => (
+                            <li key={`liul${index}`}>
+                              <NavLink to={item.link}>{item.name}</NavLink>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  ) : (
+                    <Button
+                      href="#"
+                      color="link"
+                      className="login-btn"
+                      onClick={() => setAuthModalOpen(true)}
+                    >
+                      Login/Register
+                    </Button>
+                  )}
                 </Box>
               </Grid>
             </Grid>

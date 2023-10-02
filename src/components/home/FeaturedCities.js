@@ -11,8 +11,10 @@ const FeaturedCities = () => {
     <div id="cities">
       <div className="sectionHeader">
         <h1 className="sectionTitle">Featured Cities</h1>
-        <div className="browseAll">
-          browse all <MdKeyboardDoubleArrowRight />
+        <div>
+          <Link className="browseAll" to="creative-jobs">
+            browse all <MdKeyboardDoubleArrowRight />
+          </Link>
         </div>
       </div>
 

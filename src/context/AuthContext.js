@@ -2,12 +2,16 @@ import api from "../api/api";
 import createDataContext from "./createDataContext";
 import { useCookies } from "react-cookie";
 
-const state = { isSignedIn: false, formMessage: null, token: null };
+const state = { isSignedIn: false, formMessage: null, token: null, role: null };
 
 const authReducer = (state, action) => {
   switch (action.type) {
     case "set_token":
-      return { ...state, token: action.payload };
+      return {
+        ...state,
+        token: action.payload.token,
+        role: action.payload.role,
+      };
 
     case "set_form_message":
       return { ...state, formMessage: action.payload };
@@ -60,7 +64,7 @@ const setErrorMessage = (dispatch, message) => {
 };
 
 const signup = (dispatch) => {
-  return async (data, role) => {
+  return async (data, role, cb = false) => {
     resetFormMessage(dispatch)();
     try {
       const formData = prepareFields(data);
@@ -75,6 +79,7 @@ const signup = (dispatch) => {
         payload: { type: "success", message: getRegisterSuccessMessage() },
       });
     } catch (error) {
+      cb && cb();
       setErrorMessage(dispatch, error.response.data.message);
     }
   };
@@ -85,7 +90,7 @@ const signin = (dispatch) => {
     resetFormMessage(dispatch)();
     try {
       const response = await api.post("/login", data);
-      setToken(dispatch)(response.data.token);
+      setToken(dispatch)(response.data.token, response.data.user.role);
       dispatch({
         type: "set_form_message",
         payload: { type: "success", message: getLoginSuccessMessage() },
@@ -97,16 +102,15 @@ const signin = (dispatch) => {
 };
 
 const setToken = (dispatch) => {
-  return (token) => {
+  return (token, role) => {
     if (token) {
       dispatch({
         type: "set_token",
-        payload: token,
+        payload: { token, role },
       });
     }
   };
 };
-
 
 const prepareFields = (data) => {
   const formData = data.reduce((obj, item) => {

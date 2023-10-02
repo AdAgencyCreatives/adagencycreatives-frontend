@@ -1,8 +1,9 @@
 import Dialog from "@mui/material/Dialog";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { IoCloseOutline, IoEye, IoEyeOff } from "react-icons/io5";
 import "../../styles/Modal/AuthModal.scss";
 import { Context as AuthContext } from "../../context/AuthContext";
+import ScrollToHash from "../ScrollToHash";
 
 const RegisterModal = ({ open, handleClose, setModal }) => {
   const { state, signup } = useContext(AuthContext);
@@ -10,6 +11,7 @@ const RegisterModal = ({ open, handleClose, setModal }) => {
   const [show, setShow] = useState({});
   const [tab, setTab] = useState("creative");
   const [message, setMessage] = useState(null);
+  const dialogRef = useRef(null);
 
   useEffect(() => {
     if (formMessage) {
@@ -71,7 +73,7 @@ const RegisterModal = ({ open, handleClose, setModal }) => {
         type: "hidden",
         name: "linkedin_profile",
         placeholder: "LinkedIn Profile *",
-        value:" "
+        value: " ",
       },
     ],
     agency: [
@@ -129,7 +131,7 @@ const RegisterModal = ({ open, handleClose, setModal }) => {
         type: "hidden",
         name: "portfolio_site",
         placeholder: "Portfolio Site *",
-        value:" "
+        value: " ",
       },
     ],
   });
@@ -144,7 +146,14 @@ const RegisterModal = ({ open, handleClose, setModal }) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    signup(fields[tab], tab);
+    signup(fields[tab], tab, () => {
+      dialogRef.current
+        .getElementsByClassName("MuiDialog-container")[0]
+        .scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+    });
   };
 
   const toggleShow = (field, visible) => {
@@ -167,6 +176,7 @@ const RegisterModal = ({ open, handleClose, setModal }) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       scroll="body"
+      ref={dialogRef}
     >
       <div className="auth-modal">
         <div className="auth-header"></div>

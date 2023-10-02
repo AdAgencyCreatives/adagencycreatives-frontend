@@ -127,3 +127,12 @@ a.link-dark:hover {
     max-width: 1240px;
   }
 }
+
+@keyframes fade-in {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}

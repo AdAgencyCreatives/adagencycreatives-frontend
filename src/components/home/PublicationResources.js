@@ -11,8 +11,6 @@ import littleblack from "../../assets/images/publications/littleblack.jpeg";
 import muse from "../../assets/images/publications/muse.jpeg";
 import thedrum from "../../assets/images/publications/thedrum.jpeg";
 
-import { MdKeyboardDoubleArrowRight } from "react-icons/md";
-
 const PublicationResources = () => {
   const publications = [
     {

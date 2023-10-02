@@ -2,7 +2,7 @@ import api from "../api/api";
 import createDataContext from "./createDataContext";
 
 api.defaults.headers.common["Authorization"] =
-  "Bearer 8|Gzdh4rjnn9cCa86aNj83yhJh3wUmxp0KmgFE64JGf8c00a62";
+"Bearer 2|q52keLEZTFkJVwMcKQhGpaEbVTXCXsGyyWVtZC6Y0db02524";
 
 const state = { jobs: null };
 

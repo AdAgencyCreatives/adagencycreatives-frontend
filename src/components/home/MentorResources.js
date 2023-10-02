@@ -5,6 +5,7 @@ import copy from "../../assets/images/copy.jpg";
 import inspire from "../../assets/images/inspire.jpg";
 import art from "../../assets/images/art.jpg";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const MentorResources = () => {
   const mentors = [
@@ -33,13 +34,15 @@ const MentorResources = () => {
       url: "#",
     },
   ];
-  
+
   return (
     <div id="mentors">
       <div className="sectionHeader">
         <h1 className="sectionTitle">Mentor Resources</h1>
-        <div className="browseAll">
-          browse all <MdKeyboardDoubleArrowRight />
+        <div>
+          <Link className="browseAll" to="mentoring-resources">
+            browse all <MdKeyboardDoubleArrowRight />
+          </Link>
         </div>
       </div>
 

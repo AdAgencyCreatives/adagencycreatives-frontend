@@ -117,9 +117,12 @@ a.active>.menu-link-btn {
     -ms-transform: rotateX(0deg);
     -o-transform: rotateX(0deg);
     transform: rotateX(0deg);
+    left: 0;
+}
+
+.has-children:hover .dropdown-menu:not(.logged-in-dropdown) {
     border-top: 2px solid black;
     border-radius: 0;
-    left: 0;
 }
 
 .dropdown-menu {
@@ -169,4 +172,48 @@ ul.dropdown-list:before {
     position: absolute;
     bottom: 100%;
     left: 40px;
+}
+
+.logged-in-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: var(--color-primary);
+    font-size: 20px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: 300;
+    cursor: pointer;
+}
+
+.logged-in-menu:hover{
+    color: black;
+}
+
+.logged-in-dropdown {
+    left: auto !important;
+    right: 0px;
+    top: 65px;
+    padding: 15px;
+    max-height: 450px;
+    overflow-y: auto;
+}
+
+.logged-in-dropdown .dropdown-list:before {
+    content: none;
+}
+
+.logged-in-dropdown ul li a {
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+.logged-in-dropdown ul li:hover a {
+    background: var(--color-secondary);
+}
+
+.logged-in-dropdown ul {
+    padding-top: 0;
+    margin-bottom: 0px;
 }

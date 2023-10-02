@@ -1,22 +1,14 @@
 import Placeholder from "../../assets/images/placeholder.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { PaginationStyle } from "../../styles/PaginationStyle";
-import { Context as AgenciesContext } from "../../context/AgenciesContext";
 import { Link } from "react-router-dom";
+import useAgencies from "../../hooks/useAgencies";
 
 const AdAgencies = () => {
   const swiperElRef = useRef(null);
-
-  const {
-    state: { agencies },
-    getAgencies,
-  } = useContext(AgenciesContext);
-
-  useEffect(() => {
-    getAgencies();
-  }, []);
+  const agencies = useAgencies();
 
   useEffect(() => {
     const params = {
@@ -41,8 +33,10 @@ const AdAgencies = () => {
     <div id="agencies">
       <div className="sectionHeader">
         <h1 className="sectionTitle">Advertising Agencies</h1>
-        <div className="browseAll">
-          browse all <MdKeyboardDoubleArrowRight />
+        <div>
+          <Link className="browseAll" to="agencies">
+            browse all <MdKeyboardDoubleArrowRight />
+          </Link>
         </div>
       </div>
       {/* Slides */}
@@ -60,7 +54,7 @@ const AdAgencies = () => {
               return (
                 <swiper-slide key={`slide${index}`}>
                   <div className="sliderContent adagencies-slider">
-                    <Link to={`/agency`} className="employer-logo">
+                    <Link to={`/agency/${item.slug}`} className="employer-logo">
                       <img
                         src={item.logo || Placeholder}
                         width={150}
@@ -71,7 +65,7 @@ const AdAgencies = () => {
                       />
                     </Link>
                     <h3 className="employer-title">
-                      <Link to={`/agency`}>{item.name}</Link>
+                      <Link to={`/agency/${item.slug}`}>{item.name}</Link>
                     </h3>
                     {item.location && (
                       <div className="job-location location">
@@ -85,7 +79,7 @@ const AdAgencies = () => {
                       </div>
                     )}
                     <div className="open-jobs-btn">
-                      <a href="#">Open Jobs - 0</a>
+                      <Link to={`/agency/${item.slug}`}>Open Jobs - 0</Link>
                     </div>
                   </div>
                 </swiper-slide>

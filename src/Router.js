@@ -116,6 +116,11 @@ export const router = createBrowserRouter([
       },
 
       {
+        path: "/logout",
+        element: <CopyWriting />,
+      },
+
+      {
         path: "/:page",
         element: <Agency />,
       },

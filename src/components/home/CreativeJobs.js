@@ -43,8 +43,10 @@ const CreativeJobs = () => {
     <div id="jobs">
       <div className="sectionHeader">
         <h1 className="sectionTitle">Creative Jobs</h1>
-        <div className="browseAll">
-          browse all <MdKeyboardDoubleArrowRight />
+        <div>
+          <Link className="browseAll" to="creative-jobs">
+            browse all <MdKeyboardDoubleArrowRight />
+          </Link>
         </div>
       </div>
 
@@ -93,7 +95,7 @@ const CreativeJobs = () => {
                         <span>{item.employment_type}</span>
                       </Link>
                     </div>
-                    <Link to={`/job/`} className="employer-logo">
+                    <Link to={`/job/${item.slug}`} className="employer-logo">
                       <img
                         src={item.agency.logo}
                         width={150}
@@ -104,10 +106,14 @@ const CreativeJobs = () => {
                       />
                     </Link>
                     <h3 className="employer-title">
-                      <Link to={`/agency`}>{item.agency.name}</Link>
+                      <Link to={`/agency/${item.agency.slug}`}>
+                        {item.agency.name}
+                      </Link>
                     </h3>
                     <h3 className="job-title">
-                      <Link to={`/job/`} className="link-dark">{item.title}</Link>
+                      <Link to={`/job/${item.slug}`} className="link-dark">
+                        {item.title}
+                      </Link>
                     </h3>
                     {item.location && (
                       <div className="job-location location">

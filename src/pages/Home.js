@@ -15,6 +15,7 @@ import SpotlightCreative from "../components/home/SpotlightCreative";
 import CreativeJobs from "../components/home/CreativeJobs";
 import { useContext } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 register();
 
@@ -124,9 +125,9 @@ const Home = () => {
                 Do you have feedback or want to become a contributor?
               </h3>
               <div className="contact-btn">
-                <a href="#">
+                <Link to='/contact'>
                   <span>Contact Us</span>
-                </a>
+                </Link>
               </div>
             </div>
             <div className="col"></div>

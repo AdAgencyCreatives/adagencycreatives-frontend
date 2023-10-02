@@ -28,12 +28,6 @@ const ScrollToHash = () => {
           top: targetPosition,
           behavior: 'smooth'
       });
-      // hashElement.scrollIntoView({
-      //   behavior: "smooth",
-      //   block: "center",
-      //   inline: "nearest",
-
-      // });
     }
   }, [hashElement]);
 
