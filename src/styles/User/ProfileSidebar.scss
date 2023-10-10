@@ -1,8 +1,11 @@
 .profile-sidebar {
-    padding: 30px;
-    background: #eee !important;
-    border-radius: 8px;
 
+    .sidebar-item {
+        padding: 30px;
+        background: #eee !important;
+        border-radius: 8px;
+        // width: 100%;
+    }
 
     .item {
         display: flex;
@@ -23,6 +26,11 @@
 
     .title {
         margin-bottom: 18px;
+    }
+
+    .video-section video {
+        width: 100%;
+        border-radius: 5px;
     }
 
     .btn-dark:hover {

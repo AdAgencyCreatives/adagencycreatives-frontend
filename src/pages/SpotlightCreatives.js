@@ -1,6 +1,7 @@
 import Spotlight from "../assets/images/Creative-Spotlight-No-Background-600x600.png";
 import { IoChevronForwardOutline } from "react-icons/io5";
-import '../styles/SpotlightCreative.css'
+import "../styles/SpotlightCreative.css";
+import SearchBar from "../components/SearchBar";
 
 const SpotlightCreatives = () => {
   const spotlightSlides = 7;
@@ -8,6 +9,10 @@ const SpotlightCreatives = () => {
   return (
     <div className="dark-container page-spotlight mb-0 mt-4">
       <div className="container p-md-0 px-5">
+        <h1 className="community-title text-white text-center mb-4">
+          Creative Spotlights
+        </h1>
+        <SearchBar />
         <div className="row g-4">
           {Array.apply(11, { length: spotlightSlides }).map((value, index) => {
             return (

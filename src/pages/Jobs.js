@@ -1,10 +1,10 @@
 import Select from "react-select";
 import "../styles/Jobs.scss";
 import { useState } from "react";
-import { IoStar } from "react-icons/io5";
-import Tooltip from "../components/Tooltip"
+import { IoBriefcaseOutline, IoStar } from "react-icons/io5";
+import Tooltip from "../components/Tooltip";
 import { Link } from "react-router-dom";
-  
+
 const job_titles = [
   { value: 150, label: "3D Designer" },
   { value: 117, label: "Art Director" },
@@ -246,7 +246,7 @@ const Jobs = () => {
                           <div className="job-metas">
                             <div className="category-job">
                               <div className="job-category with-icon">
-                                <i className="flaticon-briefcase-1"></i>
+                                <IoBriefcaseOutline />
                                 <a href="#">Senior Art Director</a>
                               </div>
                             </div>
@@ -328,7 +328,7 @@ const Jobs = () => {
                           <div className="job-metas">
                             <div className="category-job">
                               <div className="job-category with-icon">
-                                <i className="flaticon-briefcase-1"></i>
+                                <IoBriefcaseOutline />
                                 <a href="#">Senior Art Director</a>
                               </div>
                             </div>
@@ -410,7 +410,7 @@ const Jobs = () => {
                           <div className="job-metas">
                             <div className="category-job">
                               <div className="job-category with-icon">
-                                <i className="flaticon-briefcase-1"></i>
+                                <IoBriefcaseOutline />
                                 <a href="#">Senior Art Director</a>
                               </div>
                             </div>

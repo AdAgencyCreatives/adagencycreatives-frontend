@@ -11,7 +11,7 @@ const MentorResources = () => {
   const mentors = [
     {
       image: copy,
-      url: "#",
+      url: "/copywriting-mentors",
     },
     {
       image: art,

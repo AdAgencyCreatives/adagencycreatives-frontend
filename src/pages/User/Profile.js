@@ -47,7 +47,7 @@ const Profile = () => {
               </div>
               {page === "creative" ? <CreativeContent /> : <AgencyContent />}
             </div>
-            <div className="col-md-4 d-none d-md-flex">
+            <div className="col-md-4 d-none d-md-block">
               <div className="profile-sidebar">
                 {page === "creative" ? <CreativeSidebar /> : <AgencySidebar />}
               </div>

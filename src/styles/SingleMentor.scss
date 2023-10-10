@@ -16,13 +16,18 @@
     .box {
         border: 1px solid white;
         text-align: center;
-        padding: 15px;
         position: relative;
-        height:100%;
+        height: 210px;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         align-content: center;
+        transform-style: preserve-3d;
+        transition: all 1s ease;
+
+        &.flip:hover {
+            transform: rotateY(180deg);
+        }
     }
 
     .main-title {
@@ -39,7 +44,7 @@
         bottom: 17px;
     }
 
-    .box-link a {
+    .box-link .link {
         color: white;
         border: 1px solid white;
         border-radius: 10px;
@@ -51,12 +56,49 @@
 
     .title-small {
         margin-top: 10px;
-        width: 100%;
+        width: 80%;
+        position: absolute;
+        bottom: 17px;
     }
 
-    @media (max-width:900px){
-        .main-title{
+    .flip-card-front,
+    .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+
+    .page-single-mentor .box:hover {
+        transform: rotateY(180deg);
+    }
+
+    .flip-card-back img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .flip-card-back {
+        transform: rotateY(180deg);
+    }
+
+    .flip-card-front {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: center;
+    }
+
+    @media (max-width:900px) {
+        .main-title {
             font-size: 1.5rem;
+        }
+    }
+
+    @media (max-width:400px){
+        .title{
+            font-size: 38px;
         }
     }
 }

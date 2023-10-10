@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import ppk from "../../../assets/images/ppk.png";
 import "../../../styles/User/ProfileContent.scss";
-import { IoStar } from "react-icons/io5";
-import Tooltip from "../../Tooltip"
+import { IoBriefcaseOutline, IoStar } from "react-icons/io5";
+import Tooltip from "../../Tooltip";
 
 const Content = () => {
   return (
@@ -36,7 +36,8 @@ const Content = () => {
                     <div className="job-metas">
                       <div className="category-job">
                         <div className="job-category with-icon">
-                          <i className="flaticon-briefcase-1"></i>
+                          <IoBriefcaseOutline />
+
                           <a href="#">Senior Art Director</a>
                         </div>
                       </div>
@@ -117,7 +118,8 @@ const Content = () => {
                     <div className="job-metas">
                       <div className="category-job">
                         <div className="job-category with-icon">
-                          <i className="flaticon-briefcase-1"></i>
+                          <IoBriefcaseOutline />
+
                           <a href="#">Senior Art Director</a>
                         </div>
                       </div>
@@ -198,7 +200,8 @@ const Content = () => {
                     <div className="job-metas">
                       <div className="category-job">
                         <div className="job-category with-icon">
-                          <i className="flaticon-briefcase-1"></i>
+                          <IoBriefcaseOutline />
+
                           <a href="#">Senior Art Director</a>
                         </div>
                       </div>

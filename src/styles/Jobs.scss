@@ -159,6 +159,7 @@
 .type-job {
     text-decoration: none;
     color: white;
+    font-size: 13px;
 }
 
 .type-job:hover {
@@ -340,6 +341,12 @@ input.form-check-input {
 
 .results-count {
     font-size: 20px;
+}
+
+.job-category.with-icon {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 @media (max-width:400px) {

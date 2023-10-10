@@ -115,22 +115,24 @@ const Home = () => {
         <MentorResources />
 
         <PublicationResources />
-        <div className="sectionHeader" id="feedback">
-          <h1 className="sectionTitle">Say, Hello</h1>
-        </div>
-        <div className="contact-section">
-          <div className="row">
-            <div className="text-center text-sm-start col-xs-12 col-sm-8 col-md-12">
-              <h3 className="title">
-                Do you have feedback or want to become a contributor?
-              </h3>
-              <div className="contact-btn">
-                <Link to='/contact'>
-                  <span>Contact Us</span>
-                </Link>
+        <div id="feedback">
+          <div className="sectionHeader">
+            <h1 className="sectionTitle">Say, Hello</h1>
+          </div>
+          <div className="contact-section">
+            <div className="row">
+              <div className="text-center text-sm-start col-xs-12 col-sm-8 col-md-12">
+                <h3 className="title">
+                  Do you have feedback or want to become a contributor?
+                </h3>
+                <div className="contact-btn">
+                  <Link to="/contact">
+                    <span>Contact Us</span>
+                  </Link>
+                </div>
               </div>
+              <div className="col"></div>
             </div>
-            <div className="col"></div>
           </div>
         </div>
       </div>

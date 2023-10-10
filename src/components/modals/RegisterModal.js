@@ -286,8 +286,8 @@ const RegisterModal = ({ open, handleClose, setModal }) => {
                       style={{ fontSize: 18 }}
                       htmlFor="remember"
                     >
-                      You accept our <a href="#">Terms and Conditions</a> and
-                      <a href="#">Privacy Policy</a>
+                      You accept our <a href="#">Terms and Conditions</a> and 
+                       <a href="#"> Privacy Policy</a>
                     </label>
                   </div>
                 </div>
