@@ -1,9 +1,6 @@
 import api from "../api/api";
 import createDataContext from "./createDataContext";
 
-api.defaults.headers.common["Authorization"] =
-  "Bearer 8|Gzdh4rjnn9cCa86aNj83yhJh3wUmxp0KmgFE64JGf8c00a62";
-
 const state = { screatives: null, nextPage: null, loading: false };
 
 const reducer = (state, action) => {

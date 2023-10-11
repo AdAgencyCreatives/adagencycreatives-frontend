@@ -6,6 +6,8 @@ const api = axios.create({
 
 api.defaults.headers.common['Content-Type'] = "application/json";
 api.defaults.headers.common['Accept'] = "application/json";
+api.defaults.headers.common["Authorization"] =
+  "Bearer 1|tVb9HYdjw23nNbKeSDEdFeicjpdf4Yq1Z6aedowrabc7d56b";
 
 api.interceptors.response.use(
     response => {

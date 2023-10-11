@@ -1,25 +1,10 @@
 import Select from "react-select";
 import "../styles/Jobs.scss";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IoBriefcaseOutline, IoStar } from "react-icons/io5";
 import Tooltip from "../components/Tooltip";
 import { Link } from "react-router-dom";
-
-const job_titles = [
-  { value: 150, label: "3D Designer" },
-  { value: 117, label: "Art Director" },
-  { value: 147, label: "Associate Creative Director Art Director" },
-  { value: 148, label: "Associate Creative Director Copywriter" },
-  { value: 149, label: "Chief Creative Officer (CCO)" },
-];
-
-const states = [
-  { value: 150, label: "Alabama" },
-  { value: 117, label: "Alaska" },
-  { value: 147, label: "Arizona" },
-  { value: 148, label: "Arkansas" },
-  { value: 149, label: "Connecticut" },
-];
+import { Context as JobsContext } from "../context/JobsContext";
 
 const citiesArray = {
   148: [
@@ -66,22 +51,6 @@ const citiesArray = {
   ],
 };
 
-const employment = [
-  { value: 150, label: "Contract" },
-  { value: 117, label: "Freelance" },
-  { value: 147, label: "Full-Time" },
-  { value: 148, label: "Internship" },
-  { value: 149, label: "Part-Time" },
-];
-
-const media = [
-  { value: 150, label: "360 Activation" },
-  { value: 117, label: "Bilingual" },
-  { value: 147, label: "Branding" },
-  { value: 148, label: "Concepts" },
-  { value: 149, label: "Digital" },
-];
-
 const titles = [
   { value: 150, label: "3D Designer" },
   { value: 117, label: "Art Director" },
@@ -97,12 +66,111 @@ const emailFreq = [
 ];
 
 const Jobs = () => {
-  const [cities, setCities] = useState([]);
+  const [statesList, setStates] = useState([]);
+  const [citiesList, setCities] = useState([]);
+  const [jobTitles, setJobTitles] = useState([]);
+  const [employment, setEmployment] = useState([]);
+  const [media, setMedia] = useState([]);
+  const [filters, setFilters] = useState({});
 
-  const changeState = ({ value }, { action }) => {
-    if (action == "select-option") {
-      setCities(citiesArray[value]);
+  const {
+    state: {
+      jobs,
+      categories,
+      states,
+      cities,
+      employment_type,
+      media_experiences,
+    },
+    getJobs,
+    getCategories,
+    getStates,
+    getCities,
+    getEmploymentTypes,
+    getMediaExperiences,
+  } = useContext(JobsContext);
+
+  useEffect(() => {
+    getJobs();
+    getCategories();
+    getStates();
+    getEmploymentTypes();
+    getMediaExperiences();
+  }, []);
+
+  useEffect(() => {
+    let data = categories;
+    if (categories.length) {
+      data = parseFieldsData(categories);
     }
+    setJobTitles(data);
+  }, [categories]);
+
+  useEffect(() => {
+    let data = states;
+    if (states.length) {
+      data = parseFieldsData(states);
+    }
+    setStates(data);
+  }, [states]);
+
+  useEffect(() => {
+    let data = cities;
+    if (cities.length) {
+      data = parseFieldsData(cities);
+    }
+    setCities(data);
+  }, [cities]);
+
+  useEffect(() => {
+    let data = media_experiences;
+    if (media_experiences.length) {
+      data = parseFieldsData(media_experiences);
+    }
+    setMedia(data);
+  }, [media_experiences]);
+
+  useEffect(() => {
+    let data = employment_type;
+    if (employment_type.length) {
+      data = employment_type.map((item) => {
+        return { label: item, value: item };
+      });
+    }
+    setEmployment(data);
+  }, [employment_type]);
+
+  const parseFieldsData = (data) => {
+    const parsedValue = data.map((item) => {
+      return { label: item.name, value: item.uuid || item.id };
+    });
+    return parsedValue;
+  };
+
+  const changeState = (item, { action }) => {
+    if (action == "select-option") {
+      getCities(item.value);
+      addFilter(item, "state");
+    }
+  };
+
+  const addFilter = (item, type) => {
+    setFilters({ ...filters, [type]: item });
+  };
+
+  const removeFilter = (item, key = false) => {
+    console.log({filters})
+
+    let updatedFilters = { ...filters };
+
+    if (key) {
+      updatedFilters[item].splice(key);
+    } else {
+      delete updatedFilters[item];
+    }
+
+    console.log({updatedFilters})
+    setFilters(updatedFilters);
   };
 
   return (
@@ -116,7 +184,11 @@ const Jobs = () => {
               <div className="filter-item">
                 <div className="filter-label">Industry Job Title</div>
                 <div className="filter-box">
-                  <Select options={job_titles} placeholder="select one" />
+                  <Select
+                    options={jobTitles}
+                    placeholder="select one"
+                    onChange={(item) => addFilter(item, "title")}
+                  />
                 </div>
               </div>
 
@@ -126,20 +198,28 @@ const Jobs = () => {
                 </div>
                 <div className="filter-box mb-3">
                   <Select
-                    options={states}
+                    options={statesList}
                     onChange={changeState}
                     placeholder="Filter By State"
                   />
                 </div>
                 <div className="filter-box">
-                  <Select options={cities} placeholder="Filter By City" />
+                  <Select
+                    options={citiesList}
+                    placeholder="Filter By City"
+                    onChange={(item) => addFilter(item, "city")}
+                  />
                 </div>
               </div>
 
               <div className="filter-item">
                 <div className="filter-label">Employment Type</div>
                 <div className="filter-box">
-                  <Select options={employment} placeholder="select one" />
+                  <Select
+                    options={employment}
+                    placeholder="select one"
+                    onChange={(item) => addFilter(item, "employment_type")}
+                  />
                 </div>
               </div>
 
@@ -150,6 +230,7 @@ const Jobs = () => {
                     options={media}
                     isMulti
                     placeholder="select up to three"
+                    onChange={(item) => addFilter(item, "media_experience")}
                   />
                 </div>
               </div>
@@ -157,23 +238,25 @@ const Jobs = () => {
               <div className="filter-item">
                 <div className="filter-label">Remote Opportunity</div>
                 <div className="filter-box">
-                  <div class="form-check">
+                  <div className="form-check">
                     <input
-                      class="form-check-input"
+                      className="form-check-input"
                       type="radio"
                       name="remote"
                       value={1}
+                      onChange={() => addFilter({ label: "Yes" }, "remote")}
                     />
-                    <label class="form-check-label">Yes</label>
+                    <label className="form-check-label">Yes</label>
                   </div>
-                  <div class="form-check">
+                  <div className="form-check">
                     <input
-                      class="form-check-input"
+                      className="form-check-input"
                       type="radio"
                       name="remote"
                       value={0}
+                      onChange={() => addFilter({ label: "No" }, "remote")}
                     />
-                    <label class="form-check-label">No</label>
+                    <label className="form-check-label">No</label>
                   </div>
                 </div>
               </div>
@@ -202,270 +285,150 @@ const Jobs = () => {
             {/* Jobs List */}
 
             <div className="jobs-list-container">
-              <div class="results-filter-wrapper">
-                <h3 class="title">Filters</h3>
-                <div class="inner">
-                  <ul class="results-filter">
-                    <li>
-                      <a href="#">
-                        <span class="close-value">x</span>Yes
+              {Object.keys(filters).length ? (
+                <>
+                  <div className="results-filter-wrapper">
+                    <h3 className="title">Filters</h3>
+                    <div className="inner">
+                      <ul className="results-filter">
+                        {Object.keys(filters).map((item) => {
+                          if (Array.isArray(filters[item])) {
+                            return filters[item].map((i, key) => {
+                              return (
+                                <li key={i.value}>
+                                  <a
+                                    href="#"
+                                    onClick={() => removeFilter(item, key)}
+                                  >
+                                    <span className="close-value">x</span>
+                                    {i.label}
+                                  </a>
+                                </li>
+                              );
+                            });
+                          } else {
+                            return (
+                              <li key={item.value}>
+                                <a href="#" onClick={() => removeFilter(item)}>
+                                  <span className="close-value">x</span>
+                                  {filters[item].label}
+                                </a>
+                              </li>
+                            );
+                          }
+                        })}
+                      </ul>
+                      <a href="#" onClick={() => setFilters({})}>
+                        Clear all
                       </a>
-                    </li>
-                  </ul>
-                  <a href="#">Clear all</a>
-                </div>
-              </div>
-              <div class="jobs-alert-ordering-wrapper">
-                <div class="results-count">Showing all results</div>
-                <div class="jobs-ordering-wrapper"></div>
-              </div>
+                    </div>
+                  </div>
+                  <div className="jobs-alert-ordering-wrapper">
+                    <div className="results-count">Showing all results</div>
+                    <div className="jobs-ordering-wrapper"></div>
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
               <div className="jobs-list-container">
-                <div className="job-item">
-                  <div className="d-flex align-items-center flex-md-nowrap flex-wrap gap-md-0 gap-3">
-                    <div className="inner-left">
-                      <div className="employer-logo">
-                        <a href="#">
-                          <img
-                            width="150"
-                            height="150"
-                            src="https://adagencycreatives.com/wp-content/uploads/wp-job-board-pro-uploads/_employer_featured_image/2023/04/160over90-150x150.png"
-                            className=""
-                            alt=""
-                          />
-                        </a>
-                      </div>
-                      <div className="meta row w-100 align-items-center">
-                        <div className="job-list-content col-md-8">
-                          <div className="title-wrapper flex-middle-sm">
-                            <h2 className="job-title">
-                              <Link to="/job/160over90" rel="bookmark">
-                                160over90
-                              </Link>
-                            </h2>
-                          </div>
-                          <div className="job-metas">
-                            <div className="category-job">
-                              <div className="job-category with-icon">
-                                <IoBriefcaseOutline />
-                                <a href="#">Senior Art Director</a>
+                {jobs.map((item) => (
+                  <div className="job-item" key={item.id}>
+                    <div className="d-flex align-items-center flex-md-nowrap flex-wrap gap-md-0 gap-3">
+                      <div className="inner-left">
+                        <div className="employer-logo">
+                          <Link to={"/job/" + item.title}>
+                            <img
+                              width="150"
+                              height="150"
+                              src={item.agency.logo}
+                              className=""
+                              alt=""
+                            />
+                          </Link>
+                        </div>
+                        <div className="meta row w-100 align-items-center">
+                          <div className="job-list-content col-md-8">
+                            <div className="title-wrapper flex-middle-sm">
+                              <h2 className="job-title">
+                                <Link to={"/job/" + item.title}>
+                                  {item.title}
+                                </Link>
+                              </h2>
+                            </div>
+                            <div className="job-metas">
+                              <div className="d-flex">
+                                <div className="category-job">
+                                  <div className="job-category with-icon">
+                                    <IoBriefcaseOutline />
+                                    <Link
+                                      to={
+                                        "/job-category/" +
+                                        item.category
+                                          .toLowerCase()
+                                          .replace(" ", "-")
+                                      }
+                                    >
+                                      {item.category}
+                                    </Link>
+                                  </div>
+                                </div>
+                                <div className="job-deadline with-icon">
+                                  <i className="flaticon-wall-clock"></i> August
+                                  14, 2023
+                                </div>
+                              </div>
+                              <div>
+                                <div className="job-type with-title">
+                                  <Link
+                                    className="type-job"
+                                    to={"/job-type/" + item.employment_type}
+                                  >
+                                    {item.employment_type}
+                                  </Link>
+                                </div>
+                                {Object.keys(item.priority).map((key) => {
+                                  if (item.priority[key]) {
+                                    let parts = key.split("_");
+                                    let type = parts[1];
+                                    return (
+                                      <Tooltip title={type} type={type}>
+                                        <button className="btn p-0 border-0 me-2">
+                                          <IoStar
+                                            size={20}
+                                            className={
+                                              "icon-rounded star-badge " + type
+                                            }
+                                          />
+                                        </button>
+                                      </Tooltip>
+                                    );
+                                  }
+                                })}
                               </div>
                             </div>
-                            <div className="job-deadline with-icon">
-                              <i className="flaticon-wall-clock"></i> August 14,
-                              2023
-                            </div>
-                            <div className="job-type with-title">
-                              <a className="type-job" href="#">
-                                Full-Time
-                              </a>
-                            </div>
-                            <Tooltip title="Featured" type="featured">
-                              <button className="btn p-0 border-0 me-2">
-                                <IoStar
-                                  size={20}
-                                  className="icon-rounded star-badge featured"
-                                />
-                              </button>
-                            </Tooltip>
-                            <Tooltip title="Onsite" type="onsite">
-                              <button className="btn p-0 border-0">
-                                <IoStar
-                                  size={20}
-                                  className="icon-rounded star-badge onsite"
-                                />
-                              </button>
-                            </Tooltip>
                           </div>
-                        </div>
 
-                        <div className="col-md-4">
-                          <div className="d-flex justify-content-md-end mt-3 mt-md-0">
-                            <a
-                              className="btn-follow btn-action-job btn-add-job-shortlist"
-                              data-job_id="4545"
-                              data-nonce="a33de480b9"
-                            >
-                              <i className="flaticon-bookmark"></i>
-                            </a>
-                            <a
-                              href="https://www.linkedin.com/jobs/view/3649027671/?alternateChannel=search&amp;refId=w7BE3gGca8PklL6PqfKYw&amp;trackingId=rgVKVC9elfj17yZ4bPTusg"
-                              target="_blank"
-                              rel="nofollow, noindex"
-                              className="btn btn-apply btn-apply-job-external "
-                            >
-                              Apply Now
-                              <i className="next flaticon-right-arrow"></i>
-                            </a>
+                          <div className="col-md-4">
+                            <div className="d-flex justify-content-md-end mt-3 mt-md-0">
+                              <a className="btn-follow btn-action-job btn-add-job-shortlist">
+                                <i className="flaticon-bookmark"></i>
+                              </a>
+                              <Link
+                                to={item.external_link}
+                                target="_blank"
+                                className="btn btn-apply btn-apply-job-external "
+                              >
+                                Apply Now
+                                <i className="next flaticon-right-arrow"></i>
+                              </Link>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="job-item">
-                  <div className="d-flex align-items-center flex-md-nowrap flex-wrap gap-md-0 gap-3">
-                    <div className="inner-left">
-                      <div className="employer-logo">
-                        <a href="#">
-                          <img
-                            width="150"
-                            height="150"
-                            src="https://adagencycreatives.com/wp-content/uploads/wp-job-board-pro-uploads/_employer_featured_image/2023/04/160over90-150x150.png"
-                            className=""
-                            alt=""
-                          />
-                        </a>
-                      </div>
-                      <div className="meta row w-100 align-items-center">
-                        <div className="job-list-content col-md-8">
-                          <div className="title-wrapper flex-middle-sm">
-                            <h2 className="job-title">
-                              <Link to="/job/160over90" rel="bookmark">
-                                160over90
-                              </Link>
-                            </h2>
-                          </div>
-                          <div className="job-metas">
-                            <div className="category-job">
-                              <div className="job-category with-icon">
-                                <IoBriefcaseOutline />
-                                <a href="#">Senior Art Director</a>
-                              </div>
-                            </div>
-                            <div className="job-deadline with-icon">
-                              <i className="flaticon-wall-clock"></i> August 14,
-                              2023
-                            </div>
-                            <div className="job-type with-title">
-                              <a className="type-job" href="#">
-                                Full-Time
-                              </a>
-                            </div>
-                            <Tooltip title="Urgent" type="urgent">
-                              <button className="btn p-0 border-0 me-2">
-                                <IoStar
-                                  size={20}
-                                  className="icon-rounded star-badge urgent"
-                                />
-                              </button>
-                            </Tooltip>
-                            <Tooltip title="Hybrid" type="hybrid">
-                              <button className="btn p-0 border-0">
-                                <IoStar
-                                  size={20}
-                                  className="icon-rounded star-badge hybrid"
-                                />
-                              </button>
-                            </Tooltip>
-                          </div>
-                        </div>
-
-                        <div className="col-md-4">
-                          <div className="d-flex justify-content-md-end mt-3 mt-md-0">
-                            <a
-                              className="btn-follow btn-action-job btn-add-job-shortlist"
-                              data-job_id="4545"
-                              data-nonce="a33de480b9"
-                            >
-                              <i className="flaticon-bookmark"></i>
-                            </a>
-                            <a
-                              href="https://www.linkedin.com/jobs/view/3649027671/?alternateChannel=search&amp;refId=w7BE3gGca8PklL6PqfKYw&amp;trackingId=rgVKVC9elfj17yZ4bPTusg"
-                              target="_blank"
-                              rel="nofollow, noindex"
-                              className="btn btn-apply btn-apply-job-external "
-                            >
-                              Apply Now
-                              <i className="next flaticon-right-arrow"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="job-item">
-                  <div className="d-flex align-items-center flex-md-nowrap flex-wrap gap-md-0 gap-3">
-                    <div className="inner-left">
-                      <div className="employer-logo">
-                        <a href="#">
-                          <img
-                            width="150"
-                            height="150"
-                            src="https://adagencycreatives.com/wp-content/uploads/wp-job-board-pro-uploads/_employer_featured_image/2023/04/160over90-150x150.png"
-                            className=""
-                            alt=""
-                          />
-                        </a>
-                      </div>
-                      <div className="meta row w-100 align-items-center">
-                        <div className="job-list-content col-md-8">
-                          <div className="title-wrapper flex-middle-sm">
-                            <h2 className="job-title">
-                              <Link to="/job/160over90" rel="bookmark">
-                                160over90
-                              </Link>
-                            </h2>
-                          </div>
-                          <div className="job-metas">
-                            <div className="category-job">
-                              <div className="job-category with-icon">
-                                <IoBriefcaseOutline />
-                                <a href="#">Senior Art Director</a>
-                              </div>
-                            </div>
-                            <div className="job-deadline with-icon">
-                              <i className="flaticon-wall-clock"></i> August 14,
-                              2023
-                            </div>
-                            <div className="job-type with-title">
-                              <a className="type-job" href="#">
-                                Full-Time
-                              </a>
-                            </div>
-                            <Tooltip title="Featured" type="featured">
-                              <button className="btn p-0 border-0 me-2">
-                                <IoStar
-                                  size={20}
-                                  className="icon-rounded star-badge featured"
-                                />
-                              </button>
-                            </Tooltip>
-                            <Tooltip title="Remote" type="remote">
-                              <button className="btn p-0 border-0">
-                                <IoStar
-                                  size={20}
-                                  className="icon-rounded star-badge remote"
-                                />
-                              </button>
-                            </Tooltip>
-                          </div>
-                        </div>
-
-                        <div className="col-md-4">
-                          <div className="d-flex justify-content-md-end mt-3 mt-md-0">
-                            <a
-                              className="btn-follow btn-action-job btn-add-job-shortlist"
-                              data-job_id="4545"
-                              data-nonce="a33de480b9"
-                            >
-                              <i className="flaticon-bookmark"></i>
-                            </a>
-                            <a
-                              href="https://www.linkedin.com/jobs/view/3649027671/?alternateChannel=search&amp;refId=w7BE3gGca8PklL6PqfKYw&amp;trackingId=rgVKVC9elfj17yZ4bPTusg"
-                              target="_blank"
-                              rel="nofollow, noindex"
-                              className="btn btn-apply btn-apply-job-external "
-                            >
-                              Apply Now
-                              <i className="next flaticon-right-arrow"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>

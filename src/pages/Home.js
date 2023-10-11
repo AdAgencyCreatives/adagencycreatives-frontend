@@ -33,20 +33,22 @@ const Home = () => {
         <div className="searchArea">
           <p className="searchHeader">Search Creative Jobs</p>
           <div className="searchBox">
-            <div className="row">
-              <div className="col-md-8 col-12 position-relative">
-                {/* <SearchOutline color={"#00000"} width="25px" className="searchIcon" /> */}
-                <IoSearchOutline size={26} className="searchIcon" />
-                <input
-                  className="searchInput form-control"
-                  type="text"
-                  placeholder="Search by name, title, location, company, in"
-                />
+            <form action="/creative-jobs">
+              <div className="row">
+                <div className="col-md-8 col-12 position-relative">
+                  {/* <SearchOutline color={"#00000"} width="25px" className="searchIcon" /> */}
+                  <IoSearchOutline size={26} className="searchIcon" />
+                  <input
+                    className="searchInput form-control"
+                    type="text"
+                    placeholder="Search by name, title, location, company, in"
+                  />
+                </div>
+                <div className="col">
+                  <button className="searchBtn">Find Jobs</button>
+                </div>
               </div>
-              <div className="col">
-                <button className="searchBtn">Find Jobs</button>
-              </div>
-            </div>
+            </form>
           </div>
           <div className="popularSearch">
             <p>

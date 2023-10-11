@@ -117,11 +117,20 @@
 .job-metas {
     display: flex;
     flex-wrap: wrap;
+    gap: 10px;
+
+    >div {
+        width: 100%;
+    }
 }
 
 .category-job,
 .job-deadline {
-    flex: 50%;
+    // flex: 50%;
+}
+
+.category-job {
+    margin-right: 10px
 }
 
 .btn-apply {
@@ -142,7 +151,7 @@
 }
 
 .job-type {
-    line-height: 30px;
+    line-height: 26px;
     display: inline-block;
     color: var(--superio-theme-color);
     background: black;
@@ -329,6 +338,7 @@ input.form-check-input {
     margin-left: auto;
     padding-right: 10px;
     text-decoration: none;
+    width: 100px;
 }
 
 .results-filter-wrapper .results-filter a:hover {
