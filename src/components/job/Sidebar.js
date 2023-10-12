@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
-    <>
+    <div className="sidebar-item">
       <div className="content">
         <div className="item">
           <IoCalendarClearOutline />
@@ -53,7 +53,7 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -28,7 +28,9 @@ const LoginModal = ({ open, handleClose, setModal }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signin(formData);
+    signin(formData,() => {
+      handleClose()
+    });
   };
 
   return (

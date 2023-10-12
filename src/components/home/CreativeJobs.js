@@ -13,11 +13,11 @@ const CreativeJobs = () => {
 
   const {
     state: { jobs },
-    getJobs,
+    getFeaturedJobs,
   } = useContext(JobsContext);
 
   useEffect(() => {
-    getJobs();
+    getFeaturedJobs();
   }, []);
 
   useEffect(() => {

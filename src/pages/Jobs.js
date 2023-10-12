@@ -1,7 +1,12 @@
 import Select from "react-select";
 import "../styles/Jobs.scss";
 import { useContext, useEffect, useState } from "react";
-import { IoBriefcaseOutline, IoStar } from "react-icons/io5";
+import {
+  IoArrowBack,
+  IoArrowForward,
+  IoBriefcaseOutline,
+  IoStar,
+} from "react-icons/io5";
 import Tooltip from "../components/Tooltip";
 import { Link } from "react-router-dom";
 import { Context as JobsContext } from "../context/JobsContext";
@@ -76,6 +81,8 @@ const Jobs = () => {
   const {
     state: {
       jobs,
+      meta,
+      links,
       categories,
       states,
       cities,
@@ -88,6 +95,8 @@ const Jobs = () => {
     getCities,
     getEmploymentTypes,
     getMediaExperiences,
+    filterJobs,
+    paginateJob,
   } = useContext(JobsContext);
 
   useEffect(() => {
@@ -155,11 +164,13 @@ const Jobs = () => {
   };
 
   const addFilter = (item, type) => {
-    setFilters({ ...filters, [type]: item });
+    let updatedFilters = { ...filters, [type]: item };
+    setFilters(updatedFilters);
+    filterJobs(updatedFilters);
   };
 
   const removeFilter = (item, key = false) => {
-    console.log({filters})
+    console.log({ filters });
 
     let updatedFilters = { ...filters };
 
@@ -169,8 +180,13 @@ const Jobs = () => {
       delete updatedFilters[item];
     }
 
-    console.log({updatedFilters})
+    console.log({ updatedFilters });
     setFilters(updatedFilters);
+    filterJobs(updatedFilters);
+  };
+
+  const paginate = (page) => {
+    paginateJob(page);
   };
 
   return (
@@ -244,7 +260,9 @@ const Jobs = () => {
                       type="radio"
                       name="remote"
                       value={1}
-                      onChange={() => addFilter({ label: "Yes" }, "remote")}
+                      onChange={() =>
+                        addFilter({ label: "Yes", value: 1 }, "remote")
+                      }
                     />
                     <label className="form-check-label">Yes</label>
                   </div>
@@ -254,7 +272,9 @@ const Jobs = () => {
                       type="radio"
                       name="remote"
                       value={0}
-                      onChange={() => addFilter({ label: "No" }, "remote")}
+                      onChange={() =>
+                        addFilter({ label: "No", value: 0 }, "remote")
+                      }
                     />
                     <label className="form-check-label">No</label>
                   </div>
@@ -269,7 +289,7 @@ const Jobs = () => {
                 <h1 className="jobs-filter-title">Request Job Notifications</h1>
                 <div className="notif-input-box">
                   <h5 className="notif-title fw-normal">Title</h5>
-                  <Select options={titles} placeholder="Select title" />
+                  <Select options={jobTitles} placeholder="Select title" />
                 </div>
                 <div className="notif-input-box">
                   <h5 className="notif-title fw-normal">Email Frequency</h5>
@@ -324,7 +344,9 @@ const Jobs = () => {
                     </div>
                   </div>
                   <div className="jobs-alert-ordering-wrapper">
-                    <div className="results-count">Showing all results</div>
+                    <div className="results-count">
+                      Showing all {jobs.length} results
+                    </div>
                     <div className="jobs-ordering-wrapper"></div>
                   </div>
                 </>
@@ -332,103 +354,182 @@ const Jobs = () => {
                 ""
               )}
               <div className="jobs-list-container">
-                {jobs.map((item) => (
-                  <div className="job-item" key={item.id}>
-                    <div className="d-flex align-items-center flex-md-nowrap flex-wrap gap-md-0 gap-3">
-                      <div className="inner-left">
-                        <div className="employer-logo">
-                          <Link to={"/job/" + item.title}>
-                            <img
-                              width="150"
-                              height="150"
-                              src={item.agency.logo}
-                              className=""
-                              alt=""
-                            />
-                          </Link>
-                        </div>
-                        <div className="meta row w-100 align-items-center">
-                          <div className="job-list-content col-md-8">
-                            <div className="title-wrapper flex-middle-sm">
-                              <h2 className="job-title">
-                                <Link to={"/job/" + item.title}>
-                                  {item.title}
-                                </Link>
-                              </h2>
-                            </div>
-                            <div className="job-metas">
-                              <div className="d-flex">
-                                <div className="category-job">
-                                  <div className="job-category with-icon">
-                                    <IoBriefcaseOutline />
-                                    <Link
-                                      to={
-                                        "/job-category/" +
-                                        item.category
-                                          .toLowerCase()
-                                          .replace(" ", "-")
-                                      }
-                                    >
-                                      {item.category}
-                                    </Link>
+                {jobs.length ? (
+                  jobs.map((item) => (
+                    <div className="job-item" key={item.id}>
+                      <div className="d-flex align-items-center flex-md-nowrap flex-wrap gap-md-0 gap-3">
+                        <div className="inner-left">
+                          <div className="employer-logo">
+                            <Link to={"/job/" + item.title}>
+                              <img
+                                width="150"
+                                height="150"
+                                src={item.agency.logo}
+                                className=""
+                                alt=""
+                              />
+                            </Link>
+                          </div>
+                          <div className="meta row w-100 align-items-center">
+                            <div className="job-list-content col-md-8">
+                              <div className="title-wrapper flex-middle-sm">
+                                <h5 className="employer-name mb-0">
+                                  <Link
+                                    className="link-dark"
+                                    to={"/agency/" + item.agency.slug}
+                                  >
+                                    {item.agency.name}
+                                  </Link>
+                                </h5>
+                                <h2 className="job-title">
+                                  <Link to={"/job/" + item.title}>
+                                    {item.title}
+                                  </Link>
+                                </h2>
+                              </div>
+                              <div className="job-metas">
+                                <div className="d-flex flex-wrap">
+                                  <div className="category-job">
+                                    <div className="job-category with-icon">
+                                      <IoBriefcaseOutline />
+                                      <Link
+                                        to={
+                                          "/job-category/" +
+                                          item.category
+                                            .toLowerCase()
+                                            .replace(" ", "-")
+                                        }
+                                      >
+                                        {item.category}
+                                      </Link>
+                                    </div>
+                                  </div>
+                                  <div className="job-deadline with-icon">
+                                    <i className="flaticon-wall-clock"></i>{" "}
+                                    August 14, 2023
                                   </div>
                                 </div>
-                                <div className="job-deadline with-icon">
-                                  <i className="flaticon-wall-clock"></i> August
-                                  14, 2023
+                                <div>
+                                  <div className="job-type with-title">
+                                    <Link
+                                      className="type-job"
+                                      to={"/job-type/" + item.employment_type}
+                                    >
+                                      {item.employment_type}
+                                    </Link>
+                                  </div>
+                                  {Object.keys(item.priority).map((key) => {
+                                    if (item.priority[key]) {
+                                      let parts = key.split("_");
+                                      let type = parts[1];
+                                      return (
+                                        <Tooltip title={type} type={type}>
+                                          <button className="btn p-0 border-0 me-2">
+                                            <IoStar
+                                              size={20}
+                                              className={
+                                                "icon-rounded star-badge " +
+                                                type
+                                              }
+                                            />
+                                          </button>
+                                        </Tooltip>
+                                      );
+                                    }
+                                  })}
                                 </div>
-                              </div>
-                              <div>
-                                <div className="job-type with-title">
-                                  <Link
-                                    className="type-job"
-                                    to={"/job-type/" + item.employment_type}
-                                  >
-                                    {item.employment_type}
-                                  </Link>
-                                </div>
-                                {Object.keys(item.priority).map((key) => {
-                                  if (item.priority[key]) {
-                                    let parts = key.split("_");
-                                    let type = parts[1];
-                                    return (
-                                      <Tooltip title={type} type={type}>
-                                        <button className="btn p-0 border-0 me-2">
-                                          <IoStar
-                                            size={20}
-                                            className={
-                                              "icon-rounded star-badge " + type
-                                            }
-                                          />
-                                        </button>
-                                      </Tooltip>
-                                    );
-                                  }
-                                })}
                               </div>
                             </div>
-                          </div>
 
-                          <div className="col-md-4">
-                            <div className="d-flex justify-content-md-end mt-3 mt-md-0">
-                              <a className="btn-follow btn-action-job btn-add-job-shortlist">
-                                <i className="flaticon-bookmark"></i>
-                              </a>
-                              <Link
-                                to={item.external_link}
-                                target="_blank"
-                                className="btn btn-apply btn-apply-job-external "
-                              >
-                                Apply Now
-                                <i className="next flaticon-right-arrow"></i>
-                              </Link>
+                            <div className="col-md-4">
+                              <div className="d-flex justify-content-md-end mt-3 mt-md-0">
+                                <a className="btn-follow btn-action-job btn-add-job-shortlist">
+                                  <i className="flaticon-bookmark"></i>
+                                </a>
+                                <Link
+                                  to={item.external_link}
+                                  target="_blank"
+                                  className="btn btn-apply btn-apply-job-external "
+                                >
+                                  Apply Now
+                                  <i className="next flaticon-right-arrow"></i>
+                                </Link>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
+                  ))
+                ) : (
+                  <p>No Jobs found</p>
+                )}
+                {meta.total > 10 ? (
+                  <div className="row mt-3">
+                    <div className="col-12">
+                      <p className="user-count">
+                        Viewing {meta.from} - {meta.to} of {meta.total} Jobs
+                      </p>
+                      <div className="user-pagination">
+                        <nav>
+                          <ul className="pagination">
+                            <li
+                              className={
+                                "page-item" +
+                                (meta.current_page == 1 ? " disabled" : "")
+                              }
+                              onClick={() => paginate(meta.current_page - 1)}
+                            >
+                              <a
+                                className="page-link"
+                                href="#"
+                                aria-label="Previous"
+                              >
+                                <span aria-hidden="true">&laquo;</span>
+                              </a>
+                            </li>
+                            {Array.apply(null, { length: meta.last_page }).map(
+                              (item, index) => (
+                                <li
+                                  className={
+                                    "page-item " +
+                                    (meta.current_page == index + 1
+                                      ? "active"
+                                      : "")
+                                  }
+                                  onClick={() => paginate(index + 1)}
+                                >
+                                  <a className="page-link" href="#">
+                                    {index + 1}
+                                  </a>
+                                </li>
+                              )
+                            )}
+                            <li
+                              className={
+                                "page-item" +
+                                (meta.current_page == meta.last_page
+                                  ? " disabled"
+                                  : "")
+                              }
+                              onClick={() => paginate(meta.current_page + 1)}
+                            >
+                              <a
+                                className="page-link"
+                                href="#"
+                                aria-label="Next"
+                              >
+                                <span aria-hidden="true">&raquo;</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </nav>
+                      </div>
+                    </div>
                   </div>
-                ))}
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </div>

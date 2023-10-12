@@ -1,4 +1,4 @@
-import api from "../api/api";
+import {api} from "../api/api";
 import createDataContext from "./createDataContext";
 
 const state = { creatives: null, nextPage: null, loading: false };

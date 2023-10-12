@@ -25,7 +25,7 @@ import { useEffect, useState } from "react";
 import { navItems } from "../nav/NavItems";
 import AuthModal from "./modals/AuthModal";
 import { Context as AuthContext } from "../context/AuthContext";
-import Placeholder from "../assets/images/NathanWalker_ProfilePic-150x150.jpg";
+import Placeholder from "../assets/images/placeholder.png";
 import { agencyNav, creativeNav } from "../nav/AgencyNav";
 
 const drawerWidth = "85%";
@@ -236,7 +236,7 @@ function Header(props) {
                           width="50"
                           className="avatar-rounded rounded-circle"
                         />
-                        <div className="username">Test User</div>
+                        <div className="username">{state.user.username}</div>
                       </div>
                       <div className="dropdown-menu logged-in-dropdown show">
                         <ul className="dropdown-list">

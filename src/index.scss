@@ -1,5 +1,7 @@
+$primary-color: #d3a11f;
+
 :root {
-  --color-primary: #d3a11f;
+  --color-primary: #{$primary-color};
   --color-secondary: #ededed;
   --color-gray: #777777;
   --bs-primary-rgb: 211, 161, 131;
@@ -94,7 +96,7 @@ a.link-dark:hover {
   letter-spacing: 3px;
 }
 
-.alert{
+.alert {
   font-size: 20px;
   font-weight: 300;
 }
@@ -112,6 +114,35 @@ a.link-dark:hover {
 
 .MuiTooltip-tooltip {
   text-transform: capitalize;
+}
+
+
+li.page-item {
+  width: 25px;
+  text-align: center;
+}
+
+.pagination {
+  gap: 5px;
+}
+
+.page-link {
+  color: var(--color-primary);
+  padding: 5px;
+  font-size: 14px;
+}
+
+.active .page-link {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+
+  &:hover{
+    color: white;
+  }
+}
+
+.page-link:hover {
+  color: var(--color-primary);
 }
 
 @media (min-width: 576px) {
@@ -134,9 +165,10 @@ a.link-dark:hover {
 
 @keyframes fade-in {
   from {
-      opacity: 0;
+    opacity: 0;
   }
+
   to {
-      opacity: 1;
+    opacity: 1;
   }
 }

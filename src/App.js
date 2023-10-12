@@ -31,10 +31,11 @@ function App() {
     setToken,
     state: { token, role },
   } = useContext(AuthContext);
-  const [cookies, setCookie] = useCookies();
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   useEffect(() => {
     if (cookies.token !== undefined) {
+      // removeCookie("token",{path:"/"})
       setToken(cookies.token, cookies.role);
     }
   }, []);
