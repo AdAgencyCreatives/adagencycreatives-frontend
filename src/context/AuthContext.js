@@ -94,7 +94,7 @@ const signup = (dispatch) => {
 };
 
 const signin = (dispatch) => {
-  return async (data,cb) => {
+  return async (data, cb) => {
     resetFormMessage(dispatch)();
     try {
       const response = await api.post("/login", data);
@@ -104,7 +104,7 @@ const signin = (dispatch) => {
         type: "set_form_message",
         payload: { type: "success", message: getLoginSuccessMessage() },
       });
-      cb()
+      cb();
     } catch (error) {
       setErrorMessage(dispatch, error.response.data.message);
     }
@@ -122,6 +122,37 @@ const setToken = (dispatch) => {
     }
   };
 };
+
+// const verifyToken = (dispatch) => {
+//   return async (token) => {
+//     try {
+//       const response = await api.post(
+//         "/re_login",
+//         {},
+//         {
+//           headers: {
+//             Authorization: "Bearer " + token,
+//           },
+//         }
+//       );
+//       setToken(dispatch)(response.data.token, response.data.user.role);
+//       setUserData(dispatch, response.data.user);
+//       dispatch({
+//         type: "set_form_message",
+//         payload: { type: "success", message: getLoginSuccessMessage() },
+//       });
+//     } catch (error) {
+//       setErrorMessage(dispatch, error.response.data.message);
+//     }
+//     if (token) {
+//       setAuthToken(token);
+//       dispatch({
+//         type: "set_token",
+//         payload: { token, role },
+//       });
+//     }
+//   };
+// };
 
 const setUserData = (dispatch, data) => {
   dispatch({

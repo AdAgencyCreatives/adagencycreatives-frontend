@@ -1,7 +1,12 @@
-import {api} from "../api/api";
+import { api } from "../api/api";
 import createDataContext from "./createDataContext";
 
-const state = { creatives: null, nextPage: null, loading: false };
+const state = {
+  creatives: null,
+  nextPage: null,
+  loading: false,
+  single_creative: {},
+};
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -10,6 +15,8 @@ const reducer = (state, action) => {
         creatives: action.payload.data,
         nextPage: action.payload.links.next,
       };
+    case "set_single_creative":
+      return { ...state, single_creative: action.payload.data[0] };
     case "load_creatives":
       return {
         creatives: [...state.creatives, ...action.payload.data],
@@ -31,6 +38,18 @@ const getCreatives = (dispatch) => {
       const response = await api.get("/creatives");
       dispatch({
         type: "set_creatives",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
+const getCreative = (dispatch) => {
+  return async (slug) => {
+    try {
+      const response = await api.get("/creatives?filter[slug]=" + slug);
+      dispatch({
+        type: "set_single_creative",
         payload: response.data,
       });
     } catch (error) {}
@@ -59,6 +78,6 @@ const loadCreatives = (dispatch) => {
 
 export const { Context, Provider } = createDataContext(
   reducer,
-  { getCreatives, loadCreatives },
+  { getCreatives, loadCreatives, getCreative },
   state
 );
