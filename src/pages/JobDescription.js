@@ -1,11 +1,30 @@
+import { useParams } from "react-router-dom";
 import Header from "../components/job/Header";
 import Sidebar from "../components/job/Sidebar";
+import { useContext, useEffect } from "react";
+import { Context as JobsContext } from "../context/JobsContext";
+import Loader from "../components/Loader";
+import RelatedJobs from "../components/job/RelatedJobs";
 
 const JobDescription = () => {
-  return (
+  const { job } = useParams();
+  const {
+    state: { single_job, related_jobs },
+    getJob,
+  } = useContext(JobsContext);
+
+  console.log({ single_job });
+
+  useEffect(() => {
+    getJob(job);
+  }, []);
+
+  return Object.keys(single_job).length === 0 ? (
+    <Loader />
+  ) : (
     <>
       <div className="profile-header">
-        <Header />
+        <Header data={single_job} />
       </div>
       <div className="profile-content mt-5 mb-5">
         <div className="container">
@@ -13,7 +32,8 @@ const JobDescription = () => {
             <div className="col-md-8">
               <div className="content-section">
                 <h1 className="content-title mt-0">Job Description</h1>
-                <h5 className="subtitle">About the job:</h5>
+                {single_job.description}
+                {/* <h5 className="subtitle">About the job:</h5>
                 <p className="content">
                   Bakery Austin is currently seeking a proven, energetic, and
                   inspired Senior Art Director with the drive to create
@@ -136,12 +156,13 @@ const JobDescription = () => {
                     <li>Snacks, Meals and Drinks</li>
                     <li>No Time Tracking!</li>
                   </ul>
-                </p>
+                </p> */}
+                <RelatedJobs data={related_jobs} />
               </div>
             </div>
             <div className="col-md-4">
               <div className="profile-sidebar">
-                <Sidebar />
+                <Sidebar data={single_job} />
               </div>
             </div>
           </div>

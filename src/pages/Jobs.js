@@ -7,62 +7,11 @@ import {
   IoBriefcaseOutline,
   IoStar,
 } from "react-icons/io5";
+import moment from "moment";
 import Tooltip from "../components/Tooltip";
 import { Link } from "react-router-dom";
 import { Context as JobsContext } from "../context/JobsContext";
 
-const citiesArray = {
-  148: [
-    { id: 455, label: "Bentonville" },
-    { id: 454, label: "Fayetteville" },
-    { id: 453, label: "Fort Smith" },
-    { id: 457, label: "Jonesboro" },
-    { id: 452, label: "Little Rock" },
-    { id: 456, label: "Springdale" },
-  ],
-  147: [
-    { id: 451, label: "Avondale" },
-    { id: 443, label: "Chandler" },
-    { id: 446, label: "Gilbert" },
-    { id: 444, label: "Glendale" },
-    { id: 442, label: "Mesa" },
-    { id: 448, label: "Peoria" },
-    { id: 440, label: "Phoenix" },
-    { id: 445, label: "Scottsdale" },
-    { id: 449, label: "Surprise" },
-    { id: 447, label: "Tempe" },
-    { id: 441, label: "Tucson" },
-    { id: 450, label: "Yuma" },
-  ],
-  117: [{ id: 439, label: "Anchorage" }],
-  150: [
-    { id: 433, label: "Birmingham" },
-    { id: 438, label: "Hoover" },
-    { id: 436, label: "Huntsville" },
-    { id: 435, label: "Mobile" },
-    { id: 434, label: "Montgomery" },
-    { id: 437, label: "Tuscaloosa" },
-  ],
-  149: [
-    { id: 590, label: "Bridgeport" },
-    { id: 596, label: "Danbury" },
-    { id: 592, label: "Hartford" },
-    { id: 597, label: "New Britain" },
-    { id: 591, label: "New Haven" },
-    { id: 595, label: "Norwalk" },
-    { id: 593, label: "Stamford" },
-    { id: 594, label: "Waterbury" },
-    { id: 2055, label: "Wilton" },
-  ],
-};
-
-const titles = [
-  { value: 150, label: "3D Designer" },
-  { value: 117, label: "Art Director" },
-  { value: 147, label: "Associate Creative Director Art Director" },
-  { value: 148, label: "Associate Creative Director Copywriter" },
-  { value: 149, label: "Chief Creative Officer (CCO)" },
-];
 
 const emailFreq = [
   { value: 1, label: "Daily" },
@@ -186,7 +135,7 @@ const Jobs = () => {
   };
 
   const paginate = (page) => {
-    paginateJob(page);
+    paginateJob(page, filters);
   };
 
   return (
@@ -338,7 +287,13 @@ const Jobs = () => {
                           }
                         })}
                       </ul>
-                      <a href="#" onClick={() => setFilters({})}>
+                      <a
+                        href="#"
+                        onClick={() => {
+                          setFilters({});
+                          filterJobs({});
+                        }}
+                      >
                         Clear all
                       </a>
                     </div>
@@ -360,7 +315,7 @@ const Jobs = () => {
                       <div className="d-flex align-items-center flex-md-nowrap flex-wrap gap-md-0 gap-3">
                         <div className="inner-left">
                           <div className="employer-logo">
-                            <Link to={"/job/" + item.title}>
+                            <Link to={"/job/" + item.slug}>
                               <img
                                 width="150"
                                 height="150"
@@ -382,7 +337,7 @@ const Jobs = () => {
                                   </Link>
                                 </h5>
                                 <h2 className="job-title">
-                                  <Link to={"/job/" + item.title}>
+                                  <Link to={"/job/" + item.slug}>
                                     {item.title}
                                   </Link>
                                 </h2>
@@ -405,8 +360,8 @@ const Jobs = () => {
                                     </div>
                                   </div>
                                   <div className="job-deadline with-icon">
-                                    <i className="flaticon-wall-clock"></i>{" "}
-                                    August 14, 2023
+                                    <i className="flaticon-wall-clock"></i>
+                                    {moment(item.expired_at).format("MMMM D, YYYY")}
                                   </div>
                                 </div>
                                 <div>

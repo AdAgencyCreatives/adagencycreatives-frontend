@@ -11,12 +11,18 @@ const state = {
   employment_type: [],
   media_experiences: [],
   filters: null,
+  single_job: {},
+  related_jobs: [],
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "set_jobs":
       return { ...state, jobs: action.payload.data, meta: action.payload.meta };
+    case "set_single_job":
+      return { ...state, single_job: action.payload.data[0] };
+    case "set_related_jobs":
+      return { ...state, related_jobs: action.payload.data };
     case "set_categories":
       return { ...state, categories: action.payload.data };
     case "set_filters":
@@ -60,6 +66,29 @@ const getJobs = (dispatch) => {
       });
     } catch (error) {}
   };
+};
+
+const getJob = (dispatch) => {
+  return async (slug) => {
+    try {
+      const response = await api.get("/jobs?filter[slug]=" + slug);
+      getRelatedJobs(dispatch, response.data.data[0].employment_type);
+      dispatch({
+        type: "set_single_job",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
+const getRelatedJobs = async (dispatch, category) => {
+  try {
+    const response = await api.get("/jobs?filter[employment_type]=" + category);
+    dispatch({
+      type: "set_related_jobs",
+      payload: response.data,
+    });
+  } catch (error) {}
 };
 
 const getCategories = (dispatch) => {
@@ -113,7 +142,7 @@ const getEmploymentTypes = (dispatch) => {
 const getMediaExperiences = (dispatch) => {
   return async (uuid) => {
     try {
-      const response = await api.get("/media-experiences");
+      const response = await api.get("/get_media-experiences");
       dispatch({
         type: "set_media_experiences",
         payload: response.data,
@@ -123,9 +152,10 @@ const getMediaExperiences = (dispatch) => {
 };
 
 const paginateJob = (dispatch) => {
-  return async (page) => {
+  return async (page, filters) => {
     try {
-      const response = await api.get("/jobs?page=" + page);
+      let filter = getFilters(filters);
+      const response = await api.get("/jobs?" + filter + "&page=" + page);
       dispatch({
         type: "set_jobs",
         payload: response.data,
@@ -162,7 +192,12 @@ const getFilters = (filters) => {
     (filters.employment_type ? filters.employment_type.value : "");
   filter +=
     "&filter[is_remote]=" + (filters.remote ? filters.remote.value : "");
-  // filter += "filter[media_experience]=" + filters.state.value;
+  if (filters.media_experience) {
+    filter += "&filter[media_experience]=";
+    filters.media_experience.forEach((element) => {
+      filter += element.value + ",";
+    });
+  }
   // filter += "filter[state_id]=" + filters.state.value;
 
   return filter;
@@ -172,6 +207,7 @@ export const { Context, Provider } = createDataContext(
   reducer,
   {
     getJobs,
+    getJob,
     getFeaturedJobs,
     getCategories,
     getStates,

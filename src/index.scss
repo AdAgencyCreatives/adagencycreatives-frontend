@@ -141,6 +141,13 @@ li.page-item {
   }
 }
 
+.loader {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+}
+
 .page-link:hover {
   color: var(--color-primary);
 }

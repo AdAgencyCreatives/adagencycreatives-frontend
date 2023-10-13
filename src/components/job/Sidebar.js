@@ -7,8 +7,9 @@ import "../../styles/User/ProfileSidebar.scss";
 import bullseye from "../../assets/images/icons/bulleyes.png";
 import { FaUserTie } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
-const Sidebar = () => {
+const Sidebar = ({ data }) => {
   return (
     <div className="sidebar-item">
       <div className="content">
@@ -16,7 +17,9 @@ const Sidebar = () => {
           <IoCalendarClearOutline />
           <div className="details">
             <div className="text">Date Posted</div>
-            <div className="value">September 7, 2023</div>
+            <div className="value">
+              {moment(data.created_at).format("MMMM D, YYYY")}
+            </div>
           </div>
         </div>
         <div className="item">
@@ -24,7 +27,18 @@ const Sidebar = () => {
           <div className="details">
             <div className="text">Job Location</div>
             <div className="value">
-              <Link to="#" className="text-dark">Austin, Texas</Link>
+              <Link
+                className="text-dark"
+                to={`/job-location/${data.location.state}`}
+              >
+                {data.location.state},
+              </Link>
+              <Link
+                className="text-dark"
+                to={`/job-location/${data.location.city}`}
+              >
+                {data.location.city}
+              </Link>
             </div>
           </div>
         </div>
@@ -32,26 +46,31 @@ const Sidebar = () => {
           <IoHourglassOutline />
           <div className="details">
             <div className="text">Expiration date</div>
-            <div className="value">October 22, 2023</div>
+            <div className="value">
+              {moment(data.expired_at).format("MMMM D, YYYY")}
+            </div>
           </div>
         </div>
         <div className="item">
           <FaUserTie />
           <div className="details">
             <div className="text">Years Experience</div>
-            <div className="value">Senior 5-10 years</div>
+            <div className="value">{data.experience}</div>
           </div>
         </div>
-        <div className="item">
-          <img src={bullseye} height={22} width={22} />
-          <div className="details">
-            <div className="text">Industry Experience</div>
-            <div className="value">
-              Automotive and Transportation, Beverage | Spirits, Digital |
-              Social, Traditional Agency
+        {data.industry_experience.length ? (
+          <div className="item">
+            <img src={bullseye} height={22} width={22} />
+            <div className="details">
+              <div className="text">Industry Experience</div>
+              <div className="value">
+                {data.industry_experience.join(", ")}
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
