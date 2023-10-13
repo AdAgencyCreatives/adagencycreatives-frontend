@@ -10,6 +10,7 @@ import { Provider as CreativesProvider } from "./context/CreativesContext";
 import { Provider as JobsProvider } from "./context/JobsContext";
 import { Provider as AgenciesProvider } from "./context/AgenciesContext";
 import { Provider as SpotlightProvider } from "./context/SpotlightContext";
+import { Provider as CommunityProvider } from "./context/CommunityContext";
 
 const theme = createTheme({
   typography: {
@@ -36,6 +37,7 @@ function App() {
   useEffect(() => {
     if (cookies.token !== undefined) {
       // removeCookie("token",{path:"/"})
+
       setToken(cookies.token, cookies.role);
     }
   }, []);
@@ -53,12 +55,14 @@ function App() {
         <AgenciesProvider>
           <SpotlightProvider>
             <JobsProvider>
-              <div className="App">
-                <ScrollRestoration />
-                <Header />
-                <Outlet />
-                <Footer />
-              </div>
+              <CommunityProvider>
+                <div className="App">
+                  <ScrollRestoration />
+                  <Header />
+                  <Outlet />
+                  <Footer />
+                </div>
+              </CommunityProvider>
             </JobsProvider>
           </SpotlightProvider>
         </AgenciesProvider>
