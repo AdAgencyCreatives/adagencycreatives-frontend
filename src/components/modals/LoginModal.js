@@ -110,14 +110,14 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                     Forgotten password?
                   </a>
                 </div>
-                <button className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3">
+                <button className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3 fs-5">
                   Login
                 </button>
                 <p
                   className="text-center mt-4"
                   style={{ fontSize: 20, fontWeight: 300 }}
                 >
-                  Do you need to create an account?
+                  Do you need to create an account?&nbsp;
                   <a
                     href="#"
                     style={{ fontWeight: "bold", color: "black" }}

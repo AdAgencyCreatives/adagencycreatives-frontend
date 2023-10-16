@@ -6,44 +6,58 @@ import AgencyContent from "../../components/user/Agency/Content";
 import AgencyHeader from "../../components/user/Agency/Header";
 import AgencySidebar from "../../components/user/Agency/Sidebar";
 import { useLocation, useParams } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import Loader from "../../components/Loader";
 
 import { Context as CreativesContext } from "../../context/CreativesContext";
 import { Context as AgenciesContext } from "../../context/AgenciesContext";
 
 const Profile = () => {
   const { username } = useParams();
+  const [page, setPage] = useState("creative");
+
   let location = useLocation();
-  const path = location.pathname;
-  let page;
-
-  const {
-    state: { single_creative },
-    getCreative,
-  } = useContext(CreativesContext);
-
-
-  if (path.indexOf("creative") !== -1) {
-    page = "creative";
-  } else if (path.indexOf("agency") !== -1) {
-    page = "agency";
-  }
 
   useEffect(() => {
-    console.log("getting createive")
+    const path = location.pathname;
+    if (path.indexOf("creative") !== -1) {
+      setPage("creative");
+    } else if (path.indexOf("agency") !== -1) {
+      setPage("agency");
+    }
+  }, [location]);
+
+  const {
+    state: { single_creative, creative_education, creative_experience },
+    getCreative,
+  } = useContext(CreativesContext);
+  const {
+    state: { single_agency, open_positions },
+    getAgency,
+  } = useContext(AgenciesContext);
+
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    console.log("getting creative");
     if (page == "creative") getCreative(username);
-  }, []);
+    else if (page == "agency") getAgency(username);
+  }, [page]);
 
-  console.log({ single_creative });
+  useEffect(() => {
+    if (page == "creative") setData(single_creative);
+    else if (page == "agency") setData(single_agency);
+  }, [single_creative, single_agency]);
 
-
-  return (
+  return Object.keys(data).length === 0 ? (
+    <Loader />
+  ) : (
     <>
       <div className="profile-header">
         {page === "creative" ? (
-          <CreativeHeader data={single_creative} />
+          <CreativeHeader data={data} />
         ) : (
-          <AgencyHeader />
+          <AgencyHeader data={data} />
         )}
       </div>
       <div className="profile-content mt-5">
@@ -52,34 +66,31 @@ const Profile = () => {
             <div className="col-md-8">
               <div className="content-section">
                 <h1 className="content-title mt-0">About</h1>
-                <p className="content">
-                  I am deeply passionate about connecting people through art and
-                  design, and I believe that creativity has the power to
-                  transcend boundaries and bring people together. In my free
-                  time, I enjoy exploring new art forms and experimenting with
-                  different mediums, from digital illustration to traditional
-                  painting.
-                </p>
+                <p className="content">{data.about}</p>
               </div>
               <div className="profile-sidebar d-md-none">
                 {page === "creative" ? (
-                  <CreativeSidebar data={single_creative} />
+                  <CreativeSidebar data={data} />
                 ) : (
-                  <AgencySidebar />
+                  <AgencySidebar data={data} />
                 )}
               </div>
               {page === "creative" ? (
-                <CreativeContent data={single_creative} />
+                <CreativeContent
+                  data={data}
+                  education={creative_education}
+                  experience={creative_experience}
+                />
               ) : (
-                <AgencyContent />
+                <AgencyContent data={data} jobs={open_positions} />
               )}
             </div>
             <div className="col-md-4 d-none d-md-block">
               <div className="profile-sidebar">
                 {page === "creative" ? (
-                  <CreativeSidebar data={single_creative} />
+                  <CreativeSidebar data={data} />
                 ) : (
-                  <AgencySidebar />
+                  <AgencySidebar data={data} />
                 )}
               </div>
             </div>

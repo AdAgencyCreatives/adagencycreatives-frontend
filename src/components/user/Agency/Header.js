@@ -4,36 +4,51 @@ import {
   IoLocationOutline,
   IoPersonAdd,
 } from "react-icons/io5";
-import ppk from "../../../assets/images/ppk.png";
+import Placeholder from "../../../assets/images/placeholder.png";
 import "../../../styles/User/ProfileHeader.scss";
 import { Link } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ data }) => {
   return (
     <div className="container">
       <div className="row align-items-center justify-content-between">
         <div className="col-12 d-flex align-items-top">
           <div className="avatar employer">
-            <img src={ppk} />
+            <img src={data.logo || Placeholder} />
           </div>
           <div className="meta row w-100 align-items-center">
             <div className="col-md-6">
-              <div className="username">PPK</div>
-              <div className="position">
-                <IoBriefcaseOutline />
-                <Link to="agency-category/design" className="cat-link">
-                  Design | Branding
-                </Link>
-                ,
-                <Link to="agency-category/social" className="cat-link">
-                  Social | Digital
-                </Link>
-              </div>
-              <div className="job-location location">
-                <IoLocationOutline />
-                <a href="#">Los Angeles,</a>
-                <a href="#">California</a>
-              </div>
+              <div className="username">{data.name}</div>
+              {data.industry_experience && (
+                <div className="position">
+                  <IoBriefcaseOutline />
+                  {data.industry_experience.map((item,index) => (
+                    <>
+                      <Link
+                        to={
+                          "agency-category/" +
+                          item.toLowerCase().replace(" ", "-").replace("|", "-")
+                        }
+                        className="cat-link"
+                      >
+                        {item}
+                      </Link>
+                      {index < data.industry_experience.length - 1 && ","}
+                    </>
+                  ))}
+                </div>
+              )}
+              {data.location && (
+                <div className="job-location location">
+                  <IoLocationOutline />
+                  <Link to={`/agency-location/${data.location.state}`}>
+                    {data.location.state},
+                  </Link>
+                  <Link to={`/agency-location/${data.location.city}`}>
+                    {data.location.city}
+                  </Link>
+                </div>
+              )}
               <div className="open-jobs">Open Job - 1</div>
             </div>
             <div className="col-md-6">

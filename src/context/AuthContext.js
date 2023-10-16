@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { api, setAuthToken } from "../api/api";
 import createDataContext from "./createDataContext";
 import { useCookies } from "react-cookie";
@@ -111,9 +112,19 @@ const signin = (dispatch) => {
   };
 };
 
+const getToken = (dispatch) => {
+  return () => {
+    const token = Cookies.get("token");
+    if (token) {
+      verifyToken(dispatch, token);
+    }
+  };
+};
+
 const setToken = (dispatch) => {
   return (token, role) => {
     if (token) {
+      Cookies.set({ token, role });
       setAuthToken(token);
       dispatch({
         type: "set_token",
@@ -123,36 +134,29 @@ const setToken = (dispatch) => {
   };
 };
 
-// const verifyToken = (dispatch) => {
-//   return async (token) => {
-//     try {
-//       const response = await api.post(
-//         "/re_login",
-//         {},
-//         {
-//           headers: {
-//             Authorization: "Bearer " + token,
-//           },
-//         }
-//       );
-//       setToken(dispatch)(response.data.token, response.data.user.role);
-//       setUserData(dispatch, response.data.user);
-//       dispatch({
-//         type: "set_form_message",
-//         payload: { type: "success", message: getLoginSuccessMessage() },
-//       });
-//     } catch (error) {
-//       setErrorMessage(dispatch, error.response.data.message);
-//     }
-//     if (token) {
-//       setAuthToken(token);
-//       dispatch({
-//         type: "set_token",
-//         payload: { token, role },
-//       });
-//     }
-//   };
-// };
+const verifyToken = async (dispatch, token) => {
+  try {
+    const response = await api.post(
+      "/re_login",
+      {},
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    setToken(dispatch)(response.data.token, response.data.user.role);
+    setUserData(dispatch, response.data.user);
+    dispatch({
+      type: "set_form_message",
+      payload: { type: "success", message: getLoginSuccessMessage() },
+    });
+  } catch (error) {
+    Cookies.remove("token");
+    Cookies.remove("role");
+    setErrorMessage(dispatch, error.response.data.message);
+  }
+};
 
 const setUserData = (dispatch, data) => {
   dispatch({
@@ -171,6 +175,6 @@ const prepareFields = (data) => {
 
 export const { Context, Provider } = createDataContext(
   authReducer,
-  { signup, signin, resetFormMessage, setToken },
+  { signup, signin, resetFormMessage, setToken, getToken },
   state
 );
