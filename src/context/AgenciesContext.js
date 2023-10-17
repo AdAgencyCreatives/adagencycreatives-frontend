@@ -7,6 +7,7 @@ const state = {
   loading: false,
   single_agency: {},
   open_positions: [],
+  stats: null,
 };
 
 const reducer = (state, action) => {
@@ -37,6 +38,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         loading: action.payload,
+      };
+    case "set_stats":
+      return {
+        ...state,
+        stats: action.payload.stats,
       };
     default:
       return state;
@@ -101,8 +107,20 @@ const getOpenPositions = async (dispatch, uid) => {
   } catch (error) {}
 };
 
+const getStats = (dispatch) => {
+  return async () => {
+    try {
+      const response = await api.get("/agency_stats");
+      dispatch({
+        type: "set_stats",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
-  { getAgencies, loadAgencies, getAgency },
+  { getAgencies, loadAgencies, getAgency, getStats },
   state
 );

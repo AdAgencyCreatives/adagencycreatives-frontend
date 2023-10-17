@@ -557,7 +557,7 @@ a.employer-logo img {
 }
 
 .publications-slider img:hover, .mentor img:hover {
-    transform: scale(1.1);
+    transform: scale(1.3);
 }
 
 @media (max-width:768px) {

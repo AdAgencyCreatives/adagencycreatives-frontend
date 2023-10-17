@@ -112,8 +112,21 @@ const signin = (dispatch) => {
   };
 };
 
+const logout = (dispatch) => {
+  return (cb) => {
+    Cookies.remove("token");
+    Cookies.remove("role");
+    dispatch({
+      type: "set_token",
+      payload: { token: null, role: null },
+    });
+    cb();
+  };
+};
+
 const getToken = (dispatch) => {
   return () => {
+    console.log("getting token")
     const token = Cookies.get("token");
     if (token) {
       verifyToken(dispatch, token);
@@ -124,7 +137,9 @@ const getToken = (dispatch) => {
 const setToken = (dispatch) => {
   return (token, role) => {
     if (token) {
-      Cookies.set({ token, role });
+      console.log(token, role);
+      Cookies.set("token", token);
+      Cookies.set("role", role);
       setAuthToken(token);
       dispatch({
         type: "set_token",
@@ -135,6 +150,7 @@ const setToken = (dispatch) => {
 };
 
 const verifyToken = async (dispatch, token) => {
+  console.log("verifying token")
   try {
     const response = await api.post(
       "/re_login",
@@ -145,6 +161,7 @@ const verifyToken = async (dispatch, token) => {
         },
       }
     );
+    // console.log("ssss", response.data);
     setToken(dispatch)(response.data.token, response.data.user.role);
     setUserData(dispatch, response.data.user);
     dispatch({
@@ -159,6 +176,7 @@ const verifyToken = async (dispatch, token) => {
 };
 
 const setUserData = (dispatch, data) => {
+  // console.log("userdata", data);
   dispatch({
     type: "set_user",
     payload: data,
@@ -175,6 +193,6 @@ const prepareFields = (data) => {
 
 export const { Context, Provider } = createDataContext(
   authReducer,
-  { signup, signin, resetFormMessage, setToken, getToken },
+  { signup, signin, resetFormMessage, setToken, getToken, logout },
   state
 );

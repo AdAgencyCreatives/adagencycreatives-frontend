@@ -59,7 +59,7 @@ const Agencies = () => {
                       </div>
                     )}
                     <div className="open-jobs-btn">
-                      <Link to={`/agency/${item.slug}`} >Open Jobs - 0</Link>
+                      <Link to={`/agency/${item.slug}`} >Open Jobs - {item.open_jobs}</Link>
                     </div>
                   </div>
                 </div>

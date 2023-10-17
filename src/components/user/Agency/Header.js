@@ -14,7 +14,7 @@ const Header = ({ data }) => {
       <div className="row align-items-center justify-content-between">
         <div className="col-12 d-flex align-items-top">
           <div className="avatar employer">
-            <img src={data.logo || Placeholder} />
+            <img src={data.logo || Placeholder} height={100} width={100} />
           </div>
           <div className="meta row w-100 align-items-center">
             <div className="col-md-6">
@@ -22,7 +22,7 @@ const Header = ({ data }) => {
               {data.industry_experience && (
                 <div className="position">
                   <IoBriefcaseOutline />
-                  {data.industry_experience.map((item,index) => (
+                  {data.industry_experience.map((item, index) => (
                     <>
                       <Link
                         to={
@@ -49,7 +49,7 @@ const Header = ({ data }) => {
                   </Link>
                 </div>
               )}
-              <div className="open-jobs">Open Job - 1</div>
+              <div className="open-jobs">Open Job - {data.open_jobs}</div>
             </div>
             <div className="col-md-6">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0">

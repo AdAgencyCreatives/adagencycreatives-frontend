@@ -89,18 +89,18 @@ const Sidebar = ({ data }) => {
             <div className="details">
               <div className="text mb-3">Agency</div>
               <div className="value d-flex flex-wrap gap-3">
-                <button className="btn btn-dark w-100">
+                <button className="btn btn-dark w-100 py-3">
                   <a
-                    className="text-light"
+                    className="text-light fs-5"
                     href="https://www.linkedin.com/company/uniteppk/"
                     target="_blank"
                   >
                     LinkedIn
                   </a>
                 </button>
-                <button className="btn btn-dark w-100">
+                <button className="btn btn-dark w-100 py-3">
                   <a
-                    className="text-light"
+                    className="text-light fs-5"
                     href="https://www.linkedin.com/company/uniteppk/"
                     target="_blank"
                   >

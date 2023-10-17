@@ -9,18 +9,8 @@ import "../../../styles/AgencyDashboard/Dashboard.scss";
 import Views from "../../../components/agency/dashboard/Views";
 import Notifications from "../../../components/agency/dashboard/Notifications";
 import Applicants from "../../../components/agency/dashboard/Applicants";
-import { useContext, useEffect } from "react";
-import { Context } from "../../../context/AgenciesContext";
 
 const Dashboard = () => {
-  const {
-    state: { stats },
-    getStats,
-  } = useContext(Context);
-
-  useEffect(() => {
-    getStats();
-  }, []);
   return (
     <div className="dashboard-wrapper agency-page-dashboard">
       <h3 className="page-title">Dashboard Statistics</h3>
@@ -34,9 +24,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="inner">
-                <div className="number-count">
-                  {stats && stats.number_of_posts}
-                </div>
+                <div className="number-count">0</div>
                 <span>Posted Jobs</span>
               </div>
             </div>
@@ -51,9 +39,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="inner">
-                <div className="number-count">
-                  {stats && stats.applications}
-                </div>
+                <div className="number-count">0</div>
                 <span>Application</span>
               </div>
             </div>
@@ -68,7 +54,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="inner">
-                <div className="number-count">{stats && stats.review}</div>
+                <div className="number-count">0</div>
                 <span>Review</span>
               </div>
             </div>
@@ -83,7 +69,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="inner">
-                <div className="number-count">{stats && stats.shortlisted}</div>
+                <div className="number-count">0</div>
                 <span>Shortlisted</span>
               </div>
             </div>

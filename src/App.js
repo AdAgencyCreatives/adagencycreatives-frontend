@@ -6,11 +6,11 @@ import { Outlet, ScrollRestoration } from "react-router-dom";
 import { Context as AuthContext } from "./context/AuthContext";
 import { useContext, useEffect } from "react";
 // import { useCookies } from "react-cookie";
+import { Provider as DataProvider } from "./context/DataContext";
 import { Provider as CreativesProvider } from "./context/CreativesContext";
 import { Provider as JobsProvider } from "./context/JobsContext";
 import { Provider as AgenciesProvider } from "./context/AgenciesContext";
 import { Provider as SpotlightProvider } from "./context/SpotlightContext";
-import Cookies from "js-cookie";
 
 const theme = createTheme({
   typography: {
@@ -29,27 +29,29 @@ const theme = createTheme({
 
 function App() {
   const { getToken } = useContext(AuthContext);
-
   useEffect(() => {
+    console.log("what happened");
     getToken();
   }, []);
 
   return (
     <ThemeProvider theme={theme}>
-      <CreativesProvider>
-        <AgenciesProvider>
-          <SpotlightProvider>
-            <JobsProvider>
-              <div className="App">
-                <ScrollRestoration />
-                <Header />
-                <Outlet />
-                <Footer />
-              </div>
-            </JobsProvider>
-          </SpotlightProvider>
-        </AgenciesProvider>
-      </CreativesProvider>
+      <DataProvider>
+        <CreativesProvider>
+          <AgenciesProvider>
+            <SpotlightProvider>
+              <JobsProvider>
+                <div className="App">
+                  <ScrollRestoration />
+                  <Header />
+                  <Outlet />
+                  <Footer />
+                </div>
+              </JobsProvider>
+            </SpotlightProvider>
+          </AgenciesProvider>
+        </CreativesProvider>
+      </DataProvider>
     </ThemeProvider>
   );
 }

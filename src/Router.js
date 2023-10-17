@@ -21,6 +21,19 @@ import Agency from "./pages/User/Agency";
 import Checkout from "./pages/Cart/Checkout";
 import CopyWriting from "./pages/Mentor/CopyWriting";
 import LoginAs from "./pages/LoginAs";
+import { useContext, useEffect } from "react";
+import { Context as AuthContext } from "./context/AuthContext";
+
+
+
+const Logout = () => {
+  const {logout} = useContext(AuthContext)
+  useEffect(() => {
+    logout(() => {
+      window.location = "/";
+    })
+  })
+}
 
 export const router = createBrowserRouter([
   {
@@ -118,7 +131,7 @@ export const router = createBrowserRouter([
 
       {
         path: "/logout",
-        element: <CopyWriting />,
+        element: <Logout />,
       },
 
       {
