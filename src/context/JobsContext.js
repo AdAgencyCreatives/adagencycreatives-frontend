@@ -22,7 +22,10 @@ const reducer = (state, action) => {
     case "set_single_job":
       return { ...state, single_job: action.payload.data[0] };
     case "set_related_jobs":
-      return { ...state, related_jobs: action.payload.data };
+      const related_jobs = action.payload.data.filter((item) => {
+        return item.id !== state.single_job.id;
+      });
+      return { ...state, related_jobs: related_jobs };
     case "set_categories":
       return { ...state, categories: action.payload.data };
     case "set_filters":
@@ -72,7 +75,7 @@ const getJob = (dispatch) => {
   return async (slug) => {
     try {
       const response = await api.get("/jobs?filter[slug]=" + slug);
-      getRelatedJobs(dispatch, response.data.data[0].employment_type);
+      getRelatedJobs(dispatch, response.data.data[0].category_id);
       dispatch({
         type: "set_single_job",
         payload: response.data,
@@ -83,7 +86,7 @@ const getJob = (dispatch) => {
 
 const getRelatedJobs = async (dispatch, category) => {
   try {
-    const response = await api.get("/jobs?filter[employment_type]=" + category);
+    const response = await api.get("/jobs?filter[category_id]=" + category);
     dispatch({
       type: "set_related_jobs",
       payload: response.data,
@@ -106,7 +109,7 @@ const getCategories = (dispatch) => {
 const getStates = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/locations");
+      const response = await api.get("/locations?per_page=-1");
       dispatch({
         type: "set_states",
         payload: response.data,
@@ -118,7 +121,9 @@ const getStates = (dispatch) => {
 const getCities = (dispatch) => {
   return async (uuid) => {
     try {
-      const response = await api.get("/locations?filter[state_id]=" + uuid);
+      const response = await api.get(
+        "/locations?per_page=-1&filter[state_id]=" + uuid
+      );
       dispatch({
         type: "set_cities",
         payload: response.data,
@@ -203,6 +208,19 @@ const getFilters = (filters) => {
   return filter;
 };
 
+const requestNotifications = (dispatch) => {
+  return async (uid, cat_id) => {
+    try {
+      const response = await api.post("/job-alerts", {
+        user_id: uid,
+        category_id: cat_id,
+        status: 1,
+      });
+      alert("Job notifications enabled successfully");
+    } catch (error) {}
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
@@ -216,6 +234,7 @@ export const { Context, Provider } = createDataContext(
     getMediaExperiences,
     filterJobs,
     paginateJob,
+    requestNotifications,
   },
   state
 );

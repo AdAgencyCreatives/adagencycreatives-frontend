@@ -5,11 +5,12 @@ import Footer from "./components/Footer";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import { Context as AuthContext } from "./context/AuthContext";
 import { useContext, useEffect } from "react";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
 import { Provider as CreativesProvider } from "./context/CreativesContext";
 import { Provider as JobsProvider } from "./context/JobsContext";
 import { Provider as AgenciesProvider } from "./context/AgenciesContext";
 import { Provider as SpotlightProvider } from "./context/SpotlightContext";
+import Cookies from "js-cookie";
 
 const theme = createTheme({
   typography: {
@@ -27,25 +28,11 @@ const theme = createTheme({
 });
 
 function App() {
-  const {
-    setToken,
-    state: { token, role },
-  } = useContext(AuthContext);
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const { getToken } = useContext(AuthContext);
 
   useEffect(() => {
-    if (cookies.token !== undefined) {
-      // removeCookie("token",{path:"/"})
-      setToken(cookies.token, cookies.role);
-    }
+    getToken();
   }, []);
-
-  useEffect(() => {
-    if (token) {
-      setCookie("token", token);
-      setCookie("role", role);
-    }
-  }, [token]);
 
   return (
     <ThemeProvider theme={theme}>

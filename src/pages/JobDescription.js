@@ -17,7 +17,7 @@ const JobDescription = () => {
 
   useEffect(() => {
     getJob(job);
-  }, []);
+  }, [job]);
 
   return Object.keys(single_job).length === 0 ? (
     <Loader />

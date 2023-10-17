@@ -20,6 +20,7 @@ import JobDescription from "./pages/JobDescription";
 import Agency from "./pages/User/Agency";
 import Checkout from "./pages/Cart/Checkout";
 import CopyWriting from "./pages/Mentor/CopyWriting";
+import LoginAs from "./pages/LoginAs";
 
 export const router = createBrowserRouter([
   {
@@ -123,6 +124,10 @@ export const router = createBrowserRouter([
       {
         path: "/:page",
         element: <Agency />,
+      },
+      {
+        path: "/loginas",
+        element: <LoginAs />,
       },
     ],
   },
