@@ -83,6 +83,7 @@
 
         .react-calendar__tile--now {
             background: var(--color-primary);
+            border: 2px solid white;
         }
 
         .react-calendar__navigation button:enabled:hover,

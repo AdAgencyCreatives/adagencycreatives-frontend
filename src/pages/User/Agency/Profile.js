@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "../../../styles/AgencyDashboard/Profile.scss";
 import Select from "react-select";
 import { EditorState } from "draft-js";
@@ -6,62 +6,254 @@ import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Logo from "../../../assets/images/NathanWalker_ProfilePic-150x150.jpg";
 import { FiPaperclip, FiTrash2 } from "react-icons/fi";
+import { Context as DataContext } from "../../../context/DataContext";
+import { Context as AgenciesContext } from "../../../context/AgenciesContext";
+import { Context as AuthContext } from "../../../context/AuthContext";
+import Loader from "../../../components/Loader";
 
 const Profile = () => {
-  const states = [
-    { value: 150, label: "Alabama" },
-    { value: 117, label: "Alaska" },
-    { value: 147, label: "Arizona" },
-    { value: 148, label: "Arkansas" },
-    { value: 149, label: "Connecticut" },
+  const [statesList, setStates] = useState([]);
+  const [citiesList, setCities] = useState([]);
+  const [media, setMedia] = useState([]);
+  const [industry, setIndustry] = useState([]);
+  const [isLoading, setIsloading] = useState(true);
+  const [fields, setFields] = useState([]);
+
+  const workplace_preference = [
+    { label: "Remote", value: "remote" },
+    { label: "Hybrid", value: "hybrid" },
+    { label: "Onsite", value: "onsite" },
+  ];
+  const showProfile = [
+    { label: "Show", value: 1 },
+    { label: "Hide", value: 0 },
   ];
 
-  const citiesArray = {
-    148: [
-      { id: 455, label: "Bentonville" },
-      { id: 454, label: "Fayetteville" },
-      { id: 453, label: "Fort Smith" },
-      { id: 457, label: "Jonesboro" },
-      { id: 452, label: "Little Rock" },
-      { id: 456, label: "Springdale" },
-    ],
-    147: [
-      { id: 451, label: "Avondale" },
-      { id: 443, label: "Chandler" },
-      { id: 446, label: "Gilbert" },
-      { id: 444, label: "Glendale" },
-      { id: 442, label: "Mesa" },
-      { id: 448, label: "Peoria" },
-      { id: 440, label: "Phoenix" },
-      { id: 445, label: "Scottsdale" },
-      { id: 449, label: "Surprise" },
-      { id: 447, label: "Tempe" },
-      { id: 441, label: "Tucson" },
-      { id: 450, label: "Yuma" },
-    ],
-    117: [{ id: 439, label: "Anchorage" }],
-    150: [
-      { id: 433, label: "Birmingham" },
-      { id: 438, label: "Hoover" },
-      { id: 436, label: "Huntsville" },
-      { id: 435, label: "Mobile" },
-      { id: 434, label: "Montgomery" },
-      { id: 437, label: "Tuscaloosa" },
-    ],
-    149: [
-      { id: 590, label: "Bridgeport" },
-      { id: 596, label: "Danbury" },
-      { id: 592, label: "Hartford" },
-      { id: 597, label: "New Britain" },
-      { id: 591, label: "New Haven" },
-      { id: 595, label: "Norwalk" },
-      { id: 593, label: "Stamford" },
-      { id: 594, label: "Waterbury" },
-      { id: 2055, label: "Wilton" },
-    ],
+  const {
+    state: { user },
+  } = useContext(AuthContext);
+
+  const {
+    state: { single_agency },
+    getAgency,
+  } = useContext(AgenciesContext);
+
+  const {
+    state: { states, cities, media_experiences, industry_experiences },
+    getStates,
+    getCities,
+    getMediaExperiences,
+    getIndustryExperiences,
+  } = useContext(DataContext);
+
+  useEffect(() => {
+    if (user) {
+      getAgency(user.username);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (Object.keys(single_agency).length > 0 && citiesList.length === 0) {
+      console.log("fetching cities");
+      getCities(single_agency.location.state_id);
+    }
+  }, [single_agency, citiesList]);
+
+  useEffect(() => {
+    if (Object.keys(single_agency).length > 0) {
+      setIsloading(false);
+      setFields([
+        {
+          label: "Your Logo",
+          required: true,
+          type: "image",
+          image: single_agency.logo,
+          name: "_employer_featured_image",
+        },
+        {
+          label: "Company Name",
+          required: true,
+          type: "text",
+          name: "_employer_title",
+          value: single_agency.name,
+        },
+        {
+          label: "Company Website",
+          required: true,
+          type: "text",
+          name: "_employer_website",
+          value: single_agency.links.find((link) => link.label == "website")
+            .url,
+        },
+        {
+          label: "Location",
+          required: true,
+          type: "dropdown",
+          name: "_employer_location1",
+          data: statesList,
+          callback: changeState,
+          placeholder: "Select State",
+          value: statesList.find(
+            (state) => (state.label = single_agency.location.state)
+          ),
+        },
+        {
+          label: "",
+          type: "dropdown",
+          name: "_employer_location2",
+          data: citiesList,
+          placeholder: "Select City",
+          value: citiesList.find(
+            (city) => (city.value = single_agency.location.city_id)
+          ),
+        },
+        {
+          label: "Company LinkedIn",
+          required: true,
+          type: "text",
+          name: "_employer_linkedin",
+          value: single_agency.links.find((link) => link.label == "linkedin")
+            .url,
+        },
+        {
+          label: "Contact Email",
+          required: true,
+          type: "text",
+          name: "_employer_email",
+          value: user.email,
+        },
+        {
+          label: "Contact First Name",
+          required: true,
+          type: "text",
+          name: "employer-contact-firstname",
+          value: user.first_name,
+        },
+        {
+          label: "Contact Last Name",
+          required: true,
+          type: "text",
+          name: "employer-contact-lastname",
+          value: user.last_name,
+        },
+        {
+          label: "Contact Phone Number",
+          required: true,
+          type: "text",
+          name: "_employer_phone",
+          value: user.first_name,
+        },
+        {
+          label: "About Your Company",
+          required: true,
+          type: "editor",
+          name: "_employer_description",
+          value: user.about,
+        },
+        {
+          label: "Industry Specialty",
+          required: true,
+          type: "dropdown",
+          data: industry,
+          isMulti: true,
+          name: "_employer_category",
+          value: single_agency.industry_experience,
+        },
+        {
+          label: "Media Experience",
+          required: true,
+          type: "dropdown",
+          data: media,
+          isMulti: true,
+          name: "_employer_category",
+          value: single_agency.media_experience,
+        },
+        {
+          label: "Workplace Preference",
+          required: true,
+          type: "dropdown",
+          isMulti: true,
+          data: workplace_preference,
+          name: "_employer_category",
+          value: single_agency.workplace_preference,
+        },
+        {
+          label: "Company Size",
+          required: true,
+          type: "text",
+          name: "_employer_company_size",
+          value: single_agency.size,
+        },
+        {
+          label: "Show Company Profile",
+          required: true,
+          type: "dropdown",
+          data: showProfile,
+          name: "_employer_show_profile",
+          value: "",
+        },
+        {
+          label: "Your Ad Agency Creatives Profile URL",
+          required: true,
+          type: "text",
+          name: "_employer_profile_url",
+          value: single_agency.slug,
+        },
+      ]);
+    }
+  }, [single_agency, user]);
+
+  useEffect(() => {
+    getStates();
+    getMediaExperiences();
+    getIndustryExperiences();
+  }, []);
+
+  useEffect(() => {
+    let data = states;
+    if (states.length) {
+      data = parseFieldsData(states);
+    }
+    setStates(data);
+  }, [states]);
+
+  useEffect(() => {
+    let data = cities;
+    if (cities.length) {
+      data = parseFieldsData(cities);
+    }
+    setCities(data);
+  }, [cities]);
+
+  useEffect(() => {
+    let data = media_experiences;
+    if (media_experiences.length) {
+      data = parseFieldsData(media_experiences);
+    }
+    setMedia(data);
+  }, [media_experiences]);
+
+  useEffect(() => {
+    let data = industry_experiences;
+    if (industry_experiences.length) {
+      data = parseFieldsData(industry_experiences);
+    }
+    setIndustry(data);
+  }, [industry_experiences]);
+
+  const parseFieldsData = (data) => {
+    const parsedValue = data.map((item) => {
+      return { label: item.name, value: item.uuid || item.id };
+    });
+    return parsedValue;
   };
 
-  const [cities, setCities] = useState([]);
+  const changeState = (item, { action }) => {
+    if (action == "select-option") {
+      getCities(item.value);
+    }
+  };
+
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [isMounted, setIsMounted] = useState(false);
 
@@ -72,110 +264,9 @@ const Profile = () => {
     };
   }, []);
 
-  const changeState = ({ value }, { action }) => {
-    if (action == "select-option") {
-      setCities(citiesArray[value]);
-    }
-  };
-
-  const fields = [
-    {
-      label: "Your Logo",
-      required: true,
-      type: "image",
-      name: "_employer_featured_image",
-    },
-    {
-      label: "Company Name",
-      required: true,
-      type: "text",
-      name: "_employer_title",
-    },
-    {
-      label: "Company Website",
-      required: true,
-      type: "text",
-      name: "_employer_website",
-    },
-    {
-      label: "Location",
-      required: true,
-      type: "dropdown",
-      name: "_employer_location1",
-      data: states,
-      callback: changeState,
-      placeholder: "Select State",
-    },
-    {
-      label: "",
-      type: "dropdown",
-      name: "_employer_location2",
-      data: cities,
-      placeholder: "Select City",
-    },
-    {
-      label: "Company LinkedIn",
-      required: true,
-      type: "text",
-      name: "linkedinlink",
-    },
-    {
-      label: "Contact Email",
-      required: true,
-      type: "text",
-      name: "_employer_email",
-    },
-    {
-      label: "Contact First Name",
-      required: true,
-      type: "text",
-      name: "employer-contact-firstname",
-    },
-    {
-      label: "Contact Last Name",
-      required: true,
-      type: "text",
-      name: "employer-contact-lastname",
-    },
-    {
-      label: "Contact Phone Number",
-      required: true,
-      type: "text",
-      name: "_employer_phone",
-    },
-    {
-      label: "About Your Company",
-      required: true,
-      type: "editor",
-      name: "_employer_description",
-    },
-    {
-      label: "Industry Specialty",
-      required: true,
-      type: "dropdown",
-      name: "_employer_category",
-    },
-    {
-      label: "Company Size",
-      required: true,
-      type: "text",
-      name: "_employer_company_size",
-    },
-    {
-      label: "Show Company Profile",
-      required: true,
-      type: "dropdown",
-      name: "_employer_show_profile",
-    },
-    {
-      label: "Your Ad Agency Creatives Profile URL",
-      required: true,
-      type: "text",
-      name: "_employer_profile_url",
-    },
-  ];
-
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="agency-page-profile">
       <h3 className="page-title">Edit Profile</h3>
       <div className="card">
@@ -199,7 +290,7 @@ const Profile = () => {
                       />
                       <div className="row align-items-center upload-box">
                         <div className="col-md-2 col-sm-4 col-12">
-                          <img src={Logo} className="w-100"/>
+                          <img src={field.image} className="w-100" />
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                           <button className="btn btn-secondary w-100 mb-2 text-uppercase">
@@ -219,7 +310,11 @@ const Profile = () => {
                         {field.label}
                         {field.required && <span className="required">*</span>}
                       </label>
-                      <input type="text" className="form-control" />
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={field.value}
+                      />
                     </div>
                   );
                 case "dropdown":
@@ -231,8 +326,10 @@ const Profile = () => {
                       </label>
                       <Select
                         options={field.data}
+                        isMulti={field.isMulti || false}
                         onChange={field.callback}
                         placeholder={field.placeholder}
+                        defaultValue={field.value}
                         styles={{
                           control: (baseStyles) => ({
                             ...baseStyles,

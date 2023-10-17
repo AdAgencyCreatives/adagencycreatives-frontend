@@ -2,13 +2,13 @@ import "../styles/Footer.css";
 import { FaLinkedinIn } from "react-icons/fa";
 
 const Footer = () => {
-  const linkedIn = "https://www.linkedin.com/company/adagencycreatives";
+  const linkedIn = "https://www.instagram.com/adagencycreativescommunity";
   return (
     <div className="footer">
       <div className="container">
         <div className="row">
           <div className="col">
-            <h3 className="footer-title">Gather. Inspire. Do Cool S#*t!</h3>
+            <h3 className="footer-title">Gather. Inspire. Do Cool $#*t!</h3>
             <a href={linkedIn} className="social">
               <FaLinkedinIn />
             </a>
