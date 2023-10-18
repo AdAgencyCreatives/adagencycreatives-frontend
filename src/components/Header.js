@@ -26,7 +26,7 @@ import { navItems } from "../nav/NavItems";
 import AuthModal from "./modals/AuthModal";
 import { Context as AuthContext } from "../context/AuthContext";
 import Placeholder from "../assets/images/placeholder.png";
-import { agencyNav, creativeNav } from "../nav/AgencyNav";
+import { agencyNav, creativeNav } from "../nav/DashboardNav";
 
 const drawerWidth = "85%";
 
@@ -43,8 +43,7 @@ function Header(props) {
 
   useEffect(() => {
     if (state.token !== null) {
-      console.log(state.role);
-      setLoggedInNav(state.role == "creative" ? creativeNav : agencyNav);
+      setLoggedInNav(state.role === "creative" ? creativeNav : agencyNav);
     }
   }, [state.token]);
 
@@ -241,7 +240,7 @@ function Header(props) {
                       <div className="dropdown-menu logged-in-dropdown show">
                         <ul className="dropdown-list">
                           {loggedInNav.map((item, index) => (
-                            <li key={`liul${index}`}>
+                            <li key={`liul${index}`} className="testing">
                               <NavLink to={item.link}>{item.name}</NavLink>
                             </li>
                           ))}

@@ -8,6 +8,7 @@ const state = {
   single_creative: {},
   creative_experience: [],
   creative_education: [],
+  formSubmit: false
 };
 
 const reducer = (state, action) => {
@@ -35,6 +36,11 @@ const reducer = (state, action) => {
         ...state,
         loading: action.payload,
       };
+    case "set_form_submit":
+      return {
+        ...state,
+        formSubmit: action.payload,
+      };
     default:
       return state;
   }
@@ -56,6 +62,22 @@ const getCreative = (dispatch) => {
   return async (slug) => {
     try {
       const response = await api.get("/creatives?filter[slug]=" + slug);
+      const data = response.data.data[0];
+      const uid = data.user_id;
+      getCreativeEducation(dispatch, uid);
+      getCreativeExperience(dispatch, uid);
+      dispatch({
+        type: "set_single_creative",
+        payload: data,
+      });
+    } catch (error) {}
+  };
+};
+
+const getCreativeById = (dispatch) => {
+  return async (id) => {
+    try {
+      const response = await api.get("/creatives?filter[user_id]=" + id);
       const data = response.data.data[0];
       const uid = data.user_id;
       getCreativeEducation(dispatch, uid);
@@ -110,6 +132,6 @@ const loadCreatives = (dispatch) => {
 
 export const { Context, Provider } = createDataContext(
   reducer,
-  { getCreatives, loadCreatives, getCreative },
+  { getCreatives, loadCreatives, getCreative, getCreativeById },
   state
 );

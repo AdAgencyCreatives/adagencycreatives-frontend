@@ -2,7 +2,7 @@ import Dashboard from "./Dashboard";
 import Profile from "./Profile";
 import PostJob from "./PostJob";
 import MyJobs from "./MyJobs";
-import Sidebar from "../../../components/agency/Sidebar";
+import Sidebar from "../../../components/creative/Sidebar";
 import "../../../styles/AgencyDashboard/index.scss";
 import { useParams } from "react-router-dom";
 import ApplicantJobs from "../../../components/agency/dashboard/ApplicantJobs";
@@ -12,7 +12,7 @@ import CreativeShortlist from "./CreativeShortlist";
 import Packages from "./Packages";
 import MyResume from "./MyResume";
 
-const Agency = () => {
+const Creative = () => {
   const { page } = useParams();
   const components = {
     "dashboard": <Dashboard />,
@@ -41,4 +41,4 @@ const Agency = () => {
   );
 };
 
-export default Agency;
+export default Creative;

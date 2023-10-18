@@ -17,7 +17,7 @@ import Notifications from "./pages/Notifications";
 import About from "./pages/About";
 import Profile from "./pages/User/Profile";
 import JobDescription from "./pages/JobDescription";
-import Agency from "./pages/User/Agency";
+import UserDashboard from "./pages/User/UserDashboard";
 import Checkout from "./pages/Cart/Checkout";
 import CopyWriting from "./pages/Mentor/CopyWriting";
 import LoginAs from "./pages/LoginAs";
@@ -136,7 +136,7 @@ export const router = createBrowserRouter([
 
       {
         path: "/:page",
-        element: <Agency />,
+        element: <UserDashboard />,
       },
       {
         path: "/loginas",
