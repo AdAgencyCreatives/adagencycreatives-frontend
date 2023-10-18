@@ -99,26 +99,21 @@ const getAgencyById = (dispatch) => {
 
 const loadAgencies = (dispatch) => {
   return async (page) => {
-    dispatch({
-      type: "set_loading",
-      payload: true,
-    });
+    setLoading(dispatch, true);
     try {
       const response = await api.get(page);
       dispatch({
         type: "load_agencies",
         payload: response.data,
       });
-      dispatch({
-        type: "set_loading",
-        payload: false,
-      });
+      setLoading(dispatch, false);
     } catch (error) {}
   };
 };
 
 const getOpenPositions = (dispatch) => {
   return async (uid) => {
+    setLoading(dispatch, true);
     try {
       const response = await api.get("/jobs?filter[user_id]=" + uid);
       const data = response.data;
@@ -127,6 +122,7 @@ const getOpenPositions = (dispatch) => {
         payload: data,
       });
     } catch (error) {}
+    setLoading(dispatch, false);
   };
 };
 
@@ -144,7 +140,6 @@ const getStats = (dispatch) => {
 
 const saveAgency = (dispatch) => {
   return async (uid, data) => {
-
     dispatch({
       type: "set_form_submit",
       payload: true,
@@ -159,6 +154,25 @@ const saveAgency = (dispatch) => {
   };
 };
 
+const saveAgencyImage = (dispatch) => {
+  return async (data) => {
+    try {
+      const response = await api.post("/attachments", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    } catch (error) {}
+  };
+};
+
+const setLoading = (dispatch, state) => {
+  dispatch({
+    type: "set_loading",
+    payload: state,
+  });
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
@@ -169,6 +183,7 @@ export const { Context, Provider } = createDataContext(
     getAgencyById,
     saveAgency,
     getOpenPositions,
+    saveAgencyImage,
   },
   state
 );

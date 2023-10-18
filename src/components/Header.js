@@ -231,7 +231,7 @@ function Header(props) {
                     <div className="nav-item has-children">
                       <div className="logged-in-menu">
                         <img
-                          src={Placeholder}
+                          src={state.user.image || Placeholder}
                           height="50"
                           width="50"
                           className="avatar-rounded rounded-circle"

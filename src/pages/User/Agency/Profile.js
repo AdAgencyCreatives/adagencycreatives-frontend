@@ -4,7 +4,7 @@ import Select from "react-select";
 import { EditorState, ContentState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import Logo from "../../../assets/images/NathanWalker_ProfilePic-150x150.jpg";
+import Placeholder from "../../../assets/images/placeholder.png";
 import { FiPaperclip, FiTrash2 } from "react-icons/fi";
 import { Context as DataContext } from "../../../context/DataContext";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
@@ -13,7 +13,8 @@ import Loader from "../../../components/Loader";
 import { CircularProgress } from "@mui/material";
 
 const Profile = () => {
-  const imageRef = useRef();
+  const imageUploadRef = useRef();
+  const logoRef = useRef();
   const [statesList, setStates] = useState([]);
   const [citiesList, setCities] = useState([]);
   const [media, setMedia] = useState([]);
@@ -49,6 +50,7 @@ const Profile = () => {
     state: { single_agency, formSubmit },
     getAgencyById,
     saveAgency,
+    saveAgencyImage,
   } = useContext(AgenciesContext);
 
   const {
@@ -65,12 +67,15 @@ const Profile = () => {
     }
   }, [user]);
 
+
+  //Fetch initial Cities
   useEffect(() => {
     if (Object.keys(single_agency).length > 0 && citiesList.length === 0) {
       getCities(single_agency.location.state_id);
     }
   }, [single_agency, citiesList]);
 
+  // Set initial fields
   useEffect(() => {
     if (
       Object.keys(single_agency).length > 0 &&
@@ -236,6 +241,7 @@ const Profile = () => {
     }
   }, [single_agency, user, media, industry, statesList]);
 
+  // Cities update
   useEffect(() => {
     if (citiesList.length > 0 && fields.length) {
       let updatedFields = [...fields];
@@ -244,6 +250,7 @@ const Profile = () => {
     }
   }, [citiesList, fields]);
 
+  //Set initial form data
   useEffect(() => {
     if (Object.keys(single_agency).length > 0 && !isLoading) {
       setFormData({
@@ -373,6 +380,22 @@ const Profile = () => {
     saveAgency(user.uuid, formData);
   };
 
+  const removeLogo = () => {
+    logoRef.current.src = ""
+  }
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    logoRef.current.src = URL.createObjectURL(file)
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("user_id", user.uuid);
+      formData.append("resource_type", "agency_logo");
+     saveAgencyImage(formData);
+    }
+  };
+
   return isLoading ? (
     <Loader />
   ) : (
@@ -399,17 +422,25 @@ const Profile = () => {
                       />
                       <div className="row align-items-center upload-box">
                         <div className="col-md-2 col-sm-4 col-12">
-                          <img src={field.image} className="w-100" />
+                          <img src={field.image} className="w-100" ref={logoRef} />
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
-                          <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => imageRef.current.click()}>
+                          <button
+                            className="btn btn-secondary w-100 mb-2 text-uppercase"
+                            onClick={() => imageUploadRef.current.click()}
+                          >
                             <FiPaperclip /> Upload
                           </button>
-                          <button className="btn btn-secondary w-100 text-uppercase">
+                          <button className="btn btn-secondary w-100 text-uppercase" onClick={removeLogo}>
                             <FiTrash2 /> Remove
                           </button>
                         </div>
-                        <input type="file" ref={imageRef} className="d-none" onChange={(file) => console.log(file)} />
+                        <input
+                          type="file"
+                          ref={imageUploadRef}
+                          className="d-none"
+                          onChange={handleFileChange}
+                        />
                       </div>
                     </div>
                   );
