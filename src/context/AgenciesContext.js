@@ -8,6 +8,7 @@ const state = {
   single_agency: {},
   open_positions: [],
   stats: null,
+  formSubmit: false,
 };
 
 const reducer = (state, action) => {
@@ -38,6 +39,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         loading: action.payload,
+      };
+    case "set_form_submit":
+      return {
+        ...state,
+        formSubmit: action.payload,
       };
     case "set_stats":
       return {
@@ -76,6 +82,21 @@ const getAgency = (dispatch) => {
   };
 };
 
+const getAgencyById = (dispatch) => {
+  return async (id) => {
+    try {
+      const response = await api.get("/agencies?filter[user_id]=" + id);
+      const data = response.data.data[0];
+      const uid = data.user_id;
+      getOpenPositions(dispatch)(uid);
+      dispatch({
+        type: "set_single_agency",
+        payload: data,
+      });
+    } catch (error) {}
+  };
+};
+
 const loadAgencies = (dispatch) => {
   return async (page) => {
     dispatch({
@@ -96,15 +117,17 @@ const loadAgencies = (dispatch) => {
   };
 };
 
-const getOpenPositions = async (dispatch, uid) => {
-  try {
-    const response = await api.get("/jobs?filter[user_id]=" + uid);
-    const data = response.data;
-    dispatch({
-      type: "set_open_positions",
-      payload: data,
-    });
-  } catch (error) {}
+const getOpenPositions = (dispatch) => {
+  return async (uid) => {
+    try {
+      const response = await api.get("/jobs?filter[user_id]=" + uid);
+      const data = response.data;
+      dispatch({
+        type: "set_open_positions",
+        payload: data,
+      });
+    } catch (error) {}
+  };
 };
 
 const getStats = (dispatch) => {
@@ -119,8 +142,33 @@ const getStats = (dispatch) => {
   };
 };
 
+const saveAgency = (dispatch) => {
+  return async (uid, data) => {
+
+    dispatch({
+      type: "set_form_submit",
+      payload: true,
+    });
+    try {
+      const response = await api.patch("/agency_profile/" + uid, data);
+    } catch (error) {}
+    dispatch({
+      type: "set_form_submit",
+      payload: false,
+    });
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
-  { getAgencies, loadAgencies, getAgency, getStats },
+  {
+    getAgencies,
+    loadAgencies,
+    getAgency,
+    getStats,
+    getAgencyById,
+    saveAgency,
+    getOpenPositions,
+  },
   state
 );

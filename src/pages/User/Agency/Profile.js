@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import "../../../styles/AgencyDashboard/Profile.scss";
 import Select from "react-select";
-import { EditorState } from "draft-js";
+import { EditorState, ContentState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Logo from "../../../assets/images/NathanWalker_ProfilePic-150x150.jpg";
@@ -10,23 +10,35 @@ import { Context as DataContext } from "../../../context/DataContext";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import Loader from "../../../components/Loader";
+import { CircularProgress } from "@mui/material";
 
 const Profile = () => {
+  const imageRef = useRef();
   const [statesList, setStates] = useState([]);
   const [citiesList, setCities] = useState([]);
   const [media, setMedia] = useState([]);
   const [industry, setIndustry] = useState([]);
   const [isLoading, setIsloading] = useState(true);
   const [fields, setFields] = useState([]);
+  const [formData, setFormData] = useState({});
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    return () => {
+      setIsMounted(false);
+    };
+  }, []);
 
   const workplace_preference = [
-    { label: "Remote", value: "remote" },
-    { label: "Hybrid", value: "hybrid" },
-    { label: "Onsite", value: "onsite" },
+    { label: "Remote", value: "remote", key: "is_remote" },
+    { label: "Hybrid", value: "hybrid", key: "is_hybrid" },
+    { label: "Onsite", value: "onsite", key: "is_onsite" },
   ];
   const showProfile = [
-    { label: "Show", value: 1 },
-    { label: "Hide", value: 0 },
+    { label: "Show", value: 1, key: "show" },
+    { label: "Hide", value: 0, key: "hide" },
   ];
 
   const {
@@ -34,8 +46,9 @@ const Profile = () => {
   } = useContext(AuthContext);
 
   const {
-    state: { single_agency },
-    getAgency,
+    state: { single_agency, formSubmit },
+    getAgencyById,
+    saveAgency,
   } = useContext(AgenciesContext);
 
   const {
@@ -48,40 +61,49 @@ const Profile = () => {
 
   useEffect(() => {
     if (user) {
-      getAgency(user.username);
+      getAgencyById(user.uuid);
     }
   }, [user]);
 
   useEffect(() => {
     if (Object.keys(single_agency).length > 0 && citiesList.length === 0) {
-      console.log("fetching cities");
       getCities(single_agency.location.state_id);
     }
   }, [single_agency, citiesList]);
 
   useEffect(() => {
-    if (Object.keys(single_agency).length > 0) {
+    if (
+      Object.keys(single_agency).length > 0 &&
+      industry.length &&
+      media.length &&
+      statesList.length
+    ) {
       setIsloading(false);
+      setEditorState(
+        EditorState.createWithContent(
+          ContentState.createFromText(single_agency.about)
+        )
+      );
       setFields([
         {
           label: "Your Logo",
           required: true,
           type: "image",
           image: single_agency.logo,
-          name: "_employer_featured_image",
+          name: "company_logo",
         },
         {
           label: "Company Name",
           required: true,
           type: "text",
-          name: "_employer_title",
+          name: "company_name",
           value: single_agency.name,
         },
         {
           label: "Company Website",
           required: true,
           type: "text",
-          name: "_employer_website",
+          name: "website",
           value: single_agency.links.find((link) => link.label == "website")
             .url,
         },
@@ -89,29 +111,32 @@ const Profile = () => {
           label: "Location",
           required: true,
           type: "dropdown",
-          name: "_employer_location1",
+          name: "state_id",
           data: statesList,
-          callback: changeState,
+          callback: (item) => changeState(item, "state_id"),
           placeholder: "Select State",
           value: statesList.find(
-            (state) => (state.label = single_agency.location.state)
+            (state) => state.value == single_agency.location.state_id
           ),
         },
         {
           label: "",
           type: "dropdown",
-          name: "_employer_location2",
-          data: citiesList,
+          name: "city_id",
+          data: [],
           placeholder: "Select City",
-          value: citiesList.find(
-            (city) => (city.value = single_agency.location.city_id)
-          ),
+          callback: (item) => handleDropdownChange(item, "city_id"),
+          /* value: citiesList.find((city) => {
+            console.log("filteringcityid", single_agency.location.city_id);
+            console.log("filtering", city.value);
+            return city.value == single_agency.location.city_id;
+          }), */
         },
         {
           label: "Company LinkedIn",
           required: true,
           type: "text",
-          name: "_employer_linkedin",
+          name: "linkedin",
           value: single_agency.links.find((link) => link.label == "linkedin")
             .url,
         },
@@ -119,35 +144,35 @@ const Profile = () => {
           label: "Contact Email",
           required: true,
           type: "text",
-          name: "_employer_email",
+          name: "email",
           value: user.email,
         },
         {
           label: "Contact First Name",
           required: true,
           type: "text",
-          name: "employer-contact-firstname",
+          name: "first_name",
           value: user.first_name,
         },
         {
           label: "Contact Last Name",
           required: true,
           type: "text",
-          name: "employer-contact-lastname",
+          name: "last_name",
           value: user.last_name,
         },
         {
           label: "Contact Phone Number",
           required: true,
           type: "text",
-          name: "_employer_phone",
-          value: user.first_name,
+          name: "phone_number",
+          value: single_agency.phone_number,
         },
         {
           label: "About Your Company",
           required: true,
           type: "editor",
-          name: "_employer_description",
+          name: "about",
           value: user.about,
         },
         {
@@ -156,8 +181,11 @@ const Profile = () => {
           type: "dropdown",
           data: industry,
           isMulti: true,
-          name: "_employer_category",
-          value: single_agency.industry_experience,
+          name: "industry_experience",
+          callback: (item) => handleMultiChange(item, "industry_experience"),
+          value: industry.filter((item) =>
+            single_agency.industry_experience.includes(item.label)
+          ),
         },
         {
           label: "Media Experience",
@@ -165,8 +193,11 @@ const Profile = () => {
           type: "dropdown",
           data: media,
           isMulti: true,
-          name: "_employer_category",
-          value: single_agency.media_experience,
+          name: "media_experience",
+          callback: (item) => handleMultiChange(item, "media_experience"),
+          value: media.filter((item) =>
+            single_agency.media_experience.includes(item.label)
+          ),
         },
         {
           label: "Workplace Preference",
@@ -174,14 +205,16 @@ const Profile = () => {
           type: "dropdown",
           isMulti: true,
           data: workplace_preference,
-          name: "_employer_category",
-          value: single_agency.workplace_preference,
+          name: "workplace_preference",
+          callback: (item) =>
+            handleWorkplaceChange(item, "workplace_preference"),
+          value: workplace_preference.filter((item) => single_agency[item.key]),
         },
         {
           label: "Company Size",
           required: true,
           type: "text",
-          name: "_employer_company_size",
+          name: "size",
           value: single_agency.size,
         },
         {
@@ -189,19 +222,58 @@ const Profile = () => {
           required: true,
           type: "dropdown",
           data: showProfile,
-          name: "_employer_show_profile",
-          value: "",
+          name: "show_profile",
+          value: showProfile.filter((item) => item.value == user.is_visible),
         },
         {
           label: "Your Ad Agency Creatives Profile URL",
           required: true,
           type: "text",
-          name: "_employer_profile_url",
+          name: "slug",
           value: single_agency.slug,
         },
       ]);
     }
-  }, [single_agency, user]);
+  }, [single_agency, user, media, industry, statesList]);
+
+  useEffect(() => {
+    if (citiesList.length > 0 && fields.length) {
+      let updatedFields = [...fields];
+      updatedFields[4].data = citiesList;
+      setFields(updatedFields);
+    }
+  }, [citiesList, fields]);
+
+  useEffect(() => {
+    if (Object.keys(single_agency).length > 0 && !isLoading) {
+      setFormData({
+        company_name: single_agency.name,
+        website: single_agency.links.find((link) => link.label == "website")
+          .url,
+        state_id: single_agency.location.state_id,
+        city_id: single_agency.location.city_id,
+        linkedin: single_agency.links.find((link) => link.label == "linkedin")
+          .url,
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        phone_number: "",
+        about: single_agency.about,
+        industry_experience: single_agency.industry_experience.map(
+          (item) => industry_experiences.find((j) => j.name == item).id
+        ),
+        media_experience: single_agency.media_experience.map(
+          (item) => media_experiences.find((j) => j.name == item).id
+        ),
+        is_onsite: single_agency.workplace_preference.is_onsite,
+        is_hybrid: single_agency.workplace_preference.is_hybrid,
+        is_remote: single_agency.workplace_preference.is_remote,
+        size: single_agency.size,
+        show_profile: user.is_visible,
+        slug: single_agency.slug,
+      });
+    }
+  }, [isLoading, media_experiences, industry_experiences]);
 
   useEffect(() => {
     getStates();
@@ -243,26 +315,63 @@ const Profile = () => {
 
   const parseFieldsData = (data) => {
     const parsedValue = data.map((item) => {
-      return { label: item.name, value: item.uuid || item.id };
+      return { label: item.name, value: item.uuid || item.id, key: item.name };
     });
     return parsedValue;
   };
 
-  const changeState = (item, { action }) => {
-    if (action == "select-option") {
-      getCities(item.value);
-    }
+  const changeState = (item, name) => {
+    getCities(item.value);
+    handleDropdownChange(item, name);
   };
 
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [isMounted, setIsMounted] = useState(false);
+  const handleTextChange = (e, name) => {
+    const value = e.target.value;
+    let newFields = [...fields];
+    const fieldIndex = newFields.findIndex((item) => item.name == name);
+    newFields[fieldIndex].value = value;
+    setFields([...newFields]);
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleDropdownChange = (item, name) => {
+    setFormData((prev) => ({ ...prev, [name]: item.value }));
+  };
+
+  const handleMultiChange = (item, name) => {
+    const values = item.map((i) => i.value);
+    setFormData((prev) => ({ ...prev, [name]: values }));
+  };
+
+  const handleWorkplaceChange = (item, name) => {
+    const result = {};
+
+    item.forEach((item) => {
+      result[item.key] = 1;
+    });
+    setFormData((prev) => ({
+      ...prev,
+      is_hybrid: result.hasOwnProperty("is_hybrid") ? 1 : 0,
+      is_onsite: result.hasOwnProperty("is_onsite") ? 1 : 0,
+      is_remote: result.hasOwnProperty("is_remote") ? 1 : 0,
+    }));
+  };
+
+  const handleEditorChange = (editorState, name) => {
+    setEditorState(editorState);
+    const contentState = editorState.getCurrentContent();
+    const contentStateText = contentState.getPlainText(); // This gives you the plain text content
+    const contentStateRaw = convertToRaw(contentState); // This gives you the content in a raw format
+    setFormData((prev) => ({ ...prev, [name]: contentStateText }));
+  };
 
   useEffect(() => {
-    setIsMounted(true);
-    return () => {
-      setIsMounted(false);
-    };
-  }, []);
+    console.log(formData);
+  }, [formData]);
+
+  const handleSubmit = () => {
+    saveAgency(user.uuid, formData);
+  };
 
   return isLoading ? (
     <Loader />
@@ -273,11 +382,11 @@ const Profile = () => {
         <h4 className="text-uppercase mb-4">Edit Profile</h4>
         <div className="profile-edit-form">
           <div className="row gx-3 gy-5 align-items-end">
-            {fields.map((field) => {
+            {fields.map((field, index) => {
               switch (field.type) {
                 case "image":
                   return (
-                    <div className="col-12" key={field.name}>
+                    <div className="col-12" key={index}>
                       <label htmlFor={field.name} className="form-label">
                         {field.label}
                         {field.required && <span className="required">*</span>}
@@ -285,7 +394,7 @@ const Profile = () => {
                       <input
                         type="hidden"
                         className="input-text"
-                        name="_employer_featured_image"
+                        name="field.name"
                         value=""
                       />
                       <div className="row align-items-center upload-box">
@@ -293,19 +402,20 @@ const Profile = () => {
                           <img src={field.image} className="w-100" />
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
-                          <button className="btn btn-secondary w-100 mb-2 text-uppercase">
+                          <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => imageRef.current.click()}>
                             <FiPaperclip /> Upload
                           </button>
                           <button className="btn btn-secondary w-100 text-uppercase">
                             <FiTrash2 /> Remove
                           </button>
                         </div>
+                        <input type="file" ref={imageRef} className="d-none" onChange={(file) => console.log(file)} />
                       </div>
                     </div>
                   );
                 case "text":
                   return (
-                    <div className="col-sm-6" key={field.name}>
+                    <div className="col-sm-6" key={index}>
                       <label htmlFor={field.name} className="form-label">
                         {field.label}
                         {field.required && <span className="required">*</span>}
@@ -314,12 +424,13 @@ const Profile = () => {
                         type="text"
                         className="form-control"
                         value={field.value}
+                        onChange={(e) => handleTextChange(e, field.name)}
                       />
                     </div>
                   );
                 case "dropdown":
                   return (
-                    <div className="col-sm-6" key={field.name}>
+                    <div className="col-sm-6" key={index}>
                       <label htmlFor={field.name} className="form-label">
                         {field.label}
                         {field.required && <span className="required">*</span>}
@@ -358,7 +469,7 @@ const Profile = () => {
 
                 case "editor":
                   return (
-                    <div className="col-12" key={field.name}>
+                    <div className="col-12" key={index}>
                       <label htmlFor={field.name} className="form-label">
                         {field.label}
                         {field.required && <span className="required">*</span>}
@@ -380,8 +491,7 @@ const Profile = () => {
                             ],
                           }}
                           onEditorStateChange={(newState) => {
-                            console.log(newState);
-                            setEditorState(newState);
+                            handleEditorChange(newState, field.name);
                           }}
                         />
                       )}
@@ -391,8 +501,12 @@ const Profile = () => {
             })}
           </div>
           <div className="submit-btn mt-4">
-            <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2">
-              Save Profile
+            <button
+              className="btn btn-dark btn-hover-primary border-0 px-3 py-2"
+              onClick={handleSubmit}
+              disabled={formSubmit}
+            >
+              Save Profile {formSubmit && <CircularProgress size={20} />}
             </button>
           </div>
         </div>

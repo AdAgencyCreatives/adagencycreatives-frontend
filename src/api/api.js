@@ -16,7 +16,7 @@ const setAuthToken = (token) => {
 api.interceptors.response.use(
   (response) => {
     // Do something with the response data
-    console.log(response);
+    // console.log(response);
     return response;
   },
   (error) => {

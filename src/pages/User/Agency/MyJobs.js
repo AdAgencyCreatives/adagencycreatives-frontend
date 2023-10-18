@@ -1,9 +1,15 @@
 import "../../../styles/AgencyDashboard/MyJobs.scss";
 import { Tooltip } from "@mui/material";
+import { useContext } from "react";
 import { IoClose, IoArrowForward, IoLocationOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { Context } from "../../../context/AgenciesContext";
 
 const MyJobs = () => {
+  const {
+    state: { open_positions },
+    getOpenPositions,
+  } = useContext(Context);
   return (
     <div className="agency-page-myjobs">
       <h3 className="page-title">Manage Jobs</h3>
