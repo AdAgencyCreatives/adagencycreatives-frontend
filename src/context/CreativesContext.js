@@ -130,8 +130,36 @@ const loadCreatives = (dispatch) => {
   };
 };
 
+const saveCreative = (dispatch) => {
+  return async (uid, data) => {
+    dispatch({
+      type: "set_form_submit",
+      payload: true,
+    });
+    try {
+      const response = await api.patch("/creative_profile/" + uid, data);
+    } catch (error) {}
+    dispatch({
+      type: "set_form_submit",
+      payload: false,
+    });
+  };
+};
+
+const saveCreativeImage = (dispatch) => {
+  return async (data) => {
+    try {
+      const response = await api.post("/attachments", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    } catch (error) {}
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
-  { getCreatives, loadCreatives, getCreative, getCreativeById },
+  { getCreatives, loadCreatives, getCreative, getCreativeById, saveCreative, saveCreativeImage },
   state
 );

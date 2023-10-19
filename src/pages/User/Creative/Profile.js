@@ -18,6 +18,7 @@ const Profile = () => {
   const [citiesList, setCities] = useState([]);
   const [media, setMedia] = useState([]);
   const [industry, setIndustry] = useState([]);
+  const [employentType, setEmployentType] = useState([]);
   const [isLoading, setIsloading] = useState(true);
   const [fields, setFields] = useState([]);
   const [formData, setFormData] = useState({});
@@ -36,9 +37,15 @@ const Profile = () => {
     { label: "Hybrid", value: "hybrid", key: "is_hybrid" },
     { label: "Onsite", value: "onsite", key: "is_onsite" },
   ];
+
   const showProfile = [
     { label: "Show", value: 1, key: "show" },
     { label: "Hide", value: 0, key: "hide" },
+  ];
+
+  const openToRelocation = [
+    { label: "Yes", value: 1, key: "Yes" },
+    { label: "No", value: 0, key: "No" },
   ];
 
   const {
@@ -53,11 +60,12 @@ const Profile = () => {
   } = useContext(CreativesContext);
 
   const {
-    state: { states, cities, media_experiences, industry_experiences },
+    state: { states, cities, media_experiences, industry_experiences, employment_type },
     getStates,
     getCities,
     getMediaExperiences,
     getIndustryExperiences,
+    getEmploymentTypes
   } = useContext(DataContext);
 
   useEffect(() => {
@@ -80,7 +88,8 @@ const Profile = () => {
       Object.keys(single_creative).length > 0 &&
       industry.length &&
       media.length &&
-      statesList.length
+      statesList.length &&
+      employentType.length
     ) {
       setIsloading(false);
       setEditorState(
@@ -88,40 +97,127 @@ const Profile = () => {
           ContentState.createFromText(single_creative.about)
         )
       );
-      setFields([
+      console.log(single_creative);
+      const fields = [
         {
           label: "Upload Your Profile Picture Avatar",
           required: true,
           type: "image",
-          name: "_employee_featured_image",
-          image: user.image,
+          name: "profile_image",
+          image: single_creative.profile_image,
         },
         {
           label: "First Name",
           required: true,
           type: "text",
-          name: "_employee_firstname",
+          name: "first_name",
           value: user.first_name,
         },
         {
           label: "Last Name",
           required: true,
           type: "text",
-          name: "_employee_lastname",
+          name: "last_name",
           value: user.last_name,
+        },
+        {
+          label: "Location",
+          required: true,
+          type: "dropdown",
+          name: "state_id",
+          data: statesList,
+          callback: (item) => changeState(item, "state_id"),
+          placeholder: "Select State",
+          value: statesList.find(
+            (state) => state.value == single_creative.location.state_id
+          ),
+        },
+        {
+          label: "",
+          type: "dropdown",
+          name: "city_id",
+          data: [],
+          placeholder: "Select City",
+          callback: (item) => handleDropdownChange(item, "city_id")
+        },
+        {
+          label: "Portfolio Site",
+          required: true,
+          type: "text",
+          name: "portfolio_site",
+          value: single_creative.links.find((link) => link.label === "portfolio")?.url ?? '',
+        },
+        {
+          label: "LinkedIn Profile",
+          required: true,
+          type: "text",
+          name: "linkedin_profile",
+          value: single_creative.links.find((link) => link.label === "linkedin")?.url ?? '',
         },
         {
           label: "Email",
           required: true,
           type: "email",
-          name: "_employee_email",
+          name: "email",
           value: user.email,
         },
         {
           label: "Phone Number",
           required: true,
           type: "text",
-          name: "_employee_phone",
+          name: "phone_number",
+          value: single_creative.phone_number,
+        },
+        {
+          label: "About",
+          required: true,
+          type: "editor",
+          name: "about",
+          value: user.about,
+        },
+        {
+          label: "Industry Specialty",
+          required: true,
+          type: "dropdown",
+          data: industry,
+          isMulti: true,
+          name: "industry_experience",
+          callback: (item) => handleMultiChange(item, "industry_experience"),
+          value: industry.filter((item) =>
+            single_creative.industry_experience.includes(item.label)
+          ),
+        },
+        {
+          label: "Media Experience",
+          required: true,
+          type: "dropdown",
+          data: media,
+          isMulti: true,
+          name: "media_experience",
+          callback: (item) => handleMultiChange(item, "media_experience"),
+          value: media.filter((item) =>
+            single_creative.media_experience.includes(item.label)
+          ),
+        },
+        {
+          label: "Workplace Preference",
+          required: true,
+          type: "dropdown",
+          isMulti: true,
+          data: workplace_preference,
+          name: "workplace_preference",
+          callback: (item) =>
+            handleWorkplaceChange(item, "workplace_preference"),
+          value: workplace_preference.filter((item) => single_creative.workplace_preference[item.key]),
+        },
+        {
+          label: "Type of Work",
+          required: true,
+          type: "dropdown",
+          data: employentType,
+          name: "employment_type",
+          callback: (item) => handleDropdownChange(item, "employment_type"),
+          value: employentType.filter((item) => item.value == single_creative.employment_type),
         },
         {
           label: "Show my profile",
@@ -129,37 +225,29 @@ const Profile = () => {
           type: "dropdown",
           data: showProfile,
           name: "show_profile",
+          callback: (item) => handleDropdownChange(item, "show_profile"),
           value: showProfile.filter((item) => item.value === user.is_visible),
         },
         {
-          label: "Portfolio Site",
-          required: true,
-          type: "text",
-          name: "portfolio_site",
-        },
-        {
-          label: "LinkedIn Profile",
-          required: true,
-          type: "text",
-          name: "portfolio_site",
-        },
-        {
-          label: "Type of Work",
+          label: "Open to Relocation",
           required: true,
           type: "dropdown",
-          name: "type_of_work",
-          data: states,
-          placeholder: "",
+          data: openToRelocation,
+          name: "is_opentorelocation",
+          callback: (item) => handleDropdownChange(item, "is_opentorelocation"),
+          value: openToRelocation.filter((item) => item.value === single_creative.is_opentorelocation),
         },
         {
           label: "Your Ad Agency Creatives Profile Link",
           required: true,
           type: "text",
-          name: "employer-contact-lastname",
+          name: "slug",
+          value: single_creative.slug,
         }
-      ]);
+      ];
+      setFields(fields);
     }
-  }, [single_creative, user, media, industry, statesList]);
+  }, [single_creative, user, media, industry, statesList, employentType]);
 
   // Cities update
   useEffect(() => {
@@ -174,16 +262,17 @@ const Profile = () => {
   useEffect(() => {
     if (Object.keys(single_creative).length > 0 && !isLoading) {
       setFormData({
-        company_name: single_creative.name,
-        website: single_creative.links?.find((link) => link.label == "website")
-          .url,
-        state_id: single_creative.location.state_id,
-        city_id: single_creative.location.city_id,
-        linkedin: single_creative.links?.find((link) => link.label == "linkedin")
-          .url,
-        email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
+        username: user.username,
+        email: user.email,
+        show_profile: user.is_visible,
+        slug: single_creative.slug, 
+        employment_type: single_creative.employment_type,
+        website: single_creative.links?.find((link) => link.label == "portfolio")?.url ?? '',
+        linkedin: single_creative.links?.find((link) => link.label == "linkedin")?.url ?? '',
+        state_id: single_creative.location.state_id,
+        city_id: single_creative.location.city_id,
         phone_number: "",
         about: single_creative.about,
         industry_experience: single_creative.industry_experience.map(
@@ -195,17 +284,16 @@ const Profile = () => {
         is_onsite: single_creative.workplace_preference.is_onsite,
         is_hybrid: single_creative.workplace_preference.is_hybrid,
         is_remote: single_creative.workplace_preference.is_remote,
-        size: single_creative.size,
-        show_profile: user.is_visible,
-        slug: single_creative.slug,
+        is_opentorelocation: single_creative.is_opentorelocation
       });
     }
-  }, [isLoading, media_experiences, industry_experiences]);
+  }, [isLoading, media_experiences, industry_experiences, employment_type]);
 
   useEffect(() => {
     getStates();
     getMediaExperiences();
     getIndustryExperiences();
+    getEmploymentTypes();
   }, []);
 
   useEffect(() => {
@@ -239,6 +327,16 @@ const Profile = () => {
     }
     setIndustry(data);
   }, [industry_experiences]);
+
+  useEffect(() => {
+    let data = employment_type;
+    if (employment_type.length) {
+      data = employment_type.map((item) => {
+        return { label: item, value: item, key: item };
+      });
+    }
+    setEmployentType(data);
+  }, [employment_type]);
 
   const parseFieldsData = (data) => {
     const parsedValue = data.map((item) => {
@@ -293,7 +391,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    console.log(formData);
+    // console.log(formData);
   }, [formData]);
 
   const handleSubmit = () => {
@@ -311,7 +409,7 @@ const Profile = () => {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("user_id", user.uuid);
-      formData.append("resource_type", "Creative_logo");
+      formData.append("resource_type", "profile_image");
      saveCreativeImage(formData);
     }
   };

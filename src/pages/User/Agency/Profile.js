@@ -109,8 +109,7 @@ const Profile = () => {
           required: true,
           type: "text",
           name: "website",
-          value: single_agency.links.find((link) => link.label == "website")
-            .url,
+          value: single_agency.links.find((link) => link.label == "website")?.url ?? '',
         },
         {
           label: "Location",
@@ -142,8 +141,7 @@ const Profile = () => {
           required: true,
           type: "text",
           name: "linkedin",
-          value: single_agency.links.find((link) => link.label == "linkedin")
-            .url,
+          value: single_agency.links.find((link) => link.label == "linkedin")?.url ?? '',
         },
         {
           label: "Contact Email",
@@ -255,12 +253,10 @@ const Profile = () => {
     if (Object.keys(single_agency).length > 0 && !isLoading) {
       setFormData({
         company_name: single_agency.name,
-        website: single_agency.links.find((link) => link.label == "website")
-          .url,
+        website: single_agency.links.find((link) => link.label == "website")?.url ?? '',
         state_id: single_agency.location.state_id,
         city_id: single_agency.location.city_id,
-        linkedin: single_agency.links.find((link) => link.label == "linkedin")
-          .url,
+        linkedin: single_agency.links.find((link) => link.label == "linkedin").url ?? '',
         email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
