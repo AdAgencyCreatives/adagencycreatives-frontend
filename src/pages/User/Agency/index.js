@@ -4,19 +4,20 @@ import PostJob from "./PostJob";
 import MyJobs from "./MyJobs";
 import Sidebar from "../../../components/agency/Sidebar";
 import "../../../styles/AgencyDashboard/index.scss";
-import { useParams } from "react-router-dom";
+import { useMatch, useParams } from "react-router-dom";
 import ApplicantJobs from "../../../components/agency/dashboard/ApplicantJobs";
 import ChangePassword from "./ChangePassword";
 import DeleteProfile from "./DeleteProfile";
 import CreativeShortlist from "./CreativeShortlist";
 import Packages from "./Packages";
 import MyResume from "./MyResume";
+import JobPost from "../../Jobs/JobPost";
 
 const Agency = () => {
   const { page } = useParams();
   const components = {
-    "dashboard": <Dashboard />,
-    "profile": <Profile />,
+    dashboard: <Dashboard />,
+    profile: <Profile />,
     "my-resume": <MyResume />,
     "post-a-job": <PostJob />,
     "my-jobs": <MyJobs />,
@@ -24,8 +25,14 @@ const Agency = () => {
     "change-password": <ChangePassword />,
     "delete-profile": <DeleteProfile />,
     "shortlist-creatives": <CreativeShortlist />,
-    "packages": <Packages />,
+    packages: <Packages />,
   };
+
+  let component = components[page];
+  const match = useMatch("job/edit/:id");
+  if (match) {
+    component = <JobPost id={match.params.id} />;
+  }
 
   return (
     <div className="agency-dashboard-container">
@@ -34,7 +41,7 @@ const Agency = () => {
           <div className="col-md-3 pt-3">
             <Sidebar />
           </div>
-          <div className="col-md-9 pt-5">{components[page]}</div>
+          <div className="col-md-9 pt-5">{component}</div>
         </div>
       </div>
     </div>

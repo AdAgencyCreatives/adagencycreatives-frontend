@@ -19,6 +19,7 @@ const MyJobs = () => {
   const {
     state: { open_positions, loading },
     getOpenPositions,
+    deleteJob,
   } = useContext(AgenciesContext);
 
   const {
@@ -116,13 +117,19 @@ const MyJobs = () => {
                           </Tooltip>
 
                           <Tooltip title="Edit">
-                            <Link className="btn p-0 border-0 btn-hover-primary">
+                            <Link
+                              className="btn p-0 border-0 btn-hover-primary"
+                              to={"/job/edit/" + job.id}
+                            >
                               <IoPencil className="icon-rounded" />
                             </Link>
                           </Tooltip>
 
                           <Tooltip title="Remove">
-                            <Link className="btn p-0 border-0 btn-hover-primary">
+                            <Link
+                              className="btn p-0 border-0 btn-hover-primary"
+                              onClick={() => deleteJob(job.id)}
+                            >
                               <IoClose className="icon-rounded" />
                             </Link>
                           </Tooltip>

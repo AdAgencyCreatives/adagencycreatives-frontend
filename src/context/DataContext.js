@@ -8,6 +8,8 @@ const state = {
   employment_type: [],
   media_experiences: [],
   industry_experiences: [],
+  strengths: [],
+  years_experience: [],
 };
 
 const reducer = (state, action) => {
@@ -22,8 +24,12 @@ const reducer = (state, action) => {
       return { ...state, employment_type: action.payload };
     case "set_media_experiences":
       return { ...state, media_experiences: action.payload.data };
-      case "set_industry_experiences":
-        return { ...state, industry_experiences: action.payload.data };
+    case "set_industry_experiences":
+      return { ...state, industry_experiences: action.payload.data };
+      case "set_strengths":
+        return { ...state, strengths: action.payload.data };
+    case "set_years_experience":
+      return { ...state, years_experience: action.payload.data };
     default:
       return state;
   }
@@ -79,12 +85,36 @@ const getEmploymentTypes = (dispatch) => {
   };
 };
 
+const getYearsExperience = (dispatch) => {
+  return async (uuid) => {
+    try {
+      const response = await api.get("/years-of-experience");
+      dispatch({
+        type: "set_years_experience",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
 const getMediaExperiences = (dispatch) => {
   return async (uuid) => {
     try {
       const response = await api.get("/get_media-experiences");
       dispatch({
         type: "set_media_experiences",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
+const getStrengths = (dispatch) => {
+  return async () => {
+    try {
+      const response = await api.get("/get_strengths");
+      dispatch({
+        type: "set_strengths",
         payload: response.data,
       });
     } catch (error) {}
@@ -111,7 +141,9 @@ export const { Context, Provider } = createDataContext(
     getCities,
     getEmploymentTypes,
     getMediaExperiences,
-    getIndustryExperiences
+    getIndustryExperiences,
+    getYearsExperience,
+    getStrengths
   },
   state
 );

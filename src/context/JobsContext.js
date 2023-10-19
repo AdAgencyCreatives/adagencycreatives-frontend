@@ -13,6 +13,7 @@ const state = {
   filters: null,
   single_job: {},
   related_jobs: [],
+  formSubmit: false,
 };
 
 const reducer = (state, action) => {
@@ -20,7 +21,12 @@ const reducer = (state, action) => {
     case "set_jobs":
       return { ...state, jobs: action.payload.data, meta: action.payload.meta };
     case "set_single_job":
-      return { ...state, single_job: action.payload.data[0] };
+      return { ...state, single_job: action.payload };
+    case "delete_job":
+      return {
+        ...state,
+        jobs: state.jobs.filter((job) => job.id != action.payload),
+      };
     case "set_related_jobs":
       const related_jobs = action.payload.data.filter((item) => {
         return item.id !== state.single_job.id;
@@ -38,6 +44,11 @@ const reducer = (state, action) => {
       return { ...state, employment_type: action.payload };
     case "set_media_experiences":
       return { ...state, media_experiences: action.payload.data };
+    case "set_form_submit":
+      return {
+        ...state,
+        formSubmit: action.payload,
+      };
     default:
       return state;
   }
@@ -47,7 +58,7 @@ const getFeaturedJobs = (dispatch) => {
   return async () => {
     try {
       const response = await api.get(
-        "/jobs?filter[is_featured]=1&filter[is_urgent]=1"
+        "/jobs?filter[is_featured]=1&filter[is_urgent]=1&filter[status]=1"
       );
       console.log({ response });
       dispatch({
@@ -61,7 +72,7 @@ const getFeaturedJobs = (dispatch) => {
 const getJobs = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/jobs");
+      const response = await api.get("/jobs?filter[status]=1");
       console.log({ response });
       dispatch({
         type: "set_jobs",
@@ -78,7 +89,19 @@ const getJob = (dispatch) => {
       getRelatedJobs(dispatch, response.data.data[0].category_id);
       dispatch({
         type: "set_single_job",
-        payload: response.data,
+        payload: response.data.data[0],
+      });
+    } catch (error) {}
+  };
+};
+
+const getJobById = (dispatch) => {
+  return async (id) => {
+    try {
+      const response = await api.get("/jobs/" + id);
+      dispatch({
+        type: "set_single_job",
+        payload: response.data.data,
       });
     } catch (error) {}
   };
@@ -86,7 +109,9 @@ const getJob = (dispatch) => {
 
 const getRelatedJobs = async (dispatch, category) => {
   try {
-    const response = await api.get("/jobs?filter[category_id]=" + category);
+    const response = await api.get(
+      "/jobs?filter[status]=1&filter[category_id]=" + category
+    );
     dispatch({
       type: "set_related_jobs",
       payload: response.data,
@@ -160,7 +185,9 @@ const paginateJob = (dispatch) => {
   return async (page, filters) => {
     try {
       let filter = getFilters(filters);
-      const response = await api.get("/jobs?" + filter + "&page=" + page);
+      const response = await api.get(
+        "/jobs?filter[status]=1&" + filter + "&page=" + page
+      );
       dispatch({
         type: "set_jobs",
         payload: response.data,
@@ -178,7 +205,7 @@ const filterJobs = (dispatch) => {
     });
     let filter = getFilters(filters);
     try {
-      const response = await api.get("/jobs?" + filter);
+      const response = await api.get("/jobs?filter[status]=1&" + filter);
       dispatch({
         type: "set_jobs",
         payload: response.data,
@@ -203,7 +230,6 @@ const getFilters = (filters) => {
       filter += element.value + ",";
     });
   }
-  // filter += "filter[state_id]=" + filters.state.value;
 
   return filter;
 };
@@ -221,11 +247,52 @@ const requestNotifications = (dispatch) => {
   };
 };
 
+const saveJob = (dispatch) => {
+  return async (uid, data) => {
+    setFormSubmit(dispatch, true);
+    try {
+      const response = await api.patch("/jobs/" + uid, data);
+    } catch (error) {}
+    setFormSubmit(dispatch, false);
+  };
+};
+
+const createJob = (dispatch) => {
+  return async (data) => {
+    setFormSubmit(dispatch, true);
+    try {
+      const response = await api.post("/jobs/", data);
+    } catch (error) {}
+    setFormSubmit(dispatch, false);
+  };
+};
+
+const deleteJob = (dispatch) => {
+  return async (id) => {
+    try {
+      const response = await api.delete("/jobs/" + id);
+      dispatch({
+        type: "delete_job",
+        payload: id,
+      });
+    } catch (error) {}
+  };
+};
+
+const setFormSubmit = (dispatch, state) => {
+  dispatch({
+    type: "set_form_submit",
+    payload: state,
+  });
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
     getJobs,
     getJob,
+    getJobById,
+    deleteJob,
     getFeaturedJobs,
     getCategories,
     getStates,
@@ -235,6 +302,8 @@ export const { Context, Provider } = createDataContext(
     filterJobs,
     paginateJob,
     requestNotifications,
+    saveJob,
+    createJob
   },
   state
 );

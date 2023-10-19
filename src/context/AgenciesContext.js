@@ -29,6 +29,13 @@ const reducer = (state, action) => {
         ...state,
         open_positions: action.payload.data,
       };
+    case "delete_job":
+      return {
+        ...state,
+        open_positions: state.open_positions.filter(
+          (job) => job.id != action.payload
+        ),
+      };
     case "load_agencies":
       return {
         ...state,
@@ -115,7 +122,9 @@ const getOpenPositions = (dispatch) => {
   return async (uid) => {
     setLoading(dispatch, true);
     try {
-      const response = await api.get("/jobs?filter[user_id]=" + uid);
+      const response = await api.get(
+        "/jobs?sort=-created_at&filter[user_id]=" + uid
+      );
       const data = response.data;
       dispatch({
         type: "set_open_positions",
@@ -166,6 +175,18 @@ const saveAgencyImage = (dispatch) => {
   };
 };
 
+const deleteJob = (dispatch) => {
+  return async (id) => {
+    try {
+      const response = await api.delete("/jobs/" + id);
+      dispatch({
+        type: "delete_job",
+        payload: id,
+      });
+    } catch (error) {}
+  };
+};
+
 const setLoading = (dispatch, state) => {
   dispatch({
     type: "set_loading",
@@ -184,6 +205,7 @@ export const { Context, Provider } = createDataContext(
     saveAgency,
     getOpenPositions,
     saveAgencyImage,
+    deleteJob,
   },
   state
 );

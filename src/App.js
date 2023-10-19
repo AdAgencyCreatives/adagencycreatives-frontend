@@ -4,7 +4,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Footer from "./components/Footer";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import { Context as AuthContext } from "./context/AuthContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 // import { useCookies } from "react-cookie";
 import { Provider as DataProvider } from "./context/DataContext";
 import { Provider as CreativesProvider } from "./context/CreativesContext";
@@ -29,8 +29,7 @@ const theme = createTheme({
 
 function App() {
   const { getToken } = useContext(AuthContext);
-  useEffect(() => {
-    console.log("what happened");
+  useMemo(() => {
     getToken();
   }, []);
 

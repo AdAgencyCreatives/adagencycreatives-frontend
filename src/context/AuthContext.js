@@ -126,7 +126,6 @@ const logout = (dispatch) => {
 
 const getToken = (dispatch) => {
   return () => {
-    console.log("getting token")
     const token = Cookies.get("token");
     if (token) {
       verifyToken(dispatch, token);
@@ -137,7 +136,6 @@ const getToken = (dispatch) => {
 const setToken = (dispatch) => {
   return (token, role) => {
     if (token) {
-      console.log(token, role);
       Cookies.set("token", token);
       Cookies.set("role", role);
       setAuthToken(token);
@@ -150,7 +148,6 @@ const setToken = (dispatch) => {
 };
 
 const verifyToken = async (dispatch, token) => {
-  console.log("verifying token")
   try {
     const response = await api.post(
       "/re_login",
@@ -161,7 +158,6 @@ const verifyToken = async (dispatch, token) => {
         },
       }
     );
-    // console.log("ssss", response.data);
     setToken(dispatch)(response.data.token, response.data.user.role);
     setUserData(dispatch, response.data.user);
     dispatch({
@@ -176,7 +172,6 @@ const verifyToken = async (dispatch, token) => {
 };
 
 const setUserData = (dispatch, data) => {
-  // console.log("userdata", data);
   dispatch({
     type: "set_user",
     payload: data,
