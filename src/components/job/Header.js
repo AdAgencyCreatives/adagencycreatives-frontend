@@ -13,6 +13,7 @@ import Tooltip from "../Tooltip";
 import moment from "moment";
 
 const Header = ({ data }) => {
+  console.log({data})
   return (
     <div className="container">
       <div className="row align-items-center justify-content-between">

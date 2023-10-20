@@ -241,7 +241,7 @@ function Header(props) {
                         <ul className="dropdown-list">
                           {loggedInNav.map((item, index) => (
                             <li key={`liul${index}`} className="testing">
-                              <NavLink to={item.link}>{item.name}</NavLink>
+                              <Link to={item.link}>{item.name}</Link>
                             </li>
                           ))}
                         </ul>

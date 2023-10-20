@@ -47,13 +47,12 @@ const Jobs = () => {
     getMediaExperiences,
     filterJobs,
     paginateJob,
-    requestNotifications
+    requestNotifications,
   } = useContext(JobsContext);
 
   const {
     state: { user },
   } = useContext(AuthContext);
-
 
   useEffect(() => {
     getJobs();
@@ -258,7 +257,9 @@ const Jobs = () => {
                 <div className="job-alert-button">
                   <button
                     className="alert-btn btn fs-5"
-                    onClick={() => requestNotifications(user.uuid, notifCategory)}
+                    onClick={() =>
+                      requestNotifications(user.uuid, notifCategory)
+                    }
                   >
                     Save Job Alert
                   </button>

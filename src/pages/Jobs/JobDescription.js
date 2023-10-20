@@ -13,8 +13,6 @@ const JobDescription = () => {
     getJob,
   } = useContext(JobsContext);
 
-  console.log({ single_job });
-
   useEffect(() => {
     getJob(job);
   }, [job]);

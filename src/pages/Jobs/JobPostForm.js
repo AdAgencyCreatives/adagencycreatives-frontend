@@ -17,7 +17,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 
-const JobPost = ({ id, setJobStatus }) => {
+const JobPostForm = ({ id, setJobStatus }) => {
   const imageUploadRef = useRef();
   const logoRef = useRef();
   const [categoriesList, setCategories] = useState([]);
@@ -501,6 +501,7 @@ const JobPost = ({ id, setJobStatus }) => {
     } else {
       formData.user_id = user.uuid;
       createJob(formData);
+      setJobStatus("preview")
     }
   };
 
@@ -726,7 +727,7 @@ const JobPost = ({ id, setJobStatus }) => {
               onClick={handleSubmit}
               disabled={formSubmit}
             >
-              {isEdit ? "Update" : "Save & Preview"}{" "}
+              {isEdit ? "Update" : "Save & Preview"}
               {formSubmit && <CircularProgress size={20} />}
             </button>
           </div>
@@ -736,4 +737,4 @@ const JobPost = ({ id, setJobStatus }) => {
   );
 };
 
-export default JobPost;
+export default JobPostForm;

@@ -9,6 +9,7 @@ const state = {
   token: null,
   role: null,
   user: null,
+  formSubmit: false,
 };
 
 const authReducer = (state, action) => {
@@ -27,6 +28,8 @@ const authReducer = (state, action) => {
 
     case "reset_form_message":
       return { ...state, formMessage: null };
+    case "set_form_submit":
+      return { ...state, formSubmit: action.payload };
     default:
       return state;
   }
@@ -124,6 +127,17 @@ const logout = (dispatch) => {
   };
 };
 
+const updatePassword = (dispatch) => {
+  return async (data) => {
+    setFormSubmit(dispatch, true);
+    try {
+      const response = await api.patch("/update_password", data);
+      alert("Password has been changed");
+    } catch (error) {}
+    setFormSubmit(dispatch, false);
+  };
+};
+
 const getToken = (dispatch) => {
   return () => {
     const token = Cookies.get("token");
@@ -186,8 +200,23 @@ const prepareFields = (data) => {
   return formData;
 };
 
+const setFormSubmit = (dispatch, state) => {
+  dispatch({
+    type: "set_form_submit",
+    payload: state,
+  });
+};
+
 export const { Context, Provider } = createDataContext(
   authReducer,
-  { signup, signin, resetFormMessage, setToken, getToken, logout },
+  {
+    signup,
+    signin,
+    resetFormMessage,
+    setToken,
+    getToken,
+    logout,
+    updatePassword,
+  },
   state
 );

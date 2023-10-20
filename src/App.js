@@ -11,6 +11,7 @@ import { Provider as CreativesProvider } from "./context/CreativesContext";
 import { Provider as JobsProvider } from "./context/JobsContext";
 import { Provider as AgenciesProvider } from "./context/AgenciesContext";
 import { Provider as SpotlightProvider } from "./context/SpotlightContext";
+import { Provider as SubscriptionProvider } from "./context/SubscriptionContext";
 
 const theme = createTheme({
   typography: {
@@ -36,20 +37,22 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <DataProvider>
-        <CreativesProvider>
-          <AgenciesProvider>
-            <SpotlightProvider>
-              <JobsProvider>
-                <div className="App">
-                  <ScrollRestoration />
-                  <Header />
-                  <Outlet />
-                  <Footer />
-                </div>
-              </JobsProvider>
-            </SpotlightProvider>
-          </AgenciesProvider>
-        </CreativesProvider>
+        <SubscriptionProvider>
+          <CreativesProvider>
+            <AgenciesProvider>
+              <SpotlightProvider>
+                <JobsProvider>
+                  <div className="App">
+                    <ScrollRestoration />
+                    <Header />
+                    <Outlet />
+                    <Footer />
+                  </div>
+                </JobsProvider>
+              </SpotlightProvider>
+            </AgenciesProvider>
+          </CreativesProvider>
+        </SubscriptionProvider>
       </DataProvider>
     </ThemeProvider>
   );

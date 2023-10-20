@@ -11,7 +11,7 @@ import DeleteProfile from "./DeleteProfile";
 import CreativeShortlist from "./CreativeShortlist";
 import Packages from "./Packages";
 import MyResume from "./MyResume";
-import JobPost from "../../Jobs/JobPost";
+import JobPost from "../../Jobs/JobPostForm";
 
 const Agency = () => {
   const { page } = useParams();

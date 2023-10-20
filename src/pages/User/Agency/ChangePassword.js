@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { IoEye, IoEyeOff } from "react-icons/io5";
-import '../../../styles/AgencyDashboard/ChangePassword.scss'
+import "../../../styles/AgencyDashboard/ChangePassword.scss";
+import { useContext } from "react";
+import { Context } from "../../../context/AuthContext";
+import { CircularProgress } from "@mui/material";
 
 const ChangePassword = () => {
-  //   const [fields, setFields] = useState({
-  //     old: "",
-  //     new: "",
-  //     retype: "",
-  //   });
+  const {
+    state: { formSubmit },
+    updatePassword,
+  } = useContext(Context);
 
   const [show, setShow] = useState({
     old: false,
@@ -15,9 +17,13 @@ const ChangePassword = () => {
     retype: false,
   });
 
-  const setValue = (e) => {
-    let value = e.target.value;
-  };
+  const [data, setData] = useState({
+    old_password: "",
+    password: "",
+    password_confirmation: "",
+  });
+
+
   return (
     <div className="dashboard-wrapper agency-page-change-password">
       <h3 className="page-title">Change Password</h3>
@@ -32,16 +38,19 @@ const ChangePassword = () => {
                 <input
                   type={show.old ? "text" : "password"}
                   className="form-control"
-                  //value={fields.old}
-                  onChange={setValue}
+                  value={data.old_password}
+                  onChange={(e) =>
+                    setData((prev) => ({
+                      ...prev,
+                      old_password: e.target.value,
+                    }))
+                  }
                 />
                 <div className="showToggle">
                   {show.old ? (
                     <IoEye onClick={() => setShow({ ...show, old: false })} />
                   ) : (
-                    <IoEyeOff
-                      onClick={() => setShow({ ...show, old: true })}
-                    />
+                    <IoEyeOff onClick={() => setShow({ ...show, old: true })} />
                   )}
                 </div>
               </div>
@@ -52,15 +61,19 @@ const ChangePassword = () => {
                 <input
                   type={show.new ? "text" : "password"}
                   className="form-control"
-                  //value={fields.new}
+                  value={data.password}
+                  onChange={(e) =>
+                    setData((prev) => ({
+                      ...prev,
+                      password: e.target.value,
+                    }))
+                  }
                 />
                 <div className="showToggle">
                   {show.new ? (
                     <IoEye onClick={() => setShow({ ...show, new: false })} />
                   ) : (
-                    <IoEyeOff
-                      onClick={() => setShow({ ...show, new: true })}
-                    />
+                    <IoEyeOff onClick={() => setShow({ ...show, new: true })} />
                   )}
                 </div>
               </div>
@@ -71,17 +84,35 @@ const ChangePassword = () => {
                 <input
                   type={show.retype ? "text" : "password"}
                   className="form-control"
-                  //value={fields.retype}
+                  value={data.password_confirmation}
+                  onChange={(e) =>
+                    setData((prev) => ({
+                      ...prev,
+                      password_confirmation: e.target.value,
+                    }))
+                  }
                 />
                 <div className="showToggle">
                   {show.retype ? (
-                    <IoEye onClick={() => setShow({ ...show, retype: false })} />
+                    <IoEye
+                      onClick={() => setShow({ ...show, retype: false })}
+                    />
                   ) : (
                     <IoEyeOff
                       onClick={() => setShow({ ...show, retype: true })}
                     />
                   )}
                 </div>
+              </div>
+
+              <div className="submit-btn mt-4">
+                <button
+                  className="btn btn-dark btn-hover-primary border-0 px-3 py-2"
+                  onClick={() => updatePassword(data)}
+                  disabled={formSubmit}
+                >
+                  Change Password {formSubmit && <CircularProgress size={20} />}
+                </button>
               </div>
             </div>
           </div>
