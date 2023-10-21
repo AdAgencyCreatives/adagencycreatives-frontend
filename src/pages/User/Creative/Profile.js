@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import "../../../styles/AgencyDashboard/Profile.scss";
-import Select from "react-select";
+import Select from "../../../components/Select";
 import { EditorState, ContentState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -60,12 +60,18 @@ const Profile = () => {
   } = useContext(CreativesContext);
 
   const {
-    state: { states, cities, media_experiences, industry_experiences, employment_type },
+    state: {
+      states,
+      cities,
+      media_experiences,
+      industry_experiences,
+      employment_type,
+    },
     getStates,
     getCities,
     getMediaExperiences,
     getIndustryExperiences,
-    getEmploymentTypes
+    getEmploymentTypes,
   } = useContext(DataContext);
 
   useEffect(() => {
@@ -73,7 +79,6 @@ const Profile = () => {
       getCreativeById(user.uuid);
     }
   }, [user]);
-
 
   //Fetch initial Cities
   useEffect(() => {
@@ -138,21 +143,25 @@ const Profile = () => {
           name: "city_id",
           data: [],
           placeholder: "Select City",
-          callback: (item) => handleDropdownChange(item, "city_id")
+          callback: (item) => handleDropdownChange(item, "city_id"),
         },
         {
           label: "Portfolio Site",
           required: true,
           type: "text",
           name: "portfolio_site",
-          value: single_creative.links.find((link) => link.label === "portfolio")?.url ?? '',
+          value:
+            single_creative.links.find((link) => link.label === "portfolio")
+              ?.url ?? "",
         },
         {
           label: "LinkedIn Profile",
           required: true,
           type: "text",
           name: "linkedin_profile",
-          value: single_creative.links.find((link) => link.label === "linkedin")?.url ?? '',
+          value:
+            single_creative.links.find((link) => link.label === "linkedin")
+              ?.url ?? "",
         },
         {
           label: "Email",
@@ -208,7 +217,9 @@ const Profile = () => {
           name: "workplace_preference",
           callback: (item) =>
             handleWorkplaceChange(item, "workplace_preference"),
-          value: workplace_preference.filter((item) => single_creative.workplace_preference[item.key]),
+          value: workplace_preference.filter(
+            (item) => single_creative.workplace_preference[item.key]
+          ),
         },
         {
           label: "Type of Work",
@@ -217,7 +228,9 @@ const Profile = () => {
           data: employentType,
           name: "employment_type",
           callback: (item) => handleDropdownChange(item, "employment_type"),
-          value: employentType.filter((item) => item.value == single_creative.employment_type),
+          value: employentType.filter(
+            (item) => item.value == single_creative.employment_type
+          ),
         },
         {
           label: "Show my profile",
@@ -235,7 +248,9 @@ const Profile = () => {
           data: openToRelocation,
           name: "is_opentorelocation",
           callback: (item) => handleDropdownChange(item, "is_opentorelocation"),
-          value: openToRelocation.filter((item) => item.value === single_creative.is_opentorelocation),
+          value: openToRelocation.filter(
+            (item) => item.value === single_creative.is_opentorelocation
+          ),
         },
         {
           label: "Your Ad Agency Creatives Profile Link",
@@ -243,7 +258,7 @@ const Profile = () => {
           type: "text",
           name: "slug",
           value: single_creative.slug,
-        }
+        },
       ];
       setFields(fields);
     }
@@ -267,10 +282,14 @@ const Profile = () => {
         username: user.username,
         email: user.email,
         show_profile: user.is_visible,
-        slug: single_creative.slug, 
+        slug: single_creative.slug,
         employment_type: single_creative.employment_type,
-        website: single_creative.links?.find((link) => link.label == "portfolio")?.url ?? '',
-        linkedin: single_creative.links?.find((link) => link.label == "linkedin")?.url ?? '',
+        website:
+          single_creative.links?.find((link) => link.label == "portfolio")
+            ?.url ?? "",
+        linkedin:
+          single_creative.links?.find((link) => link.label == "linkedin")
+            ?.url ?? "",
         state_id: single_creative.location.state_id,
         city_id: single_creative.location.city_id,
         phone_number: "",
@@ -284,7 +303,7 @@ const Profile = () => {
         is_onsite: single_creative.workplace_preference.is_onsite,
         is_hybrid: single_creative.workplace_preference.is_hybrid,
         is_remote: single_creative.workplace_preference.is_remote,
-        is_opentorelocation: single_creative.is_opentorelocation
+        is_opentorelocation: single_creative.is_opentorelocation,
       });
     }
   }, [isLoading, media_experiences, industry_experiences, employment_type]);
@@ -399,18 +418,18 @@ const Profile = () => {
   };
 
   const removeLogo = () => {
-    logoRef.current.src = ""
-  }
+    logoRef.current.src = "";
+  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    logoRef.current.src = URL.createObjectURL(file)
+    logoRef.current.src = URL.createObjectURL(file);
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("user_id", user.uuid);
       formData.append("resource_type", "profile_image");
-     saveCreativeImage(formData);
+      saveCreativeImage(formData);
     }
   };
 
@@ -441,7 +460,11 @@ const Profile = () => {
                       />
                       <div className="row align-items-center upload-box">
                         <div className="col-md-2 col-sm-4 col-12">
-                          <img src={field.image} className="w-100" ref={logoRef} />
+                          <img
+                            src={field.image}
+                            className="w-100"
+                            ref={logoRef}
+                          />
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                           <button
@@ -450,7 +473,10 @@ const Profile = () => {
                           >
                             <FiPaperclip /> Upload
                           </button>
-                          <button className="btn btn-secondary w-100 text-uppercase" onClick={removeLogo}>
+                          <button
+                            className="btn btn-secondary w-100 text-uppercase"
+                            onClick={removeLogo}
+                          >
                             <FiTrash2 /> Remove
                           </button>
                         </div>

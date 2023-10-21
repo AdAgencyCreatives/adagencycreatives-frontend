@@ -1,4 +1,4 @@
-import Select from "react-select";
+import Select from "../../components/Select";
 import "../../styles/Jobs.scss";
 import { useContext, useEffect, useState } from "react";
 import {
