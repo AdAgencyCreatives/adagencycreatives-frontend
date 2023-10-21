@@ -133,7 +133,9 @@ const updatePassword = (dispatch) => {
     try {
       const response = await api.patch("/update_password", data);
       alert("Password has been changed");
-    } catch (error) {}
+    } catch (error) {
+      alert(error.response.data.message)
+    }
     setFormSubmit(dispatch, false);
   };
 };

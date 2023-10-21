@@ -13,13 +13,17 @@ const state = {
   filters: null,
   single_job: {},
   related_jobs: [],
+  applications: [],
   formSubmit: false,
+  isLoading: false,
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "set_jobs":
       return { ...state, jobs: action.payload.data, meta: action.payload.meta };
+    case "set_applications":
+      return { ...state, applications: action.payload };
     case "set_single_job":
       return { ...state, single_job: action.payload };
     case "delete_job":
@@ -45,10 +49,9 @@ const reducer = (state, action) => {
     case "set_media_experiences":
       return { ...state, media_experiences: action.payload.data };
     case "set_form_submit":
-      return {
-        ...state,
-        formSubmit: action.payload,
-      };
+      return { ...state, formSubmit: action.payload };
+    case "set_loading":
+      return { ...state, isLoading: action.payload };
     default:
       return state;
   }
@@ -117,6 +120,50 @@ const getRelatedJobs = async (dispatch, category) => {
       payload: response.data,
     });
   } catch (error) {}
+};
+
+const getApplications = (dispatch) => {
+  return async (uid) => {
+    let applications = [];
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get(
+        "/jobs?filter[status]=0&filter[user_id]=" + uid
+      ); // have to set filter[status]=1 later
+      const jobs = response.data.data;
+      for (const job of jobs) {
+        const response2 = await api.get(
+          "applications?filter[job_id]=" + job.id
+        );
+        const data = response2.data.data;
+        job.applications = data;
+        applications.push(job);
+
+        dispatch({
+          type: "set_applications",
+          payload: applications,
+        });
+      }
+    } catch (error) {}
+    setLoading(dispatch, false);
+  };
+};
+
+const updateApplication = (dispatch) => {
+  return async (id, data, cb = false) => {
+    try {
+      const response = await api.patch("/applications/" + id, data);
+      cb && cb();
+    } catch (error) {}
+  };
+};
+
+const deleteApplication = (dispatch) => {
+  return async (id) => {
+    try {
+      const response = await api.delete("/applications/" + id);
+    } catch (error) {}
+  };
 };
 
 const getCategories = (dispatch) => {
@@ -303,12 +350,22 @@ const setFormSubmit = (dispatch, state) => {
   });
 };
 
+const setLoading = (dispatch, state) => {
+  dispatch({
+    type: "set_loading",
+    payload: state,
+  });
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
     getJobs,
     getJob,
     getJobById,
+    getApplications,
+    updateApplication,
+    deleteApplication,
     deleteJob,
     getFeaturedJobs,
     getCategories,

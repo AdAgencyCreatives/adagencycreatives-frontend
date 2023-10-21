@@ -88,18 +88,6 @@ const JobPostForm = ({ id, setJobStatus }) => {
 
   // Set initial fields
   useEffect(() => {
-    /* console.log(
-      id == undefined,
-      industry.length,
-      media.length,
-      statesList.length,
-      categoriesList.length,
-      employment_type.length,
-      citiesList.length,
-      strengthsList.length,
-      experience.length
-    ); */
-
     if (
       (Object.keys(single_job).length || !isEdit) &&
       (!isEdit || citiesList.length) &&
@@ -230,7 +218,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
             ),
         },
 
-        {
+        /* {
           label: "Strengths",
           required: true,
           type: "dropdown",
@@ -243,7 +231,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
             strengthsList.filter((item) =>
               single_job.character_strengths.includes(item.label)
             ),
-        },
+        }, */
         {
           label: "Years Experience",
           required: true,

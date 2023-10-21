@@ -190,7 +190,7 @@ const Profile = () => {
             single_agency.industry_experience.includes(item.label)
           ),
         },
-        {
+        /* {
           label: "Media Experience",
           required: true,
           type: "dropdown",
@@ -201,7 +201,7 @@ const Profile = () => {
           value: media.filter((item) =>
             single_agency.media_experience.includes(item.label)
           ),
-        },
+        }, */
         {
           label: "Workplace Preference",
           required: true,

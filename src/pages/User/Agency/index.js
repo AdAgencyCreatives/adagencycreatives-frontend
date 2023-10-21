@@ -12,9 +12,12 @@ import CreativeShortlist from "./CreativeShortlist";
 import Packages from "./Packages";
 import MyResume from "./MyResume";
 import JobPost from "../../Jobs/JobPostForm";
+import useToken from "../../../hooks/useToken";
+import Loader from "../../../components/Loader";
 
 const Agency = () => {
   const { page } = useParams();
+  const token = useToken();
   const components = {
     dashboard: <Dashboard />,
     profile: <Profile />,
@@ -41,7 +44,7 @@ const Agency = () => {
           <div className="col-md-3 pt-3">
             <Sidebar />
           </div>
-          <div className="col-md-9 pt-5">{component}</div>
+          <div className="col-md-9 pt-5">{token ? component : <Loader />}</div>
         </div>
       </div>
     </div>

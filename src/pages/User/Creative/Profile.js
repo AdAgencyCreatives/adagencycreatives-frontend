@@ -176,63 +176,6 @@ const Profile = () => {
           name: "phone_number",
           value: single_creative.phone_number,
         },
-<<<<<<< HEAD
-        {
-          label: "About",
-          required: true,
-          type: "editor",
-          name: "about",
-          value: user.about,
-        },
-        {
-          label: "Industry Specialty",
-          required: true,
-          type: "dropdown",
-          data: industry,
-          isMulti: true,
-          name: "industry_experience",
-          callback: (item) => handleMultiChange(item, "industry_experience"),
-          value: industry.filter((item) =>
-            single_creative.industry_experience.includes(item.label)
-          ),
-        },
-        {
-          label: "Media Experience",
-          required: true,
-          type: "dropdown",
-          data: media,
-          isMulti: true,
-          name: "media_experience",
-          callback: (item) => handleMultiChange(item, "media_experience"),
-          value: media.filter((item) =>
-            single_creative.media_experience.includes(item.label)
-          ),
-        },
-        {
-          label: "Workplace Preference",
-          required: true,
-          type: "dropdown",
-          isMulti: true,
-          data: workplace_preference,
-          name: "workplace_preference",
-          callback: (item) =>
-            handleWorkplaceChange(item, "workplace_preference"),
-          value: workplace_preference.filter(
-            (item) => single_creative.workplace_preference[item.key]
-          ),
-        },
-        {
-          label: "Type of Work",
-          required: true,
-          type: "dropdown",
-          data: employentType,
-          name: "employment_type",
-          callback: (item) => handleDropdownChange(item, "employment_type"),
-          value: employentType.filter(
-            (item) => item.value == single_creative.employment_type
-          ),
-        },
-=======
         // {
         //   label: "About",
         //   required: true,
@@ -284,7 +227,6 @@ const Profile = () => {
         //   callback: (item) => handleDropdownChange(item, "employment_type"),
         //   value: employentType.filter((item) => item.value == single_creative.employment_type),
         // },
->>>>>>> origin/creative-dashboard
         {
           label: "Show my profile",
           required: true,
@@ -294,19 +236,6 @@ const Profile = () => {
           callback: (item) => handleDropdownChange(item, "show_profile"),
           value: showProfile.filter((item) => item.value === user.is_visible),
         },
-<<<<<<< HEAD
-        {
-          label: "Open to Relocation",
-          required: true,
-          type: "dropdown",
-          data: openToRelocation,
-          name: "is_opentorelocation",
-          callback: (item) => handleDropdownChange(item, "is_opentorelocation"),
-          value: openToRelocation.filter(
-            (item) => item.value === single_creative.is_opentorelocation
-          ),
-        },
-=======
         // {
         //   label: "Open to Relocation",
         //   required: true,
@@ -316,7 +245,6 @@ const Profile = () => {
         //   callback: (item) => handleDropdownChange(item, "is_opentorelocation"),
         //   value: openToRelocation.filter((item) => item.value === single_creative.is_opentorelocation),
         // },
->>>>>>> origin/creative-dashboard
         {
           label: "Your Ad Agency Creatives Profile Link",
           required: true,
