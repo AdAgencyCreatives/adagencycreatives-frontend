@@ -4,13 +4,14 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Footer from "./components/Footer";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import { Context as AuthContext } from "./context/AuthContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 // import { useCookies } from "react-cookie";
 import { Provider as DataProvider } from "./context/DataContext";
 import { Provider as CreativesProvider } from "./context/CreativesContext";
 import { Provider as JobsProvider } from "./context/JobsContext";
 import { Provider as AgenciesProvider } from "./context/AgenciesContext";
 import { Provider as SpotlightProvider } from "./context/SpotlightContext";
+import { Provider as SubscriptionProvider } from "./context/SubscriptionContext";
 
 const theme = createTheme({
   typography: {
@@ -29,28 +30,29 @@ const theme = createTheme({
 
 function App() {
   const { getToken } = useContext(AuthContext);
-  useEffect(() => {
-    console.log("what happened");
+  useMemo(() => {
     getToken();
   }, []);
 
   return (
     <ThemeProvider theme={theme}>
       <DataProvider>
-        <CreativesProvider>
-          <AgenciesProvider>
-            <SpotlightProvider>
-              <JobsProvider>
-                <div className="App">
-                  <ScrollRestoration />
-                  <Header />
-                  <Outlet />
-                  <Footer />
-                </div>
-              </JobsProvider>
-            </SpotlightProvider>
-          </AgenciesProvider>
-        </CreativesProvider>
+        <SubscriptionProvider>
+          <CreativesProvider>
+            <AgenciesProvider>
+              <SpotlightProvider>
+                <JobsProvider>
+                  <div className="App">
+                    <ScrollRestoration />
+                    <Header />
+                    <Outlet />
+                    <Footer />
+                  </div>
+                </JobsProvider>
+              </SpotlightProvider>
+            </AgenciesProvider>
+          </CreativesProvider>
+        </SubscriptionProvider>
       </DataProvider>
     </ThemeProvider>
   );

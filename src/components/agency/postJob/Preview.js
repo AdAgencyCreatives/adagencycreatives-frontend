@@ -1,15 +1,42 @@
+import { Link } from "react-router-dom";
+import Loader from "../../Loader";
 import Header from "../../job/Header";
 import Sidebar from "../../job/Sidebar";
+import { useContext } from "react";
+import { Context } from "../../../context/JobsContext";
+import { CircularProgress } from "@mui/material";
 
-const Preview = () => {
-  return (
+const Preview = ({ single_job, setJobStatus }) => {
+  const {
+    state: { formSubmit },
+    saveJob,
+  } = useContext(Context);
+
+  const submitJob = () => {
+    saveJob(single_job.id, { status: "pending" });
+    // setJobStatus("submit");
+  };
+
+  return Object.keys(single_job).length === 0 ? (
+    <Loader />
+  ) : (
     <>
-    <div className="job-actions mt-3 mb-3 justify-content-center d-flex gap-3">
-        <button className="btn btn-gray btn-hover-primary text-uppercase ls-3 p-3 px-4">Submit Job</button>
-        <button className="btn btn-gray btn-hover-primary text-uppercase ls-3 p-3 px-4">Edit Job</button>
-    </div>
-      <div className="profile-header bg-white">
-        <Header />
+      <div className="job-actions mt-3 mb-3 justify-content-center d-flex gap-3">
+        <button
+          className="btn btn-gray btn-hover-primary text-uppercase ls-3 p-3 px-4"
+          onClick={submitJob}
+        >
+          Submit Job {formSubmit && <CircularProgress size={20} />}
+        </button>
+        <Link
+          to={"/job/edit/" + single_job.id}
+          className="btn btn-gray btn-hover-primary text-uppercase ls-3 p-3 px-4"
+        >
+          Edit Job
+        </Link>
+      </div>
+      <div className="profile-header">
+        <Header data={single_job} />
       </div>
       <div className="profile-content mt-5 mb-5">
         <div className="container">
@@ -17,7 +44,8 @@ const Preview = () => {
             <div className="col-md-8">
               <div className="content-section">
                 <h1 className="content-title mt-0">Job Description</h1>
-                <h5 className="subtitle">About the job:</h5>
+                <div dangerouslySetInnerHTML={{ __html: single_job.description }} />
+                {/* <h5 className="subtitle">About the job:</h5>
                 <p className="content">
                   Bakery Austin is currently seeking a proven, energetic, and
                   inspired Senior Art Director with the drive to create
@@ -140,12 +168,12 @@ const Preview = () => {
                     <li>Snacks, Meals and Drinks</li>
                     <li>No Time Tracking!</li>
                   </ul>
-                </p>
+                </p> */}
               </div>
             </div>
             <div className="col-md-4">
               <div className="profile-sidebar">
-                <Sidebar />
+                <Sidebar data={single_job} />
               </div>
             </div>
           </div>

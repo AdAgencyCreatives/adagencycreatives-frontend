@@ -26,7 +26,7 @@ import { navItems } from "../nav/NavItems";
 import AuthModal from "./modals/AuthModal";
 import { Context as AuthContext } from "../context/AuthContext";
 import Placeholder from "../assets/images/placeholder.png";
-import { agencyNav, creativeNav } from "../nav/AgencyNav";
+import { agencyNav, creativeNav } from "../nav/DashboardNav";
 
 const drawerWidth = "85%";
 
@@ -43,8 +43,7 @@ function Header(props) {
 
   useEffect(() => {
     if (state.token !== null) {
-      console.log(state.role);
-      setLoggedInNav(state.role == "creative" ? creativeNav : agencyNav);
+      setLoggedInNav(state.role === "creative" ? creativeNav : agencyNav);
     }
   }, [state.token]);
 
@@ -231,7 +230,7 @@ function Header(props) {
                     <div className="nav-item has-children">
                       <div className="logged-in-menu">
                         <img
-                          src={Placeholder}
+                          src={state.user.image || Placeholder}
                           height="50"
                           width="50"
                           className="avatar-rounded rounded-circle"
@@ -241,8 +240,8 @@ function Header(props) {
                       <div className="dropdown-menu logged-in-dropdown show">
                         <ul className="dropdown-list">
                           {loggedInNav.map((item, index) => (
-                            <li key={`liul${index}`}>
-                              <NavLink to={item.link}>{item.name}</NavLink>
+                            <li key={`liul${index}`} className="testing">
+                              <Link to={item.link}>{item.name}</Link>
                             </li>
                           ))}
                         </ul>

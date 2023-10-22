@@ -1,5 +1,5 @@
-import Select from "react-select";
-import "../styles/Jobs.scss";
+import Select from "../../components/Select";
+import "../../styles/Jobs.scss";
 import { useContext, useEffect, useState } from "react";
 import {
   IoArrowBack,
@@ -8,10 +8,10 @@ import {
   IoStar,
 } from "react-icons/io5";
 import moment from "moment";
-import Tooltip from "../components/Tooltip";
+import Tooltip from "../../components/Tooltip";
 import { Link } from "react-router-dom";
-import { Context as JobsContext } from "../context/JobsContext";
-import { Context as AuthContext } from "../context/AuthContext";
+import { Context as JobsContext } from "../../context/JobsContext";
+import { Context as AuthContext } from "../../context/AuthContext";
 
 const emailFreq = [
   { value: 1, label: "Daily" },
@@ -47,13 +47,12 @@ const Jobs = () => {
     getMediaExperiences,
     filterJobs,
     paginateJob,
-    requestNotifications
+    requestNotifications,
   } = useContext(JobsContext);
 
   const {
     state: { user },
   } = useContext(AuthContext);
-
 
   useEffect(() => {
     getJobs();
@@ -258,7 +257,9 @@ const Jobs = () => {
                 <div className="job-alert-button">
                   <button
                     className="alert-btn btn fs-5"
-                    onClick={() => requestNotifications(user.uuid, notifCategory)}
+                    onClick={() =>
+                      requestNotifications(user.uuid, notifCategory)
+                    }
                   >
                     Save Job Alert
                   </button>

@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
-import Header from "../components/job/Header";
-import Sidebar from "../components/job/Sidebar";
+import Header from "../../components/job/Header";
+import Sidebar from "../../components/job/Sidebar";
 import { useContext, useEffect } from "react";
-import { Context as JobsContext } from "../context/JobsContext";
-import Loader from "../components/Loader";
-import RelatedJobs from "../components/job/RelatedJobs";
+import { Context as JobsContext } from "../../context/JobsContext";
+import Loader from "../../components/Loader";
+import RelatedJobs from "../../components/job/RelatedJobs";
 
 const JobDescription = () => {
   const { job } = useParams();
@@ -12,8 +12,6 @@ const JobDescription = () => {
     state: { single_job, related_jobs },
     getJob,
   } = useContext(JobsContext);
-
-  console.log({ single_job });
 
   useEffect(() => {
     getJob(job);

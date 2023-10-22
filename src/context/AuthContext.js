@@ -9,6 +9,7 @@ const state = {
   token: null,
   role: null,
   user: null,
+  formSubmit: false,
 };
 
 const authReducer = (state, action) => {
@@ -27,6 +28,8 @@ const authReducer = (state, action) => {
 
     case "reset_form_message":
       return { ...state, formMessage: null };
+    case "set_form_submit":
+      return { ...state, formSubmit: action.payload };
     default:
       return state;
   }
@@ -124,9 +127,21 @@ const logout = (dispatch) => {
   };
 };
 
+const updatePassword = (dispatch) => {
+  return async (data) => {
+    setFormSubmit(dispatch, true);
+    try {
+      const response = await api.patch("/update_password", data);
+      alert("Password has been changed");
+    } catch (error) {
+      alert(error.response.data.message)
+    }
+    setFormSubmit(dispatch, false);
+  };
+};
+
 const getToken = (dispatch) => {
   return () => {
-    console.log("getting token")
     const token = Cookies.get("token");
     if (token) {
       verifyToken(dispatch, token);
@@ -137,7 +152,6 @@ const getToken = (dispatch) => {
 const setToken = (dispatch) => {
   return (token, role) => {
     if (token) {
-      console.log(token, role);
       Cookies.set("token", token);
       Cookies.set("role", role);
       setAuthToken(token);
@@ -150,7 +164,6 @@ const setToken = (dispatch) => {
 };
 
 const verifyToken = async (dispatch, token) => {
-  console.log("verifying token")
   try {
     const response = await api.post(
       "/re_login",
@@ -161,7 +174,6 @@ const verifyToken = async (dispatch, token) => {
         },
       }
     );
-    // console.log("ssss", response.data);
     setToken(dispatch)(response.data.token, response.data.user.role);
     setUserData(dispatch, response.data.user);
     dispatch({
@@ -176,7 +188,6 @@ const verifyToken = async (dispatch, token) => {
 };
 
 const setUserData = (dispatch, data) => {
-  // console.log("userdata", data);
   dispatch({
     type: "set_user",
     payload: data,
@@ -191,8 +202,23 @@ const prepareFields = (data) => {
   return formData;
 };
 
+const setFormSubmit = (dispatch, state) => {
+  dispatch({
+    type: "set_form_submit",
+    payload: state,
+  });
+};
+
 export const { Context, Provider } = createDataContext(
   authReducer,
-  { signup, signin, resetFormMessage, setToken, getToken, logout },
+  {
+    signup,
+    signin,
+    resetFormMessage,
+    setToken,
+    getToken,
+    logout,
+    updatePassword,
+  },
   state
 );

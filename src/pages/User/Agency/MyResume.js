@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Select from "react-select";
+import Select from "../../../components/Select";
 import { EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";

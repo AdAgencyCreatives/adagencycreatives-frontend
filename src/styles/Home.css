@@ -136,8 +136,15 @@ button.searchBtn:hover {
 }
 
 .featureTitle {
-    color: rgb(211, 161, 31);
-    font-size: 30px;
+    background: #d3a11f;
+    font-size: 23px;
+    background-image: linear-gradient(#ebb01a, #9c730b);
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    padding: 7px;
+    width: 200px;
+    margin: 10px auto;
 }
 
 .featureDesc {
@@ -366,7 +373,7 @@ img.spotlight-image {
     color: rgb(211, 161, 31);
 }
 
-.spotlight-meta:hover{
+.spotlight-meta:hover {
     color: #000;
 }
 
