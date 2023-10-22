@@ -1,10 +1,12 @@
 import { api } from "../api/api";
 import createDataContext from "./createDataContext";
 
-const state = { subscription: null, status: false };
+const state = { packages: [], subscription: null, status: false };
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "set_subscriptions":
+      return { ...state, packages: action.payload.data };
     case "set_subscription":
       return { ...state, subscription: action.payload };
     case "set_status":
@@ -40,6 +42,20 @@ const getSubscription = (dispatch) => {
   };
 };
 
+const getAllSubscriptions = (dispatch) => {
+  return async () => {
+    setStatus(dispatch, true);
+    try {
+      const response = await api.get("/subscriptions");
+      dispatch({
+        type: "set_subscriptions",
+        payload: response.data,
+      });
+    } catch (error) {}
+    setStatus(dispatch, false);
+  };
+};
+
 const setStatus = (dispatch, status) => {
   dispatch({
     type: "set_status",
@@ -49,6 +65,6 @@ const setStatus = (dispatch, status) => {
 
 export const { Context, Provider } = createDataContext(
   reducer,
-  { getSubscription },
+  { getSubscription, getAllSubscriptions },
   state
 );

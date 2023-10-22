@@ -10,6 +10,7 @@ const state = {
   industry_experiences: [],
   strengths: [],
   years_experience: [],
+  bookmarks: [],
 };
 
 const reducer = (state, action) => {
@@ -26,10 +27,12 @@ const reducer = (state, action) => {
       return { ...state, media_experiences: action.payload.data };
     case "set_industry_experiences":
       return { ...state, industry_experiences: action.payload.data };
-      case "set_strengths":
-        return { ...state, strengths: action.payload.data };
+    case "set_strengths":
+      return { ...state, strengths: action.payload.data };
     case "set_years_experience":
       return { ...state, years_experience: action.payload.data };
+    case "set_bookmarks":
+      return { ...state, bookmarks: action.payload.data };
     default:
       return state;
   }
@@ -133,6 +136,30 @@ const getIndustryExperiences = (dispatch) => {
   };
 };
 
+const getBookmarks = (dispatch) => {
+  return async (uuid) => {
+    try {
+      const response = await api.get("/bookmarks");
+      dispatch({
+        type: "set_bookmarks",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
+const createBookmark = (dispatch) => {
+  return async (user_id, resource_type, resource_id) => {
+    try {
+      const response = await api.post("/bookmarks", {
+        user_id,
+        resource_type,
+        resource_id,
+      });
+    } catch (error) {}
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
@@ -143,7 +170,9 @@ export const { Context, Provider } = createDataContext(
     getMediaExperiences,
     getIndustryExperiences,
     getYearsExperience,
-    getStrengths
+    getStrengths,
+    getBookmarks,
+    createBookmark
   },
   state
 );

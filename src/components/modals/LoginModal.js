@@ -39,6 +39,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      scroll="body"
     >
       <div className="auth-modal">
         <div className="auth-header"></div>

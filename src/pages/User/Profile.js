@@ -14,7 +14,7 @@ import { Context as AgenciesContext } from "../../context/AgenciesContext";
 
 const Profile = () => {
   const { username } = useParams();
-  const [page, setPage] = useState("creative");
+  const [page, setPage] = useState("");
 
   let location = useLocation();
 
@@ -39,7 +39,6 @@ const Profile = () => {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    console.log("getting creative");
     if (page == "creative") getCreative(username);
     else if (page == "agency") getAgency(username);
   }, [page]);

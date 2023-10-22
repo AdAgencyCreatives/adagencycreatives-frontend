@@ -4,7 +4,8 @@ import sample from "../../../assets/images/sample.mp4";
 
 const Sidebar = ({ data }) => {
   const workplacePreference = data.workplace_preference;
-
+  const linkedin = data.links.find((link) => link.label == "linkedin")?.url;
+  const website = data.links.find((link) => link.label == "website")?.url;
   const preferences = [];
 
   if (workplacePreference.is_remote) {
@@ -89,24 +90,28 @@ const Sidebar = ({ data }) => {
             <div className="details">
               <div className="text mb-3">Agency</div>
               <div className="value d-flex flex-wrap gap-3">
-                <button className="btn btn-dark w-100 py-3">
-                  <a
-                    className="text-light fs-5"
-                    href="https://www.linkedin.com/company/uniteppk/"
-                    target="_blank"
-                  >
-                    LinkedIn
-                  </a>
-                </button>
-                <button className="btn btn-dark w-100 py-3">
-                  <a
-                    className="text-light fs-5"
-                    href="https://www.linkedin.com/company/uniteppk/"
-                    target="_blank"
-                  >
-                    Website
-                  </a>
-                </button>
+                {linkedin && (
+                  <button className="btn btn-dark w-100 py-3">
+                    <Link
+                      className="text-light fs-5"
+                      to={linkedin}
+                      target="_blank"
+                    >
+                      LinkedIn
+                    </Link>
+                  </button>
+                )}
+                {website && (
+                  <button className="btn btn-dark w-100 py-3">
+                    <Link
+                      className="text-light fs-5"
+                      to={website}
+                      target="_blank"
+                    >
+                      Website
+                    </Link>
+                  </button>
+                )}
               </div>
             </div>
           </div>

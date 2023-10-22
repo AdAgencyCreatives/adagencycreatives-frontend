@@ -152,6 +152,25 @@ li.page-item {
   color: var(--color-primary);
 }
 
+.shortlist-btn {
+  opacity: 0;
+  border: 0px;
+  background: black;
+  color: white;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  border-radius: 50px;
+  width: 30px;
+  height: 30px;
+  transition: all 0.3s ease;
+}
+
+.shortlist-btn:hover {
+  background: var(--color-primary);
+}
+
+
 @media (min-width: 576px) {
   .container {
     max-width: 650px;

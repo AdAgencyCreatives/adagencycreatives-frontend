@@ -279,6 +279,10 @@ swiper-slide {
     animation: fade-in .3s linear;
 }
 
+.sliderContent:hover .shortlist-btn{
+    opacity: 1;
+}
+
 .agencies-slider {
     min-height: 380px;
 

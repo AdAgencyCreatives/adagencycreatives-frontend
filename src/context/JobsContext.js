@@ -14,8 +14,10 @@ const state = {
   single_job: {},
   related_jobs: [],
   applications: [],
+  recent_applications: [],
   formSubmit: false,
   isLoading: false,
+  notes: [],
 };
 
 const reducer = (state, action) => {
@@ -24,6 +26,21 @@ const reducer = (state, action) => {
       return { ...state, jobs: action.payload.data, meta: action.payload.meta };
     case "set_applications":
       return { ...state, applications: action.payload };
+    case "set_recent_applications":
+      return { ...state, recent_applications: action.payload.data };
+    case "delete_application": {
+      const app_id = action.payload.app_id;
+      const job_id = action.payload.job_id;
+      let jobIndex = state.applications.findIndex((job) => job.id === job_id);
+      const updatedJob = { ...state.applications[jobIndex] };
+      let updatedApplications = updatedJob.applications.filter(
+        (app) => app.id !== app_id
+      );
+      updatedJob.applications = updatedApplications;
+      const updatedData = [...state.applications];
+      updatedData[jobIndex] = { ...updatedJob };
+      return { ...state, applications: updatedData };
+    }
     case "set_single_job":
       return { ...state, single_job: action.payload };
     case "delete_job":
@@ -48,6 +65,8 @@ const reducer = (state, action) => {
       return { ...state, employment_type: action.payload };
     case "set_media_experiences":
       return { ...state, media_experiences: action.payload.data };
+    case "set_notes":
+      return { ...state, notes: action.payload.data };
     case "set_form_submit":
       return { ...state, formSubmit: action.payload };
     case "set_loading":
@@ -149,6 +168,20 @@ const getApplications = (dispatch) => {
   };
 };
 
+const getRecentApplications = (dispatch) => {
+  return async (uid) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get("applications?filter[user_id]=" + uid);
+      dispatch({
+        type: "set_recent_applications",
+        payload: response.data,
+      });
+    } catch (error) {}
+    setLoading(dispatch, false);
+  };
+};
+
 const updateApplication = (dispatch) => {
   return async (id, data, cb = false) => {
     try {
@@ -162,6 +195,31 @@ const deleteApplication = (dispatch) => {
   return async (id) => {
     try {
       const response = await api.delete("/applications/" + id);
+      const job_id = response.data.data.job_id;
+      dispatch({
+        type: "delete_application",
+        payload: { app_id: id, job_id },
+      });
+    } catch (error) {}
+  };
+};
+
+const addNote = (dispatch) => {
+  return async (data) => {
+    try {
+      const response = await api.post("/notes", data);
+    } catch (error) {}
+  };
+};
+
+const getNotes = (dispatch) => {
+  return async (id) => {
+    try {
+      const response = await api.get("/notes?filter[application_id]=" + id);
+      dispatch({
+        type: "set_notes",
+        payload: response.data,
+      });
     } catch (error) {}
   };
 };
@@ -364,9 +422,12 @@ export const { Context, Provider } = createDataContext(
     getJob,
     getJobById,
     getApplications,
+    getRecentApplications,
     updateApplication,
     deleteApplication,
     deleteJob,
+    addNote,
+    getNotes,
     getFeaturedJobs,
     getCategories,
     getStates,

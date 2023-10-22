@@ -1,18 +1,29 @@
 import Placeholder from "../assets/images/placeholder.png";
-import { IoLocationOutline } from "react-icons/io5";
+import { IoBookmarkOutline, IoLocationOutline } from "react-icons/io5";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
 import useCreatives from "../hooks/useCreatives";
 import { useContext, useEffect } from "react";
+import { Context as AuthContext } from "../context/AuthContext";
 import { Context as CreativesContext } from "../context/CreativesContext";
+import { Context as DataContext } from "../context/DataContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
 
 const Creatives = () => {
   const creatives = useCreatives();
   const { state, loadCreatives } = useContext(CreativesContext);
+  const { createBookmark } = useContext(DataContext);
+
+  const {
+    state: { role, user },
+  } = useContext(AuthContext);
 
   const loadMore = () => {
     if (state.nextPage) loadCreatives(state.nextPage);
+  };
+
+  const addToShortlist = (id) => {
+    createBookmark(user.uuid, "creatives", id);
   };
 
   useScrollLoader(state.loading, loadMore);
@@ -30,6 +41,14 @@ const Creatives = () => {
               return (
                 <div className="col-md-4 col-sm-6 col-12" key={`cv-${index}`}>
                   <div className="sliderContent agencies-slider">
+                    {role == "agency" && (
+                      <button
+                        className="shortlist-btn"
+                        onClick={() => addToShortlist(item.id)}
+                      >
+                        <IoBookmarkOutline />
+                      </button>
+                    )}
                     <img
                       src={item.profile_image || Placeholder}
                       className="candidateLogo"

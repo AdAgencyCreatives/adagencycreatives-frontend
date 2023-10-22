@@ -9,20 +9,30 @@ import {
   TfiLocationPin,
 } from "react-icons/tfi";
 import { Tooltip } from "@mui/material";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Message from "../../../components/agency/dashboard/Modals/Message";
+import { Context as DataContext } from "../../../context/DataContext";
 
 const CreativeShortlist = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const {
+    state: { bookmarks },
+    getBookmarks,
+  } = useContext(DataContext);
+
+  useEffect(() => {
+    getBookmarks();
+  }, []);
+
   return (
     <div className="agency-page-creative-shortlist">
       <h3 className="page-title">Creatives Shortlist</h3>
       <div className="card">
-        {Array.apply(null, { length: 2 }).map((value, index) => {
-          return (
+        {bookmarks.length ? (
+          bookmarks.map((value, index) => (
             <div class="candidate-list candidate-archive-layout">
               <div class="d-flex align-items-center flex-wrap">
                 <div class="candidate-info">
@@ -69,7 +79,7 @@ const CreativeShortlist = () => {
                       </Link>
                     </Tooltip>
                     <Tooltip title="Send Message">
-                      <Link to="#" onClick={() => setOpen(true)} >
+                      <Link to="#" onClick={() => setOpen(true)}>
                         <TfiEmail />
                       </Link>
                     </Tooltip>
@@ -84,8 +94,10 @@ const CreativeShortlist = () => {
                 </div>
               </div>
             </div>
-          );
-        })}
+          ))
+        ) : (
+          <p className="fs-5">There are no Creatives in your shortlist.</p>
+        )}
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import {
   TfiCheck,
   TfiLoop,
   TfiPlus,
+  TfiBackRight,
 } from "react-icons/tfi";
 import { Link } from "react-router-dom";
 import AddNotesModal from "./Modals/AddNotesModal";
@@ -20,6 +21,7 @@ const ApplicantJobs = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [appId, setAppId] = useState("");
   const [data, setData] = useState([]);
   const [tab, setTab] = useState({});
 
@@ -45,9 +47,10 @@ const ApplicantJobs = () => {
   const switchTab = (id, tab) => {
     let jobIndex = applications.findIndex((job) => job.id == id);
     const updatedJob = { ...applications[jobIndex] };
-    updatedJob.applications = updatedJob.applications.filter(
-      (application) => application.status === tab
-    );
+    updatedJob.applications = updatedJob.applications.filter((application) => {
+      if (tab == "pending") return true;
+      return application.status == tab;
+    });
     const updatedApplications = [...applications];
     updatedApplications[jobIndex] = updatedJob;
     setData(updatedApplications);
@@ -71,6 +74,12 @@ const ApplicantJobs = () => {
 
   return (
     <div className="agency-page-jobapplicants">
+      <AddNotesModal
+        open={open}
+        handleClose={handleClose}
+        app_id={appId}
+        uid={user.uuid}
+      />
       <h3 className="page-title">All Applicants</h3>
       <div className="card">
         {data.map((item) => (
@@ -142,7 +151,7 @@ const ApplicantJobs = () => {
                             <div className="candidate-info-content">
                               <div className="title-wrapper d-flex align-items-center">
                                 <h2 className="candidate-title">
-                                  <Link to={"/creative/" + application.user}>
+                                  <Link to={"/creative/" + application.slug}>
                                     {application.user}
                                   </Link>
                                 </h2>
@@ -188,48 +197,75 @@ const ApplicantJobs = () => {
                         <div className="ali-right col-sm-4">
                           <div className="applicant-action-button action-button">
                             <Tooltip title="Add Notes">
-                              <button className="btn p-0 border-0 btn-hover-primary">
-                                <TfiNotepad onClick={() => setOpen(true)} />
+                              <button
+                                className="btn p-0 border-0 btn-hover-primary"
+                                onClick={() => {
+                                  setAppId(application.id);
+                                  setOpen(true);
+                                }}
+                              >
+                                <TfiNotepad />
                               </button>
                             </Tooltip>
-                            <AddNotesModal
-                              open={open}
-                              handleClose={handleClose}
-                            />
-                            <Tooltip
-                              title="Interested"
-                              onClick={() =>
-                                setApplicationStatus(
-                                  item.id,
-                                  application.id,
-                                  "accepted"
-                                )
-                              }
-                            >
-                              <button className="btn p-0 border-0 btn-hover-primary">
-                                <TfiCheck className="icon-rounded" />
-                              </button>
-                            </Tooltip>
+                            {application.status == "pending" ? (
+                              <>
+                                <Tooltip
+                                  title="Interested"
+                                  onClick={() =>
+                                    setApplicationStatus(
+                                      item.id,
+                                      application.id,
+                                      "accepted"
+                                    )
+                                  }
+                                >
+                                  <button className="btn p-0 border-0 btn-hover-primary">
+                                    <TfiCheck className="icon-rounded" />
+                                  </button>
+                                </Tooltip>
 
-                            <Tooltip
-                              title="Not Aligned"
-                              onClick={() =>
-                                setApplicationStatus(
-                                  item.id,
-                                  application.id,
-                                  "rejected"
-                                )
-                              }
-                            >
-                              <button className="btn p-0 border-0 btn-hover-primary">
-                                <TfiLoop className="icon-rounded" />
-                              </button>
-                            </Tooltip>
+                                <Tooltip
+                                  title="Not Aligned"
+                                  onClick={() =>
+                                    setApplicationStatus(
+                                      item.id,
+                                      application.id,
+                                      "rejected"
+                                    )
+                                  }
+                                >
+                                  <button className="btn p-0 border-0 btn-hover-primary">
+                                    <TfiLoop className="icon-rounded" />
+                                  </button>
+                                </Tooltip>
+                              </>
+                            ) : (
+                              <Tooltip
+                                title="Undo"
+                                onClick={() =>
+                                  setApplicationStatus(
+                                    item.id,
+                                    application.id,
+                                    "pending"
+                                  )
+                                }
+                              >
+                                <button className="btn p-0 border-0 btn-hover-primary">
+                                  <TfiBackRight
+                                    className="icon-rounded"
+                                    style={{ transform: "rotateY(180deg)" }}
+                                  />
+                                </button>
+                              </Tooltip>
+                            )}
 
                             <Tooltip title="Download CV">
-                              <button className="btn p-0 border-0 btn-hover-primary">
+                              <Link
+                                className="btn p-0 border-0 btn-hover-primary"
+                                to={application.resume_url || "#"}
+                              >
                                 <TfiDownload className="icon-rounded" />
-                              </button>
+                              </Link>
                             </Tooltip>
 
                             <Tooltip

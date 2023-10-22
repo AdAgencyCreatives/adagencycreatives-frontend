@@ -21,7 +21,6 @@ export const useScrollLoader = (loading, cb = false) => {
       ) {
         cb();
         callbackFired.current = true;
-        console.log("asdasd");
         window.removeEventListener("scroll", handleScroll);
       }
     };
