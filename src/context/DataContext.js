@@ -172,7 +172,7 @@ export const { Context, Provider } = createDataContext(
     getYearsExperience,
     getStrengths,
     getBookmarks,
-    createBookmark
+    createBookmark,
   },
   state
 );

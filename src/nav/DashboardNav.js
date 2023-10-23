@@ -1,7 +1,7 @@
 export const agencyNav = [
   { name: "Job Dashboard", link: "/dashboard" },
   { name: "Profile", link: "/profile" },
-  { name: "Job Messages", link: "/#" },
+  { name: "Job Messages", link: "/job-messages" },
   { name: "My Jobs", link: "/my-jobs" },
   { name: "My Applicants", link: "/applicant-jobs" },
   { name: "Post a Job", link: "/post-a-job" },
@@ -16,7 +16,7 @@ export const creativeNav = [
   { name: "Job Dashboard", link: "/dashboard" },
   { name: "Profile", link: "/profile" },
   { name: "My Resume", link: "/my-resume" },
-  { name: "Job Messages", link: "/messages" },
+  { name: "Job Messages", link: "/job-messages" },
   { name: "My Opportunities", link: "/my-applied" },
   { name: "Job Alerts", link: "/job-alerts" },
   { name: "Creative Jobs", link: "/creative-jobs" },

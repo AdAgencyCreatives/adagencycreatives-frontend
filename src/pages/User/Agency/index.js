@@ -14,6 +14,7 @@ import MyResume from "./MyResume";
 import JobPost from "../../Jobs/JobPostForm";
 import useToken from "../../../hooks/useToken";
 import Loader from "../../../components/Loader";
+import JobMessages from "./JobMessages";
 
 const Agency = () => {
   const { page } = useParams();
@@ -28,6 +29,7 @@ const Agency = () => {
     "change-password": <ChangePassword />,
     "delete-profile": <DeleteProfile />,
     "shortlist-creatives": <CreativeShortlist />,
+    "job-messages": <JobMessages />,
     packages: <Packages />,
   };
 

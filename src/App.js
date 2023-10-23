@@ -12,6 +12,11 @@ import { Provider as JobsProvider } from "./context/JobsContext";
 import { Provider as AgenciesProvider } from "./context/AgenciesContext";
 import { Provider as SpotlightProvider } from "./context/SpotlightContext";
 import { Provider as SubscriptionProvider } from "./context/SubscriptionContext";
+import { Provider as ChatProvider } from "./context/ChatContext";
+import Echo from "laravel-echo";
+import Pusher from "pusher-js";
+
+window.Pusher = Pusher;
 
 const theme = createTheme({
   typography: {
@@ -29,10 +34,40 @@ const theme = createTheme({
 });
 
 function App() {
-  const { getToken } = useContext(AuthContext);
+  const {
+    state: { token, user },
+    getToken,
+  } = useContext(AuthContext);
   useMemo(() => {
     getToken();
   }, []);
+
+  useEffect(() => {
+    if (token) {
+      window.Echo = new Echo({
+        broadcaster: "pusher",
+        key: process.env.REACT_APP_PUSHER_APP_KEY,
+        cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER ?? "mt1",
+        authEndpoint: "http://35.173.50.140/broadcasting/auth",
+        wsHost: "35.173.50.140",
+        wsPort: 6001,
+        forceTLS: false,
+        disableStats: true,
+        auth: {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        },
+      });
+
+      window.Echo.private("messanger." + user.uuid).listen(
+        ".private_msg",
+        (e) => {
+          console.log(e.data);
+        }
+      );
+    }
+  }, [token, user]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -40,16 +75,18 @@ function App() {
         <SubscriptionProvider>
           <CreativesProvider>
             <AgenciesProvider>
-              <SpotlightProvider>
-                <JobsProvider>
-                  <div className="App">
-                    <ScrollRestoration />
-                    <Header />
-                    <Outlet />
-                    <Footer />
-                  </div>
-                </JobsProvider>
-              </SpotlightProvider>
+              <ChatProvider>
+                <SpotlightProvider>
+                  <JobsProvider>
+                    <div className="App">
+                      <ScrollRestoration />
+                      <Header />
+                      <Outlet />
+                      <Footer />
+                    </div>
+                  </JobsProvider>
+                </SpotlightProvider>
+              </ChatProvider>
             </AgenciesProvider>
           </CreativesProvider>
         </SubscriptionProvider>
