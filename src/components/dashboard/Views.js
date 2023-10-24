@@ -21,7 +21,7 @@ ChartJS.register(
   Tooltip,
   Filler
 );
-const Views = () => {
+const Views = ({title}) => {
   const data = {
     labels: [
       "August 30, 2023",
@@ -54,7 +54,7 @@ const Views = () => {
   };
   return (
     <div className="card">
-      <div className="card-title">Your Profile Views</div>
+      <div className="card-title">{title}</div>
       <div className="card-body">
         <Line
           data={data}

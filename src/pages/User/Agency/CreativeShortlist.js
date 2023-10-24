@@ -11,8 +11,8 @@ import {
 } from "react-icons/tfi";
 import { Tooltip } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import Message from "../../../components/agency/dashboard/Modals/Message";
-import AddNotesModal from "../../../components/agency/dashboard/Modals/AddNotesModal";
+import Message from "../../../components/dashboard/Modals/Message";
+import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 import { Context as DataContext } from "../../../context/DataContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
 

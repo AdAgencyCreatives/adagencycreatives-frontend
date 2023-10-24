@@ -6,7 +6,7 @@ const state = { messages: [], contacts: [], loading: false };
 const reducer = (state, action) => {
   switch (action.type) {
     case "set_messages":
-      return { ...state, messages: action.payload.data.messages };
+      return { ...state, messages: action.payload.data };
     case "set_contacts":
       return { ...state, contacts: action.payload.contacts };
     case "set_loading":
@@ -18,6 +18,7 @@ const reducer = (state, action) => {
 
 const getMessages = (dispatch) => {
   return async (id) => {
+    setLoading(dispatch, true);
     try {
       const response = await api.get("/messages/" + id);
       dispatch({
@@ -25,6 +26,7 @@ const getMessages = (dispatch) => {
         payload: response.data,
       });
     } catch (error) {}
+    setLoading(dispatch, false);
   };
 };
 
@@ -42,7 +44,6 @@ const getContacts = (dispatch) => {
 
 const sendMessage = (dispatch) => {
   return async (sender_id, receiver_id, message, cb = () => {}) => {
-    setLoading(dispatch, true);
     try {
       const response = await api.post("/messages", {
         sender_id,
@@ -50,7 +51,6 @@ const sendMessage = (dispatch) => {
         message,
       });
     } catch (error) {}
-    setLoading(dispatch, false);
     cb();
   };
 };

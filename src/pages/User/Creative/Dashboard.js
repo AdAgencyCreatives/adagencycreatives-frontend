@@ -2,15 +2,27 @@ import {
   IoBookmarkOutline,
   IoBriefcaseOutline,
   IoChatbubbleEllipsesOutline,
-  IoDocumentTextOutline,
+  IoEyeOutline,
 } from "react-icons/io5";
 
 import "../../../styles/AgencyDashboard/Dashboard.scss";
-import Views from "../../../components/agency/dashboard/Views";
-import Notifications from "../../../components/agency/dashboard/Notifications";
-import Applicants from "../../../components/agency/dashboard/Applicants";
+import Views from "../../../components/dashboard/Views";
+import Notifications from "../../../components/dashboard/Notifications";
+import Applicants from "../../../components/dashboard/Applicants";
+import { Context } from "../../../context/CreativesContext";
+import { useContext, useEffect } from "react";
+import JobList from "../../../components/job/JobList";
 
 const Dashboard = () => {
+  const {
+    state: { stats },
+    getStats,
+  } = useContext(Context);
+
+  useEffect(() => {
+    getStats();
+  }, []);
+
   return (
     <div className="dashboard-wrapper agency-page-dashboard">
       <h3 className="page-title">Dashboard Statistics</h3>
@@ -24,8 +36,10 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="inner">
-                <div className="number-count">0</div>
-                <span>Posted Jobs</span>
+                <div className="number-count">
+                  {stats && stats.jobs_applied}
+                </div>
+                <span>Applied Jobs</span>
               </div>
             </div>
           </div>
@@ -35,12 +49,12 @@ const Dashboard = () => {
             <div className="views-count-wrapper list-item flex-middle justify-content-between text-right">
               <div className="icon-wrapper">
                 <div className="icon">
-                  <IoDocumentTextOutline />
+                  <IoChatbubbleEllipsesOutline />
                 </div>
               </div>
               <div className="inner">
-                <div className="number-count">0</div>
-                <span>Application</span>
+                <div className="number-count">{stats && stats.review}</div>
+                <span>Review</span>
               </div>
             </div>
           </div>
@@ -50,12 +64,12 @@ const Dashboard = () => {
             <div className="review-count-wrapper list-item flex-middle justify-content-between text-right">
               <div className="icon-wrapper">
                 <div className="icon">
-                  <IoChatbubbleEllipsesOutline />
+                  <IoEyeOutline />
                 </div>
               </div>
               <div className="inner">
-                <div className="number-count">0</div>
-                <span>Review</span>
+                <div className="number-count">{stats && stats.views}</div>
+                <span>Views</span>
               </div>
             </div>
           </div>
@@ -69,7 +83,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="inner">
-                <div className="number-count">0</div>
+                <div className="number-count">{stats && stats.shortlisted}</div>
                 <span>Shortlisted</span>
               </div>
             </div>
@@ -78,7 +92,7 @@ const Dashboard = () => {
       </div>
       <div className="row">
         <div className="col-sm-8">
-          <Views />
+          <Views title={"Your Profile Views"} />
         </div>
         <div className="col-sm-4">
           <Notifications />
@@ -86,7 +100,12 @@ const Dashboard = () => {
       </div>
       <div className="row">
         <div className="col">
-          <Applicants />
+          <div className="card">
+            <div className="card-title">My Recent Applications</div>
+            <div className="card-body">
+              <JobList data={[]} />
+            </div>
+          </div>
         </div>
       </div>
     </div>

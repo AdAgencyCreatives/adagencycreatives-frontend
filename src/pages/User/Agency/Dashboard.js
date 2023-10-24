@@ -6,9 +6,9 @@ import {
 } from "react-icons/io5";
 
 import "../../../styles/AgencyDashboard/Dashboard.scss";
-import Views from "../../../components/agency/dashboard/Views";
-import Notifications from "../../../components/agency/dashboard/Notifications";
-import Applicants from "../../../components/agency/dashboard/Applicants";
+import Views from "../../../components/dashboard/Views";
+import Notifications from "../../../components/dashboard/Notifications";
+import Applicants from "../../../components/dashboard/Applicants";
 import { useContext, useEffect } from "react";
 import { Context } from "../../../context/AgenciesContext";
 
@@ -92,7 +92,7 @@ const Dashboard = () => {
       </div>
       <div className="row">
         <div className="col-sm-8">
-          <Views />
+          <Views title={"Page Views"}/>
         </div>
         <div className="col-sm-4">
           <Notifications />

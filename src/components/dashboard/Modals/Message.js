@@ -1,6 +1,6 @@
 import { Modal, Dialog, CircularProgress } from "@mui/material";
 import { useContext } from "react";
-import { Context } from "../../../../context/ChatContext";
+import { Context } from "../../../context/ChatContext";
 import { useState } from "react";
 // import "../../../styles/Modal/AddNotesModal.scss";
 

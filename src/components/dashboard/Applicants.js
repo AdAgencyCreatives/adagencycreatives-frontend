@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { Context as JobsContext } from "../../../context/JobsContext";
-import { Context as AuthContext } from "../../../context/AuthContext";
+import { Context as JobsContext } from "../../context/JobsContext";
+import { Context as AuthContext } from "../../context/AuthContext";
 import { Tooltip } from "@mui/material";
 import AddNotesModal from "./Modals/AddNotesModal";
 import { IoTimeOutline } from "react-icons/io5";
@@ -58,7 +58,7 @@ const Applicants = () => {
   return (
     <div className="agency-page-jobapplicants">
       <div className="card">
-        <div className="card-title">Recent Applications</div>
+        <div className="card-title">Recent Applicants</div>
         <AddNotesModal
           open={open}
           handleClose={handleClose}

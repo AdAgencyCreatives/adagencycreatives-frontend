@@ -33,6 +33,11 @@ const reducer = (state, action) => {
       return { ...state, years_experience: action.payload.data };
     case "set_bookmarks":
       return { ...state, bookmarks: action.payload.data };
+    case "remove_bookmark":
+      return {
+        ...state,
+        bookmarks: state.bookmarks.filter((item) => item.id != action.payload),
+      };
     default:
       return state;
   }
@@ -160,6 +165,18 @@ const createBookmark = (dispatch) => {
   };
 };
 
+const removeBookmark = (dispatch) => {
+  return async (id) => {
+    try {
+      const response = await api.delete("/bookmarks/" + id);
+      dispatch({
+        type: "remove_bookmark",
+        payload: id,
+      });
+    } catch (error) {}
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
@@ -173,6 +190,7 @@ export const { Context, Provider } = createDataContext(
     getStrengths,
     getBookmarks,
     createBookmark,
+    removeBookmark,
   },
   state
 );

@@ -1,16 +1,15 @@
 import Dashboard from "./Dashboard";
 import Profile from "./Profile";
-import PostJob from "./PostJob";
 import MyJobs from "./MyJobs";
 import Sidebar from "../../../components/creative/Sidebar";
 import "../../../styles/AgencyDashboard/index.scss";
 import { useParams } from "react-router-dom";
-import ApplicantJobs from "../../../components/agency/dashboard/ApplicantJobs";
 import ChangePassword from "./ChangePassword";
 import DeleteProfile from "./DeleteProfile";
-import CreativeShortlist from "./CreativeShortlist";
+import AgencyShortlist from "./AgencyShortlist";
 import Packages from "./Packages";
 import MyResume from "./MyResume";
+import JobMessages from "../JobMessages";
 
 const Creative = () => {
   const { page } = useParams();
@@ -18,13 +17,11 @@ const Creative = () => {
     "dashboard": <Dashboard />,
     "profile": <Profile />,
     "my-resume": <MyResume />,
-    "post-a-job": <PostJob />,
     "my-jobs": <MyJobs />,
-    "applicant-jobs": <ApplicantJobs />,
     "change-password": <ChangePassword />,
     "delete-profile": <DeleteProfile />,
-    "shortlist-creatives": <CreativeShortlist />,
-    "packages": <Packages />,
+    "agencies-shortlist": <AgencyShortlist />,
+    "job-messages": <JobMessages />,
   };
 
   return (

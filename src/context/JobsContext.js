@@ -76,11 +76,13 @@ const reducer = (state, action) => {
   }
 };
 
+const status = 0;
+
 const getFeaturedJobs = (dispatch) => {
   return async () => {
     try {
       const response = await api.get(
-        "/jobs?filter[is_featured]=1&filter[is_urgent]=1&filter[status]=1"
+        "/jobs?filter[is_featured]=1&filter[is_urgent]=1&filter[status]="+status
       );
       console.log({ response });
       dispatch({
@@ -94,7 +96,7 @@ const getFeaturedJobs = (dispatch) => {
 const getJobs = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/jobs?filter[status]=1");
+      const response = await api.get("/jobs?filter[status]="+status);
       console.log({ response });
       dispatch({
         type: "set_jobs",
@@ -132,7 +134,7 @@ const getJobById = (dispatch) => {
 const getRelatedJobs = async (dispatch, category) => {
   try {
     const response = await api.get(
-      "/jobs?filter[status]=1&filter[category_id]=" + category
+      "/jobs?filter[status]="+status+"&filter[category_id]=" + category
     );
     dispatch({
       type: "set_related_jobs",
@@ -147,7 +149,7 @@ const getApplications = (dispatch) => {
     setLoading(dispatch, true);
     try {
       const response = await api.get(
-        "/jobs?filter[status]=0&filter[user_id]=" + uid
+        "/jobs?filter[status]="+status+"&filter[user_id]=" + uid
       ); // have to set filter[status]=1 later
       const jobs = response.data.data;
       for (const job of jobs) {
@@ -291,7 +293,7 @@ const paginateJob = (dispatch) => {
     try {
       let filter = getFilters(filters);
       const response = await api.get(
-        "/jobs?filter[status]=1&" + filter + "&page=" + page
+        "/jobs?filter[status]="+status+"&" + filter + "&page=" + page
       );
       dispatch({
         type: "set_jobs",
@@ -310,7 +312,7 @@ const filterJobs = (dispatch) => {
     });
     let filter = getFilters(filters);
     try {
-      const response = await api.get("/jobs?filter[status]=1&" + filter);
+      const response = await api.get("/jobs?filter[status]="+status+"&" + filter);
       dispatch({
         type: "set_jobs",
         payload: response.data,

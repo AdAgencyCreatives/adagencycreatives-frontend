@@ -1,21 +1,31 @@
 import Placeholder from "../assets/images/placeholder.png";
-import { IoLocationOutline } from "react-icons/io5";
+import { IoBookmarkOutline, IoLocationOutline } from "react-icons/io5";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
 import useAgencies from "../hooks/useAgencies";
 import { Context as AgenciesContext } from "../context/AgenciesContext";
+import { Context as AuthContext } from "../context/AuthContext";
+import { Context as DataContext } from "../context/DataContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
 import { useContext } from "react";
 
 const Agencies = () => {
   const agencies = useAgencies();
   const { state, loadAgencies } = useContext(AgenciesContext);
+  const { createBookmark } = useContext(DataContext);
+  const {
+    state: { role, user },
+  } = useContext(AuthContext);
 
   const loadMore = () => {
     if (state.nextPage) loadAgencies(state.nextPage);
   };
 
   useScrollLoader(state.loading, loadMore);
+
+  const addToShortlist = (id) => {
+    createBookmark(user.uuid, "agencies", id);
+  };
 
   return (
     <div className="dark-container">
@@ -31,6 +41,14 @@ const Agencies = () => {
               return (
                 <div className="col-md-4 col-sm-6 col-12" key={`ag-${index}`}>
                   <div className="sliderContent adagencies-slider">
+                    {role == "creative" && (
+                      <button
+                        className="shortlist-btn"
+                        onClick={() => addToShortlist(item.id)}
+                      >
+                        <IoBookmarkOutline />
+                      </button>
+                    )}
                     <Link to={`/agency/${item.slug}`} className="employer-logo">
                       <img
                         src={item.logo || Placeholder}
@@ -59,7 +77,9 @@ const Agencies = () => {
                       </div>
                     )}
                     <div className="open-jobs-btn">
-                      <Link to={`/agency/${item.slug}`} >Open Jobs - {item.open_jobs}</Link>
+                      <Link to={`/agency/${item.slug}`}>
+                        Open Jobs - {item.open_jobs}
+                      </Link>
                     </div>
                   </div>
                 </div>

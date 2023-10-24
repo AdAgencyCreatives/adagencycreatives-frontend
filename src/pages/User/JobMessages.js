@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import JobChat from "../../../components/user/Dashboard/JobChat";
-import { Context as ChatContext } from "../../../context/ChatContext";
-import { Context as AuthContext } from "../../../context/AuthContext";
+import JobChat from "../../components/user/Dashboard/JobChat";
+import { Context as ChatContext } from "../../context/ChatContext";
+import { Context as AuthContext } from "../../context/AuthContext";
 import { useEffect } from "react";
 
 const JobMessages = () => {
   const {
-    state: { contacts, messages },
+    state: { contacts, messages, loading },
     getContacts,
     getMessages,
     sendMessage,
@@ -29,6 +29,7 @@ const JobMessages = () => {
         messages={messages}
         user={user}
         sendMessage={sendMessage}
+        loading={loading}
       />
     </div>
   );

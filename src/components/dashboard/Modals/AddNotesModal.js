@@ -1,7 +1,7 @@
 import Dialog from "@mui/material/Dialog";
-import "../../../../styles/Modal/AddNotesModal.scss";
+import "../../../styles/Modal/AddNotesModal.scss";
 import { useContext, useEffect, useState } from "react";
-import { Context } from "../../../../context/JobsContext";
+import { Context } from "../../../context/JobsContext";
 import moment from "moment";
 
 const AddNotesModal = ({ app_id, uid, open, handleClose }) => {

@@ -5,7 +5,7 @@ import MyJobs from "./MyJobs";
 import Sidebar from "../../../components/agency/Sidebar";
 import "../../../styles/AgencyDashboard/index.scss";
 import { useMatch, useParams } from "react-router-dom";
-import ApplicantJobs from "../../../components/agency/dashboard/ApplicantJobs";
+import ApplicantJobs from "../../../components/dashboard/ApplicantJobs";
 import ChangePassword from "./ChangePassword";
 import DeleteProfile from "./DeleteProfile";
 import CreativeShortlist from "./CreativeShortlist";
@@ -14,7 +14,7 @@ import MyResume from "./MyResume";
 import JobPost from "../../Jobs/JobPostForm";
 import useToken from "../../../hooks/useToken";
 import Loader from "../../../components/Loader";
-import JobMessages from "./JobMessages";
+import JobMessages from "../JobMessages";
 
 const Agency = () => {
   const { page } = useParams();

@@ -1,8 +1,9 @@
 import { CircularProgress } from "@mui/material";
 
-const Loader = () => {
+const Loader = ({ fullHeight = true }) => {
+  const height = fullHeight ? "100vh" : "100%";
   return (
-    <div className="loader">
+    <div className="loader" style={{ height }}>
       <CircularProgress />
     </div>
   );

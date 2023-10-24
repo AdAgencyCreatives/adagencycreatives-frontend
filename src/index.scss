@@ -4,7 +4,7 @@ $primary-color: #d3a11f;
   --color-primary: #{$primary-color};
   --color-secondary: #ededed;
   --color-gray: #777777;
-  --bs-primary-rgb: 211, 161, 131;
+  --bs-primary-rgb: 211, 161, 31;
 }
 
 @font-face {
@@ -38,6 +38,14 @@ a.link-dark {
 
 a.link-dark:hover {
   color: var(--color-primary) !important;
+}
+
+a.link-gray {
+  color: var(--color-gray) !important;
+}
+
+a.link-gray:hover {
+  color: black !important;
 }
 
 [contenteditable=true]:empty:before {
@@ -170,6 +178,9 @@ li.page-item {
   background: var(--color-primary);
 }
 
+.p-relative{
+  position: relative;
+}
 
 @media (min-width: 576px) {
   .container {

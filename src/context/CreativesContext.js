@@ -8,7 +8,8 @@ const state = {
   single_creative: {},
   creative_experience: [],
   creative_education: [],
-  formSubmit: false
+  stats: null,
+  formSubmit: false,
 };
 
 const reducer = (state, action) => {
@@ -32,15 +33,11 @@ const reducer = (state, action) => {
         nextPage: action.payload.links.next,
       };
     case "set_loading":
-      return {
-        ...state,
-        loading: action.payload,
-      };
+      return { ...state, loading: action.payload };
     case "set_form_submit":
-      return {
-        ...state,
-        formSubmit: action.payload,
-      };
+      return { ...state, formSubmit: action.payload };
+    case "set_stats":
+      return { ...state, stats: action.payload.stats };
     default:
       return state;
   }
@@ -158,8 +155,28 @@ const saveCreativeImage = (dispatch) => {
   };
 };
 
+const getStats = (dispatch) => {
+  return async () => {
+    try {
+      const response = await api.get("/creative_stats");
+      dispatch({
+        type: "set_stats",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
-  { getCreatives, loadCreatives, getCreative, getCreativeById, saveCreative, saveCreativeImage },
+  {
+    getCreatives,
+    getStats,
+    loadCreatives,
+    getCreative,
+    getCreativeById,
+    saveCreative,
+    saveCreativeImage,
+  },
   state
 );
