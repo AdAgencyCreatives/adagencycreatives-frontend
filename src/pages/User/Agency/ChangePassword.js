@@ -23,7 +23,6 @@ const ChangePassword = () => {
     password_confirmation: "",
   });
 
-
   return (
     <div className="dashboard-wrapper agency-page-change-password">
       <h3 className="page-title">Change Password</h3>
@@ -36,6 +35,7 @@ const ChangePassword = () => {
                   Old Password
                 </label>
                 <input
+                  id="oldPassword"
                   type={show.old ? "text" : "password"}
                   className="form-control"
                   value={data.old_password}
@@ -55,10 +55,11 @@ const ChangePassword = () => {
                 </div>
               </div>
               <div className="form-group position-relative mb-4">
-                <label htmlFor="oldPassword" className="form-label">
+                <label htmlFor="newPassword" className="form-label">
                   New Password
                 </label>
                 <input
+                  id="newPassword"
                   type={show.new ? "text" : "password"}
                   className="form-control"
                   value={data.password}
@@ -78,10 +79,11 @@ const ChangePassword = () => {
                 </div>
               </div>
               <div className="form-group position-relative">
-                <label htmlFor="oldPassword" className="form-label">
+                <label htmlFor="retypePassword" className="form-label">
                   Retype Password
                 </label>
                 <input
+                  id="retypePassword"
                   type={show.retype ? "text" : "password"}
                   className="form-control"
                   value={data.password_confirmation}
@@ -104,7 +106,6 @@ const ChangePassword = () => {
                   )}
                 </div>
               </div>
-
               <div className="submit-btn mt-4">
                 <button
                   className="btn btn-dark btn-hover-primary border-0 px-3 py-2"

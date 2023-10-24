@@ -10,6 +10,7 @@ const state = {
   role: null,
   user: null,
   formSubmit: false,
+  messageAlert: { type: '', message: '', display: '' },
 };
 
 const authReducer = (state, action) => {
@@ -30,6 +31,10 @@ const authReducer = (state, action) => {
       return { ...state, formMessage: null };
     case "set_form_submit":
       return { ...state, formSubmit: action.payload };
+
+      case "show_message_alert":
+        return { ...state, messageAlert: action.payload };
+
     default:
       return state;
   }
@@ -128,13 +133,15 @@ const logout = (dispatch) => {
 };
 
 const updatePassword = (dispatch) => {
+
   return async (data) => {
     setFormSubmit(dispatch, true);
     try {
       const response = await api.patch("/update_password", data);
-      alert("Password has been changed");
+      showMessageAlert(dispatch, { type: 'success', message: "Password has been changed", display: "true" });
     } catch (error) {
-      alert(error.response.data.message)
+      showMessageAlert(dispatch, { type: 'error', message: error.response.data.message, display: "true" });
+      // alert(error.response.data.message)
     }
     setFormSubmit(dispatch, false);
   };
@@ -209,6 +216,19 @@ const setFormSubmit = (dispatch, state) => {
   });
 };
 
+const showMessageAlert = (dispatch, globalState) => {
+  dispatch({
+    type: "show_message_alert",
+    payload: globalState,
+  });
+};
+
+const hideMessageAlert = (dispatch) => {
+  return () => {
+    showMessageAlert(dispatch, {type: '', message: '', display: ''});
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   authReducer,
   {
@@ -219,6 +239,7 @@ export const { Context, Provider } = createDataContext(
     getToken,
     logout,
     updatePassword,
+    hideMessageAlert,
   },
   state
 );
