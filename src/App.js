@@ -19,6 +19,7 @@ import Pusher from "pusher-js";
 
 window.Pusher = Pusher;
 
+
 const theme = createTheme({
   typography: {
     fontFamily: [],
@@ -55,12 +56,19 @@ function App() {
         wsHost: "35.173.50.140",
         wsPort: 6001,
         forceTLS: false,
-        disableStats: true,
+        disableStats: false,
         auth: {
           headers: {
             Authorization: "Bearer " + token,
           },
         },
+      });
+
+      window.Echo.connector.pusher.bind('pusher:subscription_succeeded', (channel) => {
+        console.log({channel})
+        if (channel.name === "private-messanger." + user.uuid) {
+            console.log('Listening to the channel');
+        }
       });
 
       window.Echo.private("messanger." + user.uuid).listen(
