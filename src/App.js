@@ -11,6 +11,7 @@ import { Provider as CreativesProvider } from "./context/CreativesContext";
 import { Provider as JobsProvider } from "./context/JobsContext";
 import { Provider as AgenciesProvider } from "./context/AgenciesContext";
 import { Provider as SpotlightProvider } from "./context/SpotlightContext";
+import { Provider as CommunityProvider } from "./context/CommunityContext";
 import { Provider as SubscriptionProvider } from "./context/SubscriptionContext";
 import { Provider as ChatProvider } from "./context/ChatContext";
 import Echo from "laravel-echo";

@@ -11,7 +11,14 @@ import Packages from "./Packages";
 import MyResume from "./MyResume";
 import JobMessages from "../JobMessages";
 
+import { useContext } from "react";
+import { Context } from "../../../context/AuthContext";
+
 const Creative = () => {
+  const {
+    hideMessageAlert
+  } = useContext(Context);
+
   const { page } = useParams();
   const components = {
     "dashboard": <Dashboard />,
@@ -23,6 +30,8 @@ const Creative = () => {
     "agencies-shortlist": <AgencyShortlist />,
     "job-messages": <JobMessages />,
   };
+
+  // hideMessageAlert();
 
   return (
     <div className="agency-dashboard-container">
