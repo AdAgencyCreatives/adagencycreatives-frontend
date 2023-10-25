@@ -44,9 +44,11 @@ function App() {
 
   useEffect(() => {
     if (token) {
+      console.log("after loggin in");
+      console.log(token);
       window.Echo = new Echo({
         broadcaster: "pusher",
-        key: process.env.REACT_APP_PUSHER_APP_KEY,
+        key: "c2125739f0d66b777906",
         cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER ?? "mt1",
         authEndpoint: "http://35.173.50.140/broadcasting/auth",
         wsHost: "35.173.50.140",
