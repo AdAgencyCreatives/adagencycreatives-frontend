@@ -291,7 +291,7 @@ const RegisterModal = ({ open, handleClose, setModal }) => {
                     </label>
                   </div>
                 </div>
-                <button className="btn btn-gray btn-hover-primary text-capitalize ls-3 w-100 mt-3 p-3">
+                <button className="btn btn-gray btn-hover-primary text-capitalize ls-3 w-100 mt-3 p-3 fs-5">
                   Register Now
                 </button>
               </form>

@@ -5,7 +5,7 @@ import bullseye from "../../../assets/images/icons/bulleyes.png";
 import time from "../../../assets/images/icons/duration-icon.png";
 import sample from "../../../assets/images/sample.mp4";
 
-const Sidebar = () => {
+const Sidebar = ({ data }) => {
   return (
     <>
       <div className="sidebar-item">
@@ -15,41 +15,48 @@ const Sidebar = () => {
             <IoCalendarClearOutline />
             <div className="details">
               <div className="text">Years of Experience</div>
-              <div className="value">Mid-Level 2-5 years</div>
+              <div className="value">{data.years_of_experience}</div>
             </div>
           </div>
           <div className="item">
             <img src={bullseye} height={22} width={22} />
             <div className="details">
               <div className="text">Industry Experience</div>
-              <div className="value">Experiential, Media</div>
+              <div className="value">{data.industry_experience.join(", ")}</div>
             </div>
           </div>
           <div className="item">
             <img src={adicon} height={22} width={22} />
             <div className="details">
               <div className="text">Media Experience</div>
-              <div className="value">Branding, Concepts, Digital</div>
+              <div className="value">{data.media_experience.join(", ")}</div>
             </div>
           </div>
           <div className="item">
             <img src={time} height={22} width={22} />
             <div className="details">
               <div className="text">Type of Work</div>
-              <div className="value">Full-Time</div>
+              <div className="value">{data.employment_type}</div>
             </div>
           </div>
           <div className="item">
             <img src={time} height={22} width={22} />
             <div className="details">
               <div className="text">Strengths</div>
-              <div className="value">Branding, Concepts, Digital</div>
+              <div className="value">{data.character_strengths.join(", ")}</div>
             </div>
           </div>
         </div>
       </div>
-      <div className="video-section mt-4">
-        <video src={sample} controls></video>
+      <div className="sidebar-item mt-4">
+        <h4 className="title">Video</h4>
+        {data.video ? (
+          <div className="video-section mt-4">
+            <video src={sample} controls></video>
+          </div>
+        ) : (
+          <button className="btn btn-dark w-100 py-3 fs-5">Coming Soon</button>
+        )}
       </div>
       <div className="sidebar-item mt-4">
         <h4 className="title">Resume</h4>

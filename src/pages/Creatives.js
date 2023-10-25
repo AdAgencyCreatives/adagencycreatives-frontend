@@ -41,7 +41,7 @@ const Creatives = () => {
                       }}
                     />
                     <div className="agencyName">
-                      <Link className="text-dark" to={`/creative/${item.name}`}>
+                      <Link className="text-dark" to={`/creative/${item.slug}`}>
                         {item.name}
                       </Link>
                     </div>
@@ -58,7 +58,7 @@ const Creatives = () => {
                       </div>
                     )}
                     <div className="profileLink">
-                      <Link to={`/creative/${item.name}`}>View Profile</Link>
+                      <Link to={`/creative/${item.slug}`}>View Profile</Link>
                     </div>
                   </div>
                 </div>

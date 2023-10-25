@@ -89,7 +89,7 @@ const CopyWriting = () => {
     {
       title: "Suggestions",
       subtitle: "Did we miss something? Please let us know.",
-      url: "contact",
+      url: "../contact",
     },
   ];
 

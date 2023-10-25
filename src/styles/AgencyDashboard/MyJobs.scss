@@ -20,7 +20,7 @@
 
         td {
             vertical-align: middle;
-            padding: 10px 15px;
+            padding: 15px 15px;
             border: none;
         }
 
@@ -35,6 +35,9 @@
 
         .title-wrapper {
             margin-bottom: 5px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
 
         .nowrap {
@@ -69,7 +72,13 @@
     }
 }
 
-.job-metas > * {
-    color: #696969;
-    font-size: 20.1px;
+.job-metas {
+    >* {
+        color: #696969;
+        font-size: 20.1px;
+    }
+
+    .location>* {
+        margin-top: 0px
+    }
 }

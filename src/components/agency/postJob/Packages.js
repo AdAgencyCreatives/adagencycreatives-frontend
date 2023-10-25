@@ -1,11 +1,12 @@
 import Single from "../../../assets/images/Single-Job-2-300x300.png";
 import Multiple from "../../../assets/images/Multiple-Jobs-2-300x300.png";
 import Premium from "../../../assets/images/Premium-Job-1-300x300.png";
-import '../../../styles/AgencyDashboard/PackagesList.scss'
+import "../../../styles/AgencyDashboard/PackagesList.scss";
 
-const Packages = ({setPackage}) => {
+const Packages = ({ setPackage, setJobStatus }) => {
   const packages = [
     {
+      id: 1,
       title: "Post a Creative Job",
       price: 149,
       image: Single,
@@ -14,21 +15,23 @@ const Packages = ({setPackage}) => {
         "<ul><li>• One (1) Targeted Job Post</li><li>• Duration 30 Days</li><li>• Job Management Dashboard</li> </ul>",
     },
     {
-        title: "Multiple Creative Jobs",
-        price: 349,
-        image: Multiple,
-        subtitle: "Multiple Creative Jobs Package",
-        description:
-          "<ul><li>• One (1) Targeted Job Post</li><li>• Duration 30 Days</li><li>• Job Management Dashboard</li> </ul>",
-      },
-      {
-        title: "Premium Creative Jobs",
-        price: 699,
-        image: Premium,
-        subtitle: "Premium Creative Jobs Package",
-        description:
-          "<ul><li>• One (1) Targeted Job Post</li><li>• Duration 30 Days</li><li>• Job Management Dashboard</li> </ul>",
-      },
+      id: 2,
+      title: "Multiple Creative Jobs",
+      price: 349,
+      image: Multiple,
+      subtitle: "Multiple Creative Jobs Package",
+      description:
+        "<ul><li>• One (1) Targeted Job Post</li><li>• Duration 30 Days</li><li>• Job Management Dashboard</li> </ul>",
+    },
+    {
+      id: 3,
+      title: "Premium Creative Jobs",
+      price: 699,
+      image: Premium,
+      subtitle: "Premium Creative Jobs Package",
+      description:
+        "<ul><li>• One (1) Targeted Job Post</li><li>• Duration 30 Days</li><li>• Job Management Dashboard</li> </ul>",
+    },
   ];
 
   return (
@@ -36,7 +39,7 @@ const Packages = ({setPackage}) => {
       <h3 className="page-title">Packages</h3>
       <div className="page-content">
         <div className="row">
-          {packages.map((item,index) => {
+          {packages.map((item, index) => {
             return (
               <div className="col-md-4" key={index}>
                 <div className="package-container">
@@ -48,7 +51,15 @@ const Packages = ({setPackage}) => {
                     className="description"
                     dangerouslySetInnerHTML={{ __html: item.description }}
                   ></div>
-                  <button className="btn btn-secondary btn-hover-dark" onClick={() => setPackage(index)}>Get Started</button>
+                  <button
+                    className="btn btn-secondary btn-hover-dark"
+                    onClick={() => {
+                      setPackage(item.id);
+                      setJobStatus("create");
+                    }}
+                  >
+                    Get Started
+                  </button>
                 </div>
               </div>
             );

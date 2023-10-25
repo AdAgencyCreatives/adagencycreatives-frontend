@@ -4,13 +4,15 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Footer from "./components/Footer";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import { Context as AuthContext } from "./context/AuthContext";
-import { useContext, useEffect } from "react";
-import { useCookies } from "react-cookie";
+import { useContext, useEffect, useMemo } from "react";
+// import { useCookies } from "react-cookie";
+import { Provider as DataProvider } from "./context/DataContext";
 import { Provider as CreativesProvider } from "./context/CreativesContext";
 import { Provider as JobsProvider } from "./context/JobsContext";
 import { Provider as AgenciesProvider } from "./context/AgenciesContext";
 import { Provider as SpotlightProvider } from "./context/SpotlightContext";
 import { Provider as CommunityProvider } from "./context/CommunityContext";
+import { Provider as SubscriptionProvider } from "./context/SubscriptionContext";
 
 const theme = createTheme({
   typography: {
@@ -28,45 +30,31 @@ const theme = createTheme({
 });
 
 function App() {
-  const {
-    setToken,
-    state: { token, role },
-  } = useContext(AuthContext);
-  const [cookies, setCookie, removeCookie] = useCookies();
-
-  useEffect(() => {
-    if (cookies.token !== undefined) {
-      // removeCookie("token",{path:"/"})
-
-      setToken(cookies.token, cookies.role);
-    }
+  const { getToken } = useContext(AuthContext);
+  useMemo(() => {
+    getToken();
   }, []);
-
-  useEffect(() => {
-    if (token) {
-      setCookie("token", token);
-      setCookie("role", role);
-    }
-  }, [token]);
 
   return (
     <ThemeProvider theme={theme}>
-      <CreativesProvider>
-        <AgenciesProvider>
-          <SpotlightProvider>
-            <JobsProvider>
-              <CommunityProvider>
-                <div className="App">
-                  <ScrollRestoration />
-                  <Header />
-                  <Outlet />
-                  <Footer />
-                </div>
-              </CommunityProvider>
-            </JobsProvider>
-          </SpotlightProvider>
-        </AgenciesProvider>
-      </CreativesProvider>
+      <DataProvider>
+        <SubscriptionProvider>
+          <CreativesProvider>
+            <AgenciesProvider>
+              <SpotlightProvider>
+                <JobsProvider>
+                  <div className="App">
+                    <ScrollRestoration />
+                    <Header />
+                    <Outlet />
+                    <Footer />
+                  </div>
+                </JobsProvider>
+              </SpotlightProvider>
+            </AgenciesProvider>
+          </CreativesProvider>
+        </SubscriptionProvider>
+      </DataProvider>
     </ThemeProvider>
   );
 }

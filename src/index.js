@@ -6,16 +6,13 @@ import reportWebVitals from "./reportWebVitals";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./Router";
 import { Provider as AuthProvider } from "./context/AuthContext";
-import { CookiesProvider } from "react-cookie";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <CookiesProvider defaultSetOptions={{ path: "/" }}>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
-    </CookiesProvider>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );
 

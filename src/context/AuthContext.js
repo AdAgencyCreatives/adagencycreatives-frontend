@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { api, setAuthToken } from "../api/api";
 import createDataContext from "./createDataContext";
 import { useCookies } from "react-cookie";
@@ -8,6 +9,8 @@ const state = {
   token: null,
   role: null,
   user: null,
+  formSubmit: false,
+  messageAlert: { type: '', message: '', display: '' },
 };
 
 const authReducer = (state, action) => {
@@ -26,6 +29,12 @@ const authReducer = (state, action) => {
 
     case "reset_form_message":
       return { ...state, formMessage: null };
+    case "set_form_submit":
+      return { ...state, formSubmit: action.payload };
+
+      case "show_message_alert":
+        return { ...state, messageAlert: action.payload };
+
     default:
       return state;
   }
@@ -94,7 +103,7 @@ const signup = (dispatch) => {
 };
 
 const signin = (dispatch) => {
-  return async (data,cb) => {
+  return async (data, cb) => {
     resetFormMessage(dispatch)();
     try {
       const response = await api.post("/login", data);
@@ -104,9 +113,45 @@ const signin = (dispatch) => {
         type: "set_form_message",
         payload: { type: "success", message: getLoginSuccessMessage() },
       });
-      cb()
+      cb();
     } catch (error) {
       setErrorMessage(dispatch, error.response.data.message);
+    }
+  };
+};
+
+const logout = (dispatch) => {
+  return (cb) => {
+    Cookies.remove("token");
+    Cookies.remove("role");
+    dispatch({
+      type: "set_token",
+      payload: { token: null, role: null },
+    });
+    cb();
+  };
+};
+
+const updatePassword = (dispatch) => {
+
+  return async (data) => {
+    setFormSubmit(dispatch, true);
+    try {
+      const response = await api.patch("/update_password", data);
+      showMessageAlert(dispatch, { type: 'success', message: "Password has been changed", display: "true" });
+    } catch (error) {
+      showMessageAlert(dispatch, { type: 'error', message: error.response.data.message, display: "true" });
+      // alert(error.response.data.message)
+    }
+    setFormSubmit(dispatch, false);
+  };
+};
+
+const getToken = (dispatch) => {
+  return () => {
+    const token = Cookies.get("token");
+    if (token) {
+      verifyToken(dispatch, token);
     }
   };
 };
@@ -114,6 +159,8 @@ const signin = (dispatch) => {
 const setToken = (dispatch) => {
   return (token, role) => {
     if (token) {
+      Cookies.set("token", token);
+      Cookies.set("role", role);
       setAuthToken(token);
       dispatch({
         type: "set_token",
@@ -121,6 +168,30 @@ const setToken = (dispatch) => {
       });
     }
   };
+};
+
+const verifyToken = async (dispatch, token) => {
+  try {
+    const response = await api.post(
+      "/re_login",
+      {},
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    setToken(dispatch)(response.data.token, response.data.user.role);
+    setUserData(dispatch, response.data.user);
+    dispatch({
+      type: "set_form_message",
+      payload: { type: "success", message: getLoginSuccessMessage() },
+    });
+  } catch (error) {
+    Cookies.remove("token");
+    Cookies.remove("role");
+    setErrorMessage(dispatch, error.response.data.message);
+  }
 };
 
 const setUserData = (dispatch, data) => {
@@ -138,8 +209,37 @@ const prepareFields = (data) => {
   return formData;
 };
 
+const setFormSubmit = (dispatch, state) => {
+  dispatch({
+    type: "set_form_submit",
+    payload: state,
+  });
+};
+
+const showMessageAlert = (dispatch, globalState) => {
+  dispatch({
+    type: "show_message_alert",
+    payload: globalState,
+  });
+};
+
+const hideMessageAlert = (dispatch) => {
+  return () => {
+    showMessageAlert(dispatch, {type: '', message: '', display: ''});
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   authReducer,
-  { signup, signin, resetFormMessage, setToken },
+  {
+    signup,
+    signin,
+    resetFormMessage,
+    setToken,
+    getToken,
+    logout,
+    updatePassword,
+    hideMessageAlert,
+  },
   state
 );

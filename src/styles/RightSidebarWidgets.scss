@@ -83,6 +83,7 @@
 
         .react-calendar__tile--now {
             background: var(--color-primary);
+            border: 2px solid white;
         }
 
         .react-calendar__navigation button:enabled:hover,
@@ -104,6 +105,11 @@
 
         .react-calendar__tile--active {
             background: #d3a11f;
+        }
+
+        .react-calendar__navigation__next2-button,
+        .react-calendar__navigation__prev2-button {
+            display: none;
         }
     }
 

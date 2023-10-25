@@ -1,5 +1,5 @@
-import Select from "react-select";
-import "../styles/Jobs.scss";
+import Select from "../../components/Select";
+import "../../styles/Jobs.scss";
 import { useContext, useEffect, useState } from "react";
 import {
   IoArrowBack,
@@ -8,10 +8,10 @@ import {
   IoStar,
 } from "react-icons/io5";
 import moment from "moment";
-import Tooltip from "../components/Tooltip";
+import Tooltip from "../../components/Tooltip";
 import { Link } from "react-router-dom";
-import { Context as JobsContext } from "../context/JobsContext";
-
+import { Context as JobsContext } from "../../context/JobsContext";
+import { Context as AuthContext } from "../../context/AuthContext";
 
 const emailFreq = [
   { value: 1, label: "Daily" },
@@ -26,6 +26,7 @@ const Jobs = () => {
   const [employment, setEmployment] = useState([]);
   const [media, setMedia] = useState([]);
   const [filters, setFilters] = useState({});
+  const [notifCategory, setNotifCategory] = useState(false);
 
   const {
     state: {
@@ -46,7 +47,12 @@ const Jobs = () => {
     getMediaExperiences,
     filterJobs,
     paginateJob,
+    requestNotifications,
   } = useContext(JobsContext);
+
+  const {
+    state: { user },
+  } = useContext(AuthContext);
 
   useEffect(() => {
     getJobs();
@@ -238,14 +244,25 @@ const Jobs = () => {
                 <h1 className="jobs-filter-title">Request Job Notifications</h1>
                 <div className="notif-input-box">
                   <h5 className="notif-title fw-normal">Title</h5>
-                  <Select options={jobTitles} placeholder="Select title" />
+                  <Select
+                    options={jobTitles}
+                    placeholder="Select title"
+                    onChange={(item) => setNotifCategory(item.value)}
+                  />
                 </div>
-                <div className="notif-input-box">
+                {/* <div className="notif-input-box">
                   <h5 className="notif-title fw-normal">Email Frequency</h5>
                   <Select options={emailFreq} />
-                </div>
+                </div> */}
                 <div className="job-alert-button">
-                  <button className="alert-btn btn">Save Job Alert</button>
+                  <button
+                    className="alert-btn btn fs-5"
+                    onClick={() =>
+                      requestNotifications(user.uuid, notifCategory)
+                    }
+                  >
+                    Save Job Alert
+                  </button>
                 </div>
               </div>
             </div>
@@ -361,7 +378,9 @@ const Jobs = () => {
                                   </div>
                                   <div className="job-deadline with-icon">
                                     <i className="flaticon-wall-clock"></i>
-                                    {moment(item.expired_at).format("MMMM D, YYYY")}
+                                    {moment(item.expired_at).format(
+                                      "MMMM D, YYYY"
+                                    )}
                                   </div>
                                 </div>
                                 <div>

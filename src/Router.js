@@ -8,7 +8,7 @@ import MentorResources from "./pages/MentorResources";
 import Publications from "./pages/Publications";
 import Contact from "./pages/Contact";
 import Community from "./pages/Community";
-import Jobs from "./pages/Jobs";
+import Jobs from "./pages/Jobs/Jobs";
 import CommunityMembers from "./pages/CommunityMembers";
 import Friends from "./pages/User/Friends";
 import Groups from "./pages/Groups";
@@ -16,10 +16,22 @@ import Messages from "./pages/Messages";
 import Notifications from "./pages/Notifications";
 import About from "./pages/About";
 import Profile from "./pages/User/Profile";
-import JobDescription from "./pages/JobDescription";
-import Agency from "./pages/User/Agency";
+import JobDescription from "./pages/Jobs/JobDescription";
+import UserDashboard from "./pages/User/UserDashboard";
 import Checkout from "./pages/Cart/Checkout";
 import CopyWriting from "./pages/Mentor/CopyWriting";
+import LoginAs from "./pages/LoginAs";
+import { useContext, useEffect } from "react";
+import { Context as AuthContext } from "./context/AuthContext";
+
+const Logout = () => {
+  const { logout } = useContext(AuthContext);
+  useEffect(() => {
+    logout(() => {
+      window.location = "/";
+    });
+  });
+};
 
 export const router = createBrowserRouter([
   {
@@ -117,12 +129,20 @@ export const router = createBrowserRouter([
 
       {
         path: "/logout",
-        element: <CopyWriting />,
+        element: <Logout />,
       },
 
       {
         path: "/:page",
-        element: <Agency />,
+        element: <UserDashboard />,
+      },
+      {
+        path: "/job/edit/:id",
+        element: <UserDashboard />,
+      },
+      {
+        path: "/loginas",
+        element: <LoginAs />,
       },
     ],
   },

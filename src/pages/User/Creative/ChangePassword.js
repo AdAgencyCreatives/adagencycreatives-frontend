@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { IoEye, IoEyeOff } from "react-icons/io5";
-import "../../../styles/AgencyDashboard/ChangePassword.scss";
+import '../../../styles/AgencyDashboard/ChangePassword.scss'
 import { useContext } from "react";
 import { Context } from "../../../context/AuthContext";
 import { CircularProgress } from "@mui/material";
+import MessageAlert from "../../../components/MessageAlert";
 
 const ChangePassword = () => {
   const {
-    state: { formSubmit },
+    state: { formSubmit, messageAlert },
     updatePassword,
   } = useContext(Context);
 
@@ -26,6 +27,7 @@ const ChangePassword = () => {
   return (
     <div className="dashboard-wrapper agency-page-change-password">
       <h3 className="page-title">Change Password</h3>
+      <MessageAlert type={messageAlert.type} message={messageAlert.message} display={messageAlert.display} />
       <div className="card">
         <div className="row">
           <div className="col-sm-8">

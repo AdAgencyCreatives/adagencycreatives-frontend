@@ -1,6 +1,6 @@
 import { Link,NavLink } from "react-router-dom";
 import Logo from "../../assets/images/AdAgency.png";
-import { agencyNav } from "../../nav/AgencyNav";
+import { agencyNav } from "../../nav/DashboardNav";
 import '../../styles/AgencyDashboard/Sidebar.scss';
 
 const Sidebar = () => {

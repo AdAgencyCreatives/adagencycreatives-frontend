@@ -4,10 +4,9 @@ import Select from "../../../components/Select";
 import { EditorState, ContentState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import Placeholder from "../../../assets/images/placeholder.png";
 import { FiPaperclip, FiTrash2 } from "react-icons/fi";
 import { Context as DataContext } from "../../../context/DataContext";
-import { Context as AgenciesContext } from "../../../context/AgenciesContext";
+import { Context as CreativesContext } from "../../../context/CreativesContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import Loader from "../../../components/Loader";
 import { CircularProgress } from "@mui/material";
@@ -19,6 +18,7 @@ const Profile = () => {
   const [citiesList, setCities] = useState([]);
   const [media, setMedia] = useState([]);
   const [industry, setIndustry] = useState([]);
+  const [employentType, setEmployentType] = useState([]);
   const [isLoading, setIsloading] = useState(true);
   const [fields, setFields] = useState([]);
   const [formData, setFormData] = useState({});
@@ -37,9 +37,15 @@ const Profile = () => {
     { label: "Hybrid", value: "hybrid", key: "is_hybrid" },
     { label: "Onsite", value: "onsite", key: "is_onsite" },
   ];
+
   const showProfile = [
     { label: "Show", value: 1, key: "show" },
     { label: "Hide", value: 0, key: "hide" },
+  ];
+
+  const openToRelocation = [
+    { label: "Yes", value: 1, key: "Yes" },
+    { label: "No", value: 0, key: "No" },
   ];
 
   const {
@@ -47,69 +53,77 @@ const Profile = () => {
   } = useContext(AuthContext);
 
   const {
-    state: { single_agency, formSubmit },
-    getAgencyById,
-    saveAgency,
-    saveAgencyImage,
-  } = useContext(AgenciesContext);
+    state: { single_creative, formSubmit },
+    getCreativeById,
+    saveCreative,
+    saveCreativeImage,
+  } = useContext(CreativesContext);
 
   const {
-    state: { states, cities, media_experiences, industry_experiences },
+    state: {
+      states,
+      cities,
+      media_experiences,
+      industry_experiences,
+      employment_type,
+    },
     getStates,
     getCities,
     getMediaExperiences,
     getIndustryExperiences,
+    getEmploymentTypes,
   } = useContext(DataContext);
 
   useEffect(() => {
     if (user) {
-      getAgencyById(user.uuid);
+      getCreativeById(user.uuid);
     }
   }, [user]);
 
-
   //Fetch initial Cities
   useEffect(() => {
-    if (Object.keys(single_agency).length > 0 && citiesList.length === 0) {
-      getCities(single_agency.location.state_id);
+    if (Object.keys(single_creative).length > 0 && citiesList.length === 0) {
+      getCities(single_creative.location.state_id);
     }
-  }, [single_agency, citiesList]);
+  }, [single_creative, citiesList]);
 
   // Set initial fields
   useEffect(() => {
     if (
-      Object.keys(single_agency).length > 0 &&
+      Object.keys(single_creative).length > 0 &&
       industry.length &&
       media.length &&
-      statesList.length
+      statesList.length &&
+      employentType.length
     ) {
       setIsloading(false);
       setEditorState(
         EditorState.createWithContent(
-          ContentState.createFromText(single_agency.about)
+          ContentState.createFromText(single_creative.about)
         )
       );
-      setFields([
+      console.log(single_creative);
+      const fields = [
         {
-          label: "Your Logo",
+          label: "Upload Your Profile Picture Avatar",
           required: true,
           type: "image",
-          image: single_agency.logo,
-          name: "company_logo",
+          name: "profile_image",
+          image: single_creative.profile_image,
         },
         {
-          label: "Company Name",
+          label: "First Name",
           required: true,
           type: "text",
-          name: "company_name",
-          value: single_agency.name,
+          name: "first_name",
+          value: user.first_name,
         },
         {
-          label: "Company Website",
+          label: "Last Name",
           required: true,
           type: "text",
-          name: "website",
-          value: single_agency.links.find((link) => link.label == "website")?.url ?? '',
+          name: "last_name",
+          value: user.last_name,
         },
         {
           label: "Location",
@@ -119,9 +133,7 @@ const Profile = () => {
           data: statesList,
           callback: (item) => changeState(item, "state_id"),
           placeholder: "Select State",
-          value: statesList.find(
-            (state) => state.value == single_agency.location.state_id
-          ),
+          value: statesList.find((state) => state.value == single_creative.location.state_id)
         },
         {
           label: "",
@@ -130,114 +142,120 @@ const Profile = () => {
           data: [],
           placeholder: "Select City",
           callback: (item) => handleDropdownChange(item, "city_id"),
-          /* value: citiesList.find((city) => {
-            console.log("filteringcityid", single_agency.location.city_id);
-            console.log("filtering", city.value);
-            return city.value == single_agency.location.city_id;
-          }), */
+          value: citiesList.find((city) => city.value == single_creative.location.city_id)
         },
         {
-          label: "Company LinkedIn",
+          label: "Portfolio Site",
           required: true,
           type: "text",
-          name: "linkedin",
-          value: single_agency.links.find((link) => link.label == "linkedin")?.url ?? '',
+          name: "portfolio_site",
+          value:
+            single_creative.links.find((link) => link.label === "portfolio")
+              ?.url ?? "",
         },
         {
-          label: "Contact Email",
+          label: "LinkedIn Profile",
           required: true,
           type: "text",
+          name: "linkedin_profile",
+          value:
+            single_creative.links.find((link) => link.label === "linkedin")
+              ?.url ?? "",
+        },
+        {
+          label: "Email",
+          required: true,
+          type: "email",
           name: "email",
           value: user.email,
         },
         {
-          label: "Contact First Name",
-          required: true,
-          type: "text",
-          name: "first_name",
-          value: user.first_name,
-        },
-        {
-          label: "Contact Last Name",
-          required: true,
-          type: "text",
-          name: "last_name",
-          value: user.last_name,
-        },
-        {
-          label: "Contact Phone Number",
+          label: "Phone Number",
           required: true,
           type: "text",
           name: "phone_number",
-          value: single_agency.phone_number,
+          value: single_creative.phone_number,
         },
+        // {
+        //   label: "About",
+        //   required: true,
+        //   type: "editor",
+        //   name: "about",
+        //   value: user.about,
+        // },
+        // {
+        //   label: "Industry Specialty",
+        //   required: true,
+        //   type: "dropdown",
+        //   data: industry,
+        //   isMulti: true,
+        //   name: "industry_experience",
+        //   callback: (item) => handleMultiChange(item, "industry_experience"),
+        //   value: industry.filter((item) =>
+        //     single_creative.industry_experience.includes(item.label)
+        //   ),
+        // },
+        // {
+        //   label: "Media Experience",
+        //   required: true,
+        //   type: "dropdown",
+        //   data: media,
+        //   isMulti: true,
+        //   name: "media_experience",
+        //   callback: (item) => handleMultiChange(item, "media_experience"),
+        //   value: media.filter((item) =>
+        //     single_creative.media_experience.includes(item.label)
+        //   ),
+        // },
+        // {
+        //   label: "Workplace Preference",
+        //   required: true,
+        //   type: "dropdown",
+        //   isMulti: true,
+        //   data: workplace_preference,
+        //   name: "workplace_preference",
+        //   callback: (item) =>
+        //     handleWorkplaceChange(item, "workplace_preference"),
+        //   value: workplace_preference.filter((item) => single_creative.workplace_preference[item.key]),
+        // },
+        // {
+        //   label: "Type of Work",
+        //   required: true,
+        //   type: "dropdown",
+        //   data: employentType,
+        //   name: "employment_type",
+        //   callback: (item) => handleDropdownChange(item, "employment_type"),
+        //   value: employentType.filter((item) => item.value == single_creative.employment_type),
+        // },
         {
-          label: "About Your Company",
-          required: true,
-          type: "editor",
-          name: "about",
-          value: user.about,
-        },
-        {
-          label: "Industry Specialty",
-          required: true,
-          type: "dropdown",
-          data: industry,
-          isMulti: true,
-          name: "industry_experience",
-          callback: (item) => handleMultiChange(item, "industry_experience"),
-          value: industry.filter((item) =>
-            single_agency.industry_experience.includes(item.label)
-          ),
-        },
-        /* {
-          label: "Media Experience",
-          required: true,
-          type: "dropdown",
-          data: media,
-          isMulti: true,
-          name: "media_experience",
-          callback: (item) => handleMultiChange(item, "media_experience"),
-          value: media.filter((item) =>
-            single_agency.media_experience.includes(item.label)
-          ),
-        }, */
-        {
-          label: "Workplace Preference",
-          required: true,
-          type: "dropdown",
-          isMulti: true,
-          data: workplace_preference,
-          name: "workplace_preference",
-          callback: (item) =>
-            handleWorkplaceChange(item, "workplace_preference"),
-          value: workplace_preference.filter((item) => single_agency[item.key]),
-        },
-        {
-          label: "Company Size",
-          required: true,
-          type: "text",
-          name: "size",
-          value: single_agency.size,
-        },
-        {
-          label: "Show Company Profile",
+          label: "Show my profile",
           required: true,
           type: "dropdown",
           data: showProfile,
           name: "show_profile",
-          value: showProfile.filter((item) => item.value == user.is_visible),
+          callback: (item) => handleDropdownChange(item, "show_profile"),
+          value: showProfile.filter((item) => item.value === user.is_visible),
         },
+        // {
+        //   label: "Open to Relocation",
+        //   required: true,
+        //   type: "dropdown",
+        //   data: openToRelocation,
+        //   name: "is_opentorelocation",
+        //   callback: (item) => handleDropdownChange(item, "is_opentorelocation"),
+        //   value: openToRelocation.filter((item) => item.value === single_creative.is_opentorelocation),
+        // },
         {
-          label: "Your Ad Agency Creatives Profile URL",
+          label: "Your Ad Agency Creatives Profile Link",
           required: true,
           type: "text",
           name: "slug",
-          value: single_agency.slug,
+          value: single_creative.slug,
         },
-      ]);
+      ];
+      setFields(fields);
     }
-  }, [single_agency, user, media, industry, statesList]);
+  }, [single_creative, user, media, industry, statesList, employentType]);
 
   // Cities update
   useEffect(() => {
@@ -250,38 +268,44 @@ const Profile = () => {
 
   //Set initial form data
   useEffect(() => {
-    if (Object.keys(single_agency).length > 0 && !isLoading) {
+    if (Object.keys(single_creative).length > 0 && !isLoading) {
       setFormData({
-        company_name: single_agency.name,
-        website: single_agency.links.find((link) => link.label == "website")?.url ?? '',
-        state_id: single_agency.location.state_id,
-        city_id: single_agency.location.city_id,
-        linkedin: single_agency.links.find((link) => link.label == "linkedin").url ?? '',
-        email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
-        phone_number: "",
-        about: single_agency.about,
-        industry_experience: single_agency.industry_experience.map(
-          (item) => industry_experiences.find((j) => j.name == item).id
-        ),
-        media_experience: single_agency.media_experience.map(
-          (item) => media_experiences.find((j) => j.name == item).id
-        ),
-        is_onsite: single_agency.workplace_preference.is_onsite,
-        is_hybrid: single_agency.workplace_preference.is_hybrid,
-        is_remote: single_agency.workplace_preference.is_remote,
-        size: single_agency.size,
+        username: user.username,
+        email: user.email,
         show_profile: user.is_visible,
-        slug: single_agency.slug,
+        slug: single_creative.slug,
+        employment_type: single_creative.employment_type,
+        website:
+          single_creative.links?.find((link) => link.label == "portfolio")
+            ?.url ?? "",
+        linkedin:
+          single_creative.links?.find((link) => link.label == "linkedin")
+            ?.url ?? "",
+        state_id: single_creative.location.state_id,
+        city_id: single_creative.location.city_id,
+        phone_number: "",
+        about: single_creative.about,
+        industry_experience: single_creative.industry_experience.map(
+          (item) => industry_experiences?.find((j) => j.name == item).id
+        ),
+        media_experience: single_creative.media_experience.map(
+          (item) => media_experiences?.find((j) => j.name == item).id
+        ),
+        is_onsite: single_creative.workplace_preference.is_onsite,
+        is_hybrid: single_creative.workplace_preference.is_hybrid,
+        is_remote: single_creative.workplace_preference.is_remote,
+        is_opentorelocation: single_creative.is_opentorelocation,
       });
     }
-  }, [isLoading, media_experiences, industry_experiences]);
+  }, [isLoading, media_experiences, industry_experiences, employment_type]);
 
   useEffect(() => {
     getStates();
     getMediaExperiences();
     getIndustryExperiences();
+    getEmploymentTypes();
   }, []);
 
   useEffect(() => {
@@ -315,6 +339,16 @@ const Profile = () => {
     }
     setIndustry(data);
   }, [industry_experiences]);
+
+  useEffect(() => {
+    let data = employment_type;
+    if (employment_type.length) {
+      data = employment_type.map((item) => {
+        return { label: item, value: item, key: item };
+      });
+    }
+    setEmployentType(data);
+  }, [employment_type]);
 
   const parseFieldsData = (data) => {
     const parsedValue = data.map((item) => {
@@ -369,39 +403,40 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    console.log(formData);
+    // console.log(formData);
   }, [formData]);
 
   const handleSubmit = () => {
-    saveAgency(user.uuid, formData);
+    saveCreative(user.uuid, formData);
   };
 
   const removeLogo = () => {
-    logoRef.current.src = ""
-  }
+    logoRef.current.src = "";
+  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    logoRef.current.src = URL.createObjectURL(file)
+    logoRef.current.src = URL.createObjectURL(file);
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("user_id", user.uuid);
-      formData.append("resource_type", "agency_logo");
-     saveAgencyImage(formData);
+      formData.append("resource_type", "profile_image");
+      saveCreativeImage(formData);
     }
   };
 
   return isLoading ? (
     <Loader />
   ) : (
-    <div className="agency-page-profile">
+    <div className="Creative-page-profile">
       <h3 className="page-title">Edit Profile</h3>
       <div className="card">
         <h4 className="text-uppercase mb-4">Edit Profile</h4>
         <div className="profile-edit-form">
           <div className="row gx-3 gy-5 align-items-end">
             {fields.map((field, index) => {
+              // eslint-disable-next-line default-case
               switch (field.type) {
                 case "image":
                   return (
@@ -418,7 +453,11 @@ const Profile = () => {
                       />
                       <div className="row align-items-center upload-box">
                         <div className="col-md-2 col-sm-4 col-12">
-                          <img src={field.image} className="w-100" ref={logoRef} />
+                          <img
+                            src={field.image}
+                            className="w-100"
+                            ref={logoRef}
+                          />
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                           <button
@@ -427,7 +466,10 @@ const Profile = () => {
                           >
                             <FiPaperclip /> Upload
                           </button>
-                          <button className="btn btn-secondary w-100 text-uppercase" onClick={removeLogo}>
+                          <button
+                            className="btn btn-secondary w-100 text-uppercase"
+                            onClick={removeLogo}
+                          >
                             <FiTrash2 /> Remove
                           </button>
                         </div>
@@ -449,6 +491,21 @@ const Profile = () => {
                       </label>
                       <input
                         type="text"
+                        className="form-control"
+                        value={field.value}
+                        onChange={(e) => handleTextChange(e, field.name)}
+                      />
+                    </div>
+                  );
+                case "email":
+                  return (
+                    <div className="col-sm-6" key={index}>
+                      <label htmlFor={field.name} className="form-label">
+                        {field.label}
+                        {field.required && <span className="required">*</span>}
+                      </label>
+                      <input
+                        type="email"
                         className="form-control"
                         value={field.value}
                         onChange={(e) => handleTextChange(e, field.name)}

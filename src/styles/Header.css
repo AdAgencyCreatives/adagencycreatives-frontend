@@ -118,6 +118,7 @@ a.active>.menu-link-btn {
     -o-transform: rotateX(0deg);
     transform: rotateX(0deg);
     left: 0;
+    overflow-y: auto;
 }
 
 .has-children:hover .dropdown-menu:not(.logged-in-dropdown) {
@@ -197,7 +198,6 @@ ul.dropdown-list:before {
     top: 65px;
     padding: 15px;
     max-height: 450px;
-    overflow-y: auto;
 }
 
 .logged-in-dropdown .dropdown-list:before {
