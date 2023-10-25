@@ -48,7 +48,7 @@ function App() {
     if (token) {
       console.log("after loggin in");
       console.log(token);
-      window.Echo = new Echo({
+      /* window.Echo = new Echo({
         broadcaster: "pusher",
         key: "c2125739f0d66b777906",
         cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER ?? "mt1",
@@ -76,7 +76,7 @@ function App() {
         (e) => {
           console.log(e.data);
         }
-      );
+      ); */
     }
   }, [token, user]);
 

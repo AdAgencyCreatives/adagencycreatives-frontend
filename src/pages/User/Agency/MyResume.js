@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import Select from "../../../components/Select";
-import { EditorState } from "draft-js";
+import { EditorState, ContentState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import Logo from "../../../assets/images/NathanWalker_ProfilePic-150x150.jpg";
+import Placeholder from "../../../assets/images/placeholder.png";
 import {
   FiChevronDown,
   FiChevronUp,
@@ -12,90 +12,495 @@ import {
   FiX,
 } from "react-icons/fi";
 import "../../../styles/AgencyDashboard/MyResume.scss";
+import htmlToDraft from "html-to-draftjs";
+import draftToHtml from "draftjs-to-html";
+import { Context as DataContext } from "../../../context/DataContext";
+import { Context as AuthContext } from "../../../context/AuthContext";
+import { Context as CreativesContext } from "../../../context/CreativesContext";
+import Loader from "../../../components/Loader";
+import { CircularProgress } from "@mui/material";
+import "react-datepicker/dist/react-datepicker.css";
 
 const MyResume = () => {
-  const states = [
-    { value: 150, label: "Alabama" },
-    { value: 117, label: "Alaska" },
-    { value: 147, label: "Arizona" },
-    { value: 148, label: "Arkansas" },
-    { value: 149, label: "Connecticut" },
-  ];
-
-  const citiesArray = {
-    148: [
-      { id: 455, label: "Bentonville" },
-      { id: 454, label: "Fayetteville" },
-      { id: 453, label: "Fort Smith" },
-      { id: 457, label: "Jonesboro" },
-      { id: 452, label: "Little Rock" },
-      { id: 456, label: "Springdale" },
-    ],
-    147: [
-      { id: 451, label: "Avondale" },
-      { id: 443, label: "Chandler" },
-      { id: 446, label: "Gilbert" },
-      { id: 444, label: "Glendale" },
-      { id: 442, label: "Mesa" },
-      { id: 448, label: "Peoria" },
-      { id: 440, label: "Phoenix" },
-      { id: 445, label: "Scottsdale" },
-      { id: 449, label: "Surprise" },
-      { id: 447, label: "Tempe" },
-      { id: 441, label: "Tucson" },
-      { id: 450, label: "Yuma" },
-    ],
-    117: [{ id: 439, label: "Anchorage" }],
-    150: [
-      { id: 433, label: "Birmingham" },
-      { id: 438, label: "Hoover" },
-      { id: 436, label: "Huntsville" },
-      { id: 435, label: "Mobile" },
-      { id: 434, label: "Montgomery" },
-      { id: 437, label: "Tuscaloosa" },
-    ],
-    149: [
-      { id: 590, label: "Bridgeport" },
-      { id: 596, label: "Danbury" },
-      { id: 592, label: "Hartford" },
-      { id: 597, label: "New Britain" },
-      { id: 591, label: "New Haven" },
-      { id: 595, label: "Norwalk" },
-      { id: 593, label: "Stamford" },
-      { id: 594, label: "Waterbury" },
-      { id: 2055, label: "Wilton" },
-    ],
-  };
-
-  const job_titles = [
-    { value: 150, label: "Junior Art Director" },
-    { value: 117, label: "3D Designer" },
-    { value: 147, label: "Art Director" },
-    { value: 148, label: "Copywriter" },
-    { value: 149, label: "Digital Designer" },
-  ];
-  const experience = [
-    { value: 150, label: "Junior 0-2 years" },
-    { value: 117, label: "Mid-Level 2-5 years" },
-    { value: 147, label: "Senior 5-10 years" },
-    { value: 148, label: "Director 10+ years" },
-    { value: 149, label: "Executive 15+ years" },
-  ];
-
-  const strengths = [];
-
-  const employment_type = [
-    { value: 150, label: "Full-Time" },
-    { value: 117, label: "Part-Time" },
-    { value: 147, label: "Freelance" },
-    { value: 148, label: "Contract" },
-    { value: 149, label: "Internship" },
-  ];
-
-  const [cities, setCities] = useState([]);
+  const imageUploadRef = useRef();
+  const logoRef = useRef();
+  const [categoriesList, setCategories] = useState([]);
+  const [statesList, setStates] = useState([]);
+  const [citiesList, setCities] = useState([]);
+  const [media, setMedia] = useState([]);
+  const [industry, setIndustry] = useState([]);
+  const [experience, setExperience] = useState([]);
+  const [strengthsList, setStrengths] = useState([]);
+  const [employment, setEmployment] = useState([]);
+  const [isLoading, setIsloading] = useState(true);
+  const [fields, setFields] = useState([]);
+  const [formData, setFormData] = useState({});
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [isMounted, setIsMounted] = useState(false);
   const repeaterRef = useRef(null);
+
+  const {
+    state: { single_creative, formSubmit },
+    getCreativeById,
+    saveCreative,
+    saveCreativeImage,
+  } = useContext(CreativesContext);
+
+  const {
+    state: {
+      categories,
+      states,
+      cities,
+      media_experiences,
+      industry_experiences,
+      employment_type,
+      years_experience,
+      strengths,
+    },
+    getCategories,
+    getStates,
+    getCities,
+    getMediaExperiences,
+    getIndustryExperiences,
+    getEmploymentTypes,
+    getYearsExperience,
+    getStrengths,
+  } = useContext(DataContext);
+
+  const {
+    state: { user, token },
+  } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (user) {
+      getCreativeById(user.uuid);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (token) {
+      console.log("yes")
+      getCategories();
+      getStates();
+      getMediaExperiences();
+      getIndustryExperiences();
+      getEmploymentTypes();
+      getYearsExperience();
+      getStrengths();
+    }
+    console.log("asd")
+  }, [token]);
+
+  // Set initial fields
+  useEffect(() => {
+    if (
+      Object.keys(single_creative).length &&
+      industry.length &&
+      media.length &&
+      statesList.length &&
+      (single_creative.location ? citiesList.length : true) &&
+      categoriesList.length &&
+      employment_type.length &&
+      strengthsList.length &&
+      experience.length
+    ) {
+      setIsloading(false);
+      if (single_creative.about) {
+        setEditorState(
+          EditorState.createWithContent(
+            ContentState.createFromBlockArray(
+              htmlToDraft(single_creative.about).contentBlocks
+            )
+          )
+        );
+      }
+      setFields([
+        {
+          label: "Your Title",
+          required: true,
+          type: "text",
+          name: "title",
+          column: "12",
+          value: single_creative.title || "",
+        },
+        {
+          label: "Industry Job Title",
+          type: "dropdown",
+          required: true,
+          column: "6",
+          name: "category_id",
+          data: categoriesList,
+          callback: (item) => handleDropdownChange(item, "category_id"),
+          placeholder: "Select Job Title",
+          value: categoriesList.find(
+            (category) => category.label == single_creative.category
+          ),
+        },
+        {
+          label: "Years of Experience",
+          type: "dropdown",
+          required: true,
+          data: experience,
+          name: "years_of_experience",
+          callback: (item) => handleDropdownChange(item, "years_of_experience"),
+          value: experience.find(
+            (item) => item.value == single_creative.years_of_experience
+          ),
+          column: "6",
+        },
+        {
+          label: "Industry Experience",
+          type: "dropdown",
+          required: true,
+          data: industry,
+          isMulti: true,
+          name: "industry_experience",
+          callback: (item) => handleMultiChange(item, "industry_experience"),
+          value: industry.filter((item) =>
+            single_creative.industry_experience.includes(item.label)
+          ),
+          column: "6",
+        },
+        {
+          label: "Media Experience",
+          type: "dropdown",
+          required: true,
+          data: media,
+          isMulti: true,
+          name: "media_experience",
+          callback: (item) => handleMultiChange(item, "media_experience"),
+          value: media.filter((item) =>
+            single_creative.media_experience.includes(item.label)
+          ),
+          column: "6",
+        },
+        {
+          label: "Location",
+          required: true,
+          type: "dropdown",
+          name: "state_id",
+          data: statesList,
+          callback: (item) => changeState(item, "state_id"),
+          placeholder: "Select State",
+          value:
+            single_creative.location &&
+            statesList.find(
+              (state) => state.value == single_creative.location.state_id
+            ),
+          column: "6",
+        },
+        {
+          label: "",
+          type: "dropdown",
+          name: "city_id",
+          data: citiesList,
+          placeholder: "Select City",
+          callback: (item) => handleDropdownChange(item, "city_id"),
+          value:
+            single_creative.location &&
+            citiesList.find(
+              (city) => city.value == single_creative.location.city_id
+            ),
+          column: "6",
+        },
+        {
+          label: "Character Strengths",
+          required: true,
+          type: "dropdown",
+          data: strengthsList,
+          isMulti: true,
+          name: "strengths",
+          callback: (item) => handleMultiChange(item, "strengths"),
+          value: strengthsList.filter((item) =>
+            single_creative.character_strengths.includes(item.label)
+          ),
+          placeholder: "Select strengths",
+          column: "6",
+        },
+        {
+          label: "Employment Type",
+          required: true,
+          type: "dropdown",
+          data: employment,
+          name: "employment_type",
+          callback: (item) => handleDropdownChange(item, "employment_type"),
+          value: employment.find((item) => {
+            return item.value == single_creative.employment_type;
+          }),
+          column: "6",
+        },
+        {
+          label: "Open to Relocation",
+          required: true,
+          type: "radio",
+          name: "is_opentorelocation",
+          value: single_creative.is_opentorelocation,
+          column: "6",
+        },
+        {
+          label: "Open to Remote",
+          required: true,
+          type: "radio",
+          name: "is_remote",
+          value: single_creative.workplace_preference.is_remote,
+          column: "6",
+        },
+
+        {
+          label: "About Me and Why Advertising",
+          required: true,
+          type: "editor",
+          name: "about",
+          value: single_creative.about,
+          column: "12",
+        },
+
+        {
+          label: "Education",
+          required: false,
+          type: "repeater",
+          name: "educations",
+          column: "12",
+          items: [
+            {
+              showDropdown: false,
+              data: [
+                {
+                  label: "Degree Program",
+                  type: "input",
+                  name: "degree",
+                },
+                {
+                  label: "College or Institution",
+                  type: "input",
+                  name: "college",
+                },
+                {
+                  label: "Completion Date",
+                  type: "input",
+                  name: "completed_at",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: "Experience",
+          required: false,
+          type: "repeater",
+          name: "experiences",
+          column: "12",
+          items: [
+            {
+              showDropdown: false,
+              data: [
+                {
+                  label: "Title",
+                  type: "input",
+                  name: "title",
+                },
+                {
+                  label: "Start Date",
+                  type: "input",
+                  name: "started_at",
+                },
+                {
+                  label: "End Date",
+                  type: "input",
+                  name: "completed_at",
+                },
+                {
+                  label: "Company",
+                  type: "input",
+                  name: "company",
+                },
+                {
+                  label: "Description",
+                  type: "textarea",
+                  name: "description",
+                },
+              ],
+            },
+          ],
+        },
+      ]);
+    }
+  }, [
+    single_creative,
+    user,
+    media,
+    industry,
+    statesList,
+    categoriesList,
+    citiesList,
+    employment,
+    experience,
+    strengthsList,
+  ]);
+
+  //Set initial form data
+  useEffect(() => {
+    if (Object.keys(single_creative).length > 0 && !isLoading) {
+      setFormData({
+        state_id: single_creative.location && single_creative.location.state_id,
+        city_id: single_creative.location && single_creative.location.city_id,
+        about: single_creative.about,
+        employment_type: single_creative.employment_type,
+        years_of_experience: single_creative.years_experience,
+        industry_experience: single_creative.industry_experience.map(
+          (item) => industry_experiences.find((j) => j.name == item).id
+        ),
+        media_experience: single_creative.media_experience.map(
+          (item) => media_experiences.find((j) => j.name == item).id
+        ),
+        strengths: single_creative.character_strengths.map(
+          (item) => strengths.find((j) => j.name == item).id
+        ),
+        is_remote: single_creative.workplace_preference.is_remote,
+        is_opentorelocation: single_creative.is_opentorelocation,
+      });
+    }
+  }, [isLoading, media_experiences, industry_experiences, strengths]);
+
+  //Fetch initial Cities
+  useEffect(() => {
+    if (Object.keys(single_creative).length > 0 && citiesList.length === 0) {
+      getCities(single_creative.location.state_id);
+    }
+  }, [single_creative, citiesList]);
+
+  useEffect(() => {
+    let data = categories;
+    if (categories.length) {
+      data = parseFieldsData(categories);
+    }
+    setCategories(data);
+  }, [categories]);
+
+  useEffect(() => {
+    let data = states;
+    if (states.length) {
+      data = parseFieldsData(states);
+    }
+    setStates(data);
+  }, [states]);
+
+  useEffect(() => {
+    let data = cities;
+    if (cities.length) {
+      data = parseFieldsData(cities);
+    }
+    setCities(data);
+  }, [cities]);
+
+  useEffect(() => {
+    let data = media_experiences;
+    if (media_experiences.length) {
+      data = parseFieldsData(media_experiences);
+    }
+    setMedia(data);
+  }, [media_experiences]);
+
+  useEffect(() => {
+    let data = industry_experiences;
+    if (industry_experiences.length) {
+      data = parseFieldsData(industry_experiences);
+    }
+    setIndustry(data);
+  }, [industry_experiences]);
+
+  useEffect(() => {
+    let data = strengths;
+    if (strengths.length) {
+      data = parseFieldsData(strengths);
+    }
+    setStrengths(data);
+  }, [strengths]);
+
+  useEffect(() => {
+    setEmployment(
+      employment_type.map((item) => ({ label: item, value: item }))
+    );
+  }, [employment_type]);
+
+  useEffect(() => {
+    setExperience(
+      years_experience.map((item) => ({ label: item.name, value: item.name }))
+    );
+  }, [years_experience]);
+
+  const parseFieldsData = (data) => {
+    const parsedValue = data.map((item) => {
+      return { label: item.name, value: item.uuid || item.id, key: item.name };
+    });
+    return parsedValue;
+  };
+
+  const changeState = (item, name) => {
+    getCities(item.value);
+    handleDropdownChange(item, name);
+  };
+
+  const handleTextChange = (e, name) => {
+    const value = e.target.value;
+    updateFields(value, name);
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleRadioChange = (e, name) => {
+    const value = parseInt(e.target.value);
+    updateFields(value, name);
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const updateFields = (value, name) => {
+    let newFields = [...fields];
+    const fieldIndex = newFields.findIndex((item) => item.name == name);
+    newFields[fieldIndex].value = value;
+    setFields([...newFields]);
+  };
+
+  const handleDropdownChange = (item, name) => {
+    setFormData((prev) => ({ ...prev, [name]: item.value }));
+  };
+
+  const handleMultiChange = (item, name) => {
+    const values = item.map((i) => i.value);
+    setFormData((prev) => ({ ...prev, [name]: values }));
+  };
+
+  const handleEditorChange = (editorState, name) => {
+    setEditorState(editorState);
+    const contentState = editorState.getCurrentContent();
+    const contentStateText = contentState.getPlainText(); // This gives you the plain text content
+    const contentStateRaw = convertToRaw(contentState); // This gives you the content in a raw format
+    const html = draftToHtml(contentStateRaw);
+    setFormData((prev) => ({ ...prev, [name]: html }));
+  };
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
+  const handleSubmit = () => {
+    saveCreative(user.uuid, formData);
+  };
+
+  const removeLogo = () => {
+    logoRef.current.src = "";
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    logoRef.current.src = URL.createObjectURL(file);
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("user_id", user.uuid);
+      formData.append("resource_type", "agency_logo");
+      // saveAgencyImage(formData);
+    }
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -103,183 +508,6 @@ const MyResume = () => {
       setIsMounted(false);
     };
   }, []);
-
-  const changeState = ({ value }, { action }) => {
-    if (action == "select-option") {
-      setCities(citiesArray[value]);
-    }
-  };
-
-  const [qualifications, setQualifications] = useState([
-    {
-      label: "Your Title",
-      required: true,
-      type: "text",
-      name: "_employer_title",
-      column: "12",
-    },
-    {
-      label: "Industry Job Title",
-      type: "dropdown",
-      required: true,
-      name: "job_title",
-      data: job_titles,
-      column: "6",
-    },
-    {
-      label: "Years of Experience",
-      type: "dropdown",
-      required: true,
-      name: "y_experience",
-      data: experience,
-      placeholder: "",
-      column: "6",
-    },
-    {
-      label: "Industry Experience",
-      type: "dropdown",
-      required: true,
-      name: "experience",
-      data: experience,
-      placeholder: "",
-      column: "6",
-    },
-    {
-      label: "Media Experience",
-      type: "dropdown",
-      required: true,
-      name: "m_experience",
-      data: experience,
-      placeholder: "",
-      column: "6",
-    },
-    {
-      label: "Location",
-      required: true,
-      type: "dropdown",
-      name: "_employer_location1",
-      data: states,
-      callback: changeState,
-      placeholder: "Select State",
-      column: "6",
-    },
-    {
-      label: "",
-      type: "dropdown",
-      name: "_employer_location2",
-      data: cities,
-      placeholder: "Select City",
-      column: "6",
-    },
-    {
-      label: "Character Strengths",
-      required: true,
-      type: "dropdown",
-      name: "_employer_strenghts",
-      data: strengths,
-      placeholder: "Select strengths",
-      column: "6",
-    },
-    {
-      label: "Employment Type",
-      required: true,
-      type: "dropdown",
-      name: "_employer_type",
-      data: employment_type,
-      column: "6",
-    },
-    {
-      label: "Open to Relocation",
-      required: true,
-      type: "radio",
-      name: "_employer_show_profile",
-      column: "6",
-    },
-    {
-      label: "Open to Remote",
-      required: true,
-      type: "radio",
-      name: "_employer_profile_url",
-      column: "6",
-    },
-
-    {
-      label: "About Me and Why Advertising",
-      required: true,
-      type: "editor",
-      name: "_employer_description",
-      column: "12",
-    },
-
-    {
-      label: "Education",
-      required: false,
-      type: "repeater",
-      name: "_employer_education",
-      column: "12",
-      items: [
-        {
-          showDropdown: false,
-          data: [
-            {
-              label: "Degree Program",
-              type: "input",
-              name: "_employer_title",
-            },
-            {
-              label: "College or Institution",
-              type: "input",
-              name: "_employer_title",
-            },
-            {
-              label: "Completion Date",
-              type: "input",
-              name: "_employer_title",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      label: "Experience",
-      required: false,
-      type: "repeater",
-      name: "_employer_experience",
-      column: "12",
-      items: [
-        {
-          showDropdown: false,
-          data: [
-            {
-              label: "Title",
-              type: "input",
-              name: "_employer_title",
-            },
-            {
-              label: "Start Date",
-              type: "input",
-              name: "_employer_title",
-            },
-            {
-              label: "End Date",
-              type: "input",
-              name: "_employer_title",
-            },
-            {
-              label: "Company",
-              type: "input",
-              name: "_employer_title",
-            },
-            {
-              label: "Description",
-              type: "textarea",
-              name: "_employer_title",
-            },
-          ],
-        },
-      ],
-    },
-  ]);
 
   const portfolio = [
     {
@@ -297,28 +525,28 @@ const MyResume = () => {
   ];
 
   const addRepeaterField = (field) => {
-    let newQualifications = [...qualifications];
+    let newQualifications = [...fields];
     newQualifications.forEach((item) => {
       if (item.name == field.name) {
         item.items.push(Object.assign({}, item.items[0]));
       }
     });
-    setQualifications(newQualifications);
+    setFields(newQualifications);
   };
 
   const toggleDropdown = (field, index) => {
     console.log("toggling");
-    let newQualifications = [...qualifications];
+    let newQualifications = [...fields];
     newQualifications.forEach((item) => {
       if (item.name == field.name) {
         item.items[index].showDropdown = !item.items[index].showDropdown;
       }
     });
-    setQualifications(newQualifications);
+    setFields(newQualifications);
   };
 
   const deleteDropdown = (field, index) => {
-    let newQualifications = [...qualifications];
+    let newQualifications = [...fields];
     newQualifications.forEach((item) => {
       if (item.name == field.name) {
         console.log(item.items);
@@ -326,7 +554,7 @@ const MyResume = () => {
         console.log(item.items);
       }
     });
-    setQualifications(newQualifications);
+    setFields(newQualifications);
   };
 
   const RepeaterField = ({ field }) => (
@@ -410,7 +638,7 @@ const MyResume = () => {
             />
             <div className="row align-items-center upload-box">
               <div className="col-md-2 col-sm-4 col-12">
-                <img src={Logo} className="w-100" />
+                <img src={Placeholder} className="w-100" />
               </div>
               <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                 <button className="btn btn-secondary w-90 mb-2 text-uppercase">
@@ -430,7 +658,12 @@ const MyResume = () => {
               {field.label}
               {field.required && <span className="required">*</span>}
             </label>
-            <input type="text" className="form-control" />
+            <input
+              type="text"
+              className="form-control"
+              value={field.value}
+              onChange={(e) => handleTextChange(e, field.name)}
+            />
           </>
         );
       case "radio":
@@ -447,6 +680,8 @@ const MyResume = () => {
                 className="form-check-input me-2"
                 name={field.name}
                 value={1}
+                checked={field.value}
+                onChange={(e) => handleRadioChange(e, field.name)}
               />
               <label className="form-check-label" htmlFor={field.name}>
                 Yes
@@ -458,6 +693,8 @@ const MyResume = () => {
                 className="form-check-input me-2"
                 name={field.name}
                 value={0}
+                checked={!field.value}
+                onChange={(e) => handleRadioChange(e, field.name)}
               />
               <label className="form-check-label" htmlFor={field.name}>
                 No
@@ -474,8 +711,10 @@ const MyResume = () => {
             </label>
             <Select
               options={field.data}
+              isMulti={field.isMulti || false}
               onChange={field.callback}
               placeholder={field.placeholder}
+              defaultValue={field.value}
               styles={{
                 control: (baseStyles) => ({
                   ...baseStyles,
@@ -492,11 +731,6 @@ const MyResume = () => {
                   ...baseStyles,
                   color: "#696969",
                 }),
-                // control:(baseStyles) => ({
-                //   ...baseStyles,
-                //   backgroundColor:"#F6F6F6",
-                //   borderColor:"white"
-                // }),
               }}
             />
           </>
@@ -526,8 +760,7 @@ const MyResume = () => {
                   ],
                 }}
                 onEditorStateChange={(newState) => {
-                  console.log(newState);
-                  setEditorState(newState);
+                  handleEditorChange(newState, field.name);
                 }}
               />
             )}
@@ -554,7 +787,7 @@ const MyResume = () => {
         <h4 className="text-uppercase mb-4">Qualifications</h4>
         <div className="profile-edit-form">
           <div className="row gx-3 gy-5 align-items-end">
-            {qualifications.map((field) => {
+            {fields.map((field) => {
               return (
                 <div className={`col-sm-${field.column}`} key={field.name}>
                   {getFormField(field)}
@@ -583,8 +816,10 @@ const MyResume = () => {
         <button
           className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 text-uppercase"
           style={{ fontSize: 20 }}
+          onClick={handleSubmit}
+          disabled={formSubmit}
         >
-          Save Resume
+          Save Profile {formSubmit && <CircularProgress size={20} />}
         </button>
       </div>
     </div>
