@@ -70,7 +70,7 @@ const Profile = () => {
 
   //Fetch initial Cities
   useEffect(() => {
-    if (Object.keys(single_agency).length > 0 && citiesList.length === 0) {
+    if (Object.keys(single_agency).length > 0 && single_agency.location && citiesList.length === 0) {
       getCities(single_agency.location.state_id);
     }
   }, [single_agency, citiesList]);

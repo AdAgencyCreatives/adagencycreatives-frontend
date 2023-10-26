@@ -489,7 +489,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
     } else {
       formData.user_id = user.uuid;
       createJob(formData);
-      setJobStatus("preview")
+      setJobStatus("preview");
     }
   };
 
