@@ -42,53 +42,25 @@ const MyResume = () => {
   const [isMounted, setIsMounted] = useState(false);
   const repeaterRef = useRef(null);
   const educationObject = {
-    showDropdown: false,
+    showDropdown: true,
     data: [
       {
         label: "Degree Program",
         type: "input",
         name: "degree",
+        value: "",
       },
       {
         label: "College or Institution",
         type: "input",
         name: "college",
+        value: "",
       },
       {
         label: "Completion Date",
         type: "input",
         name: "completed_at",
-      },
-    ],
-  };
-
-  const experienceObject = {
-    showDropdown: false,
-    data: [
-      {
-        label: "Title",
-        type: "input",
-        name: "title",
-      },
-      {
-        label: "Start Date",
-        type: "input",
-        name: "started_at",
-      },
-      {
-        label: "End Date",
-        type: "input",
-        name: "completed_at",
-      },
-      {
-        label: "Company",
-        type: "input",
-        name: "company",
-      },
-      {
-        label: "Description",
-        type: "textarea",
-        name: "description",
+        value: "",
       },
     ],
   };
@@ -136,7 +108,6 @@ const MyResume = () => {
     }
   }, [user]);
 
-  //Fetch all fields
   useEffect(() => {
     if (token) {
       getCategories();
@@ -319,8 +290,7 @@ const MyResume = () => {
           type: "repeater",
           name: "educations",
           column: "12",
-          schema: { ...educationObject },
-          items: creative_education.length
+          items: !creative_education.length
             ? creative_education.map((item) => {
                 return {
                   showDropdown: false,
@@ -333,28 +303,46 @@ const MyResume = () => {
                 };
               })
             : [educationObject],
-        },
-        {
+        }, //end
+        /* {
           label: "Experience",
           required: false,
           type: "repeater",
           name: "experiences",
           column: "12",
-          schema: experienceObject,
-          items: creative_experience.length
-            ? creative_experience.map((item) => {
-                return {
-                  showDropdown: false,
-                  data: experienceObject.data.map((ed) => {
-                    return {
-                      ...ed,
-                      value: item[ed.name],
-                    };
-                  }),
-                };
-              })
-            : [experienceObject],
-        },
+          items: [
+            {
+              showDropdown: false,
+              data: [
+                {
+                  label: "Title",
+                  type: "input",
+                  name: "title",
+                },
+                {
+                  label: "Start Date",
+                  type: "input",
+                  name: "started_at",
+                },
+                {
+                  label: "End Date",
+                  type: "input",
+                  name: "completed_at",
+                },
+                {
+                  label: "Company",
+                  type: "input",
+                  name: "company",
+                },
+                {
+                  label: "Description",
+                  type: "textarea",
+                  name: "description",
+                },
+              ],
+            },
+          ],
+        }, */
       ]);
       setFieldsGenerated(true);
     }
@@ -370,9 +358,10 @@ const MyResume = () => {
     experience,
     strengthsList,
     creative_education,
-    creative_experience,
     fieldsGenerated,
   ]);
+
+  // console.log(fields);
 
   //Set initial form data
   useEffect(() => {
@@ -398,15 +387,29 @@ const MyResume = () => {
     }
   }, [isLoading, media_experiences, industry_experiences, strengths]);
 
-  //Set initial education form data
+  //Set Education list
   useEffect(() => {
-    setEducationList(creative_education);
+    setEducationList({
+      label: "Education",
+      required: false,
+      type: "repeater",
+      name: "educations",
+      column: "12",
+      items: !creative_education.length
+        ? creative_education.map((item) => {
+            return {
+              showDropdown: false,
+              data: educationObject.data.map((ed) => {
+                return {
+                  ...ed,
+                  value: item[ed.name],
+                };
+              }),
+            };
+          })
+        : [educationObject],
+    });
   }, [creative_education]);
-
-  useEffect(() => {
-    setExperienceList(creative_experience);
-  }, [creative_experience]);
-
   //Fetch initial Cities
   useEffect(() => {
     if (
@@ -531,6 +534,7 @@ const MyResume = () => {
     console.log(formData);
   }, [formData]);
 
+  // Save Resume
   const handleSubmit = () => {
     saveResume(user.uuid, formData);
   };
@@ -551,7 +555,7 @@ const MyResume = () => {
     }
   };
 
-  // Editor mounted
+  //Editor Mounted
   useEffect(() => {
     setIsMounted(true);
     return () => {
@@ -574,72 +578,48 @@ const MyResume = () => {
     },
   ];
 
-  const updateEducationList = (index, e) => {
-    console.log("update", educationList);
-    let updatedEducationList = [...educationList];
-    updatedEducationList[index][e.target.name] = e.target.value;
-    setEducationList(updatedEducationList);
-  };
-
-  const updateExperienceList = (index, e) => {
-    let updatedExperienceList = [...experienceList];
-    updatedExperienceList[index][e.target.name] = e.target.value;
-    setExperienceList(updatedExperienceList);
-  };
-
-  const addRepeaterList = (field) => {
-    if (field.name == "educations") {
-      const data = getRepeaterListMap(educationObject.data);
-      setEducationList((prev) => [...prev, { ...data }]);
-    }
-    if (field.name == "experiences") {
-      const data = getRepeaterListMap(experienceObject.data);
-      setExperienceList((prev) => [...prev, { ...data }]);
-    }
-  };
-
-  const getRepeaterListMap = (data) => {
-    let map = {};
-    data.forEach((item) => {
-      map[item.name] = ""
-    });
-    return map
-  };
-
   const addRepeaterField = (field) => {
-    addRepeaterList(field);
     let newQualifications = [...fields];
-    const fieldIndex = newQualifications.findIndex((item) => item.name == field.name)
-    let theField = newQualifications[fieldIndex];
-    theField.items.push({...theField.schema})
+    newQualifications.forEach((item) => {
+      if (item.name == field.name) {
+        item.items.push(Object.assign({}, item.items[0]));
+      }
+    });
     setFields(newQualifications);
   };
 
-  const handleRepeaterChange = (name, item_index, data_index, e) => {
+  const handleRepeaterChange = (name, pindex, cindex, e) => {
+    e.preventDefault();
+    // Clone the fields array to create a new copy
     let updatedFields = [...fields];
+    setFields((prev) => [...prev]);
+    return;
 
+    // Find the specific repeater field by its name
     let repeaterField = updatedFields.find((field) => field.name === name);
     let fieldIndex = updatedFields.findIndex((field) => field.name === name);
+
     if (
       repeaterField &&
       repeaterField.items &&
       repeaterField.items[0] &&
       repeaterField.items[0].data
     ) {
-      const childItem = repeaterField.items[item_index].data[data_index];
+      // Locate the child item within the repeater field using the provided index
+      const childItem = repeaterField.items[pindex].data[cindex];
+      console.log(childItem);
       if (childItem) {
+        // Update the value of the child item with the new value from e.target.value
         childItem.value = e.target.value;
-        updatedFields[fieldIndex].items[item_index].data[data_index] =
-          childItem;
-        setFields([...updatedFields]);
-
-        //Update Education List
-        updateEducationList(item_index, e);
+        updatedFields[fieldIndex].items[pindex].data[cindex] = childItem;
+        // Set the updated fields array
+        //setFields([...updatedFields]);
       }
     }
   };
 
   const toggleDropdown = (field, index) => {
+    console.log("toggling");
     let newQualifications = [...fields];
     newQualifications.forEach((item) => {
       if (item.name == field.name) {
@@ -654,13 +634,6 @@ const MyResume = () => {
     newQualifications.forEach((item) => {
       if (item.name == field.name) {
         item.items.splice(index, 1);
-        if (field.name == "educations") {
-          let list = [...educationList];
-          list.splice(index, 1);
-          setEducationList(list);
-        }
-        if (field.name == "experiences")
-          setExperienceList((prev) => prev.filter((data, i) => i != index));
       }
     });
     setFields(newQualifications);
@@ -669,11 +642,7 @@ const MyResume = () => {
   const getRepeaterField = (field) => (
     <div className="repeater-container">
       {field.items.map((item, index) => (
-        <div
-          className="repeater-field"
-          field-id={index + 1}
-          key={`repeater_${field.name}_${index}`}
-        >
+        <div className="repeater-field" key={`repeater_${field.name}_${index}`}>
           <div
             className="close-btn"
             onClick={() => deleteDropdown(field, index)}
@@ -691,38 +660,41 @@ const MyResume = () => {
           </div>
           {item.showDropdown && (
             <div className="field-dropdown">
-              {item.data.map((child, cindex) => (
-                <div
-                  className="row align-items-start"
-                  key={`child_${field.name}_${index}_${child.name}`}
-                >
-                  <div className="col-sm-3">
-                    <label>{child.label}</label>
+              {item.data.map((child, cindex) => {
+                console.log(`child_${field.name}_${index}_${child.name}`);
+                return (
+                  <div
+                    className="row align-items-start"
+                    key={`child_${field.name}_${index}_${child.name}`}
+                  >
+                    <div className="col-sm-3">
+                      <label>{child.label}</label>
+                    </div>
+                    <div className="col-sm-9">
+                      {child.type == "input" ? (
+                        <input
+                          className="form-control"
+                          name={child.name}
+                          type="text"
+                          value={child.value || ""}
+                          onChange={(e) =>
+                            handleRepeaterChange(field.name, index, cindex, e)
+                          }
+                        />
+                      ) : (
+                        <textarea
+                          className="form-control"
+                          rows={5}
+                          value={child.value || ""}
+                          onChange={(e) =>
+                            handleRepeaterChange(field.name, index, cindex, e)
+                          }
+                        ></textarea>
+                      )}
+                    </div>
                   </div>
-                  <div className="col-sm-9">
-                    {child.type == "input" ? (
-                      <input
-                        className="form-control"
-                        name={child.name}
-                        type="text"
-                        value={child.value || ""}
-                        onChange={(e) =>
-                          handleRepeaterChange(field.name, index, cindex, e)
-                        }
-                      />
-                    ) : (
-                      <textarea
-                        className="form-control"
-                        rows={5}
-                        value={child.value || ""}
-                        onChange={(e) =>
-                          handleRepeaterChange(field.name, index, cindex, e)
-                        }
-                      ></textarea>
-                    )}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
               <div className="text-end">
                 <button
                   className="btn btn-secondary w-90 mb-2 text-uppercase ls-3 px-4"
@@ -744,165 +716,6 @@ const MyResume = () => {
     </div>
   );
 
-  const getFormField = function (field) {
-    switch (field.type) {
-      case "upload":
-        return (
-          <>
-            <label htmlFor={field.name} className="form-label">
-              {field.label}
-              {field.required && <span className="required">*</span>}
-            </label>
-            <input
-              type="hidden"
-              className="input-text"
-              name="_employer_featured_image"
-              value=""
-            />
-            <div className="row align-items-center upload-box">
-              <div className="col-md-2 col-sm-4 col-12">
-                <img src={Placeholder} className="w-100" />
-              </div>
-              <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
-                <button className="btn btn-secondary w-90 mb-2 text-uppercase">
-                  <FiPaperclip /> Upload
-                </button>
-                <button className="btn btn-secondary w-90 text-uppercase">
-                  <FiTrash2 /> Remove
-                </button>
-              </div>
-            </div>
-          </>
-        );
-      case "text":
-        return (
-          <>
-            <label htmlFor={field.name} className="form-label">
-              {field.label}
-              {field.required && <span className="required">*</span>}
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              value={field.value}
-              onChange={(e) => handleTextChange(e, field.name)}
-            />
-          </>
-        );
-      case "radio":
-        return (
-          <>
-            <label htmlFor={field.name} className="form-label">
-              {field.label}
-              {field.required && <span className="required">*</span>}
-            </label>
-            <br />
-            <div className="form-check">
-              <input
-                type="radio"
-                className="form-check-input me-2"
-                name={field.name}
-                value={1}
-                checked={field.value}
-                onChange={(e) => handleRadioChange(e, field.name)}
-              />
-              <label className="form-check-label" htmlFor={field.name}>
-                Yes
-              </label>
-            </div>
-            <div className="form-check">
-              <input
-                type="radio"
-                className="form-check-input me-2"
-                name={field.name}
-                value={0}
-                checked={!field.value}
-                onChange={(e) => handleRadioChange(e, field.name)}
-              />
-              <label className="form-check-label" htmlFor={field.name}>
-                No
-              </label>
-            </div>
-          </>
-        );
-      case "dropdown":
-        return (
-          <>
-            <label htmlFor={field.name} className="form-label">
-              {field.label}
-              {field.required && <span className="required">*</span>}
-            </label>
-            <Select
-              options={field.data}
-              isMulti={field.isMulti || false}
-              onChange={field.callback}
-              placeholder={field.placeholder}
-              defaultValue={field.value}
-              styles={{
-                control: (baseStyles) => ({
-                  ...baseStyles,
-                  padding: "11px",
-                  backgroundColor: "#F6F6F6",
-                  border: "none",
-                }),
-                valueContainer: (baseStyles) => ({
-                  ...baseStyles,
-                  padding: "0px",
-                  fontSize: 20,
-                }),
-                singleValue: (baseStyles) => ({
-                  ...baseStyles,
-                  color: "#696969",
-                }),
-              }}
-            />
-          </>
-        );
-
-      case "editor":
-        return (
-          <>
-            <label htmlFor={field.name} className="form-label">
-              {field.label}
-              {field.required && <span className="required">*</span>}
-            </label>
-            {isMounted && (
-              <Editor
-                editorState={editorState}
-                toolbarClassName="editorToolbar"
-                wrapperClassName="editorWrapper"
-                editorClassName="editorBody"
-                toolbar={{
-                  options: [
-                    "inline",
-                    "blockType",
-                    "fontSize",
-                    "list",
-                    "textAlign",
-                    "link",
-                  ],
-                }}
-                onEditorStateChange={(newState) => {
-                  handleEditorChange(newState, field.name);
-                }}
-              />
-            )}
-          </>
-        );
-
-      case "repeater":
-        return (
-          <div className="repeater-field" ref={repeaterRef}>
-            <label htmlFor={field.name} className="form-label">
-              {field.label}
-              {field.required && <span className="required">*</span>}
-            </label>
-            {getRepeaterField(field)}
-          </div>
-        );
-    }
-  };
-
   return isLoading ? (
     <Loader />
   ) : (
@@ -912,31 +725,11 @@ const MyResume = () => {
         <h4 className="text-uppercase mb-4">Qualifications</h4>
         <div className="profile-edit-form">
           <div className="row gx-3 gy-5 align-items-end">
-            {fields.map((field) => {
-              return (
-                <div className={`col-sm-${field.column}`} key={field.name}>
-                  {getFormField(field)}
-                </div>
-              );
-            })}
+            {getRepeaterField(educationList)}
           </div>
         </div>
       </div>
 
-      <div className="card">
-        <h4 className="text-uppercase mb-4">Portfolio</h4>
-        <div className="profile-edit-form">
-          <div className="row gx-3 gy-5 align-items-end">
-            {portfolio.map((field) => {
-              return (
-                <div className={`col-${field.column}`} key={field.name}>
-                  {getFormField(field)}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
       <div className="submit-btn mt-4">
         <button
           className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 text-uppercase"

@@ -143,6 +143,22 @@ const saveCreative = (dispatch) => {
   };
 };
 
+const saveResume = (dispatch) => {
+  return async (uid, data) => {
+    dispatch({
+      type: "set_form_submit",
+      payload: true,
+    });
+    try {
+      const response = await api.patch("/creative_resume/" + uid, data);
+    } catch (error) {}
+    dispatch({
+      type: "set_form_submit",
+      payload: false,
+    });
+  };
+};
+
 const saveCreativeImage = (dispatch) => {
   return async (data) => {
     try {
@@ -167,6 +183,7 @@ const getStats = (dispatch) => {
   };
 };
 
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
@@ -176,6 +193,7 @@ export const { Context, Provider } = createDataContext(
     getCreative,
     getCreativeById,
     saveCreative,
+    saveResume,
     saveCreativeImage,
   },
   state
