@@ -92,7 +92,7 @@ const getPost = (dispatch) => {
 const getPostById = (dispatch) => {
   return async (id) => {
     try {
-      const response = await api.get("/posts?filter[user_id]=" + id);
+      const response = await api.get("/posts?filter[post_id]=" + id);
       const data = response.data.data[0];
       const uid = data.post_id;
       getPostComments(dispatch)(uid);
