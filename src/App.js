@@ -81,12 +81,14 @@ function App() {
               <ChatProvider>
                 <SpotlightProvider>
                   <JobsProvider>
-                    <div className="App">
-                      <ScrollRestoration />
-                      <Header />
-                      <Outlet />
-                      <Footer />
-                    </div>
+                    <CommunityProvider>
+                      <div className="App">
+                        <ScrollRestoration />
+                        <Header />
+                        <Outlet />
+                        <Footer />
+                      </div>
+                    </CommunityProvider>
                   </JobsProvider>
                 </SpotlightProvider>
               </ChatProvider>
