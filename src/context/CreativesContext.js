@@ -188,8 +188,7 @@ const getStats = (dispatch) => {
   };
 };
 
-<<<<<<< HEAD
-=======
+
 const getAppliedJobs = (dispatch) => {
   return async () => {
     setLoading(dispatch, true);
@@ -203,7 +202,6 @@ const getAppliedJobs = (dispatch) => {
     setLoading(dispatch, false);
   };
 };
->>>>>>> 45905211696314e3bca26f90b86575cfa9a39dd8
 
 export const { Context, Provider } = createDataContext(
   reducer,
