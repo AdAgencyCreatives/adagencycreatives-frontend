@@ -3,11 +3,8 @@ import CreatePost from "../components/community/CreatePost";
 import LeftSidebar from "../components/community/LeftSidebar";
 import PostList from "../components/community/PostList";
 import RightSidebarWidgets from "../components/RightSidebarWidgets";
-import { useContext } from "react";
-import { Context as CommunityContext } from "../context/CommunityContext";
 
 const Community = () => {
-  const { state } = useContext(CommunityContext);
   return (
     <div className="dark-container page-community mb-0 mt-4">
       <h1 className="community-title">The Lounge</h1>

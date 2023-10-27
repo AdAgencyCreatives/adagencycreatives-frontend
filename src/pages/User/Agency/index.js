@@ -15,6 +15,7 @@ import JobPost from "../../Jobs/JobPostForm";
 import useToken from "../../../hooks/useToken";
 import Loader from "../../../components/Loader";
 import JobMessages from "../JobMessages";
+import HireAdvisor from "./HireAdvisor";
 
 const Agency = () => {
   const { page } = useParams();
@@ -30,6 +31,7 @@ const Agency = () => {
     "delete-profile": <DeleteProfile />,
     "shortlist-creatives": <CreativeShortlist />,
     "job-messages": <JobMessages />,
+    "hire-an-advisor": <HireAdvisor />,
     packages: <Packages />,
   };
 

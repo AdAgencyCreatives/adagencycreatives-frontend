@@ -11,6 +11,7 @@ import Loader from "../../components/Loader";
 
 import { Context as CreativesContext } from "../../context/CreativesContext";
 import { Context as AgenciesContext } from "../../context/AgenciesContext";
+import { Context as AuthContext } from "../../context/AuthContext";
 
 const Profile = () => {
   const { username } = useParams();
@@ -35,6 +36,10 @@ const Profile = () => {
     state: { single_agency, open_positions },
     getAgency,
   } = useContext(AgenciesContext);
+
+  const {
+    state: { role },
+  } = useContext(AuthContext);
 
   const [data, setData] = useState({});
 
@@ -87,7 +92,7 @@ const Profile = () => {
             <div className="col-md-4 d-none d-md-block">
               <div className="profile-sidebar">
                 {page === "creative" ? (
-                  <CreativeSidebar data={data} />
+                  <CreativeSidebar data={data} role={role} />
                 ) : (
                   <AgencySidebar data={data} />
                 )}
