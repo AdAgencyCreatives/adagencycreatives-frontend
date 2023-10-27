@@ -15,6 +15,8 @@ import { CircularProgress } from "@mui/material";
 const Profile = () => {
   const imageUploadRef = useRef();
   const logoRef = useRef();
+  const videoUploadRef = useRef();
+  const videoRef = useRef();
   const [statesList, setStates] = useState([]);
   const [citiesList, setCities] = useState([]);
   const [media, setMedia] = useState([]);
@@ -67,10 +69,13 @@ const Profile = () => {
     }
   }, [user]);
 
-
   //Fetch initial Cities
   useEffect(() => {
-    if (Object.keys(single_agency).length > 0 && single_agency.location && citiesList.length === 0) {
+    if (
+      Object.keys(single_agency).length > 0 &&
+      single_agency.location &&
+      citiesList.length === 0
+    ) {
       getCities(single_agency.location.state_id);
     }
   }, [single_agency, citiesList]);
@@ -109,7 +114,9 @@ const Profile = () => {
           required: true,
           type: "text",
           name: "website",
-          value: single_agency.links.find((link) => link.label == "website")?.url ?? '',
+          value:
+            single_agency.links.find((link) => link.label == "website")?.url ??
+            "",
         },
         {
           label: "Location",
@@ -141,7 +148,9 @@ const Profile = () => {
           required: true,
           type: "text",
           name: "linkedin",
-          value: single_agency.links.find((link) => link.label == "linkedin")?.url ?? '',
+          value:
+            single_agency.links.find((link) => link.label == "linkedin")?.url ??
+            "",
         },
         {
           label: "Contact Email",
@@ -235,6 +244,13 @@ const Profile = () => {
           name: "slug",
           value: single_agency.slug,
         },
+        {
+          label: "Upload your agency reel",
+          required: true,
+          type: "video",
+          image: single_agency.logo,
+          name: "company_video",
+        },
       ]);
     }
   }, [single_agency, user, media, industry, statesList]);
@@ -253,10 +269,14 @@ const Profile = () => {
     if (Object.keys(single_agency).length > 0 && !isLoading) {
       setFormData({
         company_name: single_agency.name,
-        website: single_agency.links.find((link) => link.label == "website")?.url ?? '',
+        website:
+          single_agency.links.find((link) => link.label == "website")?.url ??
+          "",
         state_id: single_agency.location.state_id,
         city_id: single_agency.location.city_id,
-        linkedin: single_agency.links.find((link) => link.label == "linkedin").url ?? '',
+        linkedin:
+          single_agency.links.find((link) => link.label == "linkedin")?.url ??
+          "",
         email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
@@ -377,18 +397,18 @@ const Profile = () => {
   };
 
   const removeLogo = () => {
-    logoRef.current.src = ""
-  }
+    logoRef.current.src = "";
+  };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event, resource) => {
     const file = event.target.files[0];
-    logoRef.current.src = URL.createObjectURL(file)
+    logoRef.current.src = URL.createObjectURL(file);
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("user_id", user.uuid);
       formData.append("resource_type", "agency_logo");
-     saveAgencyImage(formData);
+      saveAgencyImage(formData);
     }
   };
 
@@ -413,12 +433,16 @@ const Profile = () => {
                       <input
                         type="hidden"
                         className="input-text"
-                        name="field.name"
+                        name={field.name}
                         value=""
                       />
                       <div className="row align-items-center upload-box">
                         <div className="col-md-2 col-sm-4 col-12">
-                          <img src={field.image} className="w-100" ref={logoRef} />
+                          <img
+                            src={field.image}
+                            className="w-100"
+                            ref={logoRef}
+                          />
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                           <button
@@ -427,7 +451,10 @@ const Profile = () => {
                           >
                             <FiPaperclip /> Upload
                           </button>
-                          <button className="btn btn-secondary w-100 text-uppercase" onClick={removeLogo}>
+                          <button
+                            className="btn btn-secondary w-100 text-uppercase"
+                            onClick={removeLogo}
+                          >
                             <FiTrash2 /> Remove
                           </button>
                         </div>
@@ -435,11 +462,54 @@ const Profile = () => {
                           type="file"
                           ref={imageUploadRef}
                           className="d-none"
-                          onChange={handleFileChange}
+                          onChange={(e) =>
+                            handleFileChange(e, "agency_logo", logoRef)
+                          }
                         />
                       </div>
                     </div>
                   );
+                case "video":
+                  return (
+                    <div className="col-12" key={index}>
+                      <label htmlFor={field.name} className="form-label">
+                        {field.label}
+                        {field.required && <span className="required">*</span>}
+                      </label>
+                      <div className="row align-items-center upload-box">
+                        <div className="col-md-2 col-sm-4 col-12">
+                          {/* <img
+                            src={field.image}
+                            className="w-100"
+                            ref={videoRef}
+                          /> */}
+                        </div>
+                        <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
+                          <button
+                            className="btn btn-secondary w-100 mb-2 text-uppercase"
+                            onClick={() => videoUploadRef.current.click()}
+                          >
+                            <FiPaperclip /> Upload
+                          </button>
+                          <button
+                            className="btn btn-secondary w-100 text-uppercase"
+                            onClick={removeLogo}
+                          >
+                            <FiTrash2 /> Remove
+                          </button>
+                        </div>
+                        <input
+                          type="file"
+                          ref={videoUploadRef}
+                          className="d-none"
+                          onChange={(e) =>
+                            handleFileChange(e, "agency_reel", videoRef)
+                          }
+                        />
+                      </div>
+                    </div>
+                  );
+
                 case "text":
                   return (
                     <div className="col-sm-6" key={index}>

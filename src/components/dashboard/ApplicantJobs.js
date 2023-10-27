@@ -185,7 +185,7 @@ const ApplicantJobs = () => {
                                 </h4>
                                 <div className="date">
                                   <IoTimeOutline />
-                                  Applied date:{" "}
+                                  Applied date:
                                   {moment(application.created_at).format(
                                     "MMMM D, YYYY"
                                   )}

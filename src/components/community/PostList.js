@@ -14,17 +14,23 @@ import Divider from "../Divider";
 import ContentEditable from "react-contenteditable";
 
 import { useContext, useEffect } from "react";
+import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 
 const PostList = () => {
+  const {
+    state: { token },
+  } = useContext(AuthContext);
   const {
     state: { posts },
     getPosts,
   } = useContext(CommunityContext);
 
   useEffect(() => {
-    getPosts();
-  }, []);
+    if (token) {
+      getPosts();
+    }
+  }, [token]);
 
   const [actions, setActions] = useState("none");
 
@@ -65,13 +71,14 @@ const PostList = () => {
             <div className="post-content">
               <div className="post-body">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                  enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                  nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                  reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                  nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                  sunt in culpa qui officia deserunt mollit anim id est laborum
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt
+                  mollit anim id est laborum
                 </p>
                 <img src={Miami} />
               </div>
@@ -100,11 +107,12 @@ const PostList = () => {
                   <div className="comment-meta">
                     <p className="username">Tony Pawela</p>
                     <p className="content">
-                      I can guarantee it’s not you, it’s them. I’ve tried all those
-                      techniques and then some. No real success either. Not sure
-                      there’s a secret other than keep it short, try to make it
-                      personal and don’t think twice about it. You’re good enough.
-                      You’re smart enough. And doggone it, people like you!
+                      I can guarantee it’s not you, it’s them. I’ve tried all
+                      those techniques and then some. No real success either.
+                      Not sure there’s a secret other than keep it short, try to
+                      make it personal and don’t think twice about it. You’re
+                      good enough. You’re smart enough. And doggone it, people
+                      like you!
                     </p>
                     <div className="reply-section">
                       <IoArrowRedoSharp />
@@ -119,8 +127,7 @@ const PostList = () => {
               </div>
             </div>
           </div>
-        ))
-      }
+        ))}
     </div>
   );
 };

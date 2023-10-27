@@ -16,37 +16,75 @@ import { CircularProgress } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
+import useFormData from "../../hooks/useFormData";
 
 const JobPostForm = ({ id, setJobStatus }) => {
-  const imageUploadRef = useRef();
-  const logoRef = useRef();
-  const [categoriesList, setCategories] = useState([]);
+  const {
+    states: {
+      single_job,
+      employment_type,
+      categoriesList,
+      statesList,
+      citiesList,
+      strengthsList,
+      media,
+      employment,
+      experience,
+      industry,
+      media_experiences,
+      industry_experiences,
+      strengths,
+      editorState,
+      isMounted,
+      fields,
+      formSubmit,
+      imageUploadRef,
+      logoRef,
+    },
+    changeState,
+    handleTextChange,
+    handleRadioChange,
+    handleDateChange,
+    handleMultiChange,
+    handleEditorChange,
+    handleDropdownChange,
+    handleSubmit,
+    removeLogo,
+    handleFileChange,
+    setFields,
+    setEditorState,
+    setFormData,
+  } = useFormData({ id, setJobStatus });
+
+/*   const imageUploadRef = useRef();
+  const logoRef = useRef(); */
+  /* const [categoriesList, setCategories] = useState([]);
   const [statesList, setStates] = useState([]);
   const [citiesList, setCities] = useState([]);
   const [strengthsList, setStrengths] = useState([]);
   const [media, setMedia] = useState([]);
   const [employment, setEmployment] = useState([]);
   const [experience, setExperience] = useState([]);
-  const [industry, setIndustry] = useState([]);
+  const [industry, setIndustry] = useState([]); */
   const [isLoading, setIsloading] = useState(true);
-  const [fields, setFields] = useState([]);
+  /*const [fields, setFields] = useState([]);
   const [formData, setFormData] = useState({});
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false); */
   const isEdit = id !== undefined;
 
   const apply_type = [
     { label: "Internal", value: "Internal" },
     { label: "External URL", value: "External" },
   ];
-
+  /* 
   useEffect(() => {
     setIsMounted(true);
     return () => {
       setIsMounted(false);
     };
-  }, []);
-
+  }, []); */
+  /* 
   const {
     state: { user, token },
   } = useContext(AuthContext);
@@ -77,14 +115,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
     getEmploymentTypes,
     getYearsExperience,
     getStrengths,
-  } = useContext(DataContext);
-
-  //Fetch initial Cities
-  useEffect(() => {
-    if (Object.keys(single_job).length > 0 && citiesList.length === 0) {
-      getCities(single_job.location.state_id);
-    }
-  }, [single_job, citiesList]);
+  } = useContext(DataContext); */
 
   // Set initial fields
   useEffect(() => {
@@ -295,7 +326,6 @@ const JobPostForm = ({ id, setJobStatus }) => {
     }
   }, [
     single_job,
-    user,
     media,
     industry,
     statesList,
@@ -348,7 +378,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
       });
     }
   }, [isLoading, media_experiences, industry_experiences]);
-
+  /* 
   useEffect(() => {
     if (token) {
       if (id) {
@@ -362,8 +392,9 @@ const JobPostForm = ({ id, setJobStatus }) => {
       getYearsExperience();
       getStrengths();
     }
-  }, [token]);
+  }, [token]); */
 
+  /* 
   useEffect(() => {
     let data = categories;
     if (categories.length) {
@@ -507,7 +538,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
       formData.append("resource_type", "agency_logo");
       // saveAgencyImage(formData);
     }
-  };
+  }; */
 
   return isLoading ? (
     <Loader />

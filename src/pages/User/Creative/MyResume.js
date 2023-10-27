@@ -42,7 +42,7 @@ const MyResume = () => {
   const {
     state: { single_creative, formSubmit },
     getCreativeById,
-    saveCreative,
+    saveResume,
     saveCreativeImage,
   } = useContext(CreativesContext);
 
@@ -487,7 +487,7 @@ const MyResume = () => {
   }, [formData]);
 
   const handleSubmit = () => {
-    saveCreative(user.uuid, formData);
+    saveResume(user.uuid, formData);
   };
 
   const removeLogo = () => {
