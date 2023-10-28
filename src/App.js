@@ -46,7 +46,6 @@ function App() {
 
   useEffect(() => {
     if (token) {
-      console.log("after loggin in");
       console.log(token);
       /* window.Echo = new Echo({
         broadcaster: "pusher",

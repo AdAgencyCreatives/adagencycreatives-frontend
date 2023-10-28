@@ -188,6 +188,7 @@ const getStats = (dispatch) => {
   };
 };
 
+
 const getAppliedJobs = (dispatch) => {
   return async () => {
     setLoading(dispatch, true);

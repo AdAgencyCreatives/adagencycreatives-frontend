@@ -37,7 +37,7 @@ const PostList = () => {
       getPosts();
     }
   }, [token]);
-
+  
   const [actions, setActions] = useState("none");
 
   return (
