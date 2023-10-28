@@ -65,7 +65,7 @@ const reducer = (state, action) => {
 const getPosts = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/posts");
+      const response = await api.get("/posts?filter[status]=1"); // only published posts
       dispatch({
         type: "set_posts",
         payload: response.data,
