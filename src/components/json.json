@@ -1,0 +1,111 @@
+{
+    "data": [
+        {
+            "id": "e00dd599-c4a8-39d9-b7dd-e6d724e0aa96",
+            "user_id": "a9ae8ff7-e807-3e8b-bd34-a08440f03d1f",
+            "group_id": "d907ec91-8d40-3711-8b0a-4b62a33445de",
+            "author": "Reese Williamson",
+            "author_avatar": null,
+            "content": "Officia asperiores aliquid necessitatibus cupiditate dolores reprehenderit itaque blanditiis. Nesciunt nam tempora tenetur voluptas quod.",
+            "status": "published",
+            "comments_count": 3,
+            "likes_count": 0,
+            "created_at": "2023-10-25 09:22:59",
+            "updated_at": "2023-10-25 09:22:59",
+            "relationships": {
+                "comments": {
+                    "links": {
+                        "related": "https://api.noorsofttechdev.com/api/v1/comments?filter[post_id]=e00dd599-c4a8-39d9-b7dd-e6d724e0aa96"
+                    }
+                },
+                "likes": {
+                    "links": {
+                        "related": "https://api.noorsofttechdev.com/api/v1/likes?filter[post_id]=e00dd599-c4a8-39d9-b7dd-e6d724e0aa96"
+                    }
+                }
+            }
+        },
+        {
+            "id": "1713c976-f923-34f9-a89c-542d8261fbec",
+            "user_id": "05927ebb-6be8-3164-b790-7a81029d19d9",
+            "group_id": "d907ec91-8d40-3711-8b0a-4b62a33445de",
+            "author": "TEST CREATIVE",
+            "author_avatar": "https://ad-agency-creatives.s3.amazonaws.com/profile_picture/ef6a4047-db36-4879-b376-299aeec38fa7/6go1bM7kDfrwdcw5lvKIOqng7XketnjZfmR64GKt.jpg",
+            "content": "At sit necessitatibus sapiente sed quasi impedit pariatur. Odit ipsum tempore tenetur sit et. Quaerat expedita magni recusandae rerum recusandae nihil. Sint quod et sunt atque.",
+            "status": "published",
+            "comments_count": 3,
+            "likes_count": 0,
+            "created_at": "2023-10-26 15:50:42",
+            "updated_at": "2023-10-26 15:50:42",
+            "relationships": {
+                "comments": {
+                    "links": {
+                        "related": "https://api.noorsofttechdev.com/api/v1/comments?filter[post_id]=1713c976-f923-34f9-a89c-542d8261fbec"
+                    }
+                },
+                "likes": {
+                    "links": {
+                        "related": "https://api.noorsofttechdev.com/api/v1/likes?filter[post_id]=1713c976-f923-34f9-a89c-542d8261fbec"
+                    }
+                }
+            }
+        },
+        {
+            "id": "85919d6c-e60e-392f-9b1e-6db91c5e1a9f",
+            "user_id": "402e62ab-fe58-37f8-8f29-bec3de0c55d0",
+            "group_id": "107deffc-2559-3b52-a593-f8c8b9129cf2",
+            "author": "Aimee Reilly",
+            "author_avatar": null,
+            "content": "Aut minima cumque beatae ullam quia. Sit accusantium et fugiat molestiae excepturi. Non dolorem reiciendis sit corrupti ducimus. Itaque at quaerat et velit vel natus dolor.",
+            "status": "published",
+            "comments_count": 3,
+            "likes_count": 0,
+            "created_at": "2023-10-19 06:27:57",
+            "updated_at": "2023-10-19 06:27:57",
+            "relationships": {
+                "comments": {
+                    "links": {
+                        "related": "https://api.noorsofttechdev.com/api/v1/comments?filter[post_id]=85919d6c-e60e-392f-9b1e-6db91c5e1a9f"
+                    }
+                },
+                "likes": {
+                    "links": {
+                        "related": "https://api.noorsofttechdev.com/api/v1/likes?filter[post_id]=85919d6c-e60e-392f-9b1e-6db91c5e1a9f"
+                    }
+                }
+            }
+        }
+    ],
+    "links": {
+        "first": "https://api.noorsofttechdev.com/api/v1/posts?page=1",
+        "last": "https://api.noorsofttechdev.com/api/v1/posts?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "active": false
+            },
+            {
+                "url": "https://api.noorsofttechdev.com/api/v1/posts?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Next &raquo;",
+                "active": false
+            }
+        ],
+        "path": "https://api.noorsofttechdev.com/api/v1/posts",
+        "per_page": 10,
+        "to": 3,
+        "total": 3
+    }
+}
