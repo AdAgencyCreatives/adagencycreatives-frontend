@@ -15,7 +15,6 @@ import ContentEditable from "react-contenteditable";
 
 import { useContext, useEffect } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
-import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import TimeAgo from "../TimeAgo";
 import NumUnit from "../NumUnit";
@@ -34,10 +33,6 @@ const PostList = () => {
   } = useContext(CommunityContext);
 
   useEffect(() => {
-    if (token) {
-      getPosts();
-    }
-  }, [token]);
     if (token) {
       getPosts();
     }
