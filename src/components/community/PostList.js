@@ -15,6 +15,7 @@ import ContentEditable from "react-contenteditable";
 
 import { useContext, useEffect } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import TimeAgo from "../TimeAgo";
 import NumUnit from "../NumUnit";
@@ -33,6 +34,10 @@ const PostList = () => {
   } = useContext(CommunityContext);
 
   useEffect(() => {
+    if (token) {
+      getPosts();
+    }
+  }, [token]);
     if (token) {
       getPosts();
     }
@@ -112,6 +117,12 @@ const PostList = () => {
                       make it personal and don’t think twice about it. You’re
                       good enough. You’re smart enough. And doggone it, people
                       like you!
+                      I can guarantee it’s not you, it’s them. I’ve tried all
+                      those techniques and then some. No real success either.
+                      Not sure there’s a secret other than keep it short, try to
+                      make it personal and don’t think twice about it. You’re
+                      good enough. You’re smart enough. And doggone it, people
+                      like you!
                     </p>
                     <div className="reply-section">
                       <IoArrowRedoSharp />
@@ -126,6 +137,7 @@ const PostList = () => {
               </div>
             </div>
           </div>
+        ))}
         ))}
     </div>
   );

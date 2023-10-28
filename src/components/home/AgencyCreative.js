@@ -79,7 +79,7 @@ const AgencyCreatives = () => {
                       </div>
                     )}
                     <div className="profileLink">
-                      <Link to={`/creative/${item.name}`}>View Profile</Link>
+                      <Link to={`/creative/${item.slug}`}>View Profile</Link>
                     </div>
                   </div>
                 </swiper-slide>

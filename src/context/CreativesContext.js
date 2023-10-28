@@ -10,6 +10,7 @@ const state = {
   creative_education: [],
   stats: null,
   formSubmit: false,
+  applied_jobs: [],
 };
 
 const reducer = (state, action) => {
@@ -38,6 +39,9 @@ const reducer = (state, action) => {
       return { ...state, formSubmit: action.payload };
     case "set_stats":
       return { ...state, stats: action.payload.stats };
+
+    case "set_applied_jobs":
+      return { ...state, applied_jobs: action.payload.data };
     default:
       return state;
   }
@@ -109,22 +113,23 @@ const getCreativeExperience = async (dispatch, uid) => {
 
 const loadCreatives = (dispatch) => {
   return async (page) => {
-    dispatch({
-      type: "set_loading",
-      payload: true,
-    });
+    setLoading(dispatch, true);
     try {
       const response = await api.get(page);
       dispatch({
         type: "load_creatives",
         payload: response.data,
       });
-      dispatch({
-        type: "set_loading",
-        payload: false,
-      });
     } catch (error) {}
+    setLoading(dispatch, false);
   };
+};
+
+const setLoading = (dispatch, status) => {
+  dispatch({
+    type: "set_loading",
+    payload: status,
+  });
 };
 
 const saveCreative = (dispatch) => {
@@ -135,6 +140,22 @@ const saveCreative = (dispatch) => {
     });
     try {
       const response = await api.patch("/creative_profile/" + uid, data);
+    } catch (error) {}
+    dispatch({
+      type: "set_form_submit",
+      payload: false,
+    });
+  };
+};
+
+const saveResume = (dispatch) => {
+  return async (uid, data) => {
+    dispatch({
+      type: "set_form_submit",
+      payload: true,
+    });
+    try {
+      const response = await api.patch("/creative_resume/" + uid, data);
     } catch (error) {}
     dispatch({
       type: "set_form_submit",
@@ -167,6 +188,20 @@ const getStats = (dispatch) => {
   };
 };
 
+const getAppliedJobs = (dispatch) => {
+  return async () => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get("/applied_jobs");
+      dispatch({
+        type: "set_applied_jobs",
+        payload: response.data,
+      });
+    } catch (error) {}
+    setLoading(dispatch, false);
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
@@ -176,7 +211,9 @@ export const { Context, Provider } = createDataContext(
     getCreative,
     getCreativeById,
     saveCreative,
+    saveResume,
     saveCreativeImage,
+    getAppliedJobs
   },
   state
 );

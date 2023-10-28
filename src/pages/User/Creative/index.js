@@ -13,6 +13,7 @@ import JobMessages from "../JobMessages";
 
 import { useContext } from "react";
 import { Context } from "../../../context/AuthContext";
+import MyOpportunities from "./MyOpportunities";
 
 const Creative = () => {
   const {
@@ -29,6 +30,7 @@ const Creative = () => {
     "delete-profile": <DeleteProfile />,
     "agencies-shortlist": <AgencyShortlist />,
     "job-messages": <JobMessages />,
+    "my-applied": <MyOpportunities />,
   };
 
   // hideMessageAlert();

@@ -47,13 +47,11 @@ const PostJob = () => {
   const getView = () => {
     switch (jobStatus) {
       case "select_package":
-        return <Packages setPackage={setPackage} setJobStatus={setJobStatus} />;
+        return <Packages setPackage={setPackage} setJobStatus={setJobStatus} user={user} />;
       case "create":
         return <JobPostForm setJobStatus={setJobStatus} />;
       case "preview":
         return <Preview single_job={single_job} setJobStatus={setJobStatus} />;
-      /*       case "submit":
-        return <Checkout user={user} />; */
       default:
         return <Loader />;
     }

@@ -149,17 +149,11 @@ const getStats = (dispatch) => {
 
 const saveAgency = (dispatch) => {
   return async (uid, data) => {
-    dispatch({
-      type: "set_form_submit",
-      payload: true,
-    });
+    setFormSubmit(dispatch, true);
     try {
       const response = await api.patch("/agency_profile/" + uid, data);
     } catch (error) {}
-    dispatch({
-      type: "set_form_submit",
-      payload: false,
-    });
+    setFormSubmit(dispatch, false);
   };
 };
 
@@ -173,6 +167,25 @@ const saveAgencyImage = (dispatch) => {
       });
     } catch (error) {}
   };
+};
+
+const requestPackage = (dispatch) => {
+  return async (data) => {
+    setFormSubmit(dispatch, true);
+    try {
+      console.log(data)
+      const response = await api.post("/package-requests", data);
+    } catch (error) {}
+    setFormSubmit(dispatch, false);
+
+  };
+};
+
+const setFormSubmit = (dispatch, status) => {
+  dispatch({
+    type: "set_form_submit",
+    payload: status,
+  });
 };
 
 const deleteJob = (dispatch) => {
@@ -206,6 +219,7 @@ export const { Context, Provider } = createDataContext(
     getOpenPositions,
     saveAgencyImage,
     deleteJob,
+    requestPackage
   },
   state
 );
