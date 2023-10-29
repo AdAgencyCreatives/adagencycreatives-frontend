@@ -23,7 +23,7 @@ const CreatePost = () => {
 
   const {
     state: { posts, formSubmit },
-    savePost
+    getPosts, savePost
   } = useContext(CommunityContext);
 
   const [open, setOpen] = useState(false);
@@ -50,6 +50,7 @@ const CreatePost = () => {
   useEffect(() => {
     if (!formSubmit) {
       handleClose();
+      getPosts();
     }
   }, [formSubmit]);
 
