@@ -71,6 +71,7 @@ const getPosts = (dispatch) => {
   return async () => {
     try {
       const response = await api.get("/posts?filter[group_id]=d3ae7dff-e382-30f0-9a94-30e4def92e8a&sort=-created_at&filter[status]=1"); // only published posts in Feeds
+      //console.log("fetched new posts at: " + (new Date()).toString());
       dispatch({
         type: "set_posts",
         payload: response.data,

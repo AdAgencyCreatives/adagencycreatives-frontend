@@ -18,7 +18,7 @@ import Placeholder from "../../assets/images/placeholder.png";
 const CreatePost = () => {
 
   const {
-    state: { user },
+    state: { token, user },
   } = useContext(AuthContext);
 
   const {
@@ -50,7 +50,9 @@ const CreatePost = () => {
   useEffect(() => {
     if (!formSubmit) {
       handleClose();
-      getPosts();
+      if(token) {
+        getPosts();
+      }
     }
   }, [formSubmit]);
 

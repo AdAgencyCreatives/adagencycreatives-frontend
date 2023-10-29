@@ -84,6 +84,10 @@ const PostItem = (props) => {
         }
     }, [like_action]);
 
+    useEffect(() => {
+        setLikesCount(props.post.likes_count);
+    }, [props.post.likes_count]);
+
     const showLikesModal = (e) => {
         e.preventDefault();
         e.stopPropagation();
