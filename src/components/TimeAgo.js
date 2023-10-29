@@ -1,6 +1,9 @@
 const TimeAgo = (props) => {
 
-    const getTimeAgo = (oldTime, newTime) => {
+    const getTimeAgo = () => {
+        let oldTime = convertUTCDateToLocalDate(props.datetime ? new Date(props.datetime) : new Date());
+        let newTime = new Date();
+
         let timeCalc = parseInt((newTime - oldTime) / 1000);
         if (timeCalc >= (60 * 60 * 24 * 30 * 12 * 2)) {
             timeCalc = parseInt(timeCalc / 60 / 60 / 24 / 30 / 12) + " years ago";
@@ -27,8 +30,15 @@ const TimeAgo = (props) => {
         }
         return timeCalc;
     }
+
+    const convertUTCDateToLocalDate = (datetime) => {
+        let date = new Date(datetime);
+        date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+        return date;
+    };
+
     return (
-        <span className="time-text">{getTimeAgo(new Date(props.datetime || ""), new Date())}</span>
+        <span className="time-text">{getTimeAgo()}</span>
     );
 };
 

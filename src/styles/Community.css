@@ -200,6 +200,55 @@ img.post-avatar {
     border-radius: 16px;
     padding: 6px 8px 6px 8px;
     position: relative;
+    user-select: none;
+    -moz-user-select: none;
+}
+
+.post-action.post-comments:hover {
+    color: #d3a11fab;
+}
+
+.post-action.post-comments.active {
+    color: #d3a11fab;
+}
+
+.post-action.post-comments.active:hover {
+    color: #000;
+}
+
+.post-action.post-likes:hover {
+    color: #d3a11fab;
+}
+
+.post-action.post-likes.active {
+    color: #d3a11fab;
+}
+
+.post-action.post-likes.active:hover {
+    color: #000;
+}
+
+.postmodal-header {
+    position: relative;
+}
+
+.post-modal-close {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    color: #000;
+    cursor: pointer;
+    user-select: none;
+    -moz-user-select: none;
+}
+
+.post-modal-close:hover {
+    color: #d3a11fab;
+}
+
+.post-modal-close svg {
+    width: 2em;
+    height: 2em;
 }
 
 .action-dropdown ul {

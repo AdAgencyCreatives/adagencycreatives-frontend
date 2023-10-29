@@ -14,7 +14,7 @@ const NumUnit = (props) => {
     }
     
     return (
-        <span>{getNumUnit(props.number || 0)}</span>
+        <span onClick={ (e) => {props.onClick ? props.onClick(e) : void(0) } }>{getNumUnit(props.number || 0)}</span>
     );
 };
 

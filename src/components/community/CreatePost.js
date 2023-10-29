@@ -1,5 +1,7 @@
+import {
+  IoClose, IoCloseCircle, IoCloseCircleOutline, IoCloseCircleSharp,
+} from "react-icons/io5";
 import { FiCamera, FiImage, FiPaperclip } from "react-icons/fi";
-import Nathan from "../../assets/images/NathanWalker_ProfilePic-150x150.jpg";
 import { Modal } from "@mui/material";
 import { useRef, useState } from "react";
 import ContentEditable from "react-contenteditable";
@@ -8,8 +10,22 @@ import EmojiPicker, { Emoji } from "emoji-picker-react";
 import { BsEmojiSmile } from "react-icons/bs";
 import Divider from "../Divider";
 import ImagePicker from "./Modals/ImagePicker";
+import { useContext, useEffect } from "react";
+import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as CommunityContext } from "../../context/CommunityContext";
+import Placeholder from "../../assets/images/placeholder.png";
 
 const CreatePost = () => {
+
+  const {
+    state: { user },
+  } = useContext(AuthContext);
+
+  const {
+    state: { posts, formSubmit },
+    savePost
+  } = useContext(CommunityContext);
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -23,11 +39,25 @@ const CreatePost = () => {
     setShowPicker(false);
   };
 
+  const doSavePost = () => {
+    savePost({
+      "group_id": "d3ae7dff-e382-30f0-9a94-30e4def92e8a",
+      "content": content,
+      "attachment_ids": []
+    });
+  };
+
+  useEffect(() => {
+    if (!formSubmit) {
+      handleClose();
+    }
+  }, [formSubmit]);
+
   return (
     <div className="post-form">
       <div className="status-box">
         <div className="user-avatar">
-          <img src={Nathan} />
+          <img src={user ? user.image : Placeholder} />
         </div>
         <div className="textarea">
           <textarea
@@ -60,10 +90,13 @@ const CreatePost = () => {
         <div className="create-post-modal post-modal">
           <div className="postmodal-header">
             <div className="user-avatar">
-              <img src={Nathan} height={50} width={50} />
+              <img src={user ? user.image : Placeholder} height={50} width={50} />
             </div>
             <div className="user-meta">
-              <p className="username mb-0">Nathan Walker</p>
+              <p className="username mb-0">{user ? user.first_name + ' ' + user.last_name : 'User'}</p>
+            </div>
+            <div className="post-modal-close" onClick={() => handleClose()}>
+              <IoCloseCircleSharp />
             </div>
           </div>
           <div className="postmodal-body">
@@ -99,7 +132,7 @@ const CreatePost = () => {
             </div>
             <div className="post-options d-flex">
               <div className="item" onClick={() => setImagePickerOpen(true)} >
-                <FiCamera/>
+                <FiCamera />
               </div>
               <div className="item">
                 <FiImage />
@@ -112,7 +145,7 @@ const CreatePost = () => {
           <Divider />
           <div className="postmodal-footer">
             <div className="postmodal-action">
-              <button className="btn btn-post">Post</button>
+              <button className="btn btn-post" onClick={() => doSavePost()}>Post</button>
             </div>
           </div>
           <ImagePicker open={imagePickerOpen} handleImagePickerClose={() => setImagePickerOpen(false)} />
