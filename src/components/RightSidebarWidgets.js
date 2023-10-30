@@ -1,8 +1,27 @@
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../styles/RightSidebarWidgets.scss";
+import { useState, useContext, useEffect } from "react";
+import { Context as AuthContext } from "../context/AuthContext";
+import { Context as CommunityContext } from "../context/CommunityContext";
 
 const RightSidebarWidgets = () => {
+
+  const {
+    state: { token },
+  } = useContext(AuthContext);
+
+  const {
+    state: { new_members },
+    getNewMembers,
+  } = useContext(CommunityContext);
+
+  useEffect(() => {
+    if (token) {
+      getNewMembers();
+    }
+  }, [token]);
+
   return (
     <div className="right-sidebar">
       <div className="widgets">
@@ -26,76 +45,23 @@ const RightSidebarWidgets = () => {
                 aria-relevant="all"
                 aria-atomic="true"
               >
-                <li className="vcard">
-                  <div className="item">
-                    <div className="item-title fn">
-                      <a href="https://adagencycreatives.com/demo-creative-1/">
-                        Ad Agency Creatives
-                      </a>
-                    </div>
-                    <div className="item-meta">
-                      <a href="https://adagencycreatives.com/demo-creative-1/">
-                        <span className="activity">Portfolio</span>
-                      </a>
-                    </div>
-                  </div>
-                </li>
-                <li className="vcard">
-                  <div className="item">
-                    <div className="item-title fn">
-                      <a href="https://adagencycreatives.com/cassidy-fletcher/">
-                        Cassidy Fletcher
-                      </a>
-                    </div>
-                    <div className="item-meta">
-                      <a href="https://adagencycreatives.com/cassidy-fletcher/">
-                        <span className="activity">Portfolio</span>
-                      </a>
-                    </div>
-                  </div>
-                </li>
-                <li className="vcard">
-                  <div className="item">
-                    <div className="item-title fn">
-                      <a href="https://adagencycreatives.com/shreyarege08/">
-                        Shreya Rege
-                      </a>
-                    </div>
-                    <div className="item-meta">
-                      <a href="https://adagencycreatives.com/cassidy-fletcher/">
-                        <span className="activity">Portfolio</span>
-                      </a>
-                    </div>
-                  </div>
-                </li>
-                <li className="vcard">
-                  <div className="item">
-                    <div className="item-title fn">
-                      <a href="https://adagencycreatives.com/kenny/">
-                        Kenny Friedman
-                      </a>
-                    </div>
-                    <div className="item-meta">
-                      <a href="https://adagencycreatives.com/cassidy-fletcher/">
-                        <span className="activity">Portfolio</span>
-                      </a>
-                    </div>
-                  </div>
-                </li>
-                <li className="vcard">
-                  <div className="item">
-                    <div className="item-title fn">
-                      <a href="https://adagencycreatives.com/david-nigh/">
-                        David Nigh
-                      </a>
-                    </div>
-                    <div className="item-meta">
-                      <a href="https://adagencycreatives.com/cassidy-fletcher/">
-                        <span className="activity">Portfolio</span>
-                      </a>
-                    </div>
-                  </div>
-                </li>
+                {new_members &&
+                  new_members.slice(0, Math.min(5, new_members.length)).map((item, index) => (
+                    <li className="vcard">
+                      <div className="item">
+                        <div className="item-title fn">
+                          <a href={"/creative/" + item.slug}>
+                            {item.name}
+                          </a>
+                        </div>
+                        <div className="item-meta">
+                          <a href={"/creative/" + item.slug}>
+                            <span className="activity">Portfolio</span>
+                          </a>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
               </ul>
             </div>
           </div>
@@ -121,7 +87,7 @@ const RightSidebarWidgets = () => {
                         data-src="https://adagencycreatives.com/wp-content/uploads/wp-job-board-pro-uploads/_candidate_featured_image/2023/04/AAC-Logo-for-Community-150x150.png"
                         width="50"
                         height="50"
-                        alt="Profile picture of Ad Agency Creatives"
+                        alt="Profile avatar of Ad Agency Creatives"
                         className="avatar ls-is-cached lazyloaded"
                         src="https://adagencycreatives.com/wp-content/uploads/wp-job-board-pro-uploads/_candidate_featured_image/2023/04/AAC-Logo-for-Community-150x150.png"
                       />

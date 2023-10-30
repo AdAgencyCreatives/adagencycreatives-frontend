@@ -2,6 +2,7 @@ import {
     IoArrowRedoSharp,
     IoChatbubbleEllipsesOutline,
     IoEllipsisVertical,
+    IoHeart,
     IoHeartOutline,
     IoPencilOutline,
     IoTimeOutline,
@@ -131,7 +132,12 @@ const PostItem = (props) => {
             </div>
             <div className="post-actions">
                 <div className={"post-action post-likes" + (likeActive ? ' active' : '')} onClick={() => doToggleLike(props.post.id)}>
-                    <IoHeartOutline />
+                    {likeActive ? (
+                        <IoHeart />
+                    ) : (
+                        <IoHeartOutline />
+                        
+                    )}
                     <NumUnit number={likesCount} onClick={(e) => showLikesModal(e)} />
                 </div>
                 <div className="post-action post-comments" onClick={() => toggleShowComments()}>

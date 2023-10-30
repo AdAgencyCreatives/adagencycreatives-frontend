@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useReducer } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import PostItem from "./PostItem";

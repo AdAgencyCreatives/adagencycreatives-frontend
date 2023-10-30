@@ -10,12 +10,18 @@ import EmojiPicker, { Emoji } from "emoji-picker-react";
 import { BsEmojiSmile } from "react-icons/bs";
 import Divider from "../Divider";
 import ImagePicker from "./Modals/ImagePicker";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useCallback } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import Placeholder from "../../assets/images/placeholder.png";
 
 const CreatePost = () => {
+
+  const inputRef = useCallback(node => {
+    if(node && node.focus) {
+      node.focus()
+    }
+  }, [])
 
   const {
     state: { token, user },
@@ -50,7 +56,7 @@ const CreatePost = () => {
   useEffect(() => {
     if (!formSubmit) {
       handleClose();
-      if(token) {
+      if (token) {
         getPosts();
       }
     }
@@ -104,9 +110,11 @@ const CreatePost = () => {
           </div>
           <div className="postmodal-body">
             <ContentEditable
+            id="new-input"
               placeholder="What do you want to talk about?"
               html={content}
               onChange={(evt) => setContent(evt.target.value)}
+              innerRef={inputRef}
             />
             <div className="emoticons">
               <div className="toggle-emo">

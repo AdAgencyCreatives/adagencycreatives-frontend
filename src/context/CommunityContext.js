@@ -7,8 +7,9 @@ const state = {
   loading: false,
   single_post: {},
   formSubmit: false,
-  post_likes: { "post_id": "", "data": {}},
+  post_likes: { "post_id": "", "data": {} },
   like_action: { "post_id": "", "action": "", error: null },
+  new_members: [],
 };
 
 const reducer = (state, action) => {
@@ -17,6 +18,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         posts: action.payload.data,
+        nextPage: action.payload.links.next,
+      };
+    case "set_new_members":
+      return {
+        ...state,
+        new_members: action.payload.data,
         nextPage: action.payload.links.next,
       };
     case "set_single_post":
@@ -74,6 +81,18 @@ const getPosts = (dispatch) => {
       //console.log("fetched new posts at: " + (new Date()).toString());
       dispatch({
         type: "set_posts",
+        payload: response.data,
+      });
+    } catch (error) { }
+  };
+};
+
+const getNewMembers = (dispatch) => {
+  return async () => {
+    try {
+      const response = await api.get("/creatives?sort=-created_at&filter[status]=1"); // only active members
+      dispatch({
+        type: "set_new_members",
         payload: response.data,
       });
     } catch (error) { }
@@ -225,6 +244,7 @@ export const { Context, Provider } = createDataContext(
   reducer,
   {
     getPosts,
+    getNewMembers,
     loadPosts,
     getPost,
     getLikes,
