@@ -28,9 +28,15 @@ import { Context as AuthContext } from "../context/AuthContext";
 import Placeholder from "../assets/images/placeholder.png";
 import { agencyNav, creativeNav } from "../nav/DashboardNav";
 
+import { useReducer } from "react";
+import SlideInMessage, { slideInMessageInitialState, slideInMessageReducer } from "./SlideInMessage";
+
 const drawerWidth = "85%";
 
 function Header(props) {
+
+  const [slideInMessageState, slideInMessageDispatch] = useReducer(slideInMessageReducer, slideInMessageInitialState);
+
   const { window } = props;
   const { state } = React.useContext(AuthContext);
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -61,6 +67,21 @@ function Header(props) {
       setChildLink("link");
     }
   }, [location]);
+
+  const validateAccess = (e, item) => {
+    if (item && item.roles && item.roles.length > 0) {
+      for (let index = 0; index < item.roles.length; index++) {
+        const role = item.roles[index];
+        if (state.role == role) {
+          return true;
+        }
+      }
+      slideInMessageDispatch({type: 'setMessage', message: 'Please login as Creative to access'})
+      e.preventDefault();
+      return false;
+    }
+    return true;
+  };
 
   const drawer = (
     <Box onClick={handleDrawerToggle}>
@@ -191,16 +212,15 @@ function Header(props) {
                   {navItems.map((item) => (
                     <div
                       key={item.name}
-                      className={`nav-item${
-                        item.children ? " has-children" : ""
-                      }`}
+                      className={`nav-item${item.children ? " has-children" : ""
+                        }`}
                     >
                       <NavLink to={item.link}>
                         <StyledButton
                           color="link"
-                          className={`menu-link-btn ${
-                            item.children ? " dropdown-toggle" : ""
-                          }`}
+                          className={`menu-link-btn ${item.children ? " dropdown-toggle" : ""
+                            }`}
+                          onClick={(e) => validateAccess(e, item)}
                         >
                           {item.name}
                         </StyledButton>
@@ -230,6 +250,7 @@ function Header(props) {
                   >
                     Post A Job
                   </Button>
+                  <SlideInMessage message={slideInMessageState.message} dispatch={slideInMessageDispatch} />
                   {state.token ? (
                     <div className="nav-item has-children">
                       <div className="logged-in-menu">
