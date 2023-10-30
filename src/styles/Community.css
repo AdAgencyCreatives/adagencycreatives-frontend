@@ -130,7 +130,8 @@
     transition: all 0.2s ease-in;
 }
 
-.sidebar-menu li.menu-item:hover a, .sidebar-menu li.menu-item a.active {
+.sidebar-menu li.menu-item:hover a,
+.sidebar-menu li.menu-item a.active {
     background: var(--color-primary);
     color: white;
 }
@@ -395,4 +396,29 @@ img.post-avatar {
     padding: 5px 10px;
     border-radius: 10px;
     transition: all 0.2s ease;
+}
+
+.restricted-creatives-only {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100px;
+    margin-top: 50px;
+}
+
+.restricted-message {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    height: 100px;
+    background-color: #fff;
+    color: var(--color-primary);
+    border-radius: 10px;
+}
+
+.restricted-message h5 {
+    color: #000;
 }
