@@ -61,7 +61,7 @@ const Home = () => {
           <div className="row">
             <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
               <img src={Gather} className="featureImg" />
-              <span className="featureTitle">Gather</span>
+              <Link to={"/community"} className="featureTitle">Gather</Link>
               <span className="featureDesc">
                 Social creative
                 <br />
@@ -70,14 +70,14 @@ const Home = () => {
             </div>
             <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
               <img src={Mentoring} className="featureImg" />
-              <span className="featureTitle">Inspire</span>
+              <Link to={"/mentoring-resources"} className="featureTitle">Inspire</Link>
               <span className="featureDesc">
                 Mentors and <br /> resources
               </span>
             </div>
             <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
               <img src={Money} className="featureImg" />
-              <span className="featureTitle">Do Cool $#*t!</span>
+              <Link to={"/creative-jobs"} className="featureTitle">Do Cool $#*t!</Link>
               <span className="featureDesc">
                 Creative jobs <br />
                 board

@@ -11,6 +11,8 @@ const state = {
   stats: null,
   formSubmit: false,
   applied_jobs: [],
+  resume: [],
+  portfolio_items: [],
 };
 
 const reducer = (state, action) => {
@@ -39,7 +41,10 @@ const reducer = (state, action) => {
       return { ...state, formSubmit: action.payload };
     case "set_stats":
       return { ...state, stats: action.payload.stats };
-
+    case "set_resume":
+      return { ...state, resume: action.payload.data };
+    case "set_portfolio_items":
+      return { ...state, portfolio_items: action.payload.data };
     case "set_applied_jobs":
       return { ...state, applied_jobs: action.payload.data };
     default:
@@ -86,6 +91,18 @@ const getCreativeById = (dispatch) => {
       dispatch({
         type: "set_single_creative",
         payload: data,
+      });
+    } catch (error) {}
+  };
+};
+
+const searchCreatives = (dispatch) => {
+  return async (query) => {
+    try {
+      const response = await api.get("creatives/?filter[name]=" + query);
+      dispatch({
+        type: "set_creatives",
+        payload: response.data,
       });
     } catch (error) {}
   };
@@ -149,18 +166,70 @@ const saveCreative = (dispatch) => {
 };
 
 const saveResume = (dispatch) => {
-  return async (uid, data) => {
+  return async (uid, data, education, experience) => {
     dispatch({
       type: "set_form_submit",
       payload: true,
     });
     try {
-      const response = await api.patch("/creative_resume/" + uid, data);
+      await api.patch("/creative_resume/" + uid, data);
+      /* await api.patch("/educations/", education);
+      await api.patch("/experiences/", experience); */
     } catch (error) {}
     dispatch({
       type: "set_form_submit",
       payload: false,
     });
+  };
+};
+
+const saveAttachment = (dispatch) => {
+  return async (data) => {
+    try {
+      const response = await api.post("/attachments", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    } catch (error) {}
+  };
+};
+
+const removeAttachment = (dispatch) => {
+  return async (id) => {
+    try {
+      const response = await api.delete("/attachments/" + id);
+    } catch (error) {}
+  };
+};
+
+const getResume = (dispatch) => {
+  return async (uid) => {
+    try {
+      const response = await api.get(
+        "/attachments?filter[user_id]=" + uid + "&filter[resource_type]=resume"
+      );
+      dispatch({
+        type: "set_resume",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
+const getPortfolio = (dispatch) => {
+  return async (uid) => {
+    try {
+      const response = await api.get(
+        "/attachments?filter[user_id]=" +
+          uid +
+          "&filter[resource_type]=portfolio_item"
+      );
+      dispatch({
+        type: "set_portfolio_items",
+        payload: response.data,
+      });
+    } catch (error) {}
   };
 };
 
@@ -210,10 +279,15 @@ export const { Context, Provider } = createDataContext(
     loadCreatives,
     getCreative,
     getCreativeById,
+    searchCreatives,
     saveCreative,
     saveResume,
+    saveAttachment,
     saveCreativeImage,
-    getAppliedJobs
+    getAppliedJobs,
+    getResume,
+    getPortfolio,
+    removeAttachment,
   },
   state
 );

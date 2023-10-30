@@ -10,6 +10,7 @@ import {
   FiPaperclip,
   FiTrash2,
   FiX,
+  FiFile,
 } from "react-icons/fi";
 import "../../../styles/AgencyDashboard/MyResume.scss";
 import htmlToDraft from "html-to-draftjs";
@@ -22,8 +23,12 @@ import { CircularProgress } from "@mui/material";
 import "react-datepicker/dist/react-datepicker.css";
 
 const MyResume = () => {
-  const imageUploadRef = useRef();
-  const logoRef = useRef();
+  const resumeUploadRef = useRef();
+  const resumeRef = useRef();
+
+  const portfolioUploadRef = useRef();
+  const portfolioRef = useRef();
+
   const [categoriesList, setCategories] = useState([]);
   const [statesList, setStates] = useState([]);
   const [citiesList, setCities] = useState([]);
@@ -98,11 +103,16 @@ const MyResume = () => {
       single_creative,
       creative_experience,
       creative_education,
+      resume,
       formSubmit,
+      portfolio_items,
     },
     getCreativeById,
     saveResume,
-    saveCreativeImage,
+    saveAttachment,
+    getResume,
+    getPortfolio,
+    removeAttachment
   } = useContext(CreativesContext);
 
   const {
@@ -133,6 +143,8 @@ const MyResume = () => {
   useEffect(() => {
     if (user) {
       getCreativeById(user.uuid);
+      getResume(user.uuid);
+      getPortfolio(user.uuid);
     }
   }, [user]);
 
@@ -332,7 +344,7 @@ const MyResume = () => {
                   }),
                 };
               })
-            : [educationObject],
+            : [structuredClone(educationObject)],
         },
         {
           label: "Experience",
@@ -340,7 +352,7 @@ const MyResume = () => {
           type: "repeater",
           name: "experiences",
           column: "12",
-          schema: experienceObject,
+          schema: { ...experienceObject },
           items: creative_experience.length
             ? creative_experience.map((item) => {
                 return {
@@ -353,7 +365,7 @@ const MyResume = () => {
                   }),
                 };
               })
-            : [experienceObject],
+            : [structuredClone(experienceObject)],
         },
       ]);
       setFieldsGenerated(true);
@@ -528,26 +540,45 @@ const MyResume = () => {
   };
 
   useEffect(() => {
-    console.log(formData);
+    // console.log(formData);
   }, [formData]);
 
   const handleSubmit = () => {
-    saveResume(user.uuid, formData);
+    console.log(educationList, experienceList);
+    saveResume(user.uuid, formData, educationList, experienceList);
   };
 
-  const removeLogo = () => {
-    logoRef.current.src = "";
+  const removeItem = (name, ref) => {
+    let updated = [...portfolio];
+    let index = updated.findIndex((p) => p.name == name);
+    let item = { ...updated[index] };
+    let last = item.items.pop();
+    updated[index] = item;
+    setPortfolio([...updated]);
+    removeAttachment(last.id)
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event, name, ref) => {
+    let updated = [...portfolio];
+    let index = updated.findIndex((p) => p.name == name);
+    let item = { ...updated[index] };
     const file = event.target.files[0];
-    logoRef.current.src = URL.createObjectURL(file);
+    const filename = file.name;
+    if (name == "resume") {
+      item.items.push({ name: filename });
+    } else if (name == "portfolio_item") {
+      item.items.push({ url: URL.createObjectURL(file) });
+    }
+    updated[index] = item;
+    setPortfolio([...updated]);
+    console.log(file);
+
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("user_id", user.uuid);
-      formData.append("resource_type", "agency_logo");
-      // saveAgencyImage(formData);
+      formData.append("resource_type", name);
+      saveAttachment(formData);
     }
   };
 
@@ -559,23 +590,40 @@ const MyResume = () => {
     };
   }, []);
 
-  const portfolio = [
+  const [portfolio, setPortfolio] = useState([
     {
       label: "Upload up to 5 samples of your best work. A sneak peak.",
       required: true,
       type: "upload",
-      name: "_employer_featured_image",
+      name: "portfolio_item",
+      items: [],
+      ref: portfolioRef,
+      uploadRef: portfolioUploadRef,
     },
     {
       label: "Upload your resume here.",
       required: true,
       type: "upload",
-      name: "_employer_resume",
+      name: "resume",
+      items: [],
+      ref: resumeRef,
+      uploadRef: resumeUploadRef,
     },
-  ];
+  ]);
+
+  useEffect(() => {
+    let updated = [...portfolio];
+    updated[1].items = [...resume];
+    setPortfolio(updated);
+  }, [resume]);
+
+  useEffect(() => {
+    let updated = [...portfolio];
+    updated[0].items = [...portfolio_items];
+    setPortfolio(updated);
+  }, [portfolio_items]);
 
   const updateEducationList = (index, e) => {
-    console.log("update", educationList);
     let updatedEducationList = [...educationList];
     updatedEducationList[index][e.target.name] = e.target.value;
     setEducationList(updatedEducationList);
@@ -601,18 +649,21 @@ const MyResume = () => {
   const getRepeaterListMap = (data) => {
     let map = {};
     data.forEach((item) => {
-      map[item.name] = ""
+      map[item.name] = "";
     });
-    return map
+    return map;
   };
 
   const addRepeaterField = (field) => {
     addRepeaterList(field);
     let newQualifications = [...fields];
-    const fieldIndex = newQualifications.findIndex((item) => item.name == field.name)
-    let theField = newQualifications[fieldIndex];
-    theField.items.push({...theField.schema})
-    setFields(newQualifications);
+    const fieldIndex = newQualifications.findIndex(
+      (item) => item.name == field.name
+    );
+    let theField = { ...newQualifications[fieldIndex] };
+    theField.items.push(structuredClone(theField.schema));
+    newQualifications[fieldIndex] = { ...theField };
+    setFields([...newQualifications]);
   };
 
   const handleRepeaterChange = (name, item_index, data_index, e) => {
@@ -633,8 +684,8 @@ const MyResume = () => {
           childItem;
         setFields([...updatedFields]);
 
-        //Update Education List
-        updateEducationList(item_index, e);
+        if (name == "educations") updateEducationList(item_index, e);
+        else if (name == "experiences") updateExperienceList(item_index, e);
       }
     }
   };
@@ -659,8 +710,11 @@ const MyResume = () => {
           list.splice(index, 1);
           setEducationList(list);
         }
-        if (field.name == "experiences")
-          setExperienceList((prev) => prev.filter((data, i) => i != index));
+        if (field.name == "experiences") {
+          let list = [...experienceList];
+          list.splice(index, 1);
+          setExperienceList(list);
+        }
       }
     });
     setFields(newQualifications);
@@ -756,21 +810,53 @@ const MyResume = () => {
             <input
               type="hidden"
               className="input-text"
-              name="_employer_featured_image"
+              name={field.name}
               value=""
             />
             <div className="row align-items-center upload-box">
-              <div className="col-md-2 col-sm-4 col-12">
-                <img src={Placeholder} className="w-100" />
+              <div className="col-md-12 col-sm-4 col-12">
+                {field.items.map((item) =>
+                  field.name == "resume" ? (
+                    <button
+                      className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2"
+                      key={item.name}
+                    >
+                      <span className="icon_type">
+                        <FiFile />
+                      </span>
+                      <div className="filename">{item.name}</div>
+                    </button>
+                  ) : (
+                    <div className="portfolio_item">
+                      <img
+                        src={item.url}
+                        key={item.name}
+                        className="w-100"
+                      />
+                    </div>
+                  )
+                )}
               </div>
-              <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
-                <button className="btn btn-secondary w-90 mb-2 text-uppercase">
+              <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3 mb-2">
+                <button
+                  className="btn btn-secondary w-100 mb-2 text-uppercase"
+                  onClick={() => field.uploadRef.current.click()}
+                >
                   <FiPaperclip /> Upload
                 </button>
-                <button className="btn btn-secondary w-90 text-uppercase">
+                <button
+                  className="btn btn-secondary w-100 text-uppercase"
+                  onClick={() => removeItem(field.name, field.ref)}
+                >
                   <FiTrash2 /> Remove
                 </button>
               </div>
+              <input
+                type="file"
+                ref={field.uploadRef}
+                className="d-none"
+                onChange={(e) => handleFileChange(e, field.name, field.ref)}
+              />
             </div>
           </>
         );

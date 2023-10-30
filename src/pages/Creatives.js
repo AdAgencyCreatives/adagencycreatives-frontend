@@ -10,23 +10,23 @@ import { Context as DataContext } from "../context/DataContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
 
 const Creatives = () => {
-  const creatives = useCreatives();
-  const { state, loadCreatives } = useContext(CreativesContext);
+  const { creatives, loading, loadMore, searchCreatives } = useCreatives();
   const { createBookmark } = useContext(DataContext);
 
   const {
     state: { role, user },
   } = useContext(AuthContext);
 
-  const loadMore = () => {
-    if (state.nextPage) loadCreatives(state.nextPage);
-  };
-
   const addToShortlist = (id) => {
     createBookmark(user.uuid, "creatives", id);
   };
 
-  useScrollLoader(state.loading, loadMore);
+  useScrollLoader(loading, loadMore);
+
+  const searchUser = (value) => {
+    console.log("searching")
+    searchCreatives(value);
+  };
 
   return (
     <div className="dark-container">
@@ -34,7 +34,7 @@ const Creatives = () => {
         <h1 className="community-title text-white text-center mb-4">
           Creatives
         </h1>
-        <SearchBar />
+        <SearchBar onSearch={searchUser} />
         <div className="row g-4">
           {creatives &&
             creatives.map((item, index) => {
@@ -84,7 +84,7 @@ const Creatives = () => {
               );
             })}
           <div className="load-more text-center">
-            {state.loading && (
+            {loading && (
               <div className="spinner-border text-light" role="status">
                 <span className="visually-hidden">Loading...</span>
               </div>

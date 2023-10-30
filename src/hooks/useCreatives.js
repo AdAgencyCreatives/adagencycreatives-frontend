@@ -3,15 +3,21 @@ import { Context as CreativesContext } from "../context/CreativesContext";
 
 const useCreatives = () => {
   const {
-    state: { creatives },
+    state: { creatives, nextPage, loading },
     getCreatives,
+    loadCreatives,
+    searchCreatives,
   } = useContext(CreativesContext);
 
   useEffect(() => {
     getCreatives();
   }, []);
 
-  return creatives;
+  const loadMore = () => {
+    if (nextPage) loadCreatives(nextPage);
+  };
+
+  return { creatives, loading, loadMore, searchCreatives };
 };
 
 export default useCreatives;

@@ -2,7 +2,7 @@ import Dashboard from "./Dashboard";
 import Profile from "./Profile";
 import PostJob from "./PostJob";
 import MyJobs from "./MyJobs";
-import Sidebar from "../../../components/agency/Sidebar";
+import Sidebar from "../../../components/dashboard/Sidebar";
 import "../../../styles/AgencyDashboard/index.scss";
 import { useMatch, useParams } from "react-router-dom";
 import ApplicantJobs from "../../../components/dashboard/ApplicantJobs";
@@ -16,8 +16,27 @@ import useToken from "../../../hooks/useToken";
 import Loader from "../../../components/Loader";
 import JobMessages from "../JobMessages";
 import HireAdvisor from "./HireAdvisor";
+import { agencyNav } from "../../../nav/DashboardNav";
+import { Context } from "../../../context/AuthContext";
+import { Context as AgenciesContext } from "../../../context/AgenciesContext";
+import { useContext, useEffect } from "react";
 
 const Agency = () => {
+
+  const { hideMessageAlert, user } = useContext(Context);
+
+  const {
+    state: { single_agency },
+    getAgencyById,
+  } = useContext(AgenciesContext);
+
+  useEffect(() => {
+    if (user) {
+      getAgencyById(user.uuid);
+    }
+  }, [user]);
+
+
   const { page } = useParams();
   const token = useToken();
   const components = {
@@ -46,7 +65,7 @@ const Agency = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-3 pt-3">
-            <Sidebar />
+          <Sidebar nav={agencyNav} user={single_agency} />
           </div>
           <div className="col-md-9 pt-5">{token ? component : <Loader />}</div>
         </div>

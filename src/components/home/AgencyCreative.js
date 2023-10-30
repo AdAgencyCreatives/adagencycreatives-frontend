@@ -9,7 +9,7 @@ import useCreatives from "../../hooks/useCreatives";
 
 const AgencyCreatives = () => {
   const swiperElRef = useRef(null);
-  const creatives = useCreatives();
+  const {creatives} = useCreatives();
 
   useEffect(() => {
     const params = {

@@ -56,7 +56,7 @@ const LeftSidebar = () => {
             </NavLink>
           </li>
         </ul>
-        <hr class="hr" />
+        <hr className="hr" />
 
         <ul className="menu-container">
           <li className="menu-item">

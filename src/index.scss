@@ -5,6 +5,7 @@ $primary-color: #d3a11f;
   --color-secondary: #ededed;
   --color-gray: #777777;
   --bs-primary-rgb: 211, 161, 31;
+  --bs-btn-active-bg: #{$primary-color}
 }
 
 @font-face {

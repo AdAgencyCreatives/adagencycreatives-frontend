@@ -47,35 +47,28 @@ function App() {
   useEffect(() => {
     if (token) {
       console.log(token);
-      /* window.Echo = new Echo({
+       window.Echo = new Echo({
         broadcaster: "pusher",
         key: "c2125739f0d66b777906",
         cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER ?? "mt1",
-        authEndpoint: "http://35.173.50.140/broadcasting/auth",
-        wsHost: "35.173.50.140",
-        wsPort: 6001,
-        forceTLS: false,
+        authEndpoint: "https://api.noorsofttechdev.com/broadcasting/auth",
+        wssHost: "websocket.noorsofttechdev.com",
+        wssPort: 6001,
+        forceTLS: true,
         disableStats: false,
         auth: {
           headers: {
             Authorization: "Bearer " + token,
           },
         },
-      });
-
-      window.Echo.connector.pusher.bind('pusher:subscription_succeeded', (channel) => {
-        console.log({channel})
-        if (channel.name === "private-messanger." + user.uuid) {
-            console.log('Listening to the channel');
-        }
-      });
-
+       });
+      
       window.Echo.private("messanger." + user.uuid).listen(
         ".private_msg",
         (e) => {
-          console.log(e.data);
+          console.log(e);
         }
-      ); */
+      ); 
     }
   }, [token, user]);
 

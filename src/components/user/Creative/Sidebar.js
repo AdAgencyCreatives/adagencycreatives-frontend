@@ -4,8 +4,19 @@ import adicon from "../../../assets/images/icons/adicon.png";
 import bullseye from "../../../assets/images/icons/bulleyes.png";
 import time from "../../../assets/images/icons/duration-icon.png";
 import sample from "../../../assets/images/sample.mp4";
+import { useContext, useEffect } from "react";
+import { Context } from "../../../context/CreativesContext";
 
 const Sidebar = ({ data, role }) => {
+  const {
+    state: { resume },
+    getResume,
+  } = useContext(Context);
+
+  useEffect(() => {
+    getResume(data.user_id);
+  }, []);
+
   const renderListData = (list) => {
     return list.slice(0, 5).join(", ") + (list.length > 5 ? " +" : "");
   };
@@ -67,21 +78,22 @@ const Sidebar = ({ data, role }) => {
           <button className="btn btn-dark w-100 py-3 fs-5">Coming Soon</button>
         )}
       </div>
-      {role == "agency" && (
+
+      {resume.length ? (
         <div className="sidebar-item mt-4">
           <h4 className="title">Resume</h4>
           <div className="content">
-            <button className="btn btn-dark w-100 py-3 fs-5">
-              <a
-                className="text-light"
-                href="https://www.linkedin.com/company/uniteppk/"
-                target="_blank"
-              >
-                Download Resume
+            {resume.map((item) => (
+              <a href={item.url} target="_blank">
+                <button className="btn btn-dark w-100 py-3 fs-5 mb-3">
+                  Download Resume
+                </button>
               </a>
-            </button>
+            ))}
           </div>
         </div>
+      ) : (
+        ""
       )}
     </>
   );

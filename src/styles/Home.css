@@ -136,15 +136,21 @@ button.searchBtn:hover {
 }
 
 .featureTitle {
-    background: #d3a11f;
+    background: var(--color-primary);
+    color: black;
     font-size: 23px;
-    background-image: linear-gradient(#ebb01a, #9c730b);
     border-radius: 4px;
     cursor: pointer;
     text-align: center;
     padding: 7px;
     width: 200px;
     margin: 10px auto;
+    transition: all 0.3s ease;
+}
+
+.featureTitle:hover{
+    background: rgb(119, 119, 119);
+    color: white;
 }
 
 .featureDesc {

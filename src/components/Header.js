@@ -152,7 +152,11 @@ function Header(props) {
                 className="right-menu"
               >
                 <Box sx={{ display: { md: "none" } }}>
-                  <IconButton href="#" color="primary">
+                  <IconButton
+                    href={state.token ? "/dashboard" : "#"}
+                    color="primary"
+                    onClick={() => !state.token ? setAuthModalOpen(true) : ""}
+                  >
                     <AiOutlineUser />
                   </IconButton>
 
@@ -181,7 +185,7 @@ function Header(props) {
                     display: { xs: "none", md: "flex" },
                     alignItems: "center",
                     justifyContent: "end",
-                    flexWrap:"wrap"
+                    flexWrap: "wrap",
                   }}
                 >
                   {navItems.map((item) => (

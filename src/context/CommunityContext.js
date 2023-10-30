@@ -6,9 +6,9 @@ const state = {
   nextPage: null,
   loading: false,
   single_post: {},
-  post_comments: [],
-  likes: 0,
   formSubmit: false,
+  post_likes: { "post_id": "", "data": {}},
+  like_action: { "post_id": "", "action": "", error: null },
 };
 
 const reducer = (state, action) => {
@@ -52,10 +52,15 @@ const reducer = (state, action) => {
         ...state,
         formSubmit: action.payload,
       };
-    case "set_likes":
+    case "set_post_likes":
       return {
         ...state,
-        likes: action.payload.likes,
+        post_likes: action.payload,
+      };
+    case "set_like_action":
+      return {
+        ...state,
+        like_action: action.payload,
       };
     default:
       return state;
@@ -65,12 +70,13 @@ const reducer = (state, action) => {
 const getPosts = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/posts");
+      const response = await api.get("/posts?filter[group_id]=d3ae7dff-e382-30f0-9a94-30e4def92e8a&sort=-created_at&filter[status]=1"); // only published posts in Feeds
+      //console.log("fetched new posts at: " + (new Date()).toString());
       dispatch({
         type: "set_posts",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -85,7 +91,7 @@ const getPost = (dispatch) => {
         type: "set_single_post",
         payload: data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -100,7 +106,7 @@ const getPostById = (dispatch) => {
         type: "set_single_post",
         payload: data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -114,7 +120,7 @@ const loadPosts = (dispatch) => {
         payload: response.data,
       });
       setLoading(dispatch, false);
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -130,32 +136,53 @@ const getPostComments = (dispatch) => {
         type: "set_post_comments",
         payload: data,
       });
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
 
 const getLikes = (dispatch) => {
-  return async () => {
+  return async (data) => {
     try {
-      const response = await api.get("/post_likes");
+      const response = await api.get("/likes?filter[post_id]=" + data.post_id);
       dispatch({
-        type: "set_likes",
-        payload: response.data,
+        type: "set_post_likes",
+        payload: { "post_id": data.post_id, "data": response.data },
       });
-    } catch (error) {}
+    } catch (error) { }
+  };
+};
+
+const toggleLike = (dispatch) => {
+  return async (data) => {
+    dispatch({
+      type: "set_like_action",
+      payload: { "post_id": data.post_id, "action": "like_begin", error: null },
+    });
+    try {
+      const response = await api.post("/likes", data);
+      dispatch({
+        type: "set_like_action",
+        payload: { "post_id": data.post_id, "action": "like_success", error: null },
+      });
+    } catch (error) {
+      dispatch({
+        type: "set_like_action",
+        payload: { "post_id": data.post_id, "action": "like_failed", error: error },
+      });
+    }
   };
 };
 
 const savePost = (dispatch) => {
-  return async (uid, data) => {
+  return async (data) => {
     dispatch({
       type: "set_form_submit",
       payload: true,
     });
     try {
-      const response = await api.patch("/post_save/" + uid, data);
-    } catch (error) {}
+      const response = await api.post("/posts", data);
+    } catch (error) { }
     dispatch({
       type: "set_form_submit",
       payload: false,
@@ -171,7 +198,7 @@ const savePostImage = (dispatch) => {
           "Content-Type": "multipart/form-data",
         },
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -183,7 +210,7 @@ const deletePost = (dispatch) => {
         type: "delete_post",
         payload: id,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -201,6 +228,7 @@ export const { Context, Provider } = createDataContext(
     loadPosts,
     getPost,
     getLikes,
+    toggleLike,
     getPostById,
     savePost,
     getPostComments,
