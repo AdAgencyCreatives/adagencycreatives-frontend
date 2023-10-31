@@ -95,6 +95,14 @@ const PostItem = (props) => {
         alert('Like Modal');
     };
 
+    const editPost = (post) => {
+
+    };
+
+    const deletePost = (post) => {
+        console.log(window.confirm("Are you sure to delete this post?"));
+    };
+
     return (
         <div className="post-item">
             <div className="post-header">
@@ -117,10 +125,10 @@ const PostItem = (props) => {
                     </div>
                     <div className={`action-dropdown d-${actions}`}>
                         <ul>
-                            <li>
+                            <li onClick={() => editPost(props.post)}>
                                 <IoPencilOutline /> Edit
                             </li>
-                            <li>
+                            <li onClick={() => deletePost(props.post)}>
                                 <IoTrashOutline /> Delete
                             </li>
                         </ul>
@@ -136,7 +144,7 @@ const PostItem = (props) => {
                         <IoHeart />
                     ) : (
                         <IoHeartOutline />
-                        
+
                     )}
                     <NumUnit number={likesCount} onClick={(e) => showLikesModal(e)} />
                 </div>

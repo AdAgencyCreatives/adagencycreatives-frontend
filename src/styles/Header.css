@@ -188,7 +188,7 @@ ul.dropdown-list:before {
     cursor: pointer;
 }
 
-.logged-in-menu:hover{
+.logged-in-menu:hover {
     color: black;
 }
 
@@ -217,4 +217,14 @@ ul.dropdown-list:before {
 .logged-in-dropdown ul {
     padding-top: 0;
     margin-bottom: 0px;
+}
+
+.btn.btn-dark {
+    border: 2px solid black !important;
+    background-color: black !important;
+    color: white !important;
+}
+
+.btn.btn-dark:hover {
+    background-color: var(--color-primary) !important;
 }

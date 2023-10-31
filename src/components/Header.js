@@ -28,14 +28,13 @@ import { Context as AuthContext } from "../context/AuthContext";
 import Placeholder from "../assets/images/placeholder.png";
 import { agencyNav, creativeNav } from "../nav/DashboardNav";
 
-import { useReducer } from "react";
-import SlideInMessage, { slideInMessageInitialState, slideInMessageReducer } from "./SlideInMessage";
+import SlidingMessage from "./SlidingMessage";
 
 const drawerWidth = "85%";
 
 function Header(props) {
 
-  const [slideInMessageState, slideInMessageDispatch] = useReducer(slideInMessageReducer, slideInMessageInitialState);
+  const [slidingMessage, setSlidingMessage] = useState("");
 
   const { window } = props;
   const { state } = React.useContext(AuthContext);
@@ -76,8 +75,9 @@ function Header(props) {
           return true;
         }
       }
-      slideInMessageDispatch({type: 'setMessage', message: 'Please login as Creative to access'})
+      setSlidingMessage('Please login as Creative to access');
       e.preventDefault();
+      e.stopPropagation();
       return false;
     }
     return true;
@@ -250,7 +250,7 @@ function Header(props) {
                   >
                     Post A Job
                   </Button>
-                  <SlideInMessage message={slideInMessageState.message} dispatch={slideInMessageDispatch} />
+                  <SlidingMessage message={slidingMessage} setMessage={setSlidingMessage} />
                   {state.token ? (
                     <div className="nav-item has-children">
                       <div className="logged-in-menu">
