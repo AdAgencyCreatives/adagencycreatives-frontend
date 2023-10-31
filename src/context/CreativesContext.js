@@ -166,15 +166,15 @@ const saveCreative = (dispatch) => {
 };
 
 const saveResume = (dispatch) => {
-  return async (uid, data, education, experience) => {
+  return async (uid, data, educations, experiences) => {
     dispatch({
       type: "set_form_submit",
       payload: true,
     });
     try {
       await api.patch("/creative_resume/" + uid, data);
-      /* await api.patch("/educations/", education);
-      await api.patch("/experiences/", experience); */
+      await api.patch("/educations/", { educations });
+      await api.patch("/experiences/", { experiences });
     } catch (error) {}
     dispatch({
       type: "set_form_submit",

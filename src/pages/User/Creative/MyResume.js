@@ -20,7 +20,9 @@ import { Context as AuthContext } from "../../../context/AuthContext";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
 import Loader from "../../../components/Loader";
 import { CircularProgress } from "@mui/material";
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment";
 
 const MyResume = () => {
   const resumeUploadRef = useRef();
@@ -50,6 +52,11 @@ const MyResume = () => {
     showDropdown: false,
     data: [
       {
+        label: "",
+        type: "hidden",
+        name: "id",
+      },
+      {
         label: "Degree Program",
         type: "input",
         name: "degree",
@@ -61,8 +68,9 @@ const MyResume = () => {
       },
       {
         label: "Completion Date",
-        type: "input",
+        type: "date",
         name: "completed_at",
+        value: new Date()
       },
     ],
   };
@@ -71,18 +79,23 @@ const MyResume = () => {
     showDropdown: false,
     data: [
       {
+        label: "",
+        type: "hidden",
+        name: "id",
+      },
+      {
         label: "Title",
         type: "input",
         name: "title",
       },
       {
         label: "Start Date",
-        type: "input",
+        type: "date",
         name: "started_at",
       },
       {
         label: "End Date",
-        type: "input",
+        type: "date",
         name: "completed_at",
       },
       {
@@ -112,7 +125,7 @@ const MyResume = () => {
     saveAttachment,
     getResume,
     getPortfolio,
-    removeAttachment
+    removeAttachment,
   } = useContext(CreativesContext);
 
   const {
@@ -412,11 +425,27 @@ const MyResume = () => {
 
   //Set initial education form data
   useEffect(() => {
-    setEducationList(creative_education);
+    setEducationList(
+      creative_education.map((item) => ({
+        id: item.id,
+        degree: item.degree,
+        college: item.college,
+        completed_at: item.completed_at,
+      }))
+    );
   }, [creative_education]);
 
   useEffect(() => {
-    setExperienceList(creative_experience);
+    setExperienceList(
+      creative_experience.map((item) => ({
+        id: item.id,
+        title: item.title,
+        company: item.company,
+        started_at: item.started_at,
+        description: item.description,
+        completed_at: item.completed_at,
+      }))
+    );
   }, [creative_experience]);
 
   //Fetch initial Cities
@@ -555,7 +584,7 @@ const MyResume = () => {
     let last = item.items.pop();
     updated[index] = item;
     setPortfolio([...updated]);
-    removeAttachment(last.id)
+    removeAttachment(last.id);
   };
 
   const handleFileChange = (event, name, ref) => {
@@ -592,7 +621,7 @@ const MyResume = () => {
 
   const [portfolio, setPortfolio] = useState([
     {
-      label: "Upload up to 5 samples of your best work. A sneak peak.",
+      label: "Upload up to 5 samples of your best work. A sneak peek.",
       required: true,
       type: "upload",
       name: "portfolio_item",
@@ -623,15 +652,15 @@ const MyResume = () => {
     setPortfolio(updated);
   }, [portfolio_items]);
 
-  const updateEducationList = (index, e) => {
+  const updateEducationList = (index, key_name, key_value) => {
     let updatedEducationList = [...educationList];
-    updatedEducationList[index][e.target.name] = e.target.value;
+    updatedEducationList[index][key_name] = key_value;
     setEducationList(updatedEducationList);
   };
 
-  const updateExperienceList = (index, e) => {
+  const updateExperienceList = (index, key_name, key_value) => {
     let updatedExperienceList = [...experienceList];
-    updatedExperienceList[index][e.target.name] = e.target.value;
+    updatedExperienceList[index][key_name] = key_value;
     setExperienceList(updatedExperienceList);
   };
 
@@ -666,7 +695,14 @@ const MyResume = () => {
     setFields([...newQualifications]);
   };
 
-  const handleRepeaterChange = (name, item_index, data_index, e) => {
+  const handleRepeaterChange = (
+    name,
+    item_index,
+    data_index,
+    key_name,
+    key_value
+  ) => {
+    console.log(name, item_index, data_index, key_name, key_value);
     let updatedFields = [...fields];
 
     let repeaterField = updatedFields.find((field) => field.name === name);
@@ -679,13 +715,15 @@ const MyResume = () => {
     ) {
       const childItem = repeaterField.items[item_index].data[data_index];
       if (childItem) {
-        childItem.value = e.target.value;
+        childItem.value = key_value;
         updatedFields[fieldIndex].items[item_index].data[data_index] =
           childItem;
         setFields([...updatedFields]);
 
-        if (name == "educations") updateEducationList(item_index, e);
-        else if (name == "experiences") updateExperienceList(item_index, e);
+        if (name == "educations")
+          updateEducationList(item_index, key_name, key_value);
+        else if (name == "experiences")
+          updateExperienceList(item_index, key_name, key_value);
       }
     }
   };
@@ -718,6 +756,11 @@ const MyResume = () => {
       }
     });
     setFields(newQualifications);
+  };
+
+  const handleDateChange = (name, item_index, data_index, key_name, date) => {
+    const value = moment(date).format("YYYY-MM-DD HH:mm:ss");
+    handleRepeaterChange(name, item_index, data_index, key_name, value);
   };
 
   const getRepeaterField = (field) => (
@@ -761,18 +804,47 @@ const MyResume = () => {
                         type="text"
                         value={child.value || ""}
                         onChange={(e) =>
-                          handleRepeaterChange(field.name, index, cindex, e)
+                          handleRepeaterChange(
+                            field.name,
+                            index,
+                            cindex,
+                            child.name,
+                            e.target.value
+                          )
                         }
                       />
-                    ) : (
+                    ) : child.type == "textarea" ? (
                       <textarea
                         className="form-control"
                         rows={5}
                         value={child.value || ""}
                         onChange={(e) =>
-                          handleRepeaterChange(field.name, index, cindex, e)
+                          handleRepeaterChange(
+                            field.name,
+                            index,
+                            cindex,
+                            child.name,
+                            e.target.value
+                          )
                         }
                       ></textarea>
+                    ) : child.type == "date" ? (
+                      <DatePicker
+                        className="form-control"
+                        selected={child.value ? new Date(child.value) : ""}
+                        onChange={(date) =>
+                          handleDateChange(
+                            field.name,
+                            index,
+                            cindex,
+                            child.name,
+                            date
+                          )
+                        }
+                        dateFormat="MMMM d, yyyy"
+                      />
+                    ) : (
+                      ""
                     )}
                   </div>
                 </div>
@@ -828,11 +900,7 @@ const MyResume = () => {
                     </button>
                   ) : (
                     <div className="portfolio_item">
-                      <img
-                        src={item.url}
-                        key={item.name}
-                        className="w-100"
-                      />
+                      <img src={item.url} key={item.name} className="w-100" />
                     </div>
                   )
                 )}

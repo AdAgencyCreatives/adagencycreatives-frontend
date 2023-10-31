@@ -45,7 +45,7 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
     {
       id: 4,
       title: "Hire an Advisor",
-      price: 0,
+      price: "Custom",
       image: Premium,
       subtitle: "",
       description: "",
@@ -63,7 +63,11 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
               <div className="col-md-3" key={index}>
                 <div className="package-container">
                   <div className="title">{item.title}</div>
-                  <div className="price">${item.price.toFixed(2)}</div>
+                  <div className="price">
+                    {typeof item.price == "number"
+                      ? "$" + item.price.toFixed(2)
+                      : item.price}
+                  </div>
                   <img className="image" src={item.image} />
                   <div className="subtitle">{item.subtitle}</div>
                   <div

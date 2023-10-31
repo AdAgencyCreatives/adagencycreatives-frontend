@@ -34,7 +34,7 @@ const Header = ({ data }) => {
               )}
             </div>
             <div className="col-md-6">
-              <div className="actions d-flex justify-content-md-end mt-3 mt-md-0">
+              <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
                 <a href={data.resume} target="__blank">
                   <button className="btn btn-dark fs-5">Download Resume</button>
                 </a>

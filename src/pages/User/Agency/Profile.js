@@ -533,11 +533,15 @@ const Profile = () => {
                         {field.required && <span className="required">*</span>}
                       </label>
                       <Select
-                        options={field.data}
+                        options={field.data.map((option) => ({
+                          ...option,
+                          // isDisabled: formData.length ? formData[field.name].length > 7 : false,
+                        }))}
                         isMulti={field.isMulti || false}
                         onChange={field.callback}
                         placeholder={field.placeholder}
                         defaultValue={field.value}
+                        // isOptionDisabled={(option) => {return field.value.length > 7}}
                         styles={{
                           control: (baseStyles) => ({
                             ...baseStyles,

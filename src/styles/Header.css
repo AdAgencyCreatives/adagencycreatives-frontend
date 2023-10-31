@@ -92,18 +92,24 @@ a.active>.menu-link-btn {
     padding: 20px;
 }
 
-.drawer-box .social {
+.social-box {
+    padding: 0 20px;
     display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.drawer-box .social {
     background: white;
     width: 40px;
     height: 40px;
-    justify-content: center;
-    align-items: center;
     border-radius: 50%;
-    text-align: center;
-    transition: background 0.5s ease;
+    transition: background-color 0.5s ease;
     font-size: 21px;
-    margin: 0px 20px;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .drawer-box .social:hover {
@@ -188,7 +194,7 @@ ul.dropdown-list:before {
     cursor: pointer;
 }
 
-.logged-in-menu:hover{
+.logged-in-menu:hover {
     color: black;
 }
 

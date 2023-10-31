@@ -17,9 +17,14 @@ import { Context as CreativeContext } from "../../../context/CreativesContext";
 import MyOpportunities from "./MyOpportunities";
 import { creativeNav } from "../../../nav/DashboardNav";
 import { useEffect } from "react";
+import { IoMenu } from "react-icons/io5";
+import { useState } from "react";
 
 const Creative = () => {
-  const { hideMessageAlert, user } = useContext(Context);
+  const {
+    hideMessageAlert,
+    state: { user },
+  } = useContext(Context);
 
   const {
     state: { single_creative },
@@ -46,15 +51,28 @@ const Creative = () => {
   };
 
   // hideMessageAlert();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <div className="agency-dashboard-container">
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-3 pt-3">
-            <Sidebar nav={creativeNav} user={single_creative} />
+            <Sidebar
+              nav={creativeNav}
+              user={single_creative}
+              mobileOpen={mobileOpen}
+              setMobileOpen={setMobileOpen}
+            />
           </div>
-          <div className="col-md-9 pt-5">{components[page]}</div>
+          <div className="col-md-9 pt-5">
+            <div className="sidebar-toggle d-md-none d-inline-block">
+              <IoMenu
+                onClick={() => setMobileOpen((prevState) => !prevState)}
+              />
+            </div>
+            {components[page]}
+          </div>
         </div>
       </div>
     </div>

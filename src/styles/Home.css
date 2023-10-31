@@ -14,6 +14,10 @@ h1.bannerHeading {
     text-align: center;
     background: black;
     padding: 50px 0;
+    min-height: 95vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   
 }
 
 p.subHeading {
@@ -25,8 +29,9 @@ p.subHeading {
 .searchArea {
     padding: 20px;
     max-width: 700px;
-    margin: auto;
+    margin: 0 auto;
     box-sizing: border-box;
+    width: 100%;
 }
 
 p.searchHeader {

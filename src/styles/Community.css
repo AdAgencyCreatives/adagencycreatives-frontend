@@ -1,21 +1,3 @@
-@font-face {
-    font-family: 'Alta';
-    src: url(../assets/fonts/Alta_Typeface/Alta_regular.otf) format('opentype');
-    font-weight: normal;
-}
-
-@font-face {
-    font-family: 'Alta';
-    src: url(../assets/fonts/Alta_Typeface/Alta_light.otf) format('opentype');
-    font-weight: light;
-}
-
-@font-face {
-    font-family: 'Alta';
-    src: url(../assets/fonts/Alta_Typeface/Alta_caption.otf) format('opentype');
-    font-weight: bold;
-}
-
 .community-title {
     color: white;
     font-family: 'Alta';

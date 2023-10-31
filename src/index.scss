@@ -13,6 +13,24 @@ $primary-color: #d3a11f;
   src: url(assets/fonts/Jost/Jost-VariableFont_wght.ttf) format('truetype');
 }
 
+@font-face {
+  font-family: 'Alta';
+  src: url(assets/fonts/Alta_Typeface/Alta_regular.woff) format('woff');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Alta';
+  src: url(assets/fonts/Alta_Typeface/Alta_light.woff) format('woff');
+  font-weight: light;
+}
+
+@font-face {
+  font-family: 'Alta';
+  src: url(assets/fonts/Alta_Typeface/Alta_caption.woff) format('woff');
+  font-weight: bold;
+}
+
 body {
   margin: 0;
   font-family: 'JOST', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

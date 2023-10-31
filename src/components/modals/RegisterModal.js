@@ -183,15 +183,14 @@ const RegisterModal = ({ open, handleClose, setModal }) => {
         <div className="auth-body">
           <div className="job-apply-email-form-wrapper">
             <div className="inner">
-              <div className="d-flex align-items-baseline justify-content-between mb-4">
+              <div className="inner-head">
                 <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
                   Create an Account
                 </h3>
                 <p
-                  className="text-center"
                   style={{ fontSize: 20, fontWeight: 300, margin: 0 }}
                 >
-                  Already have an account?
+                  Already have an account?&nbsp;
                   <a
                     href="#"
                     style={{
@@ -205,7 +204,7 @@ const RegisterModal = ({ open, handleClose, setModal }) => {
                   </a>
                 </p>
                 <button
-                  className="border-0 bg-transparent text-primary pe-0"
+                  className="border-0 bg-transparent text-primary pe-0 close-btn"
                   onClick={handleClose}
                 >
                   <IoCloseOutline size={30} />

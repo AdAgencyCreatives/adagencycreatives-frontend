@@ -17,7 +17,7 @@ import Logo from "../assets/images/logo.png";
 import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { AiOutlineUser, AiOutlineBell, AiOutlineClose } from "react-icons/ai";
-import { FaLinkedinIn } from "react-icons/fa";
+import { FaLinkedinIn, FaInstagramSquare } from "react-icons/fa";
 import { NavLink, Link } from "react-router-dom";
 import ScrollToHash from "./ScrollToHash";
 import { useLocation } from "react-router-dom";
@@ -40,6 +40,8 @@ function Header(props) {
   const handleClose = () => setAuthModalOpen(false);
 
   const [loggedInNav, setLoggedInNav] = useState(agencyNav);
+  const instagram = "https://www.instagram.com/adagencycreativescommunity";
+  const linkedIn = "https://www.linkedin.com/company/adagencycreatives";
 
   useEffect(() => {
     if (state.token !== null) {
@@ -101,8 +103,13 @@ function Header(props) {
         </List>
         <div className="follow">
           <div className="drawer-menu-link">Follow Us</div>
-          <div className="social">
-            <FaLinkedinIn />
+          <div className="social-box">
+            <a href={linkedIn} className="social" target="__blank">
+              <FaLinkedinIn />
+            </a>
+            <a href={instagram} className="social" target="__blank">
+              <FaInstagramSquare />
+            </a>
           </div>
         </div>
       </Box>
@@ -139,14 +146,15 @@ function Header(props) {
         >
           <Toolbar>
             <Grid container justifyContent="space-between" alignItems="center">
-              <Grid item md={4} xs={6}>
+              <Grid item lg={4} md={2} xs={6}>
                 <Link className="site-logo">
                   <img className="" src={Logo} alt="Adagency Creatives" />
                 </Link>
               </Grid>
               <Grid
                 item
-                md={8}
+                lg={8}
+                md={10}
                 xs={6}
                 sx={{ textAlign: "right", padding: "10px" }}
                 className="right-menu"
@@ -155,7 +163,7 @@ function Header(props) {
                   <IconButton
                     href={state.token ? "/dashboard" : "#"}
                     color="primary"
-                    onClick={() => !state.token ? setAuthModalOpen(true) : ""}
+                    onClick={() => (!state.token ? setAuthModalOpen(true) : "")}
                   >
                     <AiOutlineUser />
                   </IconButton>
@@ -238,6 +246,9 @@ function Header(props) {
                           height="50"
                           width="50"
                           className="avatar-rounded rounded-circle"
+                          onError={(e) => {
+                            e.target.src = Placeholder; // Set the backup image source
+                          }}
                         />
                         <div className="username">{state.user.username}</div>
                       </div>

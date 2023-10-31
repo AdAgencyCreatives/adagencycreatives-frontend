@@ -5,7 +5,14 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    max-width: 600px;
+    width: 600px;
+
+    .inner-head{
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 24px;
+    }
 
     .auth-header {
         display: flex;
@@ -89,6 +96,20 @@
 
         }
 
+    }
+    
+    @media (max-width:600px){
+        & {
+            width: auto;
+        }
+        .inner-head{
+            flex-wrap: wrap;
+        }
+        .close-btn {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }        
     }
 
 }

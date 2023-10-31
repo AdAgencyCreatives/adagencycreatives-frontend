@@ -10,7 +10,6 @@ import ChangePassword from "./ChangePassword";
 import DeleteProfile from "./DeleteProfile";
 import CreativeShortlist from "./CreativeShortlist";
 import Packages from "./Packages";
-import MyResume from "./MyResume";
 import JobPost from "../../Jobs/JobPostForm";
 import useToken from "../../../hooks/useToken";
 import Loader from "../../../components/Loader";
@@ -19,11 +18,14 @@ import HireAdvisor from "./HireAdvisor";
 import { agencyNav } from "../../../nav/DashboardNav";
 import { Context } from "../../../context/AuthContext";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { IoMenu } from "react-icons/io5";
 
 const Agency = () => {
-
-  const { hideMessageAlert, user } = useContext(Context);
+  const {
+    hideMessageAlert,
+    state: { user },
+  } = useContext(Context);
 
   const {
     state: { single_agency },
@@ -36,13 +38,11 @@ const Agency = () => {
     }
   }, [user]);
 
-
   const { page } = useParams();
   const token = useToken();
   const components = {
     dashboard: <Dashboard />,
     profile: <Profile />,
-    "my-resume": <MyResume />,
     "post-a-job": <PostJob />,
     "my-jobs": <MyJobs />,
     "applicant-jobs": <ApplicantJobs />,
@@ -60,14 +60,28 @@ const Agency = () => {
     component = <JobPost id={match.params.id} />;
   }
 
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
     <div className="agency-dashboard-container">
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-3 pt-3">
-          <Sidebar nav={agencyNav} user={single_agency} />
+            <Sidebar
+              nav={agencyNav}
+              user={single_agency}
+              mobileOpen={mobileOpen}
+              setMobileOpen={setMobileOpen}
+            />
           </div>
-          <div className="col-md-9 pt-5">{token ? component : <Loader />}</div>
+          <div className="col-md-9 pt-5">
+            <div className="sidebar-toggle d-md-none d-inline-block">
+              <IoMenu
+                onClick={() => setMobileOpen((prevState) => !prevState)}
+              />
+            </div>
+            {token ? component : <Loader />}
+          </div>
         </div>
       </div>
     </div>

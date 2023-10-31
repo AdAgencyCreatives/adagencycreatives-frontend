@@ -257,7 +257,7 @@ const Jobs = () => {
                 </div> */}
                 <div className="job-alert-button">
                   <button
-                    className="alert-btn btn fs-5"
+                    className="btn btn-filter w-100"
                     onClick={() =>
                       requestNotifications(user.uuid, notifCategory)
                     }
