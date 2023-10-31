@@ -47,7 +47,7 @@ const RightSidebarWidgets = () => {
               >
                 {new_members &&
                   new_members.slice(0, Math.min(5, new_members.length)).map((item, index) => (
-                    <li className="vcard">
+                    <li key={"new-member-" + item.id} className="vcard">
                       <div className="item">
                         <div className="item-title fn">
                           <a href={"/creative/" + item.slug}>

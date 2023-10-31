@@ -12,16 +12,21 @@ const PostList = () => {
   } = useContext(AuthContext);
 
   const {
-    state: { posts },
-    getPosts,
+    state: { posts, feed_group },
+    getPosts, getFeedGroup,
   } = useContext(CommunityContext);
 
   useEffect(() => {
     if (token) {
-      getPosts();
-      console.log("Fetched Posts: " + (new Date())); // trick to force component re-render
+      if (feed_group && feed_group.length > 0) {
+        getPosts(feed_group);
+        console.log("Fetched Posts: " + (new Date())); // trick to force component re-render
+      } else {
+        getFeedGroup();
+      }
+
     }
-  }, [token, refreshPosts]);
+  }, [token, feed_group, refreshPosts]);
 
   useEffect(() => {
     const interval = setInterval(() => {

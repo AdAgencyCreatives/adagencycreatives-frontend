@@ -2,6 +2,7 @@ import { api } from "../api/api";
 import createDataContext from "./createDataContext";
 
 const state = {
+  feed_group: "",
   posts: [],
   nextPage: null,
   loading: false,
@@ -25,6 +26,11 @@ const reducer = (state, action) => {
         ...state,
         new_members: action.payload.data,
         nextPage: action.payload.links.next,
+      };
+      case "set_feed_group":
+      return {
+        ...state,
+        feed_group: action.payload.data[0].uuid,
       };
     case "set_single_post":
       return {
@@ -75,9 +81,9 @@ const reducer = (state, action) => {
 };
 
 const getPosts = (dispatch) => {
-  return async () => {
+  return async (group_id) => {
     try {
-      const response = await api.get("/posts?filter[group_id]=d3ae7dff-e382-30f0-9a94-30e4def92e8a&sort=-created_at&filter[status]=1"); // only published posts in Feeds
+      const response = await api.get("/posts?filter[group_id]=" + group_id + "&sort=-created_at&filter[status]=1"); // only published posts in Feeds
       //console.log("fetched new posts at: " + (new Date()).toString());
       dispatch({
         type: "set_posts",
@@ -93,6 +99,18 @@ const getNewMembers = (dispatch) => {
       const response = await api.get("/creatives?sort=-created_at&filter[status]=1"); // only active members
       dispatch({
         type: "set_new_members",
+        payload: response.data,
+      });
+    } catch (error) { }
+  };
+};
+
+const getFeedGroup = (dispatch) => {
+  return async () => {
+    try {
+      const response = await api.get("/groups?filter[name]=Feed&filter[status]=0"); // Only Public Feed Group for Lounge
+      dispatch({
+        type: "set_feed_group",
         payload: response.data,
       });
     } catch (error) { }
@@ -200,6 +218,8 @@ const savePost = (dispatch) => {
       payload: true,
     });
     try {
+      console.log("sending post data: ")
+      console.log(data);
       const response = await api.post("/posts", data);
     } catch (error) { }
     dispatch({
@@ -245,6 +265,7 @@ export const { Context, Provider } = createDataContext(
   {
     getPosts,
     getNewMembers,
+    getFeedGroup,
     loadPosts,
     getPost,
     getLikes,

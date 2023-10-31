@@ -28,8 +28,8 @@ const CreatePost = () => {
   } = useContext(AuthContext);
 
   const {
-    state: { posts, formSubmit },
-    getPosts, savePost
+    state: { posts, feed_group, formSubmit },
+    getPosts, savePost, getFeedGroup
   } = useContext(CommunityContext);
 
   const [open, setOpen] = useState(false);
@@ -47,7 +47,7 @@ const CreatePost = () => {
 
   const doSavePost = () => {
     savePost({
-      "group_id": "d3ae7dff-e382-30f0-9a94-30e4def92e8a",
+      "group_id": feed_group,
       "content": content,
       "attachment_ids": []
     });
@@ -56,11 +56,15 @@ const CreatePost = () => {
   useEffect(() => {
     if (!formSubmit) {
       handleClose();
-      if (token) {
-        getPosts();
+      if (token & feed_group && feed_group.length>0) {
+        getPosts(feed_group);
       }
     }
   }, [formSubmit]);
+
+  useEffect(() => {
+    getFeedGroup();
+  }, []);
 
   return (
     <div className="post-form">
