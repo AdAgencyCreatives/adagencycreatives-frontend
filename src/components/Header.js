@@ -77,7 +77,7 @@ function Header(props) {
           return true;
         }
       }
-      setSlidingMessage('Please login as Creative to access');
+      setSlidingMessage(item.restrictedMessage);
       e.preventDefault();
       e.stopPropagation();
       return false;
@@ -252,9 +252,10 @@ function Header(props) {
                     </div>
                   ))}
                   <Button
-                    href="#"
+                    href="/post-a-job"
                     sx={{ backgroundColor: "#000", color: "white" }}
                     className="post-job-link"
+                    onClick={(e) => validateAccess(e, { roles: ["admin", "agency"], restrictedMessage: 'Please login as Agency to access' })}
                   >
                     Post A Job
                   </Button>

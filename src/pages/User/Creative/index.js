@@ -10,6 +10,7 @@ import AgencyShortlist from "./AgencyShortlist";
 import Packages from "./Packages";
 import MyResume from "./MyResume";
 import JobMessages from "../JobMessages";
+import PostJob from "./PostJob";
 
 import { useContext } from "react";
 import { Context } from "../../../context/AuthContext";
@@ -48,6 +49,7 @@ const Creative = () => {
     "agencies-shortlist": <AgencyShortlist />,
     "job-messages": <JobMessages />,
     "my-applied": <MyOpportunities />,
+    "post-a-job": <PostJob />
   };
 
   // hideMessageAlert();
