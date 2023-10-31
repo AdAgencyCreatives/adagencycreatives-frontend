@@ -11,7 +11,7 @@ const SlideInMessage = (props) => {
     }, [props.message]);
 
     return (
-        <div className={"slide-in-message" + (props.message && props.message.length > 0 ? ' active' : '')}>{props.message}</div>
+        <div className={"sliding-message" + (props.message && props.message.length > 0 ? ' active' : '')}>{props.message}</div>
     );
 };
 
