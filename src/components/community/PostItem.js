@@ -2,6 +2,7 @@ import {
     IoArrowRedoSharp,
     IoChatbubbleEllipsesOutline,
     IoEllipsisVertical,
+    IoHeart,
     IoHeartOutline,
     IoPencilOutline,
     IoTimeOutline,
@@ -94,6 +95,14 @@ const PostItem = (props) => {
         alert('Like Modal');
     };
 
+    const editPost = (post) => {
+
+    };
+
+    const deletePost = (post) => {
+        console.log(window.confirm("Are you sure to delete this post?"));
+    };
+
     return (
         <div className="post-item">
             <div className="post-header">
@@ -116,10 +125,10 @@ const PostItem = (props) => {
                     </div>
                     <div className={`action-dropdown d-${actions}`}>
                         <ul>
-                            <li>
+                            <li onClick={() => editPost(props.post)}>
                                 <IoPencilOutline /> Edit
                             </li>
-                            <li>
+                            <li onClick={() => deletePost(props.post)}>
                                 <IoTrashOutline /> Delete
                             </li>
                         </ul>
@@ -131,7 +140,12 @@ const PostItem = (props) => {
             </div>
             <div className="post-actions">
                 <div className={"post-action post-likes" + (likeActive ? ' active' : '')} onClick={() => doToggleLike(props.post.id)}>
-                    <IoHeartOutline />
+                    {likeActive ? (
+                        <IoHeart />
+                    ) : (
+                        <IoHeartOutline />
+
+                    )}
                     <NumUnit number={likesCount} onClick={(e) => showLikesModal(e)} />
                 </div>
                 <div className="post-action post-comments" onClick={() => toggleShowComments()}>
