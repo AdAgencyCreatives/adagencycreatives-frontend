@@ -1,8 +1,9 @@
 import moment from "moment";
 import portfolio from "../../../assets/images/portfolio.png";
 import "../../../styles/User/ProfileContent.scss";
+import Reviews from "../Reviews";
 
-const Content = ({ education, experience }) => {
+const Content = ({ user, data, education, experience }) => {
   return (
     <>
       <div className="content-section">
@@ -67,6 +68,7 @@ const Content = ({ education, experience }) => {
       ) : (
         ""
       )}
+      <Reviews user={user} data={data} />
     </>
   );
 };
