@@ -46,29 +46,25 @@ function App() {
 
   useEffect(() => {
     if (token) {
+
+      const script = document.createElement('script');
+      script.src = 'https://js.pusher.com/8.2.0/pusher.min.js';
+      script.async = true;
       console.log(token);
-       window.Echo = new Echo({
-        broadcaster: "pusher",
-        key: "c2125739f0d66b777906",
-        cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER ?? "mt1",
-        authEndpoint: "https://api.noorsofttechdev.com/broadcasting/auth",
-        wssHost: "websocket.noorsofttechdev.com",
-        wssPort: 6001,
-        forceTLS: true,
-        disableStats: false,
-        auth: {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        },
-       });
       
-      window.Echo.private("messanger." + user.uuid).listen(
-        ".private_msg",
-        (e) => {
-          console.log(e);
-        }
-      ); 
+      // Enable pusher logging - don't include this in production
+      Pusher.logToConsole = true;
+
+      var pusher = new Pusher('c2125739f0d66b777906', {
+        cluster: 'mt1',
+
+      });
+
+      var channel = pusher.subscribe("messanger." + user.uuid);
+      channel.bind('private_msg', function(data) {
+        console.log(data);
+      });
+ 
     }
   }, [token, user]);
 
