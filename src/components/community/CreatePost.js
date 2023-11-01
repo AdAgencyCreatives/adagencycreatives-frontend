@@ -29,7 +29,7 @@ const CreatePost = () => {
 
   const {
     state: { feed_group, formSubmit, },
-    savePost, getFeedGroup, setHaltRefresh,
+    savePost, setHaltRefresh,
   } = useContext(CommunityContext);
 
   const [open, setOpen] = useState(false);
@@ -59,10 +59,6 @@ const CreatePost = () => {
       setContent("");
     }
   }, [formSubmit]);
-
-  useEffect(() => {
-    getFeedGroup();
-  }, []);
 
   useEffect(() => {
     setHaltRefresh(open);

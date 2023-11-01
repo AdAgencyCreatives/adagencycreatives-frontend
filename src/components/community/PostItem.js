@@ -22,6 +22,7 @@ import NumUnit from "../NumUnit";
 import UtcToLocalDateTime from "../UtcToLocalDateTime";
 import ConfirmDeleteModal from "./Modals/ConfirmDeleteModal";
 import EditPost from "./EditPost";
+import CreateComment from "./CreateComment";
 
 import { CookiesProvider, useCookies } from "react-cookie";
 
@@ -44,8 +45,8 @@ const PostItem = (props) => {
     } = useContext(AuthContext);
 
     const {
-        state: { posts, post_likes, like_action, },
-        getPosts, getLikes, toggleLike, deletePost
+        state: { posts, post_likes, like_action, post_comments, },
+        getPosts, getLikes, toggleLike, deletePost, getComments,
     } = useContext(CommunityContext);
 
     const [defaultAvatar, setDefaultAvatar] = useState("https://adagencycreatives.noorsofttechdev.com/static/media/placeholder.12b7e9aaed5e5566bc6a.png");
@@ -62,8 +63,8 @@ const PostItem = (props) => {
         let newState = !showComments;
         setShowComments(newState);
 
-        if(newState) {
-            // load comments from db.
+        if (newState) {
+            getComments(props.post.id)
         }
     };
 
@@ -118,7 +119,7 @@ const PostItem = (props) => {
         e.preventDefault();
         e.stopPropagation();
         setShowLikedBy(!getShowLikedBy());
-        if(!getShowLikedBy()) {
+        if (!getShowLikedBy()) {
             getLikes({ "post_id": props.post.id });
         }
     };
@@ -194,7 +195,7 @@ const PostItem = (props) => {
             <div key={'comment-box-' + props.post.id} post={props.post} className={"comment-box d-" + (showComments ? 'show' : 'none')}>
                 <Divider />
                 <div className="comment-input">
-                    <ContentEditable placeholder="Comment on this post" html={commentContent} onChange={(e) => setCommentContent(e.target.value) } />
+                    <CreateComment post={props.post} />
                 </div>
                 <h5 className="title-small">Comments</h5>
                 <div className="comments">

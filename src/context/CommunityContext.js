@@ -2,18 +2,26 @@ import { api } from "../api/api";
 import createDataContext from "./createDataContext";
 
 const state = {
-  feed_group: "",
+  feed_group: "bc6fe768-7a95-3606-9d00-4d7fc464384d",
   posts: [],
   nextPage: null,
   loading: false,
   single_post: {},
   formSubmit: false,
   post_likes: { "post_id": "", "data": {} },
+  post_comments: { "post_id": "", "data": {} },
+  comment_replies: { "comment_id": "", "data": {} },
   like_action: { "post_id": "", "action": "", error: null },
   new_members: [],
   post_added: "",
   post_updated: "",
   post_deleted: "",
+  comment_added: "",
+  comment_updated: "",
+  comment_deleted: "",
+  reply_added: "",
+  reply_updated: "",
+  reply_deleted: "",
   halt_refresh: false,
 };
 
@@ -58,11 +66,6 @@ const reducer = (state, action) => {
         ...state,
         feed_group: action.payload.data[0].uuid,
       };
-    case "set_single_post":
-      return {
-        ...state,
-        single_post: action.payload,
-      };
     case "set_post_comments":
       return {
         ...state,
@@ -82,6 +85,36 @@ const reducer = (state, action) => {
       return {
         ...state,
         post_deleted: action.payload,
+      };
+      case "add_comment":
+      return {
+        ...state,
+        comment_added: action.payload,
+      };
+    case "update_comment":
+      return {
+        ...state,
+        comment_updated: action.payload,
+      };
+    case "delete_comment":
+      return {
+        ...state,
+        comment_deleted: action.payload,
+      };
+      case "add_reply":
+      return {
+        ...state,
+        reply_added: action.payload,
+      };
+    case "update_reply":
+      return {
+        ...state,
+        reply_updated: action.payload,
+      };
+    case "delete_reply":
+      return {
+        ...state,
+        reply_deleted: action.payload,
       };
     case "load_posts":
       return {
@@ -156,36 +189,6 @@ const getFeedGroup = (dispatch) => {
   };
 };
 
-const getPost = (dispatch) => {
-  return async (slug) => {
-    try {
-      const response = await api.get("/posts?filter[slug]=" + slug);
-      const data = response.data.data[0];
-      const uid = data.post_id;
-      getPostComments(dispatch, uid);
-      dispatch({
-        type: "set_single_post",
-        payload: data,
-      });
-    } catch (error) { }
-  };
-};
-
-const getPostById = (dispatch) => {
-  return async (id) => {
-    try {
-      const response = await api.get("/posts?filter[post_id]=" + id);
-      const data = response.data.data[0];
-      const uid = data.post_id;
-      getPostComments(dispatch)(uid);
-      dispatch({
-        type: "set_single_post",
-        payload: data,
-      });
-    } catch (error) { }
-  };
-};
-
 const loadPosts = (dispatch) => {
   return async (page, group_id) => {
     let nextPageNumber = page.substring(page.indexOf("?page=") + "?page=".length);
@@ -202,18 +205,16 @@ const loadPosts = (dispatch) => {
   };
 };
 
-const getPostComments = (dispatch) => {
+const getComments = (dispatch) => {
   return async (uid) => {
     setLoading(dispatch, true);
     try {
-      const response = await api.get(
-        "/comments?sort=-created_at&filter[post_id]=" + uid
-      );
-      const data = response.data;
+      const response = await api.get("/comments?sort=-created_at&filter[post_id]=" + uid);
       dispatch({
         type: "set_post_comments",
-        payload: data,
+        payload: response.data,
       });
+      console.log(response.data);
     } catch (error) { }
     setLoading(dispatch, false);
   };
@@ -262,6 +263,26 @@ const savePost = (dispatch) => {
       const response = await api.post("/posts", data);
       dispatch({
         type: "add_post",
+        payload: response.data.data.id,
+      });
+    } catch (error) { }
+    dispatch({
+      type: "set_form_submit",
+      payload: false,
+    });
+  };
+};
+
+const saveComment = (dispatch) => {
+  return async (data) => {
+    dispatch({
+      type: "set_form_submit",
+      payload: true,
+    });
+    try {
+      const response = await api.post("/comments", data);
+      dispatch({
+        type: "add_comment",
         payload: response.data.data.id,
       });
     } catch (error) { }
@@ -339,16 +360,15 @@ export const { Context, Provider } = createDataContext(
     getNewMembers,
     getFeedGroup,
     loadPosts,
-    getPost,
     getLikes,
     toggleLike,
-    getPostById,
     savePost,
     updatePost,
-    getPostComments,
+    getComments,
     savePostImage,
     deletePost,
-    setHaltRefresh
+    setHaltRefresh,
+    saveComment,
   },
   state
 );

@@ -32,7 +32,7 @@ const PostList = () => {
         getPosts(feed_group);
         console.log("Fetched Posts: " + (new Date())); // trick to force component re-render
       } else {
-        getFeedGroup();
+        //getFeedGroup();
       }
     }
   }, [token, feed_group, refreshPosts, post_added, post_updated, post_deleted, halt_refresh]);
