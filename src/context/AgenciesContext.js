@@ -15,6 +15,7 @@ const state = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "set_agencies":
+      console.log(action.payload.data);
       return {
         ...state,
         agencies: action.payload.data,
