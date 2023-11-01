@@ -82,6 +82,7 @@ const Profile = () => {
               </div>
               {page === "creative" ? (
                 <CreativeContent
+                  user={user}
                   data={data}
                   education={creative_education}
                   experience={creative_experience}
