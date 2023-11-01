@@ -1,0 +1,28 @@
+.logout-back {
+    height: 90vh;
+}
+
+.logout-modal {
+    display: flex;
+    width: 400px;
+    height: 200px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    p {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    & >* {
+        height: auto !important;
+    }
+
+    @media (max-width:600px){
+        &{
+            width: auto;
+            padding: 50px;
+        }
+    }
+}

@@ -7,25 +7,37 @@ import { Context as AgenciesContext } from "../context/AgenciesContext";
 import { Context as AuthContext } from "../context/AuthContext";
 import { Context as DataContext } from "../context/DataContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import Tooltip from "../components/Tooltip";
 
 const Agencies = () => {
-  const agencies = useAgencies();
-  const { state, loadAgencies } = useContext(AgenciesContext);
-  const { createBookmark } = useContext(DataContext);
+  const { agencies, loading, loadMore, searchAgencies } = useAgencies();
+
   const {
-    state: { role, user },
+    state: { bookmarks },
+    createBookmark,
+    getBookmarks,
+    removeBookmark,
+  } = useContext(DataContext);
+
+  const {
+    state: { role, user, token },
   } = useContext(AuthContext);
 
-  const loadMore = () => {
-    if (state.nextPage) loadAgencies(state.nextPage);
-  };
-
-  useScrollLoader(state.loading, loadMore);
+  useScrollLoader(loading, loadMore);
 
   const addToShortlist = (id) => {
     createBookmark(user.uuid, "agencies", id);
   };
+
+  const searchUser = (value) => {
+    console.log("searching");
+    searchAgencies(value);
+  };
+
+  useEffect(() => {
+    if (user) getBookmarks(user.uuid);
+  }, [user]);
 
   return (
     <div className="dark-container">
@@ -34,20 +46,32 @@ const Agencies = () => {
           Agencies
         </h1>
 
-        <SearchBar />
+        <SearchBar onSearch={searchUser} />
         <div className="row g-4">
           {agencies &&
             agencies.map((item, index) => {
+              const isShortlisted =
+                bookmarks.find(
+                  (bookmark) => bookmark.resource.user_id == item.user_id
+                ) || false;
               return (
                 <div className="col-md-4 col-sm-6 col-12" key={`ag-${index}`}>
                   <div className="sliderContent adagencies-slider">
                     {role == "creative" && (
-                      <button
-                        className="shortlist-btn"
-                        onClick={() => addToShortlist(item.id)}
-                      >
-                        <IoBookmarkOutline />
-                      </button>
+                      <Tooltip title={"Shortlist"} type="featured">
+                        <button
+                          className={
+                            "shortlist-btn" + (isShortlisted ? " active" : "")
+                          }
+                          onClick={() =>
+                            isShortlisted
+                              ? removeBookmark(isShortlisted.id)
+                              : addToShortlist(item.id)
+                          }
+                        >
+                          <IoBookmarkOutline />
+                        </button>
+                      </Tooltip>
                     )}
                     <Link to={`/agency/${item.slug}`} className="employer-logo">
                       <img
@@ -86,7 +110,7 @@ const Agencies = () => {
               );
             })}
           <div className="load-more text-center">
-            {state.loading && (
+            {loading && (
               <div className="spinner-border text-light" role="status">
                 <span className="visually-hidden">Loading...</span>
               </div>

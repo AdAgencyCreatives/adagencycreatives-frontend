@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { IoCalendarClearOutline } from "react-icons/io5";
 import "../../../styles/User/ProfileSidebar.scss";
 import adicon from "../../../assets/images/icons/adicon.png";
@@ -5,17 +6,42 @@ import bullseye from "../../../assets/images/icons/bulleyes.png";
 import time from "../../../assets/images/icons/duration-icon.png";
 import sample from "../../../assets/images/sample.mp4";
 import { useContext, useEffect } from "react";
-import { Context } from "../../../context/CreativesContext";
+import { Context as CreativesContext } from "../../../context/CreativesContext";
+import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 
-const Sidebar = ({ data, role }) => {
+const Sidebar = ({ data, role, user }) => {
   const {
     state: { resume },
     getResume,
-  } = useContext(Context);
+  } = useContext(CreativesContext);
+
+  const {
+    state: { subscription },
+    getSubscriptionStatus,
+  } = useContext(AgenciesContext);
+
+  const checkPermissions = () => {
+    if (Cookies.get("token")) {
+      if (role == "creative" && user?.uuid == data.user_id) {
+        // check if current profile is the profie of logged in user
+        return true;
+      } else if (role == "admin" || subscription) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  };
 
   useEffect(() => {
-    getResume(data.user_id);
-  }, []);
+    if (checkPermissions()) getResume(data.user_id);
+  }, [user, subscription]);
+
+  useEffect(() => {
+    if (user?.role == "agency" || user?.role == "advisor") {
+      getSubscriptionStatus();
+    }
+  }, [user]);
 
   const renderListData = (list) => {
     return list.slice(0, 5).join(", ") + (list.length > 5 ? " +" : "");

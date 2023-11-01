@@ -272,7 +272,7 @@ function Header(props) {
                             e.target.src = Placeholder; // Set the backup image source
                           }}
                         />
-                        <div className="username">{state.user.username}</div>
+                        <div className="username">{state.user.first_name} {state.user.last_name}</div>
                       </div>
                       <div className="dropdown-menu logged-in-dropdown show">
                         <ul className="dropdown-list">

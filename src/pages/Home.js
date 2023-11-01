@@ -22,7 +22,9 @@ import SlidingMessage from "../components/SlidingMessage";
 register();
 
 const Home = () => {
-  const { state: {token, role} } = useContext(AuthContext);
+  const {
+    state: { token, role },
+  } = useContext(AuthContext);
 
   const [slidingMessage, setSlidingMessage] = useState("");
 
@@ -83,7 +85,18 @@ const Home = () => {
             <div className="row">
               <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
                 <img src={Gather} className="featureImg" />
-                <Link to={"/community"} className="featureTitle" onClick={(e) => validateAccess(e, { roles: ["admin", "creative"], restrictedMessage: 'Please login as Creative to access' })}>Gather</Link>
+                <Link
+                  to={"/community"}
+                  className="featureTitle"
+                  onClick={(e) =>
+                    validateAccess(e, {
+                      roles: ["admin", "creative"],
+                      restrictedMessage: "Please login as Creative to access",
+                    })
+                  }
+                >
+                  Gather
+                </Link>
                 <span className="featureDesc">
                   Social creative
                   <br />
@@ -92,14 +105,18 @@ const Home = () => {
               </div>
               <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
                 <img src={Mentoring} className="featureImg" />
-                <Link to={"/mentoring-resources"} className="featureTitle">Inspire</Link>
+                <Link to={"/mentoring-resources"} className="featureTitle">
+                  Inspire
+                </Link>
                 <span className="featureDesc">
                   Mentors and <br /> resources
                 </span>
               </div>
               <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
                 <img src={Money} className="featureImg" />
-                <Link to={"/creative-jobs"} className="featureTitle">Do Cool $#*t!</Link>
+                <Link to={"/creative-jobs"} className="featureTitle">
+                  Do Cool $#*t!
+                </Link>
                 <span className="featureDesc">
                   Creative jobs <br />
                   board
@@ -156,6 +173,18 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="col"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ticker">
+            <div class="ticker-text">
+              <h4 className="mb-0">About Us</h4>
+              <div className="about-content">
+                Ad Agency Creatives is a community for Creatives to come
+                together talk about the industry talk about the work meet other
+                creatives share ideas and resources manage job opportunities
+                mentor and be mentored and do really cool $#*t!&nbsp;
               </div>
             </div>
           </div>

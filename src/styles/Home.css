@@ -1,5 +1,5 @@
 .main {
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
 }
 
 h1.bannerHeading {
@@ -212,7 +212,7 @@ button.searchBtn:hover {
 
 .creative-section {
     background: black;
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
     padding-top: 20px;
 }
 
@@ -288,10 +288,6 @@ swiper-slide {
     align-items: center;
     box-sizing: border-box;
     animation: fade-in .3s linear;
-}
-
-.sliderContent:hover .shortlist-btn{
-    opacity: 1;
 }
 
 .agencies-slider {
@@ -776,6 +772,34 @@ img.publication-image {
 .contact-btn a:hover {
     background: #d3a11f;
 }
+
+.ticker {
+    width: 100%;
+    height: 60px;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+}
+
+.ticker-text {
+    display: flex;
+    animation: ticker 20s linear infinite;
+    align-items: center;
+    gap: 15px;
+}
+
+@keyframes ticker {
+    from {
+        transform: translateX(100%); /* Start from the right edge */
+    }
+    to {
+        transform: translateX(-100%); /* Move to the left edge */
+    }
+}
+
 
 @media (max-width:768px) {
     .contact-section {

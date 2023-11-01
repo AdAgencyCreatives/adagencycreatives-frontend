@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { Context } from "../../../context/JobsContext";
 import moment from "moment";
 
-const AddNotesModal = ({ app_id, uid, open, handleClose }) => {
+const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
   const [note, setNote] = useState("");
   const {
     state: { notes },
@@ -14,8 +14,8 @@ const AddNotesModal = ({ app_id, uid, open, handleClose }) => {
 
   const submitNote = () => {
     const data = {
-      user_id: uid,
-      application_id: app_id,
+      resource_type: type,
+      resource_id,
       body: note,
     };
     addNote(data);
@@ -24,7 +24,7 @@ const AddNotesModal = ({ app_id, uid, open, handleClose }) => {
   useEffect(() => {
     if (open) {
       console.log("getting note");
-      getNotes(app_id);
+      getNotes(resource_id);
     }
   }, [open]);
 

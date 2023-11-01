@@ -33,6 +33,8 @@ const reducer = (state, action) => {
       return { ...state, years_experience: action.payload.data };
     case "set_bookmarks":
       return { ...state, bookmarks: action.payload.data };
+    case "add_bookmark":
+      return { ...state, bookmarks: [...state.bookmarks, action.payload.data] };
     case "remove_bookmark":
       return {
         ...state,
@@ -144,7 +146,7 @@ const getIndustryExperiences = (dispatch) => {
 const getBookmarks = (dispatch) => {
   return async (uuid) => {
     try {
-      const response = await api.get("/bookmarks");
+      const response = await api.get("/bookmarks?filter[user_id]="+uuid);
       dispatch({
         type: "set_bookmarks",
         payload: response.data,
@@ -160,6 +162,10 @@ const createBookmark = (dispatch) => {
         user_id,
         resource_type,
         resource_id,
+      });
+      dispatch({
+        type: "add_bookmark",
+        payload: response.data,
       });
     } catch (error) {}
   };

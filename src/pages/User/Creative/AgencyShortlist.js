@@ -8,20 +8,34 @@ import {
   IoLocationOutline,
 } from "react-icons/io5";
 import { Context as DataContext } from "../../../context/DataContext";
+import { Context as AuthContext } from "../../../context/AuthContext";
+import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 
 const AgencyShortlist = () => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [openNotes, setOpenNotes] = useState(false);
+  const handleCloseNotes = () => setOpenNotes(false);
+  const [appId, setAppId] = useState("");
+
   const {
     state: { bookmarks },
     getBookmarks,
     removeBookmark,
   } = useContext(DataContext);
 
+  const {
+    state: { user },
+  } = useContext(AuthContext);
+
   useEffect(() => {
-    getBookmarks();
-  }, []);
+    if (user) {
+      getBookmarks(user.uuid);
+    }
+  }, [user]);
+
+  const openNotesDialog = (item) => {
+    setAppId(item.resource.id);
+    setOpenNotes(true);
+  };
 
   return (
     <div className="creative-page-agency-shortlist">
@@ -34,17 +48,20 @@ const AgencyShortlist = () => {
               <div class="employer-list">
                 <div class="row align-items-center justify-content-between">
                   <div class="col-12 d-flex align-items-top">
-                    <div className="avatar employer">
+                    <div className="avatar employer me-3">
                       <img
                         src={resource.logo || Placeholder}
-                        height={100}
-                        width={100}
+                        height={50}
+                        width={50}
                       />
                     </div>
                     <div className="meta row w-100 align-items-center">
-                      <div className="col-md-8">
+                      <div className="col-sm-6">
                         <div className="username">
-                          <Link to={"/agency/" + resource.slug}>
+                          <Link
+                            to={"/agency/" + resource.slug}
+                            className="link-dark link-hover-dark"
+                          >
                             {resource.name}
                           </Link>
                         </div>
@@ -89,17 +106,24 @@ const AgencyShortlist = () => {
                                 )
                               )}
                             </div>
-                          ) : ""}
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </div>
-                      <div className="col-md-3">
-                        <div className="open-jobs-btn">
+                      <div className="col-sm-5 d-flex gap-2 flex-wrap flex-md-nowrap mt-2 mt-sm-0">
+                        <div className="open-jobs-btn m-0">
                           <Link to={`/agency/${resource.slug}`}>
                             Open Jobs - {resource.open_jobs}
                           </Link>
                         </div>
+                        <div className="open-jobs-btn m-0">
+                          <Link onClick={() => openNotesDialog(item)}>
+                            Add Note
+                          </Link>
+                        </div>
                       </div>
-                      <div className="col-md-1">
+                      <div className="col-sm-1">
                         <button
                           className="btn bg-primary shortlist"
                           onClick={() => removeBookmark(item.id)}
@@ -117,6 +141,12 @@ const AgencyShortlist = () => {
           <p className="fs-5">There are no Agencies in your shortlist.</p>
         )}
       </div>
+      <AddNotesModal
+        open={openNotes}
+        handleClose={handleCloseNotes}
+        resource_id={appId}
+        type="agencies"
+      />
     </div>
   );
 };

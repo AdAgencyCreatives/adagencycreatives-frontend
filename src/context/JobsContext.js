@@ -217,7 +217,7 @@ const addNote = (dispatch) => {
 const getNotes = (dispatch) => {
   return async (id) => {
     try {
-      const response = await api.get("/notes?filter[application_id]=" + id);
+      const response = await api.get("/notes/" + id);
       dispatch({
         type: "set_notes",
         payload: response.data,

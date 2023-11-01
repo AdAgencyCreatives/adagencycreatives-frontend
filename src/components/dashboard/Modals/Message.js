@@ -2,7 +2,6 @@ import { Modal, Dialog, CircularProgress } from "@mui/material";
 import { useContext } from "react";
 import { Context } from "../../../context/ChatContext";
 import { useState } from "react";
-// import "../../../styles/Modal/AddNotesModal.scss";
 
 const Message = ({ open, handleClose, item }) => {
   const [data, setData] = useState({ subject: "", message: "" });

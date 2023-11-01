@@ -1,7 +1,6 @@
 import Cookies from "js-cookie";
 import { api, setAuthToken } from "../api/api";
 import createDataContext from "./createDataContext";
-import { useCookies } from "react-cookie";
 
 const state = {
   isSignedIn: false,
@@ -128,6 +127,7 @@ const logout = (dispatch) => {
       type: "set_token",
       payload: { token: null, role: null },
     });
+    console.log("loggin out")
     cb();
   };
 };

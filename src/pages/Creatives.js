@@ -8,13 +8,19 @@ import { Context as AuthContext } from "../context/AuthContext";
 import { Context as CreativesContext } from "../context/CreativesContext";
 import { Context as DataContext } from "../context/DataContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
+import Tooltip from "../components/Tooltip";
 
 const Creatives = () => {
   const { creatives, loading, loadMore, searchCreatives } = useCreatives();
-  const { createBookmark } = useContext(DataContext);
+  const {
+    state: { bookmarks },
+    createBookmark,
+    getBookmarks,
+    removeBookmark,
+  } = useContext(DataContext);
 
   const {
-    state: { role, user },
+    state: { role, user, token },
   } = useContext(AuthContext);
 
   const addToShortlist = (id) => {
@@ -24,9 +30,13 @@ const Creatives = () => {
   useScrollLoader(loading, loadMore);
 
   const searchUser = (value) => {
-    console.log("searching")
+    console.log("searching");
     searchCreatives(value);
   };
+
+  useEffect(() => {
+    if (user) getBookmarks(user.uuid);
+  }, [user]);
 
   return (
     <div className="dark-container">
@@ -38,16 +48,28 @@ const Creatives = () => {
         <div className="row g-4">
           {creatives &&
             creatives.map((item, index) => {
+              const isShortlisted =
+                bookmarks.find(
+                  (bookmark) => bookmark.resource.user_id == item.user_id
+                ) || false;
               return (
                 <div className="col-md-4 col-sm-6 col-12" key={`cv-${index}`}>
                   <div className="sliderContent agencies-slider">
                     {role == "agency" && (
-                      <button
-                        className="shortlist-btn"
-                        onClick={() => addToShortlist(item.id)}
-                      >
-                        <IoBookmarkOutline />
-                      </button>
+                      <Tooltip title={"Shortlist"} type="featured">
+                        <button
+                          className={
+                            "shortlist-btn" + (isShortlisted ? " active" : "")
+                          }
+                          onClick={() =>
+                            isShortlisted
+                              ? removeBookmark(isShortlisted.id)
+                              : addToShortlist(item.id)
+                          }
+                        >
+                          <IoBookmarkOutline />
+                        </button>
+                      </Tooltip>
                     )}
                     <img
                       src={item.profile_image || Placeholder}

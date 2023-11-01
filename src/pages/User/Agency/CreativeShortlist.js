@@ -35,8 +35,10 @@ const CreativeShortlist = () => {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    getBookmarks();
-  }, []);
+    if (user) {
+      getBookmarks(user.uuid);
+    }
+  }, [user]);
 
   const openMessageDialog = (item) => {
     setItem(item);
@@ -44,7 +46,7 @@ const CreativeShortlist = () => {
   };
 
   const openNotesDialog = (item) => {
-    setAppId(item.resource.user_id);
+    setAppId(item.resource.id);
     setOpenNotes(true);
   };
 
@@ -103,16 +105,18 @@ const CreativeShortlist = () => {
                               {resource.title}
                             </Link>
                           </div>
-                          <div className="candidate-location with-icon">
-                            <TfiLocationPin />
-                            <span className="restrict-location-search">
-                              {resource.location.state}
-                            </span>
-                            ,
-                            <span className="restrict-location-search">
-                              {resource.location.city}
-                            </span>
-                          </div>
+                          {resource.location && (
+                            <div className="candidate-location with-icon">
+                              <TfiLocationPin />
+                              <span className="restrict-location-search">
+                                {resource.location.state}
+                              </span>
+                              ,
+                              <span className="restrict-location-search">
+                                {resource.location.city}
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -120,7 +124,11 @@ const CreativeShortlist = () => {
                   <div className="ali-right">
                     <div className="action-button">
                       <Tooltip title="Add Notes">
-                        <Link onClick={() => { openNotesDialog(item)}} >
+                        <Link
+                          onClick={() => {
+                            openNotesDialog(item);
+                          }}
+                        >
                           <TfiNotepad />
                         </Link>
                       </Tooltip>
@@ -153,8 +161,8 @@ const CreativeShortlist = () => {
       <AddNotesModal
         open={openNotes}
         handleClose={handleCloseNotes}
-        app_id={appId}
-        uid={user.uuid}
+        resource_id={appId}
+        type="creatives"
       />
     </div>
   );

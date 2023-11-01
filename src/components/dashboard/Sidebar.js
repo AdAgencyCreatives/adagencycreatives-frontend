@@ -16,7 +16,7 @@ const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
     setMobileOpen((prevState) => !prevState);
   };
 
-  const drawerWidth = "85%";
+  const drawerWidth = "75%";
 
   const getSidebar = () => (
     <div className="agency-sidebar">
@@ -69,7 +69,7 @@ const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
           {nav.map((item, index) => {
             return (
               <li key={index}>
-                <NavLink to={item.link}>{item.name}</NavLink>
+                <NavLink to={item.link} onClick={() => setMobileOpen(false)}>{item.name}</NavLink>
               </li>
             );
           })}

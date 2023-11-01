@@ -37,20 +37,21 @@ const Sidebar = ({ data }) => {
               <div className="details">
                 <div className="text">Industry Specialty:</div>
                 <div className="value">
-                  {data.industry_experience.map((item, index) => (
+                  {data.industry_experience.slice(0, 5).map((item, index) => (
                     <>
                       <Link
                         to={
-                          "agency-category/" +
+                          "/agency-category/" +
                           item.toLowerCase().replace(" ", "-").replace("|", "-")
                         }
                         className="text-dark"
                       >
                         {item}
                       </Link>
-                      {index < data.industry_experience.length - 1 && ","}
+                      {index < data.industry_experience.length - 1 && ", "}
                     </>
                   ))}
+                  {data.industry_experience.length > 5 ? " +" : ""}
                 </div>
               </div>
             ) : (

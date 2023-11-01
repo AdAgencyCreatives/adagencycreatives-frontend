@@ -23,15 +23,7 @@ import CopyWriting from "./pages/Mentor/CopyWriting";
 import LoginAs from "./pages/LoginAs";
 import { useContext, useEffect } from "react";
 import { Context as AuthContext } from "./context/AuthContext";
-
-const Logout = () => {
-  const { logout } = useContext(AuthContext);
-  useEffect(() => {
-    logout(() => {
-      window.location = "/";
-    });
-  });
-};
+import Logout from "./pages/Logout";
 
 export const router = createBrowserRouter([
   {

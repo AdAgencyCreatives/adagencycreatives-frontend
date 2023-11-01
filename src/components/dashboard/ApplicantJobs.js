@@ -77,8 +77,8 @@ const ApplicantJobs = () => {
       <AddNotesModal
         open={open}
         handleClose={handleClose}
-        app_id={appId}
-        uid={user.uuid}
+        resource_id={appId}
+        type="applications"
       />
       <h3 className="page-title">All Applicants</h3>
       <div className="card">

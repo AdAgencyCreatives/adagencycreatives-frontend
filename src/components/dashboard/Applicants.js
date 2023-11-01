@@ -62,8 +62,8 @@ const Applicants = () => {
         <AddNotesModal
           open={open}
           handleClose={handleClose}
-          app_id={appId}
-          uid={user.uuid}
+          resource_id={appId}
+          type="applications"
         />
         <div className="card-body">
           {data.map((item) => (

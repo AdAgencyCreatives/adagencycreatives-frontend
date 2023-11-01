@@ -9,6 +9,7 @@ const state = {
   open_positions: [],
   stats: null,
   formSubmit: false,
+  subscription: null,
 };
 
 const reducer = (state, action) => {
@@ -20,15 +21,9 @@ const reducer = (state, action) => {
         nextPage: action.payload.links.next,
       };
     case "set_single_agency":
-      return {
-        ...state,
-        single_agency: action.payload,
-      };
+      return { ...state, single_agency: action.payload };
     case "set_open_positions":
-      return {
-        ...state,
-        open_positions: action.payload.data,
-      };
+      return { ...state, open_positions: action.payload.data };
     case "delete_job":
       return {
         ...state,
@@ -43,20 +38,13 @@ const reducer = (state, action) => {
         nextPage: action.payload.links.next,
       };
     case "set_loading":
-      return {
-        ...state,
-        loading: action.payload,
-      };
+      return { ...state, loading: action.payload };
     case "set_form_submit":
-      return {
-        ...state,
-        formSubmit: action.payload,
-      };
+      return { ...state, formSubmit: action.payload };
     case "set_stats":
-      return {
-        ...state,
-        stats: action.payload.stats,
-      };
+      return { ...state, stats: action.payload.stats };
+    case "set_subscription":
+      return { ...state, subscription: action.payload };
     default:
       return state;
   }
@@ -169,15 +157,45 @@ const saveAgencyImage = (dispatch) => {
   };
 };
 
+const searchAgencies = (dispatch) => {
+  return async (query) => {
+    try {
+      const response = await api.get("agencies/?filter[name]=" + query);
+      dispatch({
+        type: "set_agencies",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
 const requestPackage = (dispatch) => {
   return async (data) => {
     setFormSubmit(dispatch, true);
     try {
-      console.log(data)
+      console.log(data);
       const response = await api.post("/package-requests", data);
     } catch (error) {}
     setFormSubmit(dispatch, false);
+  };
+};
 
+const getSubscriptionStatus = (dispatch) => {
+  return async () => {
+    try {
+      const response = await api.get("/subscription/status");
+      if (response.data.data.status == "active") {
+        dispatch({
+          type: "set_subscription",
+          payload: true,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: "set_subscription",
+        payload: false,
+      });
+    }
   };
 };
 
@@ -216,10 +234,12 @@ export const { Context, Provider } = createDataContext(
     getStats,
     getAgencyById,
     saveAgency,
+    searchAgencies,
     getOpenPositions,
     saveAgencyImage,
     deleteJob,
-    requestPackage
+    requestPackage,
+    getSubscriptionStatus,
   },
   state
 );

@@ -45,8 +45,8 @@ const MyOpportunities = () => {
       <AddNotesModal
         open={open}
         handleClose={handleClose}
-        app_id={appId}
-        uid={user.uuid}
+        resource_id={appId}
+        type="applications"
       />
       {loading ? (
         <Loader />
@@ -97,7 +97,7 @@ const MyOpportunities = () => {
                                 <div className="job-metas">
                                   {job.category && (
                                     <div className="position">
-                                      <IoBriefcaseOutline />
+                                      <IoBriefcaseOutline className="me-2"/>
                                       <Link
                                         to={"/job-category/" + job.category}
                                         className="link-gray"

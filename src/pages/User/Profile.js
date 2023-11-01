@@ -32,13 +32,14 @@ const Profile = () => {
     state: { single_creative, creative_education, creative_experience },
     getCreative,
   } = useContext(CreativesContext);
+
   const {
     state: { single_agency, open_positions },
     getAgency,
   } = useContext(AgenciesContext);
 
   const {
-    state: { role },
+    state: { user, role },
   } = useContext(AuthContext);
 
   const [data, setData] = useState({});
@@ -59,7 +60,7 @@ const Profile = () => {
     <>
       <div className="profile-header">
         {page === "creative" ? (
-          <CreativeHeader data={data} />
+          <CreativeHeader data={data} role={role} user={user} />
         ) : (
           <AgencyHeader data={data} />
         )}
@@ -74,7 +75,7 @@ const Profile = () => {
               </div>
               <div className="profile-sidebar d-md-none">
                 {page === "creative" ? (
-                  <CreativeSidebar data={data} />
+                  <CreativeSidebar data={data} role={role} user={user} />
                 ) : (
                   <AgencySidebar data={data} />
                 )}
@@ -92,7 +93,7 @@ const Profile = () => {
             <div className="col-md-4 d-none d-md-block">
               <div className="profile-sidebar">
                 {page === "creative" ? (
-                  <CreativeSidebar data={data} role={role} />
+                  <CreativeSidebar data={data} role={role} user={user} />
                 ) : (
                   <AgencySidebar data={data} />
                 )}

@@ -1,3 +1,5 @@
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 import {
   IoBookmarkOutline,
   IoBriefcaseOutline,
@@ -95,6 +97,9 @@ const Dashboard = () => {
           <Views title={"Your Profile Views"} />
         </div>
         <div className="col-sm-4">
+          <div className="mb-4">
+            <Calendar />
+          </div>
           <Notifications />
         </div>
       </div>

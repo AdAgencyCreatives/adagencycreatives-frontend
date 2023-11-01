@@ -53,8 +53,8 @@ const CopyWriting = () => {
     },
 
     {
-      title: "Talk to a creative",
-      subtitle: "Director or recruiter or strategist",
+      title: "Talk to a creative director",
+      subtitle: "or recruiter or strategist",
       url: "https://talktoacreativedirector.com",
       img: talktoacreativedirector,
     },
@@ -67,8 +67,8 @@ const CopyWriting = () => {
     },
 
     {
-      title: "The Copywriters",
-      subtitle: "Handbook, By Robert W. Blythe ",
+      title: "The Copywriters Handbook",
+      subtitle: "By Robert W. Blythe ",
       url: "https://www.amazon.com/Copywriters-Handbook-Step-Step-Writing/dp/0805078045",
       img: copywriterhandbook,
     },
@@ -104,7 +104,7 @@ const CopyWriting = () => {
           </p>
           <div className="row content gy-3">
             {items.map((item, index) => (
-              <div className="col-md-3 col-sm-4 col-12">
+              <div className="col-lg-3 col-md-4 col-12">
                 <Link className={`box link-light ${item.img ? "flip": ""}`} to={item.url} target="__blank">
                   <div className="flip-card-front">
                     <div className="main-title">{item.title}</div>

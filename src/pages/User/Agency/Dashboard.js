@@ -1,3 +1,5 @@
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 import {
   IoBookmarkOutline,
   IoBriefcaseOutline,
@@ -92,9 +94,12 @@ const Dashboard = () => {
       </div>
       <div className="row">
         <div className="col-sm-8">
-          <Views title={"Page Views"}/>
+          <Views title={"Page Views"} />
         </div>
         <div className="col-sm-4">
+          <div className="mb-4">
+            <Calendar />
+          </div>
           <Notifications />
         </div>
       </div>
