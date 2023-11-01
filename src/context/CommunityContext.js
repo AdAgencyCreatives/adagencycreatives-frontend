@@ -11,6 +11,32 @@ const state = {
   post_likes: { "post_id": "", "data": {} },
   like_action: { "post_id": "", "action": "", error: null },
   new_members: [],
+  post_added: "",
+  post_updated: "",
+  post_deleted: "",
+  halt_refresh: false,
+};
+
+const appendNewPosts = (oldPosts, newPosts) => {
+  if(!oldPosts || !oldPosts.length) {
+    return newPosts;
+  }
+  let uniquePosts = [];
+  for (let index = 0; index < newPosts.length; index++) {
+    const newPost = newPosts[index];
+    let postFound = false;
+    for (let idx = 0; idx < oldPosts.length; idx++) {
+      const post = oldPosts[idx];
+      if(post.id == newPost.id) {
+        postFound=true;
+        break;
+      }
+    }
+    if(!postFound) {
+      uniquePosts.push(newPost);
+    }
+  }
+  return [...uniquePosts, ...oldPosts];
 };
 
 const reducer = (state, action) => {
@@ -18,7 +44,7 @@ const reducer = (state, action) => {
     case "set_posts":
       return {
         ...state,
-        posts: action.payload.data,
+        posts: appendNewPosts(state.posts, action.payload.data),
         nextPage: action.payload.links.next,
       };
     case "set_new_members":
@@ -27,7 +53,7 @@ const reducer = (state, action) => {
         new_members: action.payload.data,
         nextPage: action.payload.links.next,
       };
-      case "set_feed_group":
+    case "set_feed_group":
       return {
         ...state,
         feed_group: action.payload.data[0].uuid,
@@ -42,12 +68,20 @@ const reducer = (state, action) => {
         ...state,
         post_comments: action.payload.data,
       };
+    case "add_post":
+      return {
+        ...state,
+        post_added: action.payload,
+      };
+    case "update_post":
+      return {
+        ...state,
+        post_updated: action.payload,
+      };
     case "delete_post":
       return {
         ...state,
-        post_comments: state.post_comments.filter(
-          (job) => job.id != action.payload
-        ),
+        post_deleted: action.payload,
       };
     case "load_posts":
       return {
@@ -59,6 +93,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         loading: action.payload,
+      };
+    case "set_halt_refresh":
+      return {
+        ...state,
+        halt_refresh: action.payload,
       };
     case "set_form_submit":
       return {
@@ -148,10 +187,12 @@ const getPostById = (dispatch) => {
 };
 
 const loadPosts = (dispatch) => {
-  return async (page) => {
+  return async (page, group_id) => {
+    let nextPageNumber = page.substring(page.indexOf("?page=") + "?page=".length);
+    let nextPageUrl = "/posts?filter[group_id]=" + group_id + "&sort=-created_at&filter[status]=1&page=" + nextPageNumber;
     setLoading(dispatch, true);
     try {
-      const response = await api.get(page);
+      const response = await api.get(nextPageUrl);
       dispatch({
         type: "load_posts",
         payload: response.data,
@@ -218,9 +259,31 @@ const savePost = (dispatch) => {
       payload: true,
     });
     try {
-      console.log("sending post data: ")
-      console.log(data);
       const response = await api.post("/posts", data);
+      dispatch({
+        type: "add_post",
+        payload: response.data.data.id,
+      });
+    } catch (error) { }
+    dispatch({
+      type: "set_form_submit",
+      payload: false,
+    });
+  };
+};
+
+const updatePost = (dispatch) => {
+  return async (uuid, data) => {
+    dispatch({
+      type: "set_form_submit",
+      payload: true,
+    });
+    try {
+      const response = await api.patch("/posts/" + uuid, data);
+      dispatch({
+        type: "update_post",
+        payload: response.data,
+      });
     } catch (error) { }
     dispatch({
       type: "set_form_submit",
@@ -260,6 +323,15 @@ const setLoading = (dispatch, state) => {
   });
 };
 
+const setHaltRefresh = (dispatch) => {
+  return async (state) => {
+    dispatch({
+      type: "set_halt_refresh",
+      payload: state,
+    });
+  }
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
@@ -272,9 +344,11 @@ export const { Context, Provider } = createDataContext(
     toggleLike,
     getPostById,
     savePost,
+    updatePost,
     getPostComments,
     savePostImage,
     deletePost,
+    setHaltRefresh
   },
   state
 );

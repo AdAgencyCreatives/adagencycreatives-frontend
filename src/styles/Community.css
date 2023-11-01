@@ -266,6 +266,7 @@ img.post-avatar {
 }
 
 .post-actions {
+    position: relative;
     margin-top: 20px;
     display: flex;
     gap: 10px;
@@ -427,4 +428,76 @@ img.post-avatar {
 
 .sliding-message.active {
     right: 20px;
+}
+
+.num-unit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 0;
+    padding-top: 1px;
+    width: 20px;
+    height: 20px;
+    background-color: gray;
+    color: #fff;
+    border: 1px solid gray;
+    border-radius: 100%;
+}
+
+.num-unit:hover {
+    background-color: var(--color-primary);
+    color: #000;
+    border: 1px solid var(--color-primary);
+}
+
+.post-actions .post-liked-by-dropdown {
+    position: absolute;
+    top: -50px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    column-gap: 5px;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid lightgray;
+    z-index: 1;
+    cursor: pointer;
+    user-select: none;
+    -moz-user-select: none;
+    min-width: max-content;
+    min-height: 45px;
+}
+
+.post-actions .post-liked-by-dropdown .liked-by img {
+    padding: 0;
+    margin: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;    
+}
+
+
+.post-actions .post-liked-by-dropdown .liked-by img {
+    border: 2px solid lightgray;
+    flex: 0;
+}
+
+.post-actions .post-liked-by-dropdown .liked-by img:hover {
+    border: 2px solid var(--color-primary);
+}
+
+.post-actions .post-liked-by-dropdown .total-likes {
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
+    margin-top: 3px;
+    margin-left: 5px;
+    font-weight: 500;
+    color: gray;
+    font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+.post-actions .post-liked-by-dropdown .total-likes:hover {
+    color: var(--color-primary);
 }

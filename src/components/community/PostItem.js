@@ -20,16 +20,32 @@ import { Context as CommunityContext } from "../../context/CommunityContext";
 import TimeAgo from "../TimeAgo";
 import NumUnit from "../NumUnit";
 import UtcToLocalDateTime from "../UtcToLocalDateTime";
+import ConfirmDeleteModal from "./Modals/ConfirmDeleteModal";
+import EditPost from "./EditPost";
+
+import { CookiesProvider, useCookies } from "react-cookie";
 
 const PostItem = (props) => {
+
+    const showMaxLikedBy = 5;
+    const showLikedByCookieKey = "post-showLikedBy-" + props.post.id;
+    const [cookies, setCookie] = useCookies([showLikedByCookieKey]);
+
+    const setShowLikedBy = (value) => {
+        setCookie(showLikedByCookieKey, value, { path: "/" });
+    };
+
+    const getShowLikedBy = () => {
+        return cookies ? cookies[showLikedByCookieKey] : false;
+    };
 
     const {
         state: { user },
     } = useContext(AuthContext);
 
     const {
-        state: { posts, post_likes, like_action },
-        getPosts, getLikes, toggleLike
+        state: { posts, post_likes, like_action, },
+        getPosts, getLikes, toggleLike, deletePost
     } = useContext(CommunityContext);
 
     const [defaultAvatar, setDefaultAvatar] = useState("https://adagencycreatives.noorsofttechdev.com/static/media/placeholder.12b7e9aaed5e5566bc6a.png");
@@ -37,11 +53,18 @@ const PostItem = (props) => {
     const [actions, setActions] = useState("none");
     const [likeActive, setLikeActive] = useState(false);
     const [likesCount, setLikesCount] = useState(0);
+    const [likedByData, setLikedByData] = useState([]);
     const [showComments, setShowComments] = useState(false);
     const [commentsCount, setCommentsCount] = useState(0);
+    const [commentContent, setCommentContent] = useState("");
 
     const toggleShowComments = () => {
-        setShowComments(!showComments);
+        let newState = !showComments;
+        setShowComments(newState);
+
+        if(newState) {
+            // load comments from db.
+        }
     };
 
     const doToggleLike = (post_id) => {
@@ -57,6 +80,7 @@ const PostItem = (props) => {
             if (post_likes.data.data.length != likesCount) {
                 setLikesCount(post_likes.data.data.length);
             }
+            setLikedByData(post_likes.data.data)
             let user_liked = post_likes.data.data.filter(item => item.user_id == user.uuid);
             setLikeActive(user_liked && user_liked.length);
         } else {
@@ -87,20 +111,25 @@ const PostItem = (props) => {
 
     useEffect(() => {
         setLikesCount(props.post.likes_count);
+        getLikes({ "post_id": props.post.id });
     }, [props.post.likes_count]);
 
-    const showLikesModal = (e) => {
+    const onShowLikedBy = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        alert('Like Modal');
+        setShowLikedBy(!getShowLikedBy());
+        if(!getShowLikedBy()) {
+            getLikes({ "post_id": props.post.id });
+        }
     };
 
-    const editPost = (post) => {
-
+    const onUpdatePost = () => {
+        setActions("none");
     };
 
-    const deletePost = (post) => {
-        console.log(window.confirm("Are you sure to delete this post?"));
+    const onDeletePost = () => {
+        setActions("none");
+        deletePost(props.post.id);
     };
 
     return (
@@ -125,12 +154,8 @@ const PostItem = (props) => {
                     </div>
                     <div className={`action-dropdown d-${actions}`}>
                         <ul>
-                            <li onClick={() => editPost(props.post)}>
-                                <IoPencilOutline /> Edit
-                            </li>
-                            <li onClick={() => deletePost(props.post)}>
-                                <IoTrashOutline /> Delete
-                            </li>
+                            <EditPost post={props.post} onUpdatePost={onUpdatePost} />
+                            <ConfirmDeleteModal onConfirm={onDeletePost} />
                         </ul>
                     </div>
                 </div>
@@ -139,15 +164,28 @@ const PostItem = (props) => {
                 <div className="post-body" dangerouslySetInnerHTML={{ __html: props.post.content }} />
             </div>
             <div className="post-actions">
-                <div className={"post-action post-likes" + (likeActive ? ' active' : '')} onClick={() => doToggleLike(props.post.id)}>
-                    {likeActive ? (
-                        <IoHeart />
-                    ) : (
-                        <IoHeartOutline />
+                <CookiesProvider>
+                    <div className={"post-action post-likes" + (likeActive ? ' active' : '')} onClick={() => doToggleLike(props.post.id)}>
+                        {likeActive ? (
+                            <IoHeart />
+                        ) : (
+                            <IoHeartOutline />
 
-                    )}
-                    <NumUnit number={likesCount} onClick={(e) => showLikesModal(e)} />
-                </div>
+                        )}
+                        <NumUnit number={likesCount} onClick={(e) => onShowLikedBy(e)} />
+                    </div>
+
+                    <div className={"post-liked-by-dropdown" + (getShowLikedBy() ? ' d-show' : ' d-none')}>
+                        {likedByData && likedByData.slice(0, Math.min(showMaxLikedBy, likedByData.length)).map((like, index) => (
+                            <div key={"liked-by-post-" + props.post.id + "-" + like.id} className="liked-by">
+                                <img src={like.profile_picture || defaultAvatar} alt="" />
+                            </div>
+                        ))}
+                        <div className="total-likes">
+                            {likesCount > showMaxLikedBy ? '+' : ''}{likesCount > 0 ? (likesCount > showMaxLikedBy ? likesCount - showMaxLikedBy : likesCount) : 0} like{likesCount > 1 ? 's' : ''}
+                        </div>
+                    </div>
+                </CookiesProvider>
                 <div className="post-action post-comments" onClick={() => toggleShowComments()}>
                     <IoChatbubbleEllipsesOutline />
                     <NumUnit number={props.post.comments_count} />
@@ -156,7 +194,7 @@ const PostItem = (props) => {
             <div key={'comment-box-' + props.post.id} post={props.post} className={"comment-box d-" + (showComments ? 'show' : 'none')}>
                 <Divider />
                 <div className="comment-input">
-                    <ContentEditable placeholder="Comment on this post" html="" />
+                    <ContentEditable placeholder="Comment on this post" html={commentContent} onChange={(e) => setCommentContent(e.target.value) } />
                 </div>
                 <h5 className="title-small">Comments</h5>
                 <div className="comments">

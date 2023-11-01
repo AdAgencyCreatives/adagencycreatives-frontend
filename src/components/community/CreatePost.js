@@ -18,7 +18,7 @@ import Placeholder from "../../assets/images/placeholder.png";
 const CreatePost = () => {
 
   const inputRef = useCallback(node => {
-    if(node && node.focus) {
+    if (node && node.focus) {
       node.focus()
     }
   }, [])
@@ -28,8 +28,8 @@ const CreatePost = () => {
   } = useContext(AuthContext);
 
   const {
-    state: { posts, feed_group, formSubmit },
-    getPosts, savePost, getFeedGroup
+    state: { feed_group, formSubmit, },
+    savePost, getFeedGroup, setHaltRefresh,
   } = useContext(CommunityContext);
 
   const [open, setOpen] = useState(false);
@@ -56,15 +56,17 @@ const CreatePost = () => {
   useEffect(() => {
     if (!formSubmit) {
       handleClose();
-      if (token & feed_group && feed_group.length>0) {
-        getPosts(feed_group);
-      }
+      setContent("");
     }
   }, [formSubmit]);
 
   useEffect(() => {
     getFeedGroup();
   }, []);
+
+  useEffect(() => {
+    setHaltRefresh(open);
+  }, [open]);
 
   return (
     <div className="post-form">
@@ -78,6 +80,8 @@ const CreatePost = () => {
             rows={1}
             placeholder="What's on your mind?"
             onClick={handleOpen}
+            onChange={handleOpen}
+            onKeyDown={handleOpen}
           ></textarea>
         </div>
       </div>
@@ -106,7 +110,7 @@ const CreatePost = () => {
               <img src={user ? user.image : Placeholder} height={50} width={50} />
             </div>
             <div className="user-meta">
-              <p className="username mb-0">{user ? user.first_name + ' ' + user.last_name : 'User'}</p>
+              <p className="username mb-0">{user ? user.first_name + ' ' + user.last_name : 'User'} :: New Post</p>
             </div>
             <div className="post-modal-close" onClick={() => handleClose()}>
               <IoCloseCircleSharp />
@@ -114,7 +118,7 @@ const CreatePost = () => {
           </div>
           <div className="postmodal-body">
             <ContentEditable
-            id="new-input"
+              id="new-input"
               placeholder="What do you want to talk about?"
               html={content}
               onChange={(evt) => setContent(evt.target.value)}
