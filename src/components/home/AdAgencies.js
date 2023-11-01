@@ -49,7 +49,7 @@ const AdAgencies = () => {
           space-between="30"
           loop="true"
         >
-          {agencies &&
+          {agencies && agencies.length && 
             agencies.map((item, index) => {
               return (
                 <swiper-slide key={`slide${index}`}>
