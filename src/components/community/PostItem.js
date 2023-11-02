@@ -238,11 +238,13 @@ const PostItem = (props) => {
                 </div>
                 <h5 className="title-small">Comments</h5>
                 <div className="comments">
-                    {commentsData && commentsData.length && commentsData.map((comment, index) => {
+                    {commentsData && commentsData.length ? commentsData.map((comment, index) => {
                         return (
                             <Comment key={"comment-post-" + props.post.id + "-" + comment.id} post={props.post} comment={comment} />
                         );
-                    })}
+                    }) : (
+                        <></>
+                    )}
                     {!viewAllCommentsClicked ? (
                         <>
                             < Divider />
