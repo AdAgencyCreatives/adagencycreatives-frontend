@@ -29,6 +29,7 @@ const PostList = () => {
     }
     if (token) {
       if (feed_group && feed_group.length > 0) {
+        console.log(post_updated ? post_updated : "")
         getPosts(feed_group);
         console.log("Fetched Posts: " + (new Date())); // trick to force component re-render
       } else {
@@ -53,8 +54,8 @@ const PostList = () => {
   return (
     <div className="postlist">
       {posts &&
-        posts.map((item, index) => (
-          <PostItem key={item.id} post={item} refreshPosts={refreshPosts} />
+        posts.map((post, index) => (
+          <PostItem key={post.id} post={post} refreshPosts={refreshPosts} />
         ))}
     </div>
   );

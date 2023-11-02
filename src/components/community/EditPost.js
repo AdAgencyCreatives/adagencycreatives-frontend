@@ -29,7 +29,7 @@ const EditPost = (props) => {
 
     const {
         state: { feed_group, formSubmit },
-        updatePost, getFeedGroup, setHaltRefresh,
+        updatePost, setHaltRefresh,
     } = useContext(CommunityContext);
 
     const [open, setOpen] = useState(false);
@@ -64,8 +64,7 @@ const EditPost = (props) => {
 
     useEffect(() => {
         setContent(props.post.content);
-        getFeedGroup();
-    }, [props.post]);
+    }, [props.post.content]);
 
     useEffect(() => {
         setHaltRefresh(open);

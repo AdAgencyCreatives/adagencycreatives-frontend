@@ -13,15 +13,15 @@ const state = {
   post_comment_replies: { "post_id": "", "comment_id": "", "data": {} },
   like_action: { "post_id": "", "action": "", error: null },
   new_members: [],
-  post_added: "",
-  post_updated: "",
-  post_deleted: "",
-  comment_added: "",
-  comment_updated: "",
-  comment_deleted: "",
-  reply_added: "",
-  reply_updated: "",
-  reply_deleted: "",
+  post_added: null,
+  post_updated: null,
+  post_deleted: null,
+  comment_added: null,
+  comment_updated: null,
+  comment_deleted: null,
+  reply_added: null,
+  reply_updated: null,
+  reply_deleted: null,
   halt_refresh: false,
 };
 
@@ -302,7 +302,7 @@ const updatePost = (dispatch) => {
       const response = await api.patch("/posts/" + uuid, data);
       dispatch({
         type: "update_post",
-        payload: response.data,
+        payload: response.data.data,
       });
     } catch (error) { }
     dispatch({
@@ -319,11 +319,10 @@ const updateComment = (dispatch) => {
       payload: true,
     });
     try {
-      console.log("/comments/" + comment_uuid);
       const response = await api.patch("/comments/" + comment_uuid, data);
       dispatch({
         type: "update_comment",
-        payload: {post_id: response.data.post_id, comment_uuid: response.data.uuid},
+        payload: {post_id: response.data.data.post_id, comment_uuid: response.data.data.uuid},
       });
     } catch (error) { }
     dispatch({

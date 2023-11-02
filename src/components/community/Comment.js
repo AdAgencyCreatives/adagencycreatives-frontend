@@ -26,9 +26,12 @@ const Comment = (props) => {
     const [actions, setActions] = useState("none");
 
     useEffect(() => {
-        if (props.comment.id == reply_added || props.comment.id == reply_updated || props.comment.id == reply_deleted) {
-            getComments(props.post.id);
+        if (reply_added || reply_updated || reply_deleted) {
+            if (props.comment.id == reply_added || props.comment.id == reply_updated || props.comment.id == reply_deleted) {
+                getComments(props.post.id);
+            }
         }
+
     }, [reply_added, reply_updated, reply_deleted]);
 
     const onUpdateComment = () => {
@@ -42,7 +45,7 @@ const Comment = (props) => {
 
     return (
         <div className="comment">
-            {props.comment.user_id == user.uuid && (
+            {props.comment.user_id == user.uuid ? (
                 <div div className="post-action comments">
                     <div className="action-button">
                         <IoEllipsisVertical
@@ -58,6 +61,8 @@ const Comment = (props) => {
                         </ul>
                     </div>
                 </div>
+            ) : (
+                <></>
             )}
             <div className="comment-avatar">
                 <img src={props.comment.profile_picture || defaultAvatar} />

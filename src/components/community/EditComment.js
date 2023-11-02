@@ -59,8 +59,6 @@ const EditComment = (props) => {
 
   useEffect(() => {
     setContent(props.comment.content);
-    console.log("Editing Comment: ");
-    console.log(props.comment)
   }, [props.comment]);
 
   useEffect(() => {

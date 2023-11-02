@@ -46,12 +46,13 @@ const PostItem = (props) => {
     } = useContext(AuthContext);
 
     const {
-        state: { posts, post_likes, like_action, post_comments, comment_added, comment_updated, comment_deleted },
-        getPosts, getLikes, toggleLike, deletePost, getComments,
+        state: { posts, post_likes, like_action, post_updated, post_comments, comment_added, comment_updated, comment_deleted },
+        getPosts, getLikes, toggleLike, deletePost, getComments, 
     } = useContext(CommunityContext);
 
     const [defaultAvatar, setDefaultAvatar] = useState("https://adagencycreatives.noorsofttechdev.com/static/media/placeholder.12b7e9aaed5e5566bc6a.png");
 
+    const [postContent, setPostContent] = useState("");
     const [actions, setActions] = useState("none");
     const [likeActive, setLikeActive] = useState(false);
     const [likesCount, setLikesCount] = useState(0);
@@ -73,7 +74,7 @@ const PostItem = (props) => {
     };
 
     const doToggleLike = (post_id) => {
-        console.log('Initiated Post Like for Post ID: ' + post_id);
+        // console.log('Initiated Post Like for Post ID: ' + post_id);
         toggleLike({ "post_id": post_id })
     }
 
@@ -127,6 +128,7 @@ const PostItem = (props) => {
             if (post_comments.data.data.length != commentsCount) {
                 setCommentsCount(post_comments.data.data.length);
             }
+
             setCommentsData(post_comments.data.data.slice(0, viewAllCommentsClicked ? post_comments.data.data.length : 3));
         } else {
             setCommentsCount(props.post.comments_count);
@@ -134,8 +136,7 @@ const PostItem = (props) => {
     }, [post_comments]);
 
     useEffect(() => {
-        console.log(comment_updated);
-        if (props.post.id == comment_added.post_id || props.post.id == comment_updated.post_id || props.post.id == comment_deleted.post_id) {
+        if ((comment_added && props.post.id == comment_added.post_id) || (comment_updated && props.post.id == comment_updated.post_id) || (comment_deleted && props.post.id == comment_deleted.post_id)) {
             getComments(props.post.id);
         }
     }, [comment_added, comment_updated, comment_deleted]);
@@ -146,6 +147,16 @@ const PostItem = (props) => {
             setCommentsData(props.post.comments.slice(0, viewAllCommentsClicked ? props.post.comments.length : 3));
         }
     }, [viewAllCommentsClicked]);
+
+    useEffect(() => {
+        if (post_updated && post_updated.id == props.post.id) {
+            setPostContent(post_updated.content);
+        }
+    }, [post_updated]);
+
+    useEffect(() => {
+        setPostContent(props.post.content);
+    }, []);
 
     const onShowLikedBy = (e) => {
         e.preventDefault();
@@ -201,7 +212,7 @@ const PostItem = (props) => {
                 )}
             </div>
             <div className="post-content">
-                <div className="post-body" dangerouslySetInnerHTML={{ __html: props.post.content }} />
+                <div className="post-body" dangerouslySetInnerHTML={{ __html: postContent }} />
             </div>
             <div className="post-actions">
                 <CookiesProvider>
