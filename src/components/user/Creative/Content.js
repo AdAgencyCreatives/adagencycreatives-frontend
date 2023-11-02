@@ -68,7 +68,9 @@ const Content = ({ user, data, education, experience }) => {
       ) : (
         ""
       )}
-      <Reviews user={user} data={data} />
+      {user && data && (
+        <Reviews user={user} data={data} />
+      )}
     </>
   );
 };
