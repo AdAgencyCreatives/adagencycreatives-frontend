@@ -11,7 +11,8 @@ const state = {
   strengths: [],
   years_experience: [],
   bookmarks: [],
-  reviews: []
+  reviews: [],
+  reviewsMeta: {}
 };
 
 const reducer = (state, action) => {
@@ -36,6 +37,10 @@ const reducer = (state, action) => {
       return { ...state, bookmarks: action.payload.data };
     case "add_bookmark":
       return { ...state, bookmarks: [...state.bookmarks, action.payload.data] };
+    case "set_reviews":
+      return { ...state, reviews: action.payload.data };
+    case "set_reviews_meta":
+      return { ...state, reviewsMeta: action.payload.meta };
     case "add_review":
       return { ...state, reviews: [...state.reviews, action.payload.data] };
     case "remove_bookmark":
@@ -186,6 +191,23 @@ const removeBookmark = (dispatch) => {
   };
 };
 
+const getReviews = (dispatch) => {
+  return async (target_id) => {
+    try {
+      const response = await api.get("/reviews?filter[target_id]="+target_id+"&sort=-created_at");
+      // console.log(response);
+      dispatch({
+        type: "set_reviews",
+        payload: response?.data ?? [],
+      });
+      dispatch({
+        type: "set_reviews_meta",
+        payload: response?.data ?? {},
+      });
+    } catch (error) {}
+  };
+};
+
 const postReview = (dispatch) => {
   return async (review) => {
     try {
@@ -212,6 +234,7 @@ export const { Context, Provider } = createDataContext(
     getBookmarks,
     createBookmark,
     removeBookmark,
+    getReviews,
     postReview
   },
   state
