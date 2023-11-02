@@ -80,7 +80,7 @@ export const router = createBrowserRouter([
         element: <CommunityMembers />,
       },
       {
-        path: "/:username/friends",
+        path: "/friends",
         element: <Friends />,
       },
       {

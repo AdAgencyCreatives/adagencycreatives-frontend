@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../styles/SearchBar.css";
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ placeholder, onSearch }) => {
   const [input, setInput] = useState("");
 
   return (
@@ -15,7 +15,7 @@ const SearchBar = ({ onSearch }) => {
         <div className="search-bar col-md-10">
           <input
             className="search-input form-control"
-            placeholder="Search by name, title, location, company, industry experience, media, full-time etc."
+            placeholder={placeholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />

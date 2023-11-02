@@ -10,7 +10,7 @@ const state = {
   formSubmit: false,
   post_likes: { "post_id": "", "data": {} },
   post_comments: { "post_id": "", "data": {} },
-  comment_replies: { "comment_id": "", "data": {} },
+  post_comment_replies: { "post_id": "", "comment_id": "", "data": {} },
   like_action: { "post_id": "", "action": "", error: null },
   new_members: [],
   post_added: "",
@@ -69,7 +69,7 @@ const reducer = (state, action) => {
     case "set_post_comments":
       return {
         ...state,
-        post_comments: action.payload.data,
+        post_comments: action.payload,
       };
     case "add_post":
       return {
@@ -212,9 +212,8 @@ const getComments = (dispatch) => {
       const response = await api.get("/comments?sort=-created_at&filter[post_id]=" + uid);
       dispatch({
         type: "set_post_comments",
-        payload: response.data,
+        payload: { "post_id": uid, "data": response.data },
       });
-      console.log(response.data);
     } catch (error) { }
     setLoading(dispatch, false);
   };
@@ -283,7 +282,7 @@ const saveComment = (dispatch) => {
       const response = await api.post("/comments", data);
       dispatch({
         type: "add_comment",
-        payload: response.data.data.id,
+        payload: {post_id: response.data.data.post_id, comment_uuid: response.data.data.uuid},
       });
     } catch (error) { }
     dispatch({
@@ -313,6 +312,27 @@ const updatePost = (dispatch) => {
   };
 };
 
+const updateComment = (dispatch) => {
+  return async (post_id, comment_uuid, data) => {
+    dispatch({
+      type: "set_form_submit",
+      payload: true,
+    });
+    try {
+      console.log("/comments/" + comment_uuid);
+      const response = await api.patch("/comments/" + comment_uuid, data);
+      dispatch({
+        type: "update_comment",
+        payload: {post_id: response.data.post_id, comment_uuid: response.data.uuid},
+      });
+    } catch (error) { }
+    dispatch({
+      type: "set_form_submit",
+      payload: false,
+    });
+  };
+};
+
 const savePostImage = (dispatch) => {
   return async (data) => {
     try {
@@ -332,6 +352,19 @@ const deletePost = (dispatch) => {
       dispatch({
         type: "delete_post",
         payload: id,
+      });
+    } catch (error) { }
+  };
+};
+
+const deleteComment = (dispatch) => {
+  return async (post_id, comment_uuid) => {
+    try {
+      console.log("trying to delete comment: " + comment_uuid)
+      const response = await api.delete("/comments/" + comment_uuid);
+      dispatch({
+        type: "delete_comment",
+        payload: {post_id: post_id, comment_uuid: comment_uuid},
       });
     } catch (error) { }
   };
@@ -369,6 +402,8 @@ export const { Context, Provider } = createDataContext(
     deletePost,
     setHaltRefresh,
     saveComment,
+    updateComment,
+    deleteComment,
   },
   state
 );

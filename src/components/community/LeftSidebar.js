@@ -31,7 +31,7 @@ const LeftSidebar = () => {
             </NavLink>
           </li>
           <li className="menu-item">
-            <NavLink to="/username/friends">
+            <NavLink to="/friends">
               <IoPeopleOutline />
               <div className="item-name">Friends</div>
             </NavLink>

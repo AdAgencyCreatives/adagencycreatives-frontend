@@ -59,3 +59,11 @@ span.count-number {
         width: 100%;
     }
 }
+
+.sliderContent.members-list {
+    min-height: 316px;
+}
+
+.sliderContent.members-list .member-data {
+    flex: 1;
+}

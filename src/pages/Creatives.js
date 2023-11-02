@@ -44,7 +44,10 @@ const Creatives = () => {
         <h1 className="community-title text-white text-center mb-4">
           Creatives
         </h1>
-        <SearchBar onSearch={searchUser} />
+        <SearchBar 
+        placeholder="Search by name, title, location, company, industry experience, media, full-time etc." 
+        onSearch={searchUser} 
+        />
         <div className="row g-4">
           {creatives &&
             creatives.map((item, index) => {
