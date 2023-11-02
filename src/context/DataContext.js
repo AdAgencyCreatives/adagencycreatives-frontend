@@ -11,6 +11,7 @@ const state = {
   strengths: [],
   years_experience: [],
   bookmarks: [],
+  reviews: []
 };
 
 const reducer = (state, action) => {
@@ -35,6 +36,8 @@ const reducer = (state, action) => {
       return { ...state, bookmarks: action.payload.data };
     case "add_bookmark":
       return { ...state, bookmarks: [...state.bookmarks, action.payload.data] };
+    case "add_review":
+      return { ...state, reviews: [...state.reviews, action.payload.data] };
     case "remove_bookmark":
       return {
         ...state,
@@ -183,6 +186,18 @@ const removeBookmark = (dispatch) => {
   };
 };
 
+const postReview = (dispatch) => {
+  return async (review) => {
+    try {
+      const response = await api.post("/reviews", review);
+      dispatch({
+        type: "add_review",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
@@ -197,6 +212,7 @@ export const { Context, Provider } = createDataContext(
     getBookmarks,
     createBookmark,
     removeBookmark,
+    postReview
   },
   state
 );

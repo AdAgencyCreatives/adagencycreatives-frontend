@@ -27,3 +27,34 @@ button.submit-btn:hover {
     background: white;
     color: black;
 }
+
+.comment-form-rating .review-stars {
+    color: #e1e1e1;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 13px;
+    letter-spacing: 6px;
+}
+
+.comment-form-rating .review-stars.filled {
+    color: #FFC78B;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.comment-form-rating .review-stars li {
+    float: left;
+}
+
+.reset-button-default #respond {
+    border: 1px solid #ECEDF2;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    padding: 45px 50px 50px;
+    margin-top: 55px;
+}
