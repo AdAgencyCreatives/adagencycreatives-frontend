@@ -332,7 +332,7 @@ img.post-avatar {
 .comment-meta p.username {
     margin: 0;
     color: black;
-    /* height: 40px; */
+    height: 45px;
     display: flex;
     align-items: center;
 }
@@ -357,6 +357,7 @@ img.post-avatar {
 }
 
 .comments {
+    margin-left: 25px;
     margin-top: 25px;
     position: relative;
 }

@@ -69,10 +69,10 @@ const Comment = (props) => {
                     </a>
                 </p>
                 <div className="content" dangerouslySetInnerHTML={{ __html: props.comment.content }} />
-                <div className="reply-section">
+                {/* <div className="reply-section">
                     <IoArrowRedoSharp />
                     Reply Comment
-                </div>
+                </div> */}
             </div>
         </div >
     );
