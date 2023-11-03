@@ -3,9 +3,7 @@ import {
 } from "react-icons/io5";
 import { Modal } from "@mui/material";
 import { useState, useRef } from "react";
-import ContentEditable from "react-contenteditable";
-import EmojiPicker, { Emoji } from "emoji-picker-react";
-import { BsEmojiSmile } from "react-icons/bs";
+import ModalCss from "../../styles/Modal/PostModal.scss";
 import Divider from "../Divider";
 import { useContext, useEffect, useCallback } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";

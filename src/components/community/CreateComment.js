@@ -5,6 +5,7 @@ import { FiCamera, FiImage, FiPaperclip } from "react-icons/fi";
 import { Modal } from "@mui/material";
 import { useRef, useState } from "react";
 import Divider from "../Divider";
+import ModalCss from "../../styles/Modal/PostModal.scss";
 import ImagePicker from "./Modals/ImagePicker";
 import { useContext, useEffect, useCallback } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";

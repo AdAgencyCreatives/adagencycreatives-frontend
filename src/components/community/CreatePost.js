@@ -5,6 +5,7 @@ import { FiCamera, FiImage, FiPaperclip } from "react-icons/fi";
 import { Modal } from "@mui/material";
 import { useRef, useState } from "react";
 import Divider from "../Divider";
+import ModalCss from "../../styles/Modal/PostModal.scss";
 import ImagePicker from "./Modals/ImagePicker";
 import { useContext, useEffect, useCallback } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
@@ -155,7 +156,7 @@ const CreatePost = () => {
           <Divider />
           <div className="postmodal-footer">
             <div className="postmodal-action">
-              <button className={"btn btn-post d-" + (editorLoading ? 'show' : 'none')} onClick={() => doSavePost()}>Post</button>
+              <button className={"btn btn-post d-" + (!editorLoading ? 'show' : 'none')} onClick={() => doSavePost()}>Post</button>
             </div>
           </div>
           <ImagePicker open={imagePickerOpen} handleImagePickerClose={() => setImagePickerOpen(false)} />
