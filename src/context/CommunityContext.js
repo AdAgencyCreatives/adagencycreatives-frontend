@@ -269,6 +269,7 @@ const savePost = (dispatch) => {
       payload: true,
     });
     try {
+      console.log(data);
       const response = await api.post("/posts", data);
       dispatch({
         type: "add_post",

@@ -119,7 +119,7 @@ const EditPost = (props) => {
                                 content_style: 'body { font-family:Jost, Arial, sans-serify; font-size:14pt }',
                                 placeholder: 'What do you want to talk about?',
                             }}
-                            initialValue={props.post.content}
+                            initialValue={content}
                             onChange={(e) => setContent(editorRef.current ? editorRef.current.getContent() : "")}
                         />
                         <div className="post-options d-flex">

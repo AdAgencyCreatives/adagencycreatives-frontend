@@ -1,9 +1,11 @@
 import {
   IoPencilOutline, IoCloseCircleSharp,
 } from "react-icons/io5";
+import { FiCamera, FiImage, FiPaperclip } from "react-icons/fi";
 import { Modal } from "@mui/material";
 import { useState, useRef } from "react";
 import ModalCss from "../../styles/Modal/PostModal.scss";
+import ImagePicker from "./Modals/ImagePicker";
 import Divider from "../Divider";
 import { useContext, useEffect, useCallback } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
@@ -36,6 +38,7 @@ const EditComment = (props) => {
   const handleClose = () => setOpen(false);
   const [showPicker, setShowPicker] = useState(false);
   const [content, setContent] = useState("");
+  const [imagePickerOpen, setImagePickerOpen] = useState(false);
 
   const selectEmoji = (emojiData) => {
     console.log(emojiData.getEmojiUrl);
@@ -125,14 +128,26 @@ const EditComment = (props) => {
               onChange={(e) => setContent(editorRef.current ? editorRef.current.getContent() : "")}
             />
           </div>
+          <div className="post-options d-flex">
+            <div className="item" >
+              <FiCamera />
+            </div>
+            <div className="item" onClick={() => setImagePickerOpen(true)}>
+              <FiImage />
+            </div>
+            <div className="item">
+              <FiPaperclip />
+            </div>
+          </div>
           <Divider />
           <div className="postmodal-footer">
             <div className="postmodal-action">
               <button className={"btn btn-post d-" + (!editorLoading ? 'show' : 'none')} onClick={() => doUpdateComment()}>Update Comment</button>
             </div>
           </div>
+          <ImagePicker open={imagePickerOpen} handleImagePickerClose={() => setImagePickerOpen(false)} />
         </div>
-      </Modal>
+      </Modal >
     </>
   );
 };

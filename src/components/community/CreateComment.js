@@ -99,7 +99,6 @@ const CreateComment = (props) => {
           ></textarea>
         </div>
       </div>
-
       <Modal
         open={open}
         onClose={handleClose}
@@ -137,15 +136,27 @@ const CreateComment = (props) => {
               onChange={(e) => setContent(editorRef.current ? editorRef.current.getContent() : "")}
             />
           </div>
+          <div className="post-options d-flex">
+            <div className="item" >
+              <FiCamera />
+            </div>
+            <div className="item" onClick={() => setImagePickerOpen(true)}>
+              <FiImage />
+            </div>
+            <div className="item">
+              <FiPaperclip />
+            </div>
+          </div>
           <Divider />
           <div className="postmodal-footer">
             <div className="postmodal-action">
               <button className={"btn btn-post d-" + (!editorLoading ? 'show' : 'none')} onClick={() => doSaveComment()}>Comment</button>
             </div>
           </div>
+          <ImagePicker open={imagePickerOpen} handleImagePickerClose={() => setImagePickerOpen(false)} />
         </div>
-      </Modal>
-    </div>
+      </Modal >
+    </div >
   );
 };
 
