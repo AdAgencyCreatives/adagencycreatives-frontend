@@ -155,7 +155,7 @@ const CreatePost = () => {
           <Divider />
           <div className="postmodal-footer">
             <div className="postmodal-action">
-              <button className={"btn btn-post d-" + (!editorLoading ? 'show' : 'none')} onClick={() => doSavePost()}>Post</button>
+              <button className={"btn btn-post d-" + (editorLoading ? 'show' : 'none')} onClick={() => doSavePost()}>Post</button>
             </div>
           </div>
           <ImagePicker open={imagePickerOpen} handleImagePickerClose={() => setImagePickerOpen(false)} />
