@@ -2,7 +2,7 @@ import { api } from "../api/api";
 import createDataContext from "./createDataContext";
 
 const state = {
-  feed_group: "b903423b-4e5a-38a8-805f-59cf1275dffe",
+  feed_group: "715bfe90-833e-3459-9700-036ac28d3fd4",
   posts: [],
   nextPage: null,
   loading: false,
