@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { IoStar } from "react-icons/io5";
 import { Context as DataContext } from "../../../context/DataContext";
+import { containsOffensiveWords } from "../../../context/AuthContext";
 
 const ReviewForm = ({ user, data, mutateReviews, setDispalyForm }) => {  
   const [rating, setRating] = useState(5);
@@ -18,6 +19,13 @@ const ReviewForm = ({ user, data, mutateReviews, setDispalyForm }) => {
       setMessage({
         class: "warning",
         content: "Please add your comment!",
+      });
+      return;
+    }
+    if (containsOffensiveWords(comment)) {
+      setMessage({
+        class: "warning",
+        content: "Your comment includes offensive language. Please rephrase.",
       });
       return;
     }
@@ -63,11 +71,11 @@ const ReviewForm = ({ user, data, mutateReviews, setDispalyForm }) => {
                       <div className="wrapper-rating-form my-2">
                         <div className="comment-form-rating">
                           <ul className="review-stars">
-                            <li onClick={() => setRating(1)}><IoStar size={15} color={rating >= 1 && '#FFC78B'} /></li>
-                            <li onClick={() => setRating(2)}><IoStar size={15} color={rating >= 2 && '#FFC78B'} /></li>
-                            <li onClick={() => setRating(3)}><IoStar size={15} color={rating >= 3 && '#FFC78B'} /></li>
-                            <li onClick={() => setRating(4)}><IoStar size={15} color={rating >= 4 && '#FFC78B'} /></li>
-                            <li onClick={() => setRating(5)}><IoStar size={15} color={rating === 5 && '#FFC78B'} /></li>
+                            <li onClick={() => setRating(1)}><IoStar size={22} color={rating >= 1 && '#daa520'} /></li>
+                            <li onClick={() => setRating(2)}><IoStar size={22} color={rating >= 2 && '#daa520'} /></li>
+                            <li onClick={() => setRating(3)}><IoStar size={22} color={rating >= 3 && '#daa520'} /></li>
+                            <li onClick={() => setRating(4)}><IoStar size={22} color={rating >= 4 && '#daa520'} /></li>
+                            <li onClick={() => setRating(5)}><IoStar size={22} color={rating === 5 && '#daa520'} /></li>
                           </ul>
                         </div>
                         <label for="rating">Your Rating</label>

@@ -76,7 +76,7 @@ const Profile = () => {
       single_agency.location &&
       citiesList.length === 0
     ) {
-      getCities(single_agency.location.state_id);
+      getCities(single_agency.location?.state_id);
     }
   }, [single_agency, citiesList]);
 
@@ -127,7 +127,7 @@ const Profile = () => {
           callback: (item) => changeState(item, "state_id"),
           placeholder: "Select State",
           value: statesList.find(
-            (state) => state.value == single_agency.location.state_id
+            (state) => state.value == single_agency.location?.state_id
           ),
         },
         {
@@ -272,8 +272,8 @@ const Profile = () => {
         website:
           single_agency.links.find((link) => link.label == "website")?.url ??
           "",
-        state_id: single_agency.location.state_id,
-        city_id: single_agency.location.city_id,
+        state_id: single_agency.location?.state_id,
+        city_id: single_agency.location?.city_id,
         linkedin:
           single_agency.links.find((link) => link.label == "linkedin")?.url ??
           "",

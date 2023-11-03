@@ -23,7 +23,7 @@ const Reviews = ({ user, data }) => {
   return (
     <div id="reviews">
       <div className="average-rating d-flex align-items-center gap-2">
-        Creative Reviews
+        {data?.type === 'agencies' ? 'Agency' : 'Creative'} Reviews
         <div className="d-flex align-items-center gap-2">
           <IoStar size={22} color="#000" />
           {reviewsMeta?.average_rating?.toFixed(2) ?? 0.00 }

@@ -36,6 +36,7 @@ const Profile = () => {
   const {
     state: { single_agency, open_positions },
     getAgency,
+    getOpenPositions
   } = useContext(AgenciesContext);
 
   const {
@@ -46,7 +47,10 @@ const Profile = () => {
 
   useEffect(() => {
     if (page == "creative") getCreative(username);
-    else if (page == "agency") getAgency(username);
+    else if (page == "agency") { 
+      getAgency(username);
+      getOpenPositions(data.user_id);
+    };
   }, [page]);
 
   useEffect(() => {
@@ -88,7 +92,7 @@ const Profile = () => {
                   experience={creative_experience}
                 />
               ) : (
-                <AgencyContent data={data} jobs={open_positions} />
+                <AgencyContent user={user} data={data} jobs={open_positions} />
               )}
             </div>
             <div className="col-md-4 d-none d-md-block">

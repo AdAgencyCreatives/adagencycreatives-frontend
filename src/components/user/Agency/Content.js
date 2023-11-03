@@ -4,8 +4,10 @@ import "../../../styles/User/ProfileContent.scss";
 import { IoBriefcaseOutline, IoStar } from "react-icons/io5";
 import Tooltip from "../../Tooltip";
 import moment from "moment";
+import Reviews from "../Reviews";
 
-const Content = ({ data, jobs }) => {
+const Content = ({ user, data, jobs }) => {
+  console.log(jobs);
   return (
     <>
       <div className="content-section">
@@ -106,6 +108,9 @@ const Content = ({ data, jobs }) => {
           ))}
         </div>
       </div>
+      {user && data && (
+        <Reviews user={user} data={data} />
+      )}
     </>
   );
 };

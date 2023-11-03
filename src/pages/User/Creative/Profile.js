@@ -83,7 +83,7 @@ const Profile = () => {
   //Fetch initial Cities
   useEffect(() => {
     if (Object.keys(single_creative).length > 0 && citiesList.length === 0) {
-      getCities(single_creative.location.state_id);
+      getCities(single_creative.location?.state_id ?? 0);
     }
   }, [single_creative, citiesList]);
 
@@ -133,7 +133,7 @@ const Profile = () => {
           data: statesList,
           callback: (item) => changeState(item, "state_id"),
           placeholder: "Select State",
-          value: statesList.find((state) => state.value == single_creative.location.state_id)
+          value: statesList.find((state) => state.value == single_creative.location?.state_id)
         },
         {
           label: "",
@@ -142,7 +142,7 @@ const Profile = () => {
           data: [],
           placeholder: "Select City",
           callback: (item) => handleDropdownChange(item, "city_id"),
-          value: citiesList.find((city) => city.value == single_creative.location.city_id)
+          value: citiesList.find((city) => city.value == single_creative.location?.city_id)
         },
         {
           label: "Portfolio Site",
@@ -283,8 +283,8 @@ const Profile = () => {
         linkedin:
           single_creative.links?.find((link) => link.label == "linkedin")
             ?.url ?? "",
-        state_id: single_creative.location.state_id,
-        city_id: single_creative.location.city_id,
+        state_id: single_creative.location?.state_id,
+        city_id: single_creative.location?.city_id,
         phone_number: "",
         about: single_creative.about,
         industry_experience: single_creative.industry_experience.map(
