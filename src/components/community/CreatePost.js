@@ -8,7 +8,7 @@ import Divider from "../Divider";
 import ModalCss from "../../styles/Modal/PostModal.scss";
 import ImagePicker from "./Modals/ImagePicker";
 import { useContext, useEffect, useCallback } from "react";
-import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as AuthContext, containsOffensiveWords } from "../../context/AuthContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import Placeholder from "../../assets/images/placeholder.png";
 import { Editor } from '@tinymce/tinymce-react';
@@ -34,6 +34,7 @@ const CreatePost = () => {
 
   const [open, setOpen] = useState(false);
   const [editorLoading, setEditorLoading] = useState(true);
+  const [hasOffensiveWords, setHasOffensiveWords] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [showPicker, setShowPicker] = useState(false);
@@ -41,6 +42,12 @@ const CreatePost = () => {
   const [imagePickerOpen, setImagePickerOpen] = useState(false);
 
   const doSavePost = () => {
+    if (containsOffensiveWords(content)) {
+      setHasOffensiveWords(true);
+      return;
+    }
+    setHasOffensiveWords(false);
+
     savePost({
       "group_id": feed_group,
       "content": content,
@@ -58,6 +65,10 @@ const CreatePost = () => {
   useEffect(() => {
     setHaltRefresh(open);
   }, [open]);
+
+  useEffect(() => {
+    setHasOffensiveWords(containsOffensiveWords(content));
+  }, [content]);
 
   useEffect(() => {
     const handler = (e) => {
@@ -155,6 +166,13 @@ const CreatePost = () => {
           </div>
           <Divider />
           <div className="postmodal-footer">
+          <div className="postmodal-offensive-words">
+            {hasOffensiveWords && (
+              <div className="message">
+                Your post includes offensive language. Please rephrase.
+              </div>
+            )}
+            </div>
             <div className="postmodal-action">
               <button className={"btn btn-post d-" + (!editorLoading ? 'show' : 'none')} onClick={() => doSavePost()}>Post</button>
             </div>
