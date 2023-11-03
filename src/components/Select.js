@@ -8,7 +8,7 @@ const Select = (props) => {
         ...theme,
         colors: {
           ...theme.colors,
-          primary: "#d3a11f",
+          primary: "#daa520",
           primary25: "#c99e2d5c",
           primary50: "#c99e2d5c",
         },

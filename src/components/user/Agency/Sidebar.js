@@ -92,26 +92,22 @@ const Sidebar = ({ data }) => {
               <div className="text mb-3">Agency</div>
               <div className="value d-flex flex-wrap gap-3">
                 {linkedin && (
-                  <button className="btn btn-dark w-100 py-3">
-                    <Link
-                      className="text-light fs-5"
-                      to={linkedin}
-                      target="_blank"
-                    >
-                      LinkedIn
-                    </Link>
-                  </button>
+                  <Link
+                    className="text-light fs-5 btn btn-dark w-100 py-3"
+                    to={linkedin}
+                    target="_blank"
+                  >
+                    LinkedIn
+                  </Link>
                 )}
                 {website && (
-                  <button className="btn btn-dark w-100 py-3">
-                    <Link
-                      className="text-light fs-5"
-                      to={website}
-                      target="_blank"
-                    >
-                      Website
-                    </Link>
-                  </button>
+                  <Link
+                    className="text-light fs-5 btn btn-dark w-100 py-3"
+                    to={website}
+                    target="_blank"
+                  >
+                    Website
+                  </Link>
                 )}
               </div>
             </div>
