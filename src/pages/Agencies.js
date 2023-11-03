@@ -91,10 +91,19 @@ const Agencies = () => {
                     </h3>
                     {item.location && (
                       <div className="job-location location">
-                        <IoLocationOutline />
+                        {item.location && item.location.state && item.location.city ? (
+                          <IoLocationOutline />
+                        ) : (
+                          <></>
+                        )}
                         <Link to={`/agency-location/${item.location.state}`}>
-                          {item.location.state},
+                          {item.location.state}
                         </Link>
+                        {item.location && item.location.state && item.location.city ? (
+                          <span>,&nbsp;</span>
+                        ) : (
+                          <></>
+                        )}
                         <Link to={`/agency-location/${item.location.city}`}>
                           {item.location.city}
                         </Link>

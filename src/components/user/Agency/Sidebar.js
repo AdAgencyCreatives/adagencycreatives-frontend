@@ -74,8 +74,13 @@ const Sidebar = ({ data }) => {
                       to={`/agency-location/${data.location.state}`}
                       className="mt-0 fw-normal"
                     >
-                      {data.location.state},
+                      {data.location.state}
                     </Link>
+                    {data.location && data.location.state && data.location.city ? (
+                      <span>,&nbsp;</span>
+                    ) : (
+                      <></>
+                    )}
                     <Link
                       to={`/agency-location/${data.location.city}`}
                       className="mt-0 fw-normal"

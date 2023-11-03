@@ -76,13 +76,14 @@ const reducer = (state, action) => {
   }
 };
 
-const status = 0;
+const status=1;
 
 const getFeaturedJobs = (dispatch) => {
   return async () => {
     try {
       const response = await api.get(
-        "/jobs?filter[is_featured]=1&filter[is_urgent]=1&filter[status]="+status
+        // "/jobs?filter[is_featured]=1&filter[is_urgent]=1&filter[status]="+status
+        "/jobs?filter[is_featured]=1&filter[status]=1"
       );
       console.log({ response });
       dispatch({

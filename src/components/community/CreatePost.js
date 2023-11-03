@@ -7,12 +7,13 @@ import { useRef, useState } from "react";
 import Divider from "../Divider";
 import ModalCss from "../../styles/Modal/PostModal.scss";
 import ImagePicker from "./Modals/ImagePicker";
-import { useContext, useEffect, useCallback } from "react";
+import { useContext, useEffect, createRef, useCallback } from "react";
 import { Context as AuthContext, containsOffensiveWords } from "../../context/AuthContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import Placeholder from "../../assets/images/placeholder.png";
 import { Editor } from '@tinymce/tinymce-react';
 import { CircularProgress } from "@mui/material";
+import ContentEditable from 'react-contenteditable'
 
 const CreatePost = () => {
 
@@ -35,6 +36,7 @@ const CreatePost = () => {
   const [open, setOpen] = useState(false);
   const [editorLoading, setEditorLoading] = useState(true);
   const [hasOffensiveWords, setHasOffensiveWords] = useState(false);
+  const [useRichEditor, setUseRichEditor] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [showPicker, setShowPicker] = useState(false);
@@ -62,8 +64,17 @@ const CreatePost = () => {
     }
   }, [formSubmit]);
 
+  const onEditableRef = (node) => {
+    if (node && node.el && node.el.current) {
+      node.el.current.focus();
+    }
+  }
+
   useEffect(() => {
     setHaltRefresh(open);
+    if (open) {
+
+    }
   }, [open]);
 
   useEffect(() => {
@@ -71,13 +82,15 @@ const CreatePost = () => {
   }, [content]);
 
   useEffect(() => {
-    const handler = (e) => {
-      if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
-        e.stopImmediatePropagation();
-      }
-    };
-    document.addEventListener("focusin", handler);
-    return () => document.removeEventListener("focusin", handler);
+    if (useRichEditor) {
+      const handler = (e) => {
+        if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
+          e.stopImmediatePropagation();
+        }
+      };
+      document.addEventListener("focusin", handler);
+      return () => document.removeEventListener("focusin", handler);
+    }
   }, []);
 
   const performInit = (evt, editor) => {
@@ -135,23 +148,34 @@ const CreatePost = () => {
             </div>
           </div>
           <div className="postmodal-body">
-            <div className={"d-" + (editorLoading ? 'show' : 'none')}>
-              <CircularProgress />
-            </div>
-            <Editor
-              onInit={(evt, editor) => performInit(evt, editor)}
-              apiKey='0de1wvfzr5x0z7za5hi7txxvlhepurk5812ub5p0fu5tnywh'
-              init={{
-                height: 250,
-                menubar: false,
-                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                content_style: 'body { font-family:Jost, Arial, sans-serify; font-size:14pt }',
-                placeholder: 'What do you want to talk about?',
-              }}
-              initialValue=""
-              onChange={(e) => setContent(editorRef.current ? editorRef.current.getContent() : "")}
-            />
+            {useRichEditor ? (
+              <>
+                <div className={"d-" + (editorLoading ? 'show' : 'none')}>
+                  <CircularProgress />
+                </div>
+                <Editor
+                  onInit={(evt, editor) => performInit(evt, editor)}
+                  apiKey='0de1wvfzr5x0z7za5hi7txxvlhepurk5812ub5p0fu5tnywh'
+                  init={{
+                    height: 250,
+                    menubar: false,
+                    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                    content_style: 'body { font-family:Jost, Arial, sans-serify; font-size:14pt }',
+                    placeholder: 'What do you want to talk about?',
+                  }}
+                  initialValue=""
+                  onChange={(e) => setContent(editorRef.current ? editorRef.current.getContent() : "")}
+                />
+              </>
+            ) : (
+              <ContentEditable
+                ref={onEditableRef}
+                className="postmodal-editor"
+                html=""
+                placeholder="What do you want to talk about?"
+                tagName="div" />
+            )}
             <div className="post-options d-flex">
               <div className="item" >
                 <FiCamera />
@@ -166,15 +190,15 @@ const CreatePost = () => {
           </div>
           <Divider />
           <div className="postmodal-footer">
-          <div className="postmodal-offensive-words">
-            {hasOffensiveWords && (
-              <div className="message">
-                Your post includes offensive language. Please rephrase.
-              </div>
-            )}
+            <div className="postmodal-offensive-words">
+              {hasOffensiveWords && (
+                <div className="message">
+                  Your post includes offensive language. Please rephrase.
+                </div>
+              )}
             </div>
             <div className="postmodal-action">
-              <button className={"btn btn-post d-" + (!editorLoading ? 'show' : 'none')} onClick={() => doSavePost()}>Post</button>
+              <button className={"btn btn-post" + (useRichEditor ? (!editorLoading ? ' d-show' : ' d-none') : "")} onClick={() => doSavePost()}>Post</button>
             </div>
           </div>
           <ImagePicker open={imagePickerOpen} handleImagePickerClose={() => setImagePickerOpen(false)} />

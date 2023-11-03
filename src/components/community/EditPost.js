@@ -8,7 +8,7 @@ import Divider from "../Divider";
 import ModalCss from "../../styles/Modal/PostModal.scss";
 import ImagePicker from "./Modals/ImagePicker";
 import { useContext, useEffect, useCallback } from "react";
-import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as AuthContext, containsOffensiveWords } from "../../context/AuthContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import Placeholder from "../../assets/images/placeholder.png";
 import { Editor } from '@tinymce/tinymce-react';
@@ -34,6 +34,8 @@ const EditPost = (props) => {
 
     const [open, setOpen] = useState(false);
     const [editorLoading, setEditorLoading] = useState(true);
+    const [hasOffensiveWords, setHasOffensiveWords] = useState(false);
+    const [useRichEditor, setUseRichEditor] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [showPicker, setShowPicker] = useState(false);
@@ -41,6 +43,12 @@ const EditPost = (props) => {
     const [imagePickerOpen, setImagePickerOpen] = useState(false);
 
     const doUpdatePost = () => {
+        if (containsOffensiveWords(content)) {
+            setHasOffensiveWords(true);
+            return;
+        }
+        setHasOffensiveWords(false);
+
         updatePost(props.post.id, {
             "content": content,
             "status": "published",
@@ -66,13 +74,19 @@ const EditPost = (props) => {
     }, [open]);
 
     useEffect(() => {
-        const handler = (e) => {
-            if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
-                e.stopImmediatePropagation();
-            }
-        };
-        document.addEventListener("focusin", handler);
-        return () => document.removeEventListener("focusin", handler);
+        setHasOffensiveWords(containsOffensiveWords(content));
+    }, [content]);
+
+    useEffect(() => {
+        if (useRichEditor) {
+            const handler = (e) => {
+                if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
+                    e.stopImmediatePropagation();
+                }
+            };
+            document.addEventListener("focusin", handler);
+            return () => document.removeEventListener("focusin", handler);
+        }
     }, []);
 
     const performInit = (evt, editor) => {
@@ -136,6 +150,13 @@ const EditPost = (props) => {
                     </div>
                     <Divider />
                     <div className="postmodal-footer">
+                        <div className="postmodal-offensive-words">
+                            {hasOffensiveWords && (
+                                <div className="message">
+                                    Your post includes offensive language. Please rephrase.
+                                </div>
+                            )}
+                        </div>
                         <div className="postmodal-action">
                             <button className={"btn btn-post d-" + (!editorLoading ? 'show' : 'none')} onClick={() => doUpdatePost()}>Update Post</button>
                         </div>

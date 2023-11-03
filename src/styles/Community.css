@@ -578,3 +578,14 @@ img.post-avatar {
     align-self: flex-end;
 }
 
+.postmodal-editor {
+    padding: 10px;
+    border: 1px solid lightgray;
+    width: 100%;
+    height: 100%;
+}
+
+.postmodal-editor:focus {
+    border: 1px solid darkgray;
+}
+
