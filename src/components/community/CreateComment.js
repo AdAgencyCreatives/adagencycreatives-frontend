@@ -4,10 +4,6 @@ import {
 import { FiCamera, FiImage, FiPaperclip } from "react-icons/fi";
 import { Modal } from "@mui/material";
 import { useRef, useState } from "react";
-import ContentEditable from "react-contenteditable";
-import ModalCss from "../../styles/Modal/PostModal.scss";
-import EmojiPicker, { Emoji } from "emoji-picker-react";
-import { BsEmojiSmile } from "react-icons/bs";
 import Divider from "../Divider";
 import ImagePicker from "./Modals/ImagePicker";
 import { useContext, useEffect, useCallback } from "react";
@@ -15,6 +11,7 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import Placeholder from "../../assets/images/placeholder.png";
 import { Editor } from '@tinymce/tinymce-react';
+import { CircularProgress } from "@mui/material";
 
 const CreateComment = (props) => {
 
@@ -35,6 +32,7 @@ const CreateComment = (props) => {
   } = useContext(CommunityContext);
 
   const [open, setOpen] = useState(false);
+  const [editorLoading, setEditorLoading] = useState(true);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [showPicker, setShowPicker] = useState(false);
@@ -77,6 +75,7 @@ const CreateComment = (props) => {
   }, []);
 
   const performInit = (evt, editor) => {
+    setEditorLoading(false);
     editorRef.current = editor;
     editor.focus();
   };
@@ -119,8 +118,11 @@ const CreateComment = (props) => {
             </div>
           </div>
           <div className="postmodal-body">
-          <Editor
-              onInit={(evt, editor) => performInit(evt, editor) }
+            <div className={"d-" + (editorLoading ? 'show' : 'none')}>
+              <CircularProgress />
+            </div>
+            <Editor
+              onInit={(evt, editor) => performInit(evt, editor)}
               apiKey='0de1wvfzr5x0z7za5hi7txxvlhepurk5812ub5p0fu5tnywh'
               init={{
                 height: 250,
@@ -137,7 +139,7 @@ const CreateComment = (props) => {
           <Divider />
           <div className="postmodal-footer">
             <div className="postmodal-action">
-              <button className="btn btn-post" onClick={() => doSaveComment()}>Comment</button>
+              <button className={"btn btn-post d-" + (!editorLoading ? 'show' : 'none')} onClick={() => doSaveComment()}>Comment</button>
             </div>
           </div>
         </div>
