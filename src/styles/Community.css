@@ -552,3 +552,29 @@ img.post-avatar {
 .user-slug:hover {
     color: var(--color-primary);
 }
+
+.postmodal-footer {
+    display: flex;
+    flex-direction: row;
+}
+
+.postmodal-footer .postmodal-offensive-words {
+    margin-right: 10px;
+    flex: 1;
+}
+.postmodal-footer .postmodal-offensive-words .message {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: pink;
+    color: darkred;
+    font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: 14pt;
+    font-weight: 500;
+    line-height: 1;
+}
+
+.postmodal-footer .postmodal-action {
+    flex: 0;
+    align-self: flex-end;
+}
+
