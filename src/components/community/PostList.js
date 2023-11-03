@@ -29,7 +29,6 @@ const PostList = () => {
     }
     if (token) {
       if (feed_group && feed_group.length > 0) {
-        console.log(post_updated ? post_updated : "")
         getPosts(feed_group);
         console.log("Fetched Posts: " + (new Date())); // trick to force component re-render
       } else {
@@ -46,7 +45,7 @@ const PostList = () => {
         };
       });
       // Reload posts after 10 seconds
-    }, 10 * 1000);
+    }, 15 * 1000);
 
     return () => clearInterval(interval);
   }, []);

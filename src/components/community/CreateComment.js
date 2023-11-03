@@ -14,14 +14,16 @@ import { useContext, useEffect, useCallback } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import Placeholder from "../../assets/images/placeholder.png";
+import { Editor } from '@tinymce/tinymce-react';
 
 const CreateComment = (props) => {
 
-  const inputRef = useCallback(node => {
-    if (node && node.focus) {
-      node.focus()
+  const editorRef = useRef(null);
+  const editorLog = () => {
+    if (editorRef.current) {
+      console.log(editorRef.current.getContent());
     }
-  }, [])
+  };
 
   const {
     state: { token, user },
@@ -47,9 +49,9 @@ const CreateComment = (props) => {
 
   const doSaveComment = () => {
     saveComment({
-        "user_id": user.uuid,
-        "post_id": props.post.id,
-        "content": content
+      "user_id": user.uuid,
+      "post_id": props.post.id,
+      "content": content
     });
   };
 
@@ -63,6 +65,22 @@ const CreateComment = (props) => {
   useEffect(() => {
     setHaltRefresh(open);
   }, [open]);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
+        e.stopImmediatePropagation();
+      }
+    };
+    document.addEventListener("focusin", handler);
+    return () => document.removeEventListener("focusin", handler);
+  }, []);
+
+  const performInit = (evt, editor) => {
+    editorRef.current = editor;
+    editor.focus();
+  };
+
 
   return (
     <div className="post-form">
@@ -101,38 +119,20 @@ const CreateComment = (props) => {
             </div>
           </div>
           <div className="postmodal-body">
-            <ContentEditable
-              id="new-input"
-              placeholder="Write a Creative comment on this post..."
-              html={content}
-              onChange={(evt) => setContent(evt.target.value)}
-              innerRef={inputRef}
+          <Editor
+              onInit={(evt, editor) => performInit(evt, editor) }
+              apiKey='0de1wvfzr5x0z7za5hi7txxvlhepurk5812ub5p0fu5tnywh'
+              init={{
+                height: 250,
+                menubar: false,
+                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                content_style: 'body { font-family:Jost, Arial, sans-serify; font-size:14pt }',
+                placeholder: 'Comment on this post',
+              }}
+              initialValue=""
+              onChange={(e) => setContent(editorRef.current ? editorRef.current.getContent() : "")}
             />
-            <div className="emoticons">
-              <div className="toggle-emo">
-                <BsEmojiSmile onClick={() => setShowPicker((val) => !val)} />
-
-                {showPicker && (
-                  <EmojiPicker
-                    previewConfig={{ showPreview: false }}
-                    skinTonesDisabled={true}
-                    height={300}
-                    suggestedEmojisMode=""
-                    categories={[
-                      "smileys_people",
-                      "animals_nature",
-                      "food_drink",
-                      "travel_places",
-                      "activities",
-                      "objects",
-                      "symbols",
-                      "flags",
-                    ]}
-                    onEmojiClick={selectEmoji}
-                  />
-                )}
-              </div>
-            </div>
           </div>
           <Divider />
           <div className="postmodal-footer">

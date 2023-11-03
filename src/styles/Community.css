@@ -162,18 +162,20 @@ img.post-avatar {
 
 .post-time {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     color: rgb(125, 129, 132);
-    font-size: 12pt;
+    font-size: 10pt;
     align-items: center;
 }
 
 .post-time svg {
-    font-size: 12pt;
+    font-size: 14pt;
     margin-right: 5px;
 }
 
 .post-time span {
-    font-size: 12pt;
+    font-size: 10pt;
 }
 
 .post-action {

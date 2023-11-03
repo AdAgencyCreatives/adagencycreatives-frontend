@@ -10,7 +10,7 @@ import {
 } from "react-icons/io5";
 import UserAvatar from "../../assets/images/user1.jpg";
 import Miami from "../../assets/images/Miami.png";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Divider from "../Divider";
 import ContentEditable from "react-contenteditable";
 
@@ -47,7 +47,7 @@ const PostItem = (props) => {
 
     const {
         state: { posts, post_likes, like_action, post_updated, post_comments, comment_added, comment_updated, comment_deleted },
-        getPosts, getLikes, toggleLike, deletePost, getComments, 
+        getPosts, getLikes, toggleLike, deletePost, getComments,
     } = useContext(CommunityContext);
 
     const [defaultAvatar, setDefaultAvatar] = useState("https://adagencycreatives.noorsofttechdev.com/static/media/placeholder.12b7e9aaed5e5566bc6a.png");

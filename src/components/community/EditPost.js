@@ -4,10 +4,6 @@ import {
 import { FiCamera, FiImage, FiPaperclip } from "react-icons/fi";
 import { Modal } from "@mui/material";
 import { useRef, useState } from "react";
-import ContentEditable from "react-contenteditable";
-import ModalCss from "../../styles/Modal/PostModal.scss";
-import EmojiPicker, { Emoji } from "emoji-picker-react";
-import { BsEmojiSmile } from "react-icons/bs";
 import Divider from "../Divider";
 import ImagePicker from "./Modals/ImagePicker";
 import { useContext, useEffect, useCallback } from "react";
@@ -15,13 +11,16 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import Placeholder from "../../assets/images/placeholder.png";
 
+import { Editor } from '@tinymce/tinymce-react';
+
 const EditPost = (props) => {
 
-    const inputRef = useCallback(node => {
-        if (node && node.focus) {
-            node.focus()
+    const editorRef = useRef(null);
+    const editorLog = () => {
+        if (editorRef.current) {
+            console.log(editorRef.current.getContent());
         }
-    }, [])
+    };
 
     const {
         state: { token, user },
@@ -39,12 +38,6 @@ const EditPost = (props) => {
     const [content, setContent] = useState("");
     const [imagePickerOpen, setImagePickerOpen] = useState(false);
 
-    const selectEmoji = (emojiData) => {
-        console.log(emojiData.getEmojiUrl);
-        setContent((prev) => (prev += emojiData.emoji));
-        setShowPicker(false);
-    };
-
     const doUpdatePost = () => {
         updatePost(props.post.id, {
             "content": content,
@@ -56,7 +49,7 @@ const EditPost = (props) => {
     useEffect(() => {
         if (!formSubmit) {
             handleClose();
-            if(props.onUpdatePost) {
+            if (props.onUpdatePost) {
                 props.onUpdatePost();
             }
         }
@@ -69,6 +62,21 @@ const EditPost = (props) => {
     useEffect(() => {
         setHaltRefresh(open);
     }, [open]);
+
+    useEffect(() => {
+        const handler = (e) => {
+            if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
+                e.stopImmediatePropagation();
+            }
+        };
+        document.addEventListener("focusin", handler);
+        return () => document.removeEventListener("focusin", handler);
+    }, []);
+
+    const performInit = (evt, editor) => {
+        editorRef.current = editor;
+        editor.focus();
+    };
 
     return (
         <>
@@ -94,38 +102,20 @@ const EditPost = (props) => {
                         </div>
                     </div>
                     <div className="postmodal-body">
-                        <ContentEditable
-                            id="new-input"
-                            placeholder="What do you want to talk about?"
-                            html={content}
-                            onChange={(evt) => setContent(evt.target.value)}
-                            innerRef={inputRef}
+                        <Editor
+                            onInit={(evt, editor) => performInit(evt, editor)}
+                            apiKey='0de1wvfzr5x0z7za5hi7txxvlhepurk5812ub5p0fu5tnywh'
+                            init={{
+                                height: 250,
+                                menubar: false,
+                                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                                content_style: 'body { font-family:Jost, Arial, sans-serify; font-size:14pt }',
+                                placeholder: 'What do you want to talk about?',
+                            }}
+                            initialValue={props.post.content}
+                            onChange={(e) => setContent(editorRef.current ? editorRef.current.getContent() : "")}
                         />
-                        <div className="emoticons">
-                            <div className="toggle-emo">
-                                <BsEmojiSmile onClick={() => setShowPicker((val) => !val)} />
-
-                                {showPicker && (
-                                    <EmojiPicker
-                                        previewConfig={{ showPreview: false }}
-                                        skinTonesDisabled={true}
-                                        height={300}
-                                        suggestedEmojisMode=""
-                                        categories={[
-                                            "smileys_people",
-                                            "animals_nature",
-                                            "food_drink",
-                                            "travel_places",
-                                            "activities",
-                                            "objects",
-                                            "symbols",
-                                            "flags",
-                                        ]}
-                                        onEmojiClick={selectEmoji}
-                                    />
-                                )}
-                            </div>
-                        </div>
                         <div className="post-options d-flex">
                             <div className="item" onClick={() => setImagePickerOpen(true)} >
                                 <FiCamera />
@@ -141,7 +131,7 @@ const EditPost = (props) => {
                     <Divider />
                     <div className="postmodal-footer">
                         <div className="postmodal-action">
-                            <button className="btn btn-post" onClick={() => doUpdatePost()}>Post</button>
+                            <button className="btn btn-post" onClick={() => doUpdatePost()}>Update Post</button>
                         </div>
                     </div>
                     <ImagePicker open={imagePickerOpen} handleImagePickerClose={() => setImagePickerOpen(false)} />

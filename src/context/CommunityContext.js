@@ -2,7 +2,7 @@ import { api } from "../api/api";
 import createDataContext from "./createDataContext";
 
 const state = {
-  feed_group: "bc6fe768-7a95-3606-9d00-4d7fc464384d",
+  feed_group: "b903423b-4e5a-38a8-805f-59cf1275dffe",
   posts: [],
   nextPage: null,
   loading: false,
@@ -25,11 +25,11 @@ const state = {
   halt_refresh: false,
 };
 
-const appendNewPosts = (oldPosts, newPosts) => {
+const appendNewPosts = (state, oldPosts, newPosts) => {
   if(!oldPosts || !oldPosts.length) {
     return newPosts;
   }
-  let uniquePosts = [];
+  let filteredNewPosts = [];
   for (let index = 0; index < newPosts.length; index++) {
     const newPost = newPosts[index];
     let postFound = false;
@@ -41,10 +41,19 @@ const appendNewPosts = (oldPosts, newPosts) => {
       }
     }
     if(!postFound) {
-      uniquePosts.push(newPost);
+      filteredNewPosts.push(newPost);
     }
   }
-  return [...uniquePosts, ...oldPosts];
+
+  let filteredOldPosts = [];
+  for (let idx = 0; idx < oldPosts.length; idx++) {
+    const post = oldPosts[idx];
+    if(!state.post_deleted || post.id != state.post_deleted) {
+      filteredOldPosts.push(post);
+    }
+  }
+
+  return [...filteredNewPosts, ...filteredOldPosts];
 };
 
 const reducer = (state, action) => {
@@ -52,7 +61,8 @@ const reducer = (state, action) => {
     case "set_posts":
       return {
         ...state,
-        posts: appendNewPosts(state.posts, action.payload.data),
+        posts: appendNewPosts(state, state.posts, action.payload.data),
+        // posts: action.payload.data,
         nextPage: action.payload.links.next,
       };
     case "set_new_members":
