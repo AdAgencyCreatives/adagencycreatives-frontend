@@ -6,7 +6,7 @@ const SlideInMessage = (props) => {
         if (props.message && props.message.length > 0) {
             window.setTimeout(function () {
                 props.setMessage('');
-            }, 3000);
+            }, (props.delay ? props.delay : 3000));
         }
     }, [props.message]);
 

@@ -9,78 +9,99 @@ import {
   IoMailOpen,
   IoPersonAdd,
 } from "react-icons/io5";
-import Nathan from "../../assets/images/NathanWalker_ProfilePic-150x150.jpg";
+import Placeholder from "../../assets/images/placeholder.png";
+import { useContext, useEffect, useState } from "react"
+import RestrictedLounge from "../../components/RestrictedLounge";
+import { Context as AuthContext } from "../../context/AuthContext";
+import { getMyFriends, getMyFriendShips } from "../../context/FriendsDataContext";
+
+import MyFriendWidget from "../../components/community/MyFriendWidget";
 
 const Friends = () => {
-  const { username } = useParams();
-  return (
-    <div className="dark-container">
-      <div className="container-fluid px-2 px-md-5">
-        <div className="row">
-          <div className="col-12">
-            <Header username={username} />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-2 mb-3">
-            <LeftSidebar />
-          </div>
-          <div className="col-md-10">
-            <div className="row g-4">
-              {Array.apply(11, { length: 10 }).map((value, index) => {
-                return (
-                  <div className="col-md-4 col-sm-6 col-12" key={`ag-${index}`}>
-                    <div className="sliderContent members-list">
-                      <Link to="">
-                        <img
-                          src={Nathan}
-                          className="candidateLogo"
-                          width={150}
-                          height={150}
-                        />
-                      </Link>
-                      <Link className="text-black" to="">
-                        <div className="agencyName">Nathan Walker</div>
-                      </Link>
-                      <div className="position">Design Lead</div>
-                      <div className="job-location location">
-                        <IoLocationOutline />
-                        <a href="#">Austin,</a>
-                        <a href="#">Texas</a>
-                      </div>
 
-                      <div className="user-actions">
-                        <button className="btn">
-                          <IoPersonAdd />
-                        </button>
-                        <button className="btn btn-outline">
-                          <IoMailOpen />
-                        </button>
+  const [myFriends, setMyFriends] = useState([]);
+  const [myFriendShips, setMyFriendShips] = useState([]);
+
+  const {
+    state: { role, user, token },
+  } = useContext(AuthContext);
+
+  const queryParams = new URLSearchParams(window.location.search)
+  const friendshipsParam = queryParams.get("friendships")
+
+  const { username } = useParams();
+
+  const getMyFriendsAsync = async () => {
+    let result = await getMyFriends();
+    setMyFriends(result)
+  };
+
+  const getMyFriendShipsAsync = async (id, status) => {
+    let result = await getMyFriendShips(id, status);
+    setMyFriendShips(result)
+  };
+
+  useEffect(() => {
+    if (user) {
+      if (!friendshipsParam || !(friendshipsParam != "all" || friendshipsParam == "pending" || friendshipsParam == "accepted" || friendshipsParam == "declined" || friendshipsParam == "cancelled")) {
+        getMyFriendsAsync();
+      } else {
+        getMyFriendShipsAsync(user.uuid, friendshipsParam);
+      }
+    }
+  }, [user, friendshipsParam]);
+
+  return (
+    <>
+      {token && role && (role == "admin" || role == "creative") ? (
+        <div className="dark-container">
+          <div className="container-fluid px-2 px-md-5">
+            <div className="row">
+              <div className="col-12">
+                <Header username={username} />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-2 mb-3">
+                <LeftSidebar />
+              </div>
+              <div className="col-md-10">
+                <div className="row g-4">
+                  {myFriends && myFriends.map((my_friend, index) => {
+                    return (
+                      <MyFriendWidget key={"my-friend-" + my_friend.user.uuid} my_friend={my_friend} />
+                    );
+                  })}
+
+                  {myFriendShips && myFriendShips.map((my_friendship, index) => {
+                    return (
+                      <MyFriendWidget key={"my-friendship-" + my_friendship.user.uuid} my_friend={my_friendship} />
+                    );
+                  })}
+                </div>
+                {/* <div className="row mt-3">
+                  <div className="col-12">
+                    <p className="user-count">Viewing 1 - 11 of 11 members</p>
+                    <div className="user-pagination">
+                      <div className="page next">
+                        <IoArrowBack />
+                      </div>
+                      <div className="page current">1</div>
+                      <div className="page">2</div>
+                      <div className="page next">
+                        <IoArrowForward />
                       </div>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-            <div className="row mt-3">
-              <div className="col-12">
-                <p className="user-count">Viewing 1 - 11 of 11 members</p>
-                <div className="user-pagination">
-                  <div className="page next">
-                    <IoArrowBack />
-                  </div>
-                  <div className="page current">1</div>
-                  <div className="page">2</div>
-                  <div className="page next">
-                    <IoArrowForward />
-                  </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      ) : (
+        <RestrictedLounge />
+      )}
+    </>
   );
 };
 

@@ -1,47 +1,36 @@
+import Placeholder from "../assets/images/placeholder.png";
 import LeftSidebar from "../components/community/LeftSidebar";
 import Nathan from "../assets/images/NathanWalker_ProfilePic-150x150.jpg";
 import { IoEyeOutline, IoTimeOutline, IoTrashOutline } from "react-icons/io5";
 import { IconButton, Tooltip } from "@mui/material";
 import "../styles/Notifications.scss";
 import { Link } from "react-router-dom";
+import { Context as AuthContext } from "../context/AuthContext";
 
-const notifications = [
-  {
-    avatar: Nathan,
-    username: "Ad Agency Creatives",
-    time: "6 hours ago",
-    content: "Ad Agency Creatives sent you a new private message",
-  },
-  {
-    avatar: Nathan,
-    username: "Ad Agency Creatives",
-    time: "6 hours ago",
-    content: "Ad Agency Creatives sent you a new private message",
-    link: "#",
-  },
-  {
-    avatar: Nathan,
-    username: "Ad Agency Creatives",
-    time: "6 hours ago",
-    content: "Ad Agency Creatives sent you a new private message",
-    link: "#",
-  },
-  {
-    avatar: Nathan,
-    username: "Ad Agency Creatives",
-    time: "6 hours ago",
-    content: "Ad Agency Creatives sent you a new private message",
-    link: "#",
-  },
-  {
-    avatar: Nathan,
-    username: "Ad Agency Creatives",
-    time: "6 hours ago",
-    content: "Ad Agency Creatives sent you a new private message",
-    link: "#",
-  },
-];
+import { getNotifications } from "../context/NotificationsDataContext";
+import { useState, useEffect, useContext } from "react";
+import TimeAgo from "../components/TimeAgo";
+import UtcToLocalDateTime from "../components/UtcToLocalDateTime";
+
 const Notifications = () => {
+
+  const [notifications, setNotifications] = useState([]);
+
+  const {
+    state: { role, user, token },
+} = useContext(AuthContext);
+
+  const getNotificationsAsync = async (creative) => {
+    let result = await getNotifications();
+    setNotifications(result);
+  };
+
+  useEffect(() => {
+        if (user) {
+          getNotificationsAsync();
+        }
+    }, [user]);
+
   return (
     <div className="dark-container">
       <div className="container-fluid px-2 px-md-5">
@@ -56,20 +45,21 @@ const Notifications = () => {
           </div>
           <div className="col-md-10">
             <div className="notif-list">
-              {notifications.map((item, index) => {
+              {notifications && notifications.map((item, index) => {
                 return (
                   <div className="notif-item" key={`ag-${index}`}>
                     <div className="user-avatar">
-                      <img src={item.avatar} height={50} width={50} />
+                      <img src={item.user.image || Placeholder} alt="" height={50} width={50} />
                     </div>
                     <div className="notif-details">
-                      <div className="username">{item.username}</div>
+                      <div className="username">{item.user.username}</div>
                       <div className="notif-time">
                         <IoTimeOutline />
-                        {item.time}
+                        <TimeAgo datetime={item.created_at} />
+                        <UtcToLocalDateTime datetime={item.created_at} />
                       </div>
                       <Link to={item.link} className="notif-content text-dark">
-                        {item.content}
+                        {item.message}
                       </Link>
                     </div>
                     <div className="notif-actions">

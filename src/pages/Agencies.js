@@ -91,7 +91,7 @@ const Agencies = () => {
                     </h3>
                     {item.location && (
                       <div className="job-location location">
-                        {item.location && item.location.state && item.location.city ? (
+                        {item.location && (item.location.state || item.location.city) ? (
                           <IoLocationOutline />
                         ) : (
                           <></>

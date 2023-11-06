@@ -13,6 +13,7 @@ import { Context as CommunityContext } from "../../context/CommunityContext";
 import Placeholder from "../../assets/images/placeholder.png";
 import { Editor } from '@tinymce/tinymce-react';
 import { CircularProgress } from "@mui/material";
+import ContentEditable from 'react-contenteditable'
 
 const EditPost = (props) => {
 
@@ -69,6 +70,12 @@ const EditPost = (props) => {
         setContent(props.post.content);
     }, [props.post.content]);
 
+    const onEditableRef = (node) => {
+        if (node && node.el && node.el.current) {
+            node.el.current.focus();
+        }
+    }
+
     useEffect(() => {
         setHaltRefresh(open);
     }, [open]);
@@ -109,7 +116,7 @@ const EditPost = (props) => {
                 <div className="create-post-modal post-modal">
                     <div className="postmodal-header">
                         <div className="user-avatar">
-                            <img src={user ? user.image : Placeholder} height={50} width={50} />
+                            <img src={user ? user.image : Placeholder} height={50} width={50} alt="" />
                         </div>
                         <div className="user-meta">
                             <p className="username mb-0">{user ? user.first_name + ' ' + user.last_name : 'User'} :: Edit Post</p>
@@ -119,31 +126,44 @@ const EditPost = (props) => {
                         </div>
                     </div>
                     <div className="postmodal-body">
-                        <div className={"d-" + (editorLoading ? 'show' : 'none')}>
-                            <CircularProgress />
-                        </div>
-                        <Editor
-                            onInit={(evt, editor) => performInit(evt, editor)}
-                            apiKey='0de1wvfzr5x0z7za5hi7txxvlhepurk5812ub5p0fu5tnywh'
-                            init={{
-                                height: 250,
-                                menubar: false,
-                                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                                content_style: 'body { font-family:Jost, Arial, sans-serify; font-size:14pt }',
-                                placeholder: 'What do you want to talk about?',
-                            }}
-                            initialValue={content}
-                            onChange={(e) => setContent(editorRef.current ? editorRef.current.getContent() : "")}
-                        />
+                        {useRichEditor ? (
+                            <>
+                                <div className={"d-" + (editorLoading ? 'show' : 'none')}>
+                                    <CircularProgress />
+                                </div>
+                                <Editor
+                                    onInit={(evt, editor) => performInit(evt, editor)}
+                                    apiKey='0de1wvfzr5x0z7za5hi7txxvlhepurk5812ub5p0fu5tnywh'
+                                    init={{
+                                        height: 250,
+                                        menubar: false,
+                                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                                        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                                        content_style: 'body { font-family:Jost, Arial, sans-serify; font-size:14pt }',
+                                        placeholder: 'What do you want to talk about?',
+                                    }}
+                                    initialValue={content}
+                                    onChange={(e) => setContent(editorRef.current ? editorRef.current.getContent() : "")}
+                                />
+                            </>
+                        ) : (
+                            <ContentEditable
+                                ref={onEditableRef}
+                                className="postmodal-editor"
+                                html={content}
+                                placeholder="What do you want to talk about?"
+                                tagName="div"
+                                onChange={(e) => setContent(e.target.value)}
+                            />
+                        )}
                         <div className="post-options d-flex">
-                            <div className="item" onClick={() => setImagePickerOpen(true)} >
+                            <div className="item" >
                                 <FiCamera />
                             </div>
-                            <div className="item">
+                            <div className="item" onClick={() => setImagePickerOpen(true)}>
                                 <FiImage />
                             </div>
-                            <div className="item">
+                            <div className="item" onClick={() => setImagePickerOpen(true)}>
                                 <FiPaperclip />
                             </div>
                         </div>
@@ -158,7 +178,8 @@ const EditPost = (props) => {
                             )}
                         </div>
                         <div className="postmodal-action">
-                            <button className={"btn btn-post d-" + (!editorLoading ? 'show' : 'none')} onClick={() => doUpdatePost()}>Update Post</button>
+
+                            <button className={"btn btn-post" + (useRichEditor ? (!editorLoading ? ' d-show' : ' d-none') : "")} onClick={() => doUpdatePost()}>Update Post</button>
                         </div>
                     </div>
                     <ImagePicker open={imagePickerOpen} handleImagePickerClose={() => setImagePickerOpen(false)} />

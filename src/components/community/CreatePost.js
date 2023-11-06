@@ -7,7 +7,7 @@ import { useRef, useState } from "react";
 import Divider from "../Divider";
 import ModalCss from "../../styles/Modal/PostModal.scss";
 import ImagePicker from "./Modals/ImagePicker";
-import { useContext, useEffect, createRef, useCallback } from "react";
+import { useContext, useEffect, useCallback } from "react";
 import { Context as AuthContext, containsOffensiveWords } from "../../context/AuthContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import Placeholder from "../../assets/images/placeholder.png";
@@ -72,9 +72,6 @@ const CreatePost = () => {
 
   useEffect(() => {
     setHaltRefresh(open);
-    if (open) {
-
-    }
   }, [open]);
 
   useEffect(() => {
@@ -172,9 +169,11 @@ const CreatePost = () => {
               <ContentEditable
                 ref={onEditableRef}
                 className="postmodal-editor"
-                html=""
+                html={content}
                 placeholder="What do you want to talk about?"
-                tagName="div" />
+                tagName="div"
+                onChange={(e) => setContent(e.target.value)}
+              />
             )}
             <div className="post-options d-flex">
               <div className="item" >
@@ -183,7 +182,7 @@ const CreatePost = () => {
               <div className="item" onClick={() => setImagePickerOpen(true)}>
                 <FiImage />
               </div>
-              <div className="item">
+              <div className="item" onClick={() => setImagePickerOpen(true)}>
                 <FiPaperclip />
               </div>
             </div>

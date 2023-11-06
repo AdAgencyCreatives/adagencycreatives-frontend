@@ -12,7 +12,7 @@ input.search-community-members {
     font-size: 20px;
 }
 
-input.search-community-members:focus-visible{
+input.search-community-members:focus-visible {
     outline: none;
 }
 
@@ -54,7 +54,7 @@ span.count-number {
     background-color: #eee;
 }
 
-@media (max-width:768px){
+@media (max-width:768px) {
     input.search-community-members {
         width: 100%;
     }
@@ -66,4 +66,29 @@ span.count-number {
 
 .sliderContent.members-list .member-data {
     flex: 1;
+}
+
+.MuiDialog-root.message-modal {}
+
+.MuiDialog-root.message-modal .MuiDialogTitle-root {
+    margin: 10px;
+    border-radius: 10px;
+    background-color: #d3a11f !important;
+}
+
+.MuiDialog-root.message-modal .MuiDialogContent-root {
+    padding-top: 20px !important;
+}
+
+.friendship-request-status {
+    background-color: #d3a11f;
+    padding: 0px 10px;
+    font-size: 10pt;
+    color: #fff;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+    user-select: none;
+    -moz-user-select: none;
 }

@@ -13,6 +13,7 @@ import { Context as CommunityContext } from "../../context/CommunityContext";
 import Placeholder from "../../assets/images/placeholder.png";
 import { Editor } from '@tinymce/tinymce-react';
 import { CircularProgress } from "@mui/material";
+import ContentEditable from 'react-contenteditable'
 
 const EditComment = (props) => {
 
@@ -72,7 +73,14 @@ const EditComment = (props) => {
 
   useEffect(() => {
     setContent(props.comment.content);
-  }, [props.comment]);
+  }, [props.comment.content]);
+
+
+  const onEditableRef = (node) => {
+    if (node && node.el && node.el.current) {
+      node.el.current.focus();
+    }
+  }
 
   useEffect(() => {
     setHaltRefresh(open);
@@ -114,7 +122,7 @@ const EditComment = (props) => {
         <div className="create-post-modal post-modal">
           <div className="postmodal-header">
             <div className="user-avatar">
-              <img src={user ? user.image : Placeholder} height={50} width={50} />
+              <img src={user ? user.image : Placeholder} height={50} width={50} alt="" />
             </div>
             <div className="user-meta">
               <p className="username mb-0">{user ? user.first_name + ' ' + user.last_name : 'User'} :: Edit Comment</p>
@@ -124,49 +132,62 @@ const EditComment = (props) => {
             </div>
           </div>
           <div className="postmodal-body">
-            <div className={"d-" + (editorLoading ? 'show' : 'none')}>
-              <CircularProgress />
-            </div>
-            <Editor
-              onInit={(evt, editor) => performInit(evt, editor)}
-              apiKey='0de1wvfzr5x0z7za5hi7txxvlhepurk5812ub5p0fu5tnywh'
-              init={{
-                height: 250,
-                menubar: false,
-                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                content_style: 'body { font-family:Jost, Arial, sans-serify; font-size:14pt }',
-                placeholder: 'Comment on this post',
-              }}
-              initialValue={props.comment.content}
-              onChange={(e) => setContent(editorRef.current ? editorRef.current.getContent() : "")}
-            />
-          </div>
-          <div className="post-options d-flex">
-            <div className="item" >
-              <FiCamera />
-            </div>
-            <div className="item" onClick={() => setImagePickerOpen(true)}>
-              <FiImage />
-            </div>
-            <div className="item">
-              <FiPaperclip />
-            </div>
-          </div>
-          <Divider />
-          <div className="postmodal-footer">
-            <div className="postmodal-offensive-words">
-              {hasOffensiveWords && (
-                <div className="message">
-                  Your post includes offensive language. Please rephrase.
+            {useRichEditor ? (
+              <>
+                <div className={"d-" + (editorLoading ? 'show' : 'none')}>
+                  <CircularProgress />
                 </div>
-              )}
+                <Editor
+                  onInit={(evt, editor) => performInit(evt, editor)}
+                  apiKey='0de1wvfzr5x0z7za5hi7txxvlhepurk5812ub5p0fu5tnywh'
+                  init={{
+                    height: 250,
+                    menubar: false,
+                    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                    content_style: 'body { font-family:Jost, Arial, sans-serify; font-size:14pt }',
+                    placeholder: 'Comment on this post',
+                  }}
+                  initialValue={content}
+                  onChange={(e) => setContent(editorRef.current ? editorRef.current.getContent() : "")}
+                />
+              </>
+            ) : (
+              <ContentEditable
+                ref={onEditableRef}
+                className="postmodal-editor"
+                html={content}
+                placeholder="Comment on this post"
+                tagName="div"
+                onChange={(e) => setContent(e.target.value)}
+              />
+            )}
+            <div className="post-options d-flex">
+              <div className="item" >
+                <FiCamera />
+              </div>
+              <div className="item" onClick={() => setImagePickerOpen(true)}>
+                <FiImage />
+              </div>
+              <div className="item" onClick={() => setImagePickerOpen(true)}>
+                <FiPaperclip />
+              </div>
             </div>
-            <div className="postmodal-action">
-              <button className={"btn btn-post d-" + (!editorLoading ? 'show' : 'none')} onClick={() => doUpdateComment()}>Update Comment</button>
+            <Divider />
+            <div className="postmodal-footer">
+              <div className="postmodal-offensive-words">
+                {hasOffensiveWords && (
+                  <div className="message">
+                    Your post includes offensive language. Please rephrase.
+                  </div>
+                )}
+              </div>
+              <div className="postmodal-action">
+                <button className={"btn btn-post" + (useRichEditor ? (!editorLoading ? ' d-show' : ' d-none') : "")} onClick={() => doUpdateComment()}>Update Comment</button>
+              </div>
             </div>
+            <ImagePicker open={imagePickerOpen} handleImagePickerClose={() => setImagePickerOpen(false)} />
           </div>
-          <ImagePicker open={imagePickerOpen} handleImagePickerClose={() => setImagePickerOpen(false)} />
         </div>
       </Modal >
     </>

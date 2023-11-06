@@ -52,7 +52,7 @@ const LeftSidebar = () => {
             <NavLink to="/notifications">
               <IoNotificationsOutline />
               <div className="item-name">Notifications</div>
-              <span className="count">2</span>
+              {/* <span className="count">2</span> */}
             </NavLink>
           </li>
         </ul>

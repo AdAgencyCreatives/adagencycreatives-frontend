@@ -51,7 +51,7 @@ function App() {
       script.src = 'https://js.pusher.com/8.2.0/pusher.min.js';
       script.async = true;
       console.log(token);
-      
+
       // Enable pusher logging - don't include this in production
       Pusher.logToConsole = true;
 
@@ -61,10 +61,10 @@ function App() {
       });
 
       var channel = pusher.subscribe("messanger." + user.uuid);
-      channel.bind('private_msg', function(data) {
+      channel.bind('private_msg', function (data) {
         console.log(data);
       });
- 
+
     }
   }, [token, user]);
 

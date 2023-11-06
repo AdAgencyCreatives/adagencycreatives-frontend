@@ -4,6 +4,7 @@ import createDataContext from "./createDataContext";
 const state = {
   feed_group: "715bfe90-833e-3459-9700-036ac28d3fd4",
   posts: [],
+  trending_posts: [],
   nextPage: null,
   loading: false,
   single_post: {},
@@ -26,7 +27,7 @@ const state = {
 };
 
 const appendNewPosts = (state, oldPosts, newPosts) => {
-  if(!oldPosts || !oldPosts.length) {
+  if (!oldPosts || !oldPosts.length) {
     return newPosts;
   }
   let filteredNewPosts = [];
@@ -35,12 +36,12 @@ const appendNewPosts = (state, oldPosts, newPosts) => {
     let postFound = false;
     for (let idx = 0; idx < oldPosts.length; idx++) {
       const post = oldPosts[idx];
-      if(post.id == newPost.id) {
-        postFound=true;
+      if (post.id == newPost.id) {
+        postFound = true;
         break;
       }
     }
-    if(!postFound) {
+    if (!postFound) {
       filteredNewPosts.push(newPost);
     }
   }
@@ -48,7 +49,7 @@ const appendNewPosts = (state, oldPosts, newPosts) => {
   let filteredOldPosts = [];
   for (let idx = 0; idx < oldPosts.length; idx++) {
     const post = oldPosts[idx];
-    if(!state.post_deleted || post.id != state.post_deleted) {
+    if (!state.post_deleted || post.id != state.post_deleted) {
       filteredOldPosts.push(post);
     }
   }
@@ -63,6 +64,12 @@ const reducer = (state, action) => {
         ...state,
         posts: appendNewPosts(state, state.posts, action.payload.data),
         // posts: action.payload.data,
+        nextPage: action.payload.links.next,
+      };
+    case "set_trending_posts":
+      return {
+        ...state,
+        trending_posts: action.payload.data,
         nextPage: action.payload.links.next,
       };
     case "set_new_members":
@@ -96,7 +103,7 @@ const reducer = (state, action) => {
         ...state,
         post_deleted: action.payload,
       };
-      case "add_comment":
+    case "add_comment":
       return {
         ...state,
         comment_added: action.payload,
@@ -111,7 +118,7 @@ const reducer = (state, action) => {
         ...state,
         comment_deleted: action.payload,
       };
-      case "add_reply":
+    case "add_reply":
       return {
         ...state,
         reply_added: action.payload,
@@ -169,6 +176,18 @@ const getPosts = (dispatch) => {
       //console.log("fetched new posts at: " + (new Date()).toString());
       dispatch({
         type: "set_posts",
+        payload: response.data,
+      });
+    } catch (error) { }
+  };
+};
+
+const getTrendingPosts = (dispatch) => {
+  return async (group_id) => {
+    try {
+      const response = await api.get("/trending_posts?filter[group_id]=" + group_id);
+      dispatch({
+        type: "set_trending_posts",
         payload: response.data,
       });
     } catch (error) { }
@@ -293,7 +312,7 @@ const saveComment = (dispatch) => {
       const response = await api.post("/comments", data);
       dispatch({
         type: "add_comment",
-        payload: {post_id: response.data.data.post_id, comment_uuid: response.data.data.uuid},
+        payload: { post_id: response.data.data.post_id, comment_uuid: response.data.data.uuid },
       });
     } catch (error) { }
     dispatch({
@@ -333,7 +352,7 @@ const updateComment = (dispatch) => {
       const response = await api.patch("/comments/" + comment_uuid, data);
       dispatch({
         type: "update_comment",
-        payload: {post_id: response.data.data.post_id, comment_uuid: response.data.data.uuid},
+        payload: { post_id: response.data.data.post_id, comment_uuid: response.data.data.uuid },
       });
     } catch (error) { }
     dispatch({
@@ -374,7 +393,7 @@ const deleteComment = (dispatch) => {
       const response = await api.delete("/comments/" + comment_uuid);
       dispatch({
         type: "delete_comment",
-        payload: {post_id: post_id, comment_uuid: comment_uuid},
+        payload: { post_id: post_id, comment_uuid: comment_uuid },
       });
     } catch (error) { }
   };
@@ -400,6 +419,7 @@ export const { Context, Provider } = createDataContext(
   reducer,
   {
     getPosts,
+    getTrendingPosts,
     getNewMembers,
     getFeedGroup,
     loadPosts,

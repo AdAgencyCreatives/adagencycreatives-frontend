@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import AdAgencyLogo from "../../assets/images/AdAgency.png";
-import { IoLocationOutline, IoMailOpen, IoPersonAdd } from "react-icons/io5";
+import { IoLocationOutline, IoMailOpen, IoPeopleOutline, IoPersonAdd } from "react-icons/io5";
 
 const Header = ({ username }) => {
   return (
@@ -9,7 +9,7 @@ const Header = ({ username }) => {
         <img src={AdAgencyLogo} />
       </div>
       <div className="user-details">
-        <div className="username">Ad Agency Creatives</div>
+        <div className="username">{username}</div>
         <div class="member-title-location text-white">
           <div class="candidate-job text-white">Community Founder</div>
           <div class="candidate-location with-icon">
@@ -19,8 +19,13 @@ const Header = ({ username }) => {
           </div>
         </div>
         <div className="user-actions">
-          <button className="btn btn-dark btn-outline"><IoPersonAdd /> Add Friend</button>
-          <button className="btn btn-dark btn-outline"><IoMailOpen /> Message</button>
+          <Link className="btn btn-dark btn-outline" to="/community-members"><IoPersonAdd /> Add Friend</Link>
+          <Link className="btn btn-dark btn-outline" to="/messages"><IoMailOpen /> Message</Link>
+          <Link className="btn btn-dark btn-outline" to="/friends?friendships=all"><IoPeopleOutline /> All Friendships</Link>
+          <Link className="btn btn-dark btn-outline" to="/friends?friendships=pending"><IoPeopleOutline /> Pending</Link>
+          <Link className="btn btn-dark btn-outline" to="/friends?friendships=accepted"><IoPeopleOutline /> Accepted</Link>
+          <Link className="btn btn-dark btn-outline" to="/friends?friendships=declined"><IoPeopleOutline /> Declined</Link>
+          <Link className="btn btn-dark btn-outline" to="/friends?friendships=cancelled"><IoPeopleOutline /> Cancelled</Link>
         </div>
       </div>
       {/* <div class="user-statistics">

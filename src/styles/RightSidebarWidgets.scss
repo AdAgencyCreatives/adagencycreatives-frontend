@@ -1,16 +1,24 @@
 .right-sidebar {
 
     .widget {
+        padding: 10px;
         background: white;
+        border-radius: 10px;
+        margin-bottom: 30px;
+    }
+
+    .widget-header {
         padding: 10px;
         border-radius: 10px;
-        margin-bottom: 50px;
+        background-color: #d3a11f;
     }
 
     .widget-title {
+        color: #fff;
         font-weight: 500;
         font-size: 18px;
     }
+
 
     .widget-content {
         margin-top: 15px;
@@ -112,4 +120,44 @@
     .react-calendar__navigation__prev2-button {
         display: none;
     }
+}
+
+.item.new-member-widget {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+.item.new-member-widget > * {
+    line-height: 1 !important;
+}
+
+.item.new-member-widget .item-title {
+    width: 35%;
+}
+
+.item.new-member-widget .item-industry-experience {
+    width:35%;
+    font-size: 10pt;
+}
+
+.item.new-member-widget .item-meta {
+    width: 20%;
+}
+
+.item-title a,
+.item-meta a {
+    color: #000 !important;
+    font-weight: 500 !important;
+}
+
+.item-meta a .activity {
+    color: #fff !important;
+    font-weight: 500 !important;
+}
+
+.item-title a:hover,
+.item-meta a:hover,
+.item-meta a:hover .activity {
+    color: #d3a11f !important;
 }

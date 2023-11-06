@@ -30,7 +30,7 @@ const JobDescription = () => {
             <div className="col-md-8">
               <div className="content-section">
                 <h1 className="content-title mt-0">Job Description</h1>
-                {single_job.description}
+                <div dangerouslySetInnerHTML={{__html: single_job.description}}></div>
                 {/* <h5 className="subtitle">About the job:</h5>
                 <p className="content">
                   Bakery Austin is currently seeking a proven, energetic, and
