@@ -7,7 +7,9 @@ import moment from "moment";
 import Reviews from "../Reviews";
 
 const Content = ({ user, data, jobs }) => {
-  console.log(jobs);
+  const isAgency = user?.role == "agency";
+  const isOwnProfile = isAgency && user?.uuid == data.user_id;
+
   return (
     <>
       <div className="content-section">
@@ -108,9 +110,7 @@ const Content = ({ user, data, jobs }) => {
           ))}
         </div>
       </div>
-      {user && data && (
-        <Reviews user={user} data={data} />
-      )}
+      {user && data && !isOwnProfile && <Reviews user={user} data={data} />}
     </>
   );
 };

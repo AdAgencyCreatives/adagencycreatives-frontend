@@ -86,7 +86,8 @@ const Profile = () => {
       Object.keys(single_agency).length > 0 &&
       industry.length &&
       media.length &&
-      statesList.length
+      statesList.length &&
+      (single_agency.location?.city_id ? citiesList.length : true)
     ) {
       setIsloading(false);
       setEditorState(
@@ -134,14 +135,14 @@ const Profile = () => {
           label: "",
           type: "dropdown",
           name: "city_id",
-          data: [],
+          data: citiesList,
           placeholder: "Select City",
           callback: (item) => handleDropdownChange(item, "city_id"),
-          /* value: citiesList.find((city) => {
-            console.log("filteringcityid", single_agency.location.city_id);
-            console.log("filtering", city.value);
-            return city.value == single_agency.location.city_id;
-          }), */
+          value:
+            single_agency.location?.city_id &&
+            citiesList.find(
+              (city) => city.value == single_agency.location.city_id
+            ),
         },
         {
           label: "Company LinkedIn",
@@ -199,8 +200,8 @@ const Profile = () => {
             single_agency.industry_experience.includes(item.label)
           ),
         },
-        /* {
-          label: "Media Experience",
+        {
+          label: "Media Speciality",
           required: true,
           type: "dropdown",
           data: media,
@@ -210,7 +211,7 @@ const Profile = () => {
           value: media.filter((item) =>
             single_agency.media_experience.includes(item.label)
           ),
-        }, */
+        },
         {
           label: "Workplace Preference",
           required: true,
@@ -253,7 +254,7 @@ const Profile = () => {
         },
       ]);
     }
-  }, [single_agency, user, media, industry, statesList]);
+  }, [single_agency, user, media, industry, statesList, citiesList]);
 
   // Cities update
   useEffect(() => {

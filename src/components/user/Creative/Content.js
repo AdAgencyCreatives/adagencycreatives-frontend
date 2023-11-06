@@ -4,12 +4,17 @@ import "../../../styles/User/ProfileContent.scss";
 import Reviews from "../Reviews";
 
 const Content = ({ user, data, education, experience }) => {
+
+  
+  const isCreative = user?.role == "creative";
+  const isOwnProfile = isCreative && user?.uuid == data.user_id;
+
   return (
     <>
       <div className="content-section">
         <h1 className="content-title">Portfolio Site</h1>
         <a href="https://www.williambroussard.com/" target="_blank">
-          <img src={portfolio} />
+          <img src={data.profile_image || portfolio} />
         </a>
       </div>
       {/* Education */}
@@ -68,7 +73,7 @@ const Content = ({ user, data, education, experience }) => {
       ) : (
         ""
       )}
-      {user && data && (
+      {user && data && !isOwnProfile && (
         <Reviews user={user} data={data} />
       )}
     </>

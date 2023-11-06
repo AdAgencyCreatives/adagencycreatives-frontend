@@ -38,7 +38,7 @@ const Header = ({ data }) => {
                   ))}
                 </div>
               )}
-              {data.location && (
+              {data.location.state && (
                 <div className="job-location location">
                   <IoLocationOutline />
                   <Link to={`/agency-location/${data.location.state}`}>

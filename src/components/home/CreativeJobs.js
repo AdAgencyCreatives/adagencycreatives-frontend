@@ -67,26 +67,38 @@ const CreativeJobs = () => {
                 <swiper-slide key={`slide${index}`}>
                   <div className="sliderContent job-slider p-3 p-md-4">
                     <div className="left-badge">
-                      {item.priority.is_featured && (
-                        <Tooltip title="Featured" type="featured">
-                          <button className="btn p-0 border-0 me-2">
-                            <IoStar
-                              size={15}
-                              className="icon-rounded star-badge featured"
-                            />
-                          </button>
-                        </Tooltip>
-                      )}
-                      {item.priority.is_urgent && (
-                        <Tooltip title="Urgent" type="urgent">
-                          <button className="btn p-0 border-0 me-2">
-                            <IoStar
-                              size={15}
-                              className="icon-rounded star-badge urgent"
-                            />
-                          </button>
-                        </Tooltip>
-                      )}
+                      {Object.keys(item.priority).map((key) => {
+                        if (item.priority[key]) {
+                          let parts = key.split("_");
+                          let type = parts[1];
+                          return (
+                            <Tooltip title={type} type={type}>
+                              <button className="btn p-0 border-0 me-2">
+                                <IoStar
+                                  size={20}
+                                  className={"icon-rounded star-badge " + type}
+                                />
+                              </button>
+                            </Tooltip>
+                          );
+                        }
+                      })}
+                      {Object.keys(item.workplace_preference).map((key) => {
+                        if (item.workplace_preference[key]) {
+                          let parts = key.split("_");
+                          let type = parts[1];
+                          return (
+                            <Tooltip title={type} type={type}>
+                              <button className="btn p-0 border-0 me-2">
+                                <IoStar
+                                  size={20}
+                                  className={"icon-rounded star-badge " + type}
+                                />
+                              </button>
+                            </Tooltip>
+                          );
+                        }
+                      })}
                     </div>
                     <div className="right-badge">
                       <Link

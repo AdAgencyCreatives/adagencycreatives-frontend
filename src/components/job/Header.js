@@ -13,7 +13,7 @@ import Tooltip from "../Tooltip";
 import moment from "moment";
 
 const Header = ({ data }) => {
-  console.log({data})
+  console.log({ data });
   return (
     <div className="container">
       <div className="row align-items-center justify-content-between">
@@ -84,6 +84,23 @@ const Header = ({ data }) => {
                     );
                   }
                 })}
+                {Object.keys(data.workplace_preference).map((key) => {
+                  if (data.workplace_preference[key]) {
+                    let parts = key.split("_");
+                    let type = parts[1];
+                    return (
+                      <Tooltip title={type} type={type}>
+                        <button className="btn p-0 border-0">
+                          <IoStar
+                            size={20}
+                            className={"icon-rounded star-badge " + type}
+                          />
+                        </button>
+                      </Tooltip>
+                    );
+                  }
+                })}
+
                 {/* <Tooltip title="Featured" type="featured">
                   <button className="btn p-0 border-0">
                     <IoStar

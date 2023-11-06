@@ -94,7 +94,8 @@ const Profile = () => {
       industry.length &&
       media.length &&
       statesList.length &&
-      employentType.length
+      employentType.length &&
+      (single_creative.location?.city_id ? citiesList.length : true)
     ) {
       setIsloading(false);
       setEditorState(
@@ -133,7 +134,9 @@ const Profile = () => {
           data: statesList,
           callback: (item) => changeState(item, "state_id"),
           placeholder: "Select State",
-          value: statesList.find((state) => state.value == single_creative.location?.state_id)
+          value: statesList.find(
+            (state) => state.value == single_creative.location?.state_id
+          ),
         },
         {
           label: "",
@@ -142,7 +145,11 @@ const Profile = () => {
           data: [],
           placeholder: "Select City",
           callback: (item) => handleDropdownChange(item, "city_id"),
-          value: citiesList.find((city) => city.value == single_creative.location?.city_id)
+          value:
+            single_creative.location?.city_id &&
+            citiesList.find(
+              (city) => city.value == single_creative.location?.city_id
+            ),
         },
         {
           label: "Portfolio Site",
@@ -255,7 +262,15 @@ const Profile = () => {
       ];
       setFields(fields);
     }
-  }, [single_creative, user, media, industry, statesList, employentType]);
+  }, [
+    single_creative,
+    user,
+    media,
+    industry,
+    statesList,
+    employentType,
+    citiesList,
+  ]);
 
   // Cities update
   useEffect(() => {

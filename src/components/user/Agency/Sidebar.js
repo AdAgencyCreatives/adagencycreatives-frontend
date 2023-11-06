@@ -17,6 +17,11 @@ const Sidebar = ({ data }) => {
   if (workplacePreference.is_onsite) {
     preferences.push("Onsite");
   }
+
+  const renderListData = (list) => {
+    return list.slice(0, 5).join(", ") + (list.length > 5 ? " +" : "");
+  };
+
   return (
     <>
       <div className="sidebar-item">
@@ -58,65 +63,87 @@ const Sidebar = ({ data }) => {
               ""
             )}
           </div>
-          <div className="mt-4">
-            <div className="details">
-              <div className="text">Company Size</div>
-              <div className="value">{data.size}</div>
-            </div>
-          </div>
-          <div className="mt-4">
-            <div className="details">
-              <div className="text">Location:</div>
-              <div className="value">
-                {data.location && (
-                  <div className="job-location location">
-                    <Link
-                      to={`/agency-location/${data.location.state}`}
-                      className="mt-0 fw-normal"
-                    >
-                      {data.location.state}
-                    </Link>
-                    {data.location && data.location.state && data.location.city ? (
-                      <span>,&nbsp;</span>
-                    ) : (
-                      <></>
-                    )}
-                    <Link
-                      to={`/agency-location/${data.location.city}`}
-                      className="mt-0 fw-normal"
-                    >
-                      {data.location.city}
-                    </Link>
-                  </div>
-                )}
+          {data.media_experience.length ? (
+            <div className="mt-4">
+              <div className="details">
+                <div className="text">Media Specialty</div>
+                <div className="value">
+                  {renderListData(data.media_experience)}
+                </div>
               </div>
             </div>
-          </div>
-          <div className="mt-4">
-            <div className="details">
-              <div className="text mb-3">Agency</div>
-              <div className="value d-flex flex-wrap gap-3">
-                {linkedin && (
-                  <Link
-                    className="text-light fs-5 btn btn-dark w-100 py-3"
-                    to={linkedin}
-                    target="_blank"
-                  >
-                    LinkedIn
-                  </Link>
-                )}
-                {website && (
-                  <Link
-                    className="text-light fs-5 btn btn-dark w-100 py-3"
-                    to={website}
-                    target="_blank"
-                  >
-                    Website
-                  </Link>
-                )}
+          ) : (
+            ""
+          )}
+          {data.size && (
+            <div className="mt-4">
+              <div className="details">
+                <div className="text">Company Size</div>
+                <div className="value">{data.size}</div>
               </div>
             </div>
-          </div>
+          )}
+          {data.location.state && (
+            <div className="mt-4">
+              <div className="details">
+                <div className="text">Location:</div>
+                <div className="value">
+                  {data.location && (
+                    <div className="job-location location">
+                      <Link
+                        to={`/agency-location/${data.location.state}`}
+                        className="mt-0 fw-normal"
+                      >
+                        {data.location.state}
+                      </Link>
+                      {data.location &&
+                      data.location.state &&
+                      data.location.city ? (
+                        <span>,&nbsp;</span>
+                      ) : (
+                        <></>
+                      )}
+                      <Link
+                        to={`/agency-location/${data.location.city}`}
+                        className="mt-0 fw-normal"
+                      >
+                        {data.location.city}
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+          {linkedin || website ? (
+            <div className="mt-4">
+              <div className="details">
+                <div className="text mb-3">Agency</div>
+                <div className="value d-flex flex-wrap gap-3">
+                  {linkedin && (
+                    <Link
+                      className="text-light fs-5 btn btn-dark w-100 py-3"
+                      to={linkedin}
+                      target="_blank"
+                    >
+                      LinkedIn
+                    </Link>
+                  )}
+                  {website && (
+                    <Link
+                      className="text-light fs-5 btn btn-dark w-100 py-3"
+                      to={website}
+                      target="_blank"
+                    >
+                      Website
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <div className="sidebar-item mt-4">

@@ -84,6 +84,22 @@ const JobList = ({ data, showAgency = true }) => {
                           );
                         }
                       })}
+                      {Object.keys(item.workplace_preference).map((key) => {
+                        if (item.workplace_preference[key]) {
+                          let parts = key.split("_");
+                          let type = parts[1];
+                          return (
+                            <Tooltip title={type} type={type}>
+                              <button className="btn p-0 border-0 me-2">
+                                <IoStar
+                                  size={20}
+                                  className={"icon-rounded star-badge " + type}
+                                />
+                              </button>
+                            </Tooltip>
+                          );
+                        }
+                      })}
                     </div>
                   </div>
                 </div>

@@ -55,7 +55,7 @@ const Header = ({ data, role, user }) => {
                 {/* <span class="featured-text">Featured</span> */}
               </div>
               <div className="position">{data.title}</div>
-              {data.location && (
+              {data.location.state && (
                 <div className="job-location location">
                   <IoLocationOutline />
                   <Link to={`/creative-location/${data.location.state}`}>
