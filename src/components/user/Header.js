@@ -21,7 +21,7 @@ const Header = ({ username }) => {
         <div className="user-actions">
           <Link className="btn btn-dark btn-outline" to="/community-members"><IoPersonAdd /> Add Friend</Link>
           <Link className="btn btn-dark btn-outline" to="/messages"><IoMailOpen /> Message</Link>
-          <Link className="btn btn-dark btn-outline" to="/friends?friendships=all"><IoPeopleOutline /> All Friendships</Link>
+          <Link className="btn btn-dark btn-outline" to="/friends?friendships=requests"><IoPeopleOutline /> Requests</Link>
           <Link className="btn btn-dark btn-outline" to="/friends?friendships=pending"><IoPeopleOutline /> Pending</Link>
           <Link className="btn btn-dark btn-outline" to="/friends?friendships=accepted"><IoPeopleOutline /> Accepted</Link>
           <Link className="btn btn-dark btn-outline" to="/friends?friendships=declined"><IoPeopleOutline /> Declined</Link>
