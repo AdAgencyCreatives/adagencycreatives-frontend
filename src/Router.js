@@ -24,6 +24,8 @@ import LoginAs from "./pages/LoginAs";
 import { useContext, useEffect } from "react";
 import { Context as AuthContext } from "./context/AuthContext";
 import Logout from "./pages/Logout";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 
 export const router = createBrowserRouter([
   {
@@ -119,6 +121,18 @@ export const router = createBrowserRouter([
         element: <CopyWriting />,
       },
 
+      {
+        path: "/logout",
+        element: <Logout />,
+      },
+      {
+        path: "/privacy-policy",
+        element: <Privacy />,
+      },
+      {
+        path: "/terms-and-conditions",
+        element: <Terms />,
+      },
       {
         path: "/logout",
         element: <Logout />,

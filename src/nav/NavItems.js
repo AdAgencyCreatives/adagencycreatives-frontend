@@ -22,7 +22,7 @@ export const navItems = [
       { name: "Feedback", hashLink: "#feedback", link: "/contact" },
     ],
   },
-  { name: "Creatives", link: "/creatives" },
+  { name: "Creatives", link: "/creatives", auth:true },
   { name: "The Lounge", link: "/community", roles: ["admin", "creative"], restrictedMessage: 'Please login as Creative to access' },
   { name: "Agencies", link: "/agencies" },
   { name: "Contact", link: "/contact" },

@@ -5,6 +5,7 @@ import {
   IoArrowBack,
   IoArrowForward,
   IoBriefcaseOutline,
+  IoMenu,
   IoStar,
 } from "react-icons/io5";
 import moment from "moment";
@@ -13,6 +14,7 @@ import { Link } from "react-router-dom";
 import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import JobList from "../../components/job/JobList";
+import { Drawer } from "@mui/material";
 
 const emailFreq = [
   { value: 1, label: "Daily" },
@@ -123,6 +125,7 @@ const Jobs = () => {
     let updatedFilters = { ...filters, [type]: item };
     setFilters(updatedFilters);
     filterJobs(updatedFilters);
+    setMobileOpen(false)
   };
 
   const removeFilter = (item, key = false) => {
@@ -145,133 +148,162 @@ const Jobs = () => {
     paginateJob(page, filters);
   };
 
+  const drawerWidth = "75%";
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen((prevState) => !prevState);
+  };
+
+  const getFilters = () => (
+    <div className="filters">
+      <h1 className="jobs-filter-title">Search Jobs</h1>
+      <div className="filter-item">
+        <div className="filter-label">Industry Job Title</div>
+        <div className="filter-box">
+          <Select
+            options={jobTitles}
+            placeholder="select one"
+            onChange={(item) => addFilter(item, "title")}
+          />
+        </div>
+      </div>
+
+      <div className="filter-item">
+        <div className="filter-label">Job Location (State / Major City)</div>
+        <div className="filter-box mb-3">
+          <Select
+            options={statesList}
+            onChange={changeState}
+            placeholder="Filter By State"
+          />
+        </div>
+        <div className="filter-box">
+          <Select
+            options={citiesList}
+            placeholder="Filter By City"
+            onChange={(item) => addFilter(item, "city")}
+          />
+        </div>
+      </div>
+
+      <div className="filter-item">
+        <div className="filter-label">Employment Type</div>
+        <div className="filter-box">
+          <Select
+            options={employment}
+            placeholder="select one"
+            onChange={(item) => addFilter(item, "employment_type")}
+          />
+        </div>
+      </div>
+
+      <div className="filter-item">
+        <div className="filter-label">Media Experience</div>
+        <div className="filter-box">
+          <Select
+            options={media}
+            isMulti
+            placeholder="select up to three"
+            onChange={(item) => addFilter(item, "media_experience")}
+          />
+        </div>
+      </div>
+
+      <div className="filter-item">
+        <div className="filter-label">Remote Opportunity</div>
+        <div className="filter-box">
+          <div className="form-check">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="remote"
+              value={1}
+              onChange={() => addFilter({ label: "Yes", value: 1 }, "remote")}
+            />
+            <label className="form-check-label">Yes</label>
+          </div>
+          <div className="form-check">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="remote"
+              value={0}
+              onChange={() => addFilter({ label: "No", value: 0 }, "remote")}
+            />
+            <label className="form-check-label">No</label>
+          </div>
+        </div>
+      </div>
+
+      <div className="filter-btn">
+        <button className="btn btn-filter">Find Jobs</button>
+      </div>
+
+      <div className="job_notification">
+        <h1 className="jobs-filter-title">Request Job Notifications</h1>
+        <div className="notif-input-box">
+          <h5 className="notif-title fw-normal">Title</h5>
+          <Select
+            options={jobTitles}
+            placeholder="Select title"
+            onChange={(item) => setNotifCategory(item.value)}
+          />
+        </div>
+        {/* <div className="notif-input-box">
+        <h5 className="notif-title fw-normal">Email Frequency</h5>
+        <Select options={emailFreq} />
+      </div> */}
+        <div className="job-alert-button">
+          <button
+            className="btn btn-filter w-100"
+            onClick={() => requestNotifications(user.uuid, notifCategory)}
+          >
+            Save Job Alert
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const getDrawer = () => (
+    <Drawer
+      variant="temporary"
+      open={mobileOpen}
+      onClose={handleDrawerToggle}
+      ModalProps={{
+        keepMounted: true, // Better open performance on mobile.
+      }}
+      sx={{
+        display: { sm: "block", md: "none" },
+        "& .MuiDrawer-paper": {
+          //boxSizing: "border-box",
+          width: drawerWidth,
+        },
+      }}
+    >
+      {getFilters()}
+    </Drawer>
+  );
+
   return (
     <div className="light-container page-jobs mb-2 mt-md-5 mt-4">
       <div className="container-fluid px-md-5 px-3">
         <div className="row">
           <div className="col-md-4">
             {/* Jobs Sidebar */}
-            <div className="filters">
-              <h1 className="jobs-filter-title">Search Jobs</h1>
-              <div className="filter-item">
-                <div className="filter-label">Industry Job Title</div>
-                <div className="filter-box">
-                  <Select
-                    options={jobTitles}
-                    placeholder="select one"
-                    onChange={(item) => addFilter(item, "title")}
-                  />
-                </div>
-              </div>
-
-              <div className="filter-item">
-                <div className="filter-label">
-                  Job Location (State / Major City)
-                </div>
-                <div className="filter-box mb-3">
-                  <Select
-                    options={statesList}
-                    onChange={changeState}
-                    placeholder="Filter By State"
-                  />
-                </div>
-                <div className="filter-box">
-                  <Select
-                    options={citiesList}
-                    placeholder="Filter By City"
-                    onChange={(item) => addFilter(item, "city")}
-                  />
-                </div>
-              </div>
-
-              <div className="filter-item">
-                <div className="filter-label">Employment Type</div>
-                <div className="filter-box">
-                  <Select
-                    options={employment}
-                    placeholder="select one"
-                    onChange={(item) => addFilter(item, "employment_type")}
-                  />
-                </div>
-              </div>
-
-              <div className="filter-item">
-                <div className="filter-label">Media Experience</div>
-                <div className="filter-box">
-                  <Select
-                    options={media}
-                    isMulti
-                    placeholder="select up to three"
-                    onChange={(item) => addFilter(item, "media_experience")}
-                  />
-                </div>
-              </div>
-
-              <div className="filter-item">
-                <div className="filter-label">Remote Opportunity</div>
-                <div className="filter-box">
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="remote"
-                      value={1}
-                      onChange={() =>
-                        addFilter({ label: "Yes", value: 1 }, "remote")
-                      }
-                    />
-                    <label className="form-check-label">Yes</label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="remote"
-                      value={0}
-                      onChange={() =>
-                        addFilter({ label: "No", value: 0 }, "remote")
-                      }
-                    />
-                    <label className="form-check-label">No</label>
-                  </div>
-                </div>
-              </div>
-
-              <div className="filter-btn">
-                <button className="btn btn-filter">Find Jobs</button>
-              </div>
-
-              <div className="job_notification">
-                <h1 className="jobs-filter-title">Request Job Notifications</h1>
-                <div className="notif-input-box">
-                  <h5 className="notif-title fw-normal">Title</h5>
-                  <Select
-                    options={jobTitles}
-                    placeholder="Select title"
-                    onChange={(item) => setNotifCategory(item.value)}
-                  />
-                </div>
-                {/* <div className="notif-input-box">
-                  <h5 className="notif-title fw-normal">Email Frequency</h5>
-                  <Select options={emailFreq} />
-                </div> */}
-                <div className="job-alert-button">
-                  <button
-                    className="btn btn-filter w-100"
-                    onClick={() =>
-                      requestNotifications(user.uuid, notifCategory)
-                    }
-                  >
-                    Save Job Alert
-                  </button>
-                </div>
-              </div>
-            </div>
+            <div className="d-md-block d-none">{getFilters()}</div>
+            {getDrawer()}
           </div>
           <div className="col-md-8">
             {/* Jobs List */}
 
             <div className="jobs-list-container">
+              <div className="sidebar-toggle d-md-none d-inline-block">
+                <IoMenu
+                  onClick={() => setMobileOpen((prevState) => !prevState)}
+                />
+              </div>
               {Object.keys(filters).length ? (
                 <>
                   <div className="results-filter-wrapper">

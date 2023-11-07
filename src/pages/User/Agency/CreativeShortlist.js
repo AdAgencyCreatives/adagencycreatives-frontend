@@ -28,6 +28,7 @@ const CreativeShortlist = () => {
   const {
     state: { bookmarks },
     getBookmarks,
+    removeBookmark
   } = useContext(DataContext);
 
   const {
@@ -143,7 +144,7 @@ const CreativeShortlist = () => {
                         </Link>
                       </Tooltip>
                       <Tooltip title="Delete Candidate">
-                        <Link to="#">
+                        <Link onClick={() => removeBookmark(item.id)}>
                           <TfiClose />
                         </Link>
                       </Tooltip>

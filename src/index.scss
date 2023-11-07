@@ -214,6 +214,10 @@ li.page-item {
   position: relative;
 }
 
+.offset-top{
+  margin-top: 50px;
+}
+
 @media (min-width: 576px) {
   .container {
     max-width: 650px;

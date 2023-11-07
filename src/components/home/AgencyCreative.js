@@ -9,7 +9,7 @@ import useCreatives from "../../hooks/useCreatives";
 
 const AgencyCreatives = () => {
   const swiperElRef = useRef(null);
-  const {creatives} = useCreatives();
+  const {creatives} = useCreatives("home");
 
   useEffect(() => {
     const params = {
@@ -71,10 +71,10 @@ const AgencyCreatives = () => {
                     />
                     <div className="agencyName">{item.name}</div>
                     <div className="position">{item.title}</div>
-                    {item.location && (
+                    {item.location.state && (
                       <div className="job-location location">
                         <IoLocationOutline />
-                        <Link to={`/creative-location/${item.location.state}`}>{item.location.state},</Link>
+                        <Link to={`/creative-location/${item.location.state}`}>{item.location.state},&nbsp;</Link>
                         <Link to={`/creative-location/${item.location.city}`}>{item.location.city}</Link>
                       </div>
                     )}

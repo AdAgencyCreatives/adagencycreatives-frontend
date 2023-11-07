@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../styles/Footer.css";
 import { FaInstagram, FaInstagramSquare, FaLinkedinIn } from "react-icons/fa";
 
@@ -21,9 +22,9 @@ const Footer = () => {
             <div className="copyrights">
               <div className="d-flex justify-content-center flex-wrap">
                 <p>© 2023 Ad Agency Creatives. All Rights Reserved.</p>
-                <a href="#">Privacy Policy</a>
-                <a href="#">User Agreement</a>
-                <a href="#">Contact Us</a>
+                <Link to="/privacy-policy">Privacy Policy</Link>
+                <Link to="/terms-and-conditions">User Agreement</Link>
+                <Link to="/contact">Contact Us</Link>
               </div>
             </div>
           </div>

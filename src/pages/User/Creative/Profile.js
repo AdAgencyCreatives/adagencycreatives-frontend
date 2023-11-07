@@ -142,7 +142,7 @@ const Profile = () => {
           label: "",
           type: "dropdown",
           name: "city_id",
-          data: [],
+          data: citiesList,
           placeholder: "Select City",
           callback: (item) => handleDropdownChange(item, "city_id"),
           value:
@@ -273,13 +273,13 @@ const Profile = () => {
   ]);
 
   // Cities update
-  useEffect(() => {
+ /*  useEffect(() => {
     if (citiesList.length > 0 && fields.length) {
       let updatedFields = [...fields];
       updatedFields[4].data = citiesList;
       setFields(updatedFields);
     }
-  }, [citiesList, fields]);
+  }, [citiesList, fields]); */
 
   //Set initial form data
   useEffect(() => {

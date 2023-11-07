@@ -64,6 +64,18 @@ const getCreatives = (dispatch) => {
   };
 };
 
+const getHomeCreatives = (dispatch) => {
+  return async () => {
+    try {
+      const response = await api.get("/home/creatives");
+      dispatch({
+        type: "set_creatives",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
 const getCreative = (dispatch) => {
   return async (slug) => {
     try {
@@ -275,6 +287,7 @@ export const { Context, Provider } = createDataContext(
   reducer,
   {
     getCreatives,
+    getHomeCreatives,
     getStats,
     loadCreatives,
     getCreative,

@@ -1,5 +1,14 @@
 import ReactSelect from "react-select";
 
+const customStyles = {
+  option: (base, { data, isDisabled, isFocused, isSelected }) => {
+  return {
+    ...base,
+    color: isFocused ? "white" : base.color,
+  };
+}
+};
+
 const Select = (props) => {
   return (
     <ReactSelect
@@ -9,11 +18,12 @@ const Select = (props) => {
         colors: {
           ...theme.colors,
           primary: "#daa520",
-          primary25: "#c99e2d5c",
-          primary50: "#c99e2d5c",
+          primary25: "#daa520",
+          primary50: "#daa520",
         },
       })}
-    />
+      styles={{...props.styles,...customStyles}}
+      />
   );
 };
 

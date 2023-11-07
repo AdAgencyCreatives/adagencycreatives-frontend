@@ -3,8 +3,14 @@ import { Link } from "react-router-dom";
 import Tooltip from "../../components/Tooltip";
 import moment from "moment";
 import Placeholder from "../../assets/images/placeholder.png";
+import { useContext } from "react";
+import { Context } from "../../context/AuthContext";
 
-const JobList = ({ data, showAgency = true }) => {
+const JobList = ({ data, user, showAgency = true }) => {
+  const {
+    state: { role },
+  } = useContext(Context);
+
   return (
     <div className="jobs-list-container">
       {data.map((item) => (
@@ -106,17 +112,19 @@ const JobList = ({ data, showAgency = true }) => {
 
                 <div className="col-md-4">
                   <div className="d-flex justify-content-md-end mt-3 mt-md-0">
-                    <a className="btn-follow btn-action-job btn-add-job-shortlist">
+                    {/* <a className="btn-follow btn-action-job btn-add-job-shortlist">
                       <i className="flaticon-bookmark"></i>
-                    </a>
-                    <Link
-                      to={item.external_link}
-                      target="_blank"
-                      className="btn btn-apply btn-apply-job-external "
-                    >
-                      Apply Now
-                      <i className="next flaticon-right-arrow"></i>
-                    </Link>
+                    </a> */}
+                    {(role && role == "creative") && (
+                      <Link
+                        to={item.external_link}
+                        target="_blank"
+                        className="btn btn-apply btn-apply-job-external "
+                      >
+                        Apply Now
+                        <i className="next flaticon-right-arrow"></i>
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>

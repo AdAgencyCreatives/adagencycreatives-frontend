@@ -11,9 +11,16 @@ import "../../styles/User/ProfileHeader.scss";
 import { Link } from "react-router-dom";
 import Tooltip from "../Tooltip";
 import moment from "moment";
+import { Context } from "../../context/AuthContext";
+import { useContext } from "react";
 
 const Header = ({ data }) => {
   console.log({ data });
+
+  const {
+    state: { role },
+  } = useContext(Context);
+
   return (
     <div className="container">
       <div className="row align-items-center justify-content-between">
@@ -121,12 +128,14 @@ const Header = ({ data }) => {
             </div>
             <div className="col-md-4">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0">
-                <Link
-                  to={data.external_link}
-                  className="btn btn-dark btn-hover-primary px-5 py-3"
-                >
-                  Apply Now
-                </Link>
+                {role && role == "creative" && (
+                  <Link
+                    to={data.external_link}
+                    className="btn btn-dark btn-hover-primary px-5 py-3"
+                  >
+                    Apply Now
+                  </Link>
+                )}
               </div>
             </div>
           </div>

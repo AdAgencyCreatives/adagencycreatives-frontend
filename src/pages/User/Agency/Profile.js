@@ -257,13 +257,13 @@ const Profile = () => {
   }, [single_agency, user, media, industry, statesList, citiesList]);
 
   // Cities update
-  useEffect(() => {
+/*   useEffect(() => {
     if (citiesList.length > 0 && fields.length) {
       let updatedFields = [...fields];
       updatedFields[4].data = citiesList;
       setFields(updatedFields);
     }
-  }, [citiesList, fields]);
+  }, [citiesList, fields]); */
 
   //Set initial form data
   useEffect(() => {

@@ -3,7 +3,7 @@ import { IoStar } from "react-icons/io5";
 import { Context as DataContext } from "../../../context/DataContext";
 import { containsOffensiveWords } from "../../../context/AuthContext";
 
-const ReviewForm = ({ user, data, mutateReviews, setDispalyForm }) => {
+const ReviewForm = ({ user, data, mutateReviews, setDispalyForm,hasReviews }) => {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [message, setMessage] = useState(null);
@@ -79,7 +79,7 @@ const ReviewForm = ({ user, data, mutateReviews, setDispalyForm }) => {
         <div className="commentform reset-button-default">
           <div id="respond" className="comment-respond">
             <h4 className="title comment-reply-title">
-              Be the first to review “{data.name}”
+              {hasReviews ? "Share your review for " :"Be the first to review "} “{data.name}”
               <small>
                 <a
                   rel="nofollow"

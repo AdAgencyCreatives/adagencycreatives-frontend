@@ -44,10 +44,12 @@ const Creatives = () => {
         <h1 className="community-title text-white text-center mb-4">
           Creatives
         </h1>
-        <SearchBar 
-        placeholder="Search by name, title, location, company, industry experience, media, full-time etc." 
-        onSearch={searchUser} 
-        />
+        {token && (
+          <SearchBar
+            placeholder="Search by name, title, location, company, industry experience, media, full-time etc."
+            onSearch={searchUser}
+          />
+        )}
         <div className="row g-4">
           {creatives &&
             creatives.map((item, index) => {
@@ -90,20 +92,22 @@ const Creatives = () => {
                       </Link>
                     </div>
                     <div className="position">{item.title}</div>
-                    {item.location && (
+                    {item.location.state && (
                       <div className="job-location location">
                         <IoLocationOutline />
                         <Link to={`/creative-location/${item.location.state}`}>
-                          {item.location.state},
+                          {item.location.state},&nbsp;
                         </Link>
                         <Link to={`/creative-location/${item.location.city}`}>
                           {item.location.city}
                         </Link>
                       </div>
                     )}
-                    <div className="profileLink">
-                      <Link to={`/creative/${item.slug}`}>View Profile</Link>
-                    </div>
+                    {token && (
+                      <div className="profileLink">
+                        <Link to={`/creative/${item.slug}`}>View Profile</Link>
+                      </div>
+                    )}
                   </div>
                 </div>
               );

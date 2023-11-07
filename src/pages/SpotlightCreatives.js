@@ -2,9 +2,20 @@ import Spotlight from "../assets/images/Creative-Spotlight-No-Background-600x600
 import { IoChevronForwardOutline } from "react-icons/io5";
 import "../styles/SpotlightCreative.css";
 import SearchBar from "../components/SearchBar";
+import { Link } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { Context } from "../context/SpotlightContext";
 
 const SpotlightCreatives = () => {
-  const spotlightSlides = 7;
+  const {
+    state: { screatives },
+    getSCreatives,
+  } = useContext(Context);
+
+  useEffect(() => {
+    getSCreatives();
+  }, []);
+
 
   return (
     <div className="dark-container page-spotlight mb-0 mt-4">
@@ -14,26 +25,27 @@ const SpotlightCreatives = () => {
         </h1>
         <SearchBar />
         <div className="row g-4">
-          {Array.apply(11, { length: spotlightSlides }).map((value, index) => {
+          {screatives &&
+            screatives.map((item, index) => {
             return (
-              <div className="col-sm-6 col-md-4" key={value}>
+              <div className="col-sm-6 col-md-4" key={index}>
                 <div className="sliderContent spotlight-slider py-4">
-                  <img
-                    src={Spotlight}
-                    className="spotlight-image w-50"
-                    width={150}
-                    height={150}
-                  />
-                  <div className="date">July 10, 2023</div>
-                  <a className="spotlight-meta">
-                    Creative Director Art, Brant Herzer
-                  </a>
-                  <div className="watch-link">
-                    <a href="#">
-                      Watch
-                      <IoChevronForwardOutline />
-                    </a>
-                  </div>
+                  <Link to={item.url}>
+                    <img
+                      src={Spotlight}
+                      className="spotlight-image"
+                      width={150}
+                      height={150}
+                    />
+                    <div className="date">{item.created_at}</div>
+                    <div className="spotlight-meta">{item.title}</div>
+                    <div className="watch-link">
+                      <div className="">
+                        Watch
+                        <IoChevronForwardOutline />
+                      </div>
+                    </div>
+                  </Link>
                 </div>
               </div>
             );

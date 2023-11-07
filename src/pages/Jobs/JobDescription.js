@@ -5,7 +5,7 @@ import { useContext, useEffect } from "react";
 import { Context as JobsContext } from "../../context/JobsContext";
 import Loader from "../../components/Loader";
 import RelatedJobs from "../../components/job/RelatedJobs";
-
+import "../../styles/JobDescription.scss"
 const JobDescription = () => {
   const { job } = useParams();
   const {
@@ -30,7 +30,9 @@ const JobDescription = () => {
             <div className="col-md-8">
               <div className="content-section">
                 <h1 className="content-title mt-0">Job Description</h1>
-                <div dangerouslySetInnerHTML={{__html: single_job.description}}></div>
+                {single_job.description.split("\n\n").map((line) => (
+                  <p dangerouslySetInnerHTML={{ __html: line }}></p>
+                ))}
                 {/* <h5 className="subtitle">About the job:</h5>
                 <p className="content">
                   Bakery Austin is currently seeking a proven, energetic, and

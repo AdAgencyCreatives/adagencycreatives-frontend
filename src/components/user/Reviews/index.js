@@ -48,6 +48,7 @@ const Reviews = ({ user, data }) => {
           data={data}
           mutateReviews={mutateReviews}
           setDispalyForm={setDispalyForm}
+          hasReviews={reviews?.length}
         />
       )}
     </div>

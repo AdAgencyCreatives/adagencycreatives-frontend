@@ -36,7 +36,7 @@ const Profile = () => {
   const {
     state: { single_agency, open_positions },
     getAgency,
-    getOpenPositions
+    getOpenPositions,
   } = useContext(AgenciesContext);
 
   const {
@@ -47,11 +47,16 @@ const Profile = () => {
 
   useEffect(() => {
     if (page == "creative") getCreative(username);
-    else if (page == "agency") { 
+    else if (page == "agency") {
       getAgency(username);
-      getOpenPositions(data.user_id);
-    };
+    }
   }, [page]);
+
+  useEffect(() => {
+    if (page == "agency" && Object.keys(data).length) {
+      getOpenPositions(data.user_id);
+    }
+  }, [page, data]);
 
   useEffect(() => {
     if (page == "creative") setData(single_creative);
@@ -66,7 +71,7 @@ const Profile = () => {
         {page === "creative" ? (
           <CreativeHeader data={data} role={role} user={user} />
         ) : (
-          <AgencyHeader data={data} />
+          <AgencyHeader data={data} role={role} user={user} />
         )}
       </div>
       <div className="profile-content mt-5">

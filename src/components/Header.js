@@ -217,7 +217,7 @@ function Header(props) {
                     flexWrap: "wrap",
                   }}
                 >
-                  {navItems.map((item) => (
+                  {navItems.map((item) =>  (
                     <div
                       key={item.name}
                       className={`nav-item${item.children ? " has-children" : ""
