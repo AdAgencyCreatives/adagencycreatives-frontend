@@ -29,9 +29,16 @@ export const getMyFriends = async () => {
 
 export const getMyFriendShips = async (id, status) => {
     try {
-        console.log(id);
-        console.log(status);
         const response = await api.get("/friendships?filter[sender_id]="+id+"&filter[status]="+status);
+        return response.data.data;
+    } catch (error) {
+    }
+    return null;
+};
+
+export const getFriendRequests = async (id) => {
+    try {
+        const response = await api.get("/friendships?filter[receiver_id]="+id+"&filter[status]=pending");
         return response.data.data;
     } catch (error) {
     }
@@ -48,7 +55,7 @@ export const requestFriendship = async (data) => {
     return { "status": "error", "data": null };
 };
 
-export const cancelFriendship = async (data) => {
+export const respondFriendship = async (data) => {
     try {
         const response = await api.patch("/friendships", data);
         return { "status": "success", "data": response.data };

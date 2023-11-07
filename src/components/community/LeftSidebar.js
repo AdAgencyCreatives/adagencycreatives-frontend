@@ -12,7 +12,7 @@ import { HiOutlineUserGroup } from "react-icons/hi2";
 
 import { NavLink } from "react-router-dom";
 
-const LeftSidebar = () => {
+const LeftSidebar = (props) => {
   return (
     <div className="community-sidebar">
       <div className="sidebar-menu">
@@ -52,7 +52,7 @@ const LeftSidebar = () => {
             <NavLink to="/notifications">
               <IoNotificationsOutline />
               <div className="item-name">Notifications</div>
-              {/* <span className="count">2</span> */}
+              <span className="count">{props.notifications ? props.notifications.length : 0}</span>
             </NavLink>
           </li>
         </ul>

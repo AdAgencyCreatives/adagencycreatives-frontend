@@ -1,8 +1,8 @@
 import { api } from "../api/api";
 
-export const getNotifications = async () => {
+export const getNotifications = async (user_id) => {
     try {
-        const response = await api.get("/notifications?sort=-created_at");
+        const response = await api.get("/notifications?sort=-created_at&filter[user_id]="+user_id);
         return response.data.data;
     } catch (error) {
     }

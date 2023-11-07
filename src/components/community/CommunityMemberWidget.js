@@ -1,9 +1,9 @@
 import Placeholder from "../../assets/images/placeholder.png";
-import { IoEarth, IoBookmarkOutline, IoLocationOutline, IoMailOpen, IoPersonAdd, IoClose, IoCloseSharp } from "react-icons/io5";
+import { IoEarth, IoBookmarkOutline, IoLocationOutline, IoMailOpen, IoPersonAdd, IoClose, IoCloseSharp, IoCheckmarkCircleSharp, IoBandageOutline, IoBanSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
-import { getSingleFriendship, requestFriendship, cancelFriendship } from "../../context/FriendsDataContext";
+import { getSingleFriendship, requestFriendship, respondFriendship } from "../../context/FriendsDataContext";
 import MessageModal from "../MessageModal";
 
 import SlidingMessage from "../../components/SlidingMessage";
@@ -18,6 +18,9 @@ const CommunityMemberWidget = (props) => {
     const [hasFriendshipRecord, setHasFriendshipRecord] = useState(false);
     const [friendshipRecord, setFriendshipRecord] = useState(null);
     const [friendshipRequestResult, setFriendshipRequestResult] = useState({ "status": "none", "data": null });
+    const [loadingFriendRequestRecord, setLoadingFriendRequestRecord] = useState(false);
+    const [hasFriendRequestRecord, setHasFriendRequestRecord] = useState(false);
+    const [friendRequestRecord, setFriendRequestRecord] = useState(null);
 
     const [slidingMessage, setSlidingMessage] = useState("");
 
@@ -62,6 +65,7 @@ const CommunityMemberWidget = (props) => {
     useEffect(() => {
         if (user) {
             getSingleFriendshipAsync();
+            getSingleFriendRequestAsync();
         }
     }, [user]);
 
@@ -71,6 +75,14 @@ const CommunityMemberWidget = (props) => {
         setLoadingFriendshipRecord(false);
         setFriendshipRecord(result);
         setHasFriendshipRecord(result ? true : false);
+    };
+
+    const getSingleFriendRequestAsync = async () => {
+        setLoadingFriendRequestRecord(true);
+        let result = await getSingleFriendship(props.creative.user_id, user.uuid);
+        setLoadingFriendRequestRecord(false);
+        setFriendRequestRecord(result);
+        setHasFriendRequestRecord(result ? true : false);
     };
 
     const requestFriendshipAsync = async (creative) => {
@@ -83,13 +95,27 @@ const CommunityMemberWidget = (props) => {
 
     const handleRequestFriendship = (evt, creative) => {
         requestFriendshipAsync(creative);
-        saveNotificationAsync(creative);
+        sendFriendshipRequestedNotificationAsync(creative);
+    };
+
+    const handleRespondFriendship = (evt, creative, status) => {
+        respondFriendshipAsync(creative, status);
+        sendFriendshipRespondedNotificationAsync(creative, status);
     };
 
     const cancelFriendshipAsync = async (creative) => {
-        let result = await cancelFriendship({
+        let result = await respondFriendship({
             "request_id": friendshipRecord.id,
             "response": "cancelled"
+        });
+        getSingleFriendshipAsync();
+        setFriendshipRequestResult(result);
+    };
+
+    const respondFriendshipAsync = async (creative, status) => {
+        let result = await respondFriendship({
+            "request_id": friendRequestRecord.id,
+            "response": status
         });
         getSingleFriendshipAsync();
         setFriendshipRequestResult(result);
@@ -99,11 +125,20 @@ const CommunityMemberWidget = (props) => {
         cancelFriendshipAsync(creative);
     };
 
-    const saveNotificationAsync = async (creative) => {
+    const sendFriendshipRequestedNotificationAsync = async (creative) => {
         let result = await saveNotification({
             "user_id": creative.user_id,
             "type": "friendship_requested",
             "message": user.first_name + " " + user.last_name + " has sent friendship request.",
+            "body": "{}"
+        });
+    };
+
+    const sendFriendshipRespondedNotificationAsync = async (creative, status) => {
+        let result = await saveNotification({
+            "user_id": creative.user_id,
+            "type": "friendship_responded",
+            "message": user.first_name + " " + user.last_name + " has " + status + " your friendship request.",
             "body": "{}"
         });
     };
@@ -149,31 +184,49 @@ const CommunityMemberWidget = (props) => {
                         )}
                     </div>
                     <div className="user-actions">
-                        {loadingFriendshipRecord ? (
+                        {loadingFriendshipRecord || loadingFriendRequestRecord ? (
                             <CircularProgress />
                         ) : (<>
-                            {hasFriendshipRecord && friendshipRecord.status ? (<>
-                                <div className="friendship-request-status">
-                                    {friendship_statuses[friendshipRecord.status]}
-                                </div>
+                            {(hasFriendshipRecord && friendshipRecord.status) || (hasFriendRequestRecord && friendRequestRecord && (friendRequestRecord.status == "accepted" || friendRequestRecord.status == "declined")) ? (<>
+                                <Tooltip title="Friendship Status">
+                                    <div className="friendship-request-status">
+                                        {friendship_statuses[(friendshipRecord ? friendshipRecord.status : (friendRequestRecord ? friendRequestRecord.status : ""))]}
+                                    </div>
+                                </Tooltip>
                             </>) : (<></>)}
                             {hasFriendshipRecord && friendshipRecord.status == "pending" ? (<>
                                 <Tooltip title="Cancel Friendship">
-                                    <button className="btn btn-dark" onClick={(e) => handleCancelFriendship(e, friendshipRecord)}>
+                                    <button className="btn btn-dark no-border" onClick={(e) => handleCancelFriendship(e, friendshipRecord)}>
                                         <IoCloseSharp />
                                     </button>
                                 </Tooltip>
                             </>) : (<></>)}
 
-                            {!hasFriendshipRecord || friendshipRecord.status == "cancelled" ? (<>
-                                <button className="btn btn-dark" onClick={(e) => handleRequestFriendship(e, props.creative)}>
-                                    <IoPersonAdd />
-                                </button>
+                            {(!hasFriendshipRecord || friendshipRecord.status == "cancelled") && (!hasFriendRequestRecord) ? (<>
+                                <Tooltip title="Request Friendship">
+                                    <button className="btn btn-dark no-border" onClick={(e) => handleRequestFriendship(e, props.creative)}>
+                                        <IoPersonAdd />
+                                    </button>
+                                </Tooltip>
                             </>) : (<></>)}
 
-                            <button className="btn btn-dark">
-                                <IoMailOpen />
-                            </button>
+                            {hasFriendRequestRecord && !(friendRequestRecord.status == "accepted" || friendRequestRecord.status == "declined") ? (<>
+                                <Tooltip title="Accept Friendship">
+                                    <button className="btn btn-dark no-border" onClick={(e) => handleRespondFriendship(e, props.creative, "accepted")}>
+                                        <IoCheckmarkCircleSharp />
+                                    </button>
+                                </Tooltip>
+                                <Tooltip title="Decline Friendship">
+                                    <button className="btn btn-dark no-border" onClick={(e) => handleRespondFriendship(e, props.creative, "declined")}>
+                                        <IoBanSharp />
+                                    </button>
+                                </Tooltip>
+                            </>) : (<></>)}
+                            <Tooltip title="View Messages">
+                                <Link className="btn btn-dark no-border" to={"/messages/" + (props.creative.slug || "")}>
+                                    <IoMailOpen />
+                                </Link>
+                            </Tooltip>
                         </>)}
                     </div>
                 </div>

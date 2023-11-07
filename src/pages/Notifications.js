@@ -6,30 +6,39 @@ import { IconButton, Tooltip } from "@mui/material";
 import "../styles/Notifications.scss";
 import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../context/AuthContext";
+import { getCreativeById } from "../context/CreativesDataContext";
 
 import { getNotifications } from "../context/NotificationsDataContext";
 import { useState, useEffect, useContext } from "react";
 import TimeAgo from "../components/TimeAgo";
 import UtcToLocalDateTime from "../components/UtcToLocalDateTime";
+import NotificationWidget from "../components/community/NotificationWidget";
 
 const Notifications = () => {
 
   const [notifications, setNotifications] = useState([]);
+  const [creative, setCreative] = useState([]);
 
   const {
     state: { role, user, token },
-} = useContext(AuthContext);
+  } = useContext(AuthContext);
 
-  const getNotificationsAsync = async (creative) => {
-    let result = await getNotifications();
+  const getNotificationsAsync = async (user) => {
+    let result = await getNotifications(user.uuid);
     setNotifications(result);
   };
 
+  const getCreativeByIdAsync = async (user) => {
+    let result = await getCreativeById(user.uuid);
+    setCreative(result);
+  };
+
   useEffect(() => {
-        if (user) {
-          getNotificationsAsync();
-        }
-    }, [user]);
+    if (role && user) {
+      getCreativeByIdAsync(user);
+      getNotificationsAsync(user);
+    }
+  }, [user]);
 
   return (
     <div className="dark-container">
@@ -41,40 +50,13 @@ const Notifications = () => {
         </div> */}
         <div className="row">
           <div className="col-md-2 mb-3">
-            <LeftSidebar />
+            <LeftSidebar notifications={notifications || []} />
           </div>
           <div className="col-md-10">
             <div className="notif-list">
-              {notifications && notifications.map((item, index) => {
+              {notifications && notifications.map((notification, index) => {
                 return (
-                  <div className="notif-item" key={`ag-${index}`}>
-                    <div className="user-avatar">
-                      <img src={item.user.image || Placeholder} alt="" height={50} width={50} />
-                    </div>
-                    <div className="notif-details">
-                      <div className="username">{item.user.username}</div>
-                      <div className="notif-time">
-                        <IoTimeOutline />
-                        <TimeAgo datetime={item.created_at} />
-                        <UtcToLocalDateTime datetime={item.created_at} />
-                      </div>
-                      <Link to={item.link} className="notif-content text-dark">
-                        {item.message}
-                      </Link>
-                    </div>
-                    <div className="notif-actions">
-                      <Tooltip title="Mark as Read">
-                        <IconButton>
-                          <IoEyeOutline />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Delete">
-                        <IconButton>
-                          <IoTrashOutline />
-                        </IconButton>
-                      </Tooltip>
-                    </div>
-                  </div>
+                  <NotificationWidget key={"notification-" + notification.id} notification={notification} creative={creative} />
                 );
               })}
             </div>

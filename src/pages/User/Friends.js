@@ -13,7 +13,7 @@ import Placeholder from "../../assets/images/placeholder.png";
 import { useContext, useEffect, useState } from "react"
 import RestrictedLounge from "../../components/RestrictedLounge";
 import { Context as AuthContext } from "../../context/AuthContext";
-import { getMyFriends, getMyFriendShips } from "../../context/FriendsDataContext";
+import { getMyFriends, getMyFriendShips, getFriendRequests } from "../../context/FriendsDataContext";
 
 import MyFriendWidget from "../../components/community/MyFriendWidget";
 
@@ -41,10 +41,17 @@ const Friends = () => {
     setMyFriendShips(result)
   };
 
+  const getFriendRequestsAsync = async (id) => {
+    let result = await getFriendRequests(id);
+    setMyFriendShips(result)
+  };
+
   useEffect(() => {
     if (user) {
-      if (!friendshipsParam || !(friendshipsParam != "all" || friendshipsParam == "pending" || friendshipsParam == "accepted" || friendshipsParam == "declined" || friendshipsParam == "cancelled")) {
+      if (!friendshipsParam || !(friendshipsParam == "requests" || friendshipsParam == "pending" || friendshipsParam == "accepted" || friendshipsParam == "declined" || friendshipsParam == "cancelled")) {
         getMyFriendsAsync();
+      } else if (friendshipsParam == "requests") {
+        getFriendRequestsAsync(user.uuid);
       } else {
         getMyFriendShipsAsync(user.uuid, friendshipsParam);
       }
@@ -67,13 +74,13 @@ const Friends = () => {
               </div>
               <div className="col-md-10">
                 <div className="row g-4">
-                  {myFriends && myFriends.map((my_friend, index) => {
+                  {!(friendshipsParam && friendshipsParam.length) && myFriends && myFriends.map((my_friend, index) => {
                     return (
                       <MyFriendWidget key={"my-friend-" + my_friend.user.uuid} my_friend={my_friend} />
                     );
                   })}
 
-                  {myFriendShips && myFriendShips.map((my_friendship, index) => {
+                  {(friendshipsParam && friendshipsParam.length) && myFriendShips && myFriendShips.map((my_friendship, index) => {
                     return (
                       <MyFriendWidget key={"my-friendship-" + my_friendship.user.uuid} my_friend={my_friendship} />
                     );

@@ -234,3 +234,8 @@ ul.dropdown-list:before {
 .btn.btn-dark:hover {
     background-color: var(--color-primary) !important;
 }
+
+.btn.btn-dark.no-border:hover {
+    border: 2px solid var(--color-primary) !important;
+    background-color: var(--color-primary) !important;
+}
