@@ -4,7 +4,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import "../../styles/Notifications.scss";
 import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../context/AuthContext";
-import { getNotifications } from "../context/NotificationsDataContext";
+import { getNotifications } from "../../context/NotificationsDataContext";
 import { useState, useEffect, useContext } from "react";
 import TimeAgo from "../TimeAgo";
 import UtcToLocalDateTime from "../UtcToLocalDateTime";
@@ -37,8 +37,6 @@ const NotificationWidget = (props) => {
         }
     }, [user]);
 
-    const
-
     return (
         <>
             <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
@@ -59,12 +57,12 @@ const NotificationWidget = (props) => {
                 </div>
                 <div className="notif-actions">
                     <Tooltip title="Mark as Read">
-                        <IconButton onClick={(e) => handleMarkAsRead(e)}>
+                        <IconButton>
                             <IoEyeOutline />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
-                        <IconButton onClick={(e) => handleDelete(e)}>
+                        <IconButton>
                             <IoTrashOutline />
                         </IconButton>
                     </Tooltip>
