@@ -18,9 +18,9 @@ export const saveNotification = async (data) => {
     return null;
 };
 
-export const updateNotification = async (id, data) => {
+export const updateNotification = async (id) => {
     try {
-        const response = await api.patch("/notifications/"+id, data);
+        const response = await api.patch("/notifications/"+id);
         return response.data;
     } catch (error) {
     }
@@ -29,7 +29,7 @@ export const updateNotification = async (id, data) => {
 
 export const deleteNotification = async (id) => {
     try {
-        const response = await api.del("/notifications/"+id);
+        const response = await api.delete("/notifications/"+id);
         return response.data;
     } catch (error) {
     }

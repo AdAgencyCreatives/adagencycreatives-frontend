@@ -123,6 +123,7 @@ const CommunityMemberWidget = (props) => {
 
     const handleCancelFriendship = (evt, creative) => {
         cancelFriendshipAsync(creative);
+        sendFriendshipRespondedNotificationAsync(creative, "cancelled");
     };
 
     const sendFriendshipRequestedNotificationAsync = async (creative) => {
