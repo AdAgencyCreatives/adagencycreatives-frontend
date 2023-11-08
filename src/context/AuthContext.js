@@ -26,10 +26,13 @@ const authReducer = (state, action) => {
     case "set_user":
       return { ...state, user: action.payload };
 
-      case "reset_form_message":
+    case "reset_form_message":
       return { ...state, formMessage: null };
     case "set_form_submit":
       return { ...state, formSubmit: action.payload };
+
+    case "set_notifications":
+      return { ...state, notifications: action.payload };
 
     case "show_message_alert":
       return { ...state, messageAlert: action.payload };

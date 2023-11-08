@@ -1,5 +1,6 @@
 import { useContext, useEffect } from "react";
 import { Context as CreativesContext } from "../context/CreativesContext";
+import { Context as AuthContext } from "../context/AuthContext";
 
 const useCreatives = (page) => {
   const {
@@ -9,6 +10,10 @@ const useCreatives = (page) => {
     loadCreatives,
     searchCreatives,
   } = useContext(CreativesContext);
+
+  const {
+    state: { role, user, token },
+  } = useContext(AuthContext);
 
   useEffect(() => {
     if (page == "home") {

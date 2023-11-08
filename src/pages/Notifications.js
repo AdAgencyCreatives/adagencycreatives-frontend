@@ -40,6 +40,10 @@ const Notifications = () => {
     }
   }, [user]);
 
+  const loadNotifications = () => {
+    getNotificationsAsync(user);
+  };
+
   return (
     <div className="dark-container">
       <div className="container-fluid px-2 px-md-5">
@@ -56,7 +60,7 @@ const Notifications = () => {
             <div className="notif-list">
               {notifications && notifications.map((notification, index) => {
                 return (
-                  <NotificationWidget key={"notification-" + notification.id} notification={notification} creative={creative} />
+                  <NotificationWidget key={"notification-" + notification.id} notification={notification} creative={creative} loadNotifications={loadNotifications} />
                 );
               })}
             </div>

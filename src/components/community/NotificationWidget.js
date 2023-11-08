@@ -1,10 +1,10 @@
 import Placeholder from "../../assets/images/placeholder.png";
-import { IoEyeOutline, IoTimeOutline, IoTrashOutline } from "react-icons/io5";
+import { IoEyeOffOutline, IoEyeOutline, IoTimeOutline, IoTrashOutline } from "react-icons/io5";
 import { IconButton, Tooltip } from "@mui/material";
 import "../../styles/Notifications.scss";
 import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../context/AuthContext";
-import { getNotifications } from "../../context/NotificationsDataContext";
+import { deleteNotification, getNotifications, updateNotification } from "../../context/NotificationsDataContext";
 import { useState, useEffect, useContext } from "react";
 import TimeAgo from "../TimeAgo";
 import UtcToLocalDateTime from "../UtcToLocalDateTime";
@@ -26,16 +26,46 @@ const NotificationWidget = (props) => {
         };
     }, []);
 
-
     const {
         state: { role, user, token },
     } = useContext(AuthContext);
-
 
     useEffect(() => {
         if (user) {
         }
     }, [user]);
+
+    const onMarkAsReadAsync = async () => {
+        let result = await updateNotification(props.notification.uuid);
+        if (result) {
+            showMessageModal("success", "Thanks!", "The notification is marked as read", null);
+            if (props.loadNotifications) {
+                props.loadNotifications();
+            }
+        } else {
+            showMessageModal("error", "Oops!", "Unfortunately not able to mark as read notification", null);
+        }
+    };
+
+    const onDeleteAsync = async () => {
+        let result = await deleteNotification(props.notification.uuid);
+        if (result) {
+            showMessageModal("success", "Thanks!", "The notification is deleted", null);
+            if (props.loadNotifications) {
+                props.loadNotifications();
+            }
+        } else {
+            showMessageModal("error", "Oops!", "Unfortunately not able to delete notification", null);
+        }
+    };
+
+    const handleOnClick = (e, action) => {
+        if (action == "mark-as-read") {
+            onMarkAsReadAsync();
+        } else if (action == "delete") {
+            onDeleteAsync();
+        }
+    };
 
     return (
         <>
@@ -57,12 +87,16 @@ const NotificationWidget = (props) => {
                 </div>
                 <div className="notif-actions">
                     <Tooltip title="Mark as Read">
-                        <IconButton>
-                            <IoEyeOutline />
+                        <IconButton onClick={(e) => handleOnClick(e, "mark-as-read")}>
+                            {props.notification.read_at ? (
+                                <IoEyeOffOutline />
+                            ) : (
+                                <IoEyeOutline />
+                            )}
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
-                        <IconButton>
+                        <IconButton onClick={(e) => handleOnClick(e, "delete")}>
                             <IoTrashOutline />
                         </IconButton>
                     </Tooltip>
