@@ -32,22 +32,22 @@ const Header = ({ username }) => {
       </div>
       <div className="user-details">
         <div className="username">{creative ? creative.name : ""}</div>
-        <div class="member-title-location text-white">
-          <div class="candidate-job text-white">{creative ? creative.title : ""}</div>
+        <div className="member-title-location text-white">
+          <div className="candidate-job text-white">{creative ? creative.title : ""}</div>
           {creative && creative.location && (
-            <div class="member-title-location text-white">
+            <div className="member-title-location text-white">
               {creative.location && (creative.location.state || creative.location.city) ? (
                 <IoLocationOutline />
               ) : (
                 <></>
               )}
-              <span class="restrict-location-search">{creative.location && creative.location.state ? creative.location.state : ""}</span>
+              <span className="restrict-location-search">{creative.location && creative.location.state ? creative.location.state : ""}</span>
               {creative.location && creative.location.state && creative.location.city ? (
                 <span>,&nbsp;</span>
               ) : (
                 <></>
               )}
-              <span class="restrict-location-search">{creative.location && creative.location.city ? creative.location.city : ""}</span>
+              <span className="restrict-location-search">{creative.location && creative.location.city ? creative.location.city : ""}</span>
             </div>
           )}
         </div>
@@ -62,19 +62,19 @@ const Header = ({ username }) => {
           <Link className="btn btn-dark btn-outline" to="/friends?friendships=cancelled"><IoPeopleOutline /> Cancelled</Link>
         </div>
       </div>
-      {/* <div class="user-statistics">
+      {/* <div className="user-statistics">
         <ul>
           <li>
             <Link to={`${username}/comments`}>
-              <div class="snumber">0</div>
-              <h3 class="sdescription">Comments</h3>
+              <div className="snumber">0</div>
+              <h3 className="sdescription">Comments</h3>
             </Link>
           </li>
 
           <li>
             <Link to={username}>
-              <div class="snumber">257</div>
-              <h3 class="sdescription">Views</h3>
+              <div className="snumber">257</div>
+              <h3 className="sdescription">Views</h3>
             </Link>
           </li>
         </ul>
