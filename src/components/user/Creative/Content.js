@@ -4,16 +4,17 @@ import "../../../styles/User/ProfileContent.scss";
 import Reviews from "../Reviews";
 import RelatedCreatives from "./RelatedCreatives";
 import Portfolio from "./Portfolio";
+import { Link } from "react-router-dom";
 
 const Content = ({ user, data, education, experience }) => {
   const isCreative = user?.role == "creative";
   const isOwnProfile = isCreative && user?.uuid == data.user_id;
-
+  const portfolio_link = data.links.find((item) => item.type="portfolio")?.url ?? "#";
   return (
     <>
       <div className="content-section">
         <h1 className="content-title">Portfolio Site</h1>
-        <a href="https://www.williambroussard.com/" target="_blank">
+        <a href={portfolio_link} target="_blank">
           <img src={data.portfolio_website || portfolio} />
         </a>
       </div>
@@ -73,8 +74,8 @@ const Content = ({ user, data, education, experience }) => {
       ) : (
         ""
       )}
-      {user && data && !isOwnProfile && <Reviews user={user} data={data} />}
       <RelatedCreatives data={data} />
+      {user && data && !isOwnProfile && <Reviews user={user} data={data} />}
     </>
   );
 };

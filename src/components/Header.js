@@ -21,10 +21,11 @@ import { FaLinkedinIn, FaInstagramSquare } from "react-icons/fa";
 import { NavLink, Link } from "react-router-dom";
 import ScrollToHash from "./ScrollToHash";
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import { navItems } from "../nav/NavItems";
 import AuthModal from "./modals/AuthModal";
 import { Context as AuthContext } from "../context/AuthContext";
+import { Context as AlertContext } from "../context/AlertContext";
 import Placeholder from "../assets/images/placeholder.png";
 import { agencyNav, creativeNav } from "../nav/DashboardNav";
 
@@ -34,7 +35,7 @@ const drawerWidth = "85%";
 
 function Header(props) {
 
-  const [slidingMessage, setSlidingMessage] = useState("");
+  const {state:{message},showAlert} = useContext(AlertContext);
 
   const { window } = props;
   const { state } = React.useContext(AuthContext);
@@ -77,7 +78,7 @@ function Header(props) {
           return true;
         }
       }
-      setSlidingMessage(item.restrictedMessage);
+      showAlert(item.restrictedMessage);
       e.preventDefault();
       e.stopPropagation();
       return false;
@@ -259,7 +260,7 @@ function Header(props) {
                   >
                     Post A Job
                   </Button>
-                  <SlidingMessage message={slidingMessage} setMessage={setSlidingMessage} />
+                  <SlidingMessage message={message} />
                   {state.token ? (
                     <div className="nav-item has-children">
                       <div className="logged-in-menu">

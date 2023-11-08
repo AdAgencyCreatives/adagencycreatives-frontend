@@ -91,7 +91,7 @@ const getRelatedCreatives = (dispatch) => {
 const getCreative = (dispatch) => {
   return async (slug) => {
     try {
-      const response = await api.get("/creatives?filter[slug]=" + slug);
+      const response = await api.get("/creatives/new?filter[slug]=" + slug);
       const data = response.data.data[0];
       const uid = data.user_id;
       getCreativeEducation(dispatch, uid);

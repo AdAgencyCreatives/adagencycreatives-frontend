@@ -25,7 +25,7 @@ const Reviews = ({ user, data }) => {
     <div id="reviews">
       <div className="average-rating d-flex align-items-center gap-2">
         {data?.type === "agencies" ? "Agency" : "Creative"} Reviews
-        <div className="d-flex align-items-center gap-2" onClick={() => setShowReviews(true)}>
+        <div className="d-flex align-items-center gap-2" onClick={() => setShowReviews((prev) => !prev)}>
           <IoStar size={22} color="#000" />
           {reviewsMeta?.average_rating?.toFixed(2) ?? 0.0}
         </div>

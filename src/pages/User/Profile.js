@@ -41,17 +41,19 @@ const Profile = () => {
   } = useContext(AgenciesContext);
 
   const {
-    state: { user, role },
+    state: { user, role, token },
   } = useContext(AuthContext);
 
   const [data, setData] = useState({});
 
   useEffect(() => {
-    if (page == "creative") getCreative(username);
-    else if (page == "agency") {
+    if (token) {
+      if (page == "creative") getCreative(username);
+    }
+    if (page == "agency") {
       getAgency(username);
     }
-  }, [page]);
+  }, [page, token]);
 
   useEffect(() => {
     if (page == "agency" && Object.keys(data).length) {

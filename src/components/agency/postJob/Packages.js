@@ -1,6 +1,7 @@
 import Single from "../../../assets/images/Single-Job-2-300x300.png";
 import Multiple from "../../../assets/images/Multiple-Jobs-2-300x300.png";
 import Premium from "../../../assets/images/Premium-Job-1-300x300.png";
+import Hire from "../../../assets/images/Hire-an-Advisor.jpeg";
 import "../../../styles/AgencyDashboard/PackagesList.scss";
 import { Link } from "react-router-dom";
 
@@ -46,7 +47,7 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
       id: 4,
       title: "Hire an Advisor",
       price: "Custom",
-      image: Premium,
+      image: Hire,
       subtitle: "",
       description: "",
       link: "/hire-an-advisor",

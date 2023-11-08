@@ -3,7 +3,8 @@
     margin: 30px 0;
     font-size: 2.3rem;
 }
-.subtitle{
+
+.subtitle {
     font-weight: bold;
     margin-bottom: 20px;
 }
@@ -15,6 +16,36 @@
 .content-section {
     img {
         width: 100%;
+    }
+}
+
+.portfolio-item {
+
+    &:hover {
+        .overlay {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    img {
+        border-radius: 10px;
+        object-fit: cover;
+    }
+
+    .overlay {
+        position: absolute;
+        overflow: hidden;
+        inset: auto 0 0 0;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 50px;
+        -webkit-transform: scale(0);
+        transform: scale(0);
+        opacity: 0;
+        transition: all 0.2s ease;
     }
 }
 
@@ -84,4 +115,8 @@
         font-size: 20px;
         font-weight: 600;
     }
+}
+
+.realted-creatives-list-container {
+    margin: 20px 0;
 }

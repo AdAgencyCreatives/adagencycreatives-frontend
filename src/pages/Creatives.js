@@ -9,6 +9,7 @@ import { Context as CreativesContext } from "../context/CreativesContext";
 import { Context as DataContext } from "../context/DataContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
 import Tooltip from "../components/Tooltip";
+import { Context as AlertContext } from "../context/AlertContext";
 
 const Creatives = () => {
   const { creatives, loading, loadMore, searchCreatives } = useCreatives();
@@ -22,6 +23,8 @@ const Creatives = () => {
   const {
     state: { role, user, token },
   } = useContext(AuthContext);
+
+  const { showAlert } = useContext(AlertContext);
 
   const addToShortlist = (id) => {
     createBookmark(user.uuid, "creatives", id);
@@ -103,11 +106,18 @@ const Creatives = () => {
                         </Link>
                       </div>
                     )}
-                    {token && (
-                      <div className="profileLink">
-                        <Link to={`/creative/${item.slug}`}>View Profile</Link>
-                      </div>
-                    )}
+                    <div className="profileLink">
+                      <Link
+                        to={token ? `/creative/${item.slug}` : "#"}
+                        onClick={() =>
+                          !token
+                            ? showAlert("Please login to access")
+                            : false
+                        }
+                      >
+                        View Profile
+                      </Link>
+                    </div>
                   </div>
                 </div>
               );
