@@ -16,7 +16,7 @@ export const saveAttachment = async (data) => {
                 "Content-Type": "multipart/form-data",
             },
         });
-        return response.data;
+        return response.data.data;
     } catch (error) {
     }
     return null;
