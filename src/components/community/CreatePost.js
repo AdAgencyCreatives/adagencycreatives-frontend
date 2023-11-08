@@ -6,6 +6,8 @@ import { Modal } from "@mui/material";
 import { useRef, useState } from "react";
 import Divider from "../Divider";
 import ModalCss from "../../styles/Modal/PostModal.scss";
+import EmojiPicker, { Emoji } from "emoji-picker-react";
+import { BsEmojiSmile } from "react-icons/bs";
 import ImagePicker from "./Modals/ImagePicker";
 import { useContext, useEffect, useCallback } from "react";
 import { Context as AuthContext, containsOffensiveWords } from "../../context/AuthContext";
@@ -42,6 +44,7 @@ const CreatePost = () => {
   const [showPicker, setShowPicker] = useState(false);
   const [content, setContent] = useState("");
   const [imagePickerOpen, setImagePickerOpen] = useState(false);
+  const [postAttachments, setPostAttachments] = useState([]);
 
   const doSavePost = () => {
     if (containsOffensiveWords(content)) {
@@ -94,6 +97,12 @@ const CreatePost = () => {
     setEditorLoading(false);
     editorRef.current = editor;
     editor.focus();
+  };
+
+  const selectEmoji = (emojiData) => {
+    console.log(emojiData.getEmojiUrl);
+    setContent((prev) => (prev += emojiData.emoji));
+    setShowPicker(false);
   };
 
   return (
@@ -166,14 +175,41 @@ const CreatePost = () => {
                 />
               </>
             ) : (
-              <ContentEditable
-                ref={onEditableRef}
-                className="postmodal-editor"
-                html={content}
-                placeholder="What do you want to talk about?"
-                tagName="div"
-                onChange={(e) => setContent(e.target.value)}
-              />
+              <>
+                <ContentEditable
+                  ref={onEditableRef}
+                  className="postmodal-editor"
+                  html={content}
+                  placeholder="What do you want to talk about?"
+                  tagName="div"
+                  onChange={(e) => setContent(e.target.value)}
+                />
+                <div className="emoticons">
+                  <div className="toggle-emo">
+                    <BsEmojiSmile onClick={() => setShowPicker((val) => !val)} />
+
+                    {showPicker && (
+                      <EmojiPicker
+                        previewConfig={{ showPreview: false }}
+                        skinTonesDisabled={true}
+                        height={300}
+                        suggestedEmojisMode=""
+                        categories={[
+                          "smileys_people",
+                          "animals_nature",
+                          "food_drink",
+                          "travel_places",
+                          "activities",
+                          "objects",
+                          "symbols",
+                          "flags",
+                        ]}
+                        onEmojiClick={selectEmoji}
+                      />
+                    )}
+                  </div>
+                </div>
+              </>
             )}
             <div className="post-options d-flex">
               <div className="item" >

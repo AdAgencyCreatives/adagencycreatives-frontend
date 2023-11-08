@@ -79,7 +79,7 @@ const NotificationWidget = (props) => {
                     <div className="notif-time">
                         <IoTimeOutline />
                         <TimeAgo datetime={props.notification.created_at} />
-                        <UtcToLocalDateTime datetime={props.notification.created_at} />
+                        {/* <UtcToLocalDateTime datetime={props.notification.created_at} /> */}
                     </div>
                     <Link to={props.notification.link} className="notif-content text-dark">
                         {props.notification.message}
