@@ -50,6 +50,7 @@
 
         &.rounded img {
             border-radius: 50px;
+            object-fit: cover;
         }
 
         &.employer img {

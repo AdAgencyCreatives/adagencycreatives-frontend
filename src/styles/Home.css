@@ -260,6 +260,7 @@ img.candidateLogo {
     height: 90px;
     margin: 0 auto 15px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 swiper-slide {

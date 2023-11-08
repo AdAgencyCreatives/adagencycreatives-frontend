@@ -42,7 +42,7 @@ const CommunityMembers = () => {
                 <LeftSidebar />
               </div>
               <div className="col-md-10">
-                <div className="row g-4 px-md-1 px-5">
+                <div className="row g-4 px-1">
                   {creatives &&
                     creatives.map((creative, index) => {
                       return (

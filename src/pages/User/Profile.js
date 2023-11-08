@@ -12,6 +12,7 @@ import Loader from "../../components/Loader";
 import { Context as CreativesContext } from "../../context/CreativesContext";
 import { Context as AgenciesContext } from "../../context/AgenciesContext";
 import { Context as AuthContext } from "../../context/AuthContext";
+import Portfolio from "../../components/user/Creative/Portfolio";
 
 const Profile = () => {
   const { username } = useParams();
@@ -78,6 +79,7 @@ const Profile = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-8">
+              {page == "creative" && <Portfolio id={data.user_id} />}
               <div className="content-section">
                 <h1 className="content-title mt-0">About</h1>
                 <p className="content">{data.about}</p>

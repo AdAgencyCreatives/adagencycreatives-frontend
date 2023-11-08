@@ -76,6 +76,18 @@ const getHomeCreatives = (dispatch) => {
   };
 };
 
+const getRelatedCreatives = (dispatch) => {
+  return async (title) => {
+    try {
+      const response = await api.get("/creatives?filter[title]="+title);
+      dispatch({
+        type: "set_creatives",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
 const getCreative = (dispatch) => {
   return async (slug) => {
     try {
@@ -195,6 +207,7 @@ const saveResume = (dispatch) => {
   };
 };
 
+
 const saveAttachment = (dispatch) => {
   return async (data) => {
     try {
@@ -287,6 +300,7 @@ export const { Context, Provider } = createDataContext(
   reducer,
   {
     getCreatives,
+    getRelatedCreatives,
     getHomeCreatives,
     getStats,
     loadCreatives,
