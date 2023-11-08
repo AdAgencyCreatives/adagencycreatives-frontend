@@ -52,7 +52,7 @@ const Home = () => {
         <div className="banner">
           <h1 className="bannerHeading">Welcome to Ad Agency Creatives</h1>
           <p className="subHeading">
-            An all inclusive community for Advertising Agency Creatives
+            A community for advertising agency creatives and the agencies hiring them
           </p>
           <div className="searchArea">
             <p className="searchHeader">Search Creative Jobs</p>
