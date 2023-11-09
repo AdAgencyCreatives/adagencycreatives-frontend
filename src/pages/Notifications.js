@@ -13,19 +13,25 @@ import { useState, useEffect, useContext } from "react";
 import TimeAgo from "../components/TimeAgo";
 import UtcToLocalDateTime from "../components/UtcToLocalDateTime";
 import NotificationWidget from "../components/community/NotificationWidget";
+import { CircularProgress } from "@mui/material";
 
 const Notifications = () => {
 
+  const [isLoading, setIsLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [creative, setCreative] = useState([]);
 
   const {
-    state: { role, user, token },
+    state: { role, user, token, notifications_count },
+    getNotificationsCount
   } = useContext(AuthContext);
 
   const getNotificationsAsync = async (user) => {
+    setIsLoading(true);
     let result = await getNotifications(user.uuid);
     setNotifications(result);
+    getNotificationsCount(user.uuid);
+    setIsLoading(false);
   };
 
   const getCreativeByIdAsync = async (user) => {
@@ -39,6 +45,12 @@ const Notifications = () => {
       getNotificationsAsync(user);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (role && user && notifications_count != notifications.length) {
+      getNotificationsAsync(user);
+    }
+  }, [notifications_count]);
 
   const loadNotifications = () => {
     getNotificationsAsync(user);
@@ -54,20 +66,32 @@ const Notifications = () => {
         </div> */}
         <div className="row">
           <div className="col-md-2 mb-3">
-            <LeftSidebar notifications={notifications || []} />
+            <LeftSidebar />
           </div>
           <div className="col-md-10">
-            <div className="notif-list">
-              {notifications && notifications.map((notification, index) => {
-                return (
-                  <NotificationWidget key={"notification-" + notification.id} notification={notification} creative={creative} loadNotifications={loadNotifications} />
-                );
-              })}
-            </div>
+            {isLoading ? (
+              <div className="center-page">
+                <CircularProgress />
+                <span>Loading ...</span>
+              </div>
+            ) : (<>
+              {notifications && notifications.length ? (
+                <div className="notif-list">
+                  {notifications && notifications.map((notification, index) => {
+                    return (
+                      <NotificationWidget key={"notification-" + notification.id} notification={notification} creative={creative} loadNotifications={loadNotifications} />
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="center-page">
+                  Sorry, nothing here.
+                </div>
+              )}</>)}
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

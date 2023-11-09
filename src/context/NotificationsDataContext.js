@@ -14,6 +14,7 @@ export const saveNotification = async (data) => {
         const response = await api.post("/notifications", data);
         return response.data;
     } catch (error) {
+        console.log(error);
     }
     return null;
 };

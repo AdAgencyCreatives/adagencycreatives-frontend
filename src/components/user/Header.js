@@ -25,6 +25,10 @@ const Header = ({ username }) => {
     }
   }, [user]);
 
+  const isCurrentPage = (relativeUrl) => {
+    return (window.location.pathname + (window.location.search && window.location.search.length > 1 ? window.location.search : '')) == relativeUrl;
+  }
+
   return (
     <div className="user-profile-header mb-5">
       <div className="user-avatar">
@@ -52,14 +56,14 @@ const Header = ({ username }) => {
           )}
         </div>
         <div className="user-actions">
-          <Link className="btn btn-dark btn-outline" to="/community-members"><IoPersonAdd /> Add Friend</Link>
-          <Link className="btn btn-dark btn-outline" to="/messages"><IoMailOpen /> Message</Link>
-          <Link className="btn btn-dark btn-outline" to="/friends?friendships=requests"><IoPeopleOutline /> Friend Requests</Link>
-          <Link className="btn btn-dark btn-outline" to="/friends"><IoPeopleOutline /> Your Friends</Link>
-          <Link className="btn btn-dark btn-outline" to="/friends?friendships=pending"><IoPeopleOutline /> Pending</Link>
-          <Link className="btn btn-dark btn-outline" to="/friends?friendships=accepted"><IoPeopleOutline /> Accepted</Link>
-          <Link className="btn btn-dark btn-outline" to="/friends?friendships=declined"><IoPeopleOutline /> Declined</Link>
-          <Link className="btn btn-dark btn-outline" to="/friends?friendships=cancelled"><IoPeopleOutline /> Cancelled</Link>
+          <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/community-members') ? ' btn-selected' : '')} to="/community-members"><IoPersonAdd /> Add Friend</Link>
+          <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/messages') ? ' btn-selected' : '')} to="/messages"><IoMailOpen /> Message</Link>
+          <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/friends') ? ' btn-selected' : '')} to="/friends"><IoPeopleOutline /> Your Friends</Link>
+          <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/friends?friendships=requests') ? ' btn-selected' : '')} to="/friends?friendships=requests"><IoPeopleOutline /> Friend Requests</Link>
+          <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/friends?friendships=pending') ? ' btn-selected' : '')} to="/friends?friendships=pending"><IoPeopleOutline /> Pending</Link>
+          <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/friends?friendships=accepted') ? ' btn-selected' : '')} to="/friends?friendships=accepted"><IoPeopleOutline /> Accepted</Link>
+          <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/friends?friendships=declined') ? ' btn-selected' : '')} to="/friends?friendships=declined"><IoPeopleOutline /> Declined</Link>
+          <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/friends?friendships=cancelled') ? ' btn-selected' : '')} to="/friends?friendships=cancelled"><IoPeopleOutline /> Cancelled</Link>
         </div>
       </div>
       {/* <div className="user-statistics">
