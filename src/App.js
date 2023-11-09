@@ -59,14 +59,13 @@ function App() {
                     <JobsProvider>
                       <CommunityProvider>
                         <GroupsProvider>
-                          <ChatListener>
-                            <div className="App">
-                              <ScrollRestoration />
-                              <Header />
-                              <Outlet />
-                              <Footer />
-                            </div>
-                          </ChatListener>
+                          <div className="App">
+                            <ChatListener />
+                            <ScrollRestoration />
+                            <Header />
+                            <Outlet />
+                            <Footer />
+                          </div>
                         </GroupsProvider>
                       </CommunityProvider>
                     </JobsProvider>
