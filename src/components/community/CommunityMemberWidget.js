@@ -137,9 +137,9 @@ const CommunityMemberWidget = (props) => {
 
     const sendFriendshipRespondedNotificationAsync = async (creative, status) => {
         let result = await saveNotification({
-            "user_id": creative.user_id,
+            "user_id": creative.user_id ? creative.user_id : creative.user.uuid,
             "type": "friendship_responded",
-            "message": user.first_name + " " + user.last_name + " has " + status + " your friendship request.",
+            "message": user.first_name + " " + user.last_name + " has " + status + (status == "cancelled" ? "" : " your") + " friendship request.",
             "body": "{}"
         });
     };

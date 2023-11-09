@@ -239,3 +239,33 @@ ul.dropdown-list:before {
     border: 2px solid var(--color-primary) !important;
     background-color: var(--color-primary) !important;
 }
+
+.menu-item {
+    position: relative;
+}
+
+.menu-item .count {
+    position: absolute;
+    right: 10px;
+}
+
+.center-page {
+    position: absolute;
+    left: 50vw;
+    top: 50vh;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    min-width: 250px;
+    min-height: 100px;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    user-select: none;
+}
+
+.btn.btn-dark.btn-selected {
+    background-color: var(--color-primary) !important;
+}

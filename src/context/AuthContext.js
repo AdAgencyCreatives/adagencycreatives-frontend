@@ -9,6 +9,8 @@ const state = {
   role: null,
   user: null,
   formSubmit: false,
+  notifications_count: 0,
+  activities_count: 0,
   messageAlert: { type: '', message: '', display: '' },
 };
 
@@ -31,8 +33,10 @@ const authReducer = (state, action) => {
     case "set_form_submit":
       return { ...state, formSubmit: action.payload };
 
-    case "set_notifications":
-      return { ...state, notifications: action.payload };
+    case "set_notifications_count":
+      return { ...state, notifications_count: action.payload };
+      case "set_activities_count":
+      return { ...state, activities_count: action.payload };
 
     case "show_message_alert":
       return { ...state, messageAlert: action.payload };
@@ -88,15 +92,18 @@ const signup = (dispatch) => {
     try {
       const formData = prepareFields(data);
       formData.role = role;
-      const response = await api.post("/users", formData);
       if (formData.password !== formData.cpassword) {
         setErrorMessage(dispatch, "The passwords do not match");
         return;
       }
+
+      const response = await api.post("/users", formData);
+      
       dispatch({
         type: "set_form_message",
         payload: { type: "success", message: getRegisterSuccessMessage() },
       });
+      logActivity(response.data.uuid, "register", "You signed up as " + response.data.role + ", via email: " + response.data.email, "{user_id:" + response.data.uuid + "}");
     } catch (error) {
       cb && cb();
       setErrorMessage(dispatch, error.response.data.message);
@@ -115,6 +122,7 @@ const signin = (dispatch) => {
         type: "set_form_message",
         payload: { type: "success", message: getLoginSuccessMessage() },
       });
+      logActivity(response.data.user.uuid, "login", "You signed in as " + response.data.user.role + ", via email: " + response.data.user.email, "{user_id:" + response.data.user.uuid + "}");
       cb();
     } catch (error) {
       setErrorMessage(dispatch, error.response.data.message);
@@ -147,6 +155,34 @@ const updatePassword = (dispatch) => {
       // alert(error.response.data.message)
     }
     setFormSubmit(dispatch, false);
+  };
+};
+
+const getNotificationsCount = (dispatch) => {
+
+  return async (user_id) => {
+    try {
+      const response = await api.get("/notifications/count?filter[user_id]="+user_id);
+      dispatch({
+        type: "set_notifications_count",
+        payload: response.data.count,
+      });
+    } catch (error) {
+    }
+  };
+};
+
+const getActivitiesCount = (dispatch) => {
+
+  return async (user_id) => {
+    try {
+      const response = await api.get("/activities/count?filter[user_id]="+user_id);
+      dispatch({
+        type: "set_activities_count",
+        payload: response.data.count,
+      });
+    } catch (error) {
+    }
   };
 };
 
@@ -232,6 +268,20 @@ const hideMessageAlert = (dispatch) => {
   };
 };
 
+export const logActivity = async (user_id, type, message, body) => {
+  try {
+      const response = await api.post("/activities", {
+          "user_id": user_id,
+          "type": type && type.length ? type : "general",
+          "message": message && message.length ? message : "",
+          "body": body && body.length ? body : "{}",
+      });
+      return response.data;
+  } catch (error) {
+  }
+  return null;
+};
+
 export const { Context, Provider } = createDataContext(
   authReducer,
   {
@@ -243,6 +293,8 @@ export const { Context, Provider } = createDataContext(
     logout,
     updatePassword,
     hideMessageAlert,
+    getNotificationsCount,
+    getActivitiesCount,
   },
   state
 );
