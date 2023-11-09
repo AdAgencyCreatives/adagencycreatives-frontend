@@ -28,7 +28,7 @@ const CreativeShortlist = () => {
   const {
     state: { bookmarks },
     getBookmarks,
-    removeBookmark
+    removeBookmark,
   } = useContext(DataContext);
 
   const {
@@ -158,7 +158,12 @@ const CreativeShortlist = () => {
           <p className="fs-5">There are no Creatives in your shortlist.</p>
         )}
       </div>
-      <Message open={open} handleClose={handleClose} item={item} />
+      <Message
+        open={open}
+        handleClose={handleClose}
+        item={item.resource}
+        type="job"
+      />
       <AddNotesModal
         open={openNotes}
         handleClose={handleCloseNotes}

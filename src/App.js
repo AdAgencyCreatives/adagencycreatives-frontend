@@ -17,9 +17,8 @@ import { Provider as SubscriptionProvider } from "./context/SubscriptionContext"
 import { Provider as ChatProvider } from "./context/ChatContext";
 import { Provider as AlertProvider } from "./context/AlertContext";
 import Echo from "laravel-echo";
-import Pusher from "pusher-js";
+import ChatListener from "./components/chat/ChatListener";
 
-window.Pusher = Pusher;
 
 const theme = createTheme({
   typography: {
@@ -41,30 +40,12 @@ function App() {
     state: { token, user },
     getToken,
   } = useContext(AuthContext);
+
+
   useMemo(() => {
     getToken();
   }, []);
 
-  useEffect(() => {
-    if (token) {
-      const script = document.createElement("script");
-      script.src = "https://js.pusher.com/8.2.0/pusher.min.js";
-      script.async = true;
-      console.log(token);
-
-      // Enable pusher logging - don't include this in production
-      Pusher.logToConsole = true;
-
-      var pusher = new Pusher("c2125739f0d66b777906", {
-        cluster: "mt1",
-      });
-
-      var channel = pusher.subscribe("messanger." + user.uuid);
-      channel.bind("private_msg", function (data) {
-        console.log(data);
-      });
-    }
-  }, [token, user]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -78,12 +59,14 @@ function App() {
                     <JobsProvider>
                       <CommunityProvider>
                         <GroupsProvider>
-                          <div className="App">
-                            <ScrollRestoration />
-                            <Header />
-                            <Outlet />
-                            <Footer />
-                          </div>
+                          <ChatListener>
+                            <div className="App">
+                              <ScrollRestoration />
+                              <Header />
+                              <Outlet />
+                              <Footer />
+                            </div>
+                          </ChatListener>
                         </GroupsProvider>
                       </CommunityProvider>
                     </JobsProvider>

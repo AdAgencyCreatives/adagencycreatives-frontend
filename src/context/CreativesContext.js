@@ -79,7 +79,7 @@ const getHomeCreatives = (dispatch) => {
 const getRelatedCreatives = (dispatch) => {
   return async (title) => {
     try {
-      const response = await api.get("/creatives?filter[title]="+title);
+      const response = await api.get("/creatives?filter[title]=" + title);
       dispatch({
         type: "set_creatives",
         payload: response.data,
@@ -122,6 +122,8 @@ const getCreativeById = (dispatch) => {
 
 const searchCreatives = (dispatch) => {
   return async (query) => {
+    setLoading(dispatch, true);
+
     try {
       const response = await api.get("creatives/?filter[name]=" + query);
       dispatch({
@@ -129,6 +131,7 @@ const searchCreatives = (dispatch) => {
         payload: response.data,
       });
     } catch (error) {}
+    setLoading(dispatch, false);
   };
 };
 
@@ -206,7 +209,6 @@ const saveResume = (dispatch) => {
     });
   };
 };
-
 
 const saveAttachment = (dispatch) => {
   return async (data) => {

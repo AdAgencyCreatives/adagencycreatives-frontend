@@ -6,18 +6,26 @@ import Cookies from "js-cookie";
 import { useContext, useEffect, useState } from "react";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 import FriendshipWidget from "../../../components/community/FriendshipWidget";
+import Message from "../../dashboard/Modals/Message";
 
 const Header = ({ data, role, user }) => {
+
   const [allowed, setAllowed] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [item, setItem] = useState({});
+  const handleClose = () => setOpen(false);
 
   const {
     state: { subscription },
     getSubscriptionStatus,
   } = useContext(AgenciesContext);
 
+  const isCreative = role == "creative";
+  const isOwnProfile = isCreative && user?.uuid == data.user_id;
+
   const checkPermissions = () => {
     if (Cookies.get("token")) {
-      if (role == "creative" && user?.uuid == data.user_id) {
+      if (isOwnProfile) {
         // check if current profile is the profie of logged in user
         return true;
       } else if (role == "admin" || subscription) {
@@ -77,7 +85,19 @@ const Header = ({ data, role, user }) => {
                     </button>
                   </a>
                 )}
-                <button className="btn btn-dark fs-5">Private Message</button>
+                {isCreative && !isOwnProfile && (
+                  <>
+                    <button className="btn btn-dark fs-5" onClick={() =>  setOpen(true)}>
+                      Private Message
+                    </button>
+                    <Message
+                      open={open}
+                      handleClose={handleClose}
+                      item={data}
+                      type="private"
+                    />
+                  </>
+                )}
                 <FriendshipWidget creative={data} />
               </div>
             </div>
