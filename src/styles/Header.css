@@ -232,6 +232,7 @@ ul.dropdown-list:before {
 }
 
 .btn.btn-dark:hover {
+    border: 2px solid var(--color-primary) !important;
     background-color: var(--color-primary) !important;
 }
 

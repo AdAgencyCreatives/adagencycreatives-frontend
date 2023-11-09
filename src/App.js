@@ -8,6 +8,7 @@ import { useContext, useEffect, useMemo } from "react";
 // import { useCookies } from "react-cookie";
 import { Provider as DataProvider } from "./context/DataContext";
 import { Provider as CreativesProvider } from "./context/CreativesContext";
+import { Provider as GroupsProvider } from "./context/GroupsContext";
 import { Provider as JobsProvider } from "./context/JobsContext";
 import { Provider as AgenciesProvider } from "./context/AgenciesContext";
 import { Provider as SpotlightProvider } from "./context/SpotlightContext";
@@ -76,12 +77,14 @@ function App() {
                   <SpotlightProvider>
                     <JobsProvider>
                       <CommunityProvider>
-                        <div className="App">
-                          <ScrollRestoration />
-                          <Header />
-                          <Outlet />
-                          <Footer />
-                        </div>
+                        <GroupsProvider>
+                          <div className="App">
+                            <ScrollRestoration />
+                            <Header />
+                            <Outlet />
+                            <Footer />
+                          </div>
+                        </GroupsProvider>
                       </CommunityProvider>
                     </JobsProvider>
                   </SpotlightProvider>

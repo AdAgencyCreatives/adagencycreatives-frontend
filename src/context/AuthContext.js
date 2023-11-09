@@ -103,7 +103,7 @@ const signup = (dispatch) => {
         type: "set_form_message",
         payload: { type: "success", message: getRegisterSuccessMessage() },
       });
-      logActivity(response.data.uuid, "register", "You signed up as " + response.data.role + ", via email: " + response.data.email, "{user_id:" + response.data.uuid + "}");
+      logActivity(response.data.uuid, "signup", "You signed up as " + response.data.role + ", via email: " + response.data.email, "{user_id:" + response.data.uuid + "}");
     } catch (error) {
       cb && cb();
       setErrorMessage(dispatch, error.response.data.message);
@@ -122,7 +122,7 @@ const signin = (dispatch) => {
         type: "set_form_message",
         payload: { type: "success", message: getLoginSuccessMessage() },
       });
-      logActivity(response.data.user.uuid, "login", "You signed in as " + response.data.user.role + ", via email: " + response.data.user.email, "{user_id:" + response.data.user.uuid + "}");
+      logActivity(response.data.user.uuid, "signin", "You signed in as " + response.data.user.role + ", via email: " + response.data.user.email, "{user_id:" + response.data.user.uuid + "}");
       cb();
     } catch (error) {
       setErrorMessage(dispatch, error.response.data.message);

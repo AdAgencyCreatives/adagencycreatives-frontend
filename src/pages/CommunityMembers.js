@@ -29,7 +29,7 @@ const CommunityMembers = () => {
     searchCreatives(value);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setIsLoading(false);
   }, [creatives]);
 
@@ -83,7 +83,8 @@ const CommunityMembers = () => {
                     <div className="center-page">
                       Sorry, nothing here.
                     </div>
-                  )}</>)}
+                  )}
+                </>)}
               </div>
             </div>
           </div>

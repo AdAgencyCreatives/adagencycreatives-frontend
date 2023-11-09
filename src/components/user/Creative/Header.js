@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useContext, useEffect, useState } from "react";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
+import FriendshipWidget from "../../../components/community/FriendshipWidget";
 
 const Header = ({ data, role, user }) => {
   const [allowed, setAllowed] = useState(false);
@@ -77,9 +78,7 @@ const Header = ({ data, role, user }) => {
                   </a>
                 )}
                 <button className="btn btn-dark fs-5">Private Message</button>
-                <button className="btn btn-dark fs-5">
-                  <IoPersonAdd />
-                </button>
+                <FriendshipWidget creative={data} />
               </div>
             </div>
           </div>
