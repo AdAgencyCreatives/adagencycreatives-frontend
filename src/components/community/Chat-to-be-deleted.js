@@ -11,11 +11,11 @@ import { FaPaperclip, FaRegEdit, FaRegSmile } from "react-icons/fa";
 import EmojiPicker, { Emoji } from "emoji-picker-react";
 
 import { HiOutlineUserGroup } from "react-icons/hi2";
-import Avatar from "../assets/images/user1.jpg";
-import "../styles/Chat.scss";
+import Avatar from "../../assets/images/user1.jpg";
+import "../../styles/Chat.scss";
 import { useState } from "react";
 import ContentEditable from "react-contenteditable";
-import NewChat from "./chat/NewChat";
+import NewChat from "../chat/NewChat";
 
 const Chat = () => {
   const tabs = {

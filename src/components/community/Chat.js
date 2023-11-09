@@ -1,23 +1,46 @@
-import { IoClose, IoSearchOutline } from "react-icons/io5";
+import {
+  IoClose,
+  IoFileTrayOutline,
+  IoPeopleOutline,
+  IoSearchOutline,
+} from "react-icons/io5";
+import { FaRegEdit } from "react-icons/fa";
 
-import "../../../styles/Chat.scss";
-import { useEffect, useState, useContext } from "react";
-import moment from "moment";
-import UserList from "../../chat/UserList";
-import ChatBox from "../../chat/ChatBox";
-import { Context } from "../../../context/ChatContext";
+import { HiOutlineUserGroup } from "react-icons/hi2";
+import "../../styles/Chat.scss";
+import { useState, useEffect, useContext } from "react";
+import ChatBox from "../chat/ChatBox";
+import { Context } from "../../context/ChatContext";
+import UserList from "../chat/UserList";
+import { getMyFriends } from "../../context/FriendsDataContext";
 
-const JobChat = ({ getMessages }) => {
+const Chat = () => {
   const {
     state: { contacts },
+    getMessages,
+    getContacts,
   } = useContext(Context);
+
   const [search, setSearch] = useState();
-  const [tab, setTab] = useState("all");
+  const [tab, setTab] = useState("messages");
   const [chatBox, setChatBox] = useState("list");
   const [userListMobile, setUserListMobile] = useState("");
   const [chatBoxMobile, setChatBoxMobile] = useState("mobile-hide");
-  const [contact, setContact] = useState({});
   const [contactsList, setContactsList] = useState([]);
+  const [contact, setContact] = useState({});
+  const [friends, setFriends] = useState([]);
+
+  console.log(friends)
+  useEffect(() => {
+    getContacts("private");
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const data = await getMyFriends();
+      setFriends(data.map((item) =>  item.user.uuid ));
+    })();
+  }, []);
 
   useEffect(() => {
     setContactsList(contacts);
@@ -40,9 +63,10 @@ const JobChat = ({ getMessages }) => {
 
   const switchTab = (name) => {
     let updatedList = contacts.filter((item) => {
-      if (name == "all") return true;
-      else if (name == "read") return item.read_at;
-      else return true;
+      if (name == "messages") return true;
+      else if (name == "friends") {
+        return friends.includes(item.contact.uuid)
+      } else return item.type == name;
     });
     setContactsList([...updatedList]);
     setTab(name);
@@ -50,8 +74,10 @@ const JobChat = ({ getMessages }) => {
 
   const chatBoxProps = {
     contact,
+    chatBox,
     chatBoxMobile,
     handleBackButton,
+    setContact
   };
 
   return (
@@ -62,35 +88,38 @@ const JobChat = ({ getMessages }) => {
             <div className="box-header">
               <div className="header-top d-flex justify-space-between">
                 <div className="box-title">Messaging</div>
+                <div className="new-chat">
+                  <FaRegEdit onClick={() => setChatBox("new")} />
+                </div>
               </div>
               <div className="message-search-box">
                 <IoSearchOutline />
                 <input
                   className="message-search-input"
                   value={search}
-                  placeholder="Search Contacts..."
+                  placeholder="Search messages..."
                   onChange={(e) => setSearch(e.target.value)}
                 />
                 {search && <IoClose className="clear-message" />}
               </div>
               <div className="message-tabs">
                 <div
-                  className={"tab" + (tab == "all" ? " active" : "")}
-                  onClick={() => switchTab("all")}
+                  className={"tab" + (tab == "messages" ? " active" : "")}
+                  onClick={() => switchTab("messages")}
                 >
-                  All
+                  <IoFileTrayOutline /> Messages
                 </div>
                 <div
-                  className={"tab" + (tab == "read" ? " active" : "")}
-                  onClick={() => switchTab("read")}
+                  className={"tab" + (tab == "friends" ? " active" : "")}
+                  onClick={() => switchTab("friends")}
                 >
-                  Read
+                  <IoPeopleOutline /> Friends
                 </div>
                 <div
-                  className={"tab" + (tab == "unread" ? " active" : "")}
-                  onClick={() => switchTab("unread")}
+                  className={"tab" + (tab == "groups" ? " active" : "")}
+                  onClick={() => switchTab("groups")}
                 >
-                  Unread
+                  <HiOutlineUserGroup /> Groups
                 </div>
               </div>
             </div>
@@ -100,11 +129,11 @@ const JobChat = ({ getMessages }) => {
           </div>
         </div>
         <div className="col-md-8 col-12">
-          <ChatBox page="job" {...chatBoxProps} />
+          <ChatBox page="lounge" {...chatBoxProps} />
         </div>
       </div>
     </div>
   );
 };
 
-export default JobChat;
+export default Chat;

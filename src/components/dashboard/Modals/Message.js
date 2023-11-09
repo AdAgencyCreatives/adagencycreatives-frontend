@@ -1,19 +1,25 @@
 import { Modal, Dialog, CircularProgress } from "@mui/material";
 import { useContext } from "react";
-import { Context } from "../../../context/ChatContext";
+import { Context as AuthContext } from "../../../context/AuthContext";
+import { Context as ChatContext } from "../../../context/ChatContext";
 import { useState } from "react";
 
-const Message = ({ open, handleClose, item }) => {
+const Message = ({ open, handleClose, item, type }) => {
   const [data, setData] = useState({ subject: "", message: "" });
   const [message, setMessage] = useState(false);
   const {
     state: { loading },
     sendMessage,
-  } = useContext(Context);
-  const to = item.resource;
+  } = useContext(ChatContext);
+
+  const {
+    state: { user },
+  } = useContext(AuthContext);
 
   const handleSubmit = () => {
-    sendMessage(item.user_id, to.user_id, data.message, () => setMessage(true));
+    sendMessage(user.uuid, item.user_id, data.message, type, () =>
+      setMessage(true)
+    );
   };
 
   return (
@@ -24,7 +30,7 @@ const Message = ({ open, handleClose, item }) => {
       aria-describedby="modal-modal-description"
       scroll="body"
     >
-      {item.resource && (
+      {item && (
         <div className="add-note-modal">
           <div className="addnote-header"></div>
           <div className="addnote-body">
@@ -34,7 +40,7 @@ const Message = ({ open, handleClose, item }) => {
                   className="text-center"
                   style={{ fontSize: 20, marginBottom: 30, fontWeight: 400 }}
                 >
-                  Send Message to "{to.name}"
+                  Send Message to "{item.name}"
                 </p>
                 {message && (
                   <div className={`alert alert-info`}>

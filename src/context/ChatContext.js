@@ -7,6 +7,8 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "set_messages":
       return { ...state, messages: action.payload.data };
+    case "add_message":
+      return { ...state, messages: [...state.messages, action.payload.data] };
     case "set_contacts":
       return { ...state, contacts: action.payload.contacts };
     case "set_loading":
@@ -31,9 +33,9 @@ const getMessages = (dispatch) => {
 };
 
 const getContacts = (dispatch) => {
-  return async (user_id) => {
+  return async (type) => {
     try {
-      const response = await api.get("/my-contacts");
+      const response = await api.get("/my-contacts?type=" + type);
       dispatch({
         type: "set_contacts",
         payload: response.data,
@@ -43,15 +45,26 @@ const getContacts = (dispatch) => {
 };
 
 const sendMessage = (dispatch) => {
-  return async (sender_id, receiver_id, message, cb = () => {}) => {
+  return async (sender_id, receiver_id, message, type, cb = () => {}) => {
     try {
       const response = await api.post("/messages", {
         sender_id,
         receiver_id,
         message,
+        type,
       });
+      addMessage(dispatch)(response.data);
     } catch (error) {}
     cb();
+  };
+};
+
+const addMessage = (dispatch) => {
+  return (data) => {
+    dispatch({
+      type: "add_message",
+      payload: data,
+    });
   };
 };
 
@@ -64,6 +77,6 @@ const setLoading = (dispatch, status) => {
 
 export const { Context, Provider } = createDataContext(
   reducer,
-  { getMessages, getContacts, sendMessage },
+  { getMessages, getContacts, sendMessage, addMessage },
   state
 );

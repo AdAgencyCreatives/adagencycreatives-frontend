@@ -1,36 +1,19 @@
 import { useContext } from "react";
 import JobChat from "../../components/user/Dashboard/JobChat";
 import { Context as ChatContext } from "../../context/ChatContext";
-import { Context as AuthContext } from "../../context/AuthContext";
 import { useEffect } from "react";
 
 const JobMessages = () => {
-  const {
-    state: { contacts, messages, loading },
-    getContacts,
-    getMessages,
-    sendMessage,
-  } = useContext(ChatContext);
-
-  const {
-    state: { user },
-  } = useContext(AuthContext);
+  const { getContacts, getMessages } = useContext(ChatContext);
 
   useEffect(() => {
-    getContacts();
+    getContacts("job");
   }, []);
 
   return (
     <div className="agency-page-myjobs">
       <h3 className="page-title">Messages</h3>
-      <JobChat
-        contacts={contacts}
-        getMessages={getMessages}
-        messages={messages}
-        user={user}
-        sendMessage={sendMessage}
-        loading={loading}
-      />
+      <JobChat getMessages={getMessages} />
     </div>
   );
 };

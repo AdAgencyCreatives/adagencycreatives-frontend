@@ -1,35 +1,22 @@
-import { useState } from "react";
-import Avatar from "../../assets/images/user1.jpg";
+import { useContext, useEffect, useState } from "react";
+import Avatar from "../../assets/images/placeholder.png";
+import { Context as CreativesContext } from "../../context/CreativesContext";
+import Loader from "../Loader";
 
-const users = [
-  {
-    avatar: Avatar,
-    username: "John Doe",
-    postition: "Senior Director Executive",
-  },
-  {
-    avatar: Avatar,
-    username: "Ad Agency Creatives",
-    postition: "Senior Director Executive",
-  },
-  {
-    avatar: Avatar,
-    username: "Amber K.",
-    postition: "Senior Director Executive",
-  },
-  {
-    avatar: Avatar,
-    username: "Nathan Walker",
-    postition: "Senior Director Executive",
-  },
-];
-
-const NewChat = () => {
+const NewChat = ({setContact}) => {
   const [search, setSearch] = useState();
+
+  const {
+    state: { creatives, loading },
+    searchCreatives,
+  } = useContext(CreativesContext);
 
   const handleOnChange = (e) => {
     let value = e.target.value;
     setSearch(value);
+    if (value.length >= 3) {
+      searchCreatives(value);
+    }
   };
 
   return (
@@ -43,20 +30,27 @@ const NewChat = () => {
         />
       </div>
       <div className="users-list">
-        {search &&
-          users
-            .filter((user) => user.username.toLowerCase().includes(search.toLowerCase()))
-            .map((item) => (
-              <div className="item">
-                <div className="user-avatar">
-                  <img src={item.avatar} height={40} width={40} />
-                </div>
-                <div className="user-details">
-                  <div className="username">{item.username} </div>
-                  <div className="user-meta">{item.postition} </div>
-                </div>
+        {loading ? (
+          <Loader fullHeight={false} />
+        ) : (
+          search &&
+          creatives &&
+          creatives.map((item, index) => (
+            <div className="item" key={index} onClick={() => setContact(item)}>
+              <div className="user-avatar">
+                <img
+                  src={item.profile_image || Avatar}
+                  height={40}
+                  width={40}
+                />
               </div>
-            ))}
+              <div className="user-details">
+                <div className="username">{item.name} </div>
+                <div className="user-meta">{item.title} </div>
+              </div>
+            </div>
+          ))
+        )}
       </div>
       <div className="chat-area"></div>
     </div>

@@ -144,6 +144,7 @@
 
             img {
                 border-radius: 50%;
+                object-fit: cover;
             }
 
             .user-message {
@@ -226,6 +227,7 @@
 
         .chat-avatar {
             border-radius: 50px;
+            object-fit: cover;
         }
 
         .sender {
@@ -298,6 +300,8 @@
 
             .user-avatar img {
                 border-radius: 50%;
+                object-fit: cover;
+
             }
 
             .message-input {
