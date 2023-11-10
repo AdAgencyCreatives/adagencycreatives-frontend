@@ -21,7 +21,7 @@ const Chat = () => {
     getContacts,
   } = useContext(Context);
 
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
   const [tab, setTab] = useState("messages");
   const [chatBox, setChatBox] = useState("list");
   const [userListMobile, setUserListMobile] = useState("");
@@ -30,7 +30,6 @@ const Chat = () => {
   const [contact, setContact] = useState({});
   const [friends, setFriends] = useState([]);
 
-  console.log(friends)
   useEffect(() => {
     getContacts("private");
   }, []);
@@ -38,7 +37,7 @@ const Chat = () => {
   useEffect(() => {
     (async () => {
       const data = await getMyFriends();
-      setFriends(data.map((item) =>  item.user.uuid ));
+      setFriends(data.map((item) => item.user.uuid));
     })();
   }, []);
 
@@ -65,19 +64,33 @@ const Chat = () => {
     let updatedList = contacts.filter((item) => {
       if (name == "messages") return true;
       else if (name == "friends") {
-        return friends.includes(item.contact.uuid)
+        return friends.includes(item.contact.uuid);
       } else return item.type == name;
     });
     setContactsList([...updatedList]);
     setTab(name);
   };
 
+  const filterContacts = (value) => {
+    setSearch(value);
+    let updatedList = contacts.filter((item) => {
+      let name = value.toLowerCase();
+      let contact = item.contact;
+      let fname = contact.first_name.toLowerCase();
+      let lname = contact.last_name.toLowerCase();
+      return fname.includes(name) || lname.includes(name);
+    });
+    setContactsList([...updatedList])
+  };
+
   const chatBoxProps = {
     contact,
     chatBox,
     chatBoxMobile,
+    setChatBox,
     handleBackButton,
-    setContact
+    setContact,
+    getMessages,
   };
 
   return (
@@ -98,9 +111,9 @@ const Chat = () => {
                   className="message-search-input"
                   value={search}
                   placeholder="Search messages..."
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(e) => filterContacts(e.target.value)}
                 />
-                {search && <IoClose className="clear-message" />}
+                {search && <IoClose className="clear-message" onClick={() => filterContacts("")} />}
               </div>
               <div className="message-tabs">
                 <div

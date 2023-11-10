@@ -268,7 +268,7 @@ function Header(props) {
                           src={state.user.image || Placeholder}
                           height="50"
                           width="50"
-                          className="avatar-rounded rounded-circle"
+                          className="avatar-rounded rounded-circle object-fit-cover"
                           onError={(e) => {
                             e.target.src = Placeholder; // Set the backup image source
                           }}

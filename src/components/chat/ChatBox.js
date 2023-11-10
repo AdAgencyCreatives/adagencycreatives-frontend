@@ -2,6 +2,7 @@ import ContentEditable from "react-contenteditable";
 import Loader from "../Loader";
 import { IoArrowBack } from "react-icons/io5";
 import Avatar from "../../assets/images/placeholder.png";
+import UploadPlaceholder from "../../assets/images/Mischief-1.png";
 import { useEffect, useState, useRef, useContext } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as ChatContext } from "../../context/ChatContext";
@@ -16,11 +17,15 @@ const ChatBox = ({
   handleBackButton,
   contact,
   chatBox,
-  setContact
+  setChatBox,
+  setContact,
+  getMessages,
 }) => {
   const {
-    state: { messages, loading },
+    state: { messages, loading, contacts, attachments },
     sendMessage,
+    getContacts,
+    uploadAttachment,
   } = useContext(ChatContext);
 
   const {
@@ -31,6 +36,16 @@ const ChatBox = ({
   const [messageData, setMessageData] = useState([]);
   const [content, setContent] = useState("");
   const containerRef = useRef();
+  const uploadRef = useRef();
+  const logoRef = useRef();
+
+  useEffect(() => {
+    if (!Object.keys(contact).length && contacts.length) {
+      let item = contacts[0].contact;
+      setContact(item)
+      getMessages(item.uuid);
+    }
+  }, [contacts, contact]);
 
   useEffect(() => {
     setMessageData(messages);
@@ -41,14 +56,15 @@ const ChatBox = ({
   }, [messageData]);
 
   const scrollToBottom = () => {
-    containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    if (containerRef.current)
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
   };
 
   const handleMessageChange = (e) => {
     setContent(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setContent("");
     /* setMessageData((prev) => [
       ...prev,
@@ -58,7 +74,22 @@ const ChatBox = ({
         message_type: "sent",
       },
     ]); */
-    sendMessage(user.uuid, contact.uuid, content);
+    let messageBody = content;
+    if (attachments.length) {
+      attachments.forEach((item) => {
+        messageBody += "<br/>";
+        messageBody += item.url;
+      });
+    }
+    await sendMessage(user.uuid, contact.uuid, messageBody);
+    const id = contact.uuid;
+
+    let existingObject = contacts.find((obj) => obj.contact.uuid === id);
+    if (!existingObject) {
+      setChatBox("list");
+      getMessages(id);
+      await getContacts("private");
+    }
   };
 
   const parseDate = (dateString) => {
@@ -83,15 +114,50 @@ const ChatBox = ({
     setShowPicker(false);
   };
 
+  const handleFileChange = async (event, resource) => {
+    const file = event.target.files[0];
+    if (file) {
+      const src = URL.createObjectURL(file);
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("user_id", user.uuid);
+      formData.append("resource_type", "message");
+      await uploadAttachment(formData, src);
+    }
+  };
+
+  function parseMessage(message) {
+    const result = {
+      message: "",
+      attachments: [],
+    };
+
+    // Split the message by '<br/>'
+    const lines = message.split("<br/>");
+
+    lines.forEach((line) => {
+      if (line.includes("s3.amazonaws.com")) {
+        // Check if the line contains a link
+        result.attachments.push(line.trim()); // Trim to remove any extra spaces
+      } else {
+        // If it's not a link, consider it as text
+        result.message +=
+          result.message !== "" ? ` ${line.trim()}` : line.trim();
+      }
+    });
+
+    return result;
+  }
+
   return (
     <div className={`chat-box ${chatBoxMobile}`}>
       <div className="chat-mobile-top d-md-none d-flex">
         <IoArrowBack size={20} onClick={handleBackButton} />
-        <div className="name">John Doe</div>
+        <div className="name">{contact.first_name + " " +contact.last_name}</div>
       </div>
       <div className="chat-top">
         {chatBox == "new" ? (
-          <NewChat setContact={setContact} />
+          <NewChat setContact={setContact} contacts={contacts} />
         ) : (
           <div ref={containerRef} className="chat-area">
             {loading ? (
@@ -100,6 +166,7 @@ const ChatBox = ({
               messageData.map((item, index) => {
                 const sender = item.message_type == "sent" ? user : contact;
                 const time = parseDate(item.created_at);
+                const { message, attachments } = parseMessage(item.message);
                 return (
                   <div className="chat-item" key={"message" + index}>
                     <img
@@ -115,8 +182,16 @@ const ChatBox = ({
                       </div>
                       <div className="text">
                         <div
-                          dangerouslySetInnerHTML={{ __html: item.message }}
+                          dangerouslySetInnerHTML={{ __html: message }}
                         ></div>
+                        <div className="message_attachments">
+                          {attachments.length > 0 &&
+                            attachments.map((item,index) => (
+                              <a href={item} target="_blank" key={index}>
+                                <img src={item} />
+                              </a>
+                            ))}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -137,6 +212,19 @@ const ChatBox = ({
             />
           </div>
         </div>
+        {attachments.length > 0 && (
+          <div className="attachments">
+            {attachments.map((item, index) => (
+              <div className="item" key={"at_" + index}>
+                {!item.uploaded ? (
+                  <Loader fullHeight={false} />
+                ) : (
+                  <img src={item.src} />
+                )}
+              </div>
+            ))}
+          </div>
+        )}
         <div className="message-actions">
           {page == "lounge" && (
             <>
@@ -160,7 +248,13 @@ const ChatBox = ({
                   onEmojiClick={selectEmoji}
                 />
               )}
-              <FaPaperclip />
+              <FaPaperclip onClick={() => uploadRef.current.click()} />
+              <input
+                type="file"
+                ref={uploadRef}
+                className="d-none"
+                onChange={(e) => handleFileChange(e)}
+              />
             </>
           )}
           <div className="send-message">
