@@ -251,14 +251,13 @@ ul.dropdown-list:before {
 }
 
 .center-page {
-    position: absolute;
-    left: 50vw;
-    top: 50vh;
+    position: relative;
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
+    row-gap: 10px;
     min-width: 250px;
     min-height: 100px;
     align-items: center;

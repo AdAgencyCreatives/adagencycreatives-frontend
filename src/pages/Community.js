@@ -8,7 +8,6 @@ import { useContext, useEffect } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
 
 import RestrictedLounge from "../components/RestrictedLounge";
-import ScrollButton from "../components/ScrollButton";
 
 const Community = () => {
   const {
@@ -33,7 +32,6 @@ const Community = () => {
                 <div className="col-md-7 order-md-2 order-3">
                   <CreatePost />
                   <PostList />
-                  <ScrollButton />
                 </div>
                 <div className="col-md-3 order-md-3 order-2">
                   <RightSidebarWidgets />

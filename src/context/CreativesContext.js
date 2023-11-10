@@ -91,7 +91,7 @@ const getRelatedCreatives = (dispatch) => {
 const getCreative = (dispatch) => {
   return async (slug) => {
     try {
-      const response = await api.get("/creatives?filter[status]=1&filter[is_visible]=1&filter[slug]=" + slug);
+      const response = await api.get("/creatives?filter[status]=1&filter[slug]=" + slug);
       const data = response.data.data[0];
       const uid = data.user_id;
       getCreativeEducation(dispatch, uid);
@@ -107,7 +107,7 @@ const getCreative = (dispatch) => {
 const getCreativeById = (dispatch) => {
   return async (id) => {
     try {
-      const response = await api.get("/creatives?filter[status]=1&filter[is_visible]=1&filter[user_id]=" + id);
+      const response = await api.get("/creatives?filter[status]=1&filter[user_id]=" + id);
       const data = response.data.data[0];
       const uid = data.user_id;
       getCreativeEducation(dispatch, uid);

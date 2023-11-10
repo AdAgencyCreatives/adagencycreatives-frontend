@@ -97,7 +97,7 @@ const LeftSidebar = (props) => {
             </NavLink>
           </li>
         </ul>
-        <hr className="hr" />
+        {/* <hr className="hr" />
 
         <ul className="menu-container">
           <li className="menu-item">
@@ -110,7 +110,7 @@ const LeftSidebar = (props) => {
             <NavLink to="/activities">
               <IoTrendingUpOutline />
               <div className="item-name">Activities</div>
-              {/* <span className="count">{activitiesCount ? activitiesCount : 0}</span> */}
+              <span className="count">{activitiesCount ? activitiesCount : 0}</span>
             </NavLink>
           </li>
           <li className="menu-item">
@@ -119,7 +119,7 @@ const LeftSidebar = (props) => {
               <div className="item-name">Settings</div>
             </NavLink>
           </li>
-        </ul>
+        </ul> */}
       </div>
     </div>
   );

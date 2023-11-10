@@ -30,6 +30,7 @@ import Placeholder from "../assets/images/placeholder.png";
 import { agencyNav, creativeNav } from "../nav/DashboardNav";
 
 import SlidingMessage from "./SlidingMessage";
+import ScrollButton from "./ScrollButton";
 
 const drawerWidth = "85%";
 
@@ -324,6 +325,7 @@ function Header(props) {
       </Box>
       <AuthModal open={authModalOpen} handleClose={handleClose} />
       <SlidingMessage message={message} />
+      <ScrollButton />
     </>
   );
 }

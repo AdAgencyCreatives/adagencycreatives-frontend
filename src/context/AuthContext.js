@@ -172,11 +172,11 @@ const getNotificationsCount = (dispatch) => {
 
   return async (user_id) => {
     try {
-      /* const response = await api.get("/notifications/count?filter[user_id]=" + user_id);
+      const response = await api.get("/notifications/count?filter[user_id]=" + user_id);
       dispatch({
         type: "set_notifications_count",
         payload: response.data.count,
-      }); */
+      });
     } catch (error) {
     }
   };
