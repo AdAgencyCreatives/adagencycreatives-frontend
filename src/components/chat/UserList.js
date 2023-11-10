@@ -1,5 +1,7 @@
 import moment from "moment";
 import Avatar from "../../assets/images/placeholder.png";
+import { useContext } from "react";
+import { Context } from "../../context/ChatContext";
 
 const UserList = ({ data, handleItemClick }) => {
   const parseDateShort = (dateString) => {
@@ -19,11 +21,20 @@ const UserList = ({ data, handleItemClick }) => {
     return result;
   };
 
+  const {state:{activeContact}} = useContext(Context)
+  function sanitizeText(text) {
+    // Remove links with <br/>
+    const sanitizedText = text.replace(/<br\/>.*?s3\.amazonaws\.com.*?(\s|$)/g, ' ');
+  
+    // Remove any extra whitespace
+    return sanitizedText;
+  }
+  
   return (
     <ul className="users-list">
       {data.map((item) => (
         <li
-          className=""
+          className={(item.contact.uuid == activeContact) ? "active" : ""}
           onClick={() => handleItemClick(item.contact)}
           key={item.id}
         >
@@ -33,11 +44,11 @@ const UserList = ({ data, handleItemClick }) => {
               <div className="username">
                 {item.contact.first_name} {item.contact.last_name}
               </div>
-              <div className={"message-time" + (item.read_at ? "" : " unread")}>
+              <div className={"message-time" + ((item.read_at || item.message_type == "sent") ? "" : " unread")}>
                 {parseDateShort(item.created_at)}
               </div>
             </div>
-            <div className="user-message">{item.message}</div>
+            <div className="user-message">{sanitizeText(item.message)}</div>
           </div>
         </li>
       ))}

@@ -41,8 +41,9 @@ const JobChat = ({ getMessages }) => {
   const switchTab = (name) => {
     let updatedList = contacts.filter((item) => {
       if (name == "all") return true;
-      else if (name == "read") return item.read_at;
-      else return true;
+      else if (name == "read")
+        return (item.read_at || item.message_type == "sent");
+      else return (!item.read_at && item.message_type != "sent");
     });
     setContactsList([...updatedList]);
     setTab(name);
@@ -50,12 +51,16 @@ const JobChat = ({ getMessages }) => {
 
   const chatBoxProps = {
     contact,
+    chatBox,
     chatBoxMobile,
+    setChatBox,
     handleBackButton,
+    setContact,
+    getMessages,
   };
 
   return (
-    <div className="chat-container">
+    <div className="chat-container mb-4">
       <div className="row g-0">
         <div className="col-md-4 col-12">
           <div className={`users-box ${userListMobile}`}>
