@@ -61,14 +61,7 @@ const CommunityMembers = () => {
                       {creatives &&
                         creatives.map((creative, index) => {
                           return (
-                            <>
-                              {creative.user_id != user.uuid ? (
-                                <CommunityMemberWidget key={"community-member-creative-" + creative.id} creative={creative} />
-                              ) : (
-                                <></>
-                              )
-                              }
-                            </>
+                            <CommunityMemberWidget key={"community-member-creative-" + creative.id} creative={creative} />
                           );
                         })}
                       <div className="load-more text-center">

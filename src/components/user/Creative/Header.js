@@ -87,7 +87,7 @@ const Header = ({ data, role, user }) => {
                 )}
                 {isCreative && !isOwnProfile && (
                   <>
-                    <button className="btn btn-dark fs-5" onClick={() =>  setOpen(true)}>
+                    <button className="btn btn-dark fs-5" onClick={() => setOpen(true)}>
                       Private Message
                     </button>
                     <Message

@@ -22,8 +22,6 @@ const FriendshipWidget = (props) => {
     const [hasFriendRequestRecord, setHasFriendRequestRecord] = useState(false);
     const [friendRequestRecord, setFriendRequestRecord] = useState(null);
 
-    const [slidingMessage, setSlidingMessage] = useState("");
-
     const [isMounted, setIsMounted] = useState(false);
     useEffect(() => {
         setIsMounted(true);
@@ -46,6 +44,8 @@ const FriendshipWidget = (props) => {
     const {
         state: { role, user, token },
     } = useContext(AuthContext);
+
+    const isOwnProfile = user?.uuid == props.creative?.user_id;
 
     useEffect(() => {
         if (friendshipRequestResult && friendshipRequestResult.status) {
@@ -149,50 +149,53 @@ const FriendshipWidget = (props) => {
 
     return (
         <>
-            <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
-            <SlidingMessage message={slidingMessage} setMessage={setSlidingMessage} delay={4000} />
-            {loadingFriendshipRecord || loadingFriendRequestRecord ? (
-                <CircularProgress />
-            ) : (<>
-                {(hasFriendshipRecord && friendshipRecord.status) || (hasFriendRequestRecord && friendRequestRecord && (friendRequestRecord.status == "accepted" || friendRequestRecord.status == "declined")) ? (<>
-                    <Tooltip title="Friendship Status">
-                        <div className="friendship-request-status">
-                            {friendship_statuses[(friendshipRecord ? friendshipRecord.status : (friendRequestRecord ? friendRequestRecord.status : ""))]}
-                        </div>
-                    </Tooltip>
-                </>) : (<></>)}
-                {hasFriendshipRecord && friendshipRecord.status == "pending" ? (<>
-                    <Tooltip title="Cancel Friendship">
-                        <button className="btn btn-dark no-border" onClick={(e) => handleCancelFriendship(e, friendshipRecord, props.creative)}>
-                            <IoCloseSharp />
-                        </button>
-                    </Tooltip>
-                </>) : (<></>)}
+            {!isOwnProfile ? (
+                <>
+                    <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
+                    {loadingFriendshipRecord || loadingFriendRequestRecord ? (
+                        <CircularProgress />
+                    ) : (<>
+                        {(hasFriendshipRecord && friendshipRecord.status) || (hasFriendRequestRecord && friendRequestRecord && (friendRequestRecord.status == "accepted" || friendRequestRecord.status == "declined")) ? (<>
+                            <Tooltip title="Friendship Status">
+                                <div className="friendship-request-status">
+                                    {friendship_statuses[(friendshipRecord ? friendshipRecord.status : (friendRequestRecord ? friendRequestRecord.status : ""))]}
+                                </div>
+                            </Tooltip>
+                        </>) : (<></>)}
+                        {hasFriendshipRecord && friendshipRecord.status == "pending" ? (<>
+                            <Tooltip title="Cancel Friendship">
+                                <button className="btn btn-dark no-border" onClick={(e) => handleCancelFriendship(e, friendshipRecord, props.creative)}>
+                                    <IoCloseSharp />
+                                </button>
+                            </Tooltip>
+                        </>) : (<></>)}
 
-                {(!hasFriendshipRecord || friendshipRecord.status == "cancelled") && (!hasFriendRequestRecord) ? (<>
-                    <Tooltip title="Request Friendship">
-                        <button className="btn btn-dark no-border" onClick={(e) => handleRequestFriendship(e, props.creative)}>
-                            <IoPersonAdd />
-                        </button>
-                    </Tooltip>
-                </>) : (<></>)}
+                        {(!hasFriendshipRecord || friendshipRecord.status == "cancelled") && (!hasFriendRequestRecord) ? (<>
+                            <Tooltip title="Request Friendship">
+                                <button className="btn btn-dark no-border" onClick={(e) => handleRequestFriendship(e, props.creative)}>
+                                    <IoPersonAdd />
+                                </button>
+                            </Tooltip>
+                        </>) : (<></>)}
 
-                {hasFriendRequestRecord && !(friendRequestRecord.status == "accepted" || friendRequestRecord.status == "declined") ? (<>
-                    <Tooltip title="Accept Friendship">
-                        <button className="btn btn-dark no-border" onClick={(e) => handleRespondFriendship(e, props.creative, "accepted")}>
-                            <IoCheckmarkCircleSharp />
-                        </button>
-                    </Tooltip>
-                    <Tooltip title="Decline Friendship">
-                        <button className="btn btn-dark no-border" onClick={(e) => handleRespondFriendship(e, props.creative, "declined")}>
-                            <IoBanSharp />
-                        </button>
-                    </Tooltip>
-                </>) : (<></>)}
-            </>)}
-            {/* <br />
+                        {hasFriendRequestRecord && !(friendRequestRecord.status == "accepted" || friendRequestRecord.status == "declined") ? (<>
+                            <Tooltip title="Accept Friendship">
+                                <button className="btn btn-dark no-border" onClick={(e) => handleRespondFriendship(e, props.creative, "accepted")}>
+                                    <IoCheckmarkCircleSharp />
+                                </button>
+                            </Tooltip>
+                            <Tooltip title="Decline Friendship">
+                                <button className="btn btn-dark no-border" onClick={(e) => handleRespondFriendship(e, props.creative, "declined")}>
+                                    <IoBanSharp />
+                                </button>
+                            </Tooltip>
+                        </>) : (<></>)}
+                    </>)}
+                    {/* <br />
             {user.uuid}<br />
             {props.creative.user_id} */}
+                </>
+            ) : (<></>)}
         </>
     );
 };

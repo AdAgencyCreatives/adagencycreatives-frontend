@@ -86,7 +86,7 @@ const Sidebar = ({ data, role, user }) => {
               </div>
             </div>
           )}
-          {data.industry_experience.length ? (
+          {data.industry_experience?.length ? (
             <div className="item">
               <img src={bullseye} height={22} width={22} />
               <div className="details">
@@ -99,7 +99,7 @@ const Sidebar = ({ data, role, user }) => {
           ) : (
             ""
           )}
-          {data.media_experience.length ? (
+          {data.media_experience?.length ? (
             <div className="item">
               <img src={adicon} height={22} width={22} />
               <div className="details">
@@ -121,7 +121,7 @@ const Sidebar = ({ data, role, user }) => {
               </div>
             </div>
           )}
-          {data.character_strengths.length ? (
+          {data.character_strengths?.length ? (
             <div className="item">
               <img src={time} height={22} width={22} />
               <div className="details">
@@ -147,7 +147,7 @@ const Sidebar = ({ data, role, user }) => {
         )}
       </div>
 
-      {resume.length ? (
+      {resume?.length ? (
         <div className="sidebar-item mt-4">
           <h4 className="title">Resume</h4>
           <div className="content">

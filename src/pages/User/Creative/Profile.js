@@ -8,6 +8,7 @@ import { FiPaperclip, FiTrash2 } from "react-icons/fi";
 import { Context as DataContext } from "../../../context/DataContext";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
+import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
 import { CircularProgress } from "@mui/material";
 
@@ -50,7 +51,12 @@ const Profile = () => {
 
   const {
     state: { user },
+    reloadUserData,
   } = useContext(AuthContext);
+
+  const {
+    showAlert
+  } = useContext(AlertContext);
 
   const {
     state: { single_creative, formSubmit },
@@ -100,7 +106,7 @@ const Profile = () => {
       setIsloading(false);
       setEditorState(
         EditorState.createWithContent(
-          ContentState.createFromText(single_creative.about)
+          ContentState.createFromText(single_creative.about ? single_creative.about : "")
         )
       );
       console.log(single_creative);
@@ -134,7 +140,7 @@ const Profile = () => {
           data: statesList,
           callback: (item) => changeState(item, "state_id"),
           placeholder: "Select State",
-          value: statesList.find(
+          value: statesList?.find(
             (state) => state.value == single_creative.location?.state_id
           ),
         },
@@ -147,7 +153,7 @@ const Profile = () => {
           callback: (item) => handleDropdownChange(item, "city_id"),
           value:
             single_creative.location?.city_id &&
-            citiesList.find(
+            citiesList?.find(
               (city) => city.value == single_creative.location?.city_id
             ),
         },
@@ -157,7 +163,7 @@ const Profile = () => {
           type: "text",
           name: "portfolio_site",
           value:
-            single_creative.links.find((link) => link.label === "portfolio")
+            single_creative.links?.find((link) => link.label === "portfolio")
               ?.url ?? "",
         },
         {
@@ -166,7 +172,7 @@ const Profile = () => {
           type: "text",
           name: "linkedin_profile",
           value:
-            single_creative.links.find((link) => link.label === "linkedin")
+            single_creative.links?.find((link) => link.label === "linkedin")
               ?.url ?? "",
         },
         {
@@ -302,15 +308,15 @@ const Profile = () => {
         city_id: single_creative.location?.city_id,
         phone_number: "",
         about: single_creative.about,
-        industry_experience: single_creative.industry_experience.map(
+        industry_experience: single_creative.industry_experience?.map(
           (item) => industry_experiences?.find((j) => j.name == item).id
         ),
-        media_experience: single_creative.media_experience.map(
+        media_experience: single_creative.media_experience?.map(
           (item) => media_experiences?.find((j) => j.name == item).id
         ),
-        is_onsite: single_creative.workplace_preference.is_onsite,
-        is_hybrid: single_creative.workplace_preference.is_hybrid,
-        is_remote: single_creative.workplace_preference.is_remote,
+        is_onsite: single_creative.workplace_preference?.is_onsite,
+        is_hybrid: single_creative.workplace_preference?.is_hybrid,
+        is_remote: single_creative.workplace_preference?.is_remote,
         is_opentorelocation: single_creative.is_opentorelocation,
       });
     }
@@ -358,7 +364,7 @@ const Profile = () => {
   useEffect(() => {
     let data = employment_type;
     if (employment_type.length) {
-      data = employment_type.map((item) => {
+      data = employment_type?.map((item) => {
         return { label: item, value: item, key: item };
       });
     }
@@ -366,7 +372,7 @@ const Profile = () => {
   }, [employment_type]);
 
   const parseFieldsData = (data) => {
-    const parsedValue = data.map((item) => {
+    const parsedValue = data?.map((item) => {
       return { label: item.name, value: item.uuid || item.id, key: item.name };
     });
     return parsedValue;
@@ -380,7 +386,7 @@ const Profile = () => {
   const handleTextChange = (e, name) => {
     const value = e.target.value;
     let newFields = [...fields];
-    const fieldIndex = newFields.findIndex((item) => item.name == name);
+    const fieldIndex = newFields?.findIndex((item) => item.name == name);
     newFields[fieldIndex].value = value;
     setFields([...newFields]);
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -391,7 +397,7 @@ const Profile = () => {
   };
 
   const handleMultiChange = (item, name) => {
-    const values = item.map((i) => i.value);
+    const values = item?.map((i) => i.value);
     setFormData((prev) => ({ ...prev, [name]: values }));
   };
 
@@ -422,7 +428,12 @@ const Profile = () => {
   }, [formData]);
 
   const handleSubmit = () => {
-    saveCreative(user.uuid, formData);
+    (async ()=>{
+      await saveCreative(user.uuid, formData);
+      reloadUserData(user.uuid);
+      showAlert("Creative profile updated successfully.");
+    })();
+    
   };
 
   const removeLogo = () => {
@@ -433,11 +444,15 @@ const Profile = () => {
     const file = event.target.files[0];
     logoRef.current.src = URL.createObjectURL(file);
     if (file) {
-      const formData = new FormData();
+      let formData = new FormData();
       formData.append("file", file);
       formData.append("user_id", user.uuid);
-      formData.append("resource_type", "profile_image");
-      saveCreativeImage(formData);
+      formData.append("resource_type", "profile_picture");
+      (async ()=>{
+        await saveCreativeImage(formData);
+        reloadUserData(user.uuid);
+        showAlert("Creative logo updated successfully.");
+      })();
     }
   };
 
@@ -450,7 +465,7 @@ const Profile = () => {
         <h4 className="text-uppercase mb-4">Edit Profile</h4>
         <div className="profile-edit-form">
           <div className="row gx-3 gy-5 align-items-end">
-            {fields.map((field, index) => {
+            {fields?.map((field, index) => {
               // eslint-disable-next-line default-case
               switch (field.type) {
                 case "image":

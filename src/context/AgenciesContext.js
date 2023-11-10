@@ -54,7 +54,7 @@ const reducer = (state, action) => {
 const getAgencies = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/agencies");
+      const response = await api.get("/agencies?filter[status]=1");
       dispatch({
         type: "set_agencies",
         payload: response.data,
@@ -66,7 +66,7 @@ const getAgencies = (dispatch) => {
 const getAgency = (dispatch) => {
   return async (slug) => {
     try {
-      const response = await api.get("/agencies?filter[slug]=" + slug);
+      const response = await api.get("/agencies?filter[status]=1&filter[slug]=" + slug);
       const data = response.data.data[0];
       const uid = data.user_id;
       getOpenPositions(dispatch, uid);
@@ -81,7 +81,7 @@ const getAgency = (dispatch) => {
 const getAgencyById = (dispatch) => {
   return async (id) => {
     try {
-      const response = await api.get("/agencies?filter[user_id]=" + id);
+      const response = await api.get("/agencies?filter[status]=1&filter[user_id]=" + id);
       const data = response.data.data[0];
       const uid = data.user_id;
       getOpenPositions(dispatch)(uid);
@@ -161,7 +161,7 @@ const saveAgencyImage = (dispatch) => {
 const searchAgencies = (dispatch) => {
   return async (query) => {
     try {
-      const response = await api.get("agencies/?filter[name]=" + query);
+      const response = await api.get("/agencies?filter[status]=1&filter[name]=" + query);
       dispatch({
         type: "set_agencies",
         payload: response.data,

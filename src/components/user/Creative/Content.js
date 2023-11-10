@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const Content = ({ user, data, education, experience }) => {
   const isCreative = user?.role == "creative";
   const isOwnProfile = isCreative && user?.uuid == data.user_id;
-  const portfolio_link = data.links.find((item) => item.type="portfolio")?.url ?? "#";
+  const portfolio_link = data.links?.find((item) => item.type="portfolio")?.url ?? "#";
   return (
     <>
       <div className="content-section">

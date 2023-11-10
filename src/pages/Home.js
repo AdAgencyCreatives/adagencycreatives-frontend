@@ -15,6 +15,7 @@ import SpotlightCreative from "../components/home/SpotlightCreative";
 import CreativeJobs from "../components/home/CreativeJobs";
 import { useState, useContext } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
+import { Context as AlertContext } from "../context/AlertContext";
 import { Link } from "react-router-dom";
 
 import SlidingMessage from "../components/SlidingMessage";
@@ -26,7 +27,9 @@ const Home = () => {
     state: { token, role },
   } = useContext(AuthContext);
 
-  const [slidingMessage, setSlidingMessage] = useState("");
+  const {
+    showAlert
+  } = useContext(AlertContext);
 
   const validateAccess = (e, item) => {
     if (item && item.roles && item.roles.length > 0) {
@@ -36,7 +39,7 @@ const Home = () => {
           return true;
         }
       }
-      setSlidingMessage(item.restrictedMessage);
+      showAlert(item.restrictedMessage);
       e.preventDefault();
       e.stopPropagation();
       return false;
@@ -47,7 +50,6 @@ const Home = () => {
   console.log(token);
   return (
     <>
-      <SlidingMessage message={slidingMessage} setMessage={setSlidingMessage} />
       <div className="main">
         <div className="banner">
           <h1 className="bannerHeading">Welcome to Ad Agency Creatives</h1>

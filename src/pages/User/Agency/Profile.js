@@ -9,6 +9,7 @@ import { FiPaperclip, FiTrash2 } from "react-icons/fi";
 import { Context as DataContext } from "../../../context/DataContext";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
+import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
 import { CircularProgress } from "@mui/material";
 
@@ -46,7 +47,12 @@ const Profile = () => {
 
   const {
     state: { user },
+    reloadUserData
   } = useContext(AuthContext);
+
+  const {
+    showAlert
+  } = useContext(AlertContext);
 
   const {
     state: { single_agency, formSubmit },
@@ -92,7 +98,7 @@ const Profile = () => {
       setIsloading(false);
       setEditorState(
         EditorState.createWithContent(
-          ContentState.createFromText(single_agency.about)
+          ContentState.createFromText(single_agency.about ? single_agency.about : "")
         )
       );
       setFields([
@@ -257,13 +263,13 @@ const Profile = () => {
   }, [single_agency, user, media, industry, statesList, citiesList]);
 
   // Cities update
-/*   useEffect(() => {
-    if (citiesList.length > 0 && fields.length) {
-      let updatedFields = [...fields];
-      updatedFields[4].data = citiesList;
-      setFields(updatedFields);
-    }
-  }, [citiesList, fields]); */
+  /*   useEffect(() => {
+      if (citiesList.length > 0 && fields.length) {
+        let updatedFields = [...fields];
+        updatedFields[4].data = citiesList;
+        setFields(updatedFields);
+      }
+    }, [citiesList, fields]); */
 
   //Set initial form data
   useEffect(() => {
@@ -394,7 +400,12 @@ const Profile = () => {
   }, [formData]);
 
   const handleSubmit = () => {
-    saveAgency(user.uuid, formData);
+    (async () => {
+      await saveAgency(user.uuid, formData);
+      reloadUserData(user.uuid);
+      showAlert("Agency profile updated successfully.");
+    })();
+
   };
 
   const removeLogo = () => {
@@ -409,7 +420,11 @@ const Profile = () => {
       formData.append("file", file);
       formData.append("user_id", user.uuid);
       formData.append("resource_type", "agency_logo");
-      saveAgencyImage(formData);
+      (async () => {
+        await saveAgencyImage(formData);
+        reloadUserData(user.uuid);
+        showAlert("Agency logo updated successfully.");
+      })();
     }
   };
 

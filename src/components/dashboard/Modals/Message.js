@@ -1,6 +1,6 @@
 import { Modal, Dialog, CircularProgress } from "@mui/material";
 import { useContext } from "react";
-import { Context as AuthContext } from "../../../context/AuthContext";
+import { Context as AuthContext, logActivity } from "../../../context/AuthContext";
 import { Context as ChatContext } from "../../../context/ChatContext";
 import { useState } from "react";
 
@@ -20,6 +20,7 @@ const Message = ({ open, handleClose, item, type }) => {
     sendMessage(user.uuid, item.user_id, data.message, type, () =>
       setMessage(true)
     );
+    logActivity(user.uuid, "message_sent", "You sent message to Creative: " + item.name, "{user_id:'" + user.uuid + "', creative_id:'" + item.user_id + "'}");
   };
 
   return (

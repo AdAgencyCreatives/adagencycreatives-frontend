@@ -35,7 +35,7 @@ const authReducer = (state, action) => {
 
     case "set_notifications_count":
       return { ...state, notifications_count: action.payload };
-      case "set_activities_count":
+    case "set_activities_count":
       return { ...state, activities_count: action.payload };
 
     case "show_message_alert":
@@ -98,7 +98,7 @@ const signup = (dispatch) => {
       }
 
       const response = await api.post("/users", formData);
-      
+
       dispatch({
         type: "set_form_message",
         payload: { type: "success", message: getRegisterSuccessMessage() },
@@ -126,6 +126,16 @@ const signin = (dispatch) => {
       cb();
     } catch (error) {
       setErrorMessage(dispatch, error.response.data.message);
+    }
+  };
+};
+
+const reloadUserData = (dispatch) => {
+  return async (user_id) => {
+    try {
+      const response = await api.get("/users/" + user_id);
+      setUserData(dispatch, response.data.data);
+    } catch (error) {
     }
   };
 };
@@ -162,7 +172,7 @@ const getNotificationsCount = (dispatch) => {
 
   return async (user_id) => {
     try {
-      const response = await api.get("/notifications/count?filter[user_id]="+user_id);
+      const response = await api.get("/notifications/count?filter[user_id]=" + user_id);
       dispatch({
         type: "set_notifications_count",
         payload: response.data.count,
@@ -176,7 +186,7 @@ const getActivitiesCount = (dispatch) => {
 
   return async (user_id) => {
     try {
-      const response = await api.get("/activities/count?filter[user_id]="+user_id);
+      const response = await api.get("/activities/count?filter[user_id]=" + user_id);
       dispatch({
         type: "set_activities_count",
         payload: response.data.count,
@@ -270,13 +280,13 @@ const hideMessageAlert = (dispatch) => {
 
 export const logActivity = async (user_id, type, message, body) => {
   try {
-      const response = await api.post("/activities", {
-          "user_id": user_id,
-          "type": type && type.length ? type : "general",
-          "message": message && message.length ? message : "",
-          "body": body && body.length ? body : "{}",
-      });
-      return response.data;
+    const response = await api.post("/activities", {
+      "user_id": user_id,
+      "type": type && type.length ? type : "general",
+      "message": message && message.length ? message : "",
+      "body": body && body.length ? body : "{}",
+    });
+    return response.data;
   } catch (error) {
   }
   return null;
@@ -295,6 +305,7 @@ export const { Context, Provider } = createDataContext(
     hideMessageAlert,
     getNotificationsCount,
     getActivitiesCount,
+    reloadUserData,
   },
   state
 );

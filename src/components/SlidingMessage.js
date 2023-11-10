@@ -10,7 +10,7 @@ const SlideInMessage = (props) => {
         if (props.message && props.message.length > 0) {
             window.setTimeout(function () {
                 hideAlert()
-            }, (props.delay ? props.delay : 3000));
+            }, (props.delay ? props.delay : 4000));
         }
     }, [props.message]);
 
