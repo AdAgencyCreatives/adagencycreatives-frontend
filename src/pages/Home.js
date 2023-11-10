@@ -32,16 +32,18 @@ const Home = () => {
   } = useContext(AlertContext);
 
   const validateAccess = (e, item) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     if (item && item.roles && item.roles.length > 0) {
       for (let index = 0; index < item.roles.length; index++) {
         const roleToCompare = item.roles[index];
-        if (role == roleToCompare) {
+        if (role && role == roleToCompare) {
           return true;
         }
       }
       showAlert(item.restrictedMessage);
-      e.preventDefault();
-      e.stopPropagation();
+
       return false;
     }
     return true;

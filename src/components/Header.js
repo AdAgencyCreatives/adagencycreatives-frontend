@@ -260,7 +260,6 @@ function Header(props) {
                   >
                     Post A Job
                   </Button>
-                  <SlidingMessage message={message} />
                   {state.token ? (
                     <div className="nav-item has-children">
                       <div className="logged-in-menu">
@@ -324,6 +323,7 @@ function Header(props) {
         </Box>
       </Box>
       <AuthModal open={authModalOpen} handleClose={handleClose} />
+      <SlidingMessage message={message} />
     </>
   );
 }

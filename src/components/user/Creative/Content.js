@@ -14,10 +14,10 @@ const Content = ({ user, data, education, experience }) => {
     }
 
     let lowerUrl = (""+url).toLowerCase();
-    let haveHttps = lowerUrl.indexOf("https://") === false;
-    let haveHttp = lowerUrl.indexOf("http://") === false;
+    let haveHttps = lowerUrl.indexOf("https://") >= 0;
+    let haveHttp = lowerUrl.indexOf("http://") >= 0;
 
-    return !haveHttps && !haveHttp ? ("https://" + url) : url;
+    return !(haveHttps || haveHttp) ? ("https://" + url) : url;
   };
 
   const isCreative = user?.role == "creative";

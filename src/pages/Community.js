@@ -8,6 +8,7 @@ import { useContext, useEffect } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
 
 import RestrictedLounge from "../components/RestrictedLounge";
+import ScrollButton from "../components/ScrollButton";
 
 const Community = () => {
   const {
@@ -17,27 +18,30 @@ const Community = () => {
   return (
     <>
       {token && role && (role == "admin" || role == "creative") ? (
-        <div className="dark-container page-community mb-0 mt-4">
-          <h1 className="community-title">The Lounge</h1>
-          <h2 className="community-subtitle">
-            Creatives only. Ask for help. Offer or solicit advice. Share. Chat.
-            Inspire. Tell jokes.
-          </h2>
-          <div className="container-fluid mt-4">
-            <div className="row">
-              <div className="col-md-2 mb-4 mb-md-0">
-                <LeftSidebar />
-              </div>
-              <div className="col-md-7 order-md-2 order-3">
-                <CreatePost />
-                <PostList />
-              </div>
-              <div className="col-md-3 order-md-3 order-2">
-                <RightSidebarWidgets />
+        <>
+          <div className="dark-container page-community mb-0 mt-4">
+            <h1 className="community-title">The Lounge</h1>
+            <h2 className="community-subtitle">
+              Creatives only. Ask for help. Offer or solicit advice. Share. Chat.
+              Inspire. Tell jokes.
+            </h2>
+            <div className="container-fluid mt-4">
+              <div className="row">
+                <div className="col-md-2 mb-4 mb-md-0">
+                  <LeftSidebar />
+                </div>
+                <div className="col-md-7 order-md-2 order-3">
+                  <CreatePost />
+                  <PostList />
+                  <ScrollButton />
+                </div>
+                <div className="col-md-3 order-md-3 order-2">
+                  <RightSidebarWidgets />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </>
       ) : (
         <RestrictedLounge />
       )}
