@@ -7,9 +7,23 @@ import Portfolio from "./Portfolio";
 import { Link } from "react-router-dom";
 
 const Content = ({ user, data, education, experience }) => {
+
+  const rectify_url = (url) => {
+    if (!url) {
+      return url;
+    }
+
+    let lowerUrl = (""+url).toLowerCase();
+    let haveHttps = lowerUrl.indexOf("https://") === false;
+    let haveHttp = lowerUrl.indexOf("http://") === false;
+
+    return !haveHttps && !haveHttp ? ("https://" + url) : url;
+  };
+
   const isCreative = user?.role == "creative";
   const isOwnProfile = isCreative && user?.uuid == data.user_id;
-  const portfolio_link = data.links?.find((item) => item.type="portfolio")?.url ?? "#";
+  const portfolio_link = rectify_url(data.links?.find((item) => item.type = "portfolio")?.url) ?? "#";
+
   return (
     <>
       <div className="content-section">
