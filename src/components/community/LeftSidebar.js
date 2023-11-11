@@ -97,10 +97,10 @@ const LeftSidebar = (props) => {
             </NavLink>
           </li>
         </ul>
-        {/* <hr className="hr" />
+        <hr className="hr" />
 
         <ul className="menu-container">
-          <li className="menu-item">
+          {/* <li className="menu-item">
             <NavLink to="/bookmarks">
               <IoBookmarkOutline />
               <div className="item-name">Bookmarks</div>
@@ -112,14 +112,14 @@ const LeftSidebar = (props) => {
               <div className="item-name">Activities</div>
               <span className="count">{activitiesCount ? activitiesCount : 0}</span>
             </NavLink>
-          </li>
+          </li> */}
           <li className="menu-item">
             <NavLink to="/settings">
               <IoSettingsOutline />
               <div className="item-name">Settings</div>
             </NavLink>
           </li>
-        </ul> */}
+        </ul>
       </div>
     </div>
   );

@@ -42,6 +42,10 @@ const GroupWidget = (props) => {
         }
     }, [user]);
 
+    const handleJoinGroup = (e, group) => {
+        //alert(group.name);
+    };
+
     return (
         <>
             <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
@@ -59,7 +63,7 @@ const GroupWidget = (props) => {
                         <FaEarthAmericas color="#a4a4a4" /> {group_statuses[props.group.status]} Group
                     </div>
                     <div className="join-group">
-                        <button className="group-btn">
+                        <button className="group-btn" onClick={(e)=> handleJoinGroup(e, props.group)}>
                             <FaRightToBracket /> Join Group
                         </button>
                     </div>
