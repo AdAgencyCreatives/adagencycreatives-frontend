@@ -6,7 +6,7 @@ import RelatedCreatives from "./RelatedCreatives";
 import Portfolio from "./Portfolio";
 import { Link } from "react-router-dom";
 
-const Content = ({ user, data, education, experience }) => {
+const Content = ({ user, role, data, education, experience }) => {
 
   const rectify_url = (url) => {
     if (!url) {
@@ -88,7 +88,7 @@ const Content = ({ user, data, education, experience }) => {
       ) : (
         ""
       )}
-      <RelatedCreatives data={data} />
+      {role && (role == "admin" || role == "advisor") ? (<RelatedCreatives data={data} />) : (<></>)}
       {user && data && !isOwnProfile && <Reviews user={user} data={data} />}
     </>
   );

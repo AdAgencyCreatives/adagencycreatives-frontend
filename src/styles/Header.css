@@ -292,3 +292,21 @@ ul.dropdown-list:before {
 textarea.form-control:focus {
     border: 1px solid gray;
 }
+
+@media (max-width: 539px) {
+    .auth-modal .auth-body ul.role-tabs.nav.nav-tabs li {
+        flex: unset !important;
+        /* For Login / Register Buttons on separate rows on small screens */
+    }
+}
+
+.scroll-button-span {
+    background-color: #000;
+    width: 25px;
+    height: 25px;
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    z-index: -1;
+}

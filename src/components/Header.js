@@ -21,11 +21,12 @@ import { FaLinkedinIn, FaInstagramSquare } from "react-icons/fa";
 import { NavLink, Link } from "react-router-dom";
 import ScrollToHash from "./ScrollToHash";
 import { useLocation } from "react-router-dom";
-import { useEffect, useState,useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { navItems } from "../nav/NavItems";
 import AuthModal from "./modals/AuthModal";
 import { Context as AuthContext } from "../context/AuthContext";
 import { Context as AlertContext } from "../context/AlertContext";
+import { Context as SubscriptionContext } from "../context/SubscriptionContext";
 import Placeholder from "../assets/images/placeholder.png";
 import { agencyNav, creativeNav } from "../nav/DashboardNav";
 
@@ -35,8 +36,6 @@ import ScrollButton from "./ScrollButton";
 const drawerWidth = "85%";
 
 function Header(props) {
-
-  const {state:{message},showAlert} = useContext(AlertContext);
 
   const { window } = props;
   const { state } = React.useContext(AuthContext);
@@ -49,6 +48,19 @@ function Header(props) {
   const [loggedInNav, setLoggedInNav] = useState(agencyNav);
   const instagram = "https://www.instagram.com/adagencycreativescommunity";
   const linkedIn = "https://www.linkedin.com/company/adagencycreatives";
+
+  const { state: { message }, showAlert } = useContext(AlertContext);
+
+  const {
+    state: { subscription },
+    getSubscription,
+  } = useContext(SubscriptionContext);
+
+  useEffect(() => {
+    if (state.user && state.role && state.role == "agency") {
+      getSubscription();
+    }
+  }, [state.user, state.role]);
 
   useEffect(() => {
     if (state.token !== null) {
@@ -169,14 +181,14 @@ function Header(props) {
         >
           <Toolbar>
             <Grid container justifyContent="space-between" alignItems="center">
-              <Grid item lg={4} md={2} xs={6}>
+              <Grid item lg={3} md={2} xs={6}>
                 <Link className="site-logo">
                   <img className="" src={Logo} alt="Adagency Creatives" />
                 </Link>
               </Grid>
               <Grid
                 item
-                lg={8}
+                lg={9}
                 md={10}
                 xs={6}
                 sx={{ textAlign: "right", padding: "10px" }}
@@ -228,7 +240,7 @@ function Header(props) {
                     flexWrap: "wrap",
                   }}
                 >
-                  {navItems.map((item) =>  (
+                  {navItems.map((item) => (
                     <div
                       key={item.name}
                       className={`nav-item${item.children ? " has-children" : ""

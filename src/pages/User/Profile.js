@@ -97,11 +97,12 @@ const Profile = () => {
                 <CreativeContent
                   user={user}
                   data={data}
+                  role={role}
                   education={creative_education}
                   experience={creative_experience}
                 />
               ) : (
-                <AgencyContent user={user} data={data} jobs={open_positions} />
+                <AgencyContent user={user} role={role} data={data} jobs={open_positions} />
               )}
             </div>
             <div className="col-md-4 d-none d-md-block">
@@ -109,7 +110,7 @@ const Profile = () => {
                 {page === "creative" ? (
                   <CreativeSidebar data={data} role={role} user={user} />
                 ) : (
-                  <AgencySidebar data={data} />
+                  <AgencySidebar data={data} user={user}  role={role} />
                 )}
               </div>
             </div>

@@ -1,6 +1,8 @@
 import Cookies from "js-cookie";
 import { api, setAuthToken } from "../api/api";
+import { useContext } from "react";
 import createDataContext from "./createDataContext";
+import { Context as AgenciesContext } from "../context/AgenciesContext";
 
 const state = {
   isSignedIn: false,
@@ -12,6 +14,8 @@ const state = {
   notifications_count: 0,
   activities_count: 0,
   messageAlert: { type: '', message: '', display: '' },
+  subscription_status: '',
+  advance_search_capabilities: false,
 };
 
 const authReducer = (state, action) => {
@@ -27,7 +31,10 @@ const authReducer = (state, action) => {
       return { ...state, formMessage: action.payload };
     case "set_user":
       return { ...state, user: action.payload };
-
+    case "set_advance_search_capabilities":
+      return { ...state, advance_search_capabilities: action.payload };
+    case "set_subscription_status":
+      return { ...state, subscription_status: action.payload };
     case "reset_form_message":
       return { ...state, formMessage: null };
     case "set_form_submit":
@@ -118,6 +125,8 @@ const signin = (dispatch) => {
       const response = await api.post("/login", data);
       setToken(dispatch)(response.data.token, response.data.user.role);
       setUserData(dispatch, response.data.user);
+      setAdvanceSearchCapabilities(dispatch, response.data.advance_search_capabilities ? response.data.advance_search_capabilities : false)
+      setSubscriptionStatus(dispatch, response.data.subscription_status ? response.data.subscription_status : '');
       dispatch({
         type: "set_form_message",
         payload: { type: "success", message: getLoginSuccessMessage() },
@@ -249,6 +258,21 @@ const setUserData = (dispatch, data) => {
     payload: data,
   });
 };
+
+const setAdvanceSearchCapabilities = (dispatch, data) => {
+  dispatch({
+    type: "set_advance_search_capabilities",
+    payload: data,
+  });
+};
+
+const setSubscriptionStatus = (dispatch, data) => {
+  dispatch({
+    type: "set_subscription_status",
+    payload: data,
+  });
+};
+
 
 const prepareFields = (data) => {
   const formData = data.reduce((obj, item) => {

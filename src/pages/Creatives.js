@@ -3,9 +3,8 @@ import { IoBookmarkOutline, IoLocationOutline } from "react-icons/io5";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
 import useCreatives from "../hooks/useCreatives";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
-import { Context as CreativesContext } from "../context/CreativesContext";
 import { Context as DataContext } from "../context/DataContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
 import Tooltip from "../components/Tooltip";
@@ -21,10 +20,13 @@ const Creatives = () => {
   } = useContext(DataContext);
 
   const {
-    state: { role, user, token },
+    state: { role, user, token, subscription_status, advance_search_capabilities, },
   } = useContext(AuthContext);
 
   const { showAlert } = useContext(AlertContext);
+
+  const [creativeSearchPlaceholder, setCreativeSearchPlaceholder] = useState("Search by name or location");
+  //"Search by name, title, location, company, industry experience, media, full-time etc."
 
   const addToShortlist = (id) => {
     createBookmark(user.uuid, "creatives", id);
@@ -41,6 +43,19 @@ const Creatives = () => {
     if (user) getBookmarks(user.uuid);
   }, [user]);
 
+  useEffect(() => {
+    if (user && advance_search_capabilities) {
+        setCreativeSearchPlaceholder("Search by name, title, location, company, industry experience, media, full-time etc.");
+    }
+  }, [user, advance_search_capabilities]);
+
+  useEffect(() => {
+    if (user && subscription_status && subscription_status == 'active') {
+      setCreativeSearchPlaceholder("Search by name, location, or title");
+    }
+  }, [user, subscription_status]);
+
+
   return (
     <div className="dark-container">
       <div className="container p-md-0 px-5">
@@ -49,7 +64,7 @@ const Creatives = () => {
         </h1>
         {token && (
           <SearchBar
-            placeholder="Search by name, title, location, company, industry experience, media, full-time etc."
+            placeholder={creativeSearchPlaceholder}
             onSearch={searchUser}
           />
         )}

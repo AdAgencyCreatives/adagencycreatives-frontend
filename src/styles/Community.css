@@ -458,6 +458,7 @@ img.post-avatar {
     top: 200px;
     right: -100%;
     transition: right 1s;
+    z-index: 99;
 }
 
 .sliding-message.active {

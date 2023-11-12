@@ -29,6 +29,8 @@ const ScrollButton = () => {
 
     return (
         <Button>
+            <span className="scroll-button-span"
+                style={{ display: visible ? 'block' : 'none' }}></span>
             <IoArrowUpCircleSharp onClick={scrollToTop}
                 style={{ display: visible ? 'inline' : 'none' }} />
         </Button>
