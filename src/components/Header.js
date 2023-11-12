@@ -195,6 +195,15 @@ function Header(props) {
                     <AiOutlineBell />
                   </IconButton>
 
+                  <Link
+                    to="/post-a-job"
+                    sx={{ backgroundColor: "#000", color: "white" }}
+                    className="btn btn-dark btn-narrow"
+                    onClick={(e) => validateAccess(e, { roles: ["admin", "agency"], restrictedMessage: 'Please login as Agency to access' })}
+                  >
+                    P
+                  </Link>
+
                   <IconButton
                     aria-label="open drawer"
                     edge="start"

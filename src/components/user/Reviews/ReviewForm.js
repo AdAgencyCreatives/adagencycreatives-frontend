@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IoStar } from "react-icons/io5";
 import { Context as DataContext } from "../../../context/DataContext";
 import { containsOffensiveWords } from "../../../context/AuthContext";
 
-const ReviewForm = ({ user, data, mutateReviews, setDispalyForm,hasReviews }) => {
+const ReviewForm = ({ user, data, mutateReviews, setDispalyForm, hasReviews, editReview, setEditReview, userReview }) => {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [message, setMessage] = useState(null);
@@ -11,7 +11,17 @@ const ReviewForm = ({ user, data, mutateReviews, setDispalyForm,hasReviews }) =>
   const isCreative = data.type == "creatives";
   const isAgency = data.type == "agencies";
 
-  const { postReview } = useContext(DataContext);
+  const { postReview, updateReview } = useContext(DataContext);
+
+  useEffect(() => {
+    setRating(editReview ? userReview.rating : 5);
+  }, [editReview]);
+
+  useEffect(() => {
+    if (userReview) {
+      setComment(userReview.comment);
+    }
+  }, [userReview]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,20 +39,30 @@ const ReviewForm = ({ user, data, mutateReviews, setDispalyForm,hasReviews }) =>
       });
       return;
     }
-    const review = {
-      user_id: user.uuid,
-      target_id: data.user_id,
-      rating: rating,
-      comment: comment,
-    };
-    setIsLoading(true);
-    await postReview(review);
+
+    if (editReview) {
+      const review = {
+        rating: rating,
+        comment: comment,
+      };
+      setIsLoading(true);
+      await updateReview(userReview.uuid, review);
+    } else {
+      const review = {
+        user_id: user.uuid,
+        target_id: data.user_id,
+        rating: rating,
+        comment: comment,
+      };
+      setIsLoading(true);
+      await postReview(review);
+    }
 
     setRating(5);
     setComment("");
     setMessage({
       class: "info",
-      content: "Review submitted successfully!",
+      content: "Review " + (editReview ? "updated" : "submitted") + " successfully!",
     });
     mutateReviews();
     setTimeout(() => setMessage(null), 5000);
@@ -79,7 +99,7 @@ const ReviewForm = ({ user, data, mutateReviews, setDispalyForm,hasReviews }) =>
         <div className="commentform reset-button-default">
           <div id="respond" className="comment-respond">
             <h4 className="title comment-reply-title">
-              {hasReviews ? "Share your review for " :"Be the first to review "} “{data.name}”
+              {hasReviews ? "Share your review for " : "Be the first to review "} “{data.name}”
               <small>
                 <a
                   rel="nofollow"
@@ -161,7 +181,7 @@ const ReviewForm = ({ user, data, mutateReviews, setDispalyForm,hasReviews }) =>
               </div>
               <p className="form-submit mt-3">
                 <button className="btn btn-dark fs-5" type="submit">
-                  Submit Review
+                  {editReview ? "Update" : "Submit"} Review
                   {isLoading && (
                     <div className="spinner-border text-light"></div>
                   )}

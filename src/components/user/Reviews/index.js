@@ -7,10 +7,13 @@ import ReviewsList from "./ReviewsList";
 const Reviews = ({ user, data }) => {
   const [dispalyForm, setDispalyForm] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
+  const [userReview, setUserReview] = useState(null);
+  const [editReview, setEditReview] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     state: { reviews, reviewsMeta },
-    getReviews,
+    getReviews, deleteReview
   } = useContext(DataContext);
 
   useEffect(() => {
@@ -19,6 +22,25 @@ const Reviews = ({ user, data }) => {
 
   const mutateReviews = () => {
     getReviews(data?.user_id);
+  };
+
+  useEffect(() => {
+    if (user && reviews)
+      setUserReview(reviews.find(item => item.user_id == user.uuid));
+  }, [user, reviews]);
+
+  const onEditReview = (e, review) => {
+    setEditReview(true);
+    setDispalyForm(true)
+  };
+
+  const onDeleteReview = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    await deleteReview(userReview.uuid);
+    mutateReviews();
+    setIsLoading(false);
+    setDispalyForm(false);
   };
 
   return (
@@ -30,15 +52,44 @@ const Reviews = ({ user, data }) => {
           {reviewsMeta?.average_rating?.toFixed(2) ?? 0.0}
         </div>
         {!dispalyForm && (
-          <button
-            className="btn btn-dark fs-5 my-2"
-            type="button"
-            onClick={() => {
-              setDispalyForm(true);
-            }}
-          >
-            Submit Review
-          </button>
+          <>
+            {!userReview ? (
+              <button
+                className="btn btn-dark fs-5 my-2"
+                type="button"
+                onClick={() => {
+                  setDispalyForm(true);
+                }}
+              >
+                Submit Review
+              </button>
+            ) : (
+              <>
+                Your Review <span className="rating-submitted"><IoStar size={14} color="#000" /> {userReview?.rating?.toFixed(2)}</span>
+                <button
+                  className="btn btn-dark fs-5 my-2"
+                  type="button"
+                  onClick={(e) => {
+                    onEditReview(e, userReview);
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-dark fs-5 my-2"
+                  type="button"
+                  onClick={(e) => {
+                    onDeleteReview(e)
+                  }}
+                >
+                  Delete
+                  {isLoading && (
+                    <div className="spinner-border text-light"></div>
+                  )}
+                </button>
+              </>
+            )}
+          </>
         )}
       </div>
       {reviews?.length > 0 && showReviews && <ReviewsList reviews={reviews} />}
@@ -49,6 +100,9 @@ const Reviews = ({ user, data }) => {
           mutateReviews={mutateReviews}
           setDispalyForm={setDispalyForm}
           hasReviews={reviews?.length}
+          editReview={editReview}
+          setEditReview={setEditReview}
+          userReview={userReview}
         />
       )}
     </div>

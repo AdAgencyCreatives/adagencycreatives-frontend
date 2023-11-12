@@ -285,10 +285,13 @@ swiper-slide {
     padding: 30px;
     border-radius: 8px;
     display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
     animation: fade-in .3s linear;
+    height: 100%;
 }
 
 .agencies-slider {
@@ -307,6 +310,7 @@ swiper-slide {
 .location {
     display: flex;
     align-items: center;
+    flex: 1;
 }
 
 .location svg {
@@ -333,7 +337,6 @@ swiper-slide {
     border-radius: 8px;
     display: flex;
     margin: 20px auto 0;
-    position: absolute;
     bottom: 40px;
     height: 60px;
     justify-content: center;
@@ -829,4 +832,9 @@ img.publication-image {
         justify-content: center;
         gap: 0px 10px;
     }
+}
+
+.btn.btn-dark.btn-narrow {
+    padding: 0px 5px;
+    border-radius: 3px;
 }

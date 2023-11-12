@@ -269,3 +269,26 @@ ul.dropdown-list:before {
 .btn.btn-dark.btn-selected {
     background-color: var(--color-primary) !important;
 }
+
+#reviews {
+    padding: 20px 0px;
+}
+
+.rating-submitted {
+    background-color: var(--color-primary);
+    color: #000;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 10pt;
+    display: flex;
+    column-gap: 5px;
+}
+
+.rating-submitted svg {
+    margin-top: 2px;
+}
+
+textarea.form-control:focus {
+    border: 1px solid gray;
+}

@@ -3,30 +3,52 @@ import "../styles/Groups.scss";
 import { Link } from "react-router-dom";
 import LeftSidebar from "../components/community/LeftSidebar";
 import GroupWidget from "../components/community/GroupWidget";
-
-import useGroups from "../hooks/useGroups";
 import { useContext, useEffect, useState } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
 import RestrictedLounge from "../components/RestrictedLounge";
 import { CircularProgress } from "@mui/material";
+import { Context as GroupsContext } from "../context/GroupsContext";
 
 const Groups = () => {
 
-  const { groups, loading, loadMore, searchGroups } = useGroups();
   const [isLoading, setIsLoading] = useState(true);
+
+  const {
+    state: { groups, nextPage, loading },
+    getGroups,
+    loadGroups,
+    searchGroups,
+  } = useContext(GroupsContext);
 
   const {
     state: { role, user, token },
   } = useContext(AuthContext);
 
+  useEffect(() => {
+    if(user) {
+      getGroups();
+    }
+  }, [user]);
+
+  useEffect(() => {
+    setIsLoading(true);
+  }, []);
+
+  const loadMore = () => {
+    if (nextPage) loadGroups(nextPage);
+  };
+
   useScrollLoader(loading, loadMore);
 
 
   useEffect(() => {
-    setIsLoading(false);
-    console.log(groups);
-  }, [groups]);
+    if(user && groups) {
+      setIsLoading(false);
+    }
+    // console.log("Groups Fetched: ");
+    // console.log(groups);
+  }, [user, groups]);
 
   return (
     <>

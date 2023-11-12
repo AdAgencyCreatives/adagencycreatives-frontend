@@ -43,6 +43,10 @@ const reducer = (state, action) => {
       return { ...state, reviewsMeta: action.payload.meta };
     case "add_review":
       return { ...state, reviews: [...state.reviews, action.payload.data] };
+    case "update_review":
+      return { ...state, reviews: state.reviews.filter(item => item.user_id == action.payload.data.user_id ? action.payload.data : item) };
+      case "delete_review":
+      return { ...state, reviews: state.reviews.filter(item => item.user_id != action.payload.data.user_id) };
     case "remove_bookmark":
       return {
         ...state,
@@ -61,7 +65,7 @@ const getCategories = (dispatch) => {
         type: "set_categories",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -73,7 +77,7 @@ const getStates = (dispatch) => {
         type: "set_states",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -87,7 +91,7 @@ const getCities = (dispatch) => {
         type: "set_cities",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -99,7 +103,7 @@ const getEmploymentTypes = (dispatch) => {
         type: "set_employment_type",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -111,7 +115,7 @@ const getYearsExperience = (dispatch) => {
         type: "set_years_experience",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -123,7 +127,7 @@ const getMediaExperiences = (dispatch) => {
         type: "set_media_experiences",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -135,7 +139,7 @@ const getStrengths = (dispatch) => {
         type: "set_strengths",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -147,19 +151,19 @@ const getIndustryExperiences = (dispatch) => {
         type: "set_industry_experiences",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
 const getBookmarks = (dispatch) => {
   return async (uuid) => {
     try {
-      const response = await api.get("/bookmarks?filter[user_id]="+uuid);
+      const response = await api.get("/bookmarks?filter[user_id]=" + uuid);
       dispatch({
         type: "set_bookmarks",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -175,7 +179,7 @@ const createBookmark = (dispatch) => {
         type: "add_bookmark",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -187,14 +191,14 @@ const removeBookmark = (dispatch) => {
         type: "remove_bookmark",
         payload: id,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
 const getReviews = (dispatch) => {
   return async (target_id) => {
     try {
-      const response = await api.get("/reviews?filter[target_id]="+target_id+"&sort=-created_at");
+      const response = await api.get("/reviews?filter[target_id]=" + target_id + "&sort=-created_at");
       // console.log(response);
       dispatch({
         type: "set_reviews",
@@ -204,7 +208,7 @@ const getReviews = (dispatch) => {
         type: "set_reviews_meta",
         payload: response?.data ?? {},
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -216,7 +220,35 @@ const postReview = (dispatch) => {
         type: "add_review",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
+  };
+};
+
+const updateReview = (dispatch) => {
+  return async (target_id, review) => {
+    try {
+      const response = await api.patch("/reviews/" + target_id, review);
+      dispatch({
+        type: "update_review",
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log(error);
+     }
+  };
+};
+
+const deleteReview = (dispatch) => {
+  return async (target_id, review) => {
+    try {
+      const response = await api.delete("/reviews/" + target_id);
+      dispatch({
+        type: "delete_review",
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log(error);
+     }
   };
 };
 
@@ -235,7 +267,9 @@ export const { Context, Provider } = createDataContext(
     createBookmark,
     removeBookmark,
     getReviews,
-    postReview
+    postReview,
+    updateReview,
+    deleteReview,
   },
   state
 );

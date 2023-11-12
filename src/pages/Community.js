@@ -18,7 +18,7 @@ const Community = () => {
     <>
       {token && role && (role == "admin" || role == "creative") ? (
         <>
-          <div className="dark-container page-community mb-0 mt-4">
+          <div className="dark-container page-community mb-0 mt-0">
             <h1 className="community-title">The Lounge</h1>
             <h2 className="community-subtitle">
               Creatives only. Ask for help. Offer or solicit advice. Share. Chat.
