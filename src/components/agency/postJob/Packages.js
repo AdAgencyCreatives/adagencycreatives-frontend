@@ -1,7 +1,7 @@
-import Single from "../../../assets/images/Single-Job-2-300x300.png";
-import Multiple from "../../../assets/images/Multiple-Jobs-2-300x300.png";
-import Premium from "../../../assets/images/Premium-Job-1-300x300.png";
-import Hire from "../../../assets/images/Hire-an-Advisor.jpeg";
+import Single from "../../../assets/images/Single-Job-hd.jpg";
+import Multiple from "../../../assets/images/Multiple-Jobs-hd.jpg";
+import Premium from "../../../assets/images/Premium-Job-hd.jpg";
+import Hire from "../../../assets/images/Hire-an-Advisor-hd.jpg";
 import "../../../styles/AgencyDashboard/PackagesList.scss";
 import { Link } from "react-router-dom";
 
@@ -14,7 +14,14 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
       image: Single,
       subtitle: "Single Creative Job Package",
       description:
-        "<ul><li>• One (1) Targeted Job Post</li><li>• Duration 30 Days</li><li>• Job Management Dashboard</li> </ul>",
+      "<ul>" +
+      " <li>• One Job Post For 30 Days</li>"  + 
+      " <li>• Targets Advertising Talent</li>"  + 
+      " <li>• Internal ATS Option</li>"  + 
+      " <li>• Private Messaging Access</li>"  + 
+      " <li>• Additional Search Features</li>"  + 
+      " <li>• Pipeline Capabilities</li>" +
+      "</ul>",
       link:
         "https://buy.stripe.com/test_3cseVIbU60qg3aU28b?prefilled_email=" +
         user.email,
@@ -26,7 +33,15 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
       image: Multiple,
       subtitle: "Multiple Creative Jobs Package",
       description:
-        "<ul><li>• Up to Three (3) Targeted Job Post</li><li>• Duration 45 Days</li><li>• Job Management Dashboard</li><li>• Urgent Opportunities Option</li> </ul>",
+      "<ul>" +
+      " <li>• Three Job Post For 45 Days</li>"  + 
+      " <li>• Urgent Job Post Option</li>"  + 
+      " <li>• Targets Advertising Talent</li>"  + 
+      " <li>• Internal ATS Option</li>"  + 
+      " <li>• Private Messaging Access</li>"  + 
+      " <li>• Additional Search Features</li>"  + 
+      " <li>• Pipeline Capabilities</li>" +
+      "</ul>",
       link:
         "https://buy.stripe.com/test_7sI8xk6zM6OE4eY6ot?prefilled_email=" +
         user.email,
@@ -38,7 +53,16 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
       image: Premium,
       subtitle: "Premium Creative Jobs Package",
       description:
-        "<ul><li>• Up to Five (5) Targeted Job Post</li><li>• Duration 45 Days</li><li>• Job Management Dashboard</li><li>• Urgent Opportunities Option</li><li>• Featured Posting</li></ul>",
+      "<ul>" +
+      " <li>• Five Post For 45 Days</li>" +
+      " <li>• Featured Post Priority</li>" +
+      " <li>• Urgent Job Post Option</li>" +
+      " <li>• Targets Advertising Talent</li>" +
+      " <li>• Internal ATS Option</li>" +
+      " <li>• Private Messaging Access</li>" +
+      " <li>• Additional Search Features</li>" +
+      " <li>• Pipeline Capabilities</li>" +
+      "</ul>",
       link:
         "https://buy.stripe.com/test_00g00O2jwflafXG148?prefilled_email=" +
         user.email,

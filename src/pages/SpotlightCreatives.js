@@ -5,8 +5,12 @@ import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { Context } from "../context/SpotlightContext";
+import useHelper from "../hooks/useHelper";
 
 const SpotlightCreatives = () => {
+
+  const { decodeEntities } = useHelper();
+
   const {
     state: { screatives },
     getSCreatives,
@@ -27,32 +31,32 @@ const SpotlightCreatives = () => {
         <div className="row g-4">
           {screatives &&
             screatives.map((item, index) => {
-            return (
-              <div className="col-sm-6 col-md-4" key={index}>
-                <div className="sliderContent spotlight-slider py-4">
-                  <Link to={item.url}>
-                    <img
-                      src={Spotlight}
-                      className="spotlight-image"
-                      width={150}
-                      height={150}
-                    />
-                    <div className="date">{item.created_at}</div>
-                    <div className="spotlight-meta">{item.title}</div>
-                    <div className="watch-link">
-                      <div className="">
-                        Watch
-                        <IoChevronForwardOutline />
+              return (
+                <div className="col-sm-6 col-md-4" key={index}>
+                  <div className="sliderContent spotlight-slider py-4">
+                    <Link to={item.url}>
+                      <img
+                        src={Spotlight}
+                        className="spotlight-image"
+                        width={150}
+                        height={150}
+                      />
+                      <div className="date">{item.created_at}</div>
+                      <div className="spotlight-meta" dangerouslySetInnerHTML={{ __html: decodeEntities(item.title) }}></div>
+                      <div className="watch-link">
+                        <div className="">
+                          Watch
+                          <IoChevronForwardOutline />
+                        </div>
                       </div>
-                    </div>
-                  </Link>
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 

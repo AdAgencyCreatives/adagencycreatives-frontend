@@ -34,7 +34,7 @@ const Home = () => {
   const validateAccess = (e, item) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (item && item.roles && item.roles.length > 0) {
       for (let index = 0; index < item.roles.length; index++) {
         const roleToCompare = item.roles[index];
