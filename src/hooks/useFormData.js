@@ -214,6 +214,7 @@ const useFormData = (props = {}) => {
       createJob(formData);
       setJobStatus("preview");
     }
+    
   };
 
   const removeLogo = () => {

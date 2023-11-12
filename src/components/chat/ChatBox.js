@@ -6,6 +6,7 @@ import UploadPlaceholder from "../../assets/images/Mischief-1.png";
 import { useEffect, useState, useRef, useContext } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as ChatContext } from "../../context/ChatContext";
+import { Context as AlertContext } from "../../context/AlertContext";
 import moment from "moment";
 import NewChat from "./NewChat";
 import { FaRegSmile, FaPaperclip } from "react-icons/fa";
@@ -31,6 +32,10 @@ const ChatBox = ({
   const {
     state: { user },
   } = useContext(AuthContext);
+
+  const {
+    showAlert
+  } = useContext(AlertContext);
 
   const [showPicker, setShowPicker] = useState(false);
   const [messageData, setMessageData] = useState([]);
@@ -82,6 +87,7 @@ const ChatBox = ({
       });
     }
     await sendMessage(user.uuid, contact.uuid, messageBody);
+    showAlert("Message sent.");
     const id = contact.uuid;
 
     let existingObject = contacts.find((obj) => obj.contact.uuid === id);
