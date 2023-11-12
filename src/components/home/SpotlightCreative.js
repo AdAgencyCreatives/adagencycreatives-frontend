@@ -6,8 +6,11 @@ import { useRef } from "react";
 import { BulletStyle, PaginationStyle } from "../../styles/PaginationStyle";
 import { Link } from "react-router-dom";
 import { Context as CreativesContext } from "../../context/SpotlightContext";
+import useHelper from "../../hooks/useHelper";
 
 const SpotlightCreative = () => {
+
+  const { decodeEntities } = useHelper();
   const {
     state: { screatives },
     getSCreatives,
@@ -78,7 +81,7 @@ const SpotlightCreative = () => {
                         height={150}
                       />
                       <div className="date">{item.created_at}</div>
-                      <div className="spotlight-meta" dangerouslySetInnerHTML={{ __html: item.title }}></div>
+                      <div className="spotlight-meta" dangerouslySetInnerHTML={{ __html: decodeEntities(item.title) }}></div>
                       <div className="watch-link">
                         <div className="">
                           Watch
