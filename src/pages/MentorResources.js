@@ -15,23 +15,23 @@ const MentorResources = () => {
     },
     {
       image: art,
-      url: "#",
+      url: "/art-mentors",
     },
     {
       image: portfolio,
-      url: "#",
+      url: "/portfolio-mentors",
     },
     {
       image: inspire,
-      url: "#",
+      url: "/inspire-mentors",
     },
     {
       image: business,
-      url: "#",
+      url: "/business-mentors",
     },
     {
       image: tech,
-      url: "#",
+      url: "/tech-mentors",
     },
   ];
 

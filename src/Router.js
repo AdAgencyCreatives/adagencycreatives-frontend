@@ -27,6 +27,11 @@ import { Context as AuthContext } from "./context/AuthContext";
 import Logout from "./pages/Logout";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import Inspire from "./pages/Mentor/Inspire";
+import Art from "./pages/Mentor/Art";
+import Portfolio from "./pages/Mentor/Portfolio";
+import Business from "./pages/Mentor/Business";
+import Tech from "./pages/Mentor/Tech";
 
 export const router = createBrowserRouter([
   {
@@ -123,6 +128,26 @@ export const router = createBrowserRouter([
       {
         path: "/copywriting-mentors",
         element: <CopyWriting />,
+      },
+      {
+        path: "/inspire-mentors",
+        element: <Inspire />,
+      },
+      {
+        path: "/art-mentors",
+        element: <Art />,
+      },
+      {
+        path: "/portfolio-mentors",
+        element: <Portfolio />,
+      },
+      {
+        path: "/business-mentors",
+        element: <Business />,
+      },
+      {
+        path: "/tech-mentors",
+        element: <Tech />,
       },
 
       {

@@ -1,17 +1,16 @@
-import { IoArrowForward } from "react-icons/io5";
 import "../../styles/SingleMentor.scss";
-import Mtfreelance from "../../assets/images/copywriting/mtfreelance.png";
-import deckofbrilliance from "../../assets/images/copywriting/deckofbrilliance.png";
-import heywhipple from "../../assets/images/copywriting/heywhipple.png";
-import copywriterclub from "../../assets/images/copywriting/copywriterclub.png";
-import moderncopywriter from "../../assets/images/copywriting/moderncopywriter.png";
-import stuffaboutadvertising from "../../assets/images/copywriting/stuffaboutadvertising.png";
-import talktoacreativedirector from "../../assets/images/copywriting/talktoadirector.png";
-import dandad from "../../assets/images/copywriting/dandad.png";
-import copywriterhandbook from "../../assets/images/copywriting/copywriterhandbook.png";
-import ogilvy from "../../assets/images/copywriting/ogilvy.png";
-import adweek from "../../assets/images/copywriting/adweek.png";
-import { Link } from "react-router-dom";
+import Mtfreelance from "../../assets/images/screenshots/mtfreelance.png";
+import deckofbrilliance from "../../assets/images/screenshots/deckofbrilliance.png";
+import heywhipple from "../../assets/images/screenshots/heywhipple.png";
+import copywriterclub from "../../assets/images/screenshots/copywriterclub.png";
+import moderncopywriter from "../../assets/images/screenshots/moderncopywriter.png";
+import stuffaboutadvertising from "../../assets/images/screenshots/stuffaboutadvertising.png";
+import talktoacreativedirector from "../../assets/images/screenshots/talktoadirector.png";
+import dandad from "../../assets/images/screenshots/dandad.png";
+import copywriterhandbook from "../../assets/images/screenshots/copywriterhandbook.png";
+import ogilvy from "../../assets/images/screenshots/ogilvy.png";
+import adweek from "../../assets/images/screenshots/adweek.png";
+import SingleMentorList from "../../components/SingleMentorList";
 
 const CopyWriting = () => {
   const items = [
@@ -102,28 +101,7 @@ const CopyWriting = () => {
             Welcome to <strong>Copywriting, Story-Telling</strong> at it's
             finest
           </p>
-          <div className="row content gy-3">
-            {items.map((item, index) => (
-              <div className="col-lg-3 col-md-4 col-12">
-                <Link className={`box link-light ${item.img ? "flip": ""}`} to={item.url} target="__blank">
-                  <div className="flip-card-front">
-                    <div className="main-title">{item.title}</div>
-                    <div className="title-small">{item.subtitle}</div>
-                    <div className="box-link">
-                      <div className="link">
-                        <IoArrowForward />
-                      </div>
-                    </div>
-                  </div>
-                  {item.img && (
-                    <div className="flip-card-back">
-                      <img src={item.img} alt="Avatar" />
-                    </div>
-                  )}
-                </Link>
-              </div>
-            ))}
-          </div>
+          <SingleMentorList items={items} />
         </div>
       </div>
     </div>
