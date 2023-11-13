@@ -39,7 +39,7 @@ const PostJob = () => {
       if (subscription.length == 0 || subscription.status == "expired") {
         setJobStatus("select_package");
       } else {
-        setJobStatus("select_package");
+        setJobStatus("create");
       }
     }
   }, [status, subscription]);
