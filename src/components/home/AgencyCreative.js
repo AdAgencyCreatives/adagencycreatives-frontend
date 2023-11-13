@@ -6,10 +6,16 @@ import { useRef } from "react";
 import { PaginationStyle } from "../../styles/PaginationStyle";
 import { Link } from "react-router-dom";
 import useCreatives from "../../hooks/useCreatives";
+import { Context as AlertContext } from "../../context/AlertContext";
+import { Context as AuthContext } from "../../context/AuthContext";
 
 const AgencyCreatives = () => {
   const swiperElRef = useRef(null);
-  const {creatives} = useCreatives("home");
+  const { creatives } = useCreatives("home");
+  const { showAlert } = useContext(AlertContext);
+  const {
+    state: { token },
+  } = useContext(AuthContext);
 
   useEffect(() => {
     const params = {
@@ -74,12 +80,27 @@ const AgencyCreatives = () => {
                     {item.location.state && (
                       <div className="job-location location">
                         <IoLocationOutline />
-                        <Link to={`/creative-location/${item.location.state}`}>{item.location.state},&nbsp;</Link>
-                        <Link to={`/creative-location/${item.location.city}`}>{item.location.city}</Link>
+                        <Link to={`/creative-location/${item.location.state}`}>
+                          {item.location.state},&nbsp;
+                        </Link>
+                        <Link to={`/creative-location/${item.location.city}`}>
+                          {item.location.city}
+                        </Link>
                       </div>
                     )}
                     <div className="profileLink">
-                      <Link to={`/creative/${item.slug}`}>View Profile</Link>
+                      <Link
+                        to={token ? `/creative/${item.slug}` : "#"}
+                        onClick={(e) => {
+                          if (!token) {
+                            e.preventDefault();
+                            showAlert("Please login to access");
+                          }
+                          return false;
+                        }}
+                      >
+                        View Profile
+                      </Link>
                     </div>
                   </div>
                 </swiper-slide>

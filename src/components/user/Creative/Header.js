@@ -1,4 +1,4 @@
-import { IoLocationOutline, IoPersonAdd } from "react-icons/io5";
+import { IoBookmarkOutline, IoLocationOutline, IoPersonAdd } from "react-icons/io5";
 import Placeholder from "../../../assets/images/placeholder.png";
 import "../../../styles/User/ProfileHeader.scss";
 import { Link } from "react-router-dom";
@@ -98,7 +98,12 @@ const Header = ({ data, role, user }) => {
                     />
                   </>
                 )}
-                <FriendshipWidget creative={data} />
+                {isCreative && <FriendshipWidget creative={data} />}
+                {!isCreative && (
+                  <button className="btn btn-dark">
+                    <IoBookmarkOutline size={25} />
+                  </button>
+                )}
               </div>
             </div>
           </div>

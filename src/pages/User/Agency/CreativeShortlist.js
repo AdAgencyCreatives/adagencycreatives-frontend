@@ -15,6 +15,7 @@ import Message from "../../../components/dashboard/Modals/Message";
 import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 import { Context as DataContext } from "../../../context/DataContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
+import { Context as AlertContext } from "../../../context/AlertContext";
 
 const CreativeShortlist = () => {
   const [open, setOpen] = useState(false);
@@ -34,6 +35,7 @@ const CreativeShortlist = () => {
   const {
     state: { user },
   } = useContext(AuthContext);
+  const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
     if (user) {
@@ -139,7 +141,16 @@ const CreativeShortlist = () => {
                         </Link>
                       </Tooltip>
                       <Tooltip title="Send Message">
-                        <Link onClick={() => openMessageDialog(item)}>
+                        <Link
+                          onClick={(e) => {
+                            if (user.subscription_status != "active") {
+                              e.preventDefault();
+                              showAlert("Post A Job for message capabilities.");
+                            } else {
+                              openMessageDialog(item);
+                            }
+                          }}
+                        >
                           <TfiEmail />
                         </Link>
                       </Tooltip>

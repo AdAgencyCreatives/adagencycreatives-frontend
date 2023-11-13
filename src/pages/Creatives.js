@@ -20,12 +20,20 @@ const Creatives = () => {
   } = useContext(DataContext);
 
   const {
-    state: { role, user, token, subscription_status, advance_search_capabilities, },
+    state: {
+      role,
+      user,
+      token,
+      subscription_status,
+      advance_search_capabilities,
+    },
   } = useContext(AuthContext);
 
   const { showAlert } = useContext(AlertContext);
 
-  const [creativeSearchPlaceholder, setCreativeSearchPlaceholder] = useState("Search by name or location");
+  const [creativeSearchPlaceholder, setCreativeSearchPlaceholder] = useState(
+    "Search by name or location"
+  );
   //"Search by name, title, location, company, industry experience, media, full-time etc."
 
   const addToShortlist = (id) => {
@@ -45,16 +53,17 @@ const Creatives = () => {
 
   useEffect(() => {
     if (user && advance_search_capabilities) {
-        setCreativeSearchPlaceholder("Search by name, title, location, company, industry experience, media, full-time etc.");
+      setCreativeSearchPlaceholder(
+        "Search by name, title, location, company, industry experience, media, full-time etc."
+      );
     }
   }, [user, advance_search_capabilities]);
 
   useEffect(() => {
-    if (user && subscription_status && subscription_status == 'active') {
+    if (user && subscription_status && subscription_status == "active") {
       setCreativeSearchPlaceholder("Search by name, location, or title");
     }
   }, [user, subscription_status]);
-
 
   return (
     <div className="dark-container">
@@ -124,11 +133,13 @@ const Creatives = () => {
                     <div className="profileLink">
                       <Link
                         to={token ? `/creative/${item.slug}` : "#"}
-                        onClick={() =>
-                          !token
-                            ? showAlert("Please login to access")
-                            : false
-                        }
+                        onClick={(e) => {
+                          if (!token) {
+                            e.preventDefault();
+                            showAlert("Please login to access");
+                          }
+                          return false;
+                        }}
                       >
                         View Profile
                       </Link>
