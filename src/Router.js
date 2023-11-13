@@ -176,7 +176,7 @@ export const router = createBrowserRouter([
         element: <UserDashboard />,
       },
       {
-        path: "/loginas",
+        path: "/loginas/:token",
         element: <LoginAs />,
       },
     ],
