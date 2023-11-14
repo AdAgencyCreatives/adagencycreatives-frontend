@@ -503,7 +503,7 @@ const Profile = () => {
                         {field.required && <span className="required">*</span>}
                       </label>
                       <div className="row align-items-center upload-box">
-                        <div className="col-md-2 col-sm-4 col-12">
+                        <div className="col-md-12 col-sm-4 col-12">
                           {videoItem && (
                             <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2">
                               <span className="icon_type">

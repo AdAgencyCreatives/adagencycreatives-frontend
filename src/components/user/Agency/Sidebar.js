@@ -1,8 +1,9 @@
 import "../../../styles/User/ProfileSidebar.scss";
 import { Link } from "react-router-dom";
 import sample from "../../../assets/images/sample.mp4";
-import { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../../context/AgenciesContext";
+import { IoAdd } from "react-icons/io5";
 
 const Sidebar = ({ data }) => {
   const workplacePreference = data.workplace_preference;
@@ -28,8 +29,55 @@ const Sidebar = ({ data }) => {
     preferences.push("Onsite");
   }
 
-  const renderListData = (list) => {
-    return list.slice(0, 5).join(", ") + (list.length > 5 ? " +" : "");
+  const [showAllItems, setShowAllItems] = useState({});
+
+  const renderLinkList = (item, lastIndex) => {
+    return (
+      <Link
+        to={
+          "/agency-category/" +
+          item.toLowerCase().replace(" ", "-").replace("|", "-")
+        }
+        className="text-dark"
+      >
+        {item}
+        {!lastIndex && ", "}
+      </Link>
+    );
+  };
+  const renderListData = (list, listKey) => {
+    const maxItemsToShow = 5;
+
+    const renderedList = list.slice(0, maxItemsToShow);
+    const remainingItems = list.slice(maxItemsToShow);
+
+    const toggleShowAllItems = () => {
+      setShowAllItems((prev) => ({
+        ...prev,
+        [listKey]: !prev[listKey], // Toggle the visibility of the specific list
+      }));
+    };
+
+    return (
+      <>
+        {listKey == "industry"
+          ? renderedList.map((item, index) =>
+              renderLinkList(item, index == renderedList.length - 1)
+            )
+          : renderedList.join(", ")}
+        {list.length > maxItemsToShow && !showAllItems[listKey] && (
+          <React.Fragment>
+            <IoAdd onClick={toggleShowAllItems} className="cursor-pointer" />
+          </React.Fragment>
+        )}
+        {showAllItems[listKey] &&
+          remainingItems.length > 0 &&
+          remainingItems.map((item, index) => (
+            <span key={index}>, {listKey == "industry" ? renderLinkList(item, true) : item}
+            </span>
+          ))}
+      </>
+    );
   };
 
   return (
@@ -52,21 +100,7 @@ const Sidebar = ({ data }) => {
               <div className="details">
                 <div className="text">Industry Specialty:</div>
                 <div className="value">
-                  {data.industry_experience.slice(0, 5).map((item, index) => (
-                    <>
-                      <Link
-                        to={
-                          "/agency-category/" +
-                          item.toLowerCase().replace(" ", "-").replace("|", "-")
-                        }
-                        className="text-dark"
-                      >
-                        {item}
-                      </Link>
-                      {index < data.industry_experience.length - 1 && ", "}
-                    </>
-                  ))}
-                  {data.industry_experience.length > 5 ? " +" : ""}
+                  {renderListData(data.industry_experience, "industry")}
                 </div>
               </div>
             ) : (
@@ -78,7 +112,7 @@ const Sidebar = ({ data }) => {
               <div className="details">
                 <div className="text">Media Specialty</div>
                 <div className="value">
-                  {renderListData(data.media_experience)}
+                  {renderListData(data.media_experience, "m")}
                 </div>
               </div>
             </div>
@@ -109,7 +143,7 @@ const Sidebar = ({ data }) => {
                       {data.location &&
                       data.location.state &&
                       data.location.city ? (
-                        <span>,&nbsp;</span>
+                        <>,&nbsp;</>
                       ) : (
                         <></>
                       )}
@@ -160,7 +194,7 @@ const Sidebar = ({ data }) => {
         <h4 className="title">Video</h4>
         {video ? (
           <div className="video-section mt-4">
-            <video src={sample} controls></video>
+            <video src={video.url} controls></video>
           </div>
         ) : (
           <button className="btn btn-dark w-100 py-3 fs-5">Coming Soon</button>

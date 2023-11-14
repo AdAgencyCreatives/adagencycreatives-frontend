@@ -132,7 +132,7 @@ const CreativeJobs = () => {
                         <IoLocationOutline />
                         <Link to={`/creative-location/${item.location.state}`}>
                           {item.location.state},
-                        </Link>
+                        </Link>&nbsp;
                         <Link to={`/creative-location/${item.location.city}`}>
                           {item.location.city}
                         </Link>

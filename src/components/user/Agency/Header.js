@@ -44,7 +44,7 @@ const Header = ({ data, role, user }) => {
                   <IoLocationOutline />
                   <Link to={`/agency-location/${data.location.state}`}>
                     {data.location.state},
-                  </Link>
+                  </Link>&nbsp;
                   <Link to={`/agency-location/${data.location.city}`}>
                     {data.location.city}
                   </Link>
