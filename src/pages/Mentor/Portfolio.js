@@ -7,7 +7,7 @@ import amazonbook from "../../assets/images/screenshots/screenshot_16_https___ww
 import adhousenyc from "../../assets/images/screenshots/screenshot_17_https___www_adhousenyc_com_adhouseinhouse_.png";
 import itstws from "../../assets/images/screenshots/screenshot_18_https___itstws_com__.png";
 import brandcentervcu from "../../assets/images/screenshots/screenshot_19_https___brandcenter_vcu_edu_.png";
-import dribbble from "../../assets/images/screenshots/screenshot_20_https___dribbble_com_search_portfolio_.png";
+import usefulschool from "../../assets/images/screenshots/usefulschool.png";
 import adobeportfolio from "../../assets/images/screenshots/screenshot_21_https___portfolio_adobe_com_.png";
 import behance from "../../assets/images/screenshots/screenshot_22_https___www_behance_net_.png";
 import pimpmyportfolio from "../../assets/images/screenshots/screenshot_23_https___www_pimpmyportfolio_us_.png";
@@ -34,14 +34,14 @@ const Portfolio = () => {
       img: book180,
     },
     {
-      title: "MIAMI AD SCHOOL",
-      subtitle: "• Atlanta • Miami • New York ",
-      url: "https://miamiadschool.com",
-      img: miamiadschool,
+      title: "THE USEFUL SCHOOL",
+      subtitle: "Practial classes for POC",
+      url: "https://usefulschool.com",
+      img: usefulschool,
     },
     {
-      title: "HOW TO PUT YOUR ",
-      subtitle: "book together and get a job...",
+      title: "HOW TO PUT YOUR BOOK TOGETHER",
+      subtitle: "and get a job in advertising",
       url: "https://www.amazon.com/How-Your-Book-Together-Advertising/dp/1887229132",
       img: amazonbook,
     },
@@ -58,16 +58,16 @@ const Portfolio = () => {
       img: itstws,
     },
     {
-      title: "BRAND CENTER VCU",
+      title: "BRANDCENTER VCU",
       subtitle: "Creative master’s program",
       url: "https://brandcenter.vcu.edu",
       img: brandcentervcu,
     },
     {
-      title: "DRIBBBLE",
-      subtitle: "Inspiring design portfolios",
-      url: "https://dribbble.com/search/portfolio",
-      img: dribbble,
+      title: "MIAMI AD SCHOOL",
+      subtitle: "• Atlanta • Miami • New York ",
+      url: "https://miamiadschool.com",
+      img: miamiadschool,
     },
     {
       title: "ADOBE PORTFOLIO",

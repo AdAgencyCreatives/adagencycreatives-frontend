@@ -16,7 +16,7 @@ import SingleMentorList from "../../components/SingleMentorList";
 const Inspire = () => {
   const items = [
     {
-      title: "AudaciousSChool",
+      title: "Audacious SChool",
       subtitle: "Of astonishing pursuits course",
       url: "https://schoolofastonishingpursuits.com",
       img: audaciousSchoolImg,
@@ -58,8 +58,8 @@ const Inspire = () => {
       img: creativeMorningsImg,
     },
     {
-      title: "TALK TO A CREATIVE",
-      subtitle: "Director or recruiter or strategist",
+      title: "TALK TO A CREATIVE Director",
+      subtitle: "or recruiter or strategist",
       url: "https://talktoacreativedirector.com",
       img: talkToACreativeImg,
     },
@@ -82,10 +82,9 @@ const Inspire = () => {
       img: jessicaHischeImg,
     },
     {
-      title: "ADHOUSE/ INHOUSE",
-      subtitle: "8 week paid mentorship program",
-      url: "https://www.adhousenyc.com/adhouseinhouse",
-      img: adhouseImg,
+      title: "Suggestions",
+      subtitle: "Did we miss something? Please let us know.",
+      url: "../contact",
     },
   ];
 
@@ -95,9 +94,7 @@ const Inspire = () => {
         <div className="mentor-wrapper">
           <h2 className="title">Inspire</h2>
           <p className="subtitle">
-            WELCOME TO <strong>INSPIRE</strong>. HERE YOU WILL FIND
-            <strong>TALENTED CREATIVES</strong> THAT ARE
-            <strong>DEDICATED TO MENTORING.</strong>
+            WELCOME TO <strong>INSPIRE</strong>. HERE YOU WILL FIND <strong>TALENTED CREATIVES</strong> THAT ARE <strong>DEDICATED TO MENTORING.</strong>
           </p>
           <SingleMentorList items={items} />
 

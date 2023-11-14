@@ -33,7 +33,7 @@ const CopyWriting = () => {
       img: heywhipple,
     },
     {
-      title: "Copywriters Club",
+      title: "The Copywriter Club",
       subtitle: "best books, courses, podcasts",
       url: "https://thecopywriterclub.com/ultimate-copywriter-book-resource-list/",
       img: copywriterclub,

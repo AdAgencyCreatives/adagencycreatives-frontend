@@ -278,10 +278,12 @@ const verifyToken = (dispatch) => async (token) => {
       type: "set_form_message",
       payload: { type: "success", message: getLoginSuccessMessage() },
     });
+    return response;
   } catch (error) {
     Cookies.remove("token");
     Cookies.remove("role");
     setErrorMessage(dispatch, error.response.data.message);
+    throw error;
   }
 };
 
@@ -361,7 +363,7 @@ export const { Context, Provider } = createDataContext(
     getNotificationsCount,
     getActivitiesCount,
     reloadUserData,
-    verifyToken
+    verifyToken,
   },
   state
 );

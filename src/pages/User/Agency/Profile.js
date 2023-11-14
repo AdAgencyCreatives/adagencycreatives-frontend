@@ -47,18 +47,16 @@ const Profile = () => {
 
   const {
     state: { user },
-    reloadUserData
+    reloadUserData,
   } = useContext(AuthContext);
 
-  const {
-    showAlert
-  } = useContext(AlertContext);
+  const { showAlert } = useContext(AlertContext);
 
   const {
     state: { single_agency, formSubmit },
     getAgencyById,
     saveAgency,
-    saveAgencyImage,
+    uploadAttachment,
   } = useContext(AgenciesContext);
 
   const {
@@ -98,7 +96,9 @@ const Profile = () => {
       setIsloading(false);
       setEditorState(
         EditorState.createWithContent(
-          ContentState.createFromText(single_agency.about ? single_agency.about : "")
+          ContentState.createFromText(
+            single_agency.about ? single_agency.about : ""
+          )
         )
       );
       setFields([
@@ -405,26 +405,23 @@ const Profile = () => {
       reloadUserData(user.uuid);
       showAlert("Agency profile updated successfully.");
     })();
-
   };
 
   const removeLogo = () => {
     logoRef.current.src = "";
   };
 
-  const handleFileChange = (event, resource) => {
+  const handleFileChange = async (event, resource, ref) => {
     const file = event.target.files[0];
-    logoRef.current.src = URL.createObjectURL(file);
+    ref.current.src = URL.createObjectURL(file);
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("user_id", user.uuid);
-      formData.append("resource_type", "agency_logo");
-      (async () => {
-        await saveAgencyImage(formData);
-        reloadUserData(user.uuid);
-        showAlert("Agency logo updated successfully.");
-      })();
+      formData.append("resource_type", resource);
+      await uploadAttachment(formData);
+      reloadUserData(user.uuid);
+      showAlert((resource == "agency_logo" ? "Logo" : "Video") + " uploaded successfully.");
     }
   };
 
@@ -494,11 +491,11 @@ const Profile = () => {
                       </label>
                       <div className="row align-items-center upload-box">
                         <div className="col-md-2 col-sm-4 col-12">
-                          {/* <img
+                          <img
                             src={field.image}
                             className="w-100"
                             ref={videoRef}
-                          /> */}
+                          />
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                           <button

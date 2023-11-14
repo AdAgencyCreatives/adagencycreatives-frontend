@@ -12,15 +12,15 @@ const LoginAs = () => {
 
   useEffect(() => {
     if (token) {
-      verifyToken(token);
+      verifyToken(token)
+        .then((result) => {
+          window.location = "/";
+        })
+        .catch((error) => {
+          // console.error("Error:", error);
+        });
     }
   }, [token]);
-
-  useEffect(() => {
-    if (state.token) {
-      window.location = "/";
-    }
-  }, [state.token]);
 
   return (
     <>
@@ -32,7 +32,7 @@ const LoginAs = () => {
         scroll="body"
       >
         <div className="logout-modal">
-          {(state.formMessage?.type == "error") ? (
+          {state.formMessage?.type == "error" ? (
             <p style={{ color: "red" }}>Invalid token</p>
           ) : (
             <>

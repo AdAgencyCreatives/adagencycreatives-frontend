@@ -1,6 +1,10 @@
+import { useEffect } from "react";
+
 const Privacy = () => {
   return (
     <div className="container offset-top fs-5">
+      <h4 className="fs-1 fw-normal mb-4">Privacy Policy</h4>
+
       <div class="page" title="Page 1">
         <div class="layoutArea">
           <div class="column">

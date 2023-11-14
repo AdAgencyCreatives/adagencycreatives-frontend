@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 export const useScrollLoader = (loading, cb = false) => {
-  const callbackFired = useRef(false);
+  /* const callbackFired = useRef(false);
 
   useEffect(() => {
     const darkContainer = document.querySelector(".dark-container");
@@ -32,5 +32,5 @@ export const useScrollLoader = (loading, cb = false) => {
 
   useEffect(() => {
     callbackFired.current = loading;
-  }, [loading]);
+  }, [loading]); */
 };

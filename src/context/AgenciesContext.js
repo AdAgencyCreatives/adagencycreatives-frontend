@@ -146,7 +146,7 @@ const saveAgency = (dispatch) => {
   };
 };
 
-const saveAgencyImage = (dispatch) => {
+const uploadAttachment = (dispatch) => {
   return async (data) => {
     try {
       const response = await api.post("/attachments", data, {
@@ -237,7 +237,7 @@ export const { Context, Provider } = createDataContext(
     saveAgency,
     searchAgencies,
     getOpenPositions,
-    saveAgencyImage,
+    uploadAttachment,
     deleteJob,
     requestPackage,
     getSubscriptionStatus,

@@ -84,7 +84,7 @@ const CreativeShortlist = () => {
                           <h2 className="candidate-title">
                             <Link className="link-dark">{resource.name}</Link>
                           </h2>
-                          {resource.priority.is_featured && (
+                          {resource.priority.is_featured == 1 && (
                             <span
                               className="featured"
                               data-toggle="tooltip"

@@ -65,9 +65,7 @@ const Tech = () => {
         <div className="mentor-wrapper">
           <h2 className="title">Tech</h2>
           <p className="subtitle">
-            Collection of resources to follow the technology in our industry
-            <br />
-            Click on a topic below
+            A collection of <strong>TECH RESOURCES</strong> to follow the <strong>Technology Advances</strong> in our industry
           </p>
           <SingleMentorList items={items} />
         </div>

@@ -1,6 +1,6 @@
 import "../../styles/SingleMentor.scss";
 import availListImg from "../../assets/images/screenshots/The Avail List.png";
-import jessicaHischeImg from "../../assets/images/screenshots/Jessica Hische - Home.png";
+import jessicaHischeImg from "../../assets/images/screenshots/Jessica Hische - Freelance.png";
 import badPodcastImg from "../../assets/images/screenshots/screenshot_33_https___thebadpod_buzzsprout_com_.png";
 import agencySearchToolImg from "../../assets/images/screenshots/screenshot_34_https___www_aaaa_org_home_page_agency_search__.png";
 import mtFreelanceImg from "../../assets/images/screenshots/mtfreelance.png";
@@ -24,8 +24,8 @@ const Business = () => {
     },
     {
       title: "Jessica Hische",
-      subtitle: "Freelancers guidance ",
-      url: "Freelancers guidance ",
+      subtitle: "Getting Freelance Work",
+      url: "https://www.jessicahische.is/thinkingthoughtsaboutgettingfreelance",
       img: jessicaHischeImg,
     },
     {
@@ -53,8 +53,8 @@ const Business = () => {
       img: creativeMorningsImg,
     },
     {
-      title: "TALK TO A CREATIVE ",
-      subtitle: "Director or recruiter or strategist",
+      title: "TALK TO A CREATIVE Director",
+      subtitle: "or recruiter or strategist",
       url: "https://talktoacreativedirector.com",
       img: talkToCreativeDirectorImg,
     },
@@ -71,8 +71,8 @@ const Business = () => {
       img: metaAdLibraryImg,
     },
     {
-      title: "SH*T THEY DIDN’T TELL ",
-      subtitle: "You, By Paul Woods ",
+      title: "SH*T THEY DIDN’T TELL You",
+      subtitle: "By Paul Woods ",
       url: "http://paulthedesigner.us/shit-they-didnt-tell-you",
       img: shitTheyDidntTellImg,
     },

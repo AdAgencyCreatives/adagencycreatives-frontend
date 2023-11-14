@@ -27,8 +27,8 @@ const Art = () => {
       img: aigaEyeOnDesignImg,
     },
     {
-      title: "Shaun’s Very Useful",
-      subtitle: "Directory of creative things ",
+      title: "Shaun’s Very Useful Directory",
+      subtitle: "of creative things ",
       url: "https://bruciemane.notion.site/Shaun-s-Very-Useful-Directory-of-Creative-Things-9b72122139ef46c58313a90b0c519505",
       img: shaunsUsefulDirectoryImg,
     },
@@ -45,8 +45,8 @@ const Art = () => {
       img: deckOfBrillianceImg,
     },
     {
-      title: "TALK TO A CREATIVE ",
-      subtitle: "Director or recruiter or strategist",
+      title: "TALK TO A CREATIVE Director",
+      subtitle: "or recruiter or strategist",
       url: "https://talktoacreativedirector.com",
       img: talkToACreativeDirectorImg,
     },
@@ -93,8 +93,7 @@ const Art = () => {
         <div className="mentor-wrapper">
           <h2 className="title">Art</h2>
           <p className="subtitle">
-            WELCOME TO <strong>ART</strong>. HERE YOU WILL FIND
-            <strong>INSPIRATIONAL RESOURCES</strong> YOU KNOW AND SOME YOU
+            WELCOME TO <strong>ART</strong>. HERE YOU WILL FIND <strong>INSPIRATIONAL RESOURCES</strong> YOU KNOW AND SOME YOU
             DON’T.
           </p>
           <SingleMentorList items={items} />
