@@ -13,7 +13,7 @@ h1.bannerHeading {
 .banner {
     text-align: center;
     background: black;
-    padding: 50px 0;
+    padding: 50px 0 0;
     min-height: 95vh;
     display: flex;
     flex-direction: column;
@@ -691,7 +691,7 @@ img.publication-image {
 
 .sectionContent.featured-cities {
     background: white;
-    margin: 10px;
+    margin: 20px 10px;
     padding: 10px;
 }
 
@@ -788,6 +788,7 @@ img.publication-image {
     background-color: #333;
     color: #fff;
     display: flex;
+    margin-top: 30px;
 }
 
 .ticker-text {

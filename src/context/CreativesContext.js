@@ -283,7 +283,7 @@ const getVideo = (dispatch) => {
       const response = await api.get(
         "/attachments?filter[user_id]=" +
           uid +
-          "&filter[resource_type]=agency_reel"
+          "&filter[resource_type]=creative_reel"
       );
       dispatch({
         type: "set_video",

@@ -11,6 +11,7 @@ import {
   FiTrash2,
   FiX,
   FiFile,
+  FiVideo
 } from "react-icons/fi";
 import "../../../styles/AgencyDashboard/MyResume.scss";
 import htmlToDraft from "html-to-draftjs";
@@ -631,7 +632,7 @@ const MyResume = () => {
       formData.append("resource_type", name);
       const result = await saveAttachment(formData);
       if (result.data) {
-        if (name == "agency_reel")
+        if (name == "creative_reel")
           setVideoItem({ name: file.name, id: result.data.id });
         showAlert("Item uploaded successfully.");
       }
@@ -913,11 +914,11 @@ const MyResume = () => {
               {field.required && <span className="required">*</span>}
             </label>
             <div className="row align-items-center upload-box">
-              <div className="col-md-2 col-sm-4 col-12">
+              <div className="col-md-12 col-sm-4 col-12">
                 {videoItem && (
                   <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2">
                     <span className="icon_type">
-                      <FiFile />
+                      <FiVideo />
                     </span>
                     <div className="filename">{videoItem.name}</div>
                   </button>
@@ -941,7 +942,7 @@ const MyResume = () => {
                 type="file"
                 ref={videoUploadRef}
                 className="d-none"
-                onChange={(e) => handleFileChange(e, "agency_reel", videoRef)}
+                onChange={(e) => handleFileChange(e, "creative_reel", videoRef)}
               />
             </div>
           </>

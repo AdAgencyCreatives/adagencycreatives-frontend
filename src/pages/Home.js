@@ -27,9 +27,7 @@ const Home = () => {
     state: { token, role },
   } = useContext(AuthContext);
 
-  const {
-    showAlert
-  } = useContext(AlertContext);
+  const { showAlert } = useContext(AlertContext);
 
   const validateAccess = (e, item) => {
     e.preventDefault();
@@ -56,7 +54,8 @@ const Home = () => {
         <div className="banner">
           <h1 className="bannerHeading">Welcome to Ad Agency Creatives</h1>
           <p className="subHeading">
-            A community for advertising agency creatives and the agencies hiring them
+            A community for advertising agency creatives and the agencies hiring
+            them
           </p>
           <div className="searchArea">
             <p className="searchHeader">Search Creative Jobs</p>
@@ -80,8 +79,7 @@ const Home = () => {
             </div>
             <div className="popularSearch">
               <p>
-                Popular Searches: <a href="#">Art Director</a>,
-                <a href="#">Copywriter</a>,<a href="#">Designer...</a>
+                Popular Searches: <a href="#">Art Director</a>, <a href="#">Copywriter</a>, <a href="#">Designer...</a>
               </p>
             </div>
           </div>
@@ -128,6 +126,18 @@ const Home = () => {
               </div>
             </div>
           </div>
+
+          <div className="ticker">
+            <div className="ticker-text">
+              <h4 className="mb-0">About Us:</h4>
+              <div className="about-content">
+                Ad Agency Creatives is a community for Creatives to come
+                together talk about the industry talk about the work meet other
+                creatives share ideas and resources manage job opportunities
+                mentor and be mentored and do really cool $#*t!&nbsp;
+              </div>
+            </div>
+          </div>
         </div>
         <div className="section about text-center" id="about">
           <h1>About Us</h1>
@@ -144,6 +154,7 @@ const Home = () => {
             <h5>and do really cool $#*t!&nbsp;</h5>
           </div>
         </div>
+
         <div className="creative-section">
           <AgencyCreatives />
 
@@ -177,18 +188,6 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="col"></div>
-              </div>
-            </div>
-          </div>
-
-          <div className="ticker">
-            <div className="ticker-text">
-              <h4 className="mb-0">About Us</h4>
-              <div className="about-content">
-                Ad Agency Creatives is a community for Creatives to come
-                together talk about the industry talk about the work meet other
-                creatives share ideas and resources manage job opportunities
-                mentor and be mentored and do really cool $#*t!&nbsp;
               </div>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import {
+  IoAdd,
   IoCalendarClearOutline,
   IoCallOutline,
   IoMailOutline,
@@ -9,14 +10,15 @@ import adicon from "../../../assets/images/icons/adicon.png";
 import bullseye from "../../../assets/images/icons/bulleyes.png";
 import time from "../../../assets/images/icons/duration-icon.png";
 import sample from "../../../assets/images/sample.mp4";
-import { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 
 const Sidebar = ({ data, role, user }) => {
   const {
-    state: { resume },
+    state: { resume, video },
     getResume,
+    getVideo,
   } = useContext(CreativesContext);
 
   const {
@@ -49,9 +51,42 @@ const Sidebar = ({ data, role, user }) => {
     }
   }, [user]);
 
-  const renderListData = (list) => {
-    return list.slice(0, 5).join(", ") + (list.length > 5 ? " +" : "");
+  useEffect(() => {
+    getVideo(data.user_id);
+  }, []);
+
+  const [showAllItems, setShowAllItems] = useState({});
+
+  const renderListData = (list, listKey) => {
+    const maxItemsToShow = 5;
+
+    const renderedList = list.slice(0, maxItemsToShow);
+    const remainingItems = list.slice(maxItemsToShow);
+
+    const toggleShowAllItems = () => {
+      setShowAllItems((prev) => ({
+        ...prev,
+        [listKey]: !prev[listKey], // Toggle the visibility of the specific list
+      }));
+    };
+
+    return (
+      <>
+        {renderedList.join(", ")}
+        {list.length > maxItemsToShow && !showAllItems[listKey] && (
+          <React.Fragment>
+            <IoAdd onClick={toggleShowAllItems} className="cursor-pointer"/>
+          </React.Fragment>
+        )}
+        {showAllItems[listKey] &&
+          remainingItems.length > 0 &&
+          remainingItems.map((item, index) => (
+            <span key={index}>{`, ${item}`}</span>
+          ))}
+      </>
+    );
   };
+
   return (
     <>
       <div className="sidebar-item">
@@ -92,7 +127,7 @@ const Sidebar = ({ data, role, user }) => {
               <div className="details">
                 <div className="text">Industry Experience</div>
                 <div className="value">
-                  {renderListData(data.industry_experience)}
+                  {renderListData(data.industry_experience, "i")}
                 </div>
               </div>
             </div>
@@ -105,7 +140,7 @@ const Sidebar = ({ data, role, user }) => {
               <div className="details">
                 <div className="text">Media Experience</div>
                 <div className="value">
-                  {renderListData(data.media_experience)}
+                  {renderListData(data.media_experience, "m")}
                 </div>
               </div>
             </div>
@@ -127,7 +162,7 @@ const Sidebar = ({ data, role, user }) => {
               <div className="details">
                 <div className="text">Strengths</div>
                 <div className="value">
-                  {renderListData(data.character_strengths)}
+                  {renderListData(data.character_strengths, "c")}
                 </div>
               </div>
             </div>
@@ -138,9 +173,9 @@ const Sidebar = ({ data, role, user }) => {
       </div>
       <div className="sidebar-item mt-4">
         <h4 className="title">Video</h4>
-        {data.video ? (
+        {video ? (
           <div className="video-section mt-4">
-            <video src={sample} controls></video>
+            <video src={video.url} controls></video>
           </div>
         ) : (
           <button className="btn btn-dark w-100 py-3 fs-5">Coming Soon</button>

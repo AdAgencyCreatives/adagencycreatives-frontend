@@ -9,7 +9,7 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
   const packages = [
     {
       id: 1,
-      title: "Post a Creative Job",
+      title: "Single Creative Job",
       price: 149,
       image: Single,
       subtitle: "Single Creative Job Package",
@@ -72,8 +72,14 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
       title: "Hire an Advisor",
       price: "Custom",
       image: Hire,
-      subtitle: "",
-      description: "",
+      subtitle: "Hire An Advisor",
+      description:  "<ul>" +
+      "<li>• Creative Recruiting Help</li>"+
+      "<li>• Provide Details On Get Started</li>"+
+      "<li>• Our Team Will Contact You</li>"+
+      "<li>• We’ll Create A Custom Plan </li>"+
+      "<li>• You Hire Talent Directly </li>"+
+      "</ul>",
       link: "/hire-an-advisor",
     },
   ];
