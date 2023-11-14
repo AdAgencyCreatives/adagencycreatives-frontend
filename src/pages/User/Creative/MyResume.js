@@ -18,6 +18,7 @@ import draftToHtml from "draftjs-to-html";
 import { Context as DataContext } from "../../../context/DataContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
+import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
 import { CircularProgress } from "@mui/material";
 import DatePicker from "react-datepicker";
@@ -30,6 +31,10 @@ const MyResume = () => {
 
   const portfolioUploadRef = useRef();
   const portfolioRef = useRef();
+
+  const videoUploadRef = useRef();
+  const videoRef = useRef();
+  const [videoItem, setVideoItem] = useState(false);
 
   const [categoriesList, setCategories] = useState([]);
   const [statesList, setStates] = useState([]);
@@ -48,6 +53,7 @@ const MyResume = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [isMounted, setIsMounted] = useState(false);
   const repeaterRef = useRef(null);
+
   const educationObject = {
     showDropdown: false,
     data: [
@@ -70,7 +76,7 @@ const MyResume = () => {
         label: "Completion Date",
         type: "date",
         name: "completed_at",
-        value: new Date()
+        value: new Date(),
       },
     ],
   };
@@ -119,12 +125,14 @@ const MyResume = () => {
       resume,
       formSubmit,
       portfolio_items,
+      video,
     },
     getCreativeById,
     saveResume,
     saveAttachment,
     getResume,
     getPortfolio,
+    getVideo,
     removeAttachment,
   } = useContext(CreativesContext);
 
@@ -153,13 +161,20 @@ const MyResume = () => {
     state: { user, token },
   } = useContext(AuthContext);
 
+  const { showAlert } = useContext(AlertContext);
+
   useEffect(() => {
     if (user) {
       getCreativeById(user.uuid);
       getResume(user.uuid);
       getPortfolio(user.uuid);
+      getVideo(user.uuid);
     }
   }, [user]);
+
+  useEffect(() => {
+    setVideoItem(video);
+  }, [video]);
 
   //Fetch all fields
   useEffect(() => {
@@ -572,9 +587,10 @@ const MyResume = () => {
     // console.log(formData);
   }, [formData]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log(educationList, experienceList);
-    saveResume(user.uuid, formData, educationList, experienceList);
+    await saveResume(user.uuid, formData, educationList, experienceList);
+    showAlert("Resume updated successfully.");
   };
 
   const removeItem = (name, ref) => {
@@ -587,7 +603,13 @@ const MyResume = () => {
     removeAttachment(last.id);
   };
 
-  const handleFileChange = (event, name, ref) => {
+  const removeVideo = async (id) => {
+    await removeAttachment(id);
+    setVideoItem(null);
+    showAlert("Video removed successfully.");
+  };
+
+  const handleFileChange = async (event, name, ref) => {
     let updated = [...portfolio];
     let index = updated.findIndex((p) => p.name == name);
     let item = { ...updated[index] };
@@ -607,7 +629,12 @@ const MyResume = () => {
       formData.append("file", file);
       formData.append("user_id", user.uuid);
       formData.append("resource_type", name);
-      saveAttachment(formData);
+      const result = await saveAttachment(formData);
+      if (result.data) {
+        if (name == "agency_reel")
+          setVideoItem({ name: file.name, id: result.data.id });
+        showAlert("Item uploaded successfully.");
+      }
     }
   };
 
@@ -637,6 +664,12 @@ const MyResume = () => {
       items: [],
       ref: resumeRef,
       uploadRef: resumeUploadRef,
+    },
+    {
+      label: "Upload your reel, spotlight or a video resume",
+      required: false,
+      type: "video",
+      name: "company_video",
     },
   ]);
 
@@ -872,6 +905,48 @@ const MyResume = () => {
 
   const getFormField = function (field) {
     switch (field.type) {
+      case "video":
+        return (
+          <>
+            <label htmlFor={field.name} className="form-label">
+              {field.label}
+              {field.required && <span className="required">*</span>}
+            </label>
+            <div className="row align-items-center upload-box">
+              <div className="col-md-2 col-sm-4 col-12">
+                {videoItem && (
+                  <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2">
+                    <span className="icon_type">
+                      <FiFile />
+                    </span>
+                    <div className="filename">{videoItem.name}</div>
+                  </button>
+                )}
+              </div>
+              <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
+                <button
+                  className="btn btn-secondary w-100 mb-2 text-uppercase"
+                  onClick={() => videoUploadRef.current.click()}
+                >
+                  <FiPaperclip /> Upload
+                </button>
+                <button
+                  className="btn btn-secondary w-100 text-uppercase"
+                  onClick={() => removeVideo(videoItem.id)}
+                >
+                  <FiTrash2 /> Remove
+                </button>
+              </div>
+              <input
+                type="file"
+                ref={videoUploadRef}
+                className="d-none"
+                onChange={(e) => handleFileChange(e, "agency_reel", videoRef)}
+              />
+            </div>
+          </>
+        );
+
       case "upload":
         return (
           <>
@@ -886,7 +961,7 @@ const MyResume = () => {
               value=""
             />
             <div className="row align-items-center upload-box">
-              <div className="col-md-12 col-sm-4 col-12">
+              <div className="col-md-12 col-sm-4 col-12 mb-3">
                 {field.items.map((item) =>
                   field.name == "resume" ? (
                     <button
@@ -900,7 +975,11 @@ const MyResume = () => {
                     </button>
                   ) : (
                     <div className="portfolio_item">
-                      <img src={item.url} key={item.name} className="w-100" />
+                      <img
+                        src={item.url}
+                        key={item.name}
+                        className="w-100 h-100"
+                      />
                     </div>
                   )
                 )}

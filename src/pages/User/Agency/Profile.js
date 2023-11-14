@@ -5,7 +5,7 @@ import { EditorState, ContentState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Placeholder from "../../../assets/images/placeholder.png";
-import { FiPaperclip, FiTrash2 } from "react-icons/fi";
+import { FiFile, FiPaperclip, FiTrash2 } from "react-icons/fi";
 import { Context as DataContext } from "../../../context/DataContext";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
@@ -27,6 +27,7 @@ const Profile = () => {
   const [formData, setFormData] = useState({});
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [isMounted, setIsMounted] = useState(false);
+  const [videoItem, setVideoItem] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -53,10 +54,12 @@ const Profile = () => {
   const { showAlert } = useContext(AlertContext);
 
   const {
-    state: { single_agency, formSubmit },
+    state: { single_agency, formSubmit, video },
     getAgencyById,
     saveAgency,
     uploadAttachment,
+    getVideo,
+    removeAttachment
   } = useContext(AgenciesContext);
 
   const {
@@ -70,6 +73,7 @@ const Profile = () => {
   useEffect(() => {
     if (user) {
       getAgencyById(user.uuid);
+      getVideo(user.uuid);
     }
   }, [user]);
 
@@ -242,6 +246,7 @@ const Profile = () => {
           type: "dropdown",
           data: showProfile,
           name: "show_profile",
+          callback: (item) => handleDropdownChange(item, "show_profile"),
           value: showProfile.filter((item) => item.value == user.is_visible),
         },
         {
@@ -253,23 +258,13 @@ const Profile = () => {
         },
         {
           label: "Upload your agency reel",
-          required: true,
+          required: false,
           type: "video",
-          image: single_agency.logo,
           name: "company_video",
         },
       ]);
     }
   }, [single_agency, user, media, industry, statesList, citiesList]);
-
-  // Cities update
-  /*   useEffect(() => {
-      if (citiesList.length > 0 && fields.length) {
-        let updatedFields = [...fields];
-        updatedFields[4].data = citiesList;
-        setFields(updatedFields);
-      }
-    }, [citiesList, fields]); */
 
   //Set initial form data
   useEffect(() => {
@@ -310,6 +305,10 @@ const Profile = () => {
     getMediaExperiences();
     getIndustryExperiences();
   }, []);
+
+  useEffect(() => {
+    setVideoItem(video);
+  }, [video]);
 
   useEffect(() => {
     let data = states;
@@ -407,22 +406,36 @@ const Profile = () => {
     })();
   };
 
-  const removeLogo = () => {
-    logoRef.current.src = "";
-  };
-
   const handleFileChange = async (event, resource, ref) => {
     const file = event.target.files[0];
-    ref.current.src = URL.createObjectURL(file);
     if (file) {
+      if (resource == "agency_logo")
+        ref.current.src = URL.createObjectURL(file);
+      else setVideoItem({ name: file.name });
       const formData = new FormData();
       formData.append("file", file);
       formData.append("user_id", user.uuid);
       formData.append("resource_type", resource);
       await uploadAttachment(formData);
       reloadUserData(user.uuid);
-      showAlert((resource == "agency_logo" ? "Logo" : "Video") + " uploaded successfully.");
+      showAlert(
+        (resource == "agency_logo" ? "Logo" : "Video") +
+          " uploaded successfully."
+      );
     }
+  };
+
+  const removeVideo = async (id) => {
+    await removeAttachment(id);
+    reloadUserData(user.uuid);
+    showAlert("Video removed successfully.");
+  };
+
+  const removeLogo = async (id) => {
+    logoRef.current.src = "";
+    await removeAttachment(id);
+    reloadUserData(user.uuid);
+    showAlert("Logo removed successfully.");
   };
 
   return isLoading ? (
@@ -466,7 +479,7 @@ const Profile = () => {
                           </button>
                           <button
                             className="btn btn-secondary w-100 text-uppercase"
-                            onClick={removeLogo}
+                            onClick={() => removeLogo(field.id)}
                           >
                             <FiTrash2 /> Remove
                           </button>
@@ -491,11 +504,14 @@ const Profile = () => {
                       </label>
                       <div className="row align-items-center upload-box">
                         <div className="col-md-2 col-sm-4 col-12">
-                          <img
-                            src={field.image}
-                            className="w-100"
-                            ref={videoRef}
-                          />
+                          {videoItem && (
+                            <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2">
+                              <span className="icon_type">
+                                <FiFile />
+                              </span>
+                              <div className="filename">{videoItem.name}</div>
+                            </button>
+                          )}
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                           <button
@@ -506,7 +522,7 @@ const Profile = () => {
                           </button>
                           <button
                             className="btn btn-secondary w-100 text-uppercase"
-                            onClick={removeLogo}
+                            onClick={() => removeVideo(videoItem.id)}
                           >
                             <FiTrash2 /> Remove
                           </button>
@@ -533,7 +549,7 @@ const Profile = () => {
                       <input
                         type="text"
                         className="form-control"
-                        value={field.value}
+                        value={field.value || ""}
                         onChange={(e) => handleTextChange(e, field.name)}
                       />
                     </div>

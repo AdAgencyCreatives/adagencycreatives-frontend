@@ -10,6 +10,7 @@ const state = {
   stats: null,
   formSubmit: false,
   subscription: null,
+  video: null,
 };
 
 const reducer = (state, action) => {
@@ -23,6 +24,8 @@ const reducer = (state, action) => {
       };
     case "set_single_agency":
       return { ...state, single_agency: action.payload };
+    case "set_video":
+      return { ...state, video: action.payload.data[0] };
     case "set_open_positions":
       return { ...state, open_positions: action.payload.data };
     case "delete_job":
@@ -66,7 +69,9 @@ const getAgencies = (dispatch) => {
 const getAgency = (dispatch) => {
   return async (slug) => {
     try {
-      const response = await api.get("/agencies?filter[status]=1&filter[slug]=" + slug);
+      const response = await api.get(
+        "/agencies?filter[status]=1&filter[slug]=" + slug
+      );
       const data = response.data.data[0];
       const uid = data.user_id;
       getOpenPositions(dispatch, uid);
@@ -81,7 +86,9 @@ const getAgency = (dispatch) => {
 const getAgencyById = (dispatch) => {
   return async (id) => {
     try {
-      const response = await api.get("/agencies?filter[status]=1&filter[user_id]=" + id);
+      const response = await api.get(
+        "/agencies?filter[status]=1&filter[user_id]=" + id
+      );
       const data = response.data.data[0];
       const uid = data.user_id;
       getOpenPositions(dispatch)(uid);
@@ -158,10 +165,36 @@ const uploadAttachment = (dispatch) => {
   };
 };
 
+const removeAttachment = (dispatch) => {
+  return async (id) => {
+    try {
+      const response = await api.delete("/attachments/" + id);
+    } catch (error) {}
+  };
+};
+
+const getVideo = (dispatch) => {
+  return async (uid) => {
+    try {
+      const response = await api.get(
+        "/attachments?filter[user_id]=" +
+          uid +
+          "&filter[resource_type]=agency_reel"
+      );
+      dispatch({
+        type: "set_video",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
 const searchAgencies = (dispatch) => {
   return async (query) => {
     try {
-      const response = await api.get("/agencies?filter[status]=1&filter[name]=" + query);
+      const response = await api.get(
+        "/agencies?filter[status]=1&filter[name]=" + query
+      );
       dispatch({
         type: "set_agencies",
         payload: response.data,
@@ -238,10 +271,11 @@ export const { Context, Provider } = createDataContext(
     searchAgencies,
     getOpenPositions,
     uploadAttachment,
+    removeAttachment,
+    getVideo,
     deleteJob,
     requestPackage,
     getSubscriptionStatus,
-
   },
   state
 );

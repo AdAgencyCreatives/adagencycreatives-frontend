@@ -13,6 +13,7 @@ const state = {
   applied_jobs: [],
   resume: [],
   portfolio_items: [],
+  video: null,
 };
 
 const reducer = (state, action) => {
@@ -25,6 +26,8 @@ const reducer = (state, action) => {
       };
     case "set_single_creative":
       return { ...state, single_creative: action.payload };
+    case "set_video":
+      return { ...state, video: action.payload.data[0] };
     case "set_creative_experience":
       return { ...state, creative_experience: action.payload.data };
     case "set_creative_education":
@@ -55,43 +58,52 @@ const reducer = (state, action) => {
 const getCreatives = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/home/creatives?filter[status]=1&filter[is_visible]=1");
+      const response = await api.get(
+        "/home/creatives?filter[status]=1&filter[is_visible]=1"
+      );
       dispatch({
         type: "set_creatives",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
 const getHomeCreatives = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/home/creatives?filter[is_featured]=1&filter[status]=1&filter[is_visible]=1");
+      const response = await api.get(
+        "/home/creatives?filter[is_featured]=1&filter[status]=1&filter[is_visible]=1"
+      );
       dispatch({
         type: "set_creatives",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
 const getRelatedCreatives = (dispatch) => {
   return async (title) => {
     try {
-      const response = await api.get("/creatives?filter[status]=1&filter[is_visible]=1&filter[title]=" + title);
+      const response = await api.get(
+        "/creatives?filter[status]=1&filter[is_visible]=1&filter[title]=" +
+          title
+      );
       dispatch({
         type: "set_creatives",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
 const getCreative = (dispatch) => {
   return async (slug) => {
     try {
-      const response = await api.get("/creatives?filter[status]=1&filter[slug]=" + slug);
+      const response = await api.get(
+        "/creatives?filter[status]=1&filter[slug]=" + slug
+      );
       const data = response.data.data[0];
       const uid = data.user_id;
       getCreativeEducation(dispatch, uid);
@@ -100,14 +112,16 @@ const getCreative = (dispatch) => {
         type: "set_single_creative",
         payload: data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
 const getCreativeById = (dispatch) => {
   return async (id) => {
     try {
-      const response = await api.get("/creatives?filter[status]=1&filter[user_id]=" + id);
+      const response = await api.get(
+        "/creatives?filter[status]=1&filter[user_id]=" + id
+      );
       const data = response.data.data[0];
       const uid = data.user_id;
       getCreativeEducation(dispatch, uid);
@@ -116,7 +130,7 @@ const getCreativeById = (dispatch) => {
         type: "set_single_creative",
         payload: data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -125,12 +139,14 @@ const searchCreatives = (dispatch) => {
     setLoading(dispatch, true);
 
     try {
-      const response = await api.get("/creatives?filter[status]=1&filter[is_visible]=1&filter[name]=" + query);
+      const response = await api.get(
+        "/creatives?filter[status]=1&filter[is_visible]=1&filter[name]=" + query
+      );
       dispatch({
         type: "set_creatives",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
     setLoading(dispatch, false);
   };
 };
@@ -142,7 +158,7 @@ const getCreativeEducation = async (dispatch, uid) => {
       type: "set_creative_education",
       payload: response.data,
     });
-  } catch (error) { }
+  } catch (error) {}
 };
 
 const getCreativeExperience = async (dispatch, uid) => {
@@ -152,7 +168,7 @@ const getCreativeExperience = async (dispatch, uid) => {
       type: "set_creative_experience",
       payload: response.data,
     });
-  } catch (error) { }
+  } catch (error) {}
 };
 
 const loadCreatives = (dispatch) => {
@@ -164,7 +180,7 @@ const loadCreatives = (dispatch) => {
         type: "load_creatives",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
     setLoading(dispatch, false);
   };
 };
@@ -184,7 +200,7 @@ const saveCreative = (dispatch) => {
     });
     try {
       const response = await api.patch("/creative_profile/" + uid, data);
-    } catch (error) { }
+    } catch (error) {}
     dispatch({
       type: "set_form_submit",
       payload: false,
@@ -202,7 +218,7 @@ const saveResume = (dispatch) => {
       await api.patch("/creative_resume/" + uid, data);
       await api.patch("/educations/", { educations });
       await api.patch("/experiences/", { experiences });
-    } catch (error) { }
+    } catch (error) {}
     dispatch({
       type: "set_form_submit",
       payload: false,
@@ -218,7 +234,8 @@ const saveAttachment = (dispatch) => {
           "Content-Type": "multipart/form-data",
         },
       });
-    } catch (error) { }
+      return response.data;
+    } catch (error) {}
   };
 };
 
@@ -226,7 +243,7 @@ const removeAttachment = (dispatch) => {
   return async (id) => {
     try {
       const response = await api.delete("/attachments/" + id);
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -240,7 +257,7 @@ const getResume = (dispatch) => {
         type: "set_resume",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -249,14 +266,30 @@ const getPortfolio = (dispatch) => {
     try {
       const response = await api.get(
         "/attachments?filter[user_id]=" +
-        uid +
-        "&filter[resource_type]=portfolio_item"
+          uid +
+          "&filter[resource_type]=portfolio_item"
       );
       dispatch({
         type: "set_portfolio_items",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
+  };
+};
+
+const getVideo = (dispatch) => {
+  return async (uid) => {
+    try {
+      const response = await api.get(
+        "/attachments?filter[user_id]=" +
+          uid +
+          "&filter[resource_type]=agency_reel"
+      );
+      dispatch({
+        type: "set_video",
+        payload: response.data,
+      });
+    } catch (error) {}
   };
 };
 
@@ -269,7 +302,7 @@ const saveCreativeImage = (dispatch) => {
         },
       });
       return response.data.data;
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -281,7 +314,7 @@ const getStats = (dispatch) => {
         type: "set_stats",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -294,7 +327,7 @@ const getAppliedJobs = (dispatch) => {
         type: "set_applied_jobs",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
     setLoading(dispatch, false);
   };
 };
@@ -317,6 +350,7 @@ export const { Context, Provider } = createDataContext(
     getAppliedJobs,
     getResume,
     getPortfolio,
+    getVideo,
     removeAttachment,
   },
   state

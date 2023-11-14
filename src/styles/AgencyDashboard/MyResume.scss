@@ -46,10 +46,11 @@
 
     .portfolio_item {
         width: 150px;
-        border-radius: 8px;
         margin-right: 10px;
         display: inline-block;
         height: 150px;
         vertical-align: middle;
+        border-radius: 10px;
+        overflow: hidden;
     }
 }

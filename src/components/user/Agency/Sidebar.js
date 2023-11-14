@@ -1,12 +1,22 @@
 import "../../../styles/User/ProfileSidebar.scss";
 import { Link } from "react-router-dom";
 import sample from "../../../assets/images/sample.mp4";
+import { useContext, useEffect } from "react";
+import { Context } from "../../../context/AgenciesContext";
 
 const Sidebar = ({ data }) => {
   const workplacePreference = data.workplace_preference;
   const linkedin = data.links.find((link) => link.label == "linkedin")?.url;
   const website = data.links.find((link) => link.label == "website")?.url;
   const preferences = [];
+  const {
+    state: { video },
+    getVideo,
+  } = useContext(Context);
+
+  useEffect(() => {
+    getVideo(data.user_id);
+  }, []);
 
   if (workplacePreference.is_remote) {
     preferences.push("Remote");
@@ -148,7 +158,7 @@ const Sidebar = ({ data }) => {
       </div>
       <div className="sidebar-item mt-4">
         <h4 className="title">Video</h4>
-        {data.video ? (
+        {video ? (
           <div className="video-section mt-4">
             <video src={sample} controls></video>
           </div>
