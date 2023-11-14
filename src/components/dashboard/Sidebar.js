@@ -47,8 +47,17 @@ const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
             {user.location && (
               <>
                 <div className="employer-location">
-                  <div className="value">
-                    {user.location.state}, {user.location.city}
+                  <div className="value">&nbsp;
+                    {user.location.state && (
+                      <>
+                        <Link to={`/creative-location/${user.location.state}`}>
+                          {user.location.state},&nbsp;
+                        </Link>
+                        <Link to={`/creative-location/${user.location.city}`}>
+                          {user.location.city}
+                        </Link>
+                      </>
+                    )}
                   </div>
                 </div>
                 <div className="view-profile">

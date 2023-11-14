@@ -93,6 +93,7 @@ const Content = ({ user, data, jobs }) => {
                         <a className="btn-follow btn-action-job btn-add-job-shortlist">
                           <i className="flaticon-bookmark"></i>
                         </a>
+                        {user && data && !isOwnProfile && (
                         <Link
                           to={item.external_link}
                           target="_blank"
@@ -101,6 +102,7 @@ const Content = ({ user, data, jobs }) => {
                           Apply Now
                           <i className="next flaticon-right-arrow"></i>
                         </Link>
+                        )}
                       </div>
                     </div>
                   </div>
