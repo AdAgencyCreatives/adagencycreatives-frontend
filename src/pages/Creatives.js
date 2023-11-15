@@ -110,12 +110,12 @@ const Creatives = () => {
 
     //Special case: If agency does have a subscription status: active but trying to search for more than two terms. e.g.: a,b,c
     if (role == "agency" && subscription_status && subscription_status == "active" && searchTerms.length > 2) {
-      return { message: "Premium Package Subscription Required for more than Two Search Terms", proceed: true, terms_allowed: Math.min(searchTerms.length, 2) };
+      return { message: "", proceed: true, terms_allowed: Math.min(searchTerms.length, 2) };
     }
 
     //Special case: If agency doesn't have a subscription status: active and trying to search for more than one terms. e.g.: a,b
     if (role == "agency" && (!subscription_status || subscription_status != "active") && searchTerms.length > 1) {
-      return { message: "Active Package Subscription Required for more than One Search Terms", proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
+      return { message: "Post a Job for advance search capabilities", proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
     }
 
     return { message: "", proceed: true, terms_allowed: 1 };
