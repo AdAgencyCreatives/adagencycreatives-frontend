@@ -319,6 +319,7 @@ input.form-check-input {
     -o-transform: translateY(0);
     transform: translateY(0);
     text-decoration: none;
+    text-transform: capitalize;
 }
 
 .results-filter-wrapper .results-filter .close-value {
@@ -357,6 +358,51 @@ input.form-check-input {
     display: flex;
     align-items: center;
     gap: 5px;
+}
+
+.job-apply-modal {
+    .btn-resume {
+        width: 48%;
+        border: 0;
+        font-weight: 500;
+        font-size: 16px;
+        text-transform: uppercase;
+        padding: 5px 10px;
+        overflow: hidden;
+        background-color: #d9d9d9;
+        border-radius: 4px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        -ms-border-radius: 4px;
+        -o-border-radius: 4px;
+        -webkit-transition: all 0.4s ease-in-out 0s;
+        -o-transition: all 0.4s ease-in-out 0s;
+        transition: all 0.4s ease-in-out 0s;
+
+        &.active {
+            background: black;
+            color: white;
+        }
+
+        &:hover {
+            background: var(--color-primary);
+            color: white;
+        }
+    }
+
+    .label-can-drag {
+        border: 2px dashed rgba(25, 103, 210, 0.15);
+        text-align: center;
+        padding: 30px;
+        cursor: pointer;
+        font-size: 20px;
+        color: black;
+    }
+
+    .upload-file-btn-wrapper {
+        margin-bottom: 30px;
+    }
+
 }
 
 

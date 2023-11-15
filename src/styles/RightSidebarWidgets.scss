@@ -62,9 +62,22 @@
         border-radius: 50%;
     }
 
-    .item-list li.vcard .item-title a {
-        color: black;
-        font-size: 16px;
+
+    .item-list li.vcard .item-title {
+
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+
+        .item-content {
+            font-size: 16px;
+        }
+
+        a {
+            color: black;
+            font-size: 16px;
+            margin-right: 5px;
+        }
     }
 
     .item-list li.vcard .item-meta a {
@@ -128,7 +141,8 @@
     align-items: center;
     width: 100%;
 }
-.item.new-member-widget > * {
+
+.item.new-member-widget>* {
     line-height: 1 !important;
 }
 
@@ -137,7 +151,7 @@
 }
 
 .item.new-member-widget .item-industry-experience {
-    width:35%;
+    width: 35%;
     font-size: 10pt;
 }
 

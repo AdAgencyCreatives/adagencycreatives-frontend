@@ -34,7 +34,7 @@ const CopyWriting = () => {
     },
     {
       title: "The Copywriter Club",
-      subtitle: "best books, courses, podcasts",
+      subtitle: "Best books, courses, podcasts",
       url: "https://thecopywriterclub.com/ultimate-copywriter-book-resource-list/",
       img: copywriterclub,
     },

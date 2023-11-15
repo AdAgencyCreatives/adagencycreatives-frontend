@@ -10,7 +10,7 @@ import {
 } from "react-icons/io5";
 import moment from "moment";
 import Tooltip from "../../components/Tooltip";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import JobList from "../../components/job/JobList";
@@ -30,6 +30,7 @@ const Jobs = () => {
   const [media, setMedia] = useState([]);
   const [filters, setFilters] = useState({});
   const [notifCategory, setNotifCategory] = useState(false);
+  const params = useParams();
 
   const {
     state: {
@@ -58,13 +59,29 @@ const Jobs = () => {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    getJobs();
+    if (Object.keys(params).length) {
+      for (var field in params) {
+        const filter = {
+          [field]: { label: params[field].replace(/-/g," "), value: params[field] },
+        };
+        setFilters(filter);
+        filterJobs(filter);
+      }
+    } else {
+      getJobs();
+    }
     getCategories();
     getStates();
     getEmploymentTypes();
     getMediaExperiences();
   }, []);
 
+/*   useEffect(() => {
+    for (var field in params) {
+      setFilters({ [field]: { label: params[field], value: params[field] } });
+    }
+  }, [params]);
+ */
   useEffect(() => {
     let data = categories;
     if (categories.length) {
@@ -125,7 +142,7 @@ const Jobs = () => {
     let updatedFilters = { ...filters, [type]: item };
     setFilters(updatedFilters);
     filterJobs(updatedFilters);
-    setMobileOpen(false)
+    setMobileOpen(false);
   };
 
   const removeFilter = (item, key = false) => {
@@ -320,7 +337,7 @@ const Jobs = () => {
                                     onClick={() => removeFilter(item, key)}
                                   >
                                     <span className="close-value">x</span>
-                                    {i.label}
+                                    &nbsp;{i.label}
                                   </a>
                                 </li>
                               );
@@ -330,7 +347,7 @@ const Jobs = () => {
                               <li key={item.value}>
                                 <a href="#" onClick={() => removeFilter(item)}>
                                   <span className="close-value">x</span>
-                                  {filters[item].label}
+                                  &nbsp;{filters[item].label}
                                 </a>
                               </li>
                             );

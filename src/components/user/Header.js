@@ -31,11 +31,11 @@ const Header = ({ username }) => {
 
   return (
     <div className="user-profile-header mb-5">
-      <div className="user-avatar">
+      {/* <div className="user-avatar">
         <img src={creative ? creative.profile_image : Placeholder} alt="" />
-      </div>
+      </div> */}
       <div className="user-details">
-        <div className="username">{creative ? creative.name : ""}</div>
+        {/* <div className="username">{creative ? creative.name : ""}</div>
         <div className="member-title-location text-white">
           <div className="candidate-job text-white">{creative ? creative.title : ""}</div>
           {creative && creative.location && (
@@ -54,7 +54,7 @@ const Header = ({ username }) => {
               <span className="restrict-location-search">{creative.location && creative.location.city ? creative.location.city : ""}</span>
             </div>
           )}
-        </div>
+        </div> */}
         <div className="user-actions">
           <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/community-members') ? ' btn-selected' : '')} to="/community-members"><IoPersonAdd /> Add Friend</Link>
           <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/messages') ? ' btn-selected' : '')} to="/messages"><IoMailOpen /> Message</Link>

@@ -185,7 +185,7 @@ const getPosts = (dispatch) => {
 const getTrendingPosts = (dispatch) => {
   return async (group_id) => {
     try {
-      const response = await api.get("/trending_posts?filter[group_id]=" + group_id);
+      const response = await api.get("/trending_posts");
       dispatch({
         type: "set_trending_posts",
         payload: response.data,

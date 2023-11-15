@@ -9,9 +9,9 @@ import { useScrollLoader } from "../hooks/useScrollLoader";
 import RestrictedLounge from "../components/RestrictedLounge";
 import { CircularProgress } from "@mui/material";
 import { Context as GroupsContext } from "../context/GroupsContext";
+import SearchBar from "../components/SearchBar";
 
 const Groups = () => {
-
   const [isLoading, setIsLoading] = useState(true);
 
   const {
@@ -26,7 +26,7 @@ const Groups = () => {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    if(user) {
+    if (user) {
       getGroups();
     }
   }, [user]);
@@ -41,9 +41,8 @@ const Groups = () => {
 
   useScrollLoader(loading, loadMore);
 
-
   useEffect(() => {
-    if(user && groups) {
+    if (user && groups) {
       setIsLoading(false);
     }
     // console.log("Groups Fetched: ");
@@ -55,16 +54,10 @@ const Groups = () => {
       {token && role && (role == "admin" || role == "creative") ? (
         <div className="dark-container page-groups">
           <div className="container-fluid px-2 px-md-5">
-            <h1 className="display-5 fw-normal mb-5 text-white text-center">
-              Groups Directory
+            <h1 className="community-title text-white text-center mb-4">
+              Groups
             </h1>
-            <div className="search-bar">
-              <input
-                className="search-community-members"
-                placeholder="Search by name"
-              />
-              {/* <button className="clear-btn">Clear</button> */}
-            </div>
+
             <div className="members-header">
               <Link to="create" className="text-dark">
                 <div className="members-count">
@@ -84,29 +77,36 @@ const Groups = () => {
                     <CircularProgress />
                     <span>Loading ...</span>
                   </div>
-                ) : (<>
-                  {groups && groups.length ? (
-                    <div className="row g-4 px-1">
-                      {groups &&
-                        groups.map((group, index) => {
-                          return (
-                            <GroupWidget group={group} />
-                          );
-                        })}
-                      <div className="load-more text-center">
-                        {loading && (
-                          <div className="spinner-border text-light" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                          </div>
-                        )}
+                ) : (
+                  <>
+                    <SearchBar
+                      // onSearch={searchUser}
+                    />
+
+                    {groups && groups.length ? (
+                      <div className="row g-4 px-1">
+                        {groups &&
+                          groups.map((group, index) => {
+                            return <GroupWidget group={group} />;
+                          })}
+                        <div className="load-more text-center">
+                          {loading && (
+                            <div
+                              className="spinner-border text-light"
+                              role="status"
+                            >
+                              <span className="visually-hidden">
+                                Loading...
+                              </span>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="center-page">
-                      Sorry, nothing here.
-                    </div>
-                  )}
-                </>)}
+                    ) : (
+                      <div className="center-page">Sorry, nothing here.</div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </div>

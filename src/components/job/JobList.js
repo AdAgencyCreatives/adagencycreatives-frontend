@@ -3,16 +3,26 @@ import { Link } from "react-router-dom";
 import Tooltip from "../../components/Tooltip";
 import moment from "moment";
 import Placeholder from "../../assets/images/placeholder.png";
-import { useContext } from "react";
-import { Context } from "../../context/AuthContext";
+import { useContext, useState } from "react";
+import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as AlertContext } from "../../context/AlertContext";
+import ApplyJob from "./ApplyJob";
 
 const JobList = ({ data, user, showAgency = true }) => {
+  const [open, setOpen] = useState(false);
+  const handleClose = () => setOpen(false);
+  const [job, setJob] = useState(null);
+
   const {
     state: { role },
-  } = useContext(Context);
+  } = useContext(AuthContext);
+  const { showAlert } = useContext(AlertContext);
+
+  const isCreative = role == "creative";
 
   return (
     <div className="jobs-list-container">
+      <ApplyJob open={open} handleClose={handleClose} job_id={job} />
       {data.map((item) => (
         <div className="job-item" key={item.id}>
           <div className="d-flex align-items-center flex-md-nowrap flex-wrap gap-md-0 gap-3">
@@ -53,8 +63,9 @@ const JobList = ({ data, user, showAgency = true }) => {
                           <Link
                             to={
                               "/job-category/" +
-                              item.category.toLowerCase().replace(" ", "-")
+                              item.category.toLowerCase().replace(/ /g, "-")
                             }
+                            reloadDocument
                           >
                             {item.category}
                           </Link>
@@ -69,7 +80,8 @@ const JobList = ({ data, user, showAgency = true }) => {
                       <div className="job-type with-title">
                         <Link
                           className="type-job"
-                          to={"/job-type/" + item.employment_type}
+                          to={"/job-type/" + item.employment_type.toLowerCase()}
+                          reloadDocument
                         >
                           {item.employment_type}
                         </Link>
@@ -79,7 +91,7 @@ const JobList = ({ data, user, showAgency = true }) => {
                           let parts = key.split("_");
                           let type = parts[1];
                           return (
-                            <Tooltip title={type} type={type}>
+                            <Tooltip title={type} type={type} key={key}>
                               <button className="btn p-0 border-0 me-2">
                                 <IoStar
                                   size={20}
@@ -95,7 +107,7 @@ const JobList = ({ data, user, showAgency = true }) => {
                           let parts = key.split("_");
                           let type = parts[1];
                           return (
-                            <Tooltip title={type} type={type}>
+                            <Tooltip title={type} type={type} key={key}>
                               <button className="btn p-0 border-0 me-2">
                                 <IoStar
                                   size={20}
@@ -115,16 +127,27 @@ const JobList = ({ data, user, showAgency = true }) => {
                     {/* <a className="btn-follow btn-action-job btn-add-job-shortlist">
                       <i className="flaticon-bookmark"></i>
                     </a> */}
-                    {(role && role == "creative") && (
-                      <Link
-                        to={item.external_link}
-                        target="_blank"
-                        className="btn btn-apply btn-apply-job-external "
-                      >
-                        Apply Now
-                        <i className="next flaticon-right-arrow"></i>
-                      </Link>
-                    )}
+
+                    <Link
+                      to={
+                        item.apply_type == "external" ? item.external_link : ""
+                      }
+                      target="_blank"
+                      className="btn btn-apply btn-apply-job-external "
+                      onClick={(e) => {
+                        if (!isCreative) {
+                          showAlert("Login as creative to apply to this job");
+                          e.preventDefault();
+                        } else if (item.apply_type == "internal") {
+                          e.preventDefault();
+                          setJob(item.id);
+                          setOpen(true);
+                        }
+                      }}
+                    >
+                      Apply Now
+                      <i className="next flaticon-right-arrow"></i>
+                    </Link>
                   </div>
                 </div>
               </div>

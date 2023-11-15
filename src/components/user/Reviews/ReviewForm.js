@@ -28,7 +28,7 @@ const ReviewForm = ({ user, data, mutateReviews, setDispalyForm, hasReviews, edi
     if (comment === "") {
       setMessage({
         class: "warning",
-        content: "Please add your comment!",
+        content: "Please add your comment",
       });
       return;
     }

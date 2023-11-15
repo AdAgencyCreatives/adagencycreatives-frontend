@@ -84,6 +84,21 @@ export const router = createBrowserRouter([
       },
 
       {
+        path: "/job-category/:title",
+        element: <Jobs />,
+      },
+
+      {
+        path: "/job-location/:city",
+        element: <Jobs />,
+      },
+
+      {
+        path: "/job-type/:employment_type",
+        element: <Jobs />,
+      },
+
+      {
         path: "/community-members",
         element: <CommunityMembers />,
       },
@@ -108,12 +123,16 @@ export const router = createBrowserRouter([
         element: <Activities />,
       },
       {
-        path: "/agency/:username",
+        path: "/:type/:username",
         element: <Profile />,
       },
       {
-        path: "/creative/:username",
+        path: "/:type/:username",
         element: <Profile />,
+      },
+      {
+        path: "/groups/create",
+        element: <h1 className="mt-5">Coming soon</h1>,
       },
       {
         path: "/job/:job",

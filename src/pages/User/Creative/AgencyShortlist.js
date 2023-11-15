@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Placeholder from "../../../assets/images/placeholder.png";
 import "../../../styles/CreativeDashboard/AgencyShortlist.scss";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   IoBookmarkOutline,
   IoBriefcaseOutline,
@@ -45,9 +45,9 @@ const AgencyShortlist = () => {
           bookmarks.map((item, index) => {
             const resource = item.resource;
             return (
-              <div class="employer-list">
-                <div class="row align-items-center justify-content-between">
-                  <div class="col-12 d-flex align-items-top">
+              <div classname="employer-list" key={index}>
+                <div classname="row align-items-center justify-content-between">
+                  <div classname="col-12 d-flex align-items-top">
                     <div className="avatar employer me-3">
                       <img
                         src={resource.logo || Placeholder}
@@ -86,7 +86,7 @@ const AgencyShortlist = () => {
                               <IoBriefcaseOutline />
                               {resource.industry_experience.map(
                                 (item, index) => (
-                                  <>
+                                  <React.Fragment key={"i_"+index}>
                                     <Link
                                       to={
                                         "/agency-category/" +
@@ -102,7 +102,7 @@ const AgencyShortlist = () => {
                                     {index <
                                       resource.industry_experience.length - 1 &&
                                       ","}
-                                  </>
+                                  </React.Fragment>
                                 )
                               )}
                             </div>
