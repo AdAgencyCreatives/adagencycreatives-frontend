@@ -9,6 +9,7 @@ const useCreatives = (page) => {
     getHomeCreatives,
     loadCreatives,
     searchCreatives,
+    searchCreativesAdvanced
   } = useContext(CreativesContext);
 
   const {
@@ -27,7 +28,7 @@ const useCreatives = (page) => {
     if (nextPage) loadCreatives(nextPage);
   };
 
-  return { creatives, loading, loadMore, searchCreatives };
+  return { creatives, loading, loadMore, searchCreatives, searchCreativesAdvanced };
 };
 
 export default useCreatives;

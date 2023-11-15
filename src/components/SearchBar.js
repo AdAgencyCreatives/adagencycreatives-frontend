@@ -8,7 +8,9 @@ const SearchBar = ({ placeholder, onSearch }) => {
     <form
       onSubmit={(e) => {
         e.preventDefault();
+        e.stopPropagation();
         onSearch(input);
+        return false;
       }}
     >
       <div className="search-box row gy-3">
@@ -21,7 +23,7 @@ const SearchBar = ({ placeholder, onSearch }) => {
           />
         </div>
         <div className="search-btn col-md-2">
-          <button className="btn" onClick={() => onSearch(input)}>
+          <button type="submit" className="btn">
             Search
           </button>
         </div>

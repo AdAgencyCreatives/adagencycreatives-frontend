@@ -11,7 +11,7 @@ import Tooltip from "../components/Tooltip";
 import { Context as AlertContext } from "../context/AlertContext";
 
 const Creatives = () => {
-  const { creatives, loading, loadMore, searchCreatives } = useCreatives();
+  const { creatives, loading, loadMore, searchCreativesAdvanced } = useCreatives();
   const {
     state: { bookmarks },
     createBookmark,
@@ -43,8 +43,82 @@ const Creatives = () => {
   useScrollLoader(loading, loadMore);
 
   const searchUser = (value) => {
-    console.log("searching");
-    searchCreatives(value);
+
+    let searchString = "" + (value ? value : "");
+    let searchTerms = searchString.indexOf(",") >= 0 ? searchString.split(',') : [searchString];
+
+    let permission = proceed_search(searchString, searchTerms);
+
+    showAlert(permission.message);
+    if (!permission.proceed) {
+      return;
+    }
+
+    let query_search_string = build_search_string(searchTerms, permission.terms_allowed);
+    //alert(query_search_string);
+
+    console.log("Searching: " + query_search_string);
+    searchCreativesAdvanced(which_search(), query_search_string);
+
+  };
+
+  const build_search_string = (searchTerms, terms_allowed) => {
+    return searchTerms.slice(0, terms_allowed).join(',');
+  };
+
+  const which_search = () => {
+    if (!role) {
+      return "search1";
+    }
+
+    if (role == 'admin' || role == 'advisor') {
+      return "search3";
+    }
+
+    if (role == 'agency' && subscription_status == "active") {
+      return "search2";
+    }
+
+    if (role == 'agency' && subscription_status != "active") {
+      return "search1";
+    }
+
+    return "search1";
+  };
+
+  const proceed_search = (searchString, searchTerms) => {
+
+    // if (!searchString || !searchString.length) {
+    //   return { message: "Please enter some text to search", proceed: false, terms_allowed: 0 };
+    // }
+
+    if (!role) {
+      return { message: "It seems you are not logged in", proceed: false, terms_allowed: 0 };
+    }
+
+    if (role == "admin" || role == "advisor") {
+      return { message: "", proceed: true, terms_allowed: searchTerms.length };
+    }
+
+    if (role == "agency" && advance_search_capabilities) {
+      return { message: "", proceed: true, terms_allowed: searchTerms.length };
+    }
+
+    if (role == "agency" && subscription_status && subscription_status == "active" && searchTerms.length <= 2) {
+      return { message: "", proceed: true, terms_allowed: Math.min(searchTerms.length, 2) };
+    }
+
+    //Special case: If agency does have a subscription status: active but trying to search for more than two terms. e.g.: a,b,c
+    if (role == "agency" && subscription_status && subscription_status == "active" && searchTerms.length > 2) {
+      return { message: "Premium Package Subscription Required for more than Two Search Terms", proceed: true, terms_allowed: Math.min(searchTerms.length, 2) };
+    }
+
+    //Special case: If agency doesn't have a subscription status: active and trying to search for more than one terms. e.g.: a,b
+    if (role == "agency" && (!subscription_status || subscription_status != "active") && searchTerms.length > 1) {
+      return { message: "Active Package Subscription Required for more than One Search Terms", proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
+    }
+
+    return { message: "", proceed: true, terms_allowed: 1 };
   };
 
   useEffect(() => {
@@ -52,18 +126,38 @@ const Creatives = () => {
   }, [user]);
 
   useEffect(() => {
-    if (user && advance_search_capabilities) {
+    if ((!role || !role.length) || !advance_search_capabilities) {
+      return;
+    }
+
+    if (role == "agency" && advance_search_capabilities) {
       setCreativeSearchPlaceholder(
         "Search by name, title, location, company, industry experience, media, full-time etc."
       );
     }
-  }, [user, advance_search_capabilities]);
+  }, [role, advance_search_capabilities]);
 
   useEffect(() => {
-    if (user && subscription_status && subscription_status == "active") {
+    if ((!role || !role.length) || (!subscription_status || !subscription_status.length)) {
+      return;
+    }
+
+    if (role == "agency" && subscription_status == "active") {
       setCreativeSearchPlaceholder("Search by name, location, or title");
     }
-  }, [user, subscription_status]);
+  }, [role, subscription_status]);
+
+  useEffect(() => {
+    if (!role || !role.length) {
+      return;
+    }
+
+    if (role == "admin" || role == "advisor") {
+      setCreativeSearchPlaceholder(
+        "Search by name, title, location, company, industry experience, media, full-time etc."
+      );
+    }
+  }, [role]);
 
   return (
     <div className="dark-container">
@@ -85,7 +179,7 @@ const Creatives = () => {
                   (bookmark) => bookmark.resource.user_id == item.user_id
                 ) || false;
               return (
-                <div className="col-md-4 col-sm-6 col-12" key={`cv-${index}`}>
+                <div className="col-md-4 col-sm-6 col-12" key={`creative-${item.uuid}`}>
                   <div className="sliderContent agencies-slider">
                     {role == "agency" && (
                       <Tooltip title={"Shortlist"} type="featured">
