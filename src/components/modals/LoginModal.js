@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { IoCloseOutline, IoEye, IoEyeOff } from "react-icons/io5";
 import "../../styles/Modal/AuthModal.scss";
 import { Context as AuthContext } from "../../context/AuthContext";
+import { CircularProgress } from "@mui/material";
 
 const LoginModal = ({ open, handleClose, setModal }) => {
   const [show, setShow] = useState(false);
@@ -10,6 +11,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
   const { formMessage } = state;
   const [message, setMessage] = useState(null);
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [showLoading, setShowLoading] = useState(false);
 
   useEffect(() => {
     if (formMessage) {
@@ -28,7 +30,9 @@ const LoginModal = ({ open, handleClose, setModal }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signin(formData,() => {
+    setShowLoading(true);
+    signin(formData, () => {
+      setShowLoading(false);
       handleClose()
     });
   };
@@ -111,7 +115,8 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                     Forgotten password?
                   </a>
                 </div>
-                <button className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3 fs-5">
+                <div style={{ "display": (showLoading ? "flex" : "none"), "justify-content": "center" }}><CircularProgress /></div>
+                <button disabled={(showLoading ? "disabled" : "")} className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3 fs-5">
                   Login
                 </button>
                 <p

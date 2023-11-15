@@ -4,7 +4,7 @@ import LoginModal from "./LoginModal";
 import { Context as AuthContext } from "../../context/AuthContext";
 
 const AuthModal = ({ open, handleClose }) => {
-  const [modal, setModal] = useState("register");
+  const [modal, setModal] = useState("login");
   const {resetFormMessage} = useContext(AuthContext)
 
   
