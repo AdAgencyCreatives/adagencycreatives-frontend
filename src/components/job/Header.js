@@ -131,7 +131,7 @@ const Header = ({ data }) => {
                 {role && role == "creative" && (
                   <Link
                     to={data.external_link}
-                    className="btn btn-dark btn-hover-primary px-5 py-3"
+                    className="btn btn-apply"
                   >
                     Apply Now
                   </Link>

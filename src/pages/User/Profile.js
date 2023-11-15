@@ -15,20 +15,9 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import Portfolio from "../../components/user/Creative/Portfolio";
 
 const Profile = () => {
-  const { username } = useParams();
-  const [page, setPage] = useState("");
-
-  let location = useLocation();
-
-  useEffect(() => {
-    const path = location.pathname;
-    if (path.indexOf("creative") !== -1) {
-      setPage("creative");
-    } else if (path.indexOf("agency") !== -1) {
-      setPage("agency");
-    }
-  }, [location]);
-
+  const { username,type } = useParams();
+  const page = type;
+  
   const {
     state: { single_creative, creative_education, creative_experience },
     getCreative,

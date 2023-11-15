@@ -1,7 +1,6 @@
 .page-community-members .search-bar {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
 }
 
 input.search-community-members {

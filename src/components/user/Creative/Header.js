@@ -1,50 +1,51 @@
-import { IoBookmarkOutline, IoLocationOutline, IoPersonAdd } from "react-icons/io5";
+import {
+  IoBookmarkOutline,
+  IoLocationOutline,
+  IoPersonAdd,
+} from "react-icons/io5";
 import Placeholder from "../../../assets/images/placeholder.png";
 import "../../../styles/User/ProfileHeader.scss";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useContext, useEffect, useState } from "react";
-import { Context as AgenciesContext } from "../../../context/AgenciesContext";
+import { Context as AuthContext } from "../../../context/AuthContext";
+import { Context as AlertContext } from "../../../context/AlertContext";
 import FriendshipWidget from "../../../components/community/FriendshipWidget";
 import Message from "../../dashboard/Modals/Message";
+import Invite from "./Invite";
 
 const Header = ({ data, role, user }) => {
-
   const [allowed, setAllowed] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openInvite, setOpenInvite] = useState(false);
   const [item, setItem] = useState({});
   const handleClose = () => setOpen(false);
-
+  const handleCloseInvite = () => setOpenInvite(false);
+  const { showAlert } = useContext(AlertContext);
   const {
-    state: { subscription },
-    getSubscriptionStatus,
-  } = useContext(AgenciesContext);
+    state: { subscription_status },
+  } = useContext(AuthContext);
 
   const isCreative = role == "creative";
   const isOwnProfile = isCreative && user?.uuid == data.user_id;
+  const [hasSubscription, setSubscription] = useState(false);
 
-  const checkPermissions = () => {
-    if (Cookies.get("token")) {
-      if (isOwnProfile) {
-        // check if current profile is the profie of logged in user
-        return true;
-      } else if (role == "admin" || subscription) {
-        return true;
+  useEffect(() => {
+    setSubscription(subscription_status == "active");
+    console.log(subscription_status);
+  }, [subscription_status]);
+
+  const validateAccess = (e, permissions, message) => {
+    if (permissions.length > 0) {
+      let pass = permissions.every((value) => value === true);
+      if (pass) {
+        showAlert(message);
+        e.preventDefault();
+        return false;
       }
-      return false;
     }
-    return false;
+    return true;
   };
-
-  useEffect(() => {
-    if (checkPermissions()) setAllowed(true);
-  }, [user, subscription]);
-
-  useEffect(() => {
-    if (user?.role == "agency" || user?.role == "advisor") {
-      getSubscriptionStatus();
-    }
-  }, [user]);
 
   return (
     <div className="container">
@@ -68,7 +69,7 @@ const Header = ({ data, role, user }) => {
                 <div className="job-location location">
                   <IoLocationOutline />
                   <Link to={`/creative-location/${data.location.state}`}>
-                    {data.location.state},
+                    {data.location.state},&nbsp;
                   </Link>
                   <Link to={`/creative-location/${data.location.city}`}>
                     {data.location.city}
@@ -78,31 +79,69 @@ const Header = ({ data, role, user }) => {
             </div>
             <div className="col-md-6">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
-                {allowed && (
-                  <a href={data.resume} target="__blank">
+                {(isOwnProfile || !isCreative) && (
+                  <a
+                    href={data.resume}
+                    target="__blank"
+                    onClick={(e) =>
+                      validateAccess(
+                        e,
+                        [!hasSubscription, !isCreative],
+                        "Post a Job to download resumes"
+                      )
+                    }
+                  >
                     <button className="btn btn-dark fs-5">
                       Download Resume
                     </button>
                   </a>
                 )}
-                {isCreative && !isOwnProfile && (
+                {!isOwnProfile && (
                   <>
-                    <button className="btn btn-dark fs-5" onClick={() => setOpen(true)}>
+                    <button
+                      className="btn btn-dark fs-5"
+                      onClick={(e) =>
+                        validateAccess(
+                          e,
+                          [!hasSubscription, !isCreative],
+                          "Post a Job for private message capabilities"
+                        ) && setOpen(true)
+                      }
+                    >
                       Private Message
                     </button>
                     <Message
                       open={open}
                       handleClose={handleClose}
                       item={data}
-                      type="private"
+                      type={isCreative ? "private" : "job"}
                     />
                   </>
                 )}
                 {isCreative && <FriendshipWidget creative={data} />}
                 {!isCreative && (
-                  <button className="btn btn-dark">
-                    <IoBookmarkOutline size={25} />
-                  </button>
+                  <>
+                    <button
+                      className="btn btn-dark fs-5"
+                      onClick={(e) =>
+                        validateAccess(
+                          e,
+                          [!hasSubscription, !isCreative],
+                          "Post a Job to invite creatives to apply"
+                        ) && setOpenInvite(true)
+                      }
+                    >
+                      Invite
+                    </button>
+                    <Invite
+                      open={openInvite}
+                      handleClose={handleCloseInvite}
+                      item={data}
+                    />
+                    <button className="btn btn-dark">
+                      <IoBookmarkOutline size={25} />
+                    </button>
+                  </>
                 )}
               </div>
             </div>

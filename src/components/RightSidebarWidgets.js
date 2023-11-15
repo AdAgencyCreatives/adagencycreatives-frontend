@@ -24,7 +24,7 @@ const RightSidebarWidgets = () => {
   useEffect(() => {
     if (token) {
       getNewMembers();
-      getTrendingPosts(feed_group);
+      getTrendingPosts();
     }
   }, [token]);
 

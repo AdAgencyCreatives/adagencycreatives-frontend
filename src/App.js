@@ -32,6 +32,7 @@ const theme = createTheme({
     link: {
       main: "#000",
     },
+    white:"#fff"
   },
 });
 

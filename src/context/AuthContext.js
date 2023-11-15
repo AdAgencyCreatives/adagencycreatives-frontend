@@ -274,6 +274,7 @@ const verifyToken = (dispatch) => async (token) => {
     );
     setToken(dispatch)(response.data.token, response.data.user.role);
     setUserData(dispatch, response.data.user);
+    setSubscriptionStatus(dispatch, response.data.subscription_status);
     dispatch({
       type: "set_form_message",
       payload: { type: "success", message: getLoginSuccessMessage() },

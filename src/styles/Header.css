@@ -289,6 +289,11 @@ ul.dropdown-list:before {
     margin-top: 2px;
 }
 
+.btn-review {
+    font-size: 12px;
+    padding: 5px 15px;
+}
+
 textarea.form-control:focus {
     border: 1px solid gray;
 }

@@ -127,31 +127,16 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="ticker">
+          <div className="ticker" id="about">
             <div className="ticker-text">
-              <h4 className="mb-0">About Us:</h4>
+              <h1 className="mb-0">About Us:</h1>
               <div className="about-content">
-                Ad Agency Creatives is a community for Creatives to come
+                <h5>Ad Agency Creatives is a community for Creatives to come
                 together talk about the industry talk about the work meet other
                 creatives share ideas and resources manage job opportunities
-                mentor and be mentored and do really cool $#*t!&nbsp;
+                mentor and be mentored and do really cool $#*t!&nbsp;</h5>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="section about text-center" id="about">
-          <h1>About Us</h1>
-          <div className="about-content">
-            <h5>Ad Agency Creatives is a</h5>
-            <h5>community for Creatives</h5>
-            <h5>to come together</h5>
-            <h5>talk about the industry</h5>
-            <h5>talk about the work</h5>
-            <h5>meet other creatives</h5>
-            <h5>share ideas and resources</h5>
-            <h5>manage job opportunities</h5>
-            <h5>mentor and be mentored</h5>
-            <h5>and do really cool $#*t!&nbsp;</h5>
           </div>
         </div>
 

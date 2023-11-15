@@ -24,7 +24,7 @@ const Business = () => {
     },
     {
       title: "Jessica Hische",
-      subtitle: "Getting Freelance Work",
+      subtitle: "Getting freelance work",
       url: "https://www.jessicahische.is/thinkingthoughtsaboutgettingfreelance",
       img: jessicaHischeImg,
     },

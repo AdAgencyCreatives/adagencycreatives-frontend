@@ -152,7 +152,7 @@ const Sidebar = ({ data, role, user }) => {
               <img src={time} height={22} width={22} />
               <div className="details">
                 <div className="text">Type of Work</div>
-                <div className="value">{data.employment_type}</div>
+                <div className="value">{data.employment_type.replace(/,/g,', ')}</div>
               </div>
             </div>
           )}

@@ -131,6 +131,18 @@ const getOpenPositions = (dispatch) => {
   };
 };
 
+const sendJobInvite = (dispatch) => {
+  return async (receiver_id, job_id) => {
+    setLoading(dispatch, true);
+    const response = await api.post("/job-invitation", {
+      receiver_id,
+      job_id,
+    });
+    setLoading(dispatch, false);
+    return response;
+  };
+};
+
 const getStats = (dispatch) => {
   return async () => {
     try {
@@ -276,6 +288,7 @@ export const { Context, Provider } = createDataContext(
     deleteJob,
     requestPackage,
     getSubscriptionStatus,
+    sendJobInvite,
   },
   state
 );

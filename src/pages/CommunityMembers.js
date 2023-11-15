@@ -10,10 +10,9 @@ import CommunityMemberWidget from "../components/community/CommunityMemberWidget
 
 import RestrictedLounge from "../components/RestrictedLounge";
 import { CircularProgress } from "@mui/material";
-
+import SearchBar from "../components/SearchBar";
 
 const CommunityMembers = () => {
-
   const { creatives, loading, loadMore, searchCreatives } = useCreatives();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -38,13 +37,9 @@ const CommunityMembers = () => {
       {token && role && (role == "admin" || role == "creative") ? (
         <div className="dark-container page-community-members">
           <div className="container-fluid">
-            <h1 className="display-5 fw-normal mb-5 text-white text-center">
-              Creatives Directory
+            <h1 className="community-title text-white text-center mb-4">
+              Creatives
             </h1>
-            <MembersSearchBar
-              placeholder="Search by name"
-              onSearch={searchUser}
-            />
             <div className="row">
               <div className="col-md-2 mb-3">
                 <LeftSidebar />
@@ -55,29 +50,39 @@ const CommunityMembers = () => {
                     <CircularProgress />
                     <span>Loading ...</span>
                   </div>
-                ) : (<>
-                  {creatives && creatives.length ? (
-                    <div className="row g-4 px-1">
-                      {creatives &&
-                        creatives.map((creative, index) => {
-                          return (
-                            <CommunityMemberWidget key={"community-member-creative-" + creative.id} creative={creative} />
-                          );
-                        })}
-                      <div className="load-more text-center">
-                        {loading && (
-                          <div className="spinner-border text-light" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                          </div>
-                        )}
+                ) : (
+                  <>
+                    <SearchBar onSearch={searchUser} />
+
+                    {creatives && creatives.length ? (
+                      <div className="row g-4 px-1">
+                        {creatives &&
+                          creatives.map((creative, index) => {
+                            return (
+                              <CommunityMemberWidget
+                                key={"community-member-creative-" + creative.id}
+                                creative={creative}
+                              />
+                            );
+                          })}
+                        <div className="load-more text-center">
+                          {loading && (
+                            <div
+                              className="spinner-border text-light"
+                              role="status"
+                            >
+                              <span className="visually-hidden">
+                                Loading...
+                              </span>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="center-page">
-                      Sorry, nothing here.
-                    </div>
-                  )}
-                </>)}
+                    ) : (
+                      <div className="center-page">Sorry, nothing here.</div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </div>

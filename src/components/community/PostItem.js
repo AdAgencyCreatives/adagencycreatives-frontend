@@ -189,7 +189,7 @@ const PostItem = (props) => {
                     </div>
                     <div className="post-time">
                         <IoTimeOutline />
-                        <TimeAgo datetime={props.post.updated_at} />,&nbsp;
+                        <TimeAgo datetime={props.post.updated_at} />
                         {/* <UtcToLocalDateTime datetime={props.post.updated_at} /> */}
                     </div>
                 </div>
