@@ -803,14 +803,16 @@ img.publication-image {
 
 .ticker-text {
     display: flex;
-    animation: ticker 20s linear infinite;
+    flex-direction: row;
+    animation: ticker 30s linear infinite;
     align-items: center;
+    justify-content: flex-start;
     gap: 15px;
 }
 
 @keyframes ticker {
     from {
-        transform: translateX(100%); /* Start from the right edge */
+        transform: translateX(25%); /* Start from the right edge */
     }
     to {
         transform: translateX(-100%); /* Move to the left edge */

@@ -129,8 +129,9 @@ const Home = () => {
 
           <div className="ticker" id="about">
             <div className="ticker-text">
+              <h1 className="mt-3">• • • • •</h1>
               <h1 className="mb-0">About Us:</h1>
-              <div className="about-content">
+              <div className="about-content mb-0">
                 <h5>Ad Agency Creatives is a community for Creatives to come
                 together talk about the industry talk about the work meet other
                 creatives share ideas and resources manage job opportunities

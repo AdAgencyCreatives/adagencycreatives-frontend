@@ -14,6 +14,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
   const [showLoading, setShowLoading] = useState(false);
 
   useEffect(() => {
+    setShowLoading(false);
     if (formMessage) {
       setMessage({
         class: formMessage.type == "success" ? "info" : "warning",
@@ -40,7 +41,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
+      onClose={() => handleClose() }
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       scroll="body"

@@ -10,7 +10,7 @@ const AuthModal = ({ open, handleClose }) => {
   
   useEffect(() => {
     resetFormMessage()
-  },[modal])
+  },[modal, open])
 
 
   return modal == "register" ? (
