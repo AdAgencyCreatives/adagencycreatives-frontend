@@ -127,16 +127,41 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="ticker" id="about">
+          {/* <div className="ticker" id="about">
             <div className="ticker-text">
               <h1 className="mt-3">• • • • •</h1>
               <h1 className="mb-0">About Us:</h1>
               <div className="about-content mb-0">
                 <h5>Ad Agency Creatives is a community for Creatives to come
-                together talk about the industry talk about the work meet other
-                creatives share ideas and resources manage job opportunities
-                mentor and be mentored and do really cool $#*t!&nbsp;</h5>
+                  together talk about the industry talk about the work meet other
+                  creatives share ideas and resources manage job opportunities
+                  mentor and be mentored and do really cool $#*t!&nbsp;</h5>
               </div>
+            </div>
+          </div> */}
+
+          <div className="wrapper">
+            <div className="marquee">
+              <p>
+                <span className="bullets-container">
+                  <span className="bullets">• • • • •</span>
+                </span>
+                <span className="h1">About Us:</span>
+                <span>Ad Agency Creatives is a community for Creatives to come
+                  together talk about the industry talk about the work meet other
+                  creatives share ideas and resources manage job opportunities
+                  mentor and be mentored and do really cool $#*t!&nbsp;</span>
+              </p>
+              <p>
+                <span className="bullets-container">
+                  <span className="bullets">• • • • •</span>
+                </span>
+                <span className="h1">About Us:</span>
+                <span>Ad Agency Creatives is a community for Creatives to come
+                  together talk about the industry talk about the work meet other
+                  creatives share ideas and resources manage job opportunities
+                  mentor and be mentored and do really cool $#*t!&nbsp;</span>
+              </p>
             </div>
           </div>
         </div>
