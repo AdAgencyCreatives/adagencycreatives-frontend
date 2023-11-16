@@ -1,7 +1,8 @@
 import axios from "axios";
 
+export const baseUrl = "https://api.noorsofttechdev.com";
 const api = axios.create({
-  baseURL: "https://api.noorsofttechdev.com/api/v1",
+  baseURL: baseUrl + "/api/v1",
 });
 
 api.defaults.headers.common["Content-Type"] = "application/json";

@@ -32,6 +32,7 @@ import Art from "./pages/Mentor/Art";
 import Portfolio from "./pages/Mentor/Portfolio";
 import Business from "./pages/Mentor/Business";
 import Tech from "./pages/Mentor/Tech";
+import ResetPassword from "./pages/ResetPassword";
 
 export const router = createBrowserRouter([
   {
@@ -168,7 +169,10 @@ export const router = createBrowserRouter([
         path: "/tech-mentors",
         element: <Tech />,
       },
-
+      {
+        path: "/reset-password",
+        element: <ResetPassword />,
+      },
       {
         path: "/logout",
         element: <Logout />,

@@ -34,14 +34,14 @@ const LoginModal = ({ open, handleClose, setModal }) => {
     setShowLoading(true);
     signin(formData, () => {
       setShowLoading(false);
-      handleClose()
+      handleClose();
     });
   };
 
   return (
     <Dialog
       open={open}
-      onClose={() => handleClose() }
+      onClose={() => handleClose()}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       scroll="body"
@@ -112,12 +112,26 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                       Keep me signed in
                     </label>
                   </div>
-                  <a href="#" style={{ fontSize: 18, fontWeight: 300 }}>
+                  <a
+                    href="#"
+                    style={{ fontSize: 18, fontWeight: 300 }}
+                    onClick={() => setModal("reset")}
+                  >
                     Forgotten password?
                   </a>
                 </div>
-                <div style={{ "display": (showLoading ? "flex" : "none"), "justify-content": "center" }}><CircularProgress /></div>
-                <button disabled={(showLoading ? "disabled" : "")} className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3 fs-5">
+                <div
+                  style={{
+                    display: showLoading ? "flex" : "none",
+                    "justify-content": "center",
+                  }}
+                >
+                  <CircularProgress />
+                </div>
+                <button
+                  disabled={showLoading ? "disabled" : ""}
+                  className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3 fs-5"
+                >
                   Login
                 </button>
                 <p

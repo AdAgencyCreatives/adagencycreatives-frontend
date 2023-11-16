@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { api, setAuthToken } from "../api/api";
+import { api, setAuthToken, baseUrl } from "../api/api";
 import { offensiveWords, removeCharacters } from "../config";
 import { useContext } from "react";
 import createDataContext from "./createDataContext";
@@ -162,6 +162,29 @@ const signin = (dispatch) => {
       cb();
     } catch (error) {
       setErrorMessage(dispatch, error.response.data.message);
+    }
+  };
+};
+
+const sendResetLink = (dispatch) => {
+  return async (email) => {
+    try {
+      const response = await api.post(baseUrl + "/forgot-password", { email });
+      return response;
+    } catch (error) {
+      return false;
+    }
+  };
+};
+
+const resetPassword = (dispatch) => {
+  return async (data) => {
+    try {
+      const response = await api.post(baseUrl + "/reset-password", data);
+      return response;
+    } catch (error) {
+      setErrorMessage(dispatch, (error.response?.data?.message || "There was an error processing the request"));
+      return false;
     }
   };
 };
@@ -355,6 +378,8 @@ export const { Context, Provider } = createDataContext(
   {
     signup,
     signin,
+    sendResetLink,
+    resetPassword,
     resetFormMessage,
     setToken,
     getToken,
