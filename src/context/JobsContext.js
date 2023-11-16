@@ -67,6 +67,8 @@ const reducer = (state, action) => {
       return { ...state, media_experiences: action.payload.data };
     case "set_notes":
       return { ...state, notes: action.payload.data };
+    case "add_note":
+      return { ...state, notes: [...state.notes, action.payload.data] };
     case "set_form_submit":
       return { ...state, formSubmit: action.payload };
     case "set_loading":
@@ -97,7 +99,7 @@ const getFeaturedJobs = (dispatch) => {
 const getJobs = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/jobs?filter[status]=" + status);
+      const response = await api.get("/jobs/new?filter[status]=" + status);
       dispatch({
         type: "set_jobs",
         payload: response.data,
@@ -109,7 +111,7 @@ const getJobs = (dispatch) => {
 const getJob = (dispatch) => {
   return async (slug) => {
     try {
-      const response = await api.get("/jobs?filter[slug]=" + slug);
+      const response = await api.get("/jobs/new?filter[slug]=" + slug);
       getRelatedJobs(dispatch, response.data.data[0].category_id);
       dispatch({
         type: "set_single_job",
@@ -208,16 +210,24 @@ const deleteApplication = (dispatch) => {
 
 const addNote = (dispatch) => {
   return async (data) => {
+    setLoading(dispatch, true);
     try {
       const response = await api.post("/notes", data);
+      dispatch({
+        type: "add_note",
+        payload: response.data,
+      });
     } catch (error) {}
+    setLoading(dispatch, false);
   };
 };
 
 const getNotes = (dispatch) => {
-  return async (id) => {
+  return async (uid, resource_id, type) => {
     try {
-      const response = await api.get("/notes/" + id);
+      const response = await api.get(
+        `/notes?filter[user_id]=${uid}&resource_id=${resource_id}&resource_type=${type}`
+      );
       dispatch({
         type: "set_notes",
         payload: response.data,

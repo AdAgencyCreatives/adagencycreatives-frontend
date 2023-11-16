@@ -9,7 +9,8 @@ const Messages = () => {
     state: { token },
   } = useContext(Context);
   return (
-    <div className="dark-container page-messages mb-0 mt-4">
+    <div className="dark-container page-messages mb-0">
+      <h1 className="community-title">Messages</h1>
       <div className="container-fluid mt-4">
         <div className="row gy-3">
           <div className="col-lg-2">

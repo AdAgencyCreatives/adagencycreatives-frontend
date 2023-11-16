@@ -5,7 +5,8 @@ $primary-color: #d3a11f;
   --color-secondary: #ededed;
   --color-gray: #777777;
   --bs-primary-rgb: 211, 161, 31;
-  --bs-btn-active-bg: #{$primary-color}
+  --bs-btn-active-bg: #{$primary-color};
+  --bs-btn-bg: #{$primary-color};
 }
 
 @font-face {
@@ -91,6 +92,11 @@ a.link-gray:hover {
   outline: none;
   border: none;
   box-shadow: none;
+}
+
+.btn-theme {
+  background-color: var(--color-primary);
+  color: white;
 }
 
 .btn-dark {

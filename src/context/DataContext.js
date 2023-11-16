@@ -12,7 +12,7 @@ const state = {
   years_experience: [],
   bookmarks: [],
   reviews: [],
-  reviewsMeta: {}
+  reviewsMeta: {},
 };
 
 const reducer = (state, action) => {
@@ -44,9 +44,21 @@ const reducer = (state, action) => {
     case "add_review":
       return { ...state, reviews: [...state.reviews, action.payload.data] };
     case "update_review":
-      return { ...state, reviews: state.reviews.filter(item => item.user_id == action.payload.data.user_id ? action.payload.data : item) };
-      case "delete_review":
-      return { ...state, reviews: state.reviews.filter(item => item.user_id != action.payload.data.user_id) };
+      return {
+        ...state,
+        reviews: state.reviews.filter((item) =>
+          item.user_id == action.payload.data.user_id
+            ? action.payload.data
+            : item
+        ),
+      };
+    case "delete_review":
+      return {
+        ...state,
+        reviews: state.reviews.filter(
+          (item) => item.user_id != action.payload.data.user_id
+        ),
+      };
     case "remove_bookmark":
       return {
         ...state,
@@ -65,7 +77,7 @@ const getCategories = (dispatch) => {
         type: "set_categories",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -77,7 +89,7 @@ const getStates = (dispatch) => {
         type: "set_states",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -91,7 +103,7 @@ const getCities = (dispatch) => {
         type: "set_cities",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -103,7 +115,7 @@ const getEmploymentTypes = (dispatch) => {
         type: "set_employment_type",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -115,7 +127,7 @@ const getYearsExperience = (dispatch) => {
         type: "set_years_experience",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -127,7 +139,7 @@ const getMediaExperiences = (dispatch) => {
         type: "set_media_experiences",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -139,7 +151,7 @@ const getStrengths = (dispatch) => {
         type: "set_strengths",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -151,7 +163,7 @@ const getIndustryExperiences = (dispatch) => {
         type: "set_industry_experiences",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -163,7 +175,20 @@ const getBookmarks = (dispatch) => {
         type: "set_bookmarks",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
+  };
+};
+
+const checkShortlist = (dispatch) => {
+  return async (uid, resource_id, type) => {
+    try {
+      const response = await api.get(
+        `/bookmarks?filter[user_id]=${uid}&resource_id=${resource_id}&resource_type=${type}`
+      );
+      return response.data.data;
+    } catch (error) {
+      return false;
+    }
   };
 };
 
@@ -179,7 +204,10 @@ const createBookmark = (dispatch) => {
         type: "add_bookmark",
         payload: response.data,
       });
-    } catch (error) { }
+      return response.data;
+    } catch (error) {
+      return false
+    }
   };
 };
 
@@ -191,14 +219,16 @@ const removeBookmark = (dispatch) => {
         type: "remove_bookmark",
         payload: id,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
 const getReviews = (dispatch) => {
   return async (target_id) => {
     try {
-      const response = await api.get("/reviews?filter[target_id]=" + target_id + "&sort=-created_at");
+      const response = await api.get(
+        "/reviews?filter[target_id]=" + target_id + "&sort=-created_at"
+      );
       // console.log(response);
       dispatch({
         type: "set_reviews",
@@ -208,7 +238,7 @@ const getReviews = (dispatch) => {
         type: "set_reviews_meta",
         payload: response?.data ?? {},
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -220,7 +250,7 @@ const postReview = (dispatch) => {
         type: "add_review",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -234,7 +264,7 @@ const updateReview = (dispatch) => {
       });
     } catch (error) {
       console.log(error);
-     }
+    }
   };
 };
 
@@ -248,7 +278,7 @@ const deleteReview = (dispatch) => {
       });
     } catch (error) {
       console.log(error);
-     }
+    }
   };
 };
 
@@ -264,6 +294,7 @@ export const { Context, Provider } = createDataContext(
     getYearsExperience,
     getStrengths,
     getBookmarks,
+    checkShortlist,
     createBookmark,
     removeBookmark,
     getReviews,

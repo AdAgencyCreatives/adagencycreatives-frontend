@@ -1,32 +1,45 @@
 import Dialog from "@mui/material/Dialog";
 import "../../../styles/Modal/AddNotesModal.scss";
 import { useContext, useEffect, useState } from "react";
-import { Context } from "../../../context/JobsContext";
+import { Context as JobsContext } from "../../../context/JobsContext";
+import { Context as AuthContext } from "../../../context/AuthContext";
 import moment from "moment";
+import { CircularProgress } from "@mui/material";
 
 const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
   const [note, setNote] = useState("");
+  const [message, setMessage] = useState(false);
+
   const {
-    state: { notes },
+    state: { notes, isLoading },
     getNotes,
     addNote,
-  } = useContext(Context);
+  } = useContext(JobsContext);
 
-  const submitNote = () => {
+  const {
+    state: { user },
+  } = useContext(AuthContext);
+
+  const submitNote = async () => {
     const data = {
       resource_type: type,
       resource_id,
       body: note,
     };
-    addNote(data);
+    await addNote(data);
+    setMessage(true)
   };
 
   useEffect(() => {
-    if (open) {
+    if (open && user) {
       console.log("getting note");
-      getNotes(resource_id);
+      getNotes(user.uuid, resource_id, type);
     }
-  }, [open]);
+  }, [open, user]);
+
+  useEffect(() => {
+    setMessage(false)
+  },[open])
 
   return (
     <Dialog
@@ -45,6 +58,12 @@ const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
                 <span>Add Note</span>
               </h3>
 
+              {message && (
+                <div className={`alert alert-info`}>
+                  Sent note successfully.
+                </div>
+              )}
+
               <div className="form-group">
                 <label>Message</label>
                 <textarea
@@ -62,7 +81,7 @@ const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
                 onClick={submitNote}
                 className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3 fs-5"
               >
-                Add Note
+                Add Note {isLoading && <CircularProgress size={20} />}
               </button>
 
               <div className="notes-list-item">

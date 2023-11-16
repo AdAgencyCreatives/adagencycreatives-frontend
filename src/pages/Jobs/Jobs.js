@@ -55,28 +55,33 @@ const Jobs = () => {
   } = useContext(JobsContext);
 
   const {
-    state: { user },
+    state: { token, user },
   } = useContext(AuthContext);
 
   useEffect(() => {
-    if (Object.keys(params).length) {
-      for (var field in params) {
-        const filter = {
-          [field]: { label: params[field].replace(/-/g," "), value: params[field] },
-        };
-        setFilters(filter);
-        filterJobs(filter);
+    if (token) {
+      if (Object.keys(params).length) {
+        for (var field in params) {
+          const filter = {
+            [field]: {
+              label: params[field].replace(/-/g, " "),
+              value: params[field],
+            },
+          };
+          setFilters(filter);
+          filterJobs(filter);
+        }
+      } else {
+        getJobs();
       }
-    } else {
-      getJobs();
     }
     getCategories();
     getStates();
     getEmploymentTypes();
     getMediaExperiences();
-  }, []);
+  }, [token]);
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
     for (var field in params) {
       setFilters({ [field]: { label: params[field], value: params[field] } });
     }

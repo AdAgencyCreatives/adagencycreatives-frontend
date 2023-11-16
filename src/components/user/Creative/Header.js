@@ -13,6 +13,7 @@ import { Context as AlertContext } from "../../../context/AlertContext";
 import FriendshipWidget from "../../../components/community/FriendshipWidget";
 import Message from "../../dashboard/Modals/Message";
 import Invite from "./Invite";
+import useShortlist from "../../../hooks/useShortlist";
 
 const Header = ({ data, role, user }) => {
   const [allowed, setAllowed] = useState(false);
@@ -22,6 +23,12 @@ const Header = ({ data, role, user }) => {
   const handleClose = () => setOpen(false);
   const handleCloseInvite = () => setOpenInvite(false);
   const { showAlert } = useContext(AlertContext);
+  const { isShortlisted, shortlistHandler } = useShortlist(
+    user?.uuid,
+    data.id,
+    "creatives"
+  );
+
   const {
     state: { subscription_status },
   } = useContext(AuthContext);
@@ -138,7 +145,13 @@ const Header = ({ data, role, user }) => {
                       handleClose={handleCloseInvite}
                       item={data}
                     />
-                    <button className="btn btn-dark">
+                    <button
+                      className={
+                        "btn btn-hover-primary" +
+                        (isShortlisted ? " btn-theme" : " btn-dark")
+                      }
+                      onClick={shortlistHandler}
+                    >
                       <IoBookmarkOutline size={25} />
                     </button>
                   </>

@@ -12,7 +12,8 @@ const JobList = ({ data, user, showAgency = true }) => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const [job, setJob] = useState(null);
-
+  
+  console.log(data)
   const {
     state: { role },
   } = useContext(AuthContext);
@@ -57,20 +58,22 @@ const JobList = ({ data, user, showAgency = true }) => {
                   </div>
                   <div className="job-metas">
                     <div className="d-flex flex-wrap">
-                      <div className="category-job">
-                        <div className="job-category with-icon">
-                          <IoBriefcaseOutline />
-                          <Link
-                            to={
-                              "/job-category/" +
-                              item.category.toLowerCase().replace(/ /g, "-")
-                            }
-                            reloadDocument
-                          >
-                            {item.category}
-                          </Link>
+                      {item.category && (
+                        <div className="category-job">
+                          <div className="job-category with-icon">
+                            <IoBriefcaseOutline />
+                            <Link
+                              to={
+                                "/job-category/" +
+                                item.category.toLowerCase().replace(/ /g, "-")
+                              }
+                              reloadDocument
+                            >
+                              {item.category}
+                            </Link>
+                          </div>
                         </div>
-                      </div>
+                      )}
                       <div className="job-deadline with-icon">
                         <i className="flaticon-wall-clock"></i>
                         {moment(item.expired_at).format("MMMM D, YYYY")}
@@ -92,12 +95,12 @@ const JobList = ({ data, user, showAgency = true }) => {
                           let type = parts[1];
                           return (
                             <Tooltip title={type} type={type} key={key}>
-                              <button className="btn p-0 border-0 me-2">
+                              <span className="p-0 border-0 me-2">
                                 <IoStar
                                   size={20}
                                   className={"icon-rounded star-badge " + type}
                                 />
-                              </button>
+                              </span>
                             </Tooltip>
                           );
                         }
@@ -108,12 +111,12 @@ const JobList = ({ data, user, showAgency = true }) => {
                           let type = parts[1];
                           return (
                             <Tooltip title={type} type={type} key={key}>
-                              <button className="btn p-0 border-0 me-2">
+                              <span className="p-0 border-0 me-2">
                                 <IoStar
                                   size={20}
                                   className={"icon-rounded star-badge " + type}
                                 />
-                              </button>
+                              </span>
                             </Tooltip>
                           );
                         }
