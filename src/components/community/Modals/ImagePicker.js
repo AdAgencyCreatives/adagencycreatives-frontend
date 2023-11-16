@@ -42,14 +42,18 @@ const ImagePicker = ({ open, handleImagePickerClose }) => {
     console.log(fileUploaded);
   };
 
-  useEffect(()=>{
-    if(uploadedFile) {
+  useEffect(() => {
+    if (uploadedFile) {
       console.log("Uploaded File Change: ");
       console.log(uploadedFile);
 
       saveAttachmentAsync(uploadedFile);
     }
   }, [uploadedFile]);
+
+  useEffect(() => {
+    setIsFileUploading(false);
+  }, [open]);
 
   const saveAttachmentAsync = async (file) => {
     let formData = new FormData();
@@ -63,10 +67,17 @@ const ImagePicker = ({ open, handleImagePickerClose }) => {
     console.log(result);
   };
 
+  const handleModalClose = (e) => {
+    setIsFileUploading(false);
+    if (handleImagePickerClose) {
+      handleImagePickerClose();
+    }
+  };
+
   return (
     <Modal
       open={open}
-      onClose={handleImagePickerClose}
+      onClose={(e) => handleModalClose(e)}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -79,7 +90,7 @@ const ImagePicker = ({ open, handleImagePickerClose }) => {
         </div>
         <div className="image-picker-body">
           {preview && (
-            <p><img src={preview} width={320} height={240} alt="Upload preview" /></p>
+            <p><img className="image-to-upload" src={preview} alt="Upload preview" /></p>
           )}
           {isFileUploading ? (<CircularProgress />) : (<></>)}
           <p className="m-0 h4">

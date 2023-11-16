@@ -860,8 +860,9 @@ img.publication-image {
 .wrapper {
     max-width: 100%;
     overflow: hidden;
-    height: max-content;
+    height: 60px;
     background-color: white;
+    margin-top: 20px;
 }
 
 .marquee {
@@ -871,12 +872,15 @@ img.publication-image {
     animation: marquee 30s linear infinite;
     height: 100%;
     line-height: 1;
+    margin-top: 10px;
 }
 
 .marquee p {
     display: inline-block;
-    font-size: 26px;
+    font-family: 'Jost', Arial, sans-serif;
+    font-size: 24px;
     font-weight: 400;
+    line-height: 32px;
     margin-bottom: 0;
     margin-top: 5px;
     position: relative;

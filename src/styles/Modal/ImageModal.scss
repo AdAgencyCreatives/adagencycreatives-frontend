@@ -33,3 +33,8 @@
         border-radius: 20px;
     }
 }
+
+.image-to-upload {
+    max-height: 240px;
+    object-fit: cover;
+}

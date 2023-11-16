@@ -145,18 +145,14 @@ const Home = () => {
           <div className="wrapper">
             <div className="marquee">
               <p>
-                <span className="h1">About Us:</span>
-                <span>Ad Agency Creatives is a community for Creatives to come together, talk about the industry, talk about the work, meet other creatives, share ideas and resources, manage job opportunities, mentor and be mentor, and do really cool $#*t!</span>
-                <span className="bullets-container">
-                  <span className="bullets">• • • • •</span>
-                </span>
+                <b>About Us:</b>&nbsp;
+                Ad Agency Creatives is a community for Creatives to come together, talk about the industry, talk about the work, meet other creatives, share ideas and resources, manage job opportunities, mentor and be mentor, and do really cool $#*t!
+                • • • • •&nbsp;
               </p>
               <p>
-                <span className="h1">About Us:</span>
-                <span>Ad Agency Creatives is a community for Creatives to come together, talk about the industry, talk about the work, meet other creatives, share ideas and resources, manage job opportunities, mentor and be mentor, and do really cool $#*t!</span>
-                <span className="bullets-container">
-                  <span className="bullets">• • • • •</span>
-                </span>
+                <b>About Us:</b>&nbsp;
+                Ad Agency Creatives is a community for Creatives to come together, talk about the industry, talk about the work, meet other creatives, share ideas and resources, manage job opportunities, mentor and be mentor, and do really cool $#*t!
+                • • • • •&nbsp;
               </p>
             </div>
           </div>
