@@ -27,7 +27,7 @@ const Home = () => {
     state: { token, role },
   } = useContext(AuthContext);
 
-  const [search,setSearch] = useState("")
+  const [search, setSearch] = useState("")
 
   const { showAlert } = useContext(AlertContext);
 
@@ -61,7 +61,7 @@ const Home = () => {
           <div className="searchArea">
             <p className="searchHeader">Search Creative Jobs</p>
             <div className="searchBox">
-              <form action={"/creative-jobs/search/"+search}>
+              <form action={"/creative-jobs/search/" + search}>
                 <div className="row">
                   <div className="col-md-8 col-12 position-relative">
                     {/* <SearchOutline color={"#00000"} width="25px" className="searchIcon" /> */}
@@ -145,24 +145,24 @@ const Home = () => {
           <div className="wrapper">
             <div className="marquee">
               <p>
-                <span className="bullets-container">
-                  <span className="bullets">• • • • •</span>
-                </span>
                 <span className="h1">About Us:</span>
                 <span>Ad Agency Creatives is a community for Creatives to come
                   together talk about the industry talk about the work meet other
                   creatives share ideas and resources manage job opportunities
                   mentor and be mentored and do really cool $#*t!&nbsp;</span>
+                <span className="bullets-container">
+                  <span className="bullets">• • • • •</span>
+                </span>
               </p>
               <p>
-                <span className="bullets-container">
-                  <span className="bullets">• • • • •</span>
-                </span>
                 <span className="h1">About Us:</span>
                 <span>Ad Agency Creatives is a community for Creatives to come
                   together talk about the industry talk about the work meet other
                   creatives share ideas and resources manage job opportunities
                   mentor and be mentored and do really cool $#*t!&nbsp;</span>
+                <span className="bullets-container">
+                  <span className="bullets">• • • • •</span>
+                </span>
               </p>
             </div>
           </div>

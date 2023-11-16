@@ -891,8 +891,8 @@ img.publication-image {
     font-size: calc(1.375rem + 1.5vw);
     font-weight: 900;
     position: absolute;
-    left: -60px;
-    top: 0px;
+    left: -90px;
+    top: 7px;
 }
 
 .marquee p .h1 {
