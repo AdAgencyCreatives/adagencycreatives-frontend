@@ -19,6 +19,7 @@ const state = {
   formSubmit: false,
   isLoading: false,
   notes: [],
+  job_alerts: null,
 };
 
 const reducer = (state, action) => {
@@ -33,7 +34,7 @@ const reducer = (state, action) => {
       const app_id = action.payload.app_id;
       const job_id = action.payload.job_id;
       let jobIndex = state.applications.findIndex((job) => job.id === job_id);
-      console.log(app_id,job_id,jobIndex,state.applications)
+      console.log(app_id, job_id, jobIndex, state.applications);
       const updatedJob = { ...state.applications[jobIndex] };
       let updatedApplications = updatedJob.applications.filter(
         (app) => app.id !== app_id
@@ -71,6 +72,8 @@ const reducer = (state, action) => {
       return { ...state, notes: action.payload.data };
     case "add_note":
       return { ...state, notes: [...state.notes, action.payload.data] };
+    case "set_job_alert":
+      return { ...state, job_alerts: action.payload.data };
     case "set_form_submit":
       return { ...state, formSubmit: action.payload };
     case "set_loading":
@@ -115,7 +118,15 @@ const getJobs = (dispatch) => {
 const searchJobs = (dispatch) => {
   return async (q) => {
     try {
-      const response = await api.get("/home/jobs/search?search=" + q);
+      const token = getAuthToken();
+      const response = await api.get(
+        "/home/jobs/search" +
+          (token ? "/logged_in" : "") +
+          "?search=" +
+          q +
+          "&filter[status]=" +
+          status
+      );
       dispatch({
         type: "set_jobs",
         payload: response.data,
@@ -227,6 +238,36 @@ const deleteApplication = (dispatch) => {
       dispatch({
         type: "delete_application",
         payload: { app_id: id, job_id },
+      });
+    } catch (error) {}
+  };
+};
+
+const getJobAlerts = (dispatch) => {
+  return async (id) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get("/job-alerts/?filter[user_id]=" + id);
+      dispatch({
+        type: "set_job_alert",
+        payload: response.data,
+      });
+    } catch (error) {}
+    setLoading(dispatch, false);
+  };
+};
+
+const setJobAlert = (dispatch) => {
+  return async (user_id, category_id, status) => {
+    try {
+      const response = await api.post("/job-alerts", {
+        user_id,
+        category_id,
+        status,
+      });
+      dispatch({
+        type: "set_job_alert",
+        payload: response.data,
       });
     } catch (error) {}
   };
@@ -390,7 +431,6 @@ const requestNotifications = (dispatch) => {
         category_id: cat_id,
         status: 1,
       });
-      alert("Job notifications enabled successfully");
     } catch (error) {}
   };
 };
@@ -484,6 +524,8 @@ export const { Context, Provider } = createDataContext(
     getJob,
     getJobById,
     searchJobs,
+    getJobAlerts,
+    setJobAlert,
     getApplications,
     getRecentApplications,
     updateApplication,

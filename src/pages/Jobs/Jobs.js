@@ -8,11 +8,10 @@ import {
   IoMenu,
   IoStar,
 } from "react-icons/io5";
-import moment from "moment";
-import Tooltip from "../../components/Tooltip";
 import { Link, useParams } from "react-router-dom";
 import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as AlertContext } from "../../context/AlertContext";
 import JobList from "../../components/job/JobList";
 import { Drawer } from "@mui/material";
 
@@ -58,6 +57,9 @@ const Jobs = () => {
   const {
     state: { token, user },
   } = useContext(AuthContext);
+
+  const { showAlert } = useContext(AlertContext);
+
 
   useEffect(() => {
     if (Object.keys(params).length) {
@@ -279,7 +281,10 @@ const Jobs = () => {
         <div className="job-alert-button">
           <button
             className="btn btn-filter w-100"
-            onClick={() => requestNotifications(user.uuid, notifCategory)}
+            onClick={async () => {
+              await requestNotifications(user.uuid, notifCategory);
+              showAlert("Job notifications enabled successfully")
+            }}
           >
             Save Job Alert
           </button>

@@ -310,6 +310,7 @@ swiper-slide {
     display: flex;
     align-items: center;
     flex: 1;
+    justify-content: center;
 }
 
 .location svg {

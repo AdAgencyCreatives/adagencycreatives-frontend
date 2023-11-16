@@ -20,6 +20,7 @@ import { creativeNav } from "../../../nav/DashboardNav";
 import { useEffect } from "react";
 import { IoMenu } from "react-icons/io5";
 import { useState } from "react";
+import JobAlerts from "./JobAlerts";
 
 const Creative = () => {
   const {
@@ -49,7 +50,8 @@ const Creative = () => {
     "agencies-shortlist": <AgencyShortlist />,
     "job-messages": <JobMessages />,
     "my-applied": <MyOpportunities />,
-    "post-a-job": <PostJob />
+    "post-a-job": <PostJob />,
+    "job-alerts": <JobAlerts />
   };
 
   // hideMessageAlert();
