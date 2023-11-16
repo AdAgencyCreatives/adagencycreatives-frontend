@@ -212,7 +212,7 @@ const Creatives = () => {
                         {item.name}
                       </Link>
                     </div>
-                    <div className="position">{item.title}</div>
+                    <div className="position">{item.category || ""}</div>
                     {item.location.state && (
                       <div className="job-location location">
                         <IoLocationOutline />
