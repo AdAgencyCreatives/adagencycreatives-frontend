@@ -1,6 +1,8 @@
 import axios from "axios";
 
 export const baseUrl = "https://api.noorsofttechdev.com";
+let auth = null;
+
 const api = axios.create({
   baseURL: baseUrl + "/api/v1",
 });
@@ -12,6 +14,11 @@ const setAuthToken = (token) => {
   api.defaults.headers.common["Authorization"] = token
     ? `Bearer ${token}`
     : null;
+  auth = token;
+};
+
+const getAuthToken = () => {
+  return auth;
 };
 
 api.interceptors.response.use(
@@ -39,4 +46,4 @@ api.interceptors.response.use(
   }
 );
 
-export { api, setAuthToken };
+export { api, setAuthToken, getAuthToken };

@@ -145,9 +145,10 @@
     color: var(--color-primary);
 }
 
-.btn-apply:hover {
+.btn-apply:hover,.btn-apply.active {
     background-color: var(--color-primary);
     color: black;
+    border-color:transparent
 }
 
 .job-type {

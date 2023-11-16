@@ -12,8 +12,7 @@ const JobList = ({ data, user, showAgency = true }) => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const [job, setJob] = useState(null);
-  
-  console.log(data)
+
   const {
     state: { role },
   } = useContext(AuthContext);
@@ -131,26 +130,32 @@ const JobList = ({ data, user, showAgency = true }) => {
                       <i className="flaticon-bookmark"></i>
                     </a> */}
 
-                    <Link
-                      to={
-                        item.apply_type == "external" ? item.external_link : ""
-                      }
-                      target="_blank"
-                      className="btn btn-apply btn-apply-job-external "
-                      onClick={(e) => {
-                        if (!isCreative) {
-                          showAlert("Login as creative to apply to this job");
-                          e.preventDefault();
-                        } else if (item.apply_type == "internal") {
-                          e.preventDefault();
-                          setJob(item.id);
-                          setOpen(true);
+                    {item.logged_in_user?.user_has_applied ? (
+                      <Link className="btn btn-apply active">Applied</Link>
+                    ) : (
+                      <Link
+                        to={
+                          item.apply_type == "external"
+                            ? item.external_link
+                            : ""
                         }
-                      }}
-                    >
-                      Apply Now
-                      <i className="next flaticon-right-arrow"></i>
-                    </Link>
+                        target="_blank"
+                        className="btn btn-apply btn-apply-job-external "
+                        onClick={(e) => {
+                          if (!isCreative) {
+                            showAlert("Login as creative to apply to this job");
+                            e.preventDefault();
+                          } else if (item.apply_type == "internal") {
+                            e.preventDefault();
+                            setJob(item.id);
+                            setOpen(true);
+                          }
+                        }}
+                      >
+                        Apply Now
+                        <i className="next flaticon-right-arrow"></i>
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>

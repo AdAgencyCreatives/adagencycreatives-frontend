@@ -41,7 +41,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-img{
+img {
   object-fit: cover;
 }
 
@@ -94,9 +94,14 @@ a.link-gray:hover {
   box-shadow: none;
 }
 
+
 .btn-theme {
   background-color: var(--color-primary);
   color: white;
+}
+
+.background-primary {
+  background-color: var(--color-primary);
 }
 
 .btn-dark {
@@ -193,7 +198,7 @@ li.page-item {
 }
 
 .shortlist-btn {
-  opacity: 0;
+  opacity: 1;
   border: 0px;
   background: black;
   color: white;
@@ -207,7 +212,7 @@ li.page-item {
 }
 
 
-.sliderContent:hover .shortlist-btn{
+.sliderContent:hover .shortlist-btn {
   opacity: 1;
 }
 
@@ -215,7 +220,7 @@ li.page-item {
   background: var(--color-primary);
 }
 
-.shortlist-btn.active{
+.shortlist-btn.active {
   opacity: 1;
   background: var(--color-primary);
 }
@@ -224,7 +229,7 @@ li.page-item {
   position: relative;
 }
 
-.offset-top{
+.offset-top {
   margin-top: 50px;
 }
 
@@ -261,32 +266,39 @@ li.page-item {
   font-size: 22px;
   margin-top: 30px;
 }
-.average-rating > div{
+
+.average-rating>div {
   background: #eeeeee;
   border-radius: 15px;
   padding: 0 15px;
   cursor: pointer;
 }
+
 .comment-list {
   padding: 0;
   margin: 0;
   list-style: none;
   line-height: 1.75;
 }
+
 .bypostauthor {
   box-sizing: border-box;
 }
+
 .comment-list .the-comment {
   padding: 0 0 20px;
 }
-.comment-list > li:last-child > .the-comment:last-child {
+
+.comment-list>li:last-child>.the-comment:last-child {
   padding-bottom: 0;
 }
+
 .comment-list div.avatar {
   width: 75px;
   padding-right: 15px;
   float: left;
 }
+
 .comment-list img.avatar {
   width: 55px;
   height: auto;
@@ -297,12 +309,15 @@ li.page-item {
   -o-border-radius: 50%;
   margin: 0;
 }
+
 .comment-list .comment-box {
   overflow: hidden;
 }
+
 .comment-list .comment-box .star-rating {
   margin-top: 3px;
 }
+
 .review-avg {
   text-align: center;
   line-height: 30px;
@@ -317,16 +332,19 @@ li.page-item {
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
 }
-.star-rating > * {
+
+.star-rating>* {
   display: inline-block;
   vertical-align: middle;
 }
+
 .review-stars-rated {
   position: relative;
   overflow: hidden;
   line-height: 1;
   text-align: left;
 }
+
 ul.review-stars {
   list-style-type: none;
   display: flex;
@@ -334,6 +352,6 @@ ul.review-stars {
   padding-left: 5px;
 }
 
-.cursor-pointer{
+.cursor-pointer {
   cursor: pointer;
 }

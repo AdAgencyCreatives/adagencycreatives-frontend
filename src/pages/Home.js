@@ -27,6 +27,8 @@ const Home = () => {
     state: { token, role },
   } = useContext(AuthContext);
 
+  const [search,setSearch] = useState("")
+
   const { showAlert } = useContext(AlertContext);
 
   const validateAccess = (e, item) => {
@@ -47,7 +49,6 @@ const Home = () => {
     return true;
   };
 
-  console.log(token);
   return (
     <>
       <div className="main">
@@ -60,7 +61,7 @@ const Home = () => {
           <div className="searchArea">
             <p className="searchHeader">Search Creative Jobs</p>
             <div className="searchBox">
-              <form action="/creative-jobs">
+              <form action={"/creative-jobs/search/"+search}>
                 <div className="row">
                   <div className="col-md-8 col-12 position-relative">
                     {/* <SearchOutline color={"#00000"} width="25px" className="searchIcon" /> */}
@@ -69,6 +70,7 @@ const Home = () => {
                       className="searchInput form-control"
                       type="text"
                       placeholder="Search by name, title, location, company, in"
+                      onChange={(e) => setSearch(e.target.value)}
                     />
                   </div>
                   <div className="col">

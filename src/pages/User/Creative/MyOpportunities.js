@@ -10,10 +10,10 @@ import {
   IoPencil,
   IoLockOpen,
   IoBriefcaseOutline,
+  IoEyeOutline,
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
-import { Context as JobsContext } from "../../../context/JobsContext";
 import moment from "moment";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import Loader from "../../../components/Loader";
@@ -27,9 +27,9 @@ const MyOpportunities = () => {
   const {
     state: { applied_jobs, loading },
     getAppliedJobs,
+    deleteApplication
   } = useContext(CreativesContext);
 
-  const { deleteApplication } = useContext(JobsContext);
 
   const {
     state: { user, token },
@@ -78,7 +78,7 @@ const MyOpportunities = () => {
                                   width={100}
                                 />
                               </div>
-                              <div class="">
+                              <div className="ms-3">
                                 <div className="title-wrapper">
                                   <h3 className="job-table-info-content-title">
                                     <Link to={"/job/" + job.slug}>
@@ -166,7 +166,7 @@ const MyOpportunities = () => {
                                 className="btn p-0 border-0 btn-hover-primary"
                                 to={"/job/" + job.slug}
                               >
-                                <IoClose className="icon-rounded" />
+                                <IoEyeOutline className="icon-rounded" />
                               </Link>
                             </Tooltip>
                           </div>

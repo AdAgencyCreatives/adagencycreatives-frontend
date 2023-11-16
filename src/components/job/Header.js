@@ -12,17 +12,26 @@ import { Link } from "react-router-dom";
 import Tooltip from "../Tooltip";
 import moment from "moment";
 import { Context } from "../../context/AuthContext";
-import { useContext } from "react";
+import { Context as AlertContext } from "../../context/AlertContext";
+import { useContext, useState } from "react";
+import ApplyJob from "./ApplyJob";
 
 const Header = ({ data }) => {
-  console.log({ data });
-
+  const [open, setOpen] = useState(false);
+  const handleClose = () => setOpen(false);
+  const [job, setJob] = useState(null);
   const {
     state: { role },
   } = useContext(Context);
 
+  const { showAlert } = useContext(AlertContext);
+
+  const isCreative = role == "creative";
+
   return (
     <div className="container">
+      <ApplyJob open={open} handleClose={handleClose} job_id={job} />
+
       <div className="row align-items-center justify-content-between">
         <div className="col-12 d-flex align-items-top">
           <div className="avatar employer">
@@ -128,12 +137,26 @@ const Header = ({ data }) => {
             </div>
             <div className="col-md-4">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0">
-                {role && role == "creative" && (
+                {data.logged_in_user?.user_has_applied ? (
+                  <Link className="btn btn-apply active">Applied</Link>
+                ) : (
                   <Link
-                    to={data.external_link}
-                    className="btn btn-apply"
+                    to={data.apply_type == "external" ? data.external_link : ""}
+                    target="_blank"
+                    className="btn btn-apply btn-apply-job-external "
+                    onClick={(e) => {
+                      if (!isCreative) {
+                        showAlert("Login as creative to apply to this job");
+                        e.preventDefault();
+                      } else if (data.apply_type == "internal") {
+                        e.preventDefault();
+                        setJob(data.id);
+                        setOpen(true);
+                      }
+                    }}
                   >
                     Apply Now
+                    <i className="next flaticon-right-arrow"></i>
                   </Link>
                 )}
               </div>

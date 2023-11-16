@@ -156,9 +156,7 @@ const searchCreativesAdvanced = (dispatch) => {
     setLoading(dispatch, true);
 
     try {
-      const response = await api.get(
-        "/creatives/" + type + "?search=" + query
-      );
+      const response = await api.get("/creatives/" + type + "?search=" + query);
 
       dispatch({
         type: "set_creatives",
@@ -350,6 +348,17 @@ const getAppliedJobs = (dispatch) => {
   };
 };
 
+const deleteApplication = (dispatch) => {
+  return async (id) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.delete("/applications/" + id);
+      getAppliedJobs(dispatch)();
+    } catch (error) {}
+    setLoading(dispatch, false);
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
@@ -367,6 +376,7 @@ export const { Context, Provider } = createDataContext(
     saveAttachment,
     saveCreativeImage,
     getAppliedJobs,
+    deleteApplication,
     getResume,
     getPortfolio,
     getVideo,

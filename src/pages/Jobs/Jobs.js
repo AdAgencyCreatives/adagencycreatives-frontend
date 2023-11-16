@@ -50,6 +50,7 @@ const Jobs = () => {
     getEmploymentTypes,
     getMediaExperiences,
     filterJobs,
+    searchJobs,
     paginateJob,
     requestNotifications,
   } = useContext(JobsContext);
@@ -59,21 +60,20 @@ const Jobs = () => {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    if (token) {
-      if (Object.keys(params).length) {
-        for (var field in params) {
-          const filter = {
-            [field]: {
-              label: params[field].replace(/-/g, " "),
-              value: params[field],
-            },
-          };
-          setFilters(filter);
-          filterJobs(filter);
-        }
-      } else {
-        getJobs();
+    if (Object.keys(params).length) {
+      for (var field in params) {
+        const filter = {
+          [field]: {
+            label: params[field].replace(/-/g, " "),
+            value: params[field],
+          },
+        };
+        setFilters(filter);
+        if (field == "search") searchJobs(params[field]);
+        else filterJobs(filter);
       }
+    } else {
+      getJobs();
     }
     getCategories();
     getStates();

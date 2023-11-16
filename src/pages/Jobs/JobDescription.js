@@ -3,9 +3,10 @@ import Header from "../../components/job/Header";
 import Sidebar from "../../components/job/Sidebar";
 import { useContext, useEffect } from "react";
 import { Context as JobsContext } from "../../context/JobsContext";
+import { Context as AuthContext } from "../../context/AuthContext";
 import Loader from "../../components/Loader";
 import RelatedJobs from "../../components/job/RelatedJobs";
-import "../../styles/JobDescription.scss"
+import "../../styles/JobDescription.scss";
 const JobDescription = () => {
   const { job } = useParams();
   const {
@@ -13,9 +14,13 @@ const JobDescription = () => {
     getJob,
   } = useContext(JobsContext);
 
+  const {
+    state: { token },
+  } = useContext(AuthContext);
+
   useEffect(() => {
     getJob(job);
-  }, [job]);
+  }, [job, token]);
 
   return Object.keys(single_job).length === 0 ? (
     <Loader />

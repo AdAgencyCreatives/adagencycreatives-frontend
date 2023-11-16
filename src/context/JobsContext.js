@@ -1,5 +1,6 @@
-import { api } from "../api/api";
+import { api, getAuthToken } from "../api/api";
 import createDataContext from "./createDataContext";
+import { Context as AuthContext } from "./AuthContext";
 
 const state = {
   jobs: [],
@@ -32,6 +33,7 @@ const reducer = (state, action) => {
       const app_id = action.payload.app_id;
       const job_id = action.payload.job_id;
       let jobIndex = state.applications.findIndex((job) => job.id === job_id);
+      console.log(app_id,job_id,jobIndex,state.applications)
       const updatedJob = { ...state.applications[jobIndex] };
       let updatedApplications = updatedJob.applications.filter(
         (app) => app.id !== app_id
@@ -99,7 +101,9 @@ const getFeaturedJobs = (dispatch) => {
 const getJobs = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/jobs/new?filter[status]=" + status);
+      const response = await api.get(
+        getJobEndpoint() + "?filter[status]=" + status
+      );
       dispatch({
         type: "set_jobs",
         payload: response.data,
@@ -108,10 +112,30 @@ const getJobs = (dispatch) => {
   };
 };
 
+const searchJobs = (dispatch) => {
+  return async (q) => {
+    try {
+      const response = await api.get("/home/jobs/search?search=" + q);
+      dispatch({
+        type: "set_jobs",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
+const getJobEndpoint = () => {
+  const token = getAuthToken();
+  if (token) return "/jobs/logged_in";
+  return "/jobs";
+};
+
 const getJob = (dispatch) => {
   return async (slug) => {
     try {
-      const response = await api.get("/jobs/new?filter[slug]=" + slug);
+      const response = await api.get(
+        getJobEndpoint() + "?filter[slug]=" + slug
+      );
       getRelatedJobs(dispatch, response.data.data[0].category_id);
       dispatch({
         type: "set_single_job",
@@ -338,8 +362,11 @@ const getFilters = (filters) => {
     "filter[category_id]=" + (filters.title ? filters.title.value : "");
   filter += "&filter[state_id]=" + (filters.state ? filters.state.value : "");
   filter += "&filter[city_id]=" + (filters.city ? filters.city.value : "");
-  filter += "&filter[city_slug]=" + (filters.city_slug ? filters.city_slug.value : "");
-  filter += "&filter[category_slug]=" + (filters.category_slug ? filters.category_slug.value : "");
+  filter +=
+    "&filter[city_slug]=" + (filters.city_slug ? filters.city_slug.value : "");
+  filter +=
+    "&filter[category_slug]=" +
+    (filters.category_slug ? filters.category_slug.value : "");
   filter +=
     "&filter[employment_type]=" +
     (filters.employment_type ? filters.employment_type.value : "");
@@ -456,6 +483,7 @@ export const { Context, Provider } = createDataContext(
     getJobs,
     getJob,
     getJobById,
+    searchJobs,
     getApplications,
     getRecentApplications,
     updateApplication,

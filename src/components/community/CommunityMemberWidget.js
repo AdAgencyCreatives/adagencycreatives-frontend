@@ -68,7 +68,7 @@ const CommunityMemberWidget = (props) => {
                     <div className="user-actions">
                         <FriendshipWidget creative={props.creative} />
                         <Tooltip title="View Messages">
-                            <Link className="btn btn-dark no-border" to={"/messages/" + (props.creative.slug || "")}>
+                            <Link className="btn btn-dark no-border" to={"/messages/"}>
                                 <IoMailOpen />
                             </Link>
                         </Tooltip>

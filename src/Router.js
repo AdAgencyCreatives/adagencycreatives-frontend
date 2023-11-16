@@ -100,6 +100,11 @@ export const router = createBrowserRouter([
       },
 
       {
+        path: "/creative-jobs/search/:search",
+        element: <Jobs />,
+      },
+
+      {
         path: "/community-members",
         element: <CommunityMembers />,
       },

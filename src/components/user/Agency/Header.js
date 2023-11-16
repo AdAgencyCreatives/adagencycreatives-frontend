@@ -7,9 +7,16 @@ import {
 import Placeholder from "../../../assets/images/placeholder.png";
 import "../../../styles/User/ProfileHeader.scss";
 import { Link } from "react-router-dom";
+import useShortlist from "../../../hooks/useShortlist";
 
 const Header = ({ data, role, user }) => {
   const isAgency = role == "agency";
+  const { isShortlisted, shortlistHandler } = useShortlist(
+    user?.uuid,
+    data.id,
+    "agencies"
+  );
+
   return (
     <div className="container">
       <div className="row align-items-center justify-content-between">
@@ -20,7 +27,7 @@ const Header = ({ data, role, user }) => {
           <div className="meta row w-100 align-items-center">
             <div className="col-md-6">
               <div className="username">{data.name}</div>
-              {(data.industry_experience.length > 0) && (
+              {data.industry_experience.length > 0 && (
                 <div className="position">
                   <IoBriefcaseOutline />
                   {data.industry_experience.map((item, index) => (
@@ -44,7 +51,8 @@ const Header = ({ data, role, user }) => {
                   <IoLocationOutline />
                   <Link to={`/agency-location/${data.location.state}`}>
                     {data.location.state},
-                  </Link>&nbsp;
+                  </Link>
+                  &nbsp;
                   <Link to={`/agency-location/${data.location.city}`}>
                     {data.location.city}
                   </Link>
@@ -55,7 +63,13 @@ const Header = ({ data, role, user }) => {
             <div className="col-md-6">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0">
                 {!isAgency && (
-                  <button className="btn btn-dark">
+                  <button
+                    className={
+                      "btn btn-hover-primary" +
+                      (isShortlisted ? " btn-theme" : " btn-dark")
+                    }
+                    onClick={shortlistHandler}
+                  >
                     <IoBookmarkOutline size={25} />
                   </button>
                 )}
