@@ -85,12 +85,12 @@ export const router = createBrowserRouter([
       },
 
       {
-        path: "/job-category/:title",
+        path: "/job-category/:category_slug",
         element: <Jobs />,
       },
 
       {
-        path: "/job-location/:city",
+        path: "/job-location/:city_slug",
         element: <Jobs />,
       },
 

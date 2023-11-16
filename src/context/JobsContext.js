@@ -338,6 +338,8 @@ const getFilters = (filters) => {
     "filter[category_id]=" + (filters.title ? filters.title.value : "");
   filter += "&filter[state_id]=" + (filters.state ? filters.state.value : "");
   filter += "&filter[city_id]=" + (filters.city ? filters.city.value : "");
+  filter += "&filter[city_slug]=" + (filters.city_slug ? filters.city_slug.value : "");
+  filter += "&filter[category_slug]=" + (filters.category_slug ? filters.category_slug.value : "");
   filter +=
     "&filter[employment_type]=" +
     (filters.employment_type ? filters.employment_type.value : "");

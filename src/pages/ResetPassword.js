@@ -38,6 +38,7 @@ const ResetPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage(null);
+    setError(null);
     setShowLoading(true);
     const result = await resetPassword(formData);
     setShowLoading(false);
@@ -90,7 +91,7 @@ const ResetPassword = () => {
               name="password_confirmation"
               className="form-control"
               placeholder="Confirm Password"
-              onChange={(e) => handleChange("password", e.target.value)}
+              onChange={(e) => handleChange("password_confirmation", e.target.value)}
             />
             <div className="showToggle">
               {show.password_confirmation ? (
