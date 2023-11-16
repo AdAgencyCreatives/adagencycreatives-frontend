@@ -859,7 +859,7 @@ img.publication-image {
 .wrapper {
     max-width: 100%;
     overflow: hidden;
-    height: 60px;
+    height: max-content;
     background-color: white;
 }
 
