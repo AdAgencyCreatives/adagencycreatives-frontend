@@ -158,7 +158,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
         },
         {
           label: "Salary Range",
-          required: false,
+          required: true,
           type: "text",
           name: "salary_range",
           placeholder: "if required by your state",
@@ -224,6 +224,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           label: "Job Post Expires",
           type: "date",
           name: "expired_at",
+          required:true,
           value: isEdit ? new Date(single_job.expired_at) : new Date(),
         },
         {
@@ -261,7 +262,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
         },
         {
           label: "External Job Application Link",
-          required: true,
+          required: false,
           type: "text",
           name: "external_link",
           placeholder: "applicants use this link",
@@ -317,7 +318,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
         is_featured:
           (isEdit && single_job.workplace_preference.is_featured) || 0,
         salary_range: (isEdit && single_job.salary_range) || "",
-        expired_at: (isEdit && single_job.expired_at) || "",
+        expired_at: (isEdit && single_job.expired_at) || new Date(),
         external_link: (isEdit && single_job.external_link) || "",
         apply_type: (isEdit && single_job.apply_type) || "",
         years_of_experience: (isEdit && single_job.experience) || "",
@@ -352,7 +353,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                         <input
                           type="hidden"
                           className="input-text"
-                          name="field.name"
+                          name={field.name}
                           value=""
                         />
                         <div className="row align-items-center upload-box">
@@ -403,7 +404,9 @@ const JobPostForm = ({ id, setJobStatus }) => {
                         <input
                           type="text"
                           className="form-control"
-                          value={field.value}
+                          name={field.name}
+                          defaultValue={field.value}
+                          // value={field.value}
                           required={field.required}
                           onChange={(e) => handleTextChange(e, field.name)}
                         />

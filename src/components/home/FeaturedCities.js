@@ -5,8 +5,25 @@ import Dallas from "../../assets/images/Dallas-e1681932281853.png";
 import Chicago from "../../assets/images/Chicago-Nights-1-1.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { Context } from "../../context/DataContext";
 
 const FeaturedCities = () => {
+
+  const {state:{featured_cities},getFeaturedCities} = useContext(Context);
+
+  useEffect(() => {
+    getFeaturedCities();
+  },[])
+
+  const getJobCount = (name) => {
+    if(featured_cities.length){
+      const city = featured_cities.find((item) => item.name == name);
+      return city.count
+    }
+    return 0
+  }
+
   return (
     <div id="cities">
       <div className="sectionHeader">
@@ -32,7 +49,7 @@ const FeaturedCities = () => {
                     <h4 className="title">Dallas </h4>
 
                     <div className="number">
-                      <span>0</span> jobs
+                      <span>{getJobCount("Dallas")}</span> jobs
                     </div>
                   </div>
                 </div>
@@ -51,7 +68,7 @@ const FeaturedCities = () => {
                     <h4 className="title">Los Angeles </h4>
 
                     <div className="number">
-                      <span>0</span> jobs
+                      <span>{getJobCount("Los Angeles")}</span> jobs
                     </div>
                   </div>
                 </div>
@@ -68,7 +85,7 @@ const FeaturedCities = () => {
                     <h4 className="title">New York </h4>
 
                     <div className="number">
-                      <span>2</span> jobs
+                      <span>{getJobCount("New York")}</span> jobs
                     </div>
                   </div>
                 </div>
@@ -87,7 +104,7 @@ const FeaturedCities = () => {
                     <h4 className="title">Chicago </h4>
 
                     <div className="number">
-                      <span>0</span> jobs
+                      <span>{getJobCount("Chicago")}</span> jobs
                     </div>
                   </div>
                 </div>
@@ -104,7 +121,7 @@ const FeaturedCities = () => {
                     <h4 className="title">Miami </h4>
 
                     <div className="number">
-                      <span>0</span> jobs
+                      <span>{getJobCount("Miami")}</span> jobs
                     </div>
                   </div>
                 </div>

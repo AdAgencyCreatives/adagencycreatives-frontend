@@ -12,6 +12,7 @@ const state = {
   years_experience: [],
   bookmarks: [],
   reviews: [],
+  featured_cities: [],
   reviewsMeta: {},
 };
 
@@ -23,6 +24,8 @@ const reducer = (state, action) => {
       return { ...state, states: action.payload.data };
     case "set_cities":
       return { ...state, cities: action.payload.data };
+    case "set_featured_cities":
+      return { ...state, featured_cities: action.payload };
     case "set_employment_type":
       return { ...state, employment_type: action.payload };
     case "set_media_experiences":
@@ -101,6 +104,18 @@ const getCities = (dispatch) => {
       );
       dispatch({
         type: "set_cities",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
+const getFeaturedCities = (dispatch) => {
+  return async () => {
+    try {
+      const response = await api.get("/featured_cities");
+      dispatch({
+        type: "set_featured_cities",
         payload: response.data,
       });
     } catch (error) {}
@@ -206,7 +221,7 @@ const createBookmark = (dispatch) => {
       });
       return response.data;
     } catch (error) {
-      return false
+      return false;
     }
   };
 };
@@ -288,6 +303,7 @@ export const { Context, Provider } = createDataContext(
     getCategories,
     getStates,
     getCities,
+    getFeaturedCities,
     getEmploymentTypes,
     getMediaExperiences,
     getIndustryExperiences,
