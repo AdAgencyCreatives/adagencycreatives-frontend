@@ -69,6 +69,7 @@ const Home = () => {
                     <input
                       className="searchInput form-control"
                       type="text"
+                      required={true}
                       placeholder="Search by job title, location etc"
                       onChange={(e) => setSearch(e.target.value)}
                     />
