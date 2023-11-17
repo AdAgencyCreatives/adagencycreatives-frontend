@@ -101,6 +101,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         post_updated: action.payload,
+        posts: state.posts.filter(item => item.id == action.payload.id ? action.payload : item),
       };
     case "delete_post":
       return {

@@ -9,6 +9,7 @@ import ModalCss from "../../styles/Modal/PostModal.scss";
 import ImagePicker from "./Modals/ImagePicker";
 import { useContext, useEffect, useCallback } from "react";
 import { Context as AuthContext, containsOffensiveWords } from "../../context/AuthContext";
+import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import Placeholder from "../../assets/images/placeholder.png";
 import { Editor } from '@tinymce/tinymce-react';
@@ -29,6 +30,10 @@ const EditPost = (props) => {
     } = useContext(AuthContext);
 
     const {
+        showAlert,
+    } = useContext(AlertContext);
+
+    const {
         state: { feed_group, formSubmit },
         updatePost, setHaltRefresh,
     } = useContext(CommunityContext);
@@ -42,6 +47,8 @@ const EditPost = (props) => {
     const [showPicker, setShowPicker] = useState(false);
     const [content, setContent] = useState("");
     const [imagePickerOpen, setImagePickerOpen] = useState(false);
+    const [allowType, setAllowType] = useState("image");
+    const [postAttachments, setPostAttachments] = useState([]);
 
     const doUpdatePost = () => {
         if (containsOffensiveWords(content)) {
@@ -50,10 +57,16 @@ const EditPost = (props) => {
         }
         setHasOffensiveWords(false);
 
+        let uploadPostAttachments = [];
+        for (let index = 0; index < postAttachments.length; index++) {
+            const postAttachment = postAttachments[index];
+            uploadPostAttachments.push(postAttachment.id);
+        }
+
         updatePost(props.post.id, {
             "content": content,
             "status": "published",
-            "attachment_ids": []
+            "attachment_ids": uploadPostAttachments
         });
     };
 
@@ -69,6 +82,10 @@ const EditPost = (props) => {
     useEffect(() => {
         setContent(props.post.content);
     }, [props.post.content]);
+
+    useEffect(() => {
+        setPostAttachments(props.post.attachments);
+    }, [props.post.attachments]);
 
     const onEditableRef = (node) => {
         if (node && node.el && node.el.current) {
@@ -100,6 +117,10 @@ const EditPost = (props) => {
         setEditorLoading(false);
         editorRef.current = editor;
         editor.focus();
+    };
+
+    const removeAttachment = (e, postAttachment) => {
+        setPostAttachments(postAttachments.filter((item) => item.id != postAttachment.id));
     };
 
     return (
@@ -157,14 +178,45 @@ const EditPost = (props) => {
                             />
                         )}
                         <div className="post-options d-flex">
-                            <div className="item" >
+                            <div className="item" onClick={() => {
+                                setAllowType("image");
+                                setImagePickerOpen(true);
+                            }}>
                                 <FiCamera />
                             </div>
-                            <div className="item" onClick={() => setImagePickerOpen(true)}>
+                            <div className="item" onClick={() => {
+                                setAllowType("image");
+                                setImagePickerOpen(true);
+                            }}>
                                 <FiImage />
                             </div>
-                            <div className="item" onClick={() => setImagePickerOpen(true)}>
+                            <div className="item" onClick={() => {
+                                let videos = postAttachments ? postAttachments.filter(item => item.resource_type == "post_attachment_video") : [];
+                                if (videos.length > 0) {
+                                    alert("Can't upload more than one video.");
+                                    return false;
+                                }
+                                setAllowType("video");
+                                setImagePickerOpen(true);
+                            }}>
                                 <FiPaperclip />
+                            </div>
+                            <div className="post-attachments">
+                                {postAttachments && postAttachments.map((postAttachment, index) => {
+                                    return (<>
+                                        <div className="post-attachment">
+                                            {postAttachment.resource_type && postAttachment.resource_type == "post_attachment_video" ? (
+                                                <video controls muted playsInline>
+                                                    <source src={postAttachment.url} type={"video/" + postAttachment.url.substring(postAttachment.url.lastIndexOf('.') + 1)} />
+                                                    Sorry, your browser doesn't support videos.
+                                                </video>
+                                            ) : (
+                                                <img src={postAttachment.url} alt="" />
+                                            )}
+                                            <IoCloseCircleSharp onClick={(e) => removeAttachment(e, postAttachment)} />
+                                        </div>
+                                    </>);
+                                })}
                             </div>
                         </div>
                     </div>
@@ -182,7 +234,11 @@ const EditPost = (props) => {
                             <button className={"btn btn-post" + (useRichEditor ? (!editorLoading ? ' d-show' : ' d-none') : "")} onClick={() => doUpdatePost()}>Update Post</button>
                         </div>
                     </div>
-                    <ImagePicker open={imagePickerOpen} handleImagePickerClose={() => setImagePickerOpen(false)} />
+                    <ImagePicker
+                        open={imagePickerOpen}
+                        setOpen={setImagePickerOpen}
+                        handleImagePickerClose={() => setImagePickerOpen(false)}
+                        postAttachments={postAttachments} setPostAttachments={setPostAttachments} allowType={allowType} />
                 </div>
             </Modal>
         </>

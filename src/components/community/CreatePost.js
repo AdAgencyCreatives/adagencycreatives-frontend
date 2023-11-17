@@ -243,8 +243,8 @@ const CreatePost = () => {
               </div>
               <div className="item" onClick={() => {
                 let videos = postAttachments ? postAttachments.filter(item => item.resource_type == "post_attachment_video") : [];
-                if (videos.length > 1) {
-                  showAlert("Can't upload more than one video.");
+                if (videos.length > 0) {
+                  alert("Can't upload more than one video.");
                   return false;
                 }
                 setAllowType("video");
