@@ -73,7 +73,7 @@ const Profile = () => {
               {page == "creative" && <Portfolio id={data.user_id} />}
               <div className="content-section">
                 <h1 className="content-title mt-0">About</h1>
-                <p className="content">{data.about}</p>
+                <p className="content"><div dangerouslySetInnerHTML={{ __html: data.about }} /></p>
               </div>
               <div className="profile-sidebar d-md-none">
                 {page === "creative" ? (

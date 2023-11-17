@@ -67,6 +67,17 @@ span.count-number {
     flex: 1;
 }
 
+.member-data .job-location.location{
+    justify-content: center;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+
+.member-data .job-location.location *{
+    margin-top: 0px;
+}
+
 .MuiDialog-root.message-modal {}
 
 .MuiDialog-root.message-modal .MuiDialogTitle-root {
