@@ -6,11 +6,12 @@ import { CircularProgress } from "@mui/material";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import { saveAttachment } from "../../../context/AttachmentsDataContext";
 
-const ImagePicker = ({ open, handleImagePickerClose }) => {
+const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAttachments, setPostAttachments }) => {
 
   const [isFileUploading, setIsFileUploading] = useState(false);
   const [preview, setPreview] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
+  const [acceptFileTypes, setAcceptFileTypes] = useState("image/*");
 
   // Create a reference to the hidden file input element
   const hiddenFileInput = useRef(null);
@@ -44,16 +45,25 @@ const ImagePicker = ({ open, handleImagePickerClose }) => {
 
   useEffect(() => {
     if (uploadedFile) {
-      console.log("Uploaded File Change: ");
-      console.log(uploadedFile);
-
       saveAttachmentAsync(uploadedFile);
     }
   }, [uploadedFile]);
 
   useEffect(() => {
-    setIsFileUploading(false);
-  }, [open]);
+    if (allowType) {
+      switch (allowType) {
+        case "video":
+          setAcceptFileTypes("video/*");
+          break;
+        case "file":
+          setAcceptFileTypes("*");
+          break;
+        case "image":
+        default:
+          setAcceptFileTypes("image/*");
+      }
+    }
+  }, [allowType]);
 
   const saveAttachmentAsync = async (file) => {
     let formData = new FormData();
@@ -63,8 +73,11 @@ const ImagePicker = ({ open, handleImagePickerClose }) => {
     formData.append("file", file);
 
     let result = await saveAttachment(formData);
-    //setIsFileUploading(false);
-    console.log(result);
+    postAttachments.push(result);
+
+    setPreview("");
+    setIsFileUploading(false);
+    setOpen(false);
   };
 
   const handleModalClose = (e) => {
@@ -108,7 +121,7 @@ const ImagePicker = ({ open, handleImagePickerClose }) => {
           onChange={handleChange}
           ref={hiddenFileInput}
           style={{ display: 'none' }} // Make the file input element invisible
-          accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+          accept={acceptFileTypes}
         />
       </div>
     </Modal>

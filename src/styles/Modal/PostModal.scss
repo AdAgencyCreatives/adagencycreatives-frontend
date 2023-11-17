@@ -28,7 +28,7 @@
         justify-content: space-between;
 
         [contenteditable="true"] {
-            flex:1;
+            flex: 1;
 
             &:focus-visible {
                 outline: none;
@@ -49,6 +49,9 @@
 
         .post-options {
             margin-top: 20px;
+            position: relative;
+            align-items: center;
+            flex-wrap: wrap;
 
             .item {
                 background: #f3f2f0;
@@ -64,6 +67,43 @@
 
             .item:hover {
                 box-shadow: rgba(140, 140, 140, 0.2) 0px 0px 0px 1px, rgba(0, 0, 0, 0.3) 0px 4px 4px 0px;
+            }
+
+            .post-attachments {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+
+                .post-attachment {
+                    position: relative;
+
+                    img {
+                        width: 75px;
+                        min-width: 75px;
+                        max-width: 75px;
+                        height: 75px;
+                        min-height: 75px;
+                        max-height: 75px;
+                        object-fit: cover;
+                        border: 2px solid var(--color-primary);
+                        margin: 5px
+                    }
+
+                    svg {
+                        font-size: 24px;
+                        font-weight: 900;
+                        color: black;
+                        cursor: pointer;
+                        position: absolute;
+                        top: -6px;
+                        right: -6px;
+                    }
+
+                    svg:hover {
+                        font-size: 24px;
+                        color: var(--color-primary);
+                    }
+                }
             }
         }
 
@@ -96,4 +136,24 @@
         }
     }
 
+}
+
+.post-item {
+    .post-images {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        img {
+            width: 125px;
+            min-width: 125px;
+            max-width: 125px;
+            height: 125px;
+            min-height: 125px;
+            max-height: 125px;
+            object-fit: cover;
+            border: 2px solid var(--color-primary);
+            margin: 5px
+        }
+    }
 }

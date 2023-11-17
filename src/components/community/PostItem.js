@@ -36,13 +36,13 @@ const PostItem = (props) => {
 
     const showMaxLikedBy = 5;
     const showLikedByCookieKey = "post-showLikedBy-" + props.post.id;
-    
+
     const showMaxLaughedBy = 5;
     const showLaughedByCookieKey = "post-showLaughedBy-" + props.post.id;
-    
+
     const showMaxLovedBy = 5;
     const showLovedByCookieKey = "post-showLovedBy-" + props.post.id;
-    const [cookies, setCookie] = useCookies([showLikedByCookieKey,showLaughedByCookieKey,showLovedByCookieKey]);
+    const [cookies, setCookie] = useCookies([showLikedByCookieKey, showLaughedByCookieKey, showLovedByCookieKey]);
 
     const setShowLikedBy = (value) => {
         setCookie(showLikedByCookieKey, value, { path: "/" });
@@ -58,12 +58,12 @@ const PostItem = (props) => {
         return cookies ? cookies[showLikedByCookieKey] : false;
     };
 
-    
+
     const getShowLaughedBy = () => {
         return cookies ? cookies[showLaughedByCookieKey] : false;
     };
 
-    
+
     const getShowLovedBy = () => {
         return cookies ? cookies[showLovedByCookieKey] : false;
     };
@@ -74,7 +74,7 @@ const PostItem = (props) => {
 
     const {
         state: { posts, post_likes, like_action, post_laughs, laugh_action, post_loves, love_action, post_updated, post_comments, comment_added, comment_updated, comment_deleted },
-        getPosts, getLikes, toggleLike,getLaugh, toggleLaugh,getLove, toggleLove, deletePost, getComments
+        getPosts, getLikes, toggleLike, getLaugh, toggleLaugh, getLove, toggleLove, deletePost, getComments
     } = useContext(CommunityContext);
 
     const [defaultAvatar, setDefaultAvatar] = useState("https://adagencycreatives.noorsofttechdev.com/static/media/placeholder.12b7e9aaed5e5566bc6a.png");
@@ -113,13 +113,13 @@ const PostItem = (props) => {
 
     const doToggleLaugh = (post_id) => {
         // console.log('Initiated Post Like for Post ID: ' + post_id);
-        toggleLaugh({ "post_id": post_id,type:"laugh" })
+        toggleLaugh({ "post_id": post_id, type: "laugh" })
     }
 
 
     const doToggleLove = (post_id) => {
         // console.log('Initiated Post Like for Post ID: ' + post_id);
-        toggleLove({ "post_id": post_id,type:"heart" })
+        toggleLove({ "post_id": post_id, type: "heart" })
     }
 
     useEffect(() => {
@@ -364,6 +364,15 @@ const PostItem = (props) => {
             <div className="post-content">
                 <div className="post-body" dangerouslySetInnerHTML={{ __html: postContent }} />
             </div>
+            <div className="post-images">
+                {props.post.attachments && props.post.attachments.map((attachment, index) => {
+                    return (<>
+                    <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                        <img className="post-image" src={attachment.url || ""} alt="" />
+                        </a>
+                    </>);
+                })}
+            </div>
             <div className="post-actions">
                 <CookiesProvider>
                     <div className={"post-action post-likes" + (likeActive ? ' active' : '')} onClick={() => doToggleLike(props.post.id)}>
@@ -394,21 +403,21 @@ const PostItem = (props) => {
 
                 {/* Laugh Section */}
                 <CookiesProvider>
-                <div className={"post-action post-likes" + (laughActive ? ' active' : '')}>
-                    <FaFaceLaughBeam onClick={() => doToggleLaugh(props.post.id)} />
-                    <NumUnit number={laughsCount} onClick={(e) => onShowLaughedBy(e)} />
+                    <div className={"post-action post-likes" + (laughActive ? ' active' : '')}>
+                        <FaFaceLaughBeam onClick={() => doToggleLaugh(props.post.id)} />
+                        <NumUnit number={laughsCount} onClick={(e) => onShowLaughedBy(e)} />
 
-                <div className={"post-liked-by-dropdown" + (getShowLaughedBy() ? ' d-show' : ' d-none')}>
-                    {laughByData && laughByData.slice(0, Math.min(showMaxLaughedBy, laughByData.length)).map((laugh, index) => (
-                        <div key={"laughed-by-post-" + props.post.id + "-" + laugh.id} className="liked-by">
-                            <img src={laugh.profile_picture || defaultAvatar} alt="" />
+                        <div className={"post-liked-by-dropdown" + (getShowLaughedBy() ? ' d-show' : ' d-none')}>
+                            {laughByData && laughByData.slice(0, Math.min(showMaxLaughedBy, laughByData.length)).map((laugh, index) => (
+                                <div key={"laughed-by-post-" + props.post.id + "-" + laugh.id} className="liked-by">
+                                    <img src={laugh.profile_picture || defaultAvatar} alt="" />
+                                </div>
+                            ))}
+                            <div className="total-likes">
+                                {laughsCount > showMaxLaughedBy ? '+' : ''}{laughsCount > 0 ? (laughsCount > showMaxLaughedBy ? laughsCount - showMaxLaughedBy : laughsCount) : 0} laugh{laughsCount > 1 ? 's' : ''}
+                            </div>
                         </div>
-                    ))}
-                    <div className="total-likes">
-                        {laughsCount > showMaxLaughedBy ? '+' : ''}{laughsCount > 0 ? (laughsCount > showMaxLaughedBy ? laughsCount - showMaxLaughedBy : laughsCount) : 0} laugh{laughsCount > 1 ? 's' : ''}
                     </div>
-                </div>
-                </div>
 
                 </CookiesProvider>
 
@@ -423,19 +432,19 @@ const PostItem = (props) => {
                         )}
                         <NumUnit number={lovesCount} onClick={(e) => onShowLovedBy(e)} />
 
-                    <div className={"post-liked-by-dropdown" + (getShowLovedBy() ? ' d-show' : ' d-none')}>
-                        {loveByData && loveByData.slice(0, Math.min(showMaxLovedBy, loveByData.length)).map((love, index) => (
-                            <div key={"loveed-by-post-" + props.post.id + "-" + love.id} className="liked-by">
-                                <img src={love.profile_picture || defaultAvatar} alt="" />
+                        <div className={"post-liked-by-dropdown" + (getShowLovedBy() ? ' d-show' : ' d-none')}>
+                            {loveByData && loveByData.slice(0, Math.min(showMaxLovedBy, loveByData.length)).map((love, index) => (
+                                <div key={"loveed-by-post-" + props.post.id + "-" + love.id} className="liked-by">
+                                    <img src={love.profile_picture || defaultAvatar} alt="" />
+                                </div>
+                            ))}
+                            <div className="total-likes">
+                                {lovesCount > showMaxLovedBy ? '+' : ''}{lovesCount > 0 ? (lovesCount > showMaxLovedBy ? lovesCount - showMaxLovedBy : lovesCount) : 0} love{lovesCount > 1 ? 's' : ''}
                             </div>
-                        ))}
-                        <div className="total-likes">
-                            {lovesCount > showMaxLovedBy ? '+' : ''}{lovesCount > 0 ? (lovesCount > showMaxLovedBy ? lovesCount - showMaxLovedBy : lovesCount) : 0} love{lovesCount > 1 ? 's' : ''}
                         </div>
                     </div>
-                    </div>
                 </CookiesProvider>
-                
+
             </div>
             <div key={'comment-box-' + props.post.id} post={props.post} className={"comment-box d-" + (showComments ? 'show' : 'none')}>
                 <Divider />

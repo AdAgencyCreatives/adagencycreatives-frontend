@@ -16,6 +16,7 @@ import Placeholder from "../../assets/images/placeholder.png";
 import { Editor } from '@tinymce/tinymce-react';
 import { CircularProgress } from "@mui/material";
 import ContentEditable from 'react-contenteditable'
+import ConfirmDeleteModal from "../community/Modals/ConfirmDeleteModal";
 
 const CreatePost = () => {
 
@@ -44,6 +45,7 @@ const CreatePost = () => {
   const [showPicker, setShowPicker] = useState(false);
   const [content, setContent] = useState("");
   const [imagePickerOpen, setImagePickerOpen] = useState(false);
+  const [allowType, setAllowType] = useState("image");
   const [postAttachments, setPostAttachments] = useState([]);
 
   const doSavePost = () => {
@@ -53,10 +55,15 @@ const CreatePost = () => {
     }
     setHasOffensiveWords(false);
 
+    let uploadPostAttachments = [];
+    for (let index = 0; index < postAttachments.length; index++) {
+      const postAttachment = postAttachments[index];
+      uploadPostAttachments.push(postAttachment.id);
+    }
     savePost({
       "group_id": feed_group,
       "content": content,
-      "attachment_ids": []
+      "attachment_ids": uploadPostAttachments
     });
   };
 
@@ -105,6 +112,10 @@ const CreatePost = () => {
     setShowPicker(false);
   };
 
+  const removeAttachment=(e, postAttachment) => {
+    setPostAttachments(postAttachments.filter((item) => item.id != postAttachment.id));
+  };
+
   return (
     <div className="post-form">
       <div className="status-box">
@@ -134,7 +145,7 @@ const CreatePost = () => {
           <FiPaperclip />
         </div>
       </div>
-
+      
       <Modal
         open={open}
         onClose={handleClose}
@@ -212,14 +223,33 @@ const CreatePost = () => {
               </>
             )}
             <div className="post-options d-flex">
-              <div className="item" >
+              <div className="item" onClick={() => {
+                setAllowType("image");
+                setImagePickerOpen(true);
+              }}>
                 <FiCamera />
               </div>
-              <div className="item" onClick={() => setImagePickerOpen(true)}>
+              <div className="item" onClick={() => {
+                setAllowType("image");
+                setImagePickerOpen(true);
+              }}>
                 <FiImage />
               </div>
-              <div className="item" onClick={() => setImagePickerOpen(true)}>
+              <div className="item" onClick={() => {
+                setAllowType("video");
+                setImagePickerOpen(true);
+              }}>
                 <FiPaperclip />
+              </div>
+              <div className="post-attachments">
+                {postAttachments && postAttachments.map((postAttachment, index) => {
+                  return (<>
+                    <div className="post-attachment">
+                      <img src={postAttachment.url} alt="" />
+                      <IoCloseCircleSharp onClick={(e)=> removeAttachment(e, postAttachment)} />
+                    </div>
+                  </>);
+                })}
               </div>
             </div>
           </div>
@@ -236,7 +266,11 @@ const CreatePost = () => {
               <button className={"btn btn-post" + (useRichEditor ? (!editorLoading ? ' d-show' : ' d-none') : "")} onClick={() => doSavePost()}>Post</button>
             </div>
           </div>
-          <ImagePicker open={imagePickerOpen} handleImagePickerClose={() => setImagePickerOpen(false)} />
+          <ImagePicker
+            open={imagePickerOpen}
+            setOpen={setImagePickerOpen}
+            handleImagePickerClose={() => setImagePickerOpen(false)}
+            postAttachments={postAttachments} setPostAttachments={setPostAttachments} allowType={allowType} />
         </div>
       </Modal>
     </div>
