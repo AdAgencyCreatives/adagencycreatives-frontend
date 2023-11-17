@@ -16,7 +16,6 @@ import { Provider as CommunityProvider } from "./context/CommunityContext";
 import { Provider as SubscriptionProvider } from "./context/SubscriptionContext";
 import { Provider as ChatProvider } from "./context/ChatContext";
 import { Provider as AlertProvider } from "./context/AlertContext";
-import Echo from "laravel-echo";
 import ChatListener from "./components/chat/ChatListener";
 
 

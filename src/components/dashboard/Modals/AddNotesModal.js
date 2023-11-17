@@ -32,7 +32,6 @@ const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
 
   useEffect(() => {
     if (open && user) {
-      console.log("getting note");
       getNotes(user.uuid, resource_id, type);
     }
   }, [open, user]);
@@ -60,7 +59,7 @@ const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
 
               {message && (
                 <div className={`alert alert-info`}>
-                  Sent note successfully.
+                  Note successfully saved
                 </div>
               )}
 

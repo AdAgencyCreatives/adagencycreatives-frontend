@@ -69,7 +69,7 @@ const Home = () => {
                     <input
                       className="searchInput form-control"
                       type="text"
-                      placeholder="Search by name, title, location, company, in"
+                      placeholder="Search by job title, location etc"
                       onChange={(e) => setSearch(e.target.value)}
                     />
                   </div>

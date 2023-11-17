@@ -9,6 +9,7 @@ const state = {
   isSignedIn: false,
   formMessage: null,
   token: null,
+  fetchingToken: true,
   role: null,
   user: null,
   formSubmit: false,
@@ -38,6 +39,8 @@ const authReducer = (state, action) => {
       return { ...state, subscription_status: action.payload };
     case "reset_form_message":
       return { ...state, formMessage: null };
+    case "set_fetching_token":
+      return { ...state, fetchingToken: action.payload };
     case "set_form_submit":
       return { ...state, formSubmit: action.payload };
 
@@ -183,7 +186,11 @@ const resetPassword = (dispatch) => {
       const response = await api.post(baseUrl + "/reset-password", data);
       return response;
     } catch (error) {
-      setErrorMessage(dispatch, (error.response?.data?.message || "There was an error processing the request"));
+      setErrorMessage(
+        dispatch,
+        error.response?.data?.message ||
+          "There was an error processing the request"
+      );
       return false;
     }
   };
@@ -267,6 +274,12 @@ const getToken = (dispatch) => {
     if (token) {
       verifyToken(dispatch)(token);
     }
+    else{
+      dispatch({
+        type:"set_fetching_token",
+        payload:false
+      })
+    }
   };
 };
 
@@ -302,11 +315,19 @@ const verifyToken = (dispatch) => async (token) => {
       type: "set_form_message",
       payload: { type: "success", message: getLoginSuccessMessage() },
     });
+    dispatch({
+      type: "set_fetching_token",
+      payload: false,
+    });
     return response;
   } catch (error) {
     Cookies.remove("token");
     Cookies.remove("role");
     setErrorMessage(dispatch, error.response.data.message);
+    dispatch({
+      type: "set_fetching_token",
+      payload: false,
+    });
     throw error;
   }
 };
