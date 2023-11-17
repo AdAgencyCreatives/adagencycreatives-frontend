@@ -96,17 +96,8 @@ const CreativeShortlist = () => {
                           )}
                         </div>
                         <div className="job-metas">
-                          <div className="candidate-category">
-                            <Link
-                              to={
-                                resource.category &&
-                                resource.category
-                                  .toLowerCase()
-                                  .replace(" ", "-")
-                              }
-                            >
-                              {resource.title}
-                            </Link>
+                          <div className="candidate-category text-dark">
+                            {resource.title}
                           </div>
                           {resource.location && (
                             <div className="candidate-location with-icon">
