@@ -5,11 +5,13 @@ import {
     IoHeart,
     IoHeartOutline,
     IoPencilOutline,
+    IoThumbsUp,
+    IoThumbsUpOutline,
     IoTimeOutline,
     IoTrashOutline,
 } from "react-icons/io5";
 import { FaLaughBeam, FaRegLaughBeam } from "react-icons/fa";
-import { FaFaceLaughBeam } from "react-icons/fa6";
+import { FaFaceLaughBeam, FaRegThumbsUp } from "react-icons/fa6";
 
 import UserAvatar from "../../assets/images/user1.jpg";
 import Miami from "../../assets/images/Miami.png";
@@ -114,6 +116,12 @@ const PostItem = (props) => {
         toggleLaugh({ "post_id": post_id,type:"laugh" })
     }
 
+
+    const doToggleLove = (post_id) => {
+        // console.log('Initiated Post Like for Post ID: ' + post_id);
+        toggleLove({ "post_id": post_id,type:"heart" })
+    }
+
     useEffect(() => {
         if (post_likes && post_likes.data && post_likes.data.data) {
             if (post_likes.post_id && post_likes.post_id != props.post.id) {
@@ -204,6 +212,26 @@ const PostItem = (props) => {
             }
         }
     }, [laugh_action]);
+
+    useEffect(() => {
+        if (love_action && love_action.action) {
+            if (props.post.id != love_action.post_id) {
+                return;
+            }
+            switch (love_action.action) {
+                case "love_begin": console.log('Love Begin for Post ID: ' + love_action.post_id); break;
+                case "love_success":
+                    console.log('Love Succeed for Post ID: ' + love_action.post_id);
+                    setLovesCount(lovesCount + (!loveActive ? 1 : -1));
+                    setLoveActive(!loveActive);
+                    getLove({ "post_id": props.post.id });
+                    break;
+                case "love_failed": console.log('Love Failed for Post ID: ' + love_action.post_id + ", Error: " + love_action.error); break;
+                default:
+                    console.log('Invalid Love Action for Post ID: ' + love_action.post_id);
+            }
+        }
+    }, [love_action]);
 
     useEffect(() => {
         setLikesCount(props.post.likes_count);
@@ -366,15 +394,9 @@ const PostItem = (props) => {
 
                 {/* Laugh Section */}
                 <CookiesProvider>
-                <div className={"post-action post-likes" + (laughActive ? ' active' : '')} onClick={() => doToggleLaugh(props.post.id)}>
-                    {laughActive ? (
-                        <FaFaceLaughBeam  />
-                    ) : (
-                        <FaFaceLaughBeam />
-
-                    )}
+                <div className={"post-action post-likes" + (laughActive ? ' active' : '')}>
+                    <FaFaceLaughBeam onClick={() => doToggleLaugh(props.post.id)} />
                     <NumUnit number={laughsCount} onClick={(e) => onShowLaughedBy(e)} />
-                </div>
 
                 <div className={"post-liked-by-dropdown" + (getShowLaughedBy() ? ' d-show' : ' d-none')}>
                     {laughByData && laughByData.slice(0, Math.min(showMaxLaughedBy, laughByData.length)).map((laugh, index) => (
@@ -383,10 +405,37 @@ const PostItem = (props) => {
                         </div>
                     ))}
                     <div className="total-likes">
-                        {laughsCount > showMaxLaughedBy ? '+' : ''}{laughsCount > 0 ? (laughsCount > showMaxLaughedBy ? laughsCount - showMaxLaughedBy : laughsCount) : 0} like{laughsCount > 1 ? 's' : ''}
+                        {laughsCount > showMaxLaughedBy ? '+' : ''}{laughsCount > 0 ? (laughsCount > showMaxLaughedBy ? laughsCount - showMaxLaughedBy : laughsCount) : 0} laugh{laughsCount > 1 ? 's' : ''}
                     </div>
                 </div>
+                </div>
+
                 </CookiesProvider>
+
+                {/* Love Section */}
+                <CookiesProvider>
+                    <div className={"post-action post-likes" + (loveActive ? ' active' : '')}>
+                        {loveActive ? (
+                            <IoThumbsUp onClick={() => doToggleLove(props.post.id)} />
+                        ) : (
+                            <IoThumbsUpOutline onClick={() => doToggleLove(props.post.id)} />
+
+                        )}
+                        <NumUnit number={lovesCount} onClick={(e) => onShowLovedBy(e)} />
+
+                    <div className={"post-liked-by-dropdown" + (getShowLovedBy() ? ' d-show' : ' d-none')}>
+                        {loveByData && loveByData.slice(0, Math.min(showMaxLovedBy, loveByData.length)).map((love, index) => (
+                            <div key={"loveed-by-post-" + props.post.id + "-" + love.id} className="liked-by">
+                                <img src={love.profile_picture || defaultAvatar} alt="" />
+                            </div>
+                        ))}
+                        <div className="total-likes">
+                            {lovesCount > showMaxLovedBy ? '+' : ''}{lovesCount > 0 ? (lovesCount > showMaxLovedBy ? lovesCount - showMaxLovedBy : lovesCount) : 0} love{lovesCount > 1 ? 's' : ''}
+                        </div>
+                    </div>
+                    </div>
+                </CookiesProvider>
+                
             </div>
             <div key={'comment-box-' + props.post.id} post={props.post} className={"comment-box d-" + (showComments ? 'show' : 'none')}>
                 <Divider />
