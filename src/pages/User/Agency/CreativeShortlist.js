@@ -33,8 +33,9 @@ const CreativeShortlist = () => {
   } = useContext(DataContext);
 
   const {
-    state: { user },
+    state: { subscription_status,user },
   } = useContext(AuthContext);
+
   const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
@@ -134,7 +135,7 @@ const CreativeShortlist = () => {
                       <Tooltip title="Send Message">
                         <Link
                           onClick={(e) => {
-                            if (user.subscription_status != "active") {
+                            if (subscription_status != "active") {
                               e.preventDefault();
                               showAlert("Post A Job for message capabilities.");
                             } else {
