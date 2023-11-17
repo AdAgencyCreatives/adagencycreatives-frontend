@@ -39,6 +39,7 @@ const Sidebar = ({ data }) => {
           item.toLowerCase().replace(" ", "-").replace("|", "-")
         }
         className="text-dark"
+        key={item}
       >
         {item}
         {!lastIndex && ", "}

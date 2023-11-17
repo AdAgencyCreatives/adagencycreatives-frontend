@@ -11,6 +11,7 @@ const useFormData = (props = {}) => {
   const setJobStatus = props.setJobStatus;
   const imageUploadRef = useRef();
   const logoRef = useRef();
+  const linkRef = useRef();
   const [categoriesList, setCategories] = useState([]);
   const [statesList, setStates] = useState([]);
   const [citiesList, setCities] = useState([]);
@@ -189,6 +190,9 @@ const useFormData = (props = {}) => {
   };
 
   const handleDropdownChange = (item, name) => {
+    if (name == "apply_type") {
+      linkRef.current.style.display = (item.value == "Internal") ? "none" : ""
+    }
     setFormData((prev) => ({ ...prev, [name]: item.value }));
   };
 
@@ -206,15 +210,16 @@ const useFormData = (props = {}) => {
     setFormData((prev) => ({ ...prev, [name]: html }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     if (isEdit) {
-      saveJob(id, formData);
+      await saveJob(id, formData);
+      setJobStatus("preview")
     } else {
       formData.user_id = user.uuid;
       createJob(formData);
       setJobStatus("preview");
     }
-    
   };
 
   const removeLogo = () => {
@@ -256,6 +261,7 @@ const useFormData = (props = {}) => {
       formSubmit,
       imageUploadRef,
       logoRef,
+      linkRef
     },
     changeState,
     handleTextChange,

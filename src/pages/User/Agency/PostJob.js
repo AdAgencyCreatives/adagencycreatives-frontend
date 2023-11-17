@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import Checkout from "../../Cart/Checkout";
 import Loader from "../../../components/Loader";
 
-const PostJob = () => {
+const PostJob = ({ id }) => {
   const [selectedPackage, setPackage] = useState(null);
   const [jobStatus, setJobStatus] = useState("");
   const {
@@ -35,9 +35,12 @@ const PostJob = () => {
   }, [token]);
 
   useEffect(() => {
-    if (!status && subscription) {
-      if (subscription.length == 0 || subscription.status == "expired") {
-        setJobStatus("select_package");
+    if (id) {
+      setJobStatus("create");
+    }
+    else if (!status && subscription) {
+      if (subscription.length == 0 || subscription.quota_left == 0) {
+        setJobStatus("create");
       } else {
         setJobStatus("create");
       }
@@ -47,9 +50,15 @@ const PostJob = () => {
   const getView = () => {
     switch (jobStatus) {
       case "select_package":
-        return <Packages setPackage={setPackage} setJobStatus={setJobStatus} user={user} />;
+        return (
+          <Packages
+            setPackage={setPackage}
+            setJobStatus={setJobStatus}
+            user={user}
+          />
+        );
       case "create":
-        return <JobPostForm setJobStatus={setJobStatus} />;
+        return <JobPostForm setJobStatus={setJobStatus} id={id} />;
       case "preview":
         return <Preview single_job={single_job} setJobStatus={setJobStatus} />;
       default:

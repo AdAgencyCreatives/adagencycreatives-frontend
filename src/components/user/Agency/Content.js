@@ -39,19 +39,23 @@ const Content = ({ user, data, jobs }) => {
                       </div>
                       <div className="job-metas">
                         <div className="d-flex flex-wrap">
-                          <div className="category-job">
-                            <div className="job-category with-icon">
-                              <IoBriefcaseOutline />
-                              <Link
-                                to={
-                                  "/job-category/" +
-                                  item.category.toLowerCase().replace(" ", "-")
-                                }
-                              >
-                                {item.category}
-                              </Link>
+                          {item.category && (
+                            <div className="category-job">
+                              <div className="job-category with-icon">
+                                <IoBriefcaseOutline />
+                                <Link
+                                  to={
+                                    "/job-category/" +
+                                    item.category
+                                      .toLowerCase()
+                                      .replace(" ", "-")
+                                  }
+                                >
+                                  {item.category}
+                                </Link>
+                              </div>
                             </div>
-                          </div>
+                          )}
                           <div className="job-deadline with-icon">
                             <i className="flaticon-wall-clock"></i>
                             {moment(item.expired_at).format("MMMM D, YYYY")}
@@ -94,14 +98,14 @@ const Content = ({ user, data, jobs }) => {
                           <i className="flaticon-bookmark"></i>
                         </a>
                         {user && data && !isOwnProfile && (
-                        <Link
-                          to={item.external_link}
-                          target="_blank"
-                          className="btn btn-apply btn-apply-job-external "
-                        >
-                          Apply Now
-                          <i className="next flaticon-right-arrow"></i>
-                        </Link>
+                          <Link
+                            to={item.external_link}
+                            target="_blank"
+                            className="btn btn-apply btn-apply-job-external "
+                          >
+                            Apply Now
+                            <i className="next flaticon-right-arrow"></i>
+                          </Link>
                         )}
                       </div>
                     </div>

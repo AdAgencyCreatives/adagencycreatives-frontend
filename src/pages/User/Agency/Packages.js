@@ -65,7 +65,7 @@ const Packages = () => {
                       </div>
                     </td>
                     <td>
-                      <span class="action active">Active</span>
+                      <span class={"action "+item.status?.toLowerCase()}>{item.status}</span>
                     </td>
                   </tr>
                 </tbody>

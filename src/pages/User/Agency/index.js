@@ -57,7 +57,7 @@ const Agency = () => {
   let component = components[page];
   const match = useMatch("job/edit/:id");
   if (match) {
-    component = <JobPost id={match.params.id} />;
+    component = <PostJob id={match.params.id} />;
   }
 
   const [mobileOpen, setMobileOpen] = useState(false);

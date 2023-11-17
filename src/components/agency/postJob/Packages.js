@@ -75,7 +75,7 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
       subtitle: "Hire An Advisor",
       description:  "<ul>" +
       "<li>• Creative Recruiting Help</li>"+
-      "<li>• Provide Details On Get Started</li>"+
+      "<li>• Provide Details To Get Started</li>"+
       "<li>• Our Team Will Contact You</li>"+
       "<li>• We’ll Create A Custom Plan </li>"+
       "<li>• You Hire Talent Directly </li>"+

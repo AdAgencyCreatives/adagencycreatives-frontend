@@ -440,6 +440,10 @@ const saveJob = (dispatch) => {
     setFormSubmit(dispatch, true);
     try {
       const response = await api.patch("/jobs/" + uid, data);
+      dispatch({
+        type: "set_single_job",
+        payload: response.data.data,
+      });
     } catch (error) {}
     setFormSubmit(dispatch, false);
   };

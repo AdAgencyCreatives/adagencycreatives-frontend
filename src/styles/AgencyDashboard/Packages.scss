@@ -21,7 +21,12 @@
         text-decoration: underline;
     }
 
-    span.action.active {
-        color: #79b530;
+    span.action {
+        &.active {
+            color: #79b530;
+        }
+        &.expired{
+            color:red
+        }
     }
 }

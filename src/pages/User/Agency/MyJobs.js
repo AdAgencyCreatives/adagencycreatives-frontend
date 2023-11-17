@@ -51,7 +51,7 @@ const MyJobs = () => {
               <tbody>
                 {open_positions &&
                   open_positions.map((job) => (
-                    <tr>
+                    <tr key={job.id}>
                       <td className="job-table-info">
                         <div className="job-table-info-content">
                           <div className="title-wrapper">
