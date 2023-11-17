@@ -60,7 +60,7 @@ const Header = ({ data }) => {
                       className="text-black"
                       to={`/job-location/${data.location.state}`}
                     >
-                      {data.location.state},
+                      {data.location.state},&nbsp;
                     </Link>
                     <Link
                       className="text-black"

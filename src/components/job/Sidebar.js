@@ -31,7 +31,7 @@ const Sidebar = ({ data }) => {
                 className="text-dark"
                 to={`/job-location/${data.location.state}`}
               >
-                {data.location.state},
+                {data.location.state},&nbsp;
               </Link>
               <Link
                 className="text-dark"
