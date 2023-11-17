@@ -2,6 +2,7 @@ import { useEffect, useState, useContext, useRef } from "react";
 import { Context as DataContext } from "../context/DataContext";
 import { Context as JobsContext } from "../context/JobsContext";
 import { Context as AuthContext } from "../context/AuthContext";
+import { Context as AlertContext } from "../context/AlertContext";
 import { EditorState, ContentState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import moment from "moment";
@@ -12,6 +13,7 @@ const useFormData = (props = {}) => {
   const imageUploadRef = useRef();
   const logoRef = useRef();
   const linkRef = useRef();
+  const [editorRef, setEditorRef] = useState();
   const [categoriesList, setCategories] = useState([]);
   const [statesList, setStates] = useState([]);
   const [citiesList, setCities] = useState([]);
@@ -37,6 +39,8 @@ const useFormData = (props = {}) => {
   const {
     state: { user, token },
   } = useContext(AuthContext);
+
+  const { showAlert } = useContext(AlertContext);
 
   const {
     state: { single_job, formSubmit },
@@ -191,7 +195,7 @@ const useFormData = (props = {}) => {
 
   const handleDropdownChange = (item, name) => {
     if (name == "apply_type") {
-      linkRef.current.style.display = (item.value == "Internal") ? "none" : ""
+      linkRef.current.style.display = item.value == "Internal" ? "none" : "";
     }
     setFormData((prev) => ({ ...prev, [name]: item.value }));
   };
@@ -211,14 +215,19 @@ const useFormData = (props = {}) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (isEdit) {
-      await saveJob(id, formData);
-      setJobStatus("preview")
+    e.preventDefault();
+    if (!editorState.getCurrentContent().hasText()) {
+      editorRef.focus();
+      showAlert("The content cannot be empty");
     } else {
-      formData.user_id = user.uuid;
-      createJob(formData);
-      setJobStatus("preview");
+      if (isEdit) {
+        await saveJob(id, formData);
+        setJobStatus("preview");
+      } else {
+        formData.user_id = user.uuid;
+        createJob(formData);
+        setJobStatus("preview");
+      }
     }
   };
 
@@ -261,7 +270,8 @@ const useFormData = (props = {}) => {
       formSubmit,
       imageUploadRef,
       logoRef,
-      linkRef
+      linkRef,
+      editorRef,
     },
     changeState,
     handleTextChange,
@@ -276,6 +286,7 @@ const useFormData = (props = {}) => {
     setFields,
     setEditorState,
     setFormData,
+    setEditorRef,
   };
 };
 

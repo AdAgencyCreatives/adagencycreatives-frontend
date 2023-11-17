@@ -37,7 +37,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
       formSubmit,
       imageUploadRef,
       logoRef,
-      linkRef
+      linkRef,
     },
     changeState,
     handleTextChange,
@@ -52,6 +52,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
     setFields,
     setEditorState,
     setFormData,
+    setEditorRef
   } = useFormData({ id, setJobStatus });
 
   const [isLoading, setIsloading] = useState(true);
@@ -535,6 +536,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                             toolbarClassName="editorToolbar"
                             wrapperClassName="editorWrapper"
                             editorClassName="editorBody"
+                            editorRef={(ref) => setEditorRef(ref)}
                             toolbar={{
                               options: [
                                 "inline",
