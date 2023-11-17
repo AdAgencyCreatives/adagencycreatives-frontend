@@ -11,6 +11,7 @@ import { BsEmojiSmile } from "react-icons/bs";
 import ImagePicker from "./Modals/ImagePicker";
 import { useContext, useEffect, useCallback } from "react";
 import { Context as AuthContext, containsOffensiveWords } from "../../context/AuthContext";
+import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import Placeholder from "../../assets/images/placeholder.png";
 import { Editor } from '@tinymce/tinymce-react';
@@ -30,6 +31,10 @@ const CreatePost = () => {
   const {
     state: { token, user },
   } = useContext(AuthContext);
+
+  const {
+    showAlert,
+  } = useContext(AlertContext);
 
   const {
     state: { feed_group, formSubmit, },
@@ -113,7 +118,7 @@ const CreatePost = () => {
     setShowPicker(false);
   };
 
-  const removeAttachment=(e, postAttachment) => {
+  const removeAttachment = (e, postAttachment) => {
     setPostAttachments(postAttachments.filter((item) => item.id != postAttachment.id));
   };
 
@@ -146,7 +151,7 @@ const CreatePost = () => {
           <FiPaperclip />
         </div>
       </div>
-      
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -237,6 +242,11 @@ const CreatePost = () => {
                 <FiImage />
               </div>
               <div className="item" onClick={() => {
+                let videos = postAttachments ? postAttachments.filter(item => item.resource_type == "post_attachment_video") : [];
+                if (videos.length > 1) {
+                  showAlert("Can't upload more than one video.");
+                  return false;
+                }
                 setAllowType("video");
                 setImagePickerOpen(true);
               }}>
@@ -246,8 +256,15 @@ const CreatePost = () => {
                 {postAttachments && postAttachments.map((postAttachment, index) => {
                   return (<>
                     <div className="post-attachment">
-                      <img src={postAttachment.url} alt="" />
-                      <IoCloseCircleSharp onClick={(e)=> removeAttachment(e, postAttachment)} />
+                      {postAttachment.resource_type && postAttachment.resource_type == "post_attachment_video" ? (
+                        <video controls muted playsInline>
+                          <source src={postAttachment.url} type={"video/" + postAttachment.url.substring(postAttachment.url.lastIndexOf('.') + 1)} />
+                          Sorry, your browser doesn't support videos.
+                        </video>
+                      ) : (
+                        <img src={postAttachment.url} alt="" />
+                      )}
+                      <IoCloseCircleSharp onClick={(e) => removeAttachment(e, postAttachment)} />
                     </div>
                   </>);
                 })}
