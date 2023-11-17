@@ -40,7 +40,7 @@ const PostJob = ({ id }) => {
     }
     else if (!status && subscription) {
       if (subscription.length == 0 || subscription.quota_left == 0) {
-        setJobStatus("create");
+        setJobStatus("select_package");
       } else {
         setJobStatus("create");
       }

@@ -8,6 +8,9 @@ import {
     IoTimeOutline,
     IoTrashOutline,
 } from "react-icons/io5";
+import { FaLaughBeam, FaRegLaughBeam } from "react-icons/fa";
+import { FaFaceLaughBeam } from "react-icons/fa6";
+
 import UserAvatar from "../../assets/images/user1.jpg";
 import Miami from "../../assets/images/Miami.png";
 import { useState, useRef } from "react";
@@ -31,14 +34,36 @@ const PostItem = (props) => {
 
     const showMaxLikedBy = 5;
     const showLikedByCookieKey = "post-showLikedBy-" + props.post.id;
-    const [cookies, setCookie] = useCookies([showLikedByCookieKey]);
+    
+    const showMaxLaughedBy = 5;
+    const showLaughedByCookieKey = "post-showLaughedBy-" + props.post.id;
+    
+    const showMaxLovedBy = 5;
+    const showLovedByCookieKey = "post-showLovedBy-" + props.post.id;
+    const [cookies, setCookie] = useCookies([showLikedByCookieKey,showLaughedByCookieKey,showLovedByCookieKey]);
 
     const setShowLikedBy = (value) => {
         setCookie(showLikedByCookieKey, value, { path: "/" });
     };
+    const setShowLaughedBy = (value) => {
+        setCookie(showLaughedByCookieKey, value, { path: "/" });
+    };
+    const setShowLovedBy = (value) => {
+        setCookie(showLovedByCookieKey, value, { path: "/" });
+    };
 
     const getShowLikedBy = () => {
         return cookies ? cookies[showLikedByCookieKey] : false;
+    };
+
+    
+    const getShowLaughedBy = () => {
+        return cookies ? cookies[showLaughedByCookieKey] : false;
+    };
+
+    
+    const getShowLovedBy = () => {
+        return cookies ? cookies[showLovedByCookieKey] : false;
     };
 
     const {
@@ -46,8 +71,8 @@ const PostItem = (props) => {
     } = useContext(AuthContext);
 
     const {
-        state: { posts, post_likes, like_action, post_updated, post_comments, comment_added, comment_updated, comment_deleted },
-        getPosts, getLikes, toggleLike, deletePost, getComments,
+        state: { posts, post_likes, like_action, post_laughs, laugh_action, post_loves, love_action, post_updated, post_comments, comment_added, comment_updated, comment_deleted },
+        getPosts, getLikes, toggleLike,getLaugh, toggleLaugh,getLove, toggleLove, deletePost, getComments
     } = useContext(CommunityContext);
 
     const [defaultAvatar, setDefaultAvatar] = useState("https://adagencycreatives.noorsofttechdev.com/static/media/placeholder.12b7e9aaed5e5566bc6a.png");
@@ -57,6 +82,12 @@ const PostItem = (props) => {
     const [likeActive, setLikeActive] = useState(false);
     const [likesCount, setLikesCount] = useState(0);
     const [likedByData, setLikedByData] = useState([]);
+    const [laughActive, setLaughActive] = useState(false);
+    const [laughsCount, setLaughsCount] = useState(0);
+    const [laughByData, setLaughByData] = useState([]);
+    const [loveActive, setLoveActive] = useState(false);
+    const [lovesCount, setLovesCount] = useState(0);
+    const [loveByData, setLoveByData] = useState([]);
     const [commentsData, setCommentsData] = useState([]);
     const [showComments, setShowComments] = useState(false);
     const [commentsCount, setCommentsCount] = useState(0);
@@ -78,6 +109,11 @@ const PostItem = (props) => {
         toggleLike({ "post_id": post_id })
     }
 
+    const doToggleLaugh = (post_id) => {
+        // console.log('Initiated Post Like for Post ID: ' + post_id);
+        toggleLaugh({ "post_id": post_id,type:"laugh" })
+    }
+
     useEffect(() => {
         if (post_likes && post_likes.data && post_likes.data.data) {
             if (post_likes.post_id && post_likes.post_id != props.post.id) {
@@ -94,6 +130,40 @@ const PostItem = (props) => {
             getLikes({ "post_id": props.post.id });
         }
     }, [post_likes]);
+
+    useEffect(() => {
+        if (post_laughs && post_laughs.data && post_laughs.data.data) {
+            if (post_laughs.post_id && post_laughs.post_id != props.post.id) {
+                return;
+            }
+            if (post_laughs.data.data.length != laughsCount) {
+                setLaughsCount(post_laughs.data.data.length);
+            }
+            setLaughByData(post_laughs.data.data)
+            let user_liked = post_laughs.data.data.filter(item => item.user_id == user.uuid);
+            setLaughActive(user_liked && user_liked.length);
+        } else {
+            setLaughsCount(props.post.reactions.laugh);
+            getLaugh({ "post_id": props.post.id });
+        }
+    }, [post_laughs]);
+
+    useEffect(() => {
+        if (post_loves && post_loves.data && post_loves.data.data) {
+            if (post_loves.post_id && post_loves.post_id != props.post.id) {
+                return;
+            }
+            if (post_loves.data.data.length != lovesCount) {
+                setLovesCount(post_loves.data.data.length);
+            }
+            setLoveByData(post_loves.data.data)
+            let user_liked = post_loves.data.data.filter(item => item.user_id == user.uuid);
+            setLoveActive(user_liked && user_liked.length);
+        } else {
+            setLovesCount(props.post.reactions.heart);
+            getLove({ "post_id": props.post.id });
+        }
+    }, [post_loves]);
 
     useEffect(() => {
         if (like_action && like_action.action) {
@@ -116,9 +186,39 @@ const PostItem = (props) => {
     }, [like_action]);
 
     useEffect(() => {
+        if (laugh_action && laugh_action.action) {
+            if (props.post.id != laugh_action.post_id) {
+                return;
+            }
+            switch (laugh_action.action) {
+                case "laugh_begin": console.log('Laugh Begin for Post ID: ' + laugh_action.post_id); break;
+                case "laugh_success":
+                    console.log('Laugh Succeed for Post ID: ' + laugh_action.post_id);
+                    setLaughsCount(laughsCount + (!laughActive ? 1 : -1));
+                    setLaughActive(!laughActive);
+                    getLaugh({ "post_id": props.post.id });
+                    break;
+                case "laugh_failed": console.log('Laugh Failed for Post ID: ' + laugh_action.post_id + ", Error: " + laugh_action.error); break;
+                default:
+                    console.log('Invalid Laugh Action for Post ID: ' + laugh_action.post_id);
+            }
+        }
+    }, [laugh_action]);
+
+    useEffect(() => {
         setLikesCount(props.post.likes_count);
         getLikes({ "post_id": props.post.id });
     }, [props.post.likes_count]);
+
+    useEffect(() => {
+        setLaughsCount(props.post.reactions.laugh);
+        getLaugh({ "post_id": props.post.id });
+    }, [props.post.reactions.laugh]);
+
+    useEffect(() => {
+        setLovesCount(props.post.reactions.heart);
+        getLove({ "post_id": props.post.id });
+    }, [props.post.reactions.heart]);
 
     useEffect(() => {
         if (post_comments && post_comments.data && post_comments.data.data) {
@@ -167,6 +267,28 @@ const PostItem = (props) => {
             getLikes({ "post_id": props.post.id });
         }
     };
+
+    const onShowLaughedBy = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        let newState = !getShowLaughedBy();
+        setShowLaughedBy(newState);
+        if (newState) {
+            getLaugh({ "post_id": props.post.id });
+        }
+    };
+
+
+    const onShowLovedBy = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        let newState = !getShowLovedBy();
+        setShowLovedBy(newState);
+        if (newState) {
+            getLove({ "post_id": props.post.id });
+        }
+    };
+
 
     const onUpdatePost = () => {
         setActions("none");
@@ -241,6 +363,30 @@ const PostItem = (props) => {
                     <IoChatbubbleEllipsesOutline />
                     <NumUnit number={commentsCount} />
                 </div>
+
+                {/* Laugh Section */}
+                <CookiesProvider>
+                <div className={"post-action post-likes" + (laughActive ? ' active' : '')} onClick={() => doToggleLaugh(props.post.id)}>
+                    {laughActive ? (
+                        <FaFaceLaughBeam  />
+                    ) : (
+                        <FaFaceLaughBeam />
+
+                    )}
+                    <NumUnit number={laughsCount} onClick={(e) => onShowLaughedBy(e)} />
+                </div>
+
+                <div className={"post-liked-by-dropdown" + (getShowLaughedBy() ? ' d-show' : ' d-none')}>
+                    {laughByData && laughByData.slice(0, Math.min(showMaxLaughedBy, laughByData.length)).map((laugh, index) => (
+                        <div key={"laughed-by-post-" + props.post.id + "-" + laugh.id} className="liked-by">
+                            <img src={laugh.profile_picture || defaultAvatar} alt="" />
+                        </div>
+                    ))}
+                    <div className="total-likes">
+                        {laughsCount > showMaxLaughedBy ? '+' : ''}{laughsCount > 0 ? (laughsCount > showMaxLaughedBy ? laughsCount - showMaxLaughedBy : laughsCount) : 0} like{laughsCount > 1 ? 's' : ''}
+                    </div>
+                </div>
+                </CookiesProvider>
             </div>
             <div key={'comment-box-' + props.post.id} post={props.post} className={"comment-box d-" + (showComments ? 'show' : 'none')}>
                 <Divider />

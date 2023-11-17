@@ -9,10 +9,14 @@ const state = {
   loading: false,
   single_post: {},
   formSubmit: false,
-  post_likes: { "post_id": "", "data": {} },
-  post_comments: { "post_id": "", "data": {} },
-  post_comment_replies: { "post_id": "", "comment_id": "", "data": {} },
-  like_action: { "post_id": "", "action": "", error: null },
+  post_likes: { post_id: "", data: {} },
+  post_laughs: { post_id: "", data: {} },
+  post_loves: { post_id: "", data: {} },
+  post_comments: { post_id: "", data: {} },
+  post_comment_replies: { post_id: "", comment_id: "", data: {} },
+  like_action: { post_id: "", action: "", error: null },
+  laugh_action: { post_id: "", action: "", error: null },
+  love_action: { post_id: "", action: "", error: null },
   new_members: [],
   post_added: null,
   post_updated: null,
@@ -164,6 +168,27 @@ const reducer = (state, action) => {
         ...state,
         like_action: action.payload,
       };
+    case "set_post_laughs":
+      return {
+        ...state,
+        post_laughs: action.payload,
+      };
+    case "set_laugh_action":
+      return {
+        ...state,
+        laugh_action: action.payload,
+      };
+    case "set_post_loves":
+      return {
+        ...state,
+        post_loves: action.payload,
+      };
+    case "set_love_action":
+      return {
+        ...state,
+        love_action: action.payload,
+      };
+
     default:
       return state;
   }
@@ -172,13 +197,17 @@ const reducer = (state, action) => {
 const getPosts = (dispatch) => {
   return async (group_id) => {
     try {
-      const response = await api.get("/posts?filter[group_id]=" + group_id + "&sort=-created_at&filter[status]=1"); // only published posts in Feeds
+      const response = await api.get(
+        "/posts?filter[group_id]=" +
+          group_id +
+          "&sort=-created_at&filter[status]=1"
+      ); // only published posts in Feeds
       //console.log("fetched new posts at: " + (new Date()).toString());
       dispatch({
         type: "set_posts",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -190,38 +219,48 @@ const getTrendingPosts = (dispatch) => {
         type: "set_trending_posts",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
 const getNewMembers = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/creatives?sort=-created_at&filter[status]=1"); // only active members
+      const response = await api.get(
+        "/creatives?sort=-created_at&filter[status]=1"
+      ); // only active members
       dispatch({
         type: "set_new_members",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
 const getFeedGroup = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/groups?filter[name]=Feed&filter[status]=0"); // Only Public Feed Group for Lounge
+      const response = await api.get(
+        "/groups?filter[name]=Feed&filter[status]=0"
+      ); // Only Public Feed Group for Lounge
       dispatch({
         type: "set_feed_group",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
 const loadPosts = (dispatch) => {
   return async (page, group_id) => {
-    let nextPageNumber = page.substring(page.indexOf("?page=") + "?page=".length);
-    let nextPageUrl = "/posts?filter[group_id]=" + group_id + "&sort=-created_at&filter[status]=1&page=" + nextPageNumber;
+    let nextPageNumber = page.substring(
+      page.indexOf("?page=") + "?page=".length
+    );
+    let nextPageUrl =
+      "/posts?filter[group_id]=" +
+      group_id +
+      "&sort=-created_at&filter[status]=1&page=" +
+      nextPageNumber;
     setLoading(dispatch, true);
     try {
       const response = await api.get(nextPageUrl);
@@ -230,7 +269,7 @@ const loadPosts = (dispatch) => {
         payload: response.data,
       });
       setLoading(dispatch, false);
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -238,12 +277,14 @@ const getComments = (dispatch) => {
   return async (uid) => {
     setLoading(dispatch, true);
     try {
-      const response = await api.get("/comments?sort=-created_at&filter[post_id]=" + uid);
+      const response = await api.get(
+        "/comments?sort=-created_at&filter[post_id]=" + uid
+      );
       dispatch({
         type: "set_post_comments",
-        payload: { "post_id": uid, "data": response.data },
+        payload: { post_id: uid, data: response.data },
       });
-    } catch (error) { }
+    } catch (error) {}
     setLoading(dispatch, false);
   };
 };
@@ -254,9 +295,9 @@ const getLikes = (dispatch) => {
       const response = await api.get("/likes?filter[post_id]=" + data.post_id);
       dispatch({
         type: "set_post_likes",
-        payload: { "post_id": data.post_id, "data": response.data },
+        payload: { post_id: data.post_id, data: response.data },
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -264,18 +305,108 @@ const toggleLike = (dispatch) => {
   return async (data) => {
     dispatch({
       type: "set_like_action",
-      payload: { "post_id": data.post_id, "action": "like_begin", error: null },
+      payload: { post_id: data.post_id, action: "like_begin", error: null },
     });
     try {
       const response = await api.post("/likes", data);
       dispatch({
         type: "set_like_action",
-        payload: { "post_id": data.post_id, "action": "like_success", error: null },
+        payload: { post_id: data.post_id, action: "like_success", error: null },
       });
     } catch (error) {
       dispatch({
         type: "set_like_action",
-        payload: { "post_id": data.post_id, "action": "like_failed", error: error },
+        payload: { post_id: data.post_id, action: "like_failed", error: error },
+      });
+    }
+  };
+};
+
+const getLove = (dispatch) => {
+  return async (data) => {
+    try {
+      const response = await api.get(
+        "/post-reactions?filter[post_id]=" +
+          data.post_id +
+          "&filter[type]=heart"
+      );
+      dispatch({
+        type: "set_post_loves",
+        payload: { post_id: data.post_id, data: response.data },
+      });
+    } catch (error) {}
+  };
+};
+
+const toggleLove = (dispatch) => {
+  return async (data) => {
+    dispatch({
+      type: "set_love_action",
+      payload: { post_id: data.post_id, action: "love_begin", error: null },
+    });
+    try {
+      const response = await api.post("/post-reactions", data);
+      dispatch({
+        type: "set_love_action",
+        payload: {
+          post_id: data.post_id,
+          action: "love_success",
+          error: null,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: "set_love_action",
+        payload: {
+          post_id: data.post_id,
+          action: "love_failed",
+          error: error,
+        },
+      });
+    }
+  };
+};
+
+const getLaugh = (dispatch) => {
+  return async (data) => {
+    try {
+      const response = await api.get(
+        "/post-reactions?filter[post_id]=" +
+          data.post_id +
+          "&filter[type]=laugh"
+      );
+      dispatch({
+        type: "set_post_laughs",
+        payload: { post_id: data.post_id, data: response.data },
+      });
+    } catch (error) {}
+  };
+};
+
+const toggleLaugh = (dispatch) => {
+  return async (data) => {
+    dispatch({
+      type: "set_laugh_action",
+      payload: { post_id: data.post_id, action: "laugh_begin", error: null },
+    });
+    try {
+      const response = await api.post("/post-reactions", data);
+      dispatch({
+        type: "set_laugh_action",
+        payload: {
+          post_id: data.post_id,
+          action: "laugh_success",
+          error: null,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: "set_laugh_action",
+        payload: {
+          post_id: data.post_id,
+          action: "laugh_failed",
+          error: error,
+        },
       });
     }
   };
@@ -294,7 +425,7 @@ const savePost = (dispatch) => {
         type: "add_post",
         payload: response.data.data.id,
       });
-    } catch (error) { }
+    } catch (error) {}
     dispatch({
       type: "set_form_submit",
       payload: false,
@@ -312,9 +443,12 @@ const saveComment = (dispatch) => {
       const response = await api.post("/comments", data);
       dispatch({
         type: "add_comment",
-        payload: { post_id: response.data.data.post_id, comment_uuid: response.data.data.uuid },
+        payload: {
+          post_id: response.data.data.post_id,
+          comment_uuid: response.data.data.uuid,
+        },
       });
-    } catch (error) { }
+    } catch (error) {}
     dispatch({
       type: "set_form_submit",
       payload: false,
@@ -334,7 +468,7 @@ const updatePost = (dispatch) => {
         type: "update_post",
         payload: response.data.data,
       });
-    } catch (error) { }
+    } catch (error) {}
     dispatch({
       type: "set_form_submit",
       payload: false,
@@ -352,9 +486,12 @@ const updateComment = (dispatch) => {
       const response = await api.patch("/comments/" + comment_uuid, data);
       dispatch({
         type: "update_comment",
-        payload: { post_id: response.data.data.post_id, comment_uuid: response.data.data.uuid },
+        payload: {
+          post_id: response.data.data.post_id,
+          comment_uuid: response.data.data.uuid,
+        },
       });
-    } catch (error) { }
+    } catch (error) {}
     dispatch({
       type: "set_form_submit",
       payload: false,
@@ -370,7 +507,7 @@ const savePostImage = (dispatch) => {
           "Content-Type": "multipart/form-data",
         },
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -382,20 +519,20 @@ const deletePost = (dispatch) => {
         type: "delete_post",
         payload: id,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
 const deleteComment = (dispatch) => {
   return async (post_id, comment_uuid) => {
     try {
-      console.log("trying to delete comment: " + comment_uuid)
+      console.log("trying to delete comment: " + comment_uuid);
       const response = await api.delete("/comments/" + comment_uuid);
       dispatch({
         type: "delete_comment",
         payload: { post_id: post_id, comment_uuid: comment_uuid },
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -412,7 +549,7 @@ const setHaltRefresh = (dispatch) => {
       type: "set_halt_refresh",
       payload: state,
     });
-  }
+  };
 };
 
 export const { Context, Provider } = createDataContext(
@@ -425,6 +562,10 @@ export const { Context, Provider } = createDataContext(
     loadPosts,
     getLikes,
     toggleLike,
+    getLaugh,
+    toggleLaugh,
+    getLove,
+    toggleLove,
     savePost,
     updatePost,
     getComments,
