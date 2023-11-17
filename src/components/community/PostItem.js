@@ -367,9 +367,17 @@ const PostItem = (props) => {
             <div className="post-images">
                 {props.post.attachments && props.post.attachments.map((attachment, index) => {
                     return (<>
-                    <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
-                        <img className="post-image" src={attachment.url || ""} alt="" />
-                        </a>
+                        {attachment.resource_type && attachment.resource_type == "post_attachment_video" ? (
+                            <video controls muted playsInline>
+                                <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
+                                Sorry, your browser doesn't support videos.
+                            </video>
+                        ) : (
+                            <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                                <img className="post-image" src={attachment.url || ""} alt="" />
+                            </a>
+                        )}
+
                     </>);
                 })}
             </div>

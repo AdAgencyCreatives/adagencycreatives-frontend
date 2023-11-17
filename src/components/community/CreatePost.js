@@ -71,6 +71,7 @@ const CreatePost = () => {
     if (!formSubmit) {
       handleClose();
       setContent("");
+      setPostAttachments([]);
     }
   }, [formSubmit]);
 

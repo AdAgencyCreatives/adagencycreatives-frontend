@@ -69,7 +69,7 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
     let formData = new FormData();
 
     formData.append("user_id", user.uuid);
-    formData.append("resource_type", "post_attachment");
+    formData.append("resource_type", "post_attachment_" + allowType);
     formData.append("file", file);
 
     let result = await saveAttachment(formData);
