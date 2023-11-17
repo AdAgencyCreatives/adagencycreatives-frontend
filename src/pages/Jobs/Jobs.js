@@ -60,7 +60,6 @@ const Jobs = () => {
 
   const { showAlert } = useContext(AlertContext);
 
-
   useEffect(() => {
     if (Object.keys(params).length) {
       for (var field in params) {
@@ -266,29 +265,27 @@ const Jobs = () => {
 
       <div className="job_notification">
         <h1 className="jobs-filter-title">Request Job Notifications</h1>
-        <div className="notif-input-box">
-          <h5 className="notif-title fw-normal">Title</h5>
-          <Select
-            options={jobTitles}
-            placeholder="Select title"
-            onChange={(item) => setNotifCategory(item.value)}
-          />
-        </div>
-        {/* <div className="notif-input-box">
-        <h5 className="notif-title fw-normal">Email Frequency</h5>
-        <Select options={emailFreq} />
-      </div> */}
-        <div className="job-alert-button">
-          <button
-            className="btn btn-filter w-100"
-            onClick={async () => {
-              await requestNotifications(user.uuid, notifCategory);
-              showAlert("Job notifications enabled successfully")
-            }}
-          >
-            Save Job Alert
-          </button>
-        </div>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault()
+            await requestNotifications(user.uuid, notifCategory);
+            showAlert("Job notifications enabled successfully");
+          }}
+        >
+          <div className="notif-input-box">
+            <h5 className="notif-title fw-normal">Title</h5>
+            <Select
+              options={jobTitles}
+              placeholder="Select title"
+              onChange={(item) => setNotifCategory(item.value)}
+              required={true}
+              name="notif_title"
+            />
+          </div>
+          <div className="job-alert-button">
+            <button className="btn btn-filter w-100">Save Job Alert</button>
+          </div>
+        </form>
       </div>
     </div>
   );

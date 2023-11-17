@@ -34,7 +34,7 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
       subtitle: "Multiple Creative Jobs Package",
       description:
       "<ul>" +
-      " <li>• Three Job Post For 45 Days</li>"  + 
+      " <li>• Three Job Posts For 45 Days</li>"  + 
       " <li>• Urgent Job Post Option</li>"  + 
       " <li>• Targets Advertising Talent</li>"  + 
       " <li>• Internal ATS Option</li>"  + 
@@ -54,7 +54,7 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
       subtitle: "Premium Creative Jobs Package",
       description:
       "<ul>" +
-      " <li>• Five Post For 45 Days</li>" +
+      " <li>• Five Job Posts For 45 Days</li>" +
       " <li>• Featured Post Priority</li>" +
       " <li>• Urgent Job Post Option</li>" +
       " <li>• Targets Advertising Talent</li>" +

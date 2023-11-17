@@ -335,7 +335,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
       <h3 className="page-title">Edit Job</h3>
       <div className="card">
         <h4 className="text-uppercase mb-4">
-          Tell us about your creative needs
+          Opportunity Details
         </h4>
         <div className="profile-edit-form">
           <form onSubmit={handleSubmit}>
