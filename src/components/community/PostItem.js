@@ -382,12 +382,14 @@ const PostItem = (props) => {
                 })}
             </div>
             <div className="post-actions">
+
+                {/* Like Section */}
                 <CookiesProvider>
                     <div className={"post-action post-likes" + (likeActive ? ' active' : '')} onClick={() => doToggleLike(props.post.id)}>
                         {likeActive ? (
-                            <IoHeart />
+                            <IoThumbsUp />
                         ) : (
-                            <IoHeartOutline />
+                            <IoThumbsUpOutline />
 
                         )}
                         <NumUnit number={likesCount} onClick={(e) => onShowLikedBy(e)} />
@@ -404,10 +406,6 @@ const PostItem = (props) => {
                         </div>
                     </div>
                 </CookiesProvider>
-                <div className="post-action post-comments" onClick={() => toggleShowComments()}>
-                    <IoChatbubbleEllipsesOutline />
-                    <NumUnit number={commentsCount} />
-                </div>
 
                 {/* Laugh Section */}
                 <CookiesProvider>
@@ -429,13 +427,14 @@ const PostItem = (props) => {
 
                 </CookiesProvider>
 
+
                 {/* Love Section */}
                 <CookiesProvider>
                     <div className={"post-action post-likes" + (loveActive ? ' active' : '')}>
                         {loveActive ? (
-                            <IoThumbsUp onClick={() => doToggleLove(props.post.id)} />
+                            <IoHeart onClick={() => doToggleLove(props.post.id)} />
                         ) : (
-                            <IoThumbsUpOutline onClick={() => doToggleLove(props.post.id)} />
+                            <IoHeartOutline onClick={() => doToggleLove(props.post.id)} />
 
                         )}
                         <NumUnit number={lovesCount} onClick={(e) => onShowLovedBy(e)} />
@@ -452,6 +451,11 @@ const PostItem = (props) => {
                         </div>
                     </div>
                 </CookiesProvider>
+                
+                <div className="post-action post-comments" onClick={() => toggleShowComments()}>
+                    <IoChatbubbleEllipsesOutline />
+                    <NumUnit number={commentsCount} />
+                </div>
 
             </div>
             <div key={'comment-box-' + props.post.id} post={props.post} className={"comment-box d-" + (showComments ? 'show' : 'none')}>
