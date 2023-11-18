@@ -19,10 +19,15 @@ import { Context as AlertContext } from "../context/AlertContext";
 import { Link } from "react-router-dom";
 
 import SlidingMessage from "../components/SlidingMessage";
+import MessageModal from "../components/MessageModal";
 
 register();
 
 const Home = () => {
+  const [messageModalOptions, setMessageModalOptions] = useState({ "open": false, "type": "message", "title": "Message", "message": "Thanks.", "data": {}, "onClose": null });
+  const showMessageModal = (type, title, message, data) => {
+    setMessageModalOptions({ "open": true, "type": type, "title": title, "message": message, "data": data });
+  };
   const {
     state: { token, role },
   } = useContext(AuthContext);
@@ -51,6 +56,7 @@ const Home = () => {
 
   return (
     <>
+      <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
       <div className="main">
         <div className="banner">
           <h1 className="bannerHeading">Welcome to Ad Agency Creatives</h1>
@@ -61,7 +67,12 @@ const Home = () => {
           <div className="searchArea">
             <p className="searchHeader">Search Creative Jobs</p>
             <div className="searchBox">
-              <form action={"/creative-jobs/search/" + search}>
+              <form action={"/creative-jobs/search/" + search} onSubmit={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                showMessageModal("error", "Oops!", "Please enter some text to search.");
+                return false;
+              }}>
                 <div className="row">
                   <div className="col-md-8 col-12 position-relative">
                     {/* <SearchOutline color={"#00000"} width="25px" className="searchIcon" /> */}
@@ -69,8 +80,7 @@ const Home = () => {
                     <input
                       className="searchInput form-control"
                       type="text"
-                      required={true}
-                      placeholder="Search by job title, location etc"
+                      placeholder="Search by job title, location, etc."
                       onChange={(e) => setSearch(e.target.value)}
                     />
                   </div>
