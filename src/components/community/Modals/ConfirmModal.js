@@ -17,17 +17,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="left" ref={ref} {...props} />;
 });
 
-export default function ConfirmDeleteGroupModal(props) {
+export default function ConfirmModal(props) {
     const [open, setOpen] = React.useState(false);
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('sm');
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
     const handleConfirm = () => {
-        setOpen(false);
+        if (props.setOpenModal) {
+            props.setOpenModal(false);
+        } else {
+            setOpen(false);
+        }
 
         if (props.onConfirm) {
             props.onConfirm();
@@ -35,16 +35,19 @@ export default function ConfirmDeleteGroupModal(props) {
     };
 
     const handleClose = () => {
-        setOpen(false);
+        if (props.setOpenModal) {
+            props.setOpenModal(false);
+        } else {
+            setOpen(false);
+        }
     };
+
+    React.useEffect(() => {
+        setOpen(props.openModal ?? false);
+    }, [props.openModal]);
 
     return (
         <React.Fragment>
-            <Tooltip title="Delete Group"  onClick={handleClickOpen} style={{ "cursor": "pointer" }}>
-                <button className="btn btn-dark no-border" >
-                    <IoTrashOutline />
-                </button>
-            </Tooltip>
             <Dialog
                 open={open}
                 onClose={handleClose}

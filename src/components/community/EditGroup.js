@@ -172,7 +172,7 @@ const EditGroup = (props) => {
 
     return (
         <>
-            <Tooltip title="Edit Group" onClick={() => setOpen(true)} style={{ "cursor": "pointer" }}>
+            <Tooltip title="Edit Group" onClick={() => setOpen(true)}>
                 <button className="btn btn-dark no-border" >
                     <IoPencil />
                 </button>

@@ -10,9 +10,9 @@ export const joinGroup = async (data) => {
     return null;
 };
 
-export const leaveGroup = async (data) => {
+export const leaveGroup = async (user_id, data) => {
     try {
-        const response = await api.post("/group-members", data);
+        const response = await api.delete("/group-members/" + user_id, data);
         return response.data.data;
     } catch (error) { 
         return null;
@@ -20,10 +20,10 @@ export const leaveGroup = async (data) => {
     return null;
 };
 
-export const getGroupMembership = async (data) => {
+export const getGroupMembership = async (group_id, user_id) => {
     try {
-        const response = await api.post("/group-members", data);
-        return response.data.data;
+        const response = await api.get("/group-members?filter[group_id]=" + group_id + "&filter[user_id]=" + user_id);
+        return response.data.data[0];
     } catch (error) { 
         return null;
     }
