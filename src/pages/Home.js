@@ -68,10 +68,15 @@ const Home = () => {
             <p className="searchHeader">Search Creative Jobs</p>
             <div className="searchBox">
               <form action={"/creative-jobs/search/" + search} onSubmit={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                showMessageModal("error", "Oops!", "Please enter some text to search.");
-                return false;
+                if (!search || search.length == 0) {
+                  e.preventDefault();
+                  e.stopPropagation();
+
+                  showMessageModal("error", "Oops!", "Please enter some text to search.");
+                  return false;
+                } else {
+                  return true;
+                }
               }}>
                 <div className="row">
                   <div className="col-md-8 col-12 position-relative">
