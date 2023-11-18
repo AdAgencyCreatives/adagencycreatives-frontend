@@ -1,19 +1,23 @@
 import Placeholder from "../../assets/images/placeholder.png";
-import { IoEyeOffOutline, IoEyeOutline, IoTimeOutline, IoTrashOutline } from "react-icons/io5";
+import { IoBanSharp, IoCloseCircleSharp, IoEyeOffOutline, IoEyeOutline, IoPencil, IoRemoveCircleSharp, IoTimeOutline, IoTrashOutline } from "react-icons/io5";
 import { IconButton, Tooltip } from "@mui/material";
 import "../../styles/Groups.scss";
 import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../context/AuthContext";
-import { deleteGroup, getGroups, updateGroup } from "../../context/GroupsDataContext";
+import { joinGroup, leaveGroup, getGroupMembership } from "../../context/GroupMembersDataContext";
 import { useState, useEffect, useContext } from "react";
 import TimeAgo from "../TimeAgo";
 import UtcToLocalDateTime from "../UtcToLocalDateTime";
 import MessageModal from "../MessageModal";
 import { FaEarthAmericas, FaRightToBracket } from "react-icons/fa6";
 import Nathan from "../../assets/images/NathanWalker_ProfilePic-150x150.jpg";
+import EditGroup from "./EditGroup";
+import ConfirmDeleteModal from "./Modals/ConfirmDeleteModal";
+import ConfirmDeleteGroupModal from "./Modals/ConfirmDeleteGroupModal";
 
 const GroupWidget = (props) => {
 
+    const [isAdmin, setIsAdmin] = useState(false);
     const group_statuses = {
         "public": "Public",
         "private": "Private",
@@ -39,11 +43,29 @@ const GroupWidget = (props) => {
 
     useEffect(() => {
         if (user) {
+            setIsAdmin(props.group.user.id == user.id);
         }
-    }, [user]);
+    }, [user, props.group]);
 
     const handleJoinGroup = (e, group) => {
-        //alert(group.name);
+        (async () => {
+            const result = await joinGroup({
+                "user_id": user.uuid,
+                "group_id": group.uuid,
+                "role": "member"
+            });
+            if(result) {
+                showMessageModal("success", "Thanks!", "Group Joined Successfully.", result);
+            } else {
+                showMessageModal("error", "Oops!", "Unable to join group for the moment.", result);
+            }
+        })();
+    };
+
+    const handleDeleteGroup = () => {
+        if (props.onDeleteGroup) {
+            props.onDeleteGroup(props.group);
+        }
     };
 
     return (
@@ -63,9 +85,22 @@ const GroupWidget = (props) => {
                         <FaEarthAmericas color="#a4a4a4" /> {group_statuses[props.group.status]} Group
                     </div>
                     <div className="join-group">
-                        <button className="group-btn" onClick={(e)=> handleJoinGroup(e, props.group)}>
-                            <FaRightToBracket /> Join Group
-                        </button>
+                        {isAdmin ? (
+                            <>
+                                <Tooltip title="Membership Status">
+                                    <div className="group-membership-status">
+                                        Group Admin
+                                    </div>
+                                </Tooltip>
+                                <EditGroup group={props.group} />
+                                <ConfirmDeleteGroupModal title="Confirm Delete Group?" message="Are you sure to delete this group?" onConfirm={handleDeleteGroup} />
+
+                            </>
+                        ) : (
+                            <button className="group-btn" onClick={(e) => handleJoinGroup(e, props.group)}>
+                                <FaRightToBracket /> Join Group
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

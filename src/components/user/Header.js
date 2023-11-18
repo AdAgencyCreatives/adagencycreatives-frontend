@@ -30,7 +30,7 @@ const Header = ({ username }) => {
   }
 
   return (
-    <div className="user-profile-header mb-5">
+    <div className="user-profile-header friends-header">
       {/* <div className="user-avatar">
         <img src={creative ? creative.profile_image : Placeholder} alt="" />
       </div> */}
@@ -55,7 +55,7 @@ const Header = ({ username }) => {
             </div>
           )}
         </div> */}
-        <div className="user-actions">
+        <div className="post-form">
           <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/community-members') ? ' btn-selected' : '')} to="/community-members"><IoPersonAdd /> Add Friend</Link>
           {/* <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/messages') ? ' btn-selected' : '')} to="/messages"><IoMailOpen /> Message</Link> */}
           <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/friends') ? ' btn-selected' : '')} to="/friends"><IoPeopleOutline /> Your Friends</Link>

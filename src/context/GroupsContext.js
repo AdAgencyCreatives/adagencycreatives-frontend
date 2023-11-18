@@ -26,6 +26,21 @@ const reducer = (state, action) => {
         groups: [...state.groups, ...action.payload.data],
         nextPage: action.payload.links.next,
       };
+      case "save_group":
+      return {
+        ...state,
+        groups: (action.payload.reflect ? [action.payload.data, ...state.groups] : state.groups),
+      };
+      case "update_group":
+      return {
+        ...state,
+        groups: state.groups.map((item, index) => item.id == action.payload.data.id ? action.payload.data : item),
+      };
+      case "delete_group":
+      return {
+        ...state,
+        groups: state.groups.filter((item) => item.id != action.payload.data.id),
+      };
     case "set_loading":
       return { ...state, loading: action.payload };
     case "set_form_submit":
@@ -37,10 +52,15 @@ const reducer = (state, action) => {
   }
 };
 
+const logreturn = (data) => {
+  console.log(data);
+  return data;
+};
+
 const getGroups = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/groups?filter[status]=0");
+      const response = await api.get("/groups?sort=-created_at&filter[status]=0");
       dispatch({
         type: "set_groups",
         payload: response.data,
@@ -65,7 +85,7 @@ const getGroup = (dispatch) => {
 const getUserGroups = (dispatch) => {
   return async (id) => {
     try {
-      const response = await api.get("/groups?filter[user_id]=" + id);
+      const response = await api.get("/groups?sort=-created_at&filter[user_id]=" + id);
       const data = response.data;
       dispatch({
         type: "set_groups",
@@ -78,7 +98,7 @@ const getUserGroups = (dispatch) => {
 const searchGroups = (dispatch) => {
   return async (query) => {
     try {
-      const response = await api.get("groups/?filter[name]=" + query);
+      const response = await api.get("groups/?sort=-created_at&filter[status]=0&filter[name]=" + query);
       dispatch({
         type: "set_groups",
         payload: response.data,
@@ -109,14 +129,26 @@ const setLoading = (dispatch, status) => {
 };
 
 const saveGroup = (dispatch) => {
-  return async (uid, data) => {
+  return async (data) => {
     dispatch({
       type: "set_form_submit",
       payload: true,
     });
     try {
-      const response = await api.patch("/group_profile/" + uid, data);
-    } catch (error) {}
+      const response = await api.post("/groups", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      var rdata = response.data;
+      rdata.reflect = data.reflect ? data.reflect : false;
+      dispatch({
+        type: "save_group",
+        payload: rdata,
+      });
+    } catch (error) {
+      console.log(error);
+    }
     dispatch({
       type: "set_form_submit",
       payload: false,
@@ -124,47 +156,45 @@ const saveGroup = (dispatch) => {
   };
 };
 
-const saveAttachment = (dispatch) => {
-  return async (data) => {
+const updateGroup = (dispatch) => {
+  return async (id, data) => {
+    dispatch({
+      type: "set_form_submit",
+      payload: true,
+    });
     try {
-      const response = await api.post("/attachments", data, {
+      const response = await api.post("/groups/update/"+id, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-    } catch (error) {}
+      var rdata = response.data;
+      rdata.reflect = data.reflect ? data.reflect : false;
+      dispatch({
+        type: "update_group",
+        payload: rdata,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    dispatch({
+      type: "set_form_submit",
+      payload: false,
+    });
   };
 };
 
-const removeAttachment = (dispatch) => {
+const deleteGroup = (dispatch) => {
   return async (id) => {
     try {
-      const response = await api.delete("/attachments/" + id);
-    } catch (error) {}
-  };
-};
-
-const saveGroupImage = (dispatch) => {
-  return async (data) => {
-    try {
-      const response = await api.post("/attachments", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-    } catch (error) {}
-  };
-};
-
-const getStats = (dispatch) => {
-  return async () => {
-    try {
-      const response = await api.get("/group_stats");
+      const response = await api.delete("/groups/"+id);
       dispatch({
-        type: "set_stats",
+        type: "delete_group",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
@@ -172,15 +202,13 @@ export const { Context, Provider } = createDataContext(
   reducer,
   {
     getGroups,
-    getStats,
     loadGroups,
     getGroup,
     getUserGroups,
     searchGroups,
     saveGroup,
-    saveAttachment,
-    saveGroupImage,
-    removeAttachment,
+    updateGroup,
+    deleteGroup,
   },
   state
 );

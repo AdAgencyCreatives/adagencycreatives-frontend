@@ -436,6 +436,9 @@ const stringToWords = (inputText) => {
 };
 
 export const containsOffensiveWords = (inputText) => {
+  if(!inputText || inputText.length == 0) {
+    return false;
+  }
   let lowerInputText = inputText.toLowerCase();
   let inputWords = stringToWords(lowerInputText);
 

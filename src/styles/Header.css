@@ -226,18 +226,13 @@ ul.dropdown-list:before {
 }
 
 .btn.btn-dark {
-    border: 2px solid black !important;
+    border: 2px solid black;
     background-color: black !important;
     color: white !important;
 }
 
 .btn.btn-dark:hover {
-    border: 2px solid var(--color-primary) !important;
-    background-color: var(--color-primary) !important;
-}
-
-.btn.btn-dark.no-border:hover {
-    border: 2px solid var(--color-primary) !important;
+    border: 2px solid var(--color-primary);
     background-color: var(--color-primary) !important;
 }
 
@@ -267,6 +262,7 @@ ul.dropdown-list:before {
 }
 
 .btn.btn-dark.btn-selected {
+    border: 2px solid var(--color-primary);
     background-color: var(--color-primary) !important;
 }
 

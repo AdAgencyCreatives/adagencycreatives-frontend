@@ -72,9 +72,9 @@ const CommunityMemberWidget = (props) => {
                                 <IoMailOpen />
                             </Link>
                         </Tooltip>
+                    </div>
                 </div>
-            </div>
-        </div >
+            </div >
         </>
     );
 };

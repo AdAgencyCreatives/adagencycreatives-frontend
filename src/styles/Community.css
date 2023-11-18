@@ -599,3 +599,49 @@ img.post-avatar {
     width: 50px;
     height: 50px;
 }
+
+.group-visibility {
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+    margin: 10px 0px;
+}
+
+.group-visibility select {
+    width: 150px;
+    padding: 10px;
+    border: 1px solid lightgray;
+}
+
+.group-visibility select:focus {
+    border: 1px solid gray;
+}
+
+.group-image-to-upload {
+    width: 75px;
+    min-width: 75px;
+    max-width: 75px;
+    height: 75px;
+    min-height: 75px;
+    max-height: 75px;
+    object-fit: cover;
+    border: 2px solid var(--color-primary);
+}
+
+.groups-header {
+    display: flex;
+}
+
+.friends-header .post-form,
+.groups-header .post-form  {
+    display: flex;
+    column-gap: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.edit-group .postmodal-action {
+    display: flex;
+    column-gap: 10px;
+}
+

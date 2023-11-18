@@ -177,3 +177,13 @@
         }
     }
 }
+
+.postmodal-input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid lightgray;
+}
+
+.postmodal-input:focus {
+    border: 1px solid darkgray;
+}

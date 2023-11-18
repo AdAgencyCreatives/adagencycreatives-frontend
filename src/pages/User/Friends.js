@@ -20,10 +20,12 @@ import {
 } from "../../context/FriendsDataContext";
 
 import MyFriendWidget from "../../components/community/MyFriendWidget";
+import { CircularProgress } from "@mui/material";
 
 const Friends = () => {
-  const [myFriends, setMyFriends] = useState([]);
-  const [myFriendShips, setMyFriendShips] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [myFriends, setMyFriends] = useState(null);
+  const [myFriendShips, setMyFriendShips] = useState(null);
 
   const {
     state: { role, user, token },
@@ -70,6 +72,22 @@ const Friends = () => {
     }
   }, [user, friendshipsParam]);
 
+  useEffect(() => {
+    setIsLoading(true);
+  }, []);
+
+  useEffect(() => {
+    if (user && myFriends) {
+      setIsLoading(false);
+    }
+  }, [user, myFriends]);
+
+  useEffect(() => {
+    if (user && myFriendShips) {
+      setIsLoading(false);
+    }
+  }, [user, myFriendShips]);
+
   return (
     <>
       {token && role && (role == "admin" || role == "creative") ? (
@@ -88,30 +106,38 @@ const Friends = () => {
                     <Header username={username} />
                   </div>
                 </div>
-                <div className="row g-4">
-                  {!(friendshipsParam && friendshipsParam.length) &&
-                    myFriends &&
-                    myFriends.map((my_friend, index) => {
-                      return (
-                        <MyFriendWidget
-                          key={"my-friend-" + my_friend.user.uuid}
-                          my_friend={my_friend}
-                        />
-                      );
-                    })}
+                <div className="row">
+                  {isLoading ? (
+                    <div className="center-page">
+                      <CircularProgress />
+                      <span>Loading ...</span>
+                    </div>
+                  ) : (<>
+                    {!(friendshipsParam && friendshipsParam.length) &&
+                      myFriends &&
+                      myFriends.map((my_friend, index) => {
+                        return (
+                          <MyFriendWidget
+                            key={"my-friend-" + my_friend.user.uuid}
+                            my_friend={my_friend}
+                          />
+                        );
+                      })}
 
-                  {friendshipsParam &&
-                    friendshipsParam.length &&
-                    myFriendShips &&
-                    myFriendShips.map((my_friendship, index) => {
-                      return (
-                        <MyFriendWidget
-                          key={"my-friendship-" + my_friendship.user.uuid}
-                          my_friend={my_friendship}
-                        />
-                      );
-                    })}
+                    {friendshipsParam &&
+                      friendshipsParam.length &&
+                      myFriendShips &&
+                      myFriendShips.map((my_friendship, index) => {
+                        return (
+                          <MyFriendWidget
+                            key={"my-friendship-" + my_friendship.user.uuid}
+                            my_friend={my_friendship}
+                          />
+                        );
+                      })}
+                  </>)}
                 </div>
+
                 {/* <div className="row mt-3">
                   <div className="col-12">
                     <p className="user-count">Viewing 1 - 11 of 11 members</p>
@@ -127,6 +153,7 @@ const Friends = () => {
                     </div>
                   </div>
                 </div> */}
+
               </div>
             </div>
           </div>
