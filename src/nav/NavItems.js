@@ -3,7 +3,7 @@ export const navItems = [
     name: "Home",
     link: "/",
     children: [
-      { name: "About", hashLink: "#about", link: "/about" },
+      { name: "About", hashLink: "/about", link: "/about" },
       { name: "Creatives", hashLink: "#creatives", link: "/creatives" },
       {
         name: "Spotlight",
