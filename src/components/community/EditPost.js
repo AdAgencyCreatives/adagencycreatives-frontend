@@ -34,7 +34,7 @@ const EditPost = (props) => {
     } = useContext(AlertContext);
 
     const {
-        state: { feed_group, formSubmit },
+        state: { formSubmit },
         updatePost, setHaltRefresh,
     } = useContext(CommunityContext);
 

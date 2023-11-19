@@ -52,11 +52,6 @@ const reducer = (state, action) => {
   }
 };
 
-const logreturn = (data) => {
-  console.log(data);
-  return data;
-};
-
 const getGroups = (dispatch) => {
   return async () => {
     try {
@@ -84,13 +79,15 @@ const getMembershipGroups = (dispatch) => {
 const getGroup = (dispatch) => {
   return async (uuid) => {
     try {
-      const response = await api.get("/groups/" + uuid);
+      const response = await api.get("/groups?filter[uuid]=" + uuid);
       const data = response.data.data[0];
       dispatch({
         type: "set_single_group",
         payload: data,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 

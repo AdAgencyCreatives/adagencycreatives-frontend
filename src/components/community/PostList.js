@@ -4,7 +4,7 @@ import { Context as CommunityContext } from "../../context/CommunityContext";
 import PostItem from "./PostItem";
 import { useScrollLoader } from "../../hooks/useScrollLoader";
 
-const PostList = () => {
+const PostList = (props) => {
 
   const [refreshPosts, setRefreshPosts] = useState({ num: 0 });
 
@@ -13,29 +13,29 @@ const PostList = () => {
   } = useContext(AuthContext);
 
   const {
-    state: { posts, feed_group, post_added, post_updated, post_deleted, halt_refresh, nextPage, loading, },
-    getPosts, getFeedGroup, loadPosts,
+    state: { posts, post_added, post_updated, post_deleted, halt_refresh, nextPage, loading, },
+    getPosts, loadPosts, resetPosts,
   } = useContext(CommunityContext);
 
   const loadMore = () => {
-    if (nextPage) loadPosts(nextPage, feed_group);
+    if (nextPage) loadPosts(nextPage, props.feed_group);
   };
 
   useScrollLoader(loading, loadMore);
 
   useEffect(() => {
-    if(halt_refresh) {
+    if (halt_refresh) {
       return;
     }
     if (token) {
-      if (feed_group && feed_group.length > 0) {
-        getPosts(feed_group);
+      if (props.feed_group && props.feed_group.length > 0) {
+        getPosts(props.feed_group);
         console.log("Fetched Posts: " + (new Date())); // trick to force component re-render
       } else {
         //getFeedGroup();
       }
     }
-  }, [token, feed_group, refreshPosts, post_added, post_updated, post_deleted, halt_refresh]);
+  }, [token, props.feed_group, refreshPosts, post_added, post_updated, post_deleted, halt_refresh]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -46,6 +46,11 @@ const PostList = () => {
       });
       // Reload posts after 10 seconds
     }, 15 * 1000);
+
+    (async () => {
+      await resetPosts();
+    })();
+
 
     return () => clearInterval(interval);
   }, []);

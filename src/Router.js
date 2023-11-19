@@ -8,6 +8,7 @@ import MentorResources from "./pages/MentorResources";
 import Publications from "./pages/Publications";
 import Contact from "./pages/Contact";
 import Community from "./pages/Community";
+import GroupPosts from "./pages/GroupPosts";
 import Jobs from "./pages/Jobs/Jobs";
 import CommunityMembers from "./pages/CommunityMembers";
 import Friends from "./pages/User/Friends";
@@ -51,6 +52,11 @@ export const router = createBrowserRouter([
       {
         path: "/community",
         element: <Community />,
+      },
+
+      {
+        path: "/groups/:group_uuid",
+        element: <GroupPosts />,
       },
 
       {

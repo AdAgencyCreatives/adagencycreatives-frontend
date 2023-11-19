@@ -19,7 +19,7 @@ import { CircularProgress } from "@mui/material";
 import ContentEditable from 'react-contenteditable'
 import ConfirmDeleteModal from "../community/Modals/ConfirmDeleteModal";
 
-const CreatePost = () => {
+const CreatePost = (props) => {
 
   const editorRef = useRef(null);
   const editorLog = () => {
@@ -37,7 +37,7 @@ const CreatePost = () => {
   } = useContext(AlertContext);
 
   const {
-    state: { feed_group, formSubmit, },
+    state: { formSubmit, },
     savePost, setHaltRefresh,
   } = useContext(CommunityContext);
 
@@ -66,7 +66,7 @@ const CreatePost = () => {
       uploadPostAttachments.push(postAttachment.id);
     }
     savePost({
-      "group_id": feed_group,
+      "group_id": props.feed_group,
       "content": content,
       "attachment_ids": uploadPostAttachments
     });

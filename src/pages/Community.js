@@ -10,6 +10,7 @@ import { Context as AuthContext } from "../context/AuthContext";
 import RestrictedLounge from "../components/RestrictedLounge";
 
 const Community = () => {
+  const feed_group = "715bfe90-833e-3459-9700-036ac28d3fd4";
   const {
     state: { token, role },
   } = useContext(AuthContext);
@@ -30,8 +31,8 @@ const Community = () => {
                   <LeftSidebar />
                 </div>
                 <div className="col-md-7 order-md-2 order-3">
-                  <CreatePost />
-                  <PostList />
+                  <CreatePost feed_group={feed_group} />
+                  <PostList feed_group={feed_group} />
                 </div>
                 <div className="col-md-3 order-md-3 order-2">
                   <RightSidebarWidgets />

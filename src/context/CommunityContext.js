@@ -2,7 +2,6 @@ import { api } from "../api/api";
 import createDataContext from "./createDataContext";
 
 const state = {
-  feed_group: "715bfe90-833e-3459-9700-036ac28d3fd4",
   posts: [],
   trending_posts: [],
   nextPage: null,
@@ -82,11 +81,6 @@ const reducer = (state, action) => {
         new_members: action.payload.data,
         nextPage: action.payload.links.next,
       };
-    case "set_feed_group":
-      return {
-        ...state,
-        feed_group: action.payload.data[0].uuid,
-      };
     case "set_post_comments":
       return {
         ...state,
@@ -144,6 +138,12 @@ const reducer = (state, action) => {
         posts: [...state.posts, ...action.payload.data],
         nextPage: action.payload.links.next,
       };
+      case "reset_posts":
+      return {
+        ...state,
+        posts: action.payload,
+        nextPage: "",
+      };
     case "set_loading":
       return {
         ...state,
@@ -154,6 +154,7 @@ const reducer = (state, action) => {
         ...state,
         halt_refresh: action.payload,
       };
+
     case "set_form_submit":
       return {
         ...state,
@@ -238,20 +239,6 @@ const getNewMembers = (dispatch) => {
   };
 };
 
-const getFeedGroup = (dispatch) => {
-  return async () => {
-    try {
-      const response = await api.get(
-        "/groups?filter[name]=Feed&filter[status]=0"
-      ); // Only Public Feed Group for Lounge
-      dispatch({
-        type: "set_feed_group",
-        payload: response.data,
-      });
-    } catch (error) {}
-  };
-};
-
 const loadPosts = (dispatch) => {
   return async (page, group_id) => {
     let nextPageNumber = page.substring(
@@ -270,6 +257,17 @@ const loadPosts = (dispatch) => {
         payload: response.data,
       });
       setLoading(dispatch, false);
+    } catch (error) {}
+  };
+};
+
+const resetPosts = (dispatch) => {
+  return async () => {
+    try {
+      dispatch({
+        type: "reset_posts",
+        payload: [],
+      });
     } catch (error) {}
   };
 };
@@ -559,7 +557,6 @@ export const { Context, Provider } = createDataContext(
     getPosts,
     getTrendingPosts,
     getNewMembers,
-    getFeedGroup,
     loadPosts,
     getLikes,
     toggleLike,
@@ -576,6 +573,7 @@ export const { Context, Provider } = createDataContext(
     saveComment,
     updateComment,
     deleteComment,
+    resetPosts,
   },
   state
 );
