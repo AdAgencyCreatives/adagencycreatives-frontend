@@ -39,7 +39,7 @@ const Content = ({ user, role, data, education, experience }) => {
           <div className="content-list">
             {education.map((item) => (
               <div className="content" key={item.id}>
-                <div className="circle">{item.degree.charAt(0)}</div>
+                <div className="circle">{item.degree?.charAt(0)}</div>
                 <div className="top-info">
                   <span className="edu_stats">{item.degree}</span>
                   <span className="year">
@@ -65,7 +65,7 @@ const Content = ({ user, role, data, education, experience }) => {
           <div className="content-list">
             {experience.map((item) => (
               <div className="content" key={item.id}>
-                <div className="circle">{item.company.charAt(0)}</div>
+                <div className="circle">{item.company?.charAt(0)}</div>
                 <div className="top-info">
                   {/* <span className="edu_stats">{item.company}</span> */}
 

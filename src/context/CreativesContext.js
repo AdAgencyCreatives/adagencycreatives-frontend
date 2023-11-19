@@ -112,7 +112,9 @@ const getCreative = (dispatch) => {
         type: "set_single_creative",
         payload: data,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
