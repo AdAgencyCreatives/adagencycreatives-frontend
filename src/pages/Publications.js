@@ -74,7 +74,7 @@ const Publications = () => {
         <div className="row gy-md-1 gy-5 mt-3">
           {publications.map((item, index) => {
             return (
-              <div className="col-md-4 col-sm-6" key={"pub-"+index}>
+              <div className="col-md-4 col-sm-6 publication-container" key={"pub-"+index}>
                 <div className={
                     "text-center" +
                     ((index + 1) % 2
@@ -85,8 +85,9 @@ const Publications = () => {
                     <img
                       src={item.image}
                       className="publication-image"
-                      width={150}
-                      height={150}
+                      // width={150}
+                      // height={150}
+                      alt=""
                     />
                   </a>
                 </div>

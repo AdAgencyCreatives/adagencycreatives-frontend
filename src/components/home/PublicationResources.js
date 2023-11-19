@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import aaa from "../../assets/images/publications/aaa.jpeg";
 import adage from "../../assets/images/publications/adage.jpeg";
 import adsworld from "../../assets/images/publications/adsworld.jpeg";
@@ -10,6 +11,7 @@ import howdesign from "../../assets/images/publications/howdesign.jpeg";
 import littleblack from "../../assets/images/publications/littleblack.jpeg";
 import muse from "../../assets/images/publications/muse.jpeg";
 import thedrum from "../../assets/images/publications/thedrum.jpeg";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 const PublicationResources = () => {
   const publications = [
@@ -67,6 +69,11 @@ const PublicationResources = () => {
     <div id="publications">
       <div className="sectionHeader">
         <h1 className="sectionTitle">Publication Resources</h1>
+        <div>
+          <Link className="browseAll" to="publication-resources">
+            browse all <MdKeyboardDoubleArrowRight />
+          </Link>
+        </div>
       </div>
       {/* Slides */}
       <div className="sectionContent publication-section">

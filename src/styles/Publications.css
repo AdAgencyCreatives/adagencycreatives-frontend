@@ -1,0 +1,9 @@
+.publication-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.publication-container img {
+    width: 100%;
+}
