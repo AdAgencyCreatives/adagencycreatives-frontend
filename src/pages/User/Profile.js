@@ -40,9 +40,9 @@ const Profile = () => {
       if (page == "creative") getCreative(username);
     }
     if (page == "agency") {
-      getAgency(username);
+      getAgency(username, user ? user.username == username : false);
     }
-  }, [page, token]);
+  }, [page, user]);
 
   useEffect(() => {
     if (page == "agency" && Object.keys(data).length) {

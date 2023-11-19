@@ -72,7 +72,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (user) {
-      getAgencyById(user.uuid);
+      getAgencyById(user.uuid, true);
       getVideo(user.uuid);
     }
   }, [user]);

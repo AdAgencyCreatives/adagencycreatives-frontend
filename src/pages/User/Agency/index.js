@@ -34,7 +34,7 @@ const Agency = () => {
 
   useEffect(() => {
     if (user) {
-      getAgencyById(user.uuid);
+      getAgencyById(user.uuid, true);
     }
   }, [user]);
 

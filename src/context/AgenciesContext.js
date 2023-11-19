@@ -57,7 +57,7 @@ const reducer = (state, action) => {
 const getAgencies = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/agencies?filter[status]=1");
+      const response = await api.get("/agencies?filter[status]=1&filter[is_visible]=1");
       dispatch({
         type: "set_agencies",
         payload: response.data,
@@ -67,10 +67,10 @@ const getAgencies = (dispatch) => {
 };
 
 const getAgency = (dispatch) => {
-  return async (slug) => {
+  return async (slug, self=false) => {
     try {
       const response = await api.get(
-        "/agencies?filter[status]=1&filter[slug]=" + slug
+        "/agencies?filter[status]=1&filter[slug]=" + slug + (self ? "" : "&filter[is_visible]=1")
       );
       const data = response.data.data[0];
       const uid = data.user_id;
@@ -84,10 +84,10 @@ const getAgency = (dispatch) => {
 };
 
 const getAgencyById = (dispatch) => {
-  return async (id) => {
+  return async (id, self=false) => {
     try {
       const response = await api.get(
-        "/agencies?filter[status]=1&filter[user_id]=" + id
+        "/agencies?filter[status]=1&filter[user_id]=" + id + (self ? "" : "&filter[is_visible]=1")
       );
       const data = response.data.data[0];
       const uid = data.user_id;
@@ -205,7 +205,7 @@ const searchAgencies = (dispatch) => {
   return async (query) => {
     try {
       const response = await api.get(
-        "/agencies?filter[status]=1&filter[name]=" + query
+        "/agencies?filter[status]=1&filter[is_visible]=1&filter[name]=" + query
       );
       dispatch({
         type: "set_agencies",
