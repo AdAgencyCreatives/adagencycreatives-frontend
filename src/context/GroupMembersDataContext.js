@@ -10,9 +10,9 @@ export const joinGroup = async (data) => {
     return null;
 };
 
-export const leaveGroup = async (user_id, data) => {
+export const leaveGroup = async (id) => {
     try {
-        const response = await api.delete("/group-members/" + user_id, data);
+        const response = await api.delete("/group-members/" + id);
         return response.data.data;
     } catch (error) { 
         return null;

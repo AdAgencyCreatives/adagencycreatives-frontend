@@ -26,8 +26,11 @@
         .message-tabs {
             display: flex;
 
-
             .tab {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                column-gap: 5px;
                 flex: 1;
                 text-align: center;
                 padding: 10px;

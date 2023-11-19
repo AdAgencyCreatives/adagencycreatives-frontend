@@ -122,7 +122,7 @@ const Chat = () => {
                 >
                   <IoFileTrayOutline /> Messages
                 </div>
-                <div
+                {/* <div
                   className={"tab" + (tab == "friends" ? " active" : "")}
                   onClick={() => switchTab("friends")}
                 >
@@ -133,7 +133,7 @@ const Chat = () => {
                   onClick={() => switchTab("groups")}
                 >
                   <HiOutlineUserGroup /> Groups
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="box-content">

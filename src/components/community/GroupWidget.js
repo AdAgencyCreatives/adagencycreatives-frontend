@@ -1,6 +1,6 @@
 import Placeholder from "../../assets/images/placeholder.png";
 import { IoBanSharp, IoCloseCircleSharp, IoEyeOffOutline, IoEyeOutline, IoPencil, IoRemoveCircleSharp, IoTimeOutline, IoTrashOutline, IoTrashSharp } from "react-icons/io5";
-import { IconButton, Tooltip } from "@mui/material";
+import { CircularProgress, IconButton, Tooltip } from "@mui/material";
 import "../../styles/Groups.scss";
 import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../context/AuthContext";
@@ -17,9 +17,11 @@ import ConfirmModal from "./Modals/ConfirmModal";
 
 const GroupWidget = (props) => {
 
+    const [isLoading, setIsLoading] = useState(true);
     const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
     const [openConfirmLeaveModal, setOpenConfirmLeaveModal] = useState(false);
     const [memberRole, setMemberRole] = useState("");
+    const [groupMembership, setGroupMembership] = useState(null);
 
     const group_statuses = {
         "public": "Public",
@@ -53,6 +55,8 @@ const GroupWidget = (props) => {
     const getGroupMembershipAsync = async (group_id, user_id) => {
         const result = await getGroupMembership(group_id, user_id);
         setMemberRole(result ? result.role : "");
+        setGroupMembership(result)
+        setIsLoading(false);
     };
 
     const handleJoinGroup = (e, group) => {
@@ -64,10 +68,11 @@ const GroupWidget = (props) => {
             });
             if (result) {
                 showMessageModal("success", "Thanks!", "Group Joined Successfully.", result);
+                setMemberRole(result.role);
+                setGroupMembership(result);
             } else {
                 showMessageModal("error", "Oops!", "Unable to join group at the moment.", result);
             }
-            getGroupMembershipAsync();
         })();
     };
 
@@ -79,15 +84,14 @@ const GroupWidget = (props) => {
 
     const handleLeaveGroup = () => {
         (async () => {
-            const result = await leaveGroup(user.uuid, {
-                "group_id": props.group.uuid,
-            });
+            const result = await leaveGroup(groupMembership.id);
             if (result) {
                 showMessageModal("success", "Thanks!", "Group Left Successfully.", result);
+                setMemberRole("");
+                setGroupMembership(null);
             } else {
                 showMessageModal("error", "Oops!", "Unable to leave group at the moment.", result);
             }
-            getGroupMembershipAsync();
         })();
     };
 
@@ -103,58 +107,64 @@ const GroupWidget = (props) => {
                         height={150}
                         alt=""
                     />
-                    <div className="agencyName ">{props.group.name}</div>
+                    <div className="agencyName ">
+                        <Link to={"/groups/" + props.group.uuid}>
+                            {props.group.name}
+                        </Link>
+                    </div>
                     <div className="group-info">
                         <FaEarthAmericas color="#a4a4a4" /> {group_statuses[props.group.status]} Group
                     </div>
-                    <div className="join-group">
-                        {memberRole ? (
-                            <>
-                                <Tooltip title="Membership Status">
-                                    <div className="group-membership-status">
-                                        Group {memberRole}
-                                    </div>
-                                </Tooltip>
-                                {memberRole == "Admin" || memberRole == "Moderator" ? (<>
-                                    <EditGroup group={props.group} />
-                                </>) : (<></>)}
-                                {memberRole == "Admin" ? (<>
-                                    <Tooltip title="Delete Group" onClick={() => setOpenConfirmDeleteModal(true)}>
-                                        <button className="btn btn-dark" >
-                                            <IoTrashSharp />
-                                        </button>
+                    {isLoading ? (<CircularProgress />) : (
+                        <div className="join-group">
+                            {memberRole ? (
+                                <>
+                                    <Tooltip title="Membership Status">
+                                        <div className="group-membership-status">
+                                            Group {memberRole}
+                                        </div>
                                     </Tooltip>
-                                    <ConfirmModal
-                                        openModal={openConfirmDeleteModal}
-                                        setOpenModal={setOpenConfirmDeleteModal}
-                                        title="Confirm Delete Group?"
-                                        message="Are you sure to delete this group?"
-                                        onConfirm={handleDeleteGroup}
-                                    />
-                                </>) : (<></>)}
+                                    {memberRole == "Admin" || memberRole == "Moderator" ? (<>
+                                        <EditGroup group={props.group} />
+                                    </>) : (<></>)}
+                                    {memberRole == "Admin" ? (<>
+                                        <Tooltip title="Delete Group" onClick={() => setOpenConfirmDeleteModal(true)}>
+                                            <button className="btn btn-dark" >
+                                                <IoTrashSharp />
+                                            </button>
+                                        </Tooltip>
+                                        <ConfirmModal
+                                            openModal={openConfirmDeleteModal}
+                                            setOpenModal={setOpenConfirmDeleteModal}
+                                            title="Confirm Delete Group?"
+                                            message="Are you sure to delete this group?"
+                                            onConfirm={handleDeleteGroup}
+                                        />
+                                    </>) : (<></>)}
 
-                                {memberRole != "Admin" ? (<>
-                                    <Tooltip title="Leave Group">
-                                        <button className="btn btn-dark" onClick={() => setOpenConfirmLeaveModal(true)}>
-                                            <FaRightFromBracket />
-                                        </button>
-                                    </Tooltip>
-                                    <ConfirmModal
-                                        openModal={openConfirmLeaveModal}
-                                        setOpenModal={setOpenConfirmLeaveModal}
-                                        title="Confirm Leave Group?"
-                                        message="Are you sure to leave this group?"
-                                        onConfirm={handleLeaveGroup}
-                                    />
-                                </>) : (<></>)}
+                                    {memberRole != "Admin" ? (<>
+                                        <Tooltip title="Leave Group">
+                                            <button className="btn btn-dark" onClick={() => setOpenConfirmLeaveModal(true)}>
+                                                <FaRightFromBracket />
+                                            </button>
+                                        </Tooltip>
+                                        <ConfirmModal
+                                            openModal={openConfirmLeaveModal}
+                                            setOpenModal={setOpenConfirmLeaveModal}
+                                            title="Confirm Leave Group?"
+                                            message="Are you sure to leave this group?"
+                                            onConfirm={handleLeaveGroup}
+                                        />
+                                    </>) : (<></>)}
 
-                            </>
-                        ) : (
-                            <button className="btn btn-dark group-btn" onClick={(e) => handleJoinGroup(e, props.group)}>
-                                <FaRightToBracket /> Join Group
-                            </button>
-                        )}
-                    </div>
+                                </>
+                            ) : (
+                                <button className="btn btn-dark group-btn" onClick={(e) => handleJoinGroup(e, props.group)}>
+                                    <FaRightToBracket /> Join Group
+                                </button>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         </>

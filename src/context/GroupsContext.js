@@ -69,6 +69,18 @@ const getGroups = (dispatch) => {
   };
 };
 
+const getMembershipGroups = (dispatch) => {
+  return async (user_id) => {
+    try {
+      const response = await api.get("/groups?filter[member_id]=" + user_id + "&sort=-created_at");
+      dispatch({
+        type: "set_groups",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
 const getGroup = (dispatch) => {
   return async (uuid) => {
     try {
@@ -209,6 +221,7 @@ export const { Context, Provider } = createDataContext(
     saveGroup,
     updateGroup,
     deleteGroup,
+    getMembershipGroups,
   },
   state
 );

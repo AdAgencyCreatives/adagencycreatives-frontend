@@ -22,7 +22,7 @@ const Groups = () => {
 
   const {
     state: { groups, nextPage, loading },
-    getGroups, loadGroups, searchGroups, getUserGroups, updateGroup, deleteGroup,
+    getGroups, loadGroups, searchGroups, getUserGroups, updateGroup, deleteGroup, getMembershipGroups,
   } = useContext(GroupsContext);
 
   const {
@@ -50,6 +50,8 @@ const Groups = () => {
         setGroupsFound(null);
         if (viewQueryParam == "my") {
           getUserGroups(user.uuid);
+        } else if (viewQueryParam == "joined") {
+          getMembershipGroups(user.uuid);
         }
       }
     }
@@ -127,7 +129,7 @@ const Groups = () => {
                           groupsFound.map((group, index) => {
                             return (
                               <>
-                                {group.name == "Feed" || (viewQueryParam != "my" && group.status != "public") ? (<></>) : (<GroupWidget group={group} onUpdateGroup={onUpdateGroup} onDeleteGroup={onDeleteGroup} />)}
+                                {group.name == "Feed" || (viewQueryParam != "my" && viewQueryParam != "joined" && group.status != "public") ? (<></>) : (<GroupWidget key={group.uuid} group={group} onUpdateGroup={onUpdateGroup} onDeleteGroup={onDeleteGroup} />)}
                               </>
                             );
                           })}
