@@ -197,9 +197,6 @@ const Jobs = () => {
             onChange={(item) => addFilter(item, "title")}
           />
         </div>
-        <button onClick={() => {
-          console.log(selectRef.current);
-        }}>Click</button>
       </div>
 
       <div className="filter-item">
