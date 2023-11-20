@@ -36,7 +36,7 @@ const Agencies = () => {
   };
 
   useEffect(() => {
-    if (user) getBookmarks(user.uuid);
+    if (user) getBookmarks(user.uuid,"agencies");
   }, [user]);
 
   return (

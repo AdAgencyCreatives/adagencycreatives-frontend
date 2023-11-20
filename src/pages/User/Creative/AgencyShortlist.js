@@ -28,7 +28,7 @@ const AgencyShortlist = () => {
 
   useEffect(() => {
     if (user) {
-      getBookmarks(user.uuid);
+      getBookmarks(user.uuid,"agencies");
     }
   }, [user]);
 
@@ -45,9 +45,9 @@ const AgencyShortlist = () => {
           bookmarks.map((item, index) => {
             const resource = item.resource;
             return (
-              <div classname="employer-list" key={index}>
-                <div classname="row align-items-center justify-content-between">
-                  <div classname="col-12 d-flex align-items-top">
+              <div className="employer-list" key={index}>
+                <div className="row align-items-center justify-content-between">
+                  <div className="col-12 d-flex align-items-top">
                     <div className="avatar employer me-3">
                       <img
                         src={resource.logo || Placeholder}
@@ -111,7 +111,7 @@ const AgencyShortlist = () => {
                           )}
                         </div>
                       </div>
-                      <div className="col-sm-5 d-flex gap-2 flex-wrap flex-md-nowrap mt-2 mt-sm-0">
+                      <div className="col-sm-6 d-flex gap-2 flex-wrap flex-md-nowrap mt-2 mt-sm-0 justify-content-md-end">
                         <div className="open-jobs-btn m-0">
                           <Link to={`/agency/${resource.slug}`}>
                             Open Jobs - {resource.open_jobs}

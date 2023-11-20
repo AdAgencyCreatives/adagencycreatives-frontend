@@ -617,7 +617,7 @@ const MyResume = () => {
     const file = event.target.files[0];
     const filename = file.name;
     if (name == "resume") {
-      item.items.push({ name: filename });
+      item.items = [{ name: filename }];
     } else if (name == "portfolio_item") {
       item.items.push({ url: URL.createObjectURL(file) });
     }

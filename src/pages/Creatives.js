@@ -122,7 +122,7 @@ const Creatives = () => {
   };
 
   useEffect(() => {
-    if (user) getBookmarks(user.uuid);
+    if (user) getBookmarks(user.uuid,"creatives");
   }, [user]);
 
   useEffect(() => {
@@ -179,7 +179,7 @@ const Creatives = () => {
                   (bookmark) => bookmark.resource.user_id == item.user_id
                 ) || false;
               return (
-                <div className="col-md-4 col-sm-6 col-12" key={`creative-${item.uuid}`}>
+                <div className="col-md-4 col-sm-6 col-12" key={`creative-${item.user_id}`}>
                   <div className="sliderContent agencies-slider">
                     {role == "agency" && (
                       <Tooltip title={"Shortlist"} type="featured">

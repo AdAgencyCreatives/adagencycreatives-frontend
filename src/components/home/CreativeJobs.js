@@ -72,7 +72,7 @@ const CreativeJobs = () => {
                           let parts = key.split("_");
                           let type = parts[1];
                           return (
-                            <Tooltip title={type} type={type}>
+                            <Tooltip title={type} type={type} key={"tool_"+key}>
                               <button className="btn p-0 border-0 me-2">
                                 <IoStar
                                   size={20}
@@ -88,7 +88,7 @@ const CreativeJobs = () => {
                           let parts = key.split("_");
                           let type = parts[1];
                           return (
-                            <Tooltip title={type} type={type}>
+                            <Tooltip title={type} type={type} key={"tool_"+key}>
                               <button className="btn p-0 border-0 me-2">
                                 <IoStar
                                   size={20}

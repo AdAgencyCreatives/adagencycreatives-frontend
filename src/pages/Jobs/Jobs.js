@@ -1,6 +1,8 @@
 import Select from "../../components/Select";
+import Select2 from 'react-select';
+
 import "../../styles/Jobs.scss";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   IoArrowBack,
   IoArrowForward,
@@ -22,6 +24,7 @@ const emailFreq = [
 ];
 
 const Jobs = () => {
+  const selectRef = useRef(null);
   const [statesList, setStates] = useState([]);
   const [citiesList, setCities] = useState([]);
   const [jobTitles, setJobTitles] = useState([]);
@@ -145,6 +148,9 @@ const Jobs = () => {
   };
 
   const addFilter = (item, type) => {
+    console.log(filters);
+    console.log(selectRef)
+
     let updatedFilters = { ...filters, [type]: item };
     setFilters(updatedFilters);
     filterJobs(updatedFilters);
@@ -184,12 +190,16 @@ const Jobs = () => {
       <div className="filter-item">
         <div className="filter-label">Industry Job Title</div>
         <div className="filter-box">
-          <Select
+          <Select2
+            ref={selectRef}
             options={jobTitles}
             placeholder="select one"
             onChange={(item) => addFilter(item, "title")}
           />
         </div>
+        <button onClick={() => {
+          console.log(selectRef.current);
+        }}>Click</button>
       </div>
 
       <div className="filter-item">
@@ -267,7 +277,7 @@ const Jobs = () => {
         <h1 className="jobs-filter-title">Request Job Notifications</h1>
         <form
           onSubmit={async (e) => {
-            e.preventDefault()
+            e.preventDefault();
             await requestNotifications(user.uuid, notifCategory);
             showAlert("Job notifications enabled successfully");
           }}
@@ -280,6 +290,7 @@ const Jobs = () => {
               onChange={(item) => setNotifCategory(item.value)}
               required={true}
               name="notif_title"
+              // value={filters.state}
             />
           </div>
           <div className="job-alert-button">
@@ -418,6 +429,7 @@ const Jobs = () => {
                                       : "")
                                   }
                                   onClick={() => paginate(index + 1)}
+                                  key={"page"+index}
                                 >
                                   <a className="page-link" href="#">
                                     {index + 1}

@@ -35,6 +35,7 @@ const Header = ({ data, role, user }) => {
 
   const isCreative = role == "creative";
   const isOwnProfile = isCreative && user?.uuid == data.user_id;
+  const [isFriend,setIsFriend] = useState(false)
   const [hasSubscription, setSubscription] = useState(false);
 
   useEffect(() => {
@@ -53,6 +54,10 @@ const Header = ({ data, role, user }) => {
     }
     return true;
   };
+
+  useEffect(() => {
+    
+  },[])
 
   return (
     <div className="container">

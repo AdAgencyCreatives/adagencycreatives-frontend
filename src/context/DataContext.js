@@ -183,9 +183,9 @@ const getIndustryExperiences = (dispatch) => {
 };
 
 const getBookmarks = (dispatch) => {
-  return async (uuid) => {
+  return async (uuid,type) => {
     try {
-      const response = await api.get("/bookmarks?filter[user_id]=" + uuid);
+      const response = await api.get("/bookmarks?filter[user_id]=" + uuid + "&resource_type=" + type);
       dispatch({
         type: "set_bookmarks",
         payload: response.data,

@@ -40,7 +40,7 @@ const CreativeShortlist = () => {
 
   useEffect(() => {
     if (user) {
-      getBookmarks(user.uuid);
+      getBookmarks(user.uuid,"creatives");
     }
   }, [user]);
 

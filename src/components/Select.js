@@ -10,9 +10,11 @@ const customStyles = {
 };
 
 const Select = (props) => {
+  console.log(props)
   return (
     <ReactSelect
       {...props}
+      ref={props.innerRef}
       theme={(theme) => ({
         ...theme,
         colors: {
