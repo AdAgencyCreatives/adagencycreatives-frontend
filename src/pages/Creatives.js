@@ -75,7 +75,7 @@ const Creatives = () => {
       return "search3";
     }
 
-    if (role == 'agency' && subscription_status == "active") {
+    if (role == "creative" || (role == 'agency' && subscription_status == "active")) {
       return "search2";
     }
 
@@ -142,7 +142,7 @@ const Creatives = () => {
       return;
     }
 
-    if (role == "agency" && subscription_status == "active") {
+    if (role == "creative" || (role == "agency" && subscription_status == "active")) {
       setCreativeSearchPlaceholder("Search by name, location, or title");
     }
   }, [role, subscription_status]);
