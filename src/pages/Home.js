@@ -37,9 +37,6 @@ const Home = () => {
   const { showAlert } = useContext(AlertContext);
 
   const validateAccess = (e, item) => {
-    e.preventDefault();
-    e.stopPropagation();
-
     if (item && item.roles && item.roles.length > 0) {
       for (let index = 0; index < item.roles.length; index++) {
         const roleToCompare = item.roles[index];
@@ -47,6 +44,10 @@ const Home = () => {
           return true;
         }
       }
+
+      e.preventDefault();
+      e.stopPropagation();
+
       showAlert(item.restrictedMessage);
 
       return false;
@@ -67,16 +68,15 @@ const Home = () => {
           <div className="searchArea">
             <p className="searchHeader">Search Creative Jobs</p>
             <div className="searchBox">
-              <form action={"/creative-jobs/search/" + search} onSubmit={(e) => {
-                if (!search || search.length == 0) {
-                  e.preventDefault();
-                  e.stopPropagation();
-
-                  showMessageModal("error", "Oops!", "Please enter some text to search.");
-                  return false;
-                } else {
-                  return true;
-                }
+              <form action={"/creative-jobs" + (search ? "/search/" + search : "")} onSubmit={(e) => {
+                // if (!search || search.length == 0) {
+                //   e.preventDefault();
+                //   e.stopPropagation();
+                //   showMessageModal("error", "Oops!", "Please enter some text to search.");
+                //   return false;
+                // } else {
+                //   return true;
+                // }
               }}>
                 <div className="row">
                   <div className="col-md-8 col-12 position-relative">
