@@ -1,5 +1,5 @@
 import { Modal, Dialog, CircularProgress } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Context as AuthContext, logActivity } from "../../../context/AuthContext";
 import { Context as ChatContext } from "../../../context/ChatContext";
 import { useState } from "react";
@@ -15,6 +15,10 @@ const Message = ({ open, handleClose, item, type }) => {
   const {
     state: { user },
   } = useContext(AuthContext);
+
+  useEffect(() => {
+    setMessage(false)
+  },[open])
 
   const handleSubmit = () => {
     sendMessage(user.uuid, item.user_id, data.message, type, () =>
