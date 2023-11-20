@@ -135,7 +135,7 @@ const JobList = ({ data, user, showAgency = true }) => {
                     ) : (
                       <Link
                         to={
-                          item.apply_type == "external"
+                          item.apply_type.toLowerCase() == "external"
                             ? item.external_link
                             : ""
                         }
@@ -145,7 +145,7 @@ const JobList = ({ data, user, showAgency = true }) => {
                           if (!isCreative) {
                             showAlert("Login as creative to apply to this job");
                             e.preventDefault();
-                          } else if (item.apply_type == "internal") {
+                          } else if (item.apply_type.toLowerCase() == "internal") {
                             e.preventDefault();
                             setJob(item.id);
                             setOpen(true);
