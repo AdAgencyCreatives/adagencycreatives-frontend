@@ -13,6 +13,7 @@ import sample from "../../../assets/images/sample.mp4";
 import React, { useContext, useEffect, useState } from "react";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
+import { getMyFriends } from "../../../context/FriendsDataContext";
 
 const Sidebar = ({ data, role, user }) => {
   const {
@@ -30,7 +31,7 @@ const Sidebar = ({ data, role, user }) => {
   const isOwnProfile = isCreative && user?.uuid == data.user_id;
   const checkPermissions = () => {
     if (Cookies.get("token")) {
-      if (isOwnProfile) {
+      if (isOwnProfile || isFriend) {
         // check if current profile is the profie of logged in user
         return true;
       } else if (role == "admin" || subscription) {
@@ -41,9 +42,17 @@ const Sidebar = ({ data, role, user }) => {
     return false;
   };
 
+  const [isFriend,setIsFriend] = useState(false)
+
+  useEffect(() => {
+    getMyFriends().then(result => {
+      setIsFriend(result.some((item) => item.user.uuid == data.user_id ))
+    });
+  },[])
+
   useEffect(() => {
     if (checkPermissions()) getResume(data.user_id);
-  }, [user, subscription]);
+  }, [user, subscription, isFriend]);
 
   useEffect(() => {
     if (user?.role == "agency" || user?.role == "advisor") {

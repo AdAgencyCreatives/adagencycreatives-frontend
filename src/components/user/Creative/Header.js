@@ -14,6 +14,7 @@ import FriendshipWidget from "../../../components/community/FriendshipWidget";
 import Message from "../../dashboard/Modals/Message";
 import Invite from "./Invite";
 import useShortlist from "../../../hooks/useShortlist";
+import { getMyFriends } from "../../../context/FriendsDataContext";
 
 const Header = ({ data, role, user }) => {
   const [allowed, setAllowed] = useState(false);
@@ -56,7 +57,9 @@ const Header = ({ data, role, user }) => {
   };
 
   useEffect(() => {
-    
+    getMyFriends().then(result => {
+      setIsFriend(result.some((item) => item.user.uuid == data.user_id ))
+    });
   },[])
 
   return (
@@ -91,7 +94,7 @@ const Header = ({ data, role, user }) => {
             </div>
             <div className="col-md-6">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
-                {(isOwnProfile || !isCreative) && (
+                {(isOwnProfile || !isCreative || isFriend) && (
                   <a
                     href={data.resume}
                     target="__blank"
