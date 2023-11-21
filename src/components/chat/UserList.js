@@ -21,15 +21,38 @@ const UserList = ({ data, handleItemClick }) => {
     return result;
   };
 
-  const {state:{activeContact}} = useContext(Context)
+  const { state: { activeContact } } = useContext(Context)
   function sanitizeText(text) {
     // Remove links with <br/>
     const sanitizedText = text.replace(/<br\/>.*?s3\.amazonaws\.com.*?(\s|$)/g, ' ');
-  
+
     // Remove any extra whitespace
     return sanitizedText;
   }
-  
+
+  const getShortMessage = (messageText) => {
+    let newMessage = messageText;
+    while (newMessage.indexOf("<br>") >= 0 || newMessage.indexOf("<br/>") >= 0 || newMessage.indexOf("<br />") >= 0) {
+      newMessage = newMessage.replace("<br>", "\n");
+      newMessage = newMessage.replace("<br/>", "\n");
+      newMessage = newMessage.replace("<br />", "\n");
+    }
+
+    while (newMessage.indexOf("<div>") >= 0 || newMessage.indexOf("</div>") >= 0) {
+      newMessage = newMessage.replace("<div>", "\n");
+      newMessage = newMessage.replace("</div>", "\n");
+    }
+
+    while (newMessage.indexOf("\n\n") >= 0) {
+      newMessage = newMessage.replace("\n\n", "\n");
+    }
+
+    let lines = newMessage.indexOf("\n") >= 0 ? newMessage.split('\n') : [newMessage];
+    let shortMessage =  (lines.length > 3 ? lines.slice(0, 3) : lines).join("<br />");
+
+    return shortMessage;
+  };
+
   return (
     <ul className="users-list">
       {data.map((item) => (
@@ -38,7 +61,7 @@ const UserList = ({ data, handleItemClick }) => {
           onClick={() => handleItemClick(item.contact)}
           key={item.id}
         >
-          <img src={item.contact.image || Avatar} height={40} width={40} />
+          <img src={item.contact.image || Avatar} height={40} width={40} alt="" />
           <div className="user-details">
             <div className="d-flex justify-content-between align-items-center">
               <div className="username">
@@ -48,7 +71,7 @@ const UserList = ({ data, handleItemClick }) => {
                 {parseDateShort(item.created_at)}
               </div>
             </div>
-            <div className="user-message">{sanitizeText(item.message)}</div>
+            <div className="user-message" dangerouslySetInnerHTML={{ __html: getShortMessage(sanitizeText(item.message)) }}></div>
           </div>
         </li>
       ))}
