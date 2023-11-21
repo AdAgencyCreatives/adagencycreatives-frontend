@@ -59,7 +59,7 @@ const Contact = () => {
             value={formData.message}
             onChange={handleChange}
           />
-          <ReCAPTCHA sitekey="Your client site key"/>,
+          <ReCAPTCHA sitekey="6LflnAEkAAAAAMC-wK6kWCLZ3OGbIYgDzCodr50o"/>,
           <button className="submit-btn">Send</button>
         </div>
       </div>
