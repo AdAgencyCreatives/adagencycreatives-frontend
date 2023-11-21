@@ -1,6 +1,6 @@
 import axios from "axios";
-
-export const baseUrl = "https://api.noorsofttechdev.com";
+console.log(process.env)
+export const baseUrl = process.env.REACT_APP_APP_URL;
 let auth = null;
 
 const api = axios.create({
