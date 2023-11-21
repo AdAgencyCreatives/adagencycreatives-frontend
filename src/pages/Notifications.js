@@ -14,16 +14,16 @@ import TimeAgo from "../components/TimeAgo";
 import UtcToLocalDateTime from "../components/UtcToLocalDateTime";
 import NotificationWidget from "../components/community/NotificationWidget";
 import { CircularProgress } from "@mui/material";
+import RestrictedLounge from "../components/RestrictedLounge";
 
 const Notifications = () => {
-
   const [isLoading, setIsLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [creative, setCreative] = useState([]);
 
   const {
     state: { role, user, token, notifications_count },
-    getNotificationsCount
+    getNotificationsCount,
   } = useContext(AuthContext);
 
   const getNotificationsAsync = async (user) => {
@@ -57,41 +57,54 @@ const Notifications = () => {
   };
 
   return (
-    <div className="dark-container">
-      <div className="container-fluid px-2 px-md-5">
-        {/* <div className="row">
+    <>
+      {token && role && (role == "admin" || role == "creative") ? (
+        <div className="dark-container">
+          <div className="container-fluid px-2 px-md-5">
+            {/* <div className="row">
           <div className="col-12">
             <Header username={username} />
           </div>
         </div> */}
-        <div className="row">
-          <div className="col-md-2 mb-3">
-            <LeftSidebar />
-          </div>
-          <div className="col-md-10">
-            {isLoading ? (
-              <div className="center-page">
-                <CircularProgress />
-                <span>Loading ...</span>
+            <div className="row">
+              <div className="col-md-2 mb-3">
+                <LeftSidebar />
               </div>
-            ) : (<>
-              {notifications && notifications.length ? (
-                <div className="notif-list">
-                  {notifications && notifications.map((notification, index) => {
-                    return (
-                      <NotificationWidget key={"notification-" + notification.id} notification={notification} creative={creative} loadNotifications={loadNotifications} />
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="center-page">
-                  Sorry, nothing here.
-                </div>
-              )}</>)}
+              <div className="col-md-10">
+                {isLoading ? (
+                  <div className="center-page">
+                    <CircularProgress />
+                    <span>Loading ...</span>
+                  </div>
+                ) : (
+                  <>
+                    {notifications && notifications.length ? (
+                      <div className="notif-list">
+                        {notifications &&
+                          notifications.map((notification, index) => {
+                            return (
+                              <NotificationWidget
+                                key={"notification-" + notification.id}
+                                notification={notification}
+                                creative={creative}
+                                loadNotifications={loadNotifications}
+                              />
+                            );
+                          })}
+                      </div>
+                    ) : (
+                      <div className="center-page">Sorry, nothing here.</div>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div >
+      ) : (
+        <RestrictedLounge />
+      )}
+    </>
   );
 };
 
