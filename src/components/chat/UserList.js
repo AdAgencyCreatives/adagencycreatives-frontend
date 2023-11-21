@@ -43,6 +43,11 @@ const UserList = ({ data, handleItemClick }) => {
       newMessage = newMessage.replace("</div>", "\n");
     }
 
+    while (newMessage.indexOf("<p>") >= 0 || newMessage.indexOf("</p>") >= 0) {
+      newMessage = newMessage.replace("<p>", "\n");
+      newMessage = newMessage.replace("</p>", "\n");
+    }
+
     while (newMessage.indexOf("\n\n") >= 0) {
       newMessage = newMessage.replace("\n\n", "\n");
     }
