@@ -164,7 +164,7 @@
             min-height: 125px;
             max-height: 125px;
             object-fit: cover;
-            border: 2px solid var(--color-primary);
+            // border: 2px solid var(--color-primary);
             margin: 5px
         }
 
@@ -186,7 +186,7 @@
                 left: 0;
                 object-fit: contain;
                 margin: 5px;
-            border: 2px solid var(--color-primary);
+                // border: 2px solid var(--color-primary);
             }
         }
     }
