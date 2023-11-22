@@ -23,7 +23,7 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
       " <li>• Pipeline Capabilities</li>" +
       "</ul>",
       link:
-        "https://buy.stripe.com/test_3cseVIbU60qg3aU28b?prefilled_email=" +
+        process.env.REACT_APP_POST_A_CREATIVE_JOB +
         user.email,
     },
     {
@@ -43,7 +43,7 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
       " <li>• Pipeline Capabilities</li>" +
       "</ul>",
       link:
-        "https://buy.stripe.com/test_7sI8xk6zM6OE4eY6ot?prefilled_email=" +
+        process.env.REACT_APP_MULTIPLE_CREATIVE_JOBS +
         user.email,
     },
     {
@@ -64,7 +64,7 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
       " <li>• Pipeline Capabilities</li>" +
       "</ul>",
       link:
-        "https://buy.stripe.com/test_00g00O2jwflafXG148?prefilled_email=" +
+        process.env.REACT_APP_PREMIUM_CREATIVE_JOBS +
         user.email,
     },
     {
