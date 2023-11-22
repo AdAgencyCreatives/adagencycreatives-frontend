@@ -29,7 +29,7 @@ const CommunityMemberWidget = (props) => {
 
     return (
         <>
-            <div className="col-md-4 col-sm-6 col-12">
+            <div className="col-lg-4 col-md-6 col-12" style={{ "margin-bottom": "10px" }}>
                 <div className="sliderContent members-list">
                     <img
                         src={props.creative.profile_image || Placeholder}
@@ -68,7 +68,7 @@ const CommunityMemberWidget = (props) => {
                     <div className="user-actions">
                         <FriendshipWidget creative={props.creative} />
                         <Tooltip title="View Messages">
-                            <Link className="btn btn-dark no-border" to={"/messages/"}>
+                            <Link className="btn btn-dark no-border" to={"/messages/" + props.creative.user_id}>
                                 <IoMailOpen />
                             </Link>
                         </Tooltip>

@@ -636,6 +636,7 @@ img.post-avatar {
 .groups-header .post-form  {
     display: flex;
     column-gap: 10px;
+    row-gap: 10px;
     width: 100%;
     margin-bottom: 20px;
 }
@@ -645,3 +646,6 @@ img.post-avatar {
     column-gap: 10px;
 }
 
+.friends-header-links {
+    flex-wrap: wrap;
+}

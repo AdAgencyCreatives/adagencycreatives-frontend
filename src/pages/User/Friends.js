@@ -97,10 +97,10 @@ const Friends = () => {
               Friends
             </h1>
             <div className="row">
-              <div className="col-md-2 mb-3">
+              <div className="col-lg-2 col-md-3 col-sm-6 mb-3">
                 <LeftSidebar />
               </div>
-              <div className="col-md-10">
+              <div className="col-lg-10 col-md-9 col-sm-6">
                 <div className="row">
                   <div className="col-12">
                     <Header username={username} />

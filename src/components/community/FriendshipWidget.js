@@ -1,5 +1,5 @@
 import Placeholder from "../../assets/images/placeholder.png";
-import { IoEarth, IoBookmarkOutline, IoLocationOutline, IoMailOpen, IoPersonAdd, IoClose, IoCloseSharp, IoCheckmarkCircleSharp, IoBandageOutline, IoBanSharp } from "react-icons/io5";
+import { IoEarth, IoBookmarkOutline, IoLocationOutline, IoMailOpen, IoPersonAdd, IoClose, IoCloseSharp, IoCheckmarkCircleSharp, IoBandageOutline, IoBanSharp, IoTrash } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { Context as AuthContext, logActivity } from "../../context/AuthContext";
@@ -162,6 +162,7 @@ const FriendshipWidget = (props) => {
                                 </div>
                             </Tooltip>
                         </>) : (<></>)}
+
                         {hasFriendshipRecord && friendshipRecord.status == "pending" ? (<>
                             <Tooltip title="Cancel Friendship">
                                 <button className="btn btn-dark no-border" onClick={(e) => handleCancelFriendship(e, friendshipRecord, props.creative)}>
@@ -190,6 +191,17 @@ const FriendshipWidget = (props) => {
                                 </button>
                             </Tooltip>
                         </>) : (<></>)}
+
+                        {(hasFriendshipRecord && friendshipRecord.status == "accepted") || (hasFriendRequestRecord && friendRequestRecord.status == "accepted") ? (<>
+                            <Tooltip title="Unfriend">
+                                <button className="btn btn-dark no-border" onClick={(e) => {
+                                    alert("under process");
+                                }}>
+                                    <IoTrash />
+                                </button>
+                            </Tooltip>
+                        </>) : (<></>)}
+
                     </>)}
                     {/* <br />
             {user.uuid}<br />
