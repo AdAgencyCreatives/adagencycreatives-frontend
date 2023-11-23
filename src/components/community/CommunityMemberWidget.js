@@ -16,6 +16,8 @@ import FriendshipWidget from "./FriendshipWidget";
 const CommunityMemberWidget = (props) => {
 
     const [isMounted, setIsMounted] = useState(false);
+    const [visibleAfterProcess, setVisibleAfterProcess] = useState(true);
+
     useEffect(() => {
         setIsMounted(true);
         return () => {
@@ -27,54 +29,67 @@ const CommunityMemberWidget = (props) => {
         state: { role, user, token },
     } = useContext(AuthContext);
 
+    const isOwnProfile = user?.uuid == props.creative?.user_id;
+
     return (
         <>
-            <div className="col-lg-4 col-md-6 col-12" style={{ "margin-bottom": "10px" }}>
-                <div className="sliderContent members-list">
-                    <img
-                        src={props.creative.profile_image || Placeholder}
-                        className="candidateLogo"
-                        width={150}
-                        height={150}
-                        alt=""
-                    />
-                    <div className="member-data">
-                        <div className="agencyName">
-                            <Link className="text-dark" to={`/creative/${props.creative.slug}`}>
-                                {props.creative.name}
-                            </Link></div>
-                        <div className="position">{props.creative.title}</div>
-                        {props.creative.location && (
-                            <div className="job-location location">
-                                {props.creative.location && (props.creative.location.state || props.creative.location.city) ? (
-                                    <IoLocationOutline />
-                                ) : (
-                                    <></>
-                                )}
-                                <Link to={`/creative-location/${props.creative.location.state}`}>
-                                    {props.creative.location.state}
-                                </Link>
-                                {props.creative.location && props.creative.location.state && props.creative.location.city ? (
-                                    <span>,&nbsp;</span>
-                                ) : (
-                                    <></>
-                                )}
-                                <Link to={`/creative-location/${props.creative.location.city}`}>
-                                    {props.creative.location.city}
-                                </Link>
-                            </div>
-                        )}
+            {visibleAfterProcess && (
+                <div className="col-lg-4 col-md-6 col-12" style={{ "marginBottom": "10px" }}>
+                    <div className="sliderContent members-list">
+                        <img
+                            src={props.creative.profile_image || Placeholder}
+                            className="candidateLogo"
+                            width={150}
+                            height={150}
+                            alt=""
+                        />
+                        <div className="member-data">
+                            <div className="agencyName">
+                                <Link className="text-dark" to={`/creative/${props.creative.slug}`}>
+                                    {props.creative.name}
+                                </Link></div>
+                            <div className="position">{props.creative.title}</div>
+                            {props.creative.location && (
+                                <div className="job-location location">
+                                    {props.creative.location && (props.creative.location.state || props.creative.location.city) ? (
+                                        <IoLocationOutline />
+                                    ) : (
+                                        <></>
+                                    )}
+                                    <Link to={`/creative-location/${props.creative.location.state}`}>
+                                        {props.creative.location.state}
+                                    </Link>
+                                    {props.creative.location && props.creative.location.state && props.creative.location.city ? (
+                                        <span>,&nbsp;</span>
+                                    ) : (
+                                        <></>
+                                    )}
+                                    <Link to={`/creative-location/${props.creative.location.city}`}>
+                                        {props.creative.location.city}
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
+                        <div className="user-actions">
+                            <FriendshipWidget creative={props.creative} visibleAfterProcess={visibleAfterProcess} setVisibleAfterProcess={setVisibleAfterProcess} />
+                            {!isOwnProfile && (
+                                <Tooltip title="View Messages">
+                                    <Link className="btn btn-dark no-border" to={"/messages/" + props.creative.user_id}>
+                                        <IoMailOpen />
+                                    </Link>
+                                </Tooltip>
+                            )}
+
+                            {isOwnProfile && (
+                                <div className="friendship-request-status">
+                                    Your Profile
+                                </div>
+                            )}
+
+                        </div>
                     </div>
-                    <div className="user-actions">
-                        <FriendshipWidget creative={props.creative} />
-                        <Tooltip title="View Messages">
-                            <Link className="btn btn-dark no-border" to={"/messages/" + props.creative.user_id}>
-                                <IoMailOpen />
-                            </Link>
-                        </Tooltip>
-                    </div>
-                </div>
-            </div >
+                </div >
+            )}
         </>
     );
 };

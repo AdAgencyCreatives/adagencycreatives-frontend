@@ -65,6 +65,16 @@ export const respondFriendship = async (data) => {
     return { "status": "error", "data": null };
 };
 
+export const unfriend = async (data) => {
+    try {
+        const response = await api.post("/friendships/terminate", data);
+        return { "status": "success", "data": response.data };
+    } catch (error) {
+        return { "status": "error", "data": error };
+    }
+    return { "status": "error", "data": null };
+};
+
 export const getCreativeById = async (id) => {
       try {
         const response = await api.get("/creatives?filter[user_id]=" + id);

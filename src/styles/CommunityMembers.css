@@ -106,4 +106,5 @@ span.count-number {
     border-radius: 6px;
     user-select: none;
     -moz-user-select: none;
+    min-height: 40px;
 }

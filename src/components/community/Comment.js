@@ -10,7 +10,11 @@ import { Context as CommunityContext } from "../../context/CommunityContext";
 import ConfirmDeleteModal from "./Modals/ConfirmDeleteModal";
 import EditComment from "./EditComment";
 
+import useHelper from "../../hooks/useHelper";
+
 const Comment = (props) => {
+
+    const { injectHyperlinks } = useHelper();
 
     const {
         state: { user },
@@ -43,6 +47,10 @@ const Comment = (props) => {
         deleteComment(props.post.id, props.comment.uuid);
     };
 
+    const processCommentContent = (text) => {
+        return injectHyperlinks(text);
+    };
+    
     return (
         <div className="comment">
             {props.comment.user_id == user.uuid ? (
@@ -73,7 +81,7 @@ const Comment = (props) => {
                         {props.comment.user}
                     </a>
                 </p>
-                <div className="content" dangerouslySetInnerHTML={{ __html: props.comment.content }} />
+                <div className="content" dangerouslySetInnerHTML={{ __html: processCommentContent(props.comment.content) }} />
                 {/* <div className="reply-section">
                     <IoArrowRedoSharp />
                     Reply Comment

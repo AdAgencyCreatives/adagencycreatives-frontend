@@ -29,10 +29,13 @@ import ConfirmDeleteModal from "./Modals/ConfirmDeleteModal";
 import EditPost from "./EditPost";
 import CreateComment from "./CreateComment";
 import Comment from "./Comment";
+import useHelper from "../../hooks/useHelper";
 
 import { CookiesProvider, useCookies } from "react-cookie";
 
 const PostItem = (props) => {
+
+    const { injectHyperlinks } = useHelper();
 
     const showMaxLikedBy = 5;
     const showLikedByCookieKey = "post-showLikedBy-" + props.post.id;
@@ -327,6 +330,10 @@ const PostItem = (props) => {
         deletePost(props.post.id);
     };
 
+    const processPostContent = (plainText) => {
+        return injectHyperlinks(plainText);
+    };
+
     return (
         <div className="post-item">
             <div className="post-header">
@@ -362,17 +369,17 @@ const PostItem = (props) => {
                 )}
             </div>
             <div className="post-content">
-                <div className="post-body" dangerouslySetInnerHTML={{ __html: postContent }} />
+                <div className="post-body" dangerouslySetInnerHTML={{ __html: processPostContent(postContent) }} />
             </div>
             <div className="post-images">
                 {props.post.attachments && props.post.attachments.map((attachment, index) => {
                     return (<>
                         {attachment.resource_type && attachment.resource_type == "post_attachment_video" ? (
                             <div className="video-container">
-                            <video className="video" controls muted playsInline>
-                                <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
-                                Sorry, your browser doesn't support videos.
-                            </video>
+                                <video className="video" controls muted playsInline>
+                                    <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
+                                    Sorry, your browser doesn't support videos.
+                                </video>
                             </div>
                         ) : (
                             <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
@@ -453,7 +460,7 @@ const PostItem = (props) => {
                         </div>
                     </div>
                 </CookiesProvider>
-                
+
                 <div className="post-action post-comments" onClick={() => toggleShowComments()}>
                     <IoChatbubbleEllipsesOutline />
                     <NumUnit number={commentsCount} />

@@ -3,7 +3,7 @@ import { IoEarth, IoBookmarkOutline, IoLocationOutline, IoMailOpen, IoPersonAdd,
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { Context as AuthContext, logActivity } from "../../context/AuthContext";
-import { getSingleFriendship, requestFriendship, respondFriendship } from "../../context/FriendsDataContext";
+import { getSingleFriendship, requestFriendship, respondFriendship, unfriend } from "../../context/FriendsDataContext";
 import MessageModal from "../MessageModal";
 
 import SlidingMessage from "../../components/SlidingMessage";
@@ -12,6 +12,9 @@ import { CircularProgress } from "@mui/material";
 import { saveNotification } from "../../context/NotificationsDataContext";
 
 const FriendshipWidget = (props) => {
+
+    const queryParams = new URLSearchParams(window.location.search);
+    const friendshipsParam = queryParams.get("friendships");
 
     const [messageModalOptions, setMessageModalOptions] = useState({ "open": false, "type": "message", "title": "Message", "message": "Thanks.", "data": {}, "onClose": null });
     const [loadingFriendshipRecord, setLoadingFriendshipRecord] = useState(false);
@@ -35,6 +38,7 @@ const FriendshipWidget = (props) => {
         "accepted": "Accepted",
         "declined": "Declined",
         "cancelled": "Cancelled",
+        "unfriended": "Unfriended",
     };
 
     const showMessageModal = (type, title, message, data) => {
@@ -51,6 +55,9 @@ const FriendshipWidget = (props) => {
         if (friendshipRequestResult && friendshipRequestResult.status) {
             if (friendshipRequestResult.status == "success") {
                 showMessageModal("success", "Thanks!", friendshipRequestResult.data.message, null);
+                // if(friendshipsParam && friendshipsParam == "requests" && props.setVisibleAfterProcess) {
+                //     props.setVisibleAfterProcess(false);
+                // }
             } else if (friendshipRequestResult.status == "error") {
                 if (friendshipRequestResult.data) {
                     showMessageModal("error", "Oops!", friendshipRequestResult.data.message, null);
@@ -114,6 +121,16 @@ const FriendshipWidget = (props) => {
         getSingleFriendshipAsync();
     };
 
+    const unfriendAsync = async (creative) => {
+        let result = await unfriend({
+            "friend_id": creative.user_id
+        });
+        showMessageModal("success", "Thanks!", result.data.message, null);
+        logActivity(user.uuid, "friendship_responded", "Unfriended with Creative: " + creative.name, "{user_id:'" + user.uuid + "', creative_id:'" + creative.id + "', status:'cancelled'}");
+        getSingleFriendshipAsync();
+        getSingleFriendRequestAsync();
+    };
+
     const respondFriendshipAsync = async (creative, status) => {
         let result = await respondFriendship({
             "request_id": friendRequestRecord.id,
@@ -127,6 +144,11 @@ const FriendshipWidget = (props) => {
     const handleCancelFriendship = (evt, friendshipRecord, creative) => {
         cancelFriendshipAsync(friendshipRecord, creative);
         sendFriendshipRespondedNotificationAsync(creative, "cancelled");
+    };
+
+    const handleUnfriend = (evt, creative) => {
+        unfriendAsync(creative);
+        sendFriendshipRespondedNotificationAsync(creative, "unfriended");
     };
 
     const sendFriendshipRequestedNotificationAsync = async (creative) => {
@@ -155,7 +177,7 @@ const FriendshipWidget = (props) => {
                     {loadingFriendshipRecord || loadingFriendRequestRecord ? (
                         <CircularProgress />
                     ) : (<>
-                        {(hasFriendshipRecord && friendshipRecord.status) || (hasFriendRequestRecord && friendRequestRecord && (friendRequestRecord.status == "accepted" || friendRequestRecord.status == "declined")) ? (<>
+                        {(hasFriendshipRecord && friendshipRecord && friendshipRecord.status) || (hasFriendRequestRecord && friendRequestRecord && (friendRequestRecord.status == "accepted" || friendRequestRecord.status == "declined")) ? (<>
                             <Tooltip title="Friendship Status">
                                 <div className="friendship-request-status">
                                     {friendship_statuses[(friendshipRecord ? friendshipRecord.status : (friendRequestRecord ? friendRequestRecord.status : ""))]}
@@ -171,7 +193,7 @@ const FriendshipWidget = (props) => {
                             </Tooltip>
                         </>) : (<></>)}
 
-                        {(!hasFriendshipRecord || friendshipRecord.status == "cancelled") && (!hasFriendRequestRecord) ? (<>
+                        {(!hasFriendshipRecord || (hasFriendshipRecord && (friendshipRecord.status == "declined" || friendshipRecord.status == "cancelled" || friendshipRecord.status == "unfriended"))) && (!hasFriendRequestRecord || (hasFriendRequestRecord && friendRequestRecord.status == "unfriended")) ? (<>
                             <Tooltip title="Request Friendship">
                                 <button className="btn btn-dark no-border" onClick={(e) => handleRequestFriendship(e, props.creative)}>
                                     <IoPersonAdd />
@@ -179,7 +201,7 @@ const FriendshipWidget = (props) => {
                             </Tooltip>
                         </>) : (<></>)}
 
-                        {hasFriendRequestRecord && !(friendRequestRecord.status == "accepted" || friendRequestRecord.status == "declined") ? (<>
+                        {hasFriendRequestRecord && !(friendRequestRecord.status == "accepted" || friendRequestRecord.status == "declined" || friendRequestRecord.status == "unfriended") ? (<>
                             <Tooltip title="Accept Friendship">
                                 <button className="btn btn-dark no-border" onClick={(e) => handleRespondFriendship(e, props.creative, "accepted")}>
                                     <IoCheckmarkCircleSharp />
@@ -194,9 +216,7 @@ const FriendshipWidget = (props) => {
 
                         {(hasFriendshipRecord && friendshipRecord.status == "accepted") || (hasFriendRequestRecord && friendRequestRecord.status == "accepted") ? (<>
                             <Tooltip title="Unfriend">
-                                <button className="btn btn-dark no-border" onClick={(e) => {
-                                    alert("under process");
-                                }}>
+                                <button className="btn btn-dark no-border" onClick={(e) => handleUnfriend(e, props.creative)}>
                                     <IoTrash />
                                 </button>
                             </Tooltip>
