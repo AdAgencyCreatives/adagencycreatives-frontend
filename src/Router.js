@@ -35,6 +35,7 @@ import Portfolio from "./pages/Mentor/Portfolio";
 import Business from "./pages/Mentor/Business";
 import Tech from "./pages/Mentor/Tech";
 import ResetPassword from "./pages/ResetPassword";
+import FilmFestival from "./pages/FilmFestival";
 
 export const router = createBrowserRouter([
   {
@@ -219,6 +220,10 @@ export const router = createBrowserRouter([
       {
         path: "/loginas/:token",
         element: <LoginAs />,
+      },
+      {
+        path: "/film-festival",
+        element: <FilmFestival />,
       },
     ],
   },

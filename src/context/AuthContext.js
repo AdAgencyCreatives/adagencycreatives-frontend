@@ -18,6 +18,7 @@ const state = {
   messageAlert: { type: "", message: "", display: "" },
   subscription_status: "",
   advance_search_capabilities: false,
+  is_film_festival_visible: true,
 };
 
 const authReducer = (state, action) => {
@@ -51,6 +52,9 @@ const authReducer = (state, action) => {
 
     case "show_message_alert":
       return { ...state, messageAlert: action.payload };
+
+    case "set_is_film_festival_visible":
+      return { ...state, is_film_festival_visible: action.payload };
 
     default:
       return state;
@@ -118,9 +122,9 @@ const signup = (dispatch) => {
         response.data.uuid,
         "signup",
         "You signed up as " +
-          response.data.role +
-          ", via email: " +
-          response.data.email,
+        response.data.role +
+        ", via email: " +
+        response.data.email,
         "{user_id:" + response.data.uuid + "}"
       );
     } catch (error) {
@@ -157,9 +161,9 @@ const signin = (dispatch) => {
         response.data.user.uuid,
         "signin",
         "You signed in as " +
-          response.data.user.role +
-          ", via email: " +
-          response.data.user.email,
+        response.data.user.role +
+        ", via email: " +
+        response.data.user.email,
         "{user_id:" + response.data.user.uuid + "}"
       );
       cb();
@@ -189,7 +193,7 @@ const resetPassword = (dispatch) => {
       setErrorMessage(
         dispatch,
         error.response?.data?.message ||
-          "There was an error processing the request"
+        "There was an error processing the request"
       );
       return false;
     }
@@ -201,7 +205,7 @@ const reloadUserData = (dispatch) => {
     try {
       const response = await api.get("/users/" + user_id);
       setUserData(dispatch, response.data.data);
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -250,7 +254,7 @@ const getNotificationsCount = (dispatch) => {
         type: "set_notifications_count",
         payload: response.data.count,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -264,7 +268,7 @@ const getActivitiesCount = (dispatch) => {
         type: "set_activities_count",
         payload: response.data.count,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -274,10 +278,10 @@ const getToken = (dispatch) => {
     if (token) {
       verifyToken(dispatch)(token);
     }
-    else{
+    else {
       dispatch({
-        type:"set_fetching_token",
-        payload:false
+        type: "set_fetching_token",
+        payload: false
       })
     }
   };
@@ -390,8 +394,15 @@ export const logActivity = async (user_id, type, message, body) => {
       body: body && body.length ? body : "{}",
     });
     return response.data;
-  } catch (error) {}
+  } catch (error) { }
   return null;
+};
+
+export const setFilmFestivalVisible = (dispatch) => async (state) => {
+  dispatch({
+    type: "set_is_film_festival_visible",
+    payload: state,
+  });
 };
 
 export const { Context, Provider } = createDataContext(
@@ -411,6 +422,7 @@ export const { Context, Provider } = createDataContext(
     getActivitiesCount,
     reloadUserData,
     verifyToken,
+    setFilmFestivalVisible,
   },
   state
 );
@@ -436,7 +448,7 @@ const stringToWords = (inputText) => {
 };
 
 export const containsOffensiveWords = (inputText) => {
-  if(!inputText || inputText.length == 0) {
+  if (!inputText || inputText.length == 0) {
     return false;
   }
   let lowerInputText = inputText.toLowerCase();

@@ -14,23 +14,31 @@ import PublicationResources from "../components/home/PublicationResources";
 import FeaturedCities from "../components/home/FeaturedCities";
 import SpotlightCreative from "../components/home/SpotlightCreative";
 import CreativeJobs from "../components/home/CreativeJobs";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
 import { Context as AlertContext } from "../context/AlertContext";
 import { Link } from "react-router-dom";
 
 import SlidingMessage from "../components/SlidingMessage";
 import MessageModal from "../components/MessageModal";
+import { useOutletContext } from "react-router-dom";
+import FilmFestival from "./FilmFestival";
 
 register();
 
 const Home = () => {
+
+  const [setSkipHeaderFooter] = useOutletContext();
+
+  const [isFilmFestivalVisible, setIsFilmFestivalVisible] = useState(false);
+
   const [messageModalOptions, setMessageModalOptions] = useState({ "open": false, "type": "message", "title": "Message", "message": "Thanks.", "data": {}, "onClose": null });
   const showMessageModal = (type, title, message, data) => {
     setMessageModalOptions({ "open": true, "type": type, "title": title, "message": message, "data": data });
   };
   const {
-    state: { token, role },
+    state: { token, role, is_film_festival_visible },
+    setFilmFestivalVisible,
   } = useContext(AuthContext);
 
   const [search, setSearch] = useState("")
@@ -56,97 +64,112 @@ const Home = () => {
     return true;
   };
 
+  useEffect(() => {
+    if (setSkipHeaderFooter) {
+      setSkipHeaderFooter(is_film_festival_visible);
+    }
+  }, [is_film_festival_visible]);
+
+  useEffect(() => {
+    if (setSkipHeaderFooter) {
+      setFilmFestivalVisible(true);
+    }
+  }, []);
+
   return (
     <>
       <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
-      <div className="main">
-        <div className="banner">
-          <h1 className="bannerHeading">Welcome to Ad Agency Creatives</h1>
-          <p className="subHeading">
-            A community for advertising agency creatives and the agencies hiring
-            them
-          </p>
-          <div className="searchArea">
-            <p className="searchHeader">Search Creative Jobs</p>
-            <div className="searchBox">
-              <form action={"/creative-jobs" + (search ? "/search/" + search : "")} onSubmit={(e) => {
-                // if (!search || search.length == 0) {
-                //   e.preventDefault();
-                //   e.stopPropagation();
-                //   showMessageModal("error", "Oops!", "Please enter some text to search.");
-                //   return false;
-                // } else {
-                //   return true;
-                // }
-              }}>
-                <div className="row">
-                  <div className="col-md-8 col-12 position-relative">
-                    {/* <SearchOutline color={"#00000"} width="25px" className="searchIcon" /> */}
-                    <IoSearchOutline size={26} className="searchIcon" />
-                    <input
-                      className="searchInput form-control"
-                      type="text"
-                      placeholder="Search by job title, location, etc."
-                      onChange={(e) => setSearch(e.target.value)}
-                    />
+      {is_film_festival_visible ? (<>
+        <FilmFestival setFilmFestivalVisible={setFilmFestivalVisible} />
+      </>) : (<>
+        <div className="main">
+          <div className="banner">
+            <h1 className="bannerHeading">Welcome to Ad Agency Creatives</h1>
+            <p className="subHeading">
+              A community for advertising agency creatives and the agencies hiring
+              them
+            </p>
+            <div className="searchArea">
+              <p className="searchHeader">Search Creative Jobs</p>
+              <div className="searchBox">
+                <form action={"/creative-jobs" + (search ? "/search/" + search : "")} onSubmit={(e) => {
+                  // if (!search || search.length == 0) {
+                  //   e.preventDefault();
+                  //   e.stopPropagation();
+                  //   showMessageModal("error", "Oops!", "Please enter some text to search.");
+                  //   return false;
+                  // } else {
+                  //   return true;
+                  // }
+                }}>
+                  <div className="row">
+                    <div className="col-md-8 col-12 position-relative">
+                      {/* <SearchOutline color={"#00000"} width="25px" className="searchIcon" /> */}
+                      <IoSearchOutline size={26} className="searchIcon" />
+                      <input
+                        className="searchInput form-control"
+                        type="text"
+                        placeholder="Search by job title, location, etc."
+                        onChange={(e) => setSearch(e.target.value)}
+                      />
+                    </div>
+                    <div className="col">
+                      <button className="searchBtn">Find Jobs</button>
+                    </div>
                   </div>
-                  <div className="col">
-                    <button className="searchBtn">Find Jobs</button>
-                  </div>
+                </form>
+              </div>
+              <div className="popularSearch">
+                <p>
+                  Popular Searches: <a href="#">Art Director</a>, <a href="#">Copywriter</a>, <a href="#">Designer...</a>
+                </p>
+              </div>
+            </div>
+            <div className="featuresContainer container mt-3">
+              <div className="row">
+                <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
+                  <img src={Gather} className="featureImg" />
+                  <Link
+                    to={"/community"}
+                    className="featureTitle"
+                    onClick={(e) =>
+                      validateAccess(e, {
+                        roles: ["admin", "creative"],
+                        restrictedMessage: "Please login as Creative to access",
+                      })
+                    }
+                  >
+                    Gather
+                  </Link>
+                  <span className="featureDesc">
+                    Social creative
+                    <br />
+                    community
+                  </span>
                 </div>
-              </form>
-            </div>
-            <div className="popularSearch">
-              <p>
-                Popular Searches: <a href="#">Art Director</a>, <a href="#">Copywriter</a>, <a href="#">Designer...</a>
-              </p>
-            </div>
-          </div>
-          <div className="featuresContainer container mt-3">
-            <div className="row">
-              <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
-                <img src={Gather} className="featureImg" />
-                <Link
-                  to={"/community"}
-                  className="featureTitle"
-                  onClick={(e) =>
-                    validateAccess(e, {
-                      roles: ["admin", "creative"],
-                      restrictedMessage: "Please login as Creative to access",
-                    })
-                  }
-                >
-                  Gather
-                </Link>
-                <span className="featureDesc">
-                  Social creative
-                  <br />
-                  community
-                </span>
-              </div>
-              <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
-                <img src={Mentoring} className="featureImg" />
-                <Link to={"/mentoring-resources"} className="featureTitle">
-                  Inspire
-                </Link>
-                <span className="featureDesc">
-                  Mentors and <br /> resources
-                </span>
-              </div>
-              <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
-                <img src={Money} className="featureImg" />
-                <Link to={"/creative-jobs"} className="featureTitle">
-                  Do Cool $#*t!
-                </Link>
-                <span className="featureDesc">
-                  Creative jobs <br />
-                  board
-                </span>
+                <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
+                  <img src={Mentoring} className="featureImg" />
+                  <Link to={"/mentoring-resources"} className="featureTitle">
+                    Inspire
+                  </Link>
+                  <span className="featureDesc">
+                    Mentors and <br /> resources
+                  </span>
+                </div>
+                <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
+                  <img src={Money} className="featureImg" />
+                  <Link to={"/creative-jobs"} className="featureTitle">
+                    Do Cool $#*t!
+                  </Link>
+                  <span className="featureDesc">
+                    Creative jobs <br />
+                    board
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* <div className="ticker" id="about">
+            {/* <div className="ticker" id="about">
             <div className="ticker-text">
               <h1 className="mt-3">• • • • •</h1>
               <h1 className="mb-0">About Us:</h1>
@@ -159,60 +182,61 @@ const Home = () => {
             </div>
           </div> */}
 
-          <div className="wrapper">
-            <div className="marquee">
-              <p>
-                <b>About Us:</b>&nbsp;
-                Ad Agency Creatives is a community for Creatives, to come together, talk about the industry, talk about the work, meet other creatives, share ideas and resources, manage job opportunities, mentor and be mentored, and do really cool $#*t!
-                • • • • •&nbsp;
-              </p>
-              <p>
-                <b>About Us:</b>&nbsp;
-                Ad Agency Creatives is a community for Creatives, to come together, talk about the industry, talk about the work, meet other creatives, share ideas and resources, manage job opportunities, mentor and be mentored, and do really cool $#*t!
-                • • • • •&nbsp;
-              </p>
+            <div className="wrapper">
+              <div className="marquee">
+                <p>
+                  <b>About Us:</b>&nbsp;
+                  Ad Agency Creatives is a community for Creatives, to come together, talk about the industry, talk about the work, meet other creatives, share ideas and resources, manage job opportunities, mentor and be mentored, and do really cool $#*t!
+                  • • • • •&nbsp;
+                </p>
+                <p>
+                  <b>About Us:</b>&nbsp;
+                  Ad Agency Creatives is a community for Creatives, to come together, talk about the industry, talk about the work, meet other creatives, share ideas and resources, manage job opportunities, mentor and be mentored, and do really cool $#*t!
+                  • • • • •&nbsp;
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="creative-section">
-          <AgencyCreatives />
+          <div className="creative-section">
+            <AgencyCreatives />
 
-          {/* Spotlighting Creatives Section */}
-          <SpotlightCreative />
+            {/* Spotlighting Creatives Section */}
+            <SpotlightCreative />
 
-          {/* Creative Jobs Section */}
-          <CreativeJobs />
+            {/* Creative Jobs Section */}
+            <CreativeJobs />
 
-          <FeaturedCities />
+            <FeaturedCities />
 
-          <AdAgencies />
+            <AdAgencies />
 
-          <MentorResources />
+            <MentorResources />
 
-          <PublicationResources />
-          <div id="feedback">
-            <div className="sectionHeader">
-              <h1 className="sectionTitle">Say, Hello</h1>
-            </div>
-            <div className="contact-section">
-              <div className="row">
-                <div className="text-center text-sm-start col-xs-12 col-sm-8 col-md-12">
-                  <h3 className="title">
-                    Do you have feedback or want to become a contributor?
-                  </h3>
-                  <div className="contact-btn">
-                    <Link to="/contact">
-                      <span>Contact Us</span>
-                    </Link>
+            <PublicationResources />
+            <div id="feedback">
+              <div className="sectionHeader">
+                <h1 className="sectionTitle">Say, Hello</h1>
+              </div>
+              <div className="contact-section">
+                <div className="row">
+                  <div className="text-center text-sm-start col-xs-12 col-sm-8 col-md-12">
+                    <h3 className="title">
+                      Do you have feedback or want to become a contributor?
+                    </h3>
+                    <div className="contact-btn">
+                      <Link to="/contact">
+                        <span>Contact Us</span>
+                      </Link>
+                    </div>
                   </div>
+                  <div className="col"></div>
                 </div>
-                <div className="col"></div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </>)}
     </>
   );
 };

@@ -236,6 +236,18 @@ ul.dropdown-list:before {
     background-color: var(--color-primary) !important;
 }
 
+
+.btn.btn-silver {
+    border: 2px solid silver;
+    background-color: silver !important;
+    color: white !important;
+}
+
+.btn.btn-silver:hover {
+    border: 2px solid var(--color-primary);
+    background-color: var(--color-primary) !important;
+}
+
 .menu-item {
     position: relative;
 }
@@ -314,4 +326,37 @@ textarea.form-control:focus {
 
 .scroll-button:hover .scroll-button-span {
     background-color: #000;
+}
+
+.page-film-festival {
+    color: #fff;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.page-film-festival .h1 {
+    font-family: Alta;
+    font-size: 60px;
+    font-weight: 700;
+    font-family: 'ALTA';
+    letter-spacing: 0.2em;
+}
+
+.page-film-festival .h2 {
+    font-family: 'Anton';
+    font-size: 56px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.05em;
+}
+
+.page-film-festival .btn-home {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
 }

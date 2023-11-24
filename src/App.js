@@ -4,7 +4,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Footer from "./components/Footer";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import { Context as AuthContext } from "./context/AuthContext";
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 // import { useCookies } from "react-cookie";
 import { Provider as DataProvider } from "./context/DataContext";
 import { Provider as CreativesProvider } from "./context/CreativesContext";
@@ -31,16 +31,17 @@ const theme = createTheme({
     link: {
       main: "#000",
     },
-    white:"#fff"
+    white: "#fff"
   },
 });
 
 function App() {
+
+  const [skipHeaderFooter, setSkipHeaderFooter] = useState(false);
   const {
     state: { token, user },
     getToken,
   } = useContext(AuthContext);
-
 
   useMemo(() => {
     getToken();
@@ -60,11 +61,15 @@ function App() {
                       <CommunityProvider>
                         <GroupsProvider>
                           <div className="App">
-                            <ChatListener />
-                            <ScrollRestoration />
-                            <Header />
-                            <Outlet />
-                            <Footer />
+                            {!skipHeaderFooter ? (<>
+                              <ChatListener />
+                              <ScrollRestoration />
+                              <Header />
+                            </>) : (<></>)}
+                            <Outlet context={[setSkipHeaderFooter]} />
+                            {!skipHeaderFooter ? (<>
+                              <Footer />
+                            </>) : (<></>)}
                           </div>
                         </GroupsProvider>
                       </CommunityProvider>
