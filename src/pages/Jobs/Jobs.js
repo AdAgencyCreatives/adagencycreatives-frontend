@@ -1,15 +1,9 @@
 import Select from "../../components/Select";
-import Select2 from 'react-select';
+import Select2 from "react-select";
 
 import "../../styles/Jobs.scss";
 import { useContext, useEffect, useRef, useState } from "react";
-import {
-  IoArrowBack,
-  IoArrowForward,
-  IoBriefcaseOutline,
-  IoMenu,
-  IoStar,
-} from "react-icons/io5";
+import { IoArrowBack, IoArrowForward, IoBriefcaseOutline, IoMenu, IoStar } from "react-icons/io5";
 import { Link, useParams } from "react-router-dom";
 import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AuthContext } from "../../context/AuthContext";
@@ -24,7 +18,7 @@ const emailFreq = [
 ];
 
 const Jobs = () => {
-  const selectRef = useRef(null);
+  const selectRef = useRef({});
   const [statesList, setStates] = useState([]);
   const [citiesList, setCities] = useState([]);
   const [jobTitles, setJobTitles] = useState([]);
@@ -35,16 +29,7 @@ const Jobs = () => {
   const params = useParams();
 
   const {
-    state: {
-      jobs,
-      meta,
-      links,
-      categories,
-      states,
-      cities,
-      employment_type,
-      media_experiences,
-    },
+    state: { jobs, meta, links, categories, states, cities, employment_type, media_experiences },
     getJobs,
     getCategories,
     getStates,
@@ -84,6 +69,10 @@ const Jobs = () => {
     getEmploymentTypes();
     getMediaExperiences();
   }, [token]);
+
+  useEffect(() => {
+    console.log({ selectRef });
+  }, [selectRef]);
 
   /*   useEffect(() => {
     for (var field in params) {
@@ -147,19 +136,20 @@ const Jobs = () => {
     }
   };
 
-  const addFilter = (item, type) => {
-    console.log(filters);
-    console.log(selectRef)
-
-    let updatedFilters = { ...filters, [type]: item };
-    setFilters(updatedFilters);
-    filterJobs(updatedFilters);
-    setMobileOpen(false);
+  const addFilter = (item, { action }, type) => {
+    console.log(selectRef);
+    let updatedFilters;
+    if (action == "select-option") {
+      updatedFilters = { ...filters, [type]: item };
+      setFilters(updatedFilters);
+      filterJobs(updatedFilters);
+      setMobileOpen(false);
+    }
   };
 
   const removeFilter = (item, key = false) => {
-    console.log({ filters });
 
+    selectRef.current[item]?.clearValue();
     let updatedFilters = { ...filters };
 
     if (key) {
@@ -184,17 +174,21 @@ const Jobs = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
-  const getFilters = () => (
+  const getFilters = (drawer = false) => (
     <div className="filters">
       <h1 className="jobs-filter-title">Search Jobs</h1>
       <div className="filter-item">
         <div className="filter-label">Industry Job Title</div>
         <div className="filter-box">
-          <Select2
-            ref={selectRef}
+          <Select
+            //
+            key={"title"}
+            name="title"
+            isClearable={true}
+            ref={(ref) => (selectRef.current["title" + (drawer ? "-d" : "")] = ref)}
             options={jobTitles}
             placeholder="select one"
-            onChange={(item) => addFilter(item, "title")}
+            onChange={(item, action) => addFilter(item, action, "title")}
           />
         </div>
       </div>
@@ -202,17 +196,14 @@ const Jobs = () => {
       <div className="filter-item">
         <div className="filter-label">Job Location (State / Major City)</div>
         <div className="filter-box mb-3">
-          <Select
-            options={statesList}
-            onChange={changeState}
-            placeholder="Filter By State"
-          />
+          <Select options={statesList} ref={(ref) => (selectRef.current["state" + (drawer ? "-d" : "")] = ref)} onChange={changeState} placeholder="Filter By State" />
         </div>
         <div className="filter-box">
           <Select
             options={citiesList}
+            ref={(ref) => (selectRef.current["city" + (drawer ? "-d" : "")] = ref)}
             placeholder="Filter By City"
-            onChange={(item) => addFilter(item, "city")}
+            onChange={(item, action) => addFilter(item, action, "city")}
           />
         </div>
       </div>
@@ -222,8 +213,9 @@ const Jobs = () => {
         <div className="filter-box">
           <Select
             options={employment}
+            ref={(ref) => (selectRef.current["employment_type" + (drawer ? "-d" : "")] = ref)}
             placeholder="select one"
-            onChange={(item) => addFilter(item, "employment_type")}
+            onChange={(item, action) => addFilter(item, action, "employment_type")}
           />
         </div>
       </div>
@@ -233,9 +225,10 @@ const Jobs = () => {
         <div className="filter-box">
           <Select
             options={media}
+            ref={(ref) => (selectRef.current["media_experience" + (drawer ? "-d" : "")] = ref)}
             isMulti
             placeholder="select up to three"
-            onChange={(item) => addFilter(item, "media_experience")}
+            onChange={(item, action) => addFilter(item, action, "media_experience")}
           />
         </div>
       </div>
@@ -244,23 +237,11 @@ const Jobs = () => {
         <div className="filter-label">Remote Opportunity</div>
         <div className="filter-box">
           <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="remote"
-              value={1}
-              onChange={() => addFilter({ label: "Yes", value: 1 }, "remote")}
-            />
+            <input className="form-check-input" type="radio" name="remote" value={1} onChange={() => addFilter({ label: "Yes", value: 1 }, {action:"select-option"},"remote")} />
             <label className="form-check-label">Yes</label>
           </div>
           <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="remote"
-              value={0}
-              onChange={() => addFilter({ label: "No", value: 0 }, "remote")}
-            />
+            <input className="form-check-input" type="radio" name="remote" value={0} onChange={() => addFilter({ label: "No", value: 0 }, {action:"select-option"},"remote")} />
             <label className="form-check-label">No</label>
           </div>
         </div>
@@ -287,6 +268,7 @@ const Jobs = () => {
               onChange={(item) => setNotifCategory(item.value)}
               required={true}
               name="notif_title"
+              ref={(ref) => (selectRef.current["notif_title" + (drawer ? "-d" : "")] = ref)}
               // value={filters.state}
             />
           </div>
@@ -314,7 +296,7 @@ const Jobs = () => {
         },
       }}
     >
-      {getFilters()}
+      {getFilters(true)}
     </Drawer>
   );
 
@@ -332,9 +314,7 @@ const Jobs = () => {
 
             <div className="jobs-list-container">
               <div className="sidebar-toggle d-md-none d-inline-block">
-                <IoMenu
-                  onClick={() => setMobileOpen((prevState) => !prevState)}
-                />
+                <IoMenu onClick={() => setMobileOpen((prevState) => !prevState)} />
               </div>
               {Object.keys(filters).length ? (
                 <>
@@ -347,10 +327,7 @@ const Jobs = () => {
                             return filters[item].map((i, key) => {
                               return (
                                 <li key={i.value}>
-                                  <a
-                                    href="#"
-                                    onClick={() => removeFilter(item, key)}
-                                  >
+                                  <a href="#" onClick={() => removeFilter(item, key)}>
                                     <span className="close-value">x</span>
                                     &nbsp;{i.label}
                                   </a>
@@ -381,9 +358,7 @@ const Jobs = () => {
                     </div>
                   </div>
                   <div className="jobs-alert-ordering-wrapper">
-                    <div className="results-count">
-                      Showing all {jobs.length} results
-                    </div>
+                    <div className="results-count">Showing all {jobs.length} results</div>
                     <div className="jobs-ordering-wrapper"></div>
                   </div>
                 </>
@@ -401,53 +376,20 @@ const Jobs = () => {
                       <div className="user-pagination">
                         <nav>
                           <ul className="pagination">
-                            <li
-                              className={
-                                "page-item" +
-                                (meta.current_page == 1 ? " disabled" : "")
-                              }
-                              onClick={() => paginate(meta.current_page - 1)}
-                            >
-                              <a
-                                className="page-link"
-                                href="#"
-                                aria-label="Previous"
-                              >
+                            <li className={"page-item" + (meta.current_page == 1 ? " disabled" : "")} onClick={() => paginate(meta.current_page - 1)}>
+                              <a className="page-link" href="#" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                               </a>
                             </li>
-                            {Array.apply(null, { length: meta.last_page }).map(
-                              (item, index) => (
-                                <li
-                                  className={
-                                    "page-item " +
-                                    (meta.current_page == index + 1
-                                      ? "active"
-                                      : "")
-                                  }
-                                  onClick={() => paginate(index + 1)}
-                                  key={"page"+index}
-                                >
-                                  <a className="page-link" href="#">
-                                    {index + 1}
-                                  </a>
-                                </li>
-                              )
-                            )}
-                            <li
-                              className={
-                                "page-item" +
-                                (meta.current_page == meta.last_page
-                                  ? " disabled"
-                                  : "")
-                              }
-                              onClick={() => paginate(meta.current_page + 1)}
-                            >
-                              <a
-                                className="page-link"
-                                href="#"
-                                aria-label="Next"
-                              >
+                            {Array.apply(null, { length: meta.last_page }).map((item, index) => (
+                              <li className={"page-item " + (meta.current_page == index + 1 ? "active" : "")} onClick={() => paginate(index + 1)} key={"page" + index}>
+                                <a className="page-link" href="#">
+                                  {index + 1}
+                                </a>
+                              </li>
+                            ))}
+                            <li className={"page-item" + (meta.current_page == meta.last_page ? " disabled" : "")} onClick={() => paginate(meta.current_page + 1)}>
+                              <a className="page-link" href="#" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                               </a>
                             </li>

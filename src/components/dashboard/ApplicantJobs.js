@@ -270,7 +270,14 @@ const ApplicantJobs = () => {
 
                             <Tooltip
                               title="Remove From Job"
-                              onClick={() => deleteApplication(application.id)}
+                              // onClick={() => deleteApplication(application.id)}
+                              onClick={() =>
+                                setApplicationStatus(
+                                  item.id,
+                                  application.id,
+                                  "rejected"
+                                )
+                              }
                             >
                               <button className="btn p-0 border-0 btn-hover-primary">
                                 <TfiClose className="icon-rounded" />

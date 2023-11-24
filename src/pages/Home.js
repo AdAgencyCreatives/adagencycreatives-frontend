@@ -6,6 +6,7 @@ import { IoSearchOutline } from "react-icons/io5";
 // core version + navigation, pagination modules:
 import { register } from "swiper/element/bundle";
 import "swiper/css/pagination";
+// import "swiper/css/autoplay";
 import AgencyCreatives from "../components/home/AgencyCreative";
 import AdAgencies from "../components/home/AdAgencies";
 import MentorResources from "../components/home/MentorResources";

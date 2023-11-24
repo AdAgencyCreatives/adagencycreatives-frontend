@@ -1,20 +1,26 @@
+import { forwardRef } from "react";
 import ReactSelect from "react-select";
 
 const customStyles = {
   option: (base, { data, isDisabled, isFocused, isSelected }) => {
-  return {
-    ...base,
-    color: isFocused ? "white" : base.color,
-  };
-}
+    return {
+      ...base,
+      color: isFocused ? "white" : base.color,
+    };
+  },
 };
 
-const Select = (props) => {
-  console.log(props)
+const Select = forwardRef((props,ref) => {
+ /*  const setSelectRef = props.setSelectRef;
+  const innerRef = props.innerRef;
+  console.log(innerRef.selectRef)
+  const drawer = innerRef.drawer;
+  const name = innerRef.name;
+  let obj = drawer ? innerRef.selectRef.current["drawer"][name] : innerRef.selectRef.current[name]; */
   return (
     <ReactSelect
       {...props}
-      ref={props.innerRef}
+      ref={ref}
       theme={(theme) => ({
         ...theme,
         colors: {
@@ -24,9 +30,9 @@ const Select = (props) => {
           primary50: "#daa520",
         },
       })}
-      styles={{...props.styles,...customStyles}}
-      />
+      styles={{ ...props.styles, ...customStyles }}
+    />
   );
-};
+});
 
 export default Select;
