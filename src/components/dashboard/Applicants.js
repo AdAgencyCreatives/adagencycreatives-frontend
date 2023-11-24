@@ -197,8 +197,15 @@ const Applicants = () => {
 
                               <Tooltip
                                 title="Remove From Job"
-                                onClick={() =>
+                                /* onClick={() =>
                                   deleteApplication(application.id)
+                                } */
+                                onClick={() =>
+                                  setApplicationStatus(
+                                    item.id,
+                                    application.id,
+                                    "rejected"
+                                  )
                                 }
                               >
                                 <button className="btn p-0 border-0 btn-hover-primary">

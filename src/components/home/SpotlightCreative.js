@@ -26,6 +26,10 @@ const SpotlightCreative = () => {
   useEffect(() => {
     const params = {
       injectStyles: [PaginationStyle + BulletStyle],
+      autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
       pagination: {
         clickable: true,
         // renderBullet: function (index, className) {

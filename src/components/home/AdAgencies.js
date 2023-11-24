@@ -13,6 +13,10 @@ const AdAgencies = () => {
   useEffect(() => {
     const params = {
       injectStyles: [PaginationStyle],
+      autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
       breakpoints: {
         500: {
           slidesPerView: 2,

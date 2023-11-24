@@ -20,6 +20,10 @@ const AgencyCreatives = () => {
   useEffect(() => {
     const params = {
       injectStyles: [PaginationStyle],
+      autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
       // pagination: {
       //   clickable: true,
       //   renderBullet: function (index, className) {
@@ -59,6 +63,7 @@ const AgencyCreatives = () => {
           slides-per-view="1"
           space-between="30"
           loop="true"
+          autop
         >
           {creatives &&
             creatives.map((item, index) => {
