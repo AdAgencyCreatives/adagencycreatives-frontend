@@ -302,7 +302,7 @@ textarea.form-control:focus {
 }
 
 .scroll-button-span {
-    background-color: #000;
+    background-color: #fff;
     width: 25px;
     height: 25px;
     display: block;
@@ -310,4 +310,8 @@ textarea.form-control:focus {
     left: 12px;
     top: 12px;
     z-index: -1;
+}
+
+.scroll-button:hover .scroll-button-span {
+    background-color: #000;
 }

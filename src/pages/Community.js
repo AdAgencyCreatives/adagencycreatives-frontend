@@ -22,12 +22,8 @@ const Community = () => {
           <div className="dark-container page-community mb-0 mt-0">
             <h1 className="community-title">The Lounge</h1>
             <h2 className="community-subtitle">
-              Creatives only.
-              Ask for help. 
-              Share.
-              Chat.
-              Inspire.
-              Tell jokes.
+              <div>Creatives only. Ask for help. Share.</div>
+              <div>Chat. Inspire. Tell jokes.</div>
             </h2>
             <div className="container-fluid mt-4">
               <div className="row">

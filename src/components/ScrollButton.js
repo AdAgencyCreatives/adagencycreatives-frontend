@@ -28,7 +28,7 @@ const ScrollButton = () => {
     window.addEventListener('scroll', toggleVisible);
 
     return (
-        <Button>
+        <Button className="scroll-button">
             <span className="scroll-button-span"
                 style={{ display: visible ? 'block' : 'none' }}></span>
             <IoArrowUpCircleSharp onClick={scrollToTop}

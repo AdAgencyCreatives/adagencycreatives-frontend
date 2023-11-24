@@ -44,9 +44,7 @@ const TrendingPostWidgetRightSidebar = (props) => {
           <a href={"/creative/" + props.trending_post.author_slug}>
             {props.trending_post.author}
           </a>
-          <div className="item-content">
-            {trimContent(props.trending_post.content)}
-          </div>
+          <div className="item-content" dangerouslySetInnerHTML={{ __html: trimContent(props.trending_post.content) }}></div>
         </div>
         <div className="item-meta">
           <div className="post-time">
