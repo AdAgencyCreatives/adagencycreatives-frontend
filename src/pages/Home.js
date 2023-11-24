@@ -66,13 +66,13 @@ const Home = () => {
 
   useEffect(() => {
     if (setSkipHeaderFooter) {
-      setSkipHeaderFooter(is_film_festival_visible);
+      setSkipHeaderFooter(isFilmFestivalVisible);
     }
-  }, [is_film_festival_visible]);
+  }, [isFilmFestivalVisible]);
 
   useEffect(() => {
     if (setSkipHeaderFooter) {
-      setFilmFestivalVisible(true);
+      setIsFilmFestivalVisible(true);
     }
   }, []);
 
@@ -80,7 +80,7 @@ const Home = () => {
     <>
       <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
       {is_film_festival_visible ? (<>
-        <FilmFestival setFilmFestivalVisible={setFilmFestivalVisible} />
+        <FilmFestival setIsFilmFestivalVisible={setIsFilmFestivalVisible} />
       </>) : (<>
         <div className="main">
           <div className="banner">

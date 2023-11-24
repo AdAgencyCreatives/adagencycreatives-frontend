@@ -21,8 +21,8 @@ const FilmFestival = (props) => {
         <>
             <div className="dark-container page-film-festival mb-0 mt-0">
                 <Button className="btn btn-silver btn-home" onClick={(e)=> {
-                    if(props.setFilmFestivalVisible) {
-                        props.setFilmFestivalVisible(false);
+                    if(props.setIsFilmFestivalVisible) {
+                        props.setIsFilmFestivalVisible(false);
                     }
                 }}>
                     Skip to Home

@@ -18,7 +18,6 @@ const state = {
   messageAlert: { type: "", message: "", display: "" },
   subscription_status: "",
   advance_search_capabilities: false,
-  is_film_festival_visible: true,
 };
 
 const authReducer = (state, action) => {
@@ -52,9 +51,6 @@ const authReducer = (state, action) => {
 
     case "show_message_alert":
       return { ...state, messageAlert: action.payload };
-
-    case "set_is_film_festival_visible":
-      return { ...state, is_film_festival_visible: action.payload };
 
     default:
       return state;
@@ -398,13 +394,6 @@ export const logActivity = async (user_id, type, message, body) => {
   return null;
 };
 
-export const setFilmFestivalVisible = (dispatch) => async (state) => {
-  dispatch({
-    type: "set_is_film_festival_visible",
-    payload: state,
-  });
-};
-
 export const { Context, Provider } = createDataContext(
   authReducer,
   {
@@ -422,7 +411,6 @@ export const { Context, Provider } = createDataContext(
     getActivitiesCount,
     reloadUserData,
     verifyToken,
-    setFilmFestivalVisible,
   },
   state
 );
