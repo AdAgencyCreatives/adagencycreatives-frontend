@@ -158,6 +158,7 @@
 
         img {
             max-width: 100%;
+            max-height: calc(100vh - 90px);
             object-fit: cover;
             // border: 2px solid var(--color-primary);
             margin: 5px
@@ -179,6 +180,7 @@
             max-width: 100%;
             height: auto;
             padding-top: 0;
+            max-height: calc(100vh - 90px);
 
             .video {
                 width: 100%;
