@@ -11,6 +11,7 @@ import { Context as GroupsContext } from "../context/GroupsContext";
 
 import RestrictedLounge from "../components/RestrictedLounge";
 import { CircularProgress } from "@mui/material";
+import { HiOutlineUserGroup } from "react-icons/hi2";
 
 const GroupPosts = () => {
 
@@ -18,6 +19,7 @@ const GroupPosts = () => {
     const {
         state: { token, role },
     } = useContext(AuthContext);
+
     const {
         state: { single_group },
         getGroup,
@@ -39,6 +41,10 @@ const GroupPosts = () => {
             setIsLoading(false);
         }
     }, [token, single_group]);
+
+    const isCurrentPage = (relativeUrl) => {
+        return (window.location.pathname + (window.location.search && window.location.search.length > 1 ? window.location.search : '')) == relativeUrl;
+    }
 
     return (
         <>
@@ -62,6 +68,12 @@ const GroupPosts = () => {
                                     <LeftSidebar />
                                 </div>
                                 <div className="col-md-7 order-md-2 order-3">
+                                    <div className="groups-header">
+                                        <div className="post-form">
+                                            <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/groups/' + group_uuid) ? ' btn-selected' : '')} to={'/groups/' + group_uuid}><HiOutlineUserGroup /> Group Posts</Link>
+                                            <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/group-members/' + group_uuid) ? ' btn-selected' : '')} to={'/group-members/' + group_uuid}><HiOutlineUserGroup /> Group Members</Link>
+                                        </div>
+                                    </div>
                                     {isLoading ? (<>
                                         <div className="center-page">
                                             <CircularProgress />

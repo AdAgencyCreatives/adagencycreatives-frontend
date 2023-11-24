@@ -11,6 +11,7 @@ import Community from "./pages/Community";
 import GroupPosts from "./pages/GroupPosts";
 import Jobs from "./pages/Jobs/Jobs";
 import CommunityMembers from "./pages/CommunityMembers";
+import GroupMembers from "./pages/GroupMembers";
 import Friends from "./pages/User/Friends";
 import Groups from "./pages/Groups";
 import Messages from "./pages/Messages";
@@ -114,6 +115,12 @@ export const router = createBrowserRouter([
         path: "/community-members",
         element: <CommunityMembers />,
       },
+
+      {
+        path: "/group-members/:group_uuid",
+        element: <GroupMembers />,
+      },
+
       {
         path: "/friends",
         element: <Friends />,
