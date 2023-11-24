@@ -13,7 +13,7 @@ import { CircularProgress } from "@mui/material";
 import SearchBar from "../components/SearchBar";
 
 const CommunityMembers = () => {
-  const { creatives, loading, loadMore, searchCreatives } = useCreatives();
+  const { creatives, loading, loadMore, searchCreativesAdvanced } = useCreatives();
   const [isLoading, setIsLoading] = useState(true);
 
   const {
@@ -25,7 +25,9 @@ const CommunityMembers = () => {
   const searchUser = (value) => {
     console.log("searching");
     setIsLoading(true);
-    searchCreatives(value);
+    let terms = value.split(',');
+    let search = terms && terms.length && terms.length > 1 ? terms[0] : value;
+    searchCreativesAdvanced("search2", search);
   };
 
   useEffect(() => {
