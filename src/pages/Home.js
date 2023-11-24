@@ -74,12 +74,12 @@ const Home = () => {
     if (setSkipHeaderFooter) {
       setIsFilmFestivalVisible(true);
     }
-  }, []);
+  }, [setSkipHeaderFooter]);
 
   return (
     <>
       <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
-      {is_film_festival_visible ? (<>
+      {isFilmFestivalVisible ? (<>
         <FilmFestival setIsFilmFestivalVisible={setIsFilmFestivalVisible} />
       </>) : (<>
         <div className="main">
