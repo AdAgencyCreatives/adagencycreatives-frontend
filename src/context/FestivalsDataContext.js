@@ -1,8 +1,8 @@
 import { api } from "../api/api";
 
-export const getFestivals = async (user_id) => {
+export const getFestivals = async (category) => {
     try {
-        const response = await api.get("/festivals?sort=-created_at&filter[user_id]=" + user_id);
+        const response = await api.get("/festivals?sort=-created_at&filter[category]=" + category);
         return response.data.data;
     } catch (error) {
     }
