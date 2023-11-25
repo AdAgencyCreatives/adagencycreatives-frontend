@@ -141,14 +141,16 @@ const FilmFestival = (props) => {
                         }}>
                             Skip to Home
                         </Button>
-                        <div className="h1 text-center">Film Festival</div>
+                        <div className="h1 text-center mt-3">Film Festival</div>
                         <div className="h2 text-center">What does an Ad Agency Creative Actually Do</div>
-                        <img className="film-festival-enter" src={FilmFestivalEnter} alt="" onClick={(e) => setStep(old => (old % 3) + 1)} />
+                        <div className="film-festival-enter d-fccc">
+                            <img src={FilmFestivalEnter} width={"350px"} height={"100px"} alt="" onClick={(e) => setStep(old => (old % 3) + 1)} />
+                        </div>
                         <div className="h3 text-center mt-3"><strong>Deadline:</strong> December 12TH 4Pm CST</div>
                         <div className="h3 text-center"><strong>Winners Win:</strong> $500 & bragging rights</div>
                         <div className="container-fluid mt-4">
                             <div className="row">
-                                <div className="col-5 d-fssc">
+                                <div className="col-sm-5 col-12 d-fssc">
                                     <div className="h3"><strong><u>Rules</u></strong></div>
                                     <ul>
                                         <li className="h3">
@@ -168,7 +170,7 @@ const FilmFestival = (props) => {
                                         </li>
                                     </ul>
                                 </div>
-                                <div className="col-5 d-fssc">
+                                <div className="col-sm-5 col-12 d-fssc">
                                     <div className="h3"><strong><u>Winner Categories</u></strong></div>
                                     <ul>
                                         <li className="h3">
@@ -188,7 +190,7 @@ const FilmFestival = (props) => {
                                         </li>
                                     </ul>
                                 </div>
-                                <div className="col-2 d-fscc">
+                                <div className="col-sm-2 col-12 d-fscc">
                                     <img src={Favicon} alt="" />
                                 </div>
                             </div>
@@ -289,7 +291,7 @@ const FilmFestival = (props) => {
                             </div>
                         </div>
                         <div className="button-group d-fccr">
-                            <Button disabled={isFormSubmitting ? "disabled" : ""}  className="btn btn-gold btn-wide" onClick={(e) => setStep(old => (old == 1 ? 1 : old - 1))}>
+                            <Button disabled={isFormSubmitting ? "disabled" : ""} className="btn btn-gold btn-wide" onClick={(e) => setStep(old => (old == 1 ? 1 : old - 1))}>
                                 Back
                             </Button>
                             <Button disabled={isFormSubmitting ? "disabled" : ""} className="btn btn-gold btn-wide" onClick={(e) => {

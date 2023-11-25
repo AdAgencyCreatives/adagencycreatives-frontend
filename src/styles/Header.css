@@ -394,7 +394,7 @@ textarea.form-control:focus {
 
 .page-film-festival .film-festival-step {
     color: #fff;
-    width: 80vw;
+    width: 90vw;
 }
 
 .page-film-festival .h1 {
@@ -415,8 +415,8 @@ textarea.form-control:focus {
 
 .page-film-festival .btn-home {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 15px;
+    right: 15px;
     padding: 10px 20px;
 }
 
