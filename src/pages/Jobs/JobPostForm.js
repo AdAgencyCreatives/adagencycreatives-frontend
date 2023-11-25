@@ -225,7 +225,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           label: "Job Post Expires",
           type: "date",
           name: "expired_at",
-          required:true,
+          required: true,
           value: isEdit ? new Date(single_job.expired_at) : new Date(),
         },
         {
@@ -269,7 +269,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           placeholder: "applicants use this link",
           value: isEdit ? single_job.external_link || "" : "",
           hidden: true,
-          ref:linkRef
+          ref: linkRef
         },
       ]);
     }
@@ -363,6 +363,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                               src={field.image}
                               className="w-100"
                               ref={logoRef}
+                              alt=""
                             />
                           </div>
                           <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
@@ -394,7 +395,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                         className={"col-sm-6"}
                         ref={field.ref || null}
                         key={index}
-                        style={{display:(field.hidden ? "none" : "")}}
+                        style={{ display: (field.hidden ? "none" : "") }}
                       >
                         <label htmlFor={field.name} className="form-label">
                           {field.label}
@@ -554,6 +555,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                         )}
                       </div>
                     );
+                  default:
                 }
               })}
             </div>
