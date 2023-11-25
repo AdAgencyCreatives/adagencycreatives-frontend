@@ -289,7 +289,7 @@ const FilmFestival = (props) => {
                             </div>
                         </div>
                         <div className="button-group d-fccr">
-                            <Button className="btn btn-gold btn-wide" onClick={(e) => setStep(old => (old == 1 ? 1 : old - 1))}>
+                            <Button disabled={isFormSubmitting ? "disabled" : ""}  className="btn btn-gold btn-wide" onClick={(e) => setStep(old => (old == 1 ? 1 : old - 1))}>
                                 Back
                             </Button>
                             <Button disabled={isFormSubmitting ? "disabled" : ""} className="btn btn-gold btn-wide" onClick={(e) => {
