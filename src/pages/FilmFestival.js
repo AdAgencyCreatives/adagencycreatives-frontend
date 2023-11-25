@@ -310,9 +310,9 @@ const FilmFestival = (props) => {
                         <div className="h3 text-center">
                             <strong>Thank You for your submission. </strong>
                         </div>
-                        <div className="h3 text-center">
+                        {/* <div className="h3 text-center">
                             We hope you had fun and looking forward to seeing it.
-                        </div>
+                        </div> */}
                         <div className="h3 text-center">
                             Good Luck.
                         </div>
@@ -321,7 +321,7 @@ const FilmFestival = (props) => {
                                 props.setIsFilmFestivalVisible(false);
                             }
                         }}>
-                            Finish
+                            Home Page
                         </Button>
                     </div>
                 </>) : (<></>)}

@@ -197,7 +197,7 @@ const MyResume = () => {
       industry.length &&
       media.length &&
       statesList.length &&
-      (single_creative.location ? citiesList.length : true) &&
+      (single_creative.location && single_creative.location.state ? citiesList.length : true) &&
       categoriesList.length &&
       employment_type.length &&
       strengthsList.length &&
@@ -471,7 +471,9 @@ const MyResume = () => {
       single_creative.location &&
       citiesList.length === 0
     ) {
-      getCities(single_creative.location.state_id);
+      if(single_creative.location.state_id) {
+        getCities(single_creative.location.state_id);
+      }
     }
   }, [single_creative, citiesList]);
 
@@ -659,7 +661,7 @@ const MyResume = () => {
     },
     {
       label: "Upload your resume here.",
-      required: true,
+      required: false,
       type: "upload",
       name: "resume",
       items: [],
