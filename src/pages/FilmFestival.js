@@ -11,8 +11,11 @@ import { FiFile, FiPaperclip, FiTrash2 } from "react-icons/fi";
 import Select from "../components/Select";
 import { Context as AlertContext } from "../context/AlertContext";
 import SlidingMessage from "../components/SlidingMessage";
+import { useOutletContext } from "react-router-dom";
 
 const FilmFestival = (props) => {
+
+    const [setSkipHeaderFooter] = useOutletContext();
 
     const [step, setStep] = useState(1);
 
@@ -43,9 +46,7 @@ const FilmFestival = (props) => {
     } = useContext(AuthContext);
 
     useEffect(() => {
-        setIsLoading(false);
-        setIsFileLoading(false);
-        setIsFormSubmitting(false);
+        setSkipHeaderFooter(true);
     }, []);
 
     // Programatically click the hidden file input element
@@ -134,13 +135,9 @@ const FilmFestival = (props) => {
             <div className="dark-container page-film-festival d-fccc mb-0 mt-0">
                 {step == 1 ? (<>
                     <div className="film-festival-step step-1 d-fccc">
-                        <Button className="btn btn-silver btn-home btn-wide" onClick={(e) => {
-                            if (props.setIsFilmFestivalVisible) {
-                                props.setIsFilmFestivalVisible(false);
-                            }
-                        }}>
+                        <Link className="btn btn-silver btn-home btn-wide" to="/" onClick={(e) => setSkipHeaderFooter(false)}>
                             Skip to Home
-                        </Button>
+                        </Link>
                         <div className="h1 text-center mt-3">Film Festival</div>
                         <div className="h2 text-center">What does an Ad Agency Creative Actually Do</div>
                         <div className="film-festival-enter d-fccc">

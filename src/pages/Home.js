@@ -21,24 +21,17 @@ import { Link } from "react-router-dom";
 
 import SlidingMessage from "../components/SlidingMessage";
 import MessageModal from "../components/MessageModal";
-import { useOutletContext } from "react-router-dom";
-import FilmFestival from "./FilmFestival";
 
 register();
 
 const Home = () => {
-
-  const [setSkipHeaderFooter] = useOutletContext();
-
-  const [isFilmFestivalVisible, setIsFilmFestivalVisible] = useState(false);
 
   const [messageModalOptions, setMessageModalOptions] = useState({ "open": false, "type": "message", "title": "Message", "message": "Thanks.", "data": {}, "onClose": null });
   const showMessageModal = (type, title, message, data) => {
     setMessageModalOptions({ "open": true, "type": type, "title": title, "message": message, "data": data });
   };
   const {
-    state: { token, role, is_film_festival_visible },
-    setFilmFestivalVisible,
+    state: { token, role, },
   } = useContext(AuthContext);
 
   const [search, setSearch] = useState("")
@@ -64,24 +57,9 @@ const Home = () => {
     return true;
   };
 
-  useEffect(() => {
-    if (setSkipHeaderFooter) {
-      setSkipHeaderFooter(isFilmFestivalVisible);
-    }
-  }, [isFilmFestivalVisible]);
-
-  useEffect(() => {
-    if (setSkipHeaderFooter) {
-      setIsFilmFestivalVisible(true);
-    }
-  }, [setSkipHeaderFooter]);
-
   return (
     <>
       <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
-      {isFilmFestivalVisible ? (<>
-        <FilmFestival setIsFilmFestivalVisible={setIsFilmFestivalVisible} />
-      </>) : (<>
         <div className="main">
           <div className="banner">
             <h1 className="bannerHeading">Welcome to Ad Agency Creatives</h1>
@@ -236,7 +214,6 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </>)}
     </>
   );
 };

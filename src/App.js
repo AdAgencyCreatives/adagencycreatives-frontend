@@ -47,7 +47,9 @@ function App() {
     getToken();
   }, []);
 
-
+  const isCurrentPage = (relativeUrl) => {
+    return (window.location.pathname + (window.location.search && window.location.search.length > 1 ? window.location.search : '')) == relativeUrl;
+}
   return (
     <ThemeProvider theme={theme}>
       <AlertProvider>
