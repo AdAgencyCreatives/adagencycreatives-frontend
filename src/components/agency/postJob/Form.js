@@ -121,7 +121,7 @@ const Form = ({ setJobStatus }) => {
     },
     {
       label: "Salary Range",
-      required: true,
+      required: false,
       type: "text",
       name: "linkedinlink",
       placeholder: "if required by your state",
