@@ -23,7 +23,7 @@ const Community = () => {
             <h1 className="community-title">The Lounge</h1>
             <h2 className="community-subtitle">
               <div>Creatives only. Ask for help. Share.</div>
-              <div>Chat. Inspire. Tell jokes.</div>
+              <div>&nbsp;Chat. Inspire. Tell jokes.</div>
             </h2>
             <div className="container-fluid mt-4">
               <div className="row">

@@ -438,6 +438,12 @@ textarea.form-control:focus {
     letter-spacing: -0.05em;
 }
 
+@media (max-width: 767px) {
+    .page-film-festival .h3 {
+        line-height: 1.15;
+    }    
+}
+
 .page-film-festival .film-festival-step.step-3 {
     row-gap: 10px;
     column-gap: 10px;

@@ -8,6 +8,7 @@ import { useContext, useEffect, useState, } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Context as AuthContext } from "../context/AuthContext";
 import { Context as GroupsContext } from "../context/GroupsContext";
+import { getGroupMembership } from "../context/GroupMembersDataContext";
 
 import RestrictedLounge from "../components/RestrictedLounge";
 import { CircularProgress } from "@mui/material";
@@ -16,8 +17,10 @@ import { HiOutlineUserGroup } from "react-icons/hi2";
 const GroupPosts = () => {
 
     const [isLoading, setIsLoading] = useState(true);
+    const [isGroupMember, setIsGroupMember] = useState(false);
+
     const {
-        state: { token, role },
+        state: { token, user, role },
     } = useContext(AuthContext);
 
     const {
@@ -37,8 +40,14 @@ const GroupPosts = () => {
     }, [token, group_uuid]);
 
     useEffect(() => {
-        if (token && single_group && single_group.uuid) {
+        if (token && single_group && single_group.uuid == group_uuid) {
             setIsLoading(false);
+            (async () => {
+                let result = await getGroupMembership(group_uuid, user.uuid)
+                if(result && result.creative.user_id == user.uuid) {
+                    setIsGroupMember(true);
+                }
+            })();
         }
     }, [token, single_group]);
 
@@ -79,8 +88,13 @@ const GroupPosts = () => {
                                             <CircularProgress />
                                         </div>
                                     </>) : (<>
-                                        <CreatePost feed_group={single_group.uuid} />
-                                        <PostList feed_group={single_group.uuid} />
+                                        {isGroupMember ? (<>
+                                            <CreatePost feed_group={single_group.uuid} />
+                                            <PostList feed_group={single_group.uuid} />
+                                        </>) : (<>
+                                            <div className="center-page">Sorry, your are not a member of this group.</div>
+                                        </>)}
+
                                     </>)}
                                 </div>
                                 <div className="col-md-3 order-md-3 order-2">

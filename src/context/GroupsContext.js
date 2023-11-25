@@ -3,6 +3,7 @@ import createDataContext from "./createDataContext";
 
 const state = {
   groups: null,
+  group_members: null,
   nextPage: null,
   loading: false,
   single_group: {},
@@ -16,6 +17,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         groups: action.payload.data,
+        nextPage: action.payload.links.next,
+      };
+      case "set_group_members":
+      return {
+        ...state,
+        group_members: action.payload.data,
         nextPage: action.payload.links.next,
       };
     case "set_single_group":
@@ -58,6 +65,18 @@ const getGroups = (dispatch) => {
       const response = await api.get("/groups?sort=-created_at&filter[status]=0");
       dispatch({
         type: "set_groups",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
+const getGroupMembers = (dispatch) => {
+  return async (group_id) => {
+    try {
+      const response = await api.get("/group-members?filter[group_id]=" + group_id);
+      dispatch({
+        type: "set_group_members",
         payload: response.data,
       });
     } catch (error) {}
@@ -211,6 +230,7 @@ export const { Context, Provider } = createDataContext(
   reducer,
   {
     getGroups,
+    getGroupMembers,
     loadGroups,
     getGroup,
     getUserGroups,
