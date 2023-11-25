@@ -136,7 +136,7 @@ const FilmFestival = (props) => {
                 {step == 1 ? (<>
                     <div className="film-festival-step step-1 d-fccc">
                         <Link className="btn btn-silver btn-home btn-wide" to="/" onClick={(e) => setSkipHeaderFooter(false)}>
-                            Skip to Home
+                            Go Home
                         </Link>
                         <div className="h1 text-center mt-3">Film Festival</div>
                         <div className="h2 text-center">What does an Ad Agency Creative Actually Do</div>

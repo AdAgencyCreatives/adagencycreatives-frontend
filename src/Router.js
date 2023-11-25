@@ -222,7 +222,7 @@ export const router = createBrowserRouter([
         element: <LoginAs />,
       },
       {
-        path: "/film_festival_1whatdoes",
+        path: "/filmfestival1",
         element: <FilmFestival />,
       },
     ],
