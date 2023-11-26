@@ -139,7 +139,7 @@ const CreatePost = (props) => {
           ></textarea>
         </div>
       </div>
-      <div className="divider"></div>
+      {/* <div className="divider"></div>
       <div className="status-options">
         <div className="item">
           <FiCamera />
@@ -150,7 +150,7 @@ const CreatePost = (props) => {
         <div className="item">
           <FiPaperclip />
         </div>
-      </div>
+      </div> */}
 
       <Modal
         open={open}

@@ -28,6 +28,9 @@ const Sidebar = ({ data, role, user }) => {
   } = useContext(AgenciesContext);
 
   const isCreative = role == "creative";
+  const isAdmin = role == "admin";
+  const isAdvisor = role == "advisor";
+  const isAgency = role == "agency";
   const isOwnProfile = isCreative && user?.uuid == data.user_id;
   const checkPermissions = () => {
     if (Cookies.get("token")) {
@@ -96,6 +99,18 @@ const Sidebar = ({ data, role, user }) => {
     );
   };
 
+  const formatPhone = (phone) => {
+    let result = [];
+    for (let i = 0; i < phone.length; i++) {
+      const element = phone[i];
+      result.push(element);
+      if(i==2 || i == 5) {
+        result.push('-');
+      }
+    }
+    return result.join('');
+  };
+
   return (
     <>
       <div className="sidebar-item">
@@ -112,7 +127,7 @@ const Sidebar = ({ data, role, user }) => {
           ) : (
             ""
           )}
-          {data.email && (
+          {data.email && (isOwnProfile || isAdmin || isAdvisor || isFriend) && (
             <div className="item">
               <IoMailOutline size={22} />
               <div className="details">
@@ -121,12 +136,12 @@ const Sidebar = ({ data, role, user }) => {
               </div>
             </div>
           )}
-          {data.phone_number && isOwnProfile && (
+          {data.phone_number && (isOwnProfile || isAdmin || isAdvisor) && (
             <div className="item">
               <IoCallOutline size={22} />
               <div className="details">
                 <div className="text">Phone Number</div>
-                <div className="value">{data.phone_number}</div>
+                <div className="value">{formatPhone(data.phone_number)}</div>
               </div>
             </div>
           )}

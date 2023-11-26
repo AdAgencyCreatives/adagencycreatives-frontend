@@ -127,8 +127,8 @@ function Header(props) {
       <Box className="drawer-box">
         <List>
           {navItems.map((item) => (
-            <ListItem key={item.name} disablePadding>
-              <NavLink to={item.link}>
+            <ListItem key={item.name}>
+              <NavLink to={item.link} className={item.name}>
                 <ListItemButton className="drawer-menu-link">
                   <ListItemText primary={item.name} disableTypography={false} />
                 </ListItemButton>
