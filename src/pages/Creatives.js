@@ -208,7 +208,7 @@ const Creatives = () => {
                       }}
                     />
                     <div className="agencyName">
-                      <Link className="text-dark" to={`/creative/${item.slug}`}>
+                      <Link className="text-dark" to={`/creative/${item.slug}`} reloadDocument>
                         {item.name}
                       </Link>
                     </div>
@@ -234,6 +234,7 @@ const Creatives = () => {
                           }
                           return false;
                         }}
+                        reloadDocument
                       >
                         View Profile
                       </Link>
