@@ -73,7 +73,7 @@ const Agencies = () => {
                         </button>
                       </Tooltip>
                     )}
-                    <Link to={`/agency/${item.slug}`} className="employer-logo">
+                    <Link to={`/agency/${item.slug}`} className="employer-logo" reloadDocument>
                       <img
                         src={item.logo || Placeholder}
                         width={150}
@@ -85,7 +85,7 @@ const Agencies = () => {
                       />
                     </Link>
                     <h3 className="employer-title">
-                      <Link to={`/agency/${item.slug}`} className="text-dark">
+                      <Link to={`/agency/${item.slug}`} className="text-dark" reloadDocument>
                         {item.name}
                       </Link>
                     </h3>
@@ -110,7 +110,7 @@ const Agencies = () => {
                       </div>
                     )}
                     <div className="open-jobs-btn">
-                      <Link to={`/agency/${item.slug}`}>
+                      <Link to={`/agency/${item.slug}`} reloadDocument>
                         Open Jobs - {item.open_jobs}
                       </Link>
                     </div>
