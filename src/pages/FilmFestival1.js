@@ -13,7 +13,7 @@ import { Context as AlertContext } from "../context/AlertContext";
 import SlidingMessage from "../components/SlidingMessage";
 import { useOutletContext } from "react-router-dom";
 
-const FilmFestival = (props) => {
+const FilmFestival1 = (props) => {
 
     const [setSkipHeaderFooter] = useOutletContext();
 
@@ -139,15 +139,15 @@ const FilmFestival = (props) => {
                             Go Home
                         </Link>
                         <div className="h1 text-center mt-3">Film Festival</div>
-                        <div className="h2 text-center">What does an Ad Agency Creative Actually Do</div>
+                        <div className="h2 text-center">What Does An Ad Agency Creative Actually Do?</div>
                         <div className="film-festival-enter d-fccc">
                             <img src={FilmFestivalEnter} width={"350px"} height={"100px"} alt="" onClick={(e) => setStep(old => (old % 3) + 1)} />
                         </div>
                         <div className="h3 text-center mt-3"><strong>Deadline:</strong> December 12TH 4Pm CST</div>
                         <div className="h3 text-center"><strong>Winners Win:</strong> $500 & bragging rights</div>
                         <div className="container-fluid mt-4">
-                            <div className="row">
-                                <div className="col-sm-5 col-12 d-fssc">
+                            <div className="row relative">
+                                <div className="col-sm-6 col-12 d-fssc">
                                     <div className="h3"><strong><u>Rules</u></strong></div>
                                     <ul>
                                         <li className="h3">
@@ -167,7 +167,7 @@ const FilmFestival = (props) => {
                                         </li>
                                     </ul>
                                 </div>
-                                <div className="col-sm-5 col-12 d-fssc">
+                                <div className="col-sm-6 col-12 d-fssc">
                                     <div className="h3"><strong><u>Winner Categories</u></strong></div>
                                     <ul>
                                         <li className="h3">
@@ -183,11 +183,12 @@ const FilmFestival = (props) => {
                                     <div className="h3"><strong><u>Winners</u></strong></div>
                                     <ul>
                                         <li className="h3">
-                                            WILL BE ANNOUNCED Dec. 19, 2023
+                                            WILL BE ANNOUNCED <br />
+                                            TUESDAY, DECEMBER 19, 2023
                                         </li>
                                     </ul>
                                 </div>
-                                <div className="col-sm-2 col-12 d-fscc">
+                                <div className="col-12 d-fscc favicon">
                                     <img src={Favicon} alt="" />
                                 </div>
                             </div>
@@ -330,4 +331,4 @@ const FilmFestival = (props) => {
     );
 };
 
-export default FilmFestival;
+export default FilmFestival1;
