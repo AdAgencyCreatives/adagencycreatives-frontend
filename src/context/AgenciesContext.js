@@ -119,7 +119,7 @@ const getOpenPositions = (dispatch) => {
     setLoading(dispatch, true);
     try {
       const response = await api.get(
-        "/jobs?sort=-created_at&filter[user_id]=" + uid
+        "/jobs?sort=-created_at&filter[status]=1&filter[user_id]=" + uid
       );
       const data = response.data;
       dispatch({
