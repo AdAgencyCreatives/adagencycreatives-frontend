@@ -28,6 +28,8 @@ const reducer = (state, action) => {
       return { ...state, single_creative: action.payload };
     case "set_video":
       return { ...state, video: action.payload.data[0] };
+    case "reset_video":
+      return { ...state, video: null };
     case "set_creative_experience":
       return { ...state, creative_experience: action.payload.data };
     case "set_creative_education":
@@ -58,9 +60,7 @@ const reducer = (state, action) => {
 const getCreatives = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get(
-        "/home/creatives?filter[status]=1&filter[is_visible]=1"
-      );
+      const response = await api.get("/home/creatives?filter[status]=1&filter[is_visible]=1");
       dispatch({
         type: "set_creatives",
         payload: response.data,
@@ -72,9 +72,7 @@ const getCreatives = (dispatch) => {
 const getHomeCreatives = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get(
-        "/home/creatives?filter[is_featured]=1&filter[status]=1&filter[is_visible]=1"
-      );
+      const response = await api.get("/home/creatives?filter[is_featured]=1&filter[status]=1&filter[is_visible]=1");
       dispatch({
         type: "set_creatives",
         payload: response.data,
@@ -86,10 +84,7 @@ const getHomeCreatives = (dispatch) => {
 const getRelatedCreatives = (dispatch) => {
   return async (title) => {
     try {
-      const response = await api.get(
-        "/creatives?filter[status]=1&filter[is_visible]=1&filter[title]=" +
-          title
-      );
+      const response = await api.get("/creatives?filter[status]=1&filter[is_visible]=1&filter[title]=" + title);
       dispatch({
         type: "set_creatives",
         payload: response.data,
@@ -101,9 +96,7 @@ const getRelatedCreatives = (dispatch) => {
 const getCreative = (dispatch) => {
   return async (slug) => {
     try {
-      const response = await api.get(
-        "/creatives?filter[status]=1&filter[slug]=" + slug
-      );
+      const response = await api.get("/creatives?filter[status]=1&filter[slug]=" + slug);
       const data = response.data.data[0];
       const uid = data.user_id;
       getCreativeEducation(dispatch, uid);
@@ -121,9 +114,7 @@ const getCreative = (dispatch) => {
 const getCreativeById = (dispatch) => {
   return async (id) => {
     try {
-      const response = await api.get(
-        "/creatives?filter[status]=1&filter[user_id]=" + id
-      );
+      const response = await api.get("/creatives?filter[status]=1&filter[user_id]=" + id);
       const data = response.data.data[0];
       const uid = data.user_id;
       getCreativeEducation(dispatch, uid);
@@ -141,9 +132,7 @@ const searchCreatives = (dispatch) => {
     setLoading(dispatch, true);
 
     try {
-      const response = await api.get(
-        "/creatives?filter[status]=1&filter[is_visible]=1&filter[name]=" + query
-      );
+      const response = await api.get("/creatives?filter[status]=1&filter[is_visible]=1&filter[name]=" + query);
       dispatch({
         type: "set_creatives",
         payload: response.data,
@@ -268,9 +257,7 @@ const removeAttachment = (dispatch) => {
 const getResume = (dispatch) => {
   return async (uid) => {
     try {
-      const response = await api.get(
-        "/attachments?filter[user_id]=" + uid + "&filter[resource_type]=resume"
-      );
+      const response = await api.get("/attachments?filter[user_id]=" + uid + "&filter[resource_type]=resume");
       dispatch({
         type: "set_resume",
         payload: response.data,
@@ -282,11 +269,7 @@ const getResume = (dispatch) => {
 const getPortfolio = (dispatch) => {
   return async (uid) => {
     try {
-      const response = await api.get(
-        "/attachments?filter[user_id]=" +
-          uid +
-          "&filter[resource_type]=portfolio_item"
-      );
+      const response = await api.get("/attachments?filter[user_id]=" + uid + "&filter[resource_type]=portfolio_item");
       dispatch({
         type: "set_portfolio_items",
         payload: response.data,
@@ -298,16 +281,18 @@ const getPortfolio = (dispatch) => {
 const getVideo = (dispatch) => {
   return async (uid) => {
     try {
-      const response = await api.get(
-        "/attachments?filter[user_id]=" +
-          uid +
-          "&filter[resource_type]=creative_reel"
-      );
+      const response = await api.get("/attachments?filter[user_id]=" + uid + "&filter[resource_type]=creative_reel");
       dispatch({
         type: "set_video",
         payload: response.data,
       });
     } catch (error) {}
+  };
+};
+
+const resetVideo = (dispatch) => {
+  return () => {
+    dispatch({ type: "reset_video" });
   };
 };
 
@@ -382,6 +367,7 @@ export const { Context, Provider } = createDataContext(
     getResume,
     getPortfolio,
     getVideo,
+    resetVideo,
     removeAttachment,
   },
   state
