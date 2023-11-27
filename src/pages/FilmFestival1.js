@@ -317,9 +317,9 @@ const FilmFestival1 = (props) => {
                         <div className="h3 text-center">
                             Good Luck.
                         </div>
-                        <Button className="btn btn-gold btn-wide" onClick={(e) => setSkipHeaderFooter(false)}>
+                        <Link to="/" className="btn btn-gold btn-wide" onClick={(e) => setSkipHeaderFooter(false)}>
                             Home Page
-                        </Button>
+                        </Link>
                     </div>
                 </>) : (<></>)}
             </div>

@@ -324,7 +324,8 @@ function Header(props) {
                       Login/Register
                     </Button>
                   )}
-                  <Link className="btn btn-gold" to="/filmfestival1" style={{ fontWeight: "500", fontSize: "18px", marginLeft: "10px", minWidth: "120px" }}>
+                  <Link className="btn btn-gold" to="/filmfestival1" 
+                  style={{ fontWeight: "500", fontSize: "18px", marginLeft: "5px", minWidth: "120px" }}>
                   Film Festival
                 </Link>
                 </Box>

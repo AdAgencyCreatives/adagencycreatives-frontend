@@ -395,6 +395,7 @@ textarea.form-control:focus {
 
 .page-film-festival .film-festival-step {
     color: #fff;
+    max-width: 90vw;
 }
 
 .page-film-festival .h1 {
