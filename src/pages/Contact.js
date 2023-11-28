@@ -22,15 +22,17 @@ const Contact = () => {
   }
 
   const submitContact = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setSubmit(true);
     try {
       const response = await api.post("/contact-us", formData);
       showMessage(true);
+      setFormData({ name: "", email: "", phone: "", location: "", message: "" });
     } catch (error) {
       showError(true);
     }
     setSubmit(false);
+    window.scrollTo({ top: 0 });
   };
 
   return (
@@ -48,7 +50,10 @@ const Contact = () => {
             <input className="form-control form-inp" name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} />
             <input className="form-control form-inp" name="location" placeholder="Location" value={formData.location} onChange={handleChange} />
             <textarea className="form-control form-inp" rows={5} name="message" placeholder="Message" required value={formData.message} onChange={handleChange} />
-            <ReCAPTCHA sitekey="6LflnAEkAAAAAMC-wK6kWCLZ3OGbIYgDzCodr50o" />,<button className="submit-btn">{!submit ? "Send" : <CircularProgress size={20} color="white" />}</button>
+            <ReCAPTCHA sitekey="6LflnAEkAAAAAMC-wK6kWCLZ3OGbIYgDzCodr50o" />,
+            <button className="submit-btn" disabled={submit}>
+              {!submit ? "Send" : <CircularProgress size={20} color="white" />}
+            </button>
           </div>
         </div>
       </form>
