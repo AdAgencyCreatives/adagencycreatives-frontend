@@ -29,11 +29,7 @@ const Content = ({ user, role, data, education, experience }) => {
       <div className="content-section">
         <h1 className="content-title">Portfolio Site</h1>
         <a href={portfolio_link} target="_blank">
-        {data.portfolio_website ? (<>
           <img src={data.portfolio_website || ""} />
-</>) : (<>
-<iframe src={portfolio_link} />
-</>)}
         </a>
       </div>
       {/* Education */}
