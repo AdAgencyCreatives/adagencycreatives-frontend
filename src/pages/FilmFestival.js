@@ -146,8 +146,8 @@ const FilmFestival = (props) => {
                         <div className="h3 text-center mt-3"><strong>Deadline:</strong> December 12TH 4Pm CST</div>
                         <div className="h3 text-center"><strong>Winners Win:</strong> $500 & bragging rights</div>
                         <div className="container-fluid mt-4">
-                            <div className="row">
-                                <div className="col-sm-5 col-12 d-fssc">
+                            <div className="row justify-content-center">
+                                <div className="col-md-4 ps-5 col-12 d-fssc">
                                     <div className="h3"><strong><u>Rules</u></strong></div>
                                     <ul>
                                         <li className="h3">
@@ -167,7 +167,7 @@ const FilmFestival = (props) => {
                                         </li>
                                     </ul>
                                 </div>
-                                <div className="col-sm-5 col-12 d-fssc">
+                                <div className="col-md-4 ps-5 col-12 d-fssc">
                                     <div className="h3"><strong><u>Winner Categories</u></strong></div>
                                     <ul>
                                         <li className="h3">
@@ -187,9 +187,9 @@ const FilmFestival = (props) => {
                                         </li>
                                     </ul>
                                 </div>
-                                <div className="col-sm-2 col-12 d-fscc">
+                                {/* <div className="col-sm-2 col-12 d-fscc">
                                     <img src={Favicon} alt="" />
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
