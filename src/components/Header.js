@@ -36,7 +36,6 @@ import ScrollButton from "./ScrollButton";
 const drawerWidth = "85%";
 
 function Header(props) {
-
   const { window } = props;
   const { state } = React.useContext(AuthContext);
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -49,7 +48,10 @@ function Header(props) {
   const instagram = "https://www.instagram.com/adagencycreativescommunity";
   const linkedIn = "https://www.linkedin.com/company/adagencycreatives";
 
-  const { state: { message }, showAlert } = useContext(AlertContext);
+  const {
+    state: { message },
+    showAlert,
+  } = useContext(AlertContext);
 
   const {
     state: { subscription },
@@ -102,13 +104,7 @@ function Header(props) {
   const drawer = (
     <Box onClick={handleDrawerToggle}>
       <ScrollToHash />
-      <Grid
-        container
-        justifyContent="space-between"
-        alignItems="center"
-        backgroundColor="white"
-        sx={{ paddingY: 3, paddingX: 1 }}
-      >
+      <Grid container justifyContent="space-between" alignItems="center" backgroundColor="white" sx={{ paddingY: 3, paddingX: 1 }}>
         <Grid item xs={8}>
           <Link className="site-logo" to="/">
             <img className="" src={Logo} alt="Adagency Creatives" />
@@ -151,8 +147,7 @@ function Header(props) {
     </Box>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   const StyledButton = styled(Button)`
     padding: 6px 12px;
@@ -173,12 +168,7 @@ function Header(props) {
     <>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBar
-          elevation={0}
-          component="nav"
-          id="top-nav-fixed"
-          sx={{ backgroundColor: "#fff", padding: { sm: "10px 0", xs: "0" } }}
-        >
+        <AppBar elevation={0} component="nav" id="top-nav-fixed" sx={{ backgroundColor: "#fff", padding: { sm: "10px 0", xs: "0" } }}>
           <Toolbar>
             <Grid container justifyContent="space-between" alignItems="center">
               <Grid item lg={3} md={2} xs={6}>
@@ -186,46 +176,29 @@ function Header(props) {
                   <img className="" src={Logo} alt="Adagency Creatives" />
                 </Link>
               </Grid>
-              <Grid
-                item
-                lg={9}
-                md={10}
-                xs={6}
-                sx={{ textAlign: "right", padding: "10px" }}
-                className="right-menu"
-              >
+              <Grid item lg={9} md={10} xs={6} sx={{ textAlign: "right", padding: "10px" }} className="right-menu">
                 <Box sx={{ display: { md: "none" } }}>
-                  <IconButton
-                    href={state.token ? "/dashboard" : "#"}
-                    color="primary"
-                    onClick={() => (!state.token ? setAuthModalOpen(true) : "")}
-                  >
+                  <IconButton href={state.token ? "/dashboard" : "#"} color="primary" onClick={() => (!state.token ? setAuthModalOpen(true) : "")}>
                     <AiOutlineUser />
                   </IconButton>
 
-                  <IconButton href="#" color="primary">
-                    <AiOutlineBell />
-                  </IconButton>
+                  {state.role == "creative" && (
+                    <IconButton href="/notifications" color="primary">
+                      <AiOutlineBell />
+                    </IconButton>
+                  )}
 
                   <Link
                     to="/post-a-job"
                     sx={{ backgroundColor: "#000", color: "white" }}
                     className="btn btn-dark btn-narrow"
-                    onClick={(e) => validateAccess(e, { roles: ["admin", "agency"], restrictedMessage: 'Please login as Agency to access' })}
+                    onClick={(e) => validateAccess(e, { roles: ["admin", "agency"], restrictedMessage: "Please login as Agency to access" })}
                   >
                     P
                   </Link>
 
-                  <IconButton
-                    aria-label="open drawer"
-                    edge="start"
-                    onClick={handleDrawerToggle}
-                    sx={{ p: 0, ml: 1, textAlign: "right" }}
-                  >
-                    <a
-                      href="#navbar-offcanvas"
-                      className="btn-showmenu flex-column d-flex text-end align-items-end"
-                    >
+                  <IconButton aria-label="open drawer" edge="start" onClick={handleDrawerToggle} sx={{ p: 0, ml: 1, textAlign: "right" }}>
+                    <a href="#navbar-offcanvas" className="btn-showmenu flex-column d-flex text-end align-items-end">
                       <span className="inner1"></span>
                       <span className="inner2"></span>
                       <span className="inner3"></span>
@@ -241,18 +214,9 @@ function Header(props) {
                   }}
                 >
                   {navItems.map((item) => (
-                    <div
-                      key={item.name}
-                      className={`nav-item${item.children ? " has-children" : ""
-                        }`}
-                    >
+                    <div key={item.name} className={`nav-item${item.children ? " has-children" : ""}`}>
                       <NavLink to={item.link}>
-                        <StyledButton
-                          color="link"
-                          className={`menu-link-btn ${item.children ? " dropdown-toggle" : ""
-                            }`}
-                          onClick={(e) => validateAccess(e, item)}
-                        >
+                        <StyledButton color="link" className={`menu-link-btn ${item.children ? " dropdown-toggle" : ""}`} onClick={(e) => validateAccess(e, item)}>
                           {item.name}
                         </StyledButton>
                       </NavLink>
@@ -261,10 +225,7 @@ function Header(props) {
                           <ul className="dropdown-list">
                             {item.children.map((child) => (
                               <li key={child.name}>
-                                <NavLink
-                                  to={child[childLink]}
-                                  className={() => ""}
-                                >
+                                <NavLink to={child[childLink]} className={() => ""}>
                                   {child.name}
                                 </NavLink>
                               </li>
@@ -278,12 +239,12 @@ function Header(props) {
                     href="/post-a-job"
                     sx={{ backgroundColor: "#000", color: "white" }}
                     className="post-job-link"
-                    onClick={(e) => validateAccess(e, { roles: ["admin", "agency"], restrictedMessage: 'Please login as Agency to access' })}
+                    onClick={(e) => validateAccess(e, { roles: ["admin", "agency"], restrictedMessage: "Please login as Agency to access" })}
                   >
                     Post A Job
                   </Button>
                   {state.token ? (
-                    <div className="nav-item has-children">
+                    <div className="nav-item has-children ms-2">
                       <div className="logged-in-menu">
                         <img
                           src={state.user.image || Placeholder}
@@ -294,7 +255,9 @@ function Header(props) {
                             e.target.src = Placeholder; // Set the backup image source
                           }}
                         />
-                        <div className="username">{state.user.first_name} {state.user.last_name}</div>
+                        <div className="username">
+                          {state.user.first_name} {state.user.last_name}
+                        </div>
                       </div>
                       <div className="dropdown-menu logged-in-dropdown show">
                         <ul className="dropdown-list">
@@ -307,12 +270,7 @@ function Header(props) {
                       </div>
                     </div>
                   ) : (
-                    <Button
-                      href="#"
-                      color="link"
-                      className="login-btn"
-                      onClick={() => setAuthModalOpen(true)}
-                    >
+                    <Button href="#" color="link" className="login-btn" onClick={() => setAuthModalOpen(true)}>
                       Login/Register
                     </Button>
                   )}

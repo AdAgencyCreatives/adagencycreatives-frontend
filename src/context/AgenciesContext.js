@@ -31,9 +31,7 @@ const reducer = (state, action) => {
     case "delete_job":
       return {
         ...state,
-        open_positions: state.open_positions.filter(
-          (job) => job.id != action.payload
-        ),
+        open_positions: state.open_positions.filter((job) => job.id != action.payload),
       };
     case "load_agencies":
       return {
@@ -55,9 +53,9 @@ const reducer = (state, action) => {
 };
 
 const getAgencies = (dispatch) => {
-  return async () => {
+  return async (page) => {
     try {
-      const response = await api.get("/agencies?filter[status]=1&filter[is_visible]=1");
+      const response = await api.get("/agencies?filter[status]=1&filter[is_visible]=1" + (page == "home" ? "&per_page=30" : ""));
       dispatch({
         type: "set_agencies",
         payload: response.data,
@@ -67,11 +65,9 @@ const getAgencies = (dispatch) => {
 };
 
 const getAgency = (dispatch) => {
-  return async (slug, self=false) => {
+  return async (slug, self = false) => {
     try {
-      const response = await api.get(
-        "/agencies?filter[status]=1&filter[slug]=" + slug + (self ? "" : "&filter[is_visible]=1")
-      );
+      const response = await api.get("/agencies?filter[status]=1&filter[slug]=" + slug + (self ? "" : "&filter[is_visible]=1"));
       const data = response.data.data[0];
       const uid = data.user_id;
       getOpenPositions(dispatch, uid);
@@ -84,11 +80,9 @@ const getAgency = (dispatch) => {
 };
 
 const getAgencyById = (dispatch) => {
-  return async (id, self=false) => {
+  return async (id, self = false) => {
     try {
-      const response = await api.get(
-        "/agencies?filter[status]=1&filter[user_id]=" + id + (self ? "" : "&filter[is_visible]=1")
-      );
+      const response = await api.get("/agencies?filter[status]=1&filter[user_id]=" + id + (self ? "" : "&filter[is_visible]=1"));
       const data = response.data.data[0];
       const uid = data.user_id;
       getOpenPositions(dispatch)(uid);
@@ -118,9 +112,7 @@ const getOpenPositions = (dispatch) => {
   return async (uid) => {
     setLoading(dispatch, true);
     try {
-      const response = await api.get(
-        "/jobs?sort=-created_at&filter[status]=1&filter[user_id]=" + uid
-      );
+      const response = await api.get("/jobs?sort=-created_at&filter[status]=1&filter[user_id]=" + uid);
       const data = response.data;
       dispatch({
         type: "set_open_positions",
@@ -188,11 +180,7 @@ const removeAttachment = (dispatch) => {
 const getVideo = (dispatch) => {
   return async (uid) => {
     try {
-      const response = await api.get(
-        "/attachments?filter[user_id]=" +
-          uid +
-          "&filter[resource_type]=agency_reel"
-      );
+      const response = await api.get("/attachments?filter[user_id]=" + uid + "&filter[resource_type]=agency_reel");
       dispatch({
         type: "set_video",
         payload: response.data,
@@ -204,9 +192,7 @@ const getVideo = (dispatch) => {
 const searchAgencies = (dispatch) => {
   return async (query) => {
     try {
-      const response = await api.get(
-        "/agencies?filter[status]=1&filter[is_visible]=1&filter[name]=" + query
-      );
+      const response = await api.get("/agencies?filter[status]=1&filter[is_visible]=1&filter[name]=" + query);
       dispatch({
         type: "set_agencies",
         payload: response.data,
