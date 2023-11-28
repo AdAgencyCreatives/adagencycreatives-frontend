@@ -31,7 +31,7 @@ const NewMemberWidgetRightSidebar = (props) => {
                 </div>
                 <div className="item-industry-experience">
                     {/* {singleCreative && singleCreative.industry_experience && singleCreative.industry_experience.length ? singleCreative.industry_experience.slice(0, Math.min(showMaxIndustryExperiences, singleCreative.industry_experience.length)).join(', ') : ""} */}
-                    {singleCreative && singleCreative.title ? singleCreative.title : ""}
+                    {singleCreative && singleCreative.category ? singleCreative.category : ""}
                 </div>
                 <div className="item-meta">
                     <a href={"/creative/" + props.new_member.slug}>
