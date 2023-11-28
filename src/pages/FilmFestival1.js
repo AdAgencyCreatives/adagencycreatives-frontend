@@ -188,9 +188,9 @@ const FilmFestival1 = (props) => {
                                         </li>
                                     </ul>
                                 </div>
-                                <div className="col-12 d-fscc favicon">
+                                {/* <div className="col-12 d-fscc favicon">
                                     <img src={Favicon} alt="" />
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
