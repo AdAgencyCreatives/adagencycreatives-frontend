@@ -8,7 +8,7 @@ import useAgencies from "../../hooks/useAgencies";
 
 const AdAgencies = () => {
   const swiperElRef = useRef(null);
-  const {agencies} = useAgencies();
+  const {agencies} = useAgencies("home");
 
   useEffect(() => {
     const params = {

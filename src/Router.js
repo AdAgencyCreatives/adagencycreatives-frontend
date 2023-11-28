@@ -135,6 +135,10 @@ export const router = createBrowserRouter([
         element: <Messages />,
       },
       {
+        path: "/messages/:any",
+        element: <Messages />,
+      },
+      {
         path: "/notifications",
         element: <Notifications />,
       },

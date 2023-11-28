@@ -229,7 +229,7 @@ const getNewMembers = (dispatch) => {
   return async () => {
     try {
       const response = await api.get(
-        "/creatives?sort=-created_at&filter[status]=1"
+        "/creatives?sort=-created_at&filter[status]=1&filter[is_visible]=1"
       ); // only active members
       dispatch({
         type: "set_new_members",

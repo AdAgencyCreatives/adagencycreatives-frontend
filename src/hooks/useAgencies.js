@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { Context as AgenciesContext } from "../context/AgenciesContext";
 
-const useAgencies = () => {
+const useAgencies = (page) => {
   const {
     state: { agencies, nextPage, loading },
     getAgencies,
@@ -10,7 +10,7 @@ const useAgencies = () => {
   } = useContext(AgenciesContext);
 
   useEffect(() => {
-    getAgencies();
+    getAgencies(page);
   }, []);
 
   const loadMore = () => {
