@@ -13,7 +13,7 @@ import { Context as AlertContext } from "../context/AlertContext";
 import SlidingMessage from "../components/SlidingMessage";
 import { useOutletContext } from "react-router-dom";
 
-const FilmFestival = (props) => {
+const FilmFestival1 = (props) => {
 
     const [setSkipHeaderFooter] = useOutletContext();
 
@@ -139,7 +139,7 @@ const FilmFestival = (props) => {
                             Go Home
                         </Link>
                         <div className="h1 text-center mt-3">Film Festival</div>
-                        <div className="h2 text-center">What does an Ad Agency Creative Actually Do</div>
+                        <div className="h2 text-center">What Does An Ad Agency Creative Actually Do?</div>
                         <div className="film-festival-enter d-fccc">
                             <img src={FilmFestivalEnter} width={"350px"} height={"100px"} alt="" onClick={(e) => setStep(old => (old % 3) + 1)} />
                         </div>
@@ -183,7 +183,8 @@ const FilmFestival = (props) => {
                                     <div className="h3"><strong><u>Winners</u></strong></div>
                                     <ul>
                                         <li className="h3">
-                                            WILL BE ANNOUNCED Dec. 19, 2023
+                                            WILL BE ANNOUNCED <br />
+                                            TUESDAY, DECEMBER 19, 2023
                                         </li>
                                     </ul>
                                 </div>
@@ -316,13 +317,9 @@ const FilmFestival = (props) => {
                         <div className="h3 text-center">
                             Good Luck.
                         </div>
-                        <Button className="btn btn-gold btn-wide" onClick={(e) => {
-                            if (props.setIsFilmFestivalVisible) {
-                                props.setIsFilmFestivalVisible(false);
-                            }
-                        }}>
+                        <Link to="/" className="btn btn-gold btn-wide" onClick={(e) => setSkipHeaderFooter(false)}>
                             Home Page
-                        </Button>
+                        </Link>
                     </div>
                 </>) : (<></>)}
             </div>
@@ -330,4 +327,4 @@ const FilmFestival = (props) => {
     );
 };
 
-export default FilmFestival;
+export default FilmFestival1;

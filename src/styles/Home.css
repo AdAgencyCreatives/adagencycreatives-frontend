@@ -18,6 +18,19 @@ h1.bannerHeading {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
+}
+
+.main .banner .film-festival-1 {
+    position: absolute;
+    top: 30px;
+    right: 10px;
+}
+
+@media (max-width: 540px) {
+    .main .banner .film-festival-1 {
+        top: 20px;
+    }
 }
 
 p.subHeading {
