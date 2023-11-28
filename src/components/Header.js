@@ -216,14 +216,6 @@ function Header(props) {
                     P
                   </Link>
 
-                  <Link
-                    to="/filmfestival1"
-                    sx={{ backgroundColor: "#d3a11f", color: "white" }}
-                    className="btn btn-gold btn-narrow"
-                  >
-                    Film Festival
-                  </Link>
-
                   <IconButton
                     aria-label="open drawer"
                     edge="start"
@@ -324,10 +316,6 @@ function Header(props) {
                       Login/Register
                     </Button>
                   )}
-                  <Link className="btn btn-gold" to="/filmfestival1" 
-                  style={{ fontWeight: "500", fontSize: "18px", marginLeft: "5px", minWidth: "120px" }}>
-                  Film Festival
-                </Link>
                 </Box>
               </Grid>
             </Grid>
