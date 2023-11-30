@@ -70,7 +70,7 @@ const Sidebar = ({ data, role, user }) => {
 
   const [showAllItems, setShowAllItems] = useState({});
 
-  const renderListData = (list, listKey) => {
+  const renderListData = (list, listKey, isAdmin, isAdvisor, field) => {
     const maxItemsToShow = 5;
 
     const renderedList = list.slice(0, maxItemsToShow);
@@ -85,7 +85,17 @@ const Sidebar = ({ data, role, user }) => {
 
     return (
       <>
-        {renderedList.join(", ")}
+        {renderedList.map((item, index) => (
+          <span key={index}>
+            {isAdmin || isAdvisor ? (<>
+              <Link to={"/creatives/search/" + field + "/" + item}>
+                {(index > 0 ? ', ' : '') + `${item}`}
+              </Link>
+            </>) : (<>
+              {`, ${item}`}
+            </>)}
+          </span>
+        ))}
         {list.length > maxItemsToShow && !showAllItems[listKey] && (
           <React.Fragment>
             <IoAdd onClick={toggleShowAllItems} className="cursor-pointer" />
@@ -94,7 +104,15 @@ const Sidebar = ({ data, role, user }) => {
         {showAllItems[listKey] &&
           remainingItems.length > 0 &&
           remainingItems.map((item, index) => (
-            <span key={index}>{`, ${item}`}</span>
+            <span key={index}>
+              {isAdmin || isAdvisor ? (<>
+                <Link to={"/creatives/search/" + field + "/" + item}>
+                  {`, ${item}`}
+                </Link>
+              </>) : (<>
+                {`, ${item}`}
+              </>)}
+            </span>
           ))}
       </>
     );
@@ -130,7 +148,6 @@ const Sidebar = ({ data, role, user }) => {
                   </>) : (<>
                     {data.years_of_experience}
                   </>)}
-
                 </div>
               </div>
             </div>
@@ -161,7 +178,7 @@ const Sidebar = ({ data, role, user }) => {
               <div className="details">
                 <div className="text">Industry Experience</div>
                 <div className="value">
-                  {renderListData(data.industry_experience, "i")}
+                  {renderListData(data.industry_experience, "i", isAdmin, isAdvisor, 'industry-experience')}
                 </div>
               </div>
             </div>
@@ -174,7 +191,7 @@ const Sidebar = ({ data, role, user }) => {
               <div className="details">
                 <div className="text">Media Experience</div>
                 <div className="value">
-                  {renderListData(data.media_experience, "m")}
+                  {renderListData(data.media_experience, "m", isAdmin, isAdvisor, 'media-experience')}
                 </div>
               </div>
             </div>
@@ -186,7 +203,9 @@ const Sidebar = ({ data, role, user }) => {
               <img src={time} height={22} width={22} />
               <div className="details">
                 <div className="text">Type of Work</div>
-                <div className="value">{data.employment_type.replace(/,/g, ', ')}</div>
+                <div className="value">
+                  {renderListData(data.employment_type.split(','), "e", isAdmin, isAdvisor, 'work-type')}
+                </div>
               </div>
             </div>
           )}
@@ -196,7 +215,7 @@ const Sidebar = ({ data, role, user }) => {
               <div className="details">
                 <div className="text">Strengths</div>
                 <div className="value">
-                  {renderListData(data.character_strengths, "c")}
+                {renderListData(data.character_strengths, "c", isAdmin, isAdvisor, 'strengths')}
                 </div>
               </div>
             </div>

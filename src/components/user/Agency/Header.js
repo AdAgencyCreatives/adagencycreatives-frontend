@@ -50,9 +50,9 @@ const Header = ({ data, role, user }) => {
                 <div className="job-location location">
                   <IoLocationOutline />
                   <Link to={`/agency-location/${data.location.state}`}>
-                    {data.location.state},
+                    {data.location.state}
                   </Link>
-                  &nbsp;
+                  ,&nbsp;
                   <Link to={`/agency-location/${data.location.city}`}>
                     {data.location.city}
                   </Link>

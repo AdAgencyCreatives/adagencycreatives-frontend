@@ -82,16 +82,25 @@ const Header = ({ data, role, user }) => {
                 {data.name}
                 {/* <span class="featured-text">Featured</span> */}
               </div>
-              <div className="position">{data.title}</div>
+              <div className="position">{data.category}</div>
               {data.location.state && (
                 <div className="job-location location">
                   <IoLocationOutline />
-                  <Link to={`/creative-location/${data.location.state}`}>
-                    {data.location.state},&nbsp;
-                  </Link>
-                  <Link to={`/creative-location/${data.location.city}`}>
+                  {isAdmin || isAdvisor ? (<>
+                    <Link to={"/creatives/search/state/" + data.location.state}>
+                    {data.location.state}
+                    </Link>
+                  </>) : (<>
+                    {data.location.state}
+                  </>)}
+                  ,&nbsp;
+                  {isAdmin || isAdvisor ? (<>
+                    <Link to={"/creatives/search/city/" + data.location.city}>
                     {data.location.city}
-                  </Link>
+                    </Link>
+                  </>) : (<>
+                    {data.location.city}
+                  </>)}
                 </div>
               )}
             </div>
