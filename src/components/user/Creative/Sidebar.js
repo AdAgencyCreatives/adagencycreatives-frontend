@@ -14,6 +14,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 import { getMyFriends } from "../../../context/FriendsDataContext";
+import { Link } from "react-router-dom";
 
 const Sidebar = ({ data, role, user }) => {
   const {
@@ -45,13 +46,13 @@ const Sidebar = ({ data, role, user }) => {
     return false;
   };
 
-  const [isFriend,setIsFriend] = useState(false)
+  const [isFriend, setIsFriend] = useState(false)
 
   useEffect(() => {
     getMyFriends().then(result => {
-      setIsFriend(result.some((item) => item.user.uuid == data.user_id ))
+      setIsFriend(result.some((item) => item.user.uuid == data.user_id))
     });
-  },[])
+  }, [])
 
   useEffect(() => {
     if (checkPermissions()) getResume(data.user_id);
@@ -87,7 +88,7 @@ const Sidebar = ({ data, role, user }) => {
         {renderedList.join(", ")}
         {list.length > maxItemsToShow && !showAllItems[listKey] && (
           <React.Fragment>
-            <IoAdd onClick={toggleShowAllItems} className="cursor-pointer"/>
+            <IoAdd onClick={toggleShowAllItems} className="cursor-pointer" />
           </React.Fragment>
         )}
         {showAllItems[listKey] &&
@@ -104,7 +105,7 @@ const Sidebar = ({ data, role, user }) => {
     for (let i = 0; i < phone.length; i++) {
       const element = phone[i];
       result.push(element);
-      if(i==2 || i == 5) {
+      if (i == 2 || i == 5) {
         result.push('-');
       }
     }
@@ -121,7 +122,16 @@ const Sidebar = ({ data, role, user }) => {
               <IoCalendarClearOutline />
               <div className="details">
                 <div className="text">Years of Experience</div>
-                <div className="value">{data.years_of_experience}</div>
+                <div className="value">
+                  {isAdmin || isAdvisor ? (<>
+                    <Link to={"/creatives/search/years-of-experience/" + data.years_of_experience}>
+                      {data.years_of_experience}
+                    </Link>
+                  </>) : (<>
+                    {data.years_of_experience}
+                  </>)}
+
+                </div>
               </div>
             </div>
           ) : (
@@ -176,7 +186,7 @@ const Sidebar = ({ data, role, user }) => {
               <img src={time} height={22} width={22} />
               <div className="details">
                 <div className="text">Type of Work</div>
-                <div className="value">{data.employment_type.replace(/,/g,', ')}</div>
+                <div className="value">{data.employment_type.replace(/,/g, ', ')}</div>
               </div>
             </div>
           )}

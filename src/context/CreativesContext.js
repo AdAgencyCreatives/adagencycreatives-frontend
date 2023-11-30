@@ -158,6 +158,22 @@ const searchCreativesAdvanced = (dispatch) => {
   };
 };
 
+const searchCreativesFull = (dispatch) => {
+  return async (field, search) => {
+    setLoading(dispatch, true);
+
+    try {
+      const response = await api.get("/creatives/search4/?field=" + field + "&search=" + search);
+
+      dispatch({
+        type: "set_creatives",
+        payload: response.data,
+      });
+    } catch (error) {}
+    setLoading(dispatch, false);
+  };
+};
+
 const getCreativeEducation = async (dispatch, uid) => {
   try {
     const response = await api.get("/educations?filter[user_id]=" + uid);
@@ -358,6 +374,7 @@ export const { Context, Provider } = createDataContext(
     getCreativeById,
     searchCreatives,
     searchCreativesAdvanced,
+    searchCreativesFull,
     saveCreative,
     saveResume,
     saveAttachment,

@@ -15,7 +15,7 @@ const CreativeSearch = () => {
 
     const { field, search } = useParams();
 
-    const { creatives, loading, loadMore, searchCreativesAdvanced } = useCreatives();
+    const { creatives, loading, loadMore, searchCreativesAdvanced, searchCreativesFull } = useCreatives();
     const {
         state: { bookmarks },
         createBookmark,
@@ -127,6 +127,9 @@ const CreativeSearch = () => {
 
     useEffect(() => {
         if (user) getBookmarks(user.uuid, "creatives");
+        if (user && field && search) {
+            searchCreativesFull(field, search);
+        }
     }, [user]);
 
     useEffect(() => {
@@ -167,7 +170,7 @@ const CreativeSearch = () => {
         <div className="dark-container">
             <div className="container p-md-0 px-5">
                 <h1 className="community-title text-white text-center mb-4">
-                    Creatives Search
+                    Advance Creatives Search
                 </h1>
                 <div className="row g-4">
                     {creatives &&
