@@ -35,6 +35,9 @@ const Header = ({ data, role, user }) => {
   } = useContext(AuthContext);
 
   const isCreative = role == "creative";
+  const isAdmin = role == "admin";
+  const isAdvisor = role == "advisor";
+  const isAgency = role == "agency";
   const isOwnProfile = isCreative && user?.uuid == data.user_id;
   const [isFriend,setIsFriend] = useState(false)
   const [hasSubscription, setSubscription] = useState(false);
@@ -98,7 +101,7 @@ const Header = ({ data, role, user }) => {
                   <a
                     href={data.resume}
                     target="__blank"
-                    onClick={(e) =>
+                    onClick={(e) => isAdmin || isAdvisor ||
                       validateAccess(
                         e,
                         [!hasSubscription, !isCreative],
