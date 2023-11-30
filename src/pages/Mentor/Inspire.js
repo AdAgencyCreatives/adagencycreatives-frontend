@@ -7,7 +7,7 @@ import mtFreelanceImg from "../../assets/images/screenshots/mtfreelance.png";
 import invisibleSoldiersImg from "../../assets/images/screenshots/screenshot_28_https___podcasts_apple_com_us_podcast_invisible_soldiers_id1678183748_.png";
 import creativeMorningsImg from "../../assets/images/screenshots/screenshot_29_https___creativemornings_com_.png";
 import talkToACreativeImg from "../../assets/images/screenshots/talktoadirector.png";
-import confessionsOfCdImg from "../../assets/images/screenshots/screenshot_28_https___podcasts_apple_com_us_podcast_invisible_soldiers_id1678183748_.png";
+import confessionsOfCdImg from "../../assets/images/screenshots/confessions-of-a-creative-director.png";
 import creativeBumImg from "../../assets/images/screenshots/screenshot_30_https___www_creativebum_com_.png";
 import jessicaHischeImg from "../../assets/images/screenshots/Jessica Hische - Home.png";
 import adhouseImg from "../../assets/images/screenshots/screenshot_17_https___www_adhousenyc_com_adhouseinhouse_.png";

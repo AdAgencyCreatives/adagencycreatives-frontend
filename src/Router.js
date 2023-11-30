@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import Home from "./pages/Home";
 import Creatives from "./pages/Creatives";
+import CreativeSearch from "./pages/CreativeSearch";
 import Agencies from "./pages/Agencies";
 import SpotlightCreatives from "./pages/SpotlightCreatives";
 import MentorResources from "./pages/MentorResources";
@@ -49,6 +50,11 @@ export const router = createBrowserRouter([
       {
         path: "/creatives",
         element: <Creatives />,
+      },
+
+      {
+        path: "/creatives/search/:field/:search",
+        element: <CreativeSearch />,
       },
 
       {
