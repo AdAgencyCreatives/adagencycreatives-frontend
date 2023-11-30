@@ -176,6 +176,11 @@ const Home = () => {
                 Ad Agency Creatives is a community for Creatives, to come together, talk about the industry, talk about the work, meet other creatives, share ideas and resources, manage job opportunities, mentor and be mentored, and do really cool $#*t!
                 • • • • •&nbsp;
               </p>
+              <p>
+                <b>About Us:</b>&nbsp;
+                Ad Agency Creatives is a community for Creatives, to come together, talk about the industry, talk about the work, meet other creatives, share ideas and resources, manage job opportunities, mentor and be mentored, and do really cool $#*t!
+                • • • • •&nbsp;
+              </p>
             </div>
           </div>
         </div>
