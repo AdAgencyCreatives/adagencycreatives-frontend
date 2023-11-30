@@ -881,7 +881,7 @@ img.publication-image {
     white-space: nowrap;
     overflow: hidden;
     display: inline-block;
-    animation: marquee 30s linear infinite;
+    animation: marquee 20s linear infinite;
     height: 100%;
     line-height: 1;
     margin-top: 10px;
@@ -918,10 +918,10 @@ img.publication-image {
 
 @keyframes marquee {
     0% {
-        transform: translate3d(0, 0, 0);
+        transform: translate3d(-27.5%, 0, 0);
     }
 
     100% {
-        transform: translate3d(-50%, 0, 0);
+        transform: translate3d(-60.8%, 0, 0);
     }
 }
