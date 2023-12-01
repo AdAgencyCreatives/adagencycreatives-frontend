@@ -5,20 +5,33 @@ import Reviews from "../Reviews";
 import RelatedCreatives from "./RelatedCreatives";
 import Portfolio from "./Portfolio";
 import { Link } from "react-router-dom";
+import { Context as AuthContext } from "../../../context/AuthContext";
+import { useContext } from "react";
+import useHelper from "../../../hooks/useHelper";
 
 const Content = ({ user, role, data, education, experience }) => {
+
+  const { encodeSpecial, decodeSpecial } = useHelper();
 
   const rectify_url = (url) => {
     if (!url) {
       return url;
     }
 
-    let lowerUrl = (""+url).toLowerCase();
+    let lowerUrl = ("" + url).toLowerCase();
     let haveHttps = lowerUrl.indexOf("https://") >= 0;
     let haveHttp = lowerUrl.indexOf("http://") >= 0;
 
     return !(haveHttps || haveHttp) ? ("https://" + url) : url;
   };
+
+  const {
+    state: { subscription_status },
+  } = useContext(AuthContext);
+
+  const isAdmin = role == "admin";
+  const isAdvisor = role == "advisor";
+  const isAgency = role == "agency";
 
   const isCreative = user?.role == "creative";
   const isOwnProfile = isCreative && user?.uuid == data.user_id;
@@ -41,14 +54,30 @@ const Content = ({ user, role, data, education, experience }) => {
               <div className="content" key={item.id}>
                 <div className="circle">{item.degree?.charAt(0)}</div>
                 <div className="top-info">
-                  <span className="edu_stats">{item.degree}</span>
+                  <span className="edu_stats">
+                    {isAdmin || isAdvisor ? (<>
+                      <Link to={"/creatives/search/education-degree-program/" + encodeSpecial(encodeURI(item.degree))}>
+                        {item.degree}
+                      </Link>
+                    </>) : (<>
+                      {item.degree}
+                    </>)}
+                  </span>
                   <span className="year">
                     {item.completed_at &&
                       moment(item.completed_at).format("M/D/YYYY")}
                   </span>
                 </div>
                 <div className="edu_center">
-                  <span className="university">{item.college}</span>
+                  <span className="university">
+                    {isAdmin || isAdvisor ? (<>
+                      <Link to={"/creatives/search/education-college/" + encodeSpecial(encodeURI(item.college))}>
+                        {item.college}
+                      </Link>
+                    </>) : (<>
+                      {item.college}
+                    </>)}
+                  </span>
                 </div>
               </div>
             ))}
@@ -78,7 +107,15 @@ const Content = ({ user, role, data, education, experience }) => {
                   </span>
                 </div>
                 <div className="edu_center">
-                  <span className="university">{item.company}</span>
+                  <span className="university">
+                    {isAdmin || isAdvisor ? (<>
+                      <Link to={"/creatives/search/experience-company/" + encodeSpecial(encodeURI(item.company))}>
+                        {item.company}
+                      </Link>
+                    </>) : (<>
+                      {item.company}
+                    </>)}
+                  </span>
                 </div>
                 <p className="mb0">{item.description}</p>
               </div>

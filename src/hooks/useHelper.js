@@ -51,7 +51,38 @@ const useHelper = () => {
         return text.replace(regex, replacer);
     };
 
-    return { decodeEntities, injectHyperlinks };
+    const specialCharsToEncode = {
+        "/":"%2f",
+        "'":"%27",
+    };
+
+    const encodeSpecial = (text) => {
+        let result = text;
+        for (const key in specialCharsToEncode) {
+            if (Object.hasOwnProperty.call(specialCharsToEncode, key)) {
+                const element = specialCharsToEncode[key];
+                while(result.indexOf(key)>= 0) {
+                    result= result.replace(key, element);
+                }
+            }
+        }
+        return result;
+    };
+
+    const decodeSpecial = (text) => {
+        let result = text;
+        for (const key in specialCharsToEncode) {
+            if (Object.hasOwnProperty.call(specialCharsToEncode, key)) {
+                const element = specialCharsToEncode[key];
+                while(result.indexOf(element)>= 0) {
+                    result= result.replace(element, key);
+                }
+            }
+        }
+        return result;
+    };
+
+    return { decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial };
 }
 
 export default useHelper;

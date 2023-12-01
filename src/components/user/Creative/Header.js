@@ -15,8 +15,12 @@ import Message from "../../dashboard/Modals/Message";
 import Invite from "./Invite";
 import useShortlist from "../../../hooks/useShortlist";
 import { getMyFriends } from "../../../context/FriendsDataContext";
+import useHelper from "../../../hooks/useHelper";
 
 const Header = ({ data, role, user }) => {
+
+  const { encodeSpecial, decodeSpecial } = useHelper();
+
   const [allowed, setAllowed] = useState(false);
   const [open, setOpen] = useState(false);
   const [openInvite, setOpenInvite] = useState(false);
@@ -39,7 +43,7 @@ const Header = ({ data, role, user }) => {
   const isAdvisor = role == "advisor";
   const isAgency = role == "agency";
   const isOwnProfile = isCreative && user?.uuid == data.user_id;
-  const [isFriend,setIsFriend] = useState(false)
+  const [isFriend, setIsFriend] = useState(false)
   const [hasSubscription, setSubscription] = useState(false);
 
   useEffect(() => {
@@ -61,9 +65,9 @@ const Header = ({ data, role, user }) => {
 
   useEffect(() => {
     getMyFriends().then(result => {
-      setIsFriend(result.some((item) => item.user.uuid == data.user_id ))
+      setIsFriend(result.some((item) => item.user.uuid == data.user_id))
     });
-  },[])
+  }, [])
 
   return (
     <div className="container">
@@ -82,21 +86,29 @@ const Header = ({ data, role, user }) => {
                 {data.name}
                 {/* <span class="featured-text">Featured</span> */}
               </div>
-              <div className="position">{data.category}</div>
+              <div className="position">
+                {isAdmin || isAdvisor ? (<>
+                  <Link to={"/creatives/search/industry-title/" + encodeSpecial(encodeURI(data.category))}>
+                    {data.category}
+                  </Link>
+                </>) : (<>
+                  {data.category}
+                </>)}
+              </div>
               {data.location.state && (
                 <div className="job-location location">
                   <IoLocationOutline />
                   {isAdmin || isAdvisor ? (<>
-                    <Link to={"/creatives/search/state/" + data.location.state}>
-                    {data.location.state}
+                    <Link to={"/creatives/search/state/" + encodeSpecial(encodeURI(data.location.state))}>
+                      {data.location.state}
                     </Link>
                   </>) : (<>
                     {data.location.state}
                   </>)}
                   ,&nbsp;
                   {isAdmin || isAdvisor ? (<>
-                    <Link to={"/creatives/search/city/" + data.location.city}>
-                    {data.location.city}
+                    <Link to={"/creatives/search/city/" + encodeSpecial(encodeURI(data.location.city))}>
+                      {data.location.city}
                     </Link>
                   </>) : (<>
                     {data.location.city}

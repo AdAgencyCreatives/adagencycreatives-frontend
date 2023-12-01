@@ -10,12 +10,14 @@ import { useScrollLoader } from "../hooks/useScrollLoader";
 import Tooltip from "../components/Tooltip";
 import { Context as AlertContext } from "../context/AlertContext";
 import { useParams } from "react-router-dom";
+import useHelper from "../hooks/useHelper";
 
 const CreativeSearch = () => {
 
     const { field, search } = useParams();
+    const { encodeSpecial, decodeSpecial } = useHelper();
 
-    const { creatives, loading, loadMore, searchCreativesAdvanced, searchCreativesFull } = useCreatives();
+    const { creatives, loading, loadMore, searchCreativesAdvanced, searchCreativesFull } = useCreatives("creatives-search");
     const {
         state: { bookmarks },
         createBookmark,
@@ -128,7 +130,7 @@ const CreativeSearch = () => {
     useEffect(() => {
         if (user) getBookmarks(user.uuid, "creatives");
         if (user && field && search) {
-            searchCreativesFull(field, search);
+            searchCreativesFull(field, decodeURI(decodeSpecial(search)));
         }
     }, [user]);
 

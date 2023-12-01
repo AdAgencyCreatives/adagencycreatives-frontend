@@ -15,8 +15,12 @@ import { Context as CreativesContext } from "../../../context/CreativesContext";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 import { getMyFriends } from "../../../context/FriendsDataContext";
 import { Link } from "react-router-dom";
+import useHelper from "../../../hooks/useHelper";
 
 const Sidebar = ({ data, role, user }) => {
+
+  const { encodeSpecial, decodeSpecial } = useHelper();
+
   const {
     state: { resume, video },
     getResume,
@@ -88,11 +92,11 @@ const Sidebar = ({ data, role, user }) => {
         {renderedList.map((item, index) => (
           <span key={index}>
             {isAdmin || isAdvisor ? (<>
-              <Link to={"/creatives/search/" + field + "/" + item}>
+              <Link to={"/creatives/search/" + field + "/" + encodeSpecial(encodeURI(item))}>
                 {(index > 0 ? ', ' : '') + `${item}`}
               </Link>
             </>) : (<>
-              {`, ${item}`}
+              {(index > 0 ? ', ' : '') + `${item}`}
             </>)}
           </span>
         ))}
@@ -106,7 +110,7 @@ const Sidebar = ({ data, role, user }) => {
           remainingItems.map((item, index) => (
             <span key={index}>
               {isAdmin || isAdvisor ? (<>
-                <Link to={"/creatives/search/" + field + "/" + item}>
+                <Link to={"/creatives/search/" + field + "/" + encodeSpecial(encodeURI(item))}>
                   {`, ${item}`}
                 </Link>
               </>) : (<>
@@ -142,7 +146,7 @@ const Sidebar = ({ data, role, user }) => {
                 <div className="text">Years of Experience</div>
                 <div className="value">
                   {isAdmin || isAdvisor ? (<>
-                    <Link to={"/creatives/search/years-of-experience/" + data.years_of_experience}>
+                    <Link to={"/creatives/search/years-of-experience/" + encodeSpecial(encodeURI(data.years_of_experience))}>
                       {data.years_of_experience}
                     </Link>
                   </>) : (<>
