@@ -112,6 +112,7 @@ const Profile = () => {
           type: "image",
           image: single_agency.logo,
           name: "company_logo",
+          accept:".jpg, .jpeg, .png, .bmp, image/jpeg, image/png",
         },
         {
           label: "Company Name",
@@ -491,6 +492,7 @@ const Profile = () => {
                           onChange={(e) =>
                             handleFileChange(e, "agency_logo", logoRef)
                           }
+                          accept={field.accept}
                         />
                       </div>
                     </div>
@@ -534,6 +536,7 @@ const Profile = () => {
                           onChange={(e) =>
                             handleFileChange(e, "agency_reel", videoRef)
                           }
+                          accept=".mp4, .avi, .mov, video/*"
                         />
                       </div>
                     </div>

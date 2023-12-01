@@ -5,11 +5,12 @@ import "../../styles/Modal/AuthModal.scss";
 import { Context as AuthContext } from "../../context/AuthContext";
 import ScrollToHash from "../ScrollToHash";
 
-const RegisterModal = ({ open, handleClose, setModal }) => {
+const RegisterModal = ({ open, handleClose, setModal, form}) => {
+  console.log(form)
   const { state, signup } = useContext(AuthContext);
   const { formMessage } = state;
   const [show, setShow] = useState({});
-  const [tab, setTab] = useState("creative");
+  const [tab, setTab] = useState(form);
   const [message, setMessage] = useState(null);
   const dialogRef = useRef(null);
 

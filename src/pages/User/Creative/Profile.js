@@ -116,6 +116,7 @@ const Profile = () => {
           required: true,
           type: "image",
           name: "profile_image",
+          accept:".jpg, .jpeg, .png, .bmp, image/jpeg, image/png",
           image: single_creative.profile_image,
         },
         {
@@ -507,6 +508,7 @@ const Profile = () => {
                           type="file"
                           ref={imageUploadRef}
                           className="d-none"
+                          accept={field.accept}
                           onChange={handleFileChange}
                         />
                       </div>

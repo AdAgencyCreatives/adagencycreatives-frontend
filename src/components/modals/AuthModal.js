@@ -4,7 +4,7 @@ import LoginModal from "./LoginModal";
 import ForgotPassword from "./ForgotPassword";
 import { Context as AuthContext } from "../../context/AuthContext";
 
-const AuthModal = ({ open, handleClose, form = "login" }) => {
+const AuthModal = ({ open, handleClose, form = "login", registerTab = "creative" }) => {
   const [modal, setModal] = useState(form);
   const { resetFormMessage } = useContext(AuthContext);
 
@@ -19,7 +19,7 @@ const AuthModal = ({ open, handleClose, form = "login" }) => {
   }, [open]);
 
   return modal == "register" ? (
-    <RegisterModal open={open} handleClose={handleClose} setModal={setModal} />
+    <RegisterModal open={open} handleClose={handleClose} setModal={setModal} form={registerTab} />
   ) : modal == "login" ? (
     <LoginModal open={open} handleClose={handleClose} setModal={setModal} />
   ) : modal == "reset" ? (
