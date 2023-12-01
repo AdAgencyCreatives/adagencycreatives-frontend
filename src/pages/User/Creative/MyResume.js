@@ -656,6 +656,7 @@ const MyResume = () => {
       type: "upload",
       name: "portfolio_item",
       items: [],
+      accept:".jpg, .jpeg, .png, .gif, .bmp, image/jpeg, image/png, image/gif, image/bmp",
       ref: portfolioRef,
       uploadRef: portfolioUploadRef,
     },
@@ -664,6 +665,7 @@ const MyResume = () => {
       required: false,
       type: "upload",
       name: "resume",
+      accept:".doc, .docx, .pdf, .txt",
       items: [],
       ref: resumeRef,
       uploadRef: resumeUploadRef,
@@ -944,6 +946,7 @@ const MyResume = () => {
                 type="file"
                 ref={videoUploadRef}
                 className="d-none"
+                accept=".mp4, .avi, .mov, video/*"
                 onChange={(e) => handleFileChange(e, "creative_reel", videoRef)}
               />
             </div>
@@ -1005,6 +1008,7 @@ const MyResume = () => {
                 type="file"
                 ref={field.uploadRef}
                 className="d-none"
+                accept={field.accept}
                 onChange={(e) => handleFileChange(e, field.name, field.ref)}
               />
             </div>
