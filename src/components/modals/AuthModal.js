@@ -4,8 +4,8 @@ import LoginModal from "./LoginModal";
 import ForgotPassword from "./ForgotPassword";
 import { Context as AuthContext } from "../../context/AuthContext";
 
-const AuthModal = ({ open, handleClose }) => {
-  const [modal, setModal] = useState("login");
+const AuthModal = ({ open, handleClose, form = "login" }) => {
+  const [modal, setModal] = useState(form);
   const { resetFormMessage } = useContext(AuthContext);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const AuthModal = ({ open, handleClose }) => {
 
   useEffect(() => {
     if (!open) {
-      setModal("login");
+      setModal(form);
     }
   }, [open]);
 
