@@ -68,6 +68,7 @@ const SpotlightCreative = () => {
           navigation="true"
           slides-per-view="1"
           space-between="30"
+          loop="true"
         >
           {screatives &&
             screatives.map((item, index) => {
