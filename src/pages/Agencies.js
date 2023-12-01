@@ -97,14 +97,6 @@ const Agencies = () => {
                 </div>
               );
             })}
-          {loadedAll && (
-            <>
-              <button className="btn btn-theme btn-hover-primary text-uppercase w-auto mx-auto" onClick={() => setAuthModalOpen(true)}>
-                Your Agency
-              </button>
-              <AuthModal open={authModalOpen} handleClose={handleClose} form="register" />
-            </>
-          )}
           <div className="load-more text-center">
             {loading && (
               <div className="spinner-border text-light" role="status">
@@ -112,6 +104,16 @@ const Agencies = () => {
               </div>
             )}
           </div>
+        </div>
+        <div className="row">
+          {loadedAll && (
+            <>
+              <button className="btn btn-theme btn-hover-primary text-uppercase w-auto mx-auto" onClick={() => setAuthModalOpen(true)}>
+                Your Agency
+              </button>
+              <AuthModal open={authModalOpen} handleClose={handleClose} form="register" registerTab="agency" />
+            </>
+          )}
         </div>
       </div>
     </div>
