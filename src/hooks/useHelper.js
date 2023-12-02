@@ -52,8 +52,11 @@ const useHelper = () => {
     };
 
     const specialCharsToEncode = {
-        "/":"%2f",
+        "/":"%2F",
         "'":"%27",
+        "+":"%2B",
+        "&":"%26",
+        "#":"%23",
     };
 
     const encodeSpecial = (text) => {

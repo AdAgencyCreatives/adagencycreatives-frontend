@@ -130,7 +130,7 @@ const CreativeSearch = () => {
     useEffect(() => {
         if (user) getBookmarks(user.uuid, "creatives");
         if (user && field && search) {
-            searchCreativesFull(field, decodeURI(decodeSpecial(search)));
+            searchCreativesFull(field, encodeSpecial(search));
         }
     }, [user]);
 
