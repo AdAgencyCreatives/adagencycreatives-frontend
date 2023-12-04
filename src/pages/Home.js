@@ -22,9 +22,13 @@ import { Link } from "react-router-dom";
 import SlidingMessage from "../components/SlidingMessage";
 import MessageModal from "../components/MessageModal";
 
+import usePageDataHelper from "../hooks/usePageDataHelper";
+
 register();
 
 const Home = () => {
+
+  const { pageTitle, pageSubTitle } = usePageDataHelper("home");
 
   const [messageModalOptions, setMessageModalOptions] = useState({ "open": false, "type": "message", "title": "Message", "message": "Thanks.", "data": {}, "onClose": null });
   const showMessageModal = (type, title, message, data) => {
@@ -62,11 +66,8 @@ const Home = () => {
       <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
       <div className="main">
         <div className="banner">
-          <h1 className="bannerHeading">Welcome to Ad Agency Creatives</h1>
-          <p className="subHeading">
-            A community for advertising agency creatives and the agencies hiring
-            them
-          </p>
+          <h1 className="bannerHeading" dangerouslySetInnerHTML={{ __html: pageTitle }}></h1>
+          <p className="subHeading" dangerouslySetInnerHTML={{ __html: pageSubTitle }}></p>
           <Link className="btn btn-gold film-festival-1" to="/filmfestival1"
             style={{ fontWeight: "500", fontSize: "18px", marginLeft: "5px", minWidth: "120px" }}>
             Film Festival
