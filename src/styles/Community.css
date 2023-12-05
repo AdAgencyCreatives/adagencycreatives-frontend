@@ -655,3 +655,15 @@ img.post-avatar {
 .friends-header-links {
     flex-wrap: wrap;
 }
+
+.post-content a {
+    color: var(--color-primary) !important;
+}
+
+.post-content a:hover {
+    color: #000 !important;
+}
+
+h2.epr-emoji-category-label {
+    backdrop-filter: unset !important;
+}

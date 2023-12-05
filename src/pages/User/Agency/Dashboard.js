@@ -94,20 +94,21 @@ const Dashboard = () => {
       </div>
       <div className="row">
         <div className="col-sm-8">
-          <Views title={"Page Views"} />
+          {/* <Views title={"Page Views"} /> */}
+          <Applicants />
         </div>
         <div className="col-sm-4">
           <div className="mb-4">
             <Calendar />
           </div>
-          <Notifications />
+          {/* <Notifications /> */}
         </div>
       </div>
-      <div className="row">
+      {/* <div className="row">
         <div className="col">
           <Applicants />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

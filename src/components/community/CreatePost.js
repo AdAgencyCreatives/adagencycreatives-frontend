@@ -80,8 +80,11 @@ const CreatePost = (props) => {
     }
   }, [formSubmit]);
 
+  const [editableRef, setEditableRef] = useState(null);
+
   const onEditableRef = (node) => {
     if (node && node.el && node.el.current) {
+      setEditableRef(node.el.current);
       node.el.current.focus();
     }
   }
@@ -116,7 +119,21 @@ const CreatePost = (props) => {
     console.log(emojiData.getEmojiUrl);
     setContent((prev) => (prev += emojiData.emoji));
     setShowPicker(false);
+    if(editableRef) {
+      setCursorToEnd(editableRef);
+      editableRef?.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+    }
+    
   };
+
+  function setCursorToEnd(ele){
+    var range = document.createRange();
+    var sel = window.getSelection();
+    range.setStart(ele, 1);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+}
 
   const removeAttachment = (e, postAttachment) => {
     setPostAttachments(postAttachments.filter((item) => item.id != postAttachment.id));
