@@ -52,7 +52,7 @@ const Message = ({ open, handleClose, item, type }) => {
                     Sent message successful.
                   </div>
                 )}
-                <div className="form-group">
+                <div className="form-group" style={{display: "none" }}>
                   <input
                     className="form-control mb-4"
                     name="subject"

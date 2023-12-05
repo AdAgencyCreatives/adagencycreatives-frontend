@@ -23,7 +23,7 @@ const Packages = () => {
             <thead>
               <tr>
                 <th>#</th>
-                <th>ID</th>
+                {/* <th>ID</th> */}
                 <th>Package</th>
                 <th>Package Type</th>
                 <th>Package Info</th>
@@ -36,7 +36,7 @@ const Packages = () => {
                   <tr>
                     <td className="job-table-info">{index + 1}</td>
 
-                    <td className="">4643</td>
+                    {/* <td className="">4643</td> */}
 
                     <td>
                       <div className="packageName">{item.name}</div>
