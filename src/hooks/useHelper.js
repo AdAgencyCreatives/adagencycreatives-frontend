@@ -24,6 +24,10 @@ const useHelper = () => {
     })();
 
     const replacer = (matched) => {
+        if(matched.indexOf("href=")>=0 || matched.indexOf("</a>")>=0) {
+            return matched;
+        }
+        
         let withProtocol = matched;
 
         if (!withProtocol.startsWith("http")) {
@@ -42,8 +46,11 @@ const useHelper = () => {
     };
 
     const injectHyperlinks = (text) => {
+        // const expressionWithHttp =
+        //     /((https?:\/\/(www\.)?)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))/gi;
+
         const expressionWithHttp =
-            /((https?:\/\/(www\.)?)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))/gi;
+            /((href=")?(https?:\/\/(www\.)?)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.(com|net|org|biz|edu)\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)(.*<\/a>)?)/gi;
 
         const regex = new RegExp(expressionWithHttp);
 

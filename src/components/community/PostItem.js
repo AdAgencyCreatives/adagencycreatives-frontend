@@ -369,7 +369,7 @@ const PostItem = (props) => {
                 )}
             </div>
             <div className="post-content">
-                <div className="post-body" dangerouslySetInnerHTML={{ __html: processPostContent(postContent) }} />
+                <div className="post-body" dangerouslySetInnerHTML={{ __html: processPostContent(postContent) }}></div>
             </div>
             <div className="post-images">
                 {props.post.attachments && props.post.attachments.map((attachment, index) => {
