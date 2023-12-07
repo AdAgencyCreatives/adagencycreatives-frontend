@@ -459,7 +459,7 @@ img.post-avatar {
     font-weight: 600;
     font-size: medium;
     font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-    top: 200px;
+    top: 145px;
     right: -100%;
     transition: right 1s;
     z-index: 99;
@@ -467,6 +467,19 @@ img.post-avatar {
 
 .sliding-message.active {
     right: 20px;
+}
+
+.registration-success-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background-color: var(--color-primary);
+    color: #fff;
+    font-weight: normal;
+    font-size: 20px;
 }
 
 .num-unit {
