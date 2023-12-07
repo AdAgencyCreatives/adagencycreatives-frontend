@@ -3,16 +3,18 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { IoCloseOutline, IoEye, IoEyeOff } from "react-icons/io5";
 import "../../styles/Modal/AuthModal.scss";
 import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as AlertContext } from "../../context/AlertContext";
 import ScrollToHash from "../ScrollToHash";
 
-const RegisterModal = ({ open, handleClose, setModal, form}) => {
-  console.log(form)
+const RegisterModal = ({ open, handleClose, setModal, form }) => {
   const { state, signup } = useContext(AuthContext);
+  const { showAlert } = useContext(AlertContext);
   const { formMessage } = state;
   const [show, setShow] = useState({});
   const [tab, setTab] = useState(form);
   const [message, setMessage] = useState(null);
   const dialogRef = useRef(null);
+  const [formSubmit, setFormSubmit] = useState(false);
 
   useEffect(() => {
     if (formMessage) {
@@ -145,16 +147,28 @@ const RegisterModal = ({ open, handleClose, setModal, form}) => {
     setFields(updatedFields);
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    signup(fields[tab], tab, () => {
+    setFormSubmit(true);
+    /* signup(fields[tab], tab, () => {
       dialogRef.current
         .getElementsByClassName("MuiDialog-container")[0]
         .scrollTo({
           top: 0,
           behavior: "smooth",
         });
-    });
+    }); */
+    try {
+      const result = await signup(fields[tab], tab);
+      handleClose();
+      showAlert("Registration successful");
+    } catch (e) {
+      dialogRef.current.getElementsByClassName("MuiDialog-container")[0].scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+    setFormSubmit(false);
   };
 
   const toggleShow = (field, visible) => {
@@ -171,26 +185,15 @@ const RegisterModal = ({ open, handleClose, setModal, form}) => {
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      scroll="body"
-      ref={dialogRef}
-    >
+    <Dialog open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description" scroll="body" ref={dialogRef}>
       <div className="auth-modal">
         <div className="auth-header"></div>
         <div className="auth-body">
           <div className="job-apply-email-form-wrapper">
             <div className="inner">
               <div className="inner-head">
-                <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
-                  Create an Account
-                </h3>
-                <p
-                  style={{ fontSize: 20, fontWeight: 300, margin: 0 }}
-                >
+                <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>Create an Account</h3>
+                <p style={{ fontSize: 20, fontWeight: 300, margin: 0 }}>
                   Already have an account?&nbsp;
                   <a
                     href="#"
@@ -204,94 +207,57 @@ const RegisterModal = ({ open, handleClose, setModal, form}) => {
                     Login
                   </a>
                 </p>
-                <button
-                  className="border-0 bg-transparent text-primary pe-0 close-btn"
-                  onClick={handleClose}
-                >
+                <button className="border-0 bg-transparent text-primary pe-0 close-btn" onClick={handleClose}>
                   <IoCloseOutline size={30} />
                 </button>
               </div>
 
               <ul className="role-tabs nav nav-tabs">
-                <li
-                  className={tab == "creative" ? "active" : ""}
-                  onClick={() => setActiveTab("creative")}
-                >
+                <li className={tab == "creative" ? "active" : ""} onClick={() => setActiveTab("creative")}>
                   <a data-toggle="tab">Creative</a>
                 </li>
-                <li
-                  className={tab == "agency" ? "active" : ""}
-                  onClick={() => setActiveTab("agency")}
-                >
+                <li className={tab == "agency" ? "active" : ""} onClick={() => setActiveTab("agency")}>
                   <a data-toggle="tab">Agency</a>
                 </li>
               </ul>
-              {message && (
-                <div className={`alert alert-${message.class}`}>
-                  {message.content}
-                </div>
-              )}
+              {message && <div className={`alert alert-${message.class}`}>{message.content}</div>}
               <form id="register-form" onSubmit={handleFormSubmit}>
                 {fields[tab].map((field, index) => (
-                  <div
-                    className="form-group position-relative"
-                    key={field.name}
-                  >
+                  <div className="form-group position-relative" key={field.name}>
                     <label className="form-label">{field.label}</label>
                     <input
                       key={tab + field.name}
                       className="form-control mb-4"
                       name={field.name}
                       placeholder={field.placeholder}
-                      type={
-                        field.type == "password"
-                          ? show[field.name]
-                            ? "text"
-                            : "password"
-                          : field.type
-                      }
+                      type={field.type == "password" ? (show[field.name] ? "text" : "password") : field.type}
                       required="required"
                       value={field.value || ""}
-                      onChange={(e) =>
-                        handleInputChange(tab, index, e.target.value)
-                      }
+                      onChange={(e) => handleInputChange(tab, index, e.target.value)}
                     />
                     {field.type == "password" && (
-                      <div className="showToggle">
-                        {show[field.name] ? (
-                          <IoEye
-                            onClick={() => toggleShow(field.name, false)}
-                          />
-                        ) : (
-                          <IoEyeOff
-                            onClick={() => toggleShow(field.name, true)}
-                          />
-                        )}
-                      </div>
+                      <div className="showToggle">{show[field.name] ? <IoEye onClick={() => toggleShow(field.name, false)} /> : <IoEyeOff onClick={() => toggleShow(field.name, true)} />}</div>
                     )}
                   </div>
                 ))}
 
                 <div className="d-flex align-items-center justify-content-between mb-2">
                   <div className="d-flex">
-                    <input
-                      type="checkbox"
-                      className="me-2"
-                      name="remember"
-                      id="remember"
-                      required
-                    />
-                    <label
-                      className="form-check-label"
-                      style={{ fontSize: 18 }}
-                      htmlFor="remember"
-                    >
-                      You accept our <a href="/terms-and-conditions" target="_blank">Terms and Conditions</a> and 
-                       <a href="/privacy-policy" target="_blank"> Privacy Policy</a>
+                    <input type="checkbox" className="me-2" name="remember" id="remember" required />
+                    <label className="form-check-label" style={{ fontSize: 18 }} htmlFor="remember">
+                      You accept our{" "}
+                      <a href="/terms-and-conditions" target="_blank">
+                        Terms and Conditions
+                      </a>{" "}
+                      and
+                      <a href="/privacy-policy" target="_blank">
+                        {" "}
+                        Privacy Policy
+                      </a>
                     </label>
                   </div>
                 </div>
-                <button className="btn btn-gray btn-hover-primary text-capitalize ls-3 w-100 mt-3 p-3 fs-5">
+                <button className="btn btn-gray btn-hover-primary text-capitalize ls-3 w-100 mt-3 p-3 fs-5" disabled={formSubmit}>
                   Register Now
                 </button>
               </form>

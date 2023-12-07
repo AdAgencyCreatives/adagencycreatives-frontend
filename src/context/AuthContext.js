@@ -71,12 +71,10 @@ const getRegisterSuccessMessage = () => {
       Hello,
       <br />
       <br />
-      Thank you for successfully registering. You'll receive an email with next
-      steps.
+      Thank you for successfully registering. You'll receive an email with next steps.
       <br />
       <br />
-      It could be a few business days for us to verify your registration
-      request. Be on the look out for our email.
+      It could be a few business days for us to verify your registration request. Be on the look out for our email.
       <br />
       <br />
       In the meantime, enjoy exploring our home page.
@@ -98,13 +96,14 @@ const setErrorMessage = (dispatch, message) => {
 };
 
 const signup = (dispatch) => {
-  return async (data, role, cb = false) => {
+  return async (data, role) => {
     resetFormMessage(dispatch)();
     try {
       const formData = prepareFields(data);
       formData.role = role;
       if (formData.password !== formData.cpassword) {
         setErrorMessage(dispatch, "The passwords do not match");
+        throw "passwords do not match";
         return;
       }
 
@@ -114,18 +113,10 @@ const signup = (dispatch) => {
         type: "set_form_message",
         payload: { type: "success", message: getRegisterSuccessMessage() },
       });
-      logActivity(
-        response.data.uuid,
-        "signup",
-        "You signed up as " +
-        response.data.role +
-        ", via email: " +
-        response.data.email,
-        "{user_id:" + response.data.uuid + "}"
-      );
+      logActivity(response.data.uuid, "signup", "You signed up as " + response.data.role + ", via email: " + response.data.email, "{user_id:" + response.data.uuid + "}");
     } catch (error) {
-      cb && cb();
       setErrorMessage(dispatch, error.response.data.message);
+      throw error
     }
   };
 };
@@ -137,31 +128,13 @@ const signin = (dispatch) => {
       const response = await api.post("/login", data);
       setToken(dispatch)(response.data.token, response.data.user.role);
       setUserData(dispatch, response.data.user);
-      setAdvanceSearchCapabilities(
-        dispatch,
-        response.data.advance_search_capabilities
-          ? response.data.advance_search_capabilities
-          : false
-      );
-      setSubscriptionStatus(
-        dispatch,
-        response.data.subscription_status
-          ? response.data.subscription_status
-          : ""
-      );
+      setAdvanceSearchCapabilities(dispatch, response.data.advance_search_capabilities ? response.data.advance_search_capabilities : false);
+      setSubscriptionStatus(dispatch, response.data.subscription_status ? response.data.subscription_status : "");
       dispatch({
         type: "set_form_message",
         payload: { type: "success", message: getLoginSuccessMessage() },
       });
-      logActivity(
-        response.data.user.uuid,
-        "signin",
-        "You signed in as " +
-        response.data.user.role +
-        ", via email: " +
-        response.data.user.email,
-        "{user_id:" + response.data.user.uuid + "}"
-      );
+      logActivity(response.data.user.uuid, "signin", "You signed in as " + response.data.user.role + ", via email: " + response.data.user.email, "{user_id:" + response.data.user.uuid + "}");
       cb();
     } catch (error) {
       setErrorMessage(dispatch, error.response.data.message);
@@ -186,11 +159,7 @@ const resetPassword = (dispatch) => {
       const response = await api.post(baseUrl + "/reset-password", data);
       return response;
     } catch (error) {
-      setErrorMessage(
-        dispatch,
-        error.response?.data?.message ||
-        "There was an error processing the request"
-      );
+      setErrorMessage(dispatch, error.response?.data?.message || "There was an error processing the request");
       return false;
     }
   };
@@ -201,7 +170,7 @@ const reloadUserData = (dispatch) => {
     try {
       const response = await api.get("/users/" + user_id);
       setUserData(dispatch, response.data.data);
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -243,28 +212,24 @@ const updatePassword = (dispatch) => {
 const getNotificationsCount = (dispatch) => {
   return async (user_id) => {
     try {
-      const response = await api.get(
-        "/notifications/count?filter[user_id]=" + user_id
-      );
+      const response = await api.get("/notifications/count?filter[user_id]=" + user_id);
       dispatch({
         type: "set_notifications_count",
         payload: response.data.count,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
 const getActivitiesCount = (dispatch) => {
   return async (user_id) => {
     try {
-      const response = await api.get(
-        "/activities/count?filter[user_id]=" + user_id
-      );
+      const response = await api.get("/activities/count?filter[user_id]=" + user_id);
       dispatch({
         type: "set_activities_count",
         payload: response.data.count,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -273,12 +238,11 @@ const getToken = (dispatch) => {
     const token = Cookies.get("token");
     if (token) {
       verifyToken(dispatch)(token);
-    }
-    else {
+    } else {
       dispatch({
         type: "set_fetching_token",
-        payload: false
-      })
+        payload: false,
+      });
     }
   };
 };
@@ -390,7 +354,7 @@ export const logActivity = async (user_id, type, message, body) => {
       body: body && body.length ? body : "{}",
     });
     return response.data;
-  } catch (error) { }
+  } catch (error) {}
   return null;
 };
 
@@ -442,17 +406,9 @@ export const containsOffensiveWords = (inputText) => {
   let lowerInputText = inputText.toLowerCase();
   let inputWords = stringToWords(lowerInputText);
 
-  for (
-    let offensiveWordsIndex = 0;
-    offensiveWordsIndex < offensiveWords.length;
-    offensiveWordsIndex++
-  ) {
+  for (let offensiveWordsIndex = 0; offensiveWordsIndex < offensiveWords.length; offensiveWordsIndex++) {
     const offensiveWordItem = offensiveWords[offensiveWordsIndex];
-    for (
-      let inputWordsIndex = 0;
-      inputWordsIndex < inputWords.length;
-      inputWordsIndex++
-    ) {
+    for (let inputWordsIndex = 0; inputWordsIndex < inputWords.length; inputWordsIndex++) {
       const inputWordItem = inputWords[inputWordsIndex];
       if (inputWordItem == offensiveWordItem) {
         return true;
