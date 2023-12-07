@@ -451,7 +451,7 @@ img.post-avatar {
     align-items: center;
     width: max-content;
     min-width: 300px;
-    height: 60px;
+    height: auto;
     background-color: #000;
     color: var(--color-primary);
     border-radius: 10px;
