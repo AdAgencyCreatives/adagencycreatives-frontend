@@ -1,5 +1,6 @@
 import { useContext, useEffect } from "react";
 import { Context } from "../context/AlertContext";
+import { IoClose } from "react-icons/io5";
 
 const SlideInMessage = (props) => {
 
@@ -7,7 +8,7 @@ const SlideInMessage = (props) => {
 
     useEffect(() => {
         if (props.message && props.message.length > 0) {
-            const delay = props.message === 'registration-success' ? 20000 : 7000;
+            const delay = props.message === 'registration-success' ? 20000 : 5000;
             window.setTimeout(function () {
                 hideAlert()
             }, (props.delay ? props.delay : delay));
@@ -17,6 +18,7 @@ const SlideInMessage = (props) => {
     if (props.message === 'registration-success') {
         return (
             <div className={"registration-success-message sliding-message" + (props.message && props.message.length > 0 ? ' active' : '')}>
+                <div className="close" onClick={() => hideAlert()}><IoClose /></div>
                 Hello,<br /><br />
                 Thank you for successfully registering.<br />
                 You'll receive an email with next steps.<br /><br />
