@@ -1,4 +1,4 @@
-import { useContext, Fragment, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Context } from "../context/AlertContext";
 
 const SlideInMessage = (props) => {
@@ -7,7 +7,7 @@ const SlideInMessage = (props) => {
 
     useEffect(() => {
         if (props.message && props.message.length > 0) {
-            const delay = props.message === 'registration-success' ? 7000 : 20000;
+            const delay = props.message === 'registration-success' ? 20000 : 7000;
             window.setTimeout(function () {
                 hideAlert()
             }, (props.delay ? props.delay : delay));
@@ -16,7 +16,7 @@ const SlideInMessage = (props) => {
 
     if (props.message === 'registration-success') {
         return (
-            <div className={"sliding-message" + (props.message && props.message.length > 0 ? ' active' : '')}>
+            <div className={"registration-success-message sliding-message" + (props.message && props.message.length > 0 ? ' active' : '')}>
                 Hello,<br /><br />
                 Thank you for successfully registering.<br />
                 You'll receive an email with next steps.<br /><br />
