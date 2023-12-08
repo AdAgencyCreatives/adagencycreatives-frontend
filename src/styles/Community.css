@@ -480,6 +480,9 @@ img.post-avatar {
     color: #fff;
     font-weight: normal;
     font-size: 20px;
+    display: block;
+    max-width: 600px;
+    width: 90%;
 }
 
 .registration-success-message .close {
