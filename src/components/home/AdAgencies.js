@@ -54,7 +54,7 @@ const AdAgencies = () => {
           loop="true"
         >
           {agencies && agencies.length && 
-            agencies.map((item, index) => {
+            agencies.sort(() => Math.random() - 0.5).map((item, index) => {
               return (
                 <swiper-slide key={`slide${index}`}>
                   <div className="sliderContent adagencies-slider">
