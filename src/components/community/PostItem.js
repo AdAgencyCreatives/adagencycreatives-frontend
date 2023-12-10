@@ -13,6 +13,15 @@ import {
 import { FaLaughBeam, FaRegLaughBeam } from "react-icons/fa";
 import { FaFaceLaughBeam, FaRegThumbsUp } from "react-icons/fa6";
 
+import LoungePostIconLoveBlack from "../../assets/images/lounge-post-icon-love-black.png";
+import LoungePostIconLoveGold from "../../assets/images/lounge-post-icon-love-gold.png";
+import LoungePostIconLaughBlack from "../../assets/images/lounge-post-icon-laugh-black.png";
+import LoungePostIconLaughGold from "../../assets/images/lounge-post-icon-laugh-gold.png";
+import LoungePostIconLikeBlack from "../../assets/images/lounge-post-icon-like-black.png";
+import LoungePostIconLikeGold from "../../assets/images/lounge-post-icon-like-gold.png";
+import LoungePostIconCommentBlack from "../../assets/images/lounge-post-icon-comment-black.png";
+import LoungePostIconCommentGold from "../../assets/images/lounge-post-icon-comment-gold.png";
+
 import UserAvatar from "../../assets/images/user1.jpg";
 import Miami from "../../assets/images/Miami.png";
 import { useState, useRef } from "react";
@@ -396,10 +405,9 @@ const PostItem = (props) => {
                 <CookiesProvider>
                     <div className={"post-action post-likes" + (likeActive ? ' active' : '')} onClick={() => doToggleLike(props.post.id)}>
                         {likeActive ? (
-                            <IoThumbsUp />
+                            <img src={LoungePostIconLikeGold} style={{ width: "20px" }} alt="" />
                         ) : (
-                            <IoThumbsUpOutline />
-
+                            <img src={LoungePostIconLikeBlack} style={{ width: "20px" }} alt="" />
                         )}
                         <NumUnit number={likesCount} onClick={(e) => onShowLikedBy(e)} />
                     </div>
@@ -418,8 +426,12 @@ const PostItem = (props) => {
 
                 {/* Laugh Section */}
                 <CookiesProvider>
-                    <div className={"post-action post-likes" + (laughActive ? ' active' : '')}>
-                        <FaFaceLaughBeam onClick={() => doToggleLaugh(props.post.id)} />
+                    <div className={"post-action post-likes" + (laughActive ? ' active' : '')} onClick={() => doToggleLaugh(props.post.id)}>
+                        {laughActive ? (
+                            <img src={LoungePostIconLaughGold} style={{ width: "20px" }} alt="" />
+                        ) : (
+                            <img src={LoungePostIconLaughBlack} style={{ width: "20px" }} alt="" />
+                        )}
                         <NumUnit number={laughsCount} onClick={(e) => onShowLaughedBy(e)} />
 
                         <div className={"post-liked-by-dropdown" + (getShowLaughedBy() ? ' d-show' : ' d-none')}>
@@ -439,12 +451,11 @@ const PostItem = (props) => {
 
                 {/* Love Section */}
                 <CookiesProvider>
-                    <div className={"post-action post-likes" + (loveActive ? ' active' : '')}>
+                    <div className={"post-action post-likes" + (loveActive ? ' active' : '')} onClick={() => doToggleLove(props.post.id)}>
                         {loveActive ? (
-                            <IoHeart onClick={() => doToggleLove(props.post.id)} />
+                            <img src={LoungePostIconLoveGold} style={{ width: "20px" }} alt="" />
                         ) : (
-                            <IoHeartOutline onClick={() => doToggleLove(props.post.id)} />
-
+                            <img src={LoungePostIconLoveBlack} style={{ width: "20px" }} alt="" />
                         )}
                         <NumUnit number={lovesCount} onClick={(e) => onShowLovedBy(e)} />
 
@@ -462,7 +473,11 @@ const PostItem = (props) => {
                 </CookiesProvider>
 
                 <div className="post-action post-comments" onClick={() => toggleShowComments()}>
-                    <IoChatbubbleEllipsesOutline />
+                        {showComments ? (
+                            <img src={LoungePostIconCommentGold} style={{ width: "20px" }} alt="" />
+                        ) : (
+                            <img src={LoungePostIconCommentBlack} style={{ width: "20px" }} alt="" />
+                        )}
                     <NumUnit number={commentsCount} />
                 </div>
 

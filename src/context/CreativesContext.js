@@ -65,7 +65,7 @@ const getCreatives = (dispatch) => {
         type: "set_creatives",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -77,7 +77,7 @@ const getHomeCreatives = (dispatch) => {
         type: "set_creatives",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -89,7 +89,7 @@ const getRelatedCreatives = (dispatch) => {
         type: "set_creatives",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -123,7 +123,7 @@ const getCreativeById = (dispatch) => {
         type: "set_single_creative",
         payload: data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -137,7 +137,7 @@ const searchCreatives = (dispatch) => {
         type: "set_creatives",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
@@ -153,7 +153,7 @@ const searchCreativesAdvanced = (dispatch) => {
         type: "set_creatives",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
@@ -169,7 +169,7 @@ const searchCreativesFull = (dispatch) => {
         type: "set_creatives",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
@@ -181,7 +181,7 @@ const getCreativeEducation = async (dispatch, uid) => {
       type: "set_creative_education",
       payload: response.data,
     });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const getCreativeExperience = async (dispatch, uid) => {
@@ -191,7 +191,7 @@ const getCreativeExperience = async (dispatch, uid) => {
       type: "set_creative_experience",
       payload: response.data,
     });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const loadCreatives = (dispatch) => {
@@ -203,7 +203,7 @@ const loadCreatives = (dispatch) => {
         type: "load_creatives",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
@@ -223,7 +223,7 @@ const saveCreative = (dispatch) => {
     });
     try {
       const response = await api.patch("/creative_profile/" + uid, data);
-    } catch (error) {}
+    } catch (error) { }
     dispatch({
       type: "set_form_submit",
       payload: false,
@@ -241,7 +241,7 @@ const saveResume = (dispatch) => {
       await api.patch("/creative_resume/" + uid, data);
       await api.patch("/educations/", { educations });
       await api.patch("/experiences/", { experiences });
-    } catch (error) {}
+    } catch (error) { }
     dispatch({
       type: "set_form_submit",
       payload: false,
@@ -258,7 +258,7 @@ const saveAttachment = (dispatch) => {
         },
       });
       return response.data;
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -266,7 +266,7 @@ const removeAttachment = (dispatch) => {
   return async (id) => {
     try {
       const response = await api.delete("/attachments/" + id);
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -278,7 +278,7 @@ const getResume = (dispatch) => {
         type: "set_resume",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -290,7 +290,7 @@ const getPortfolio = (dispatch) => {
         type: "set_portfolio_items",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -302,7 +302,7 @@ const getVideo = (dispatch) => {
         type: "set_video",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -321,7 +321,7 @@ const saveCreativeImage = (dispatch) => {
         },
       });
       return response.data.data;
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -333,7 +333,7 @@ const getStats = (dispatch) => {
         type: "set_stats",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -346,7 +346,7 @@ const getAppliedJobs = (dispatch) => {
         type: "set_applied_jobs",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
@@ -357,7 +357,7 @@ const deleteApplication = (dispatch) => {
     try {
       const response = await api.delete("/applications/" + id);
       getAppliedJobs(dispatch)();
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };

@@ -66,7 +66,7 @@ const AgencyCreatives = () => {
           autop
         >
           {creatives &&
-            creatives.map((item, index) => {
+            creatives.sort(() => Math.random() - 0.5).map((item, index) => {
               return (
                 <swiper-slide key={`slide${index}`}>
                   <div className="sliderContent agencies-slider">
