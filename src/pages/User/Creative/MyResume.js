@@ -651,7 +651,7 @@ const MyResume = () => {
 
   const [portfolio, setPortfolio] = useState([
     {
-      label: "Upload up to 5 samples of your best work. A sneak peek.",
+      label: "Upload up to 5 image samples of your best work. A sneak peek.",
       required: false,
       type: "upload",
       name: "portfolio_item",
