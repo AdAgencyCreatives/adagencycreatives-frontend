@@ -230,11 +230,7 @@ export const router = createBrowserRouter([
       {
         path: "/loginas/:token",
         element: <LoginAs />,
-      },
-      {
-        path: "/filmfestival1",
-        element: <FilmFestival1 />,
-      },
+      }
     ],
   },
 ]);

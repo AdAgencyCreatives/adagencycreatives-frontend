@@ -1,6 +1,9 @@
 .main {
     /* margin-bottom: 50px; */
 }
+.d-none{
+    display: none;
+}
 
 h1.bannerHeading {
     font-size: 61px;

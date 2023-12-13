@@ -68,7 +68,7 @@ const Home = () => {
         <div className="banner">
           <h1 className="bannerHeading" dangerouslySetInnerHTML={{ __html: pageTitle }}></h1>
           <p className="subHeading" dangerouslySetInnerHTML={{ __html: pageSubTitle }}></p>
-          <Link className="btn btn-gold film-festival-1" to="/filmfestival1"
+          <Link className="btn btn-gold film-festival-1 d-none" to="/filmfestival1"
             style={{ fontWeight: "500", fontSize: "18px", marginLeft: "5px", minWidth: "120px" }}>
             Film Festival
           </Link>
