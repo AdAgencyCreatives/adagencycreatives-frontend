@@ -118,7 +118,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
         },
 
         {
-          label: "Job Location (State / Major City)",
+          label: "Job Location (State)",
           required: true,
           type: "dropdown",
           name: "state_id",
@@ -132,9 +132,10 @@ const JobPostForm = ({ id, setJobStatus }) => {
             ),
         },
         {
-          label: "",
+          label: "Nearest Major City",
           type: "dropdown",
           name: "city_id",
+          required: true,
           data: citiesList,
           placeholder: "Select City",
           callback: (item) => handleDropdownChange(item, "city_id"),

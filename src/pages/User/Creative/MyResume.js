@@ -274,7 +274,7 @@ const MyResume = () => {
           column: "6",
         },
         {
-          label: "Location",
+          label: "State",
           required: true,
           type: "dropdown",
           name: "state_id",
@@ -289,7 +289,7 @@ const MyResume = () => {
           column: "6",
         },
         {
-          label: "",
+          label: "City",
           type: "dropdown",
           name: "city_id",
           required: true,
