@@ -86,7 +86,7 @@ const Profile = () => {
       Object.keys(single_creative).length > 0 &&
       industry.length &&
       media.length &&
-      employentType.length &&
+      employentType.length
     ) {
       setIsloading(false);
       setEditorState(
