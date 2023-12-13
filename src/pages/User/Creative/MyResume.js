@@ -292,6 +292,7 @@ const MyResume = () => {
           label: "",
           type: "dropdown",
           name: "city_id",
+          required: true,
           data: citiesList,
           placeholder: "Select City",
           callback: (item) => handleDropdownChange(item, "city_id"),
