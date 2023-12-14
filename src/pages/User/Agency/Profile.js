@@ -14,6 +14,7 @@ import Loader from "../../../components/Loader";
 import { CircularProgress } from "@mui/material";
 
 const Profile = () => {
+  const cityRef = useRef();
   const imageUploadRef = useRef();
   const logoRef = useRef();
   const videoUploadRef = useRef();
@@ -59,7 +60,7 @@ const Profile = () => {
     saveAgency,
     uploadAttachment,
     getVideo,
-    removeAttachment
+    removeAttachment,
   } = useContext(AgenciesContext);
 
   const {
@@ -79,32 +80,16 @@ const Profile = () => {
 
   //Fetch initial Cities
   useEffect(() => {
-    if (
-      Object.keys(single_agency).length > 0 &&
-      single_agency.location &&
-      citiesList.length === 0
-    ) {
+    if (Object.keys(single_agency).length > 0 && single_agency.location && citiesList.length === 0) {
       getCities(single_agency.location?.state_id);
     }
   }, [single_agency, citiesList]);
 
   // Set initial fields
   useEffect(() => {
-    if (
-      Object.keys(single_agency).length > 0 &&
-      industry.length &&
-      media.length &&
-      statesList.length &&
-      (single_agency.location?.city_id ? citiesList.length : true)
-    ) {
+    if (Object.keys(single_agency).length > 0 && industry.length && media.length && statesList.length && (single_agency.location?.city_id ? citiesList.length : true)) {
       setIsloading(false);
-      setEditorState(
-        EditorState.createWithContent(
-          ContentState.createFromText(
-            single_agency.about ? single_agency.about : ""
-          )
-        )
-      );
+      setEditorState(EditorState.createWithContent(ContentState.createFromText(single_agency.about ? single_agency.about : "")));
       setFields([
         {
           label: "Your Logo",
@@ -112,7 +97,7 @@ const Profile = () => {
           type: "image",
           image: single_agency.logo,
           name: "company_logo",
-          accept:".jpg, .jpeg, .png, .bmp, image/jpeg, image/png",
+          accept: ".jpg, .jpeg, .png, .bmp, image/jpeg, image/png",
         },
         {
           label: "Company Name",
@@ -126,9 +111,7 @@ const Profile = () => {
           required: true,
           type: "text",
           name: "website",
-          value:
-            single_agency.links.find((link) => link.label == "website")?.url ??
-            "",
+          value: single_agency.links.find((link) => link.label == "website")?.url ?? "",
         },
         {
           label: "State",
@@ -138,32 +121,24 @@ const Profile = () => {
           data: statesList,
           callback: (item) => changeState(item, "state_id"),
           placeholder: "Select State",
-          value: statesList.find(
-            (state) => state.value == single_agency.location?.state_id
-          ),
+          value: statesList.find((state) => state.value == single_agency.location?.state_id),
         },
         {
-          label: "City",
+          label: "Nearest Major City",
           type: "dropdown",
           name: "city_id",
           required: true,
           data: citiesList,
           placeholder: "Select City",
           callback: (item) => handleDropdownChange(item, "city_id"),
-          value:
-            single_agency.location?.city_id &&
-            citiesList.find(
-              (city) => city.value == single_agency.location.city_id
-            ),
+          value: single_agency.location?.city_id && citiesList.find((city) => city.value == single_agency.location.city_id),
         },
         {
           label: "Company LinkedIn",
           required: true,
           type: "text",
           name: "linkedin",
-          value:
-            single_agency.links.find((link) => link.label == "linkedin")?.url ??
-            "",
+          value: single_agency.links.find((link) => link.label == "linkedin")?.url ?? "",
         },
         {
           label: "Contact Email",
@@ -208,9 +183,7 @@ const Profile = () => {
           isMulti: true,
           name: "industry_experience",
           callback: (item) => handleMultiChange(item, "industry_experience"),
-          value: industry.filter((item) =>
-            single_agency.industry_experience.includes(item.label)
-          ),
+          value: industry.filter((item) => single_agency.industry_experience.includes(item.label)),
         },
         {
           label: "Media Speciality",
@@ -220,9 +193,7 @@ const Profile = () => {
           isMulti: true,
           name: "media_experience",
           callback: (item) => handleMultiChange(item, "media_experience"),
-          value: media.filter((item) =>
-            single_agency.media_experience.includes(item.label)
-          ),
+          value: media.filter((item) => single_agency.media_experience.includes(item.label)),
         },
         {
           label: "Workplace Preference",
@@ -231,8 +202,7 @@ const Profile = () => {
           isMulti: true,
           data: workplace_preference,
           name: "workplace_preference",
-          callback: (item) =>
-            handleWorkplaceChange(item, "workplace_preference"),
+          callback: (item) => handleWorkplaceChange(item, "workplace_preference"),
           value: workplace_preference.filter((item) => single_agency[item.key]),
         },
         {
@@ -273,25 +243,17 @@ const Profile = () => {
     if (Object.keys(single_agency).length > 0 && !isLoading) {
       setFormData({
         company_name: single_agency.name,
-        website:
-          single_agency.links.find((link) => link.label == "website")?.url ??
-          "",
+        website: single_agency.links.find((link) => link.label == "website")?.url ?? "",
         state_id: single_agency.location?.state_id,
         city_id: single_agency.location?.city_id,
-        linkedin:
-          single_agency.links.find((link) => link.label == "linkedin")?.url ??
-          "",
+        linkedin: single_agency.links.find((link) => link.label == "linkedin")?.url ?? "",
         email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
         phone_number: "",
         about: single_agency.about,
-        industry_experience: single_agency.industry_experience.map(
-          (item) => industry_experiences.find((j) => j.name == item).id
-        ),
-        media_experience: single_agency.media_experience.map(
-          (item) => media_experiences.find((j) => j.name == item).id
-        ),
+        industry_experience: single_agency.industry_experience.map((item) => industry_experiences.find((j) => j.name == item).id),
+        media_experience: single_agency.media_experience.map((item) => media_experiences.find((j) => j.name == item).id),
         is_onsite: single_agency.workplace_preference.is_onsite,
         is_hybrid: single_agency.workplace_preference.is_hybrid,
         is_remote: single_agency.workplace_preference.is_remote,
@@ -354,6 +316,8 @@ const Profile = () => {
   const changeState = (item, name) => {
     getCities(item.value);
     handleDropdownChange(item, name);
+    cityRef.current?.clearValue();
+    // handleDropdownChange({ value: "" }, "city_id");
   };
 
   const handleTextChange = (e, name) => {
@@ -366,7 +330,9 @@ const Profile = () => {
   };
 
   const handleDropdownChange = (item, name) => {
-    setFormData((prev) => ({ ...prev, [name]: item.value }));
+    if (item) {
+      setFormData((prev) => ({ ...prev, [name]: item.value }));
+    }
   };
 
   const handleMultiChange = (item, name) => {
@@ -411,8 +377,7 @@ const Profile = () => {
   const handleFileChange = async (event, resource, ref) => {
     const file = event.target.files[0];
     if (file) {
-      if (resource == "agency_logo")
-        ref.current.src = URL.createObjectURL(file);
+      if (resource == "agency_logo") ref.current.src = URL.createObjectURL(file);
       else setVideoItem({ name: file.name });
       const formData = new FormData();
       formData.append("file", file);
@@ -420,10 +385,7 @@ const Profile = () => {
       formData.append("resource_type", resource);
       await uploadAttachment(formData);
       reloadUserData(user.uuid);
-      showAlert(
-        (resource == "agency_logo" ? "Logo" : "Video") +
-          " uploaded successfully."
-      );
+      showAlert((resource == "agency_logo" ? "Logo" : "Video") + " uploaded successfully.");
     }
   };
 
@@ -458,43 +420,20 @@ const Profile = () => {
                         {field.label}
                         {field.required && <span className="required">*</span>}
                       </label>
-                      <input
-                        type="hidden"
-                        className="input-text"
-                        name={field.name}
-                        value=""
-                      />
+                      <input type="hidden" className="input-text" name={field.name} value="" />
                       <div className="row align-items-center upload-box">
                         <div className="col-md-2 col-sm-4 col-12">
-                          <img
-                            src={field.image}
-                            className="w-100"
-                            ref={logoRef}
-                          />
+                          <img src={field.image} className="w-100" ref={logoRef} />
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
-                          <button
-                            className="btn btn-secondary w-100 mb-2 text-uppercase"
-                            onClick={() => imageUploadRef.current.click()}
-                          >
+                          <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => imageUploadRef.current.click()}>
                             <FiPaperclip /> Upload
                           </button>
-                          <button
-                            className="btn btn-secondary w-100 text-uppercase"
-                            onClick={() => removeLogo(field.id)}
-                          >
+                          <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeLogo(field.id)}>
                             <FiTrash2 /> Remove
                           </button>
                         </div>
-                        <input
-                          type="file"
-                          ref={imageUploadRef}
-                          className="d-none"
-                          onChange={(e) =>
-                            handleFileChange(e, "agency_logo", logoRef)
-                          }
-                          accept={field.accept}
-                        />
+                        <input type="file" ref={imageUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_logo", logoRef)} accept={field.accept} />
                       </div>
                     </div>
                   );
@@ -517,28 +456,14 @@ const Profile = () => {
                           )}
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
-                          <button
-                            className="btn btn-secondary w-100 mb-2 text-uppercase"
-                            onClick={() => videoUploadRef.current.click()}
-                          >
+                          <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => videoUploadRef.current.click()}>
                             <FiPaperclip /> Upload
                           </button>
-                          <button
-                            className="btn btn-secondary w-100 text-uppercase"
-                            onClick={() => removeVideo(videoItem.id)}
-                          >
+                          <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeVideo(videoItem.id)}>
                             <FiTrash2 /> Remove
                           </button>
                         </div>
-                        <input
-                          type="file"
-                          ref={videoUploadRef}
-                          className="d-none"
-                          onChange={(e) =>
-                            handleFileChange(e, "agency_reel", videoRef)
-                          }
-                          accept=".mp4, .avi, .mov, video/*"
-                        />
+                        <input type="file" ref={videoUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_reel", videoRef)} accept=".mp4, .avi, .mov, video/*" />
                       </div>
                     </div>
                   );
@@ -550,12 +475,7 @@ const Profile = () => {
                         {field.label}
                         {field.required && <span className="required">*</span>}
                       </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={field.value || ""}
-                        onChange={(e) => handleTextChange(e, field.name)}
-                      />
+                      <input type="text" className="form-control" value={field.value || ""} onChange={(e) => handleTextChange(e, field.name)} />
                     </div>
                   );
                 case "dropdown":
@@ -571,6 +491,7 @@ const Profile = () => {
                           // isDisabled: formData.length ? formData[field.name].length > 7 : false,
                         }))}
                         isMulti={field.isMulti || false}
+                        ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}
                         onChange={field.callback}
                         placeholder={field.placeholder}
                         defaultValue={field.value}
@@ -615,14 +536,7 @@ const Profile = () => {
                           wrapperClassName="editorWrapper"
                           editorClassName="editorBody"
                           toolbar={{
-                            options: [
-                              "inline",
-                              "blockType",
-                              "fontSize",
-                              "list",
-                              "textAlign",
-                              "link",
-                            ],
+                            options: ["inline", "blockType", "fontSize", "list", "textAlign", "link"],
                           }}
                           onEditorStateChange={(newState) => {
                             handleEditorChange(newState, field.name);
@@ -635,11 +549,7 @@ const Profile = () => {
             })}
           </div>
           <div className="submit-btn mt-4">
-            <button
-              className="btn btn-dark btn-hover-primary border-0 px-3 py-2"
-              onClick={handleSubmit}
-              disabled={formSubmit}
-            >
+            <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2" onClick={handleSubmit} disabled={formSubmit}>
               Save Profile {formSubmit && <CircularProgress size={20} />}
             </button>
           </div>
