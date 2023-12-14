@@ -4,15 +4,7 @@ import { EditorState, ContentState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Placeholder from "../../../assets/images/placeholder.png";
-import {
-  FiChevronDown,
-  FiChevronUp,
-  FiPaperclip,
-  FiTrash2,
-  FiX,
-  FiFile,
-  FiVideo
-} from "react-icons/fi";
+import { FiChevronDown, FiChevronUp, FiPaperclip, FiTrash2, FiX, FiFile, FiVideo } from "react-icons/fi";
 import "../../../styles/AgencyDashboard/MyResume.scss";
 import htmlToDraft from "html-to-draftjs";
 import draftToHtml from "draftjs-to-html";
@@ -27,6 +19,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 
 const MyResume = () => {
+  const cityRef = useRef();
   const resumeUploadRef = useRef();
   const resumeRef = useRef();
 
@@ -119,15 +112,7 @@ const MyResume = () => {
   };
 
   const {
-    state: {
-      single_creative,
-      creative_experience,
-      creative_education,
-      resume,
-      formSubmit,
-      portfolio_items,
-      video,
-    },
+    state: { single_creative, creative_experience, creative_education, resume, formSubmit, portfolio_items, video },
     getCreativeById,
     saveResume,
     saveAttachment,
@@ -138,16 +123,7 @@ const MyResume = () => {
   } = useContext(CreativesContext);
 
   const {
-    state: {
-      categories,
-      states,
-      cities,
-      media_experiences,
-      industry_experiences,
-      employment_type,
-      years_experience,
-      strengths,
-    },
+    state: { categories, states, cities, media_experiences, industry_experiences, employment_type, years_experience, strengths },
     getCategories,
     getStates,
     getCities,
@@ -205,13 +181,7 @@ const MyResume = () => {
     ) {
       setIsloading(false);
       if (single_creative.about) {
-        setEditorState(
-          EditorState.createWithContent(
-            ContentState.createFromBlockArray(
-              htmlToDraft(single_creative.about).contentBlocks
-            )
-          )
-        );
+        setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(single_creative.about).contentBlocks)));
       }
       setFields([
         {
@@ -231,9 +201,7 @@ const MyResume = () => {
           data: categoriesList,
           callback: (item) => handleDropdownChange(item, "category_id"),
           placeholder: "Select Job Title",
-          value: categoriesList.find(
-            (category) => category.label == single_creative.category
-          ),
+          value: categoriesList.find((category) => category.label == single_creative.category),
         },
         {
           label: "Years of Experience",
@@ -242,9 +210,7 @@ const MyResume = () => {
           data: experience,
           name: "years_of_experience",
           callback: (item) => handleDropdownChange(item, "years_of_experience"),
-          value: experience.find(
-            (item) => item.value == single_creative.years_of_experience
-          ),
+          value: experience.find((item) => item.value == single_creative.years_of_experience),
           column: "6",
         },
         {
@@ -255,9 +221,7 @@ const MyResume = () => {
           isMulti: true,
           name: "industry_experience",
           callback: (item) => handleMultiChange(item, "industry_experience"),
-          value: industry.filter((item) =>
-            single_creative.industry_experience.includes(item.label)
-          ),
+          value: industry.filter((item) => single_creative.industry_experience.includes(item.label)),
           column: "6",
         },
         {
@@ -268,38 +232,29 @@ const MyResume = () => {
           isMulti: true,
           name: "media_experience",
           callback: (item) => handleMultiChange(item, "media_experience"),
-          value: media.filter((item) =>
-            single_creative.media_experience.includes(item.label)
-          ),
+          value: media.filter((item) => single_creative.media_experience.includes(item.label)),
           column: "6",
         },
         {
-          label: "Location",
+          label: "State",
           required: true,
           type: "dropdown",
           name: "state_id",
           data: statesList,
           callback: (item) => changeState(item, "state_id"),
           placeholder: "Select State",
-          value:
-            single_creative.location &&
-            statesList.find(
-              (state) => state.value == single_creative.location.state_id
-            ),
+          value: single_creative.location && statesList.find((state) => state.value == single_creative.location.state_id),
           column: "6",
         },
         {
-          label: "",
+          label: "Nearest Major City",
           type: "dropdown",
           name: "city_id",
+          required: true,
           data: citiesList,
           placeholder: "Select City",
           callback: (item) => handleDropdownChange(item, "city_id"),
-          value:
-            single_creative.location &&
-            citiesList.find(
-              (city) => city.value == single_creative.location.city_id
-            ),
+          value: single_creative.location && citiesList.find((city) => city.value == single_creative.location.city_id),
           column: "6",
         },
         {
@@ -310,9 +265,7 @@ const MyResume = () => {
           isMulti: true,
           name: "strengths",
           callback: (item) => handleMultiChange(item, "strengths"),
-          value: strengthsList.filter((item) =>
-            single_creative.character_strengths.includes(item.label)
-          ),
+          value: strengthsList.filter((item) => single_creative.character_strengths.includes(item.label)),
           placeholder: "Select strengths",
           column: "6",
         },
@@ -399,21 +352,7 @@ const MyResume = () => {
       ]);
       setFieldsGenerated(true);
     }
-  }, [
-    single_creative,
-    user,
-    media,
-    industry,
-    statesList,
-    categoriesList,
-    citiesList,
-    employment,
-    experience,
-    strengthsList,
-    creative_education,
-    creative_experience,
-    fieldsGenerated,
-  ]);
+  }, [single_creative, user, media, industry, statesList, categoriesList, citiesList, employment, experience, strengthsList, creative_education, creative_experience, fieldsGenerated]);
 
   //Set initial form data
   useEffect(() => {
@@ -424,15 +363,9 @@ const MyResume = () => {
         about: single_creative.about,
         employment_type: single_creative.employment_type,
         years_of_experience: single_creative.years_of_experience,
-        industry_experience: single_creative.industry_experience.map(
-          (item) => industry_experiences.find((j) => j.name == item).id
-        ),
-        media_experience: single_creative.media_experience.map(
-          (item) => media_experiences.find((j) => j.name == item).id
-        ),
-        strengths: single_creative.character_strengths.map(
-          (item) => strengths.find((j) => j.name == item).id
-        ),
+        industry_experience: single_creative.industry_experience.map((item) => industry_experiences.find((j) => j.name == item).id),
+        media_experience: single_creative.media_experience.map((item) => media_experiences.find((j) => j.name == item).id),
+        strengths: single_creative.character_strengths.map((item) => strengths.find((j) => j.name == item).id),
         is_remote: single_creative.workplace_preference.is_remote,
         is_opentorelocation: single_creative.is_opentorelocation,
       });
@@ -466,12 +399,8 @@ const MyResume = () => {
 
   //Fetch initial Cities
   useEffect(() => {
-    if (
-      Object.keys(single_creative).length > 0 &&
-      single_creative.location &&
-      citiesList.length === 0
-    ) {
-      if(single_creative.location.state_id) {
+    if (Object.keys(single_creative).length > 0 && single_creative.location && citiesList.length === 0) {
+      if (single_creative.location.state_id) {
         getCities(single_creative.location.state_id);
       }
     }
@@ -526,15 +455,11 @@ const MyResume = () => {
   }, [strengths]);
 
   useEffect(() => {
-    setEmployment(
-      employment_type.map((item) => ({ label: item, value: item }))
-    );
+    setEmployment(employment_type.map((item) => ({ label: item, value: item })));
   }, [employment_type]);
 
   useEffect(() => {
-    setExperience(
-      years_experience.map((item) => ({ label: item.name, value: item.name }))
-    );
+    setExperience(years_experience.map((item) => ({ label: item.name, value: item.name })));
   }, [years_experience]);
 
   const parseFieldsData = (data) => {
@@ -545,6 +470,7 @@ const MyResume = () => {
   };
 
   const changeState = (item, name) => {
+    cityRef.current?.clearValue();
     getCities(item.value);
     handleDropdownChange(item, name);
   };
@@ -569,7 +495,9 @@ const MyResume = () => {
   };
 
   const handleDropdownChange = (item, name) => {
-    setFormData((prev) => ({ ...prev, [name]: item.value }));
+    if (item) {
+      setFormData((prev) => ({ ...prev, [name]: item.value }));
+    }
   };
 
   const handleMultiChange = (item, name) => {
@@ -634,8 +562,7 @@ const MyResume = () => {
       formData.append("resource_type", name);
       const result = await saveAttachment(formData);
       if (result.data) {
-        if (name == "creative_reel")
-          setVideoItem({ name: file.name, id: result.data.id });
+        if (name == "creative_reel") setVideoItem({ name: file.name, id: result.data.id });
         showAlert("Item uploaded successfully.");
       }
     }
@@ -656,7 +583,7 @@ const MyResume = () => {
       type: "upload",
       name: "portfolio_item",
       items: [],
-      accept:".jpg, .jpeg, .png, .gif, .bmp, image/jpeg, image/png, image/gif, image/bmp",
+      accept: ".jpg, .jpeg, .png, .gif, .bmp, image/jpeg, image/png, image/gif, image/bmp",
       ref: portfolioRef,
       uploadRef: portfolioUploadRef,
     },
@@ -665,7 +592,7 @@ const MyResume = () => {
       required: false,
       type: "upload",
       name: "resume",
-      accept:".doc, .docx, .pdf, .txt",
+      accept: ".doc, .docx, .pdf, .txt",
       items: [],
       ref: resumeRef,
       uploadRef: resumeUploadRef,
@@ -724,44 +651,28 @@ const MyResume = () => {
   const addRepeaterField = (field) => {
     addRepeaterList(field);
     let newQualifications = [...fields];
-    const fieldIndex = newQualifications.findIndex(
-      (item) => item.name == field.name
-    );
+    const fieldIndex = newQualifications.findIndex((item) => item.name == field.name);
     let theField = { ...newQualifications[fieldIndex] };
     theField.items.push(structuredClone(theField.schema));
     newQualifications[fieldIndex] = { ...theField };
     setFields([...newQualifications]);
   };
 
-  const handleRepeaterChange = (
-    name,
-    item_index,
-    data_index,
-    key_name,
-    key_value
-  ) => {
+  const handleRepeaterChange = (name, item_index, data_index, key_name, key_value) => {
     console.log(name, item_index, data_index, key_name, key_value);
     let updatedFields = [...fields];
 
     let repeaterField = updatedFields.find((field) => field.name === name);
     let fieldIndex = updatedFields.findIndex((field) => field.name === name);
-    if (
-      repeaterField &&
-      repeaterField.items &&
-      repeaterField.items[0] &&
-      repeaterField.items[0].data
-    ) {
+    if (repeaterField && repeaterField.items && repeaterField.items[0] && repeaterField.items[0].data) {
       const childItem = repeaterField.items[item_index].data[data_index];
       if (childItem) {
         childItem.value = key_value;
-        updatedFields[fieldIndex].items[item_index].data[data_index] =
-          childItem;
+        updatedFields[fieldIndex].items[item_index].data[data_index] = childItem;
         setFields([...updatedFields]);
 
-        if (name == "educations")
-          updateEducationList(item_index, key_name, key_value);
-        else if (name == "experiences")
-          updateExperienceList(item_index, key_name, key_value);
+        if (name == "educations") updateEducationList(item_index, key_name, key_value);
+        else if (name == "experiences") updateExperienceList(item_index, key_name, key_value);
       }
     }
   };
@@ -804,21 +715,11 @@ const MyResume = () => {
   const getRepeaterField = (field) => (
     <div className="repeater-container">
       {field.items.map((item, index) => (
-        <div
-          className="repeater-field"
-          field-id={index + 1}
-          key={`repeater_${field.name}_${index}`}
-        >
-          <div
-            className="close-btn"
-            onClick={() => deleteDropdown(field, index)}
-          >
+        <div className="repeater-field" field-id={index + 1} key={`repeater_${field.name}_${index}`}>
+          <div className="close-btn" onClick={() => deleteDropdown(field, index)}>
             <FiX />
           </div>
-          <div
-            className="toggle-btn"
-            onClick={() => toggleDropdown(field, index)}
-          >
+          <div className="toggle-btn" onClick={() => toggleDropdown(field, index)}>
             {item.showDropdown ? <FiChevronUp /> : <FiChevronDown />}
           </div>
           <div className="title" onClick={() => toggleDropdown(field, index)}>
@@ -827,10 +728,7 @@ const MyResume = () => {
           {item.showDropdown && (
             <div className="field-dropdown">
               {item.data.map((child, cindex) => (
-                <div
-                  className="row align-items-start"
-                  key={`child_${field.name}_${index}_${child.name}`}
-                >
+                <div className="row align-items-start" key={`child_${field.name}_${index}_${child.name}`}>
                   <div className="col-sm-3">
                     <label>{child.label}</label>
                   </div>
@@ -841,44 +739,15 @@ const MyResume = () => {
                         name={child.name}
                         type="text"
                         value={child.value || ""}
-                        onChange={(e) =>
-                          handleRepeaterChange(
-                            field.name,
-                            index,
-                            cindex,
-                            child.name,
-                            e.target.value
-                          )
-                        }
+                        onChange={(e) => handleRepeaterChange(field.name, index, cindex, child.name, e.target.value)}
                       />
                     ) : child.type == "textarea" ? (
-                      <textarea
-                        className="form-control"
-                        rows={5}
-                        value={child.value || ""}
-                        onChange={(e) =>
-                          handleRepeaterChange(
-                            field.name,
-                            index,
-                            cindex,
-                            child.name,
-                            e.target.value
-                          )
-                        }
-                      ></textarea>
+                      <textarea className="form-control" rows={5} value={child.value || ""} onChange={(e) => handleRepeaterChange(field.name, index, cindex, child.name, e.target.value)}></textarea>
                     ) : child.type == "date" ? (
                       <DatePicker
                         className="form-control"
                         selected={child.value ? new Date(child.value) : ""}
-                        onChange={(date) =>
-                          handleDateChange(
-                            field.name,
-                            index,
-                            cindex,
-                            child.name,
-                            date
-                          )
-                        }
+                        onChange={(date) => handleDateChange(field.name, index, cindex, child.name, date)}
                         dateFormat="MMMM d, yyyy"
                       />
                     ) : (
@@ -888,10 +757,7 @@ const MyResume = () => {
                 </div>
               ))}
               <div className="text-end">
-                <button
-                  className="btn btn-secondary w-90 mb-2 text-uppercase ls-3 px-4"
-                  onClick={() => deleteDropdown(field, index)}
-                >
+                <button className="btn btn-secondary w-90 mb-2 text-uppercase ls-3 px-4" onClick={() => deleteDropdown(field, index)}>
                   Remove {field.label}
                 </button>
               </div>
@@ -899,10 +765,7 @@ const MyResume = () => {
           )}
         </div>
       ))}
-      <button
-        className="btn btn-secondary w-90 mb-2 text-uppercase ls-3 mt-4 py-3 px-4"
-        onClick={() => addRepeaterField(field)}
-      >
+      <button className="btn btn-secondary w-90 mb-2 text-uppercase ls-3 mt-4 py-3 px-4" onClick={() => addRepeaterField(field)}>
         Add Another {field.label}
       </button>
     </div>
@@ -929,26 +792,14 @@ const MyResume = () => {
                 )}
               </div>
               <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
-                <button
-                  className="btn btn-secondary w-100 mb-2 text-uppercase"
-                  onClick={() => videoUploadRef.current.click()}
-                >
+                <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => videoUploadRef.current.click()}>
                   <FiPaperclip /> Upload
                 </button>
-                <button
-                  className="btn btn-secondary w-100 text-uppercase"
-                  onClick={() => removeVideo(videoItem.id)}
-                >
+                <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeVideo(videoItem.id)}>
                   <FiTrash2 /> Remove
                 </button>
               </div>
-              <input
-                type="file"
-                ref={videoUploadRef}
-                className="d-none"
-                accept=".mp4, .avi, .mov, video/*"
-                onChange={(e) => handleFileChange(e, "creative_reel", videoRef)}
-              />
+              <input type="file" ref={videoUploadRef} className="d-none" accept=".mp4, .avi, .mov, video/*" onChange={(e) => handleFileChange(e, "creative_reel", videoRef)} />
             </div>
           </>
         );
@@ -960,20 +811,12 @@ const MyResume = () => {
               {field.label}
               {field.required && <span className="required">*</span>}
             </label>
-            <input
-              type="hidden"
-              className="input-text"
-              name={field.name}
-              value=""
-            />
+            <input type="hidden" className="input-text" name={field.name} value="" />
             <div className="row align-items-center upload-box">
               <div className="col-md-12 col-sm-4 col-12 mb-3">
                 {field.items.map((item) =>
                   field.name == "resume" ? (
-                    <button
-                      className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2"
-                      key={item.name}
-                    >
+                    <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2" key={item.name}>
                       <span className="icon_type">
                         <FiFile />
                       </span>
@@ -981,36 +824,20 @@ const MyResume = () => {
                     </button>
                   ) : (
                     <div className="portfolio_item">
-                      <img
-                        src={item.url}
-                        key={item.name}
-                        className="w-100 h-100"
-                      />
+                      <img src={item.url} key={item.name} className="w-100 h-100" />
                     </div>
                   )
                 )}
               </div>
               <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3 mb-2">
-                <button
-                  className="btn btn-secondary w-100 mb-2 text-uppercase"
-                  onClick={() => field.uploadRef.current.click()}
-                >
+                <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => field.uploadRef.current.click()}>
                   <FiPaperclip /> Upload
                 </button>
-                <button
-                  className="btn btn-secondary w-100 text-uppercase"
-                  onClick={() => removeItem(field.name, field.ref)}
-                >
+                <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeItem(field.name, field.ref)}>
                   <FiTrash2 /> Remove
                 </button>
               </div>
-              <input
-                type="file"
-                ref={field.uploadRef}
-                className="d-none"
-                accept={field.accept}
-                onChange={(e) => handleFileChange(e, field.name, field.ref)}
-              />
+              <input type="file" ref={field.uploadRef} className="d-none" accept={field.accept} onChange={(e) => handleFileChange(e, field.name, field.ref)} />
             </div>
           </>
         );
@@ -1021,12 +848,7 @@ const MyResume = () => {
               {field.label}
               {field.required && <span className="required">*</span>}
             </label>
-            <input
-              type="text"
-              className="form-control"
-              value={field.value}
-              onChange={(e) => handleTextChange(e, field.name)}
-            />
+            <input type="text" className="form-control" value={field.value} onChange={(e) => handleTextChange(e, field.name)} />
           </>
         );
       case "radio":
@@ -1038,27 +860,13 @@ const MyResume = () => {
             </label>
             <br />
             <div className="form-check">
-              <input
-                type="radio"
-                className="form-check-input me-2"
-                name={field.name}
-                value={1}
-                checked={field.value}
-                onChange={(e) => handleRadioChange(e, field.name)}
-              />
+              <input type="radio" className="form-check-input me-2" name={field.name} value={1} checked={field.value} onChange={(e) => handleRadioChange(e, field.name)} />
               <label className="form-check-label" htmlFor={field.name}>
                 Yes
               </label>
             </div>
             <div className="form-check">
-              <input
-                type="radio"
-                className="form-check-input me-2"
-                name={field.name}
-                value={0}
-                checked={!field.value}
-                onChange={(e) => handleRadioChange(e, field.name)}
-              />
+              <input type="radio" className="form-check-input me-2" name={field.name} value={0} checked={!field.value} onChange={(e) => handleRadioChange(e, field.name)} />
               <label className="form-check-label" htmlFor={field.name}>
                 No
               </label>
@@ -1078,6 +886,7 @@ const MyResume = () => {
               onChange={field.callback}
               placeholder={field.placeholder}
               defaultValue={field.value}
+              ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}
               styles={{
                 control: (baseStyles) => ({
                   ...baseStyles,
@@ -1113,14 +922,7 @@ const MyResume = () => {
                 wrapperClassName="editorWrapper"
                 editorClassName="editorBody"
                 toolbar={{
-                  options: [
-                    "inline",
-                    "blockType",
-                    "fontSize",
-                    "list",
-                    "textAlign",
-                    "link",
-                  ],
+                  options: ["inline", "blockType", "fontSize", "list", "textAlign", "link"],
                 }}
                 onEditorStateChange={(newState) => {
                   handleEditorChange(newState, field.name);
@@ -1178,12 +980,7 @@ const MyResume = () => {
         </div>
       </div>
       <div className="submit-btn mt-4">
-        <button
-          className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 text-uppercase"
-          style={{ fontSize: 20 }}
-          onClick={handleSubmit}
-          disabled={formSubmit}
-        >
+        <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 text-uppercase" style={{ fontSize: 20 }} onClick={handleSubmit} disabled={formSubmit}>
           Save Profile {formSubmit && <CircularProgress size={20} />}
         </button>
       </div>

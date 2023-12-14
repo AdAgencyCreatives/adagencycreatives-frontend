@@ -15,8 +15,6 @@ import { CircularProgress } from "@mui/material";
 const Profile = () => {
   const imageUploadRef = useRef();
   const logoRef = useRef();
-  const [statesList, setStates] = useState([]);
-  const [citiesList, setCities] = useState([]);
   const [media, setMedia] = useState([]);
   const [industry, setIndustry] = useState([]);
   const [employentType, setEmployentType] = useState([]);
@@ -67,14 +65,10 @@ const Profile = () => {
 
   const {
     state: {
-      states,
-      cities,
       media_experiences,
       industry_experiences,
       employment_type,
     },
-    getStates,
-    getCities,
     getMediaExperiences,
     getIndustryExperiences,
     getEmploymentTypes,
@@ -86,22 +80,13 @@ const Profile = () => {
     }
   }, [user]);
 
-  //Fetch initial Cities
-  useEffect(() => {
-    if (Object.keys(single_creative).length > 0 && citiesList.length === 0) {
-      getCities(single_creative.location?.state_id ?? 0);
-    }
-  }, [single_creative, citiesList]);
-
   // Set initial fields
   useEffect(() => {
     if (
       Object.keys(single_creative).length > 0 &&
       industry.length &&
       media.length &&
-      statesList.length &&
-      employentType.length &&
-      (single_creative.location?.city_id ? citiesList.length : true)
+      employentType.length
     ) {
       setIsloading(false);
       setEditorState(
@@ -132,31 +117,6 @@ const Profile = () => {
           type: "text",
           name: "last_name",
           value: user.last_name,
-        },
-        {
-          label: "Location",
-          required: true,
-          type: "dropdown",
-          name: "state_id",
-          data: statesList,
-          callback: (item) => changeState(item, "state_id"),
-          placeholder: "Select State",
-          value: statesList?.find(
-            (state) => state.value == single_creative.location?.state_id
-          ),
-        },
-        {
-          label: "",
-          type: "dropdown",
-          name: "city_id",
-          data: citiesList,
-          placeholder: "Select City",
-          callback: (item) => handleDropdownChange(item, "city_id"),
-          value:
-            single_creative.location?.city_id &&
-            citiesList?.find(
-              (city) => city.value == single_creative.location?.city_id
-            ),
         },
         {
           label: "Portfolio Site",
@@ -274,9 +234,7 @@ const Profile = () => {
     user,
     media,
     industry,
-    statesList,
     employentType,
-    citiesList,
   ]);
 
   // Cities update
@@ -305,8 +263,6 @@ const Profile = () => {
         linkedin:
           single_creative.links?.find((link) => link.label == "linkedin")
             ?.url ?? "",
-        state_id: single_creative.location?.state_id,
-        city_id: single_creative.location?.city_id,
         phone_number: "",
         about: single_creative.about,
         industry_experience: single_creative.industry_experience?.map(
@@ -324,27 +280,10 @@ const Profile = () => {
   }, [isLoading, media_experiences, industry_experiences, employment_type]);
 
   useEffect(() => {
-    getStates();
     getMediaExperiences();
     getIndustryExperiences();
     getEmploymentTypes();
   }, []);
-
-  useEffect(() => {
-    let data = states;
-    if (states.length) {
-      data = parseFieldsData(states);
-    }
-    setStates(data);
-  }, [states]);
-
-  useEffect(() => {
-    let data = cities;
-    if (cities.length) {
-      data = parseFieldsData(cities);
-    }
-    setCities(data);
-  }, [cities]);
 
   useEffect(() => {
     let data = media_experiences;
@@ -377,11 +316,6 @@ const Profile = () => {
       return { label: item.name, value: item.uuid || item.id, key: item.name };
     });
     return parsedValue;
-  };
-
-  const changeState = (item, name) => {
-    getCities(item.value);
-    handleDropdownChange(item, name);
   };
 
   const handleTextChange = (e, name) => {

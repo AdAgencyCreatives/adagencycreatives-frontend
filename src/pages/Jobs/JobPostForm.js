@@ -15,7 +15,6 @@ import moment from "moment";
 import useFormData from "../../hooks/useFormData";
 
 const JobPostForm = ({ id, setJobStatus }) => {
-
   const {
     states: {
       single_job,
@@ -38,6 +37,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
       imageUploadRef,
       logoRef,
       linkRef,
+      cityRef,
     },
     changeState,
     handleTextChange,
@@ -52,7 +52,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
     setFields,
     setEditorState,
     setFormData,
-    setEditorRef
+    setEditorRef,
   } = useFormData({ id, setJobStatus });
 
   const [isLoading, setIsloading] = useState(true);
@@ -78,18 +78,11 @@ const JobPostForm = ({ id, setJobStatus }) => {
     ) {
       setIsloading(false);
       if (id) {
-        setEditorState(
-          EditorState.createWithContent(
-            ContentState.createFromBlockArray(
-              htmlToDraft(single_job.description).contentBlocks
-            )
-          )
-        );
+        setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(single_job.description).contentBlocks)));
       }
       setFields([
         {
-          label:
-            "Agency Logo only upload if it's different from your profile logo",
+          label: "Agency Logo only upload if it's different from your profile logo",
           required: false,
           type: "image",
           image: isEdit ? single_job.agency.logo : "",
@@ -110,39 +103,28 @@ const JobPostForm = ({ id, setJobStatus }) => {
           data: categoriesList,
           callback: (item) => handleDropdownChange(item, "category_id"),
           placeholder: "Select Job Title",
-          value:
-            isEdit &&
-            categoriesList.find(
-              (category) => category.value == single_job.category_id
-            ),
+          value: isEdit && categoriesList.find((category) => category.value == single_job.category_id),
         },
 
         {
-          label: "Job Location (State / Major City)",
+          label: "Job Location (State)",
           required: true,
           type: "dropdown",
           name: "state_id",
           data: statesList,
           callback: (item) => changeState(item, "state_id"),
           placeholder: "Select State",
-          value:
-            isEdit &&
-            statesList.find(
-              (state) => state.value == single_job.location.state_id
-            ),
+          value: isEdit && statesList.find((state) => state.value == single_job.location.state_id),
         },
         {
-          label: "",
+          label: "Nearest Major City",
           type: "dropdown",
           name: "city_id",
+          required: true,
           data: citiesList,
           placeholder: "Select City",
           callback: (item) => handleDropdownChange(item, "city_id"),
-          value:
-            isEdit &&
-            citiesList.find(
-              (city) => city.value == single_job.location.city_id
-            ),
+          value: isEdit && citiesList.find((city) => city.value == single_job.location.city_id),
         },
         {
           label: "Employment Type",
@@ -174,11 +156,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           isMulti: true,
           name: "industry_experience",
           callback: (item) => handleMultiChange(item, "industry_experience"),
-          value:
-            isEdit &&
-            industry.filter((item) =>
-              single_job.industry_experience.includes(item.label)
-            ),
+          value: isEdit && industry.filter((item) => single_job.industry_experience.includes(item.label)),
         },
         {
           label: "Media Experience",
@@ -188,11 +166,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           isMulti: true,
           name: "media_experience",
           callback: (item) => handleMultiChange(item, "media_experience"),
-          value:
-            isEdit &&
-            media.filter((item) =>
-              single_job.media_experience.includes(item.label)
-            ),
+          value: isEdit && media.filter((item) => single_job.media_experience.includes(item.label)),
         },
 
         /* {
@@ -216,9 +190,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           data: experience,
           name: "years_of_experience",
           callback: (item) => handleDropdownChange(item, "years_of_experience"),
-          value:
-            isEdit &&
-            experience.find((item) => item.value == single_job.experience),
+          value: isEdit && experience.find((item) => item.value == single_job.experience),
         },
 
         {
@@ -257,9 +229,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           name: "apply_type",
           placeholder: "internal or external application",
           callback: (item) => handleDropdownChange(item, "apply_type"),
-          value:
-            isEdit &&
-            apply_type.find((item) => item.value == single_job.apply_type),
+          value: isEdit && apply_type.find((item) => item.value == single_job.apply_type),
         },
         {
           label: "External Job Application Link",
@@ -269,21 +239,11 @@ const JobPostForm = ({ id, setJobStatus }) => {
           placeholder: "applicants use this link",
           value: isEdit ? single_job.external_link || "" : "",
           hidden: true,
-          ref: linkRef
+          ref: linkRef,
         },
       ]);
     }
-  }, [
-    single_job,
-    media,
-    industry,
-    statesList,
-    categoriesList,
-    citiesList,
-    employment,
-    experience,
-    strengthsList,
-  ]);
+  }, [single_job, media, industry, statesList, categoriesList, citiesList, employment, experience, strengthsList]);
 
   //Set initial form data
   useEffect(() => {
@@ -294,30 +254,14 @@ const JobPostForm = ({ id, setJobStatus }) => {
         city_id: (isEdit && single_job.location.city_id) || "",
         state_id: (isEdit && single_job.location.state_id) || "",
         description: (isEdit && single_job.description) || "",
-        industry_experience:
-          (isEdit &&
-            single_job.industry_experience.map(
-              (item) => industry_experiences.find((j) => j.name == item).id
-            )) ||
-          [],
-        media_experience:
-          (isEdit &&
-            single_job.media_experience.map(
-              (item) => media_experiences.find((j) => j.name == item).id
-            )) ||
-          [],
-        strengths:
-          (isEdit &&
-            single_job.character_strengths.map(
-              (item) => strengths.find((j) => j.name == item).id
-            )) ||
-          [],
+        industry_experience: (isEdit && single_job.industry_experience.map((item) => industry_experiences.find((j) => j.name == item).id)) || [],
+        media_experience: (isEdit && single_job.media_experience.map((item) => media_experiences.find((j) => j.name == item).id)) || [],
+        strengths: (isEdit && single_job.character_strengths.map((item) => strengths.find((j) => j.name == item).id)) || [],
         is_onsite: (isEdit && single_job.workplace_preference.is_onsite) || 0,
         is_hybrid: (isEdit && single_job.workplace_preference.is_hybrid) || 0,
         is_remote: (isEdit && single_job.workplace_preference.is_remote) || 0,
         is_urgent: (isEdit && single_job.workplace_preference.is_urgent) || 0,
-        is_featured:
-          (isEdit && single_job.workplace_preference.is_featured) || 0,
+        is_featured: (isEdit && single_job.workplace_preference.is_featured) || 0,
         salary_range: (isEdit && single_job.salary_range) || "",
         expired_at: (isEdit && single_job.expired_at) || new Date(),
         external_link: (isEdit && single_job.external_link) || "",
@@ -334,9 +278,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
     <div className="agency-page-job-edit">
       <h3 className="page-title">Post a Job Form</h3>
       <div className="card">
-        <h4 className="text-uppercase mb-4">
-          Opportunity Details
-        </h4>
+        <h4 className="text-uppercase mb-4">Opportunity Details</h4>
         <div className="profile-edit-form">
           <form onSubmit={handleSubmit}>
             <div className="row gx-3 gy-5 align-items-end">
@@ -347,61 +289,31 @@ const JobPostForm = ({ id, setJobStatus }) => {
                       <div className="col-12" key={index}>
                         <label htmlFor={field.name} className="form-label">
                           {field.label}
-                          {field.required && (
-                            <span className="required">*</span>
-                          )}
+                          {field.required && <span className="required">*</span>}
                         </label>
-                        <input
-                          type="hidden"
-                          className="input-text"
-                          name={field.name}
-                          value=""
-                        />
+                        <input type="hidden" className="input-text" name={field.name} value="" />
                         <div className="row align-items-center upload-box">
                           <div className="col-md-2 col-sm-4 col-12">
-                            <img
-                              src={field.image}
-                              className="w-100"
-                              ref={logoRef}
-                              alt=""
-                            />
+                            <img src={field.image} className="w-100" ref={logoRef} alt="" />
                           </div>
                           <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
-                            <button
-                              className="btn btn-secondary w-100 mb-2 text-uppercase"
-                              onClick={() => imageUploadRef.current.click()}
-                            >
+                            <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => imageUploadRef.current.click()}>
                               <FiPaperclip /> Upload
                             </button>
-                            <button
-                              className="btn btn-secondary w-100 text-uppercase"
-                              onClick={removeLogo}
-                            >
+                            <button className="btn btn-secondary w-100 text-uppercase" onClick={removeLogo}>
                               <FiTrash2 /> Remove
                             </button>
                           </div>
-                          <input
-                            type="file"
-                            ref={imageUploadRef}
-                            className="d-none"
-                            onChange={handleFileChange}
-                          />
+                          <input type="file" ref={imageUploadRef} className="d-none" onChange={handleFileChange} />
                         </div>
                       </div>
                     );
                   case "text":
                     return (
-                      <div
-                        className={"col-sm-6"}
-                        ref={field.ref || null}
-                        key={index}
-                        style={{ display: (field.hidden ? "none" : "") }}
-                      >
+                      <div className={"col-sm-6"} ref={field.ref || null} key={index} style={{ display: field.hidden ? "none" : "" }}>
                         <label htmlFor={field.name} className="form-label">
                           {field.label}
-                          {field.required && (
-                            <span className="required">*</span>
-                          )}
+                          {field.required && <span className="required">*</span>}
                         </label>
                         <input
                           type="text"
@@ -419,19 +331,10 @@ const JobPostForm = ({ id, setJobStatus }) => {
                       <div className="col-sm-6" key={index}>
                         <label htmlFor={field.name} className="form-label">
                           {field.label}
-                          {field.required && (
-                            <span className="required">*</span>
-                          )}
+                          {field.required && <span className="required">*</span>}
                         </label>
                         <br />
-                        <DatePicker
-                          className="form-control"
-                          selected={field.value}
-                          onChange={(date) =>
-                            handleDateChange(date, field.name)
-                          }
-                          dateFormat="MMMM d, yyyy"
-                        />
+                        <DatePicker className="form-control" selected={field.value} onChange={(date) => handleDateChange(date, field.name)} dateFormat="MMMM d, yyyy" />
                       </div>
                     );
                   case "dropdown":
@@ -439,9 +342,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                       <div className="col-sm-6" key={index}>
                         <label htmlFor={field.name} className="form-label">
                           {field.label}
-                          {field.required && (
-                            <span className="required">*</span>
-                          )}
+                          {field.required && <span className="required">*</span>}
                         </label>
                         <Select
                           options={field.data}
@@ -450,6 +351,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                           placeholder={field.placeholder}
                           defaultValue={field.value}
                           required={field.required}
+                          ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}
                           styles={{
                             control: (baseStyles) => ({
                               ...baseStyles,
@@ -480,9 +382,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                       <div className="col-sm-6" key={index}>
                         <label htmlFor={field.name} className="form-label">
                           {field.label}
-                          {field.required && (
-                            <span className="required">*</span>
-                          )}
+                          {field.required && <span className="required">*</span>}
                         </label>
                         <br />
                         <div className="form-check">
@@ -495,10 +395,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                             required={field.required}
                             onChange={(e) => handleRadioChange(e, field.name)}
                           />
-                          <label
-                            className="form-check-label"
-                            htmlFor={field.name}
-                          >
+                          <label className="form-check-label" htmlFor={field.name}>
                             Yes
                           </label>
                         </div>
@@ -512,10 +409,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                             required={field.required}
                             onChange={(e) => handleRadioChange(e, field.name)}
                           />
-                          <label
-                            className="form-check-label"
-                            htmlFor={field.name}
-                          >
+                          <label className="form-check-label" htmlFor={field.name}>
                             No
                           </label>
                         </div>
@@ -527,9 +421,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                       <div className="col-12" key={index}>
                         <label htmlFor={field.name} className="form-label">
                           {field.label}
-                          {field.required && (
-                            <span className="required">*</span>
-                          )}
+                          {field.required && <span className="required">*</span>}
                         </label>
                         {isMounted && (
                           <Editor
@@ -539,14 +431,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                             editorClassName="editorBody"
                             editorRef={(ref) => setEditorRef(ref)}
                             toolbar={{
-                              options: [
-                                "inline",
-                                "blockType",
-                                "fontSize",
-                                "list",
-                                "textAlign",
-                                "link",
-                              ],
+                              options: ["inline", "blockType", "fontSize", "list", "textAlign", "link"],
                             }}
                             onEditorStateChange={(newState) => {
                               handleEditorChange(newState, field.name);
@@ -560,10 +445,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
               })}
             </div>
             <div className="submit-btn mt-4">
-              <button
-                className="btn btn-dark btn-hover-primary border-0 px-3 py-2"
-                disabled={formSubmit}
-              >
+              <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2" disabled={formSubmit}>
                 {isEdit ? "Update" : "Save & Preview"}
                 {formSubmit && <CircularProgress size={20} />}
               </button>
