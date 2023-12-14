@@ -105,7 +105,7 @@ const getJobs = (dispatch) => {
   return async () => {
     try {
       const response = await api.get(
-        getJobEndpoint() + "?filter[status]=" + status
+        getJobEndpoint() + "?filter[status]=" + status + "&sort=-created_at"
       );
       dispatch({
         type: "set_jobs",

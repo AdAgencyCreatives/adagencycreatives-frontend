@@ -517,3 +517,9 @@ textarea.form-control:focus {
 /* .nav-item a button {
     padding: 6px !important;
 } */
+
+.rdw-link-modal {
+    left: unset !important;
+    right: 35px !important;
+    height: max-content !important;
+}

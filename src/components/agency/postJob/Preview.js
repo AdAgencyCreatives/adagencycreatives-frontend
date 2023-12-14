@@ -13,12 +13,12 @@ const Preview = ({ single_job, setJobStatus }) => {
     saveJob,
   } = useContext(Context);
 
-  const {showAlert} = useContext(AlertContext)
+  const { showAlert } = useContext(AlertContext)
 
-  const submitJob = async() => {
+  const submitJob = async () => {
     await saveJob(single_job.id, { status: "pending" });
     showAlert("Job submitted successfully. Redirecting...");
-    setTimeout(() => window.location = "/my-jobs" , 1000)
+    setTimeout(() => window.location = "/my-jobs", 1000)
   };
 
   return Object.keys(single_job).length === 0 ? (
@@ -26,12 +26,14 @@ const Preview = ({ single_job, setJobStatus }) => {
   ) : (
     <>
       <div className="job-actions mt-3 mb-3 justify-content-center d-flex gap-3">
-        <button
-          className="btn btn-gray btn-hover-primary text-uppercase ls-3 p-3 px-4"
-          onClick={submitJob}
-        >
-          Submit Job {formSubmit && <CircularProgress size={20} />}
-        </button>
+        {single_job?.status != 'approved' && (
+          <button
+            className="btn btn-gray btn-hover-primary text-uppercase ls-3 p-3 px-4"
+            onClick={submitJob}
+          >
+            Submit Job {formSubmit && <CircularProgress size={20} />}
+          </button>
+        )}
         <Link
           to={"/job/edit/" + single_job.id}
           reloadDocument={true}
