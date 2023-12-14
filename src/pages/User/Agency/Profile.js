@@ -131,7 +131,7 @@ const Profile = () => {
             "",
         },
         {
-          label: "State",
+          label: "Location (State)",
           required: true,
           type: "dropdown",
           name: "state_id",
@@ -143,7 +143,7 @@ const Profile = () => {
           ),
         },
         {
-          label: "City",
+          label: "Nearest Major City",
           type: "dropdown",
           name: "city_id",
           required: true,
