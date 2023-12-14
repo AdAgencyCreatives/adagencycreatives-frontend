@@ -10,6 +10,7 @@ import moment from "moment";
 const useFormData = (props = {}) => {
   const id = props.id;
   const setJobStatus = props.setJobStatus;
+  const cityRef = useRef();
   const imageUploadRef = useRef();
   const logoRef = useRef();
   const linkRef = useRef();
@@ -50,16 +51,7 @@ const useFormData = (props = {}) => {
   } = useContext(JobsContext);
 
   const {
-    state: {
-      categories,
-      states,
-      cities,
-      media_experiences,
-      industry_experiences,
-      employment_type,
-      years_experience,
-      strengths,
-    },
+    state: { categories, states, cities, media_experiences, industry_experiences, employment_type, years_experience, strengths },
     getCategories,
     getStates,
     getCities,
@@ -141,15 +133,11 @@ const useFormData = (props = {}) => {
   }, [strengths]);
 
   useEffect(() => {
-    setEmployment(
-      employment_type.map((item) => ({ label: item, value: item }))
-    );
+    setEmployment(employment_type.map((item) => ({ label: item, value: item })));
   }, [employment_type]);
 
   useEffect(() => {
-    setExperience(
-      years_experience.map((item) => ({ label: item.name, value: item.name }))
-    );
+    setExperience(years_experience.map((item) => ({ label: item.name, value: item.name })));
   }, [years_experience]);
 
   useEffect(() => {
@@ -166,6 +154,7 @@ const useFormData = (props = {}) => {
   const changeState = (item, name) => {
     getCities(item.value);
     handleDropdownChange(item, name);
+    cityRef.current?.clearValue();
   };
 
   const handleTextChange = (e, name) => {
@@ -194,10 +183,12 @@ const useFormData = (props = {}) => {
   };
 
   const handleDropdownChange = (item, name) => {
-    if (name == "apply_type") {
-      linkRef.current.style.display = item.value == "Internal" ? "none" : "";
+    if (item) {
+      if (name == "apply_type") {
+        linkRef.current.style.display = item.value == "Internal" ? "none" : "";
+      }
+      setFormData((prev) => ({ ...prev, [name]: item.value }));
     }
-    setFormData((prev) => ({ ...prev, [name]: item.value }));
   };
 
   const handleMultiChange = (item, name) => {
@@ -272,6 +263,7 @@ const useFormData = (props = {}) => {
       logoRef,
       linkRef,
       editorRef,
+      cityRef,
     },
     changeState,
     handleTextChange,
