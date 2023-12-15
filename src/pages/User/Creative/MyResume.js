@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useContext } from "react";
 import Select from "../../../components/Select";
 import { EditorState, ContentState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
+import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Placeholder from "../../../assets/images/placeholder.png";
 import { FiChevronDown, FiChevronUp, FiPaperclip, FiTrash2, FiX, FiFile, FiVideo } from "react-icons/fi";
@@ -19,6 +20,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 
 const MyResume = () => {
+  const editorRefTinyMCE = useRef(null);
   const cityRef = useRef();
   const resumeUploadRef = useRef();
   const resumeRef = useRef();
@@ -29,6 +31,9 @@ const MyResume = () => {
   const videoUploadRef = useRef();
   const videoRef = useRef();
   const [videoItem, setVideoItem] = useState(false);
+
+  const [useTinyMCE, setUseTinyMCE] = useState(true);
+  const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
 
   const [categoriesList, setCategories] = useState([]);
   const [statesList, setStates] = useState([]);
@@ -139,6 +144,23 @@ const MyResume = () => {
   } = useContext(AuthContext);
 
   const { showAlert } = useContext(AlertContext);
+
+  useEffect(() => {
+    /* Hack to resolve focus issue with TinyMCE editor in bootstrap model dialog */
+    const handler = (e) => {
+      if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
+        e.stopImmediatePropagation();
+      }
+    };
+    document.addEventListener("focusin", handler);
+    return () => document.removeEventListener("focusin", handler);
+  }, []);
+
+  const performInitTinyMCE = (evt, editor) => {
+    setIsLoadingTinyMCE(false);
+    editorRefTinyMCE.current = editor;
+    editor.focus();
+  };
 
   useEffect(() => {
     if (user) {
@@ -316,16 +338,16 @@ const MyResume = () => {
           schema: { ...educationObject },
           items: creative_education.length
             ? creative_education.map((item) => {
-                return {
-                  showDropdown: false,
-                  data: educationObject.data.map((ed) => {
-                    return {
-                      ...ed,
-                      value: item[ed.name],
-                    };
-                  }),
-                };
-              })
+              return {
+                showDropdown: false,
+                data: educationObject.data.map((ed) => {
+                  return {
+                    ...ed,
+                    value: item[ed.name],
+                  };
+                }),
+              };
+            })
             : [structuredClone(educationObject)],
         },
         {
@@ -337,16 +359,16 @@ const MyResume = () => {
           schema: { ...experienceObject },
           items: creative_experience.length
             ? creative_experience.map((item) => {
-                return {
-                  showDropdown: false,
-                  data: experienceObject.data.map((ed) => {
-                    return {
-                      ...ed,
-                      value: item[ed.name],
-                    };
-                  }),
-                };
-              })
+              return {
+                showDropdown: false,
+                data: experienceObject.data.map((ed) => {
+                  return {
+                    ...ed,
+                    value: item[ed.name],
+                  };
+                }),
+              };
+            })
             : [structuredClone(experienceObject)],
         },
       ]);
@@ -824,7 +846,7 @@ const MyResume = () => {
                     </button>
                   ) : (
                     <div className="portfolio_item">
-                      <img src={item.url} key={item.name} className="w-100 h-100" />
+                      <img src={item.url} key={item.name} className="w-100 h-100" alt="" />
                     </div>
                   )
                 )}
@@ -915,20 +937,47 @@ const MyResume = () => {
               {field.label}
               {field.required && <span className="required">*</span>}
             </label>
-            {isMounted && (
-              <Editor
-                editorState={editorState}
-                toolbarClassName="editorToolbar"
-                wrapperClassName="editorWrapper"
-                editorClassName="editorBody"
-                toolbar={{
-                  options: ["inline", "blockType", "fontSize", "list", "textAlign", "link"],
-                }}
-                onEditorStateChange={(newState) => {
-                  handleEditorChange(newState, field.name);
-                }}
-              />
-            )}
+            {isMounted && (<>
+              {useTinyMCE ? (
+                <>
+                  <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
+                    <CircularProgress />
+                  </div>
+                  <EditorTinyMCE
+                    onInit={(evt, editor) => performInitTinyMCE(evt, editor)}
+                    apiKey='0de1wvfzr5x0z7za5hi7txxvlhepurk5812ub5p0fu5tnywh'
+                    init={{
+                      height: 400,
+                      menubar: false,
+                      // plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                      // toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                      plugins: 'anchor autolink charmap codesample emoticons link lists searchreplace visualblocks wordcount',
+                      toolbar: 'bold italic underline strikethrough | blocks fontfamily fontsize | numlist bullist link | emoticons charmap | align lineheight | indent outdent | removeformat',
+                      content_style: 'body { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; font-size: 14pt }',
+                      placeholder: 'What do you want to talk about?',
+                    }}
+                    value={formData[field.name]}
+                    onEditorChange={(e) => {
+                      setFormData((prev) => ({ ...prev, [field.name]: (editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "") }));
+                    }
+                  }
+                  />
+                </>
+              ) : (
+                <Editor
+                  editorState={editorState}
+                  toolbarClassName="editorToolbar"
+                  wrapperClassName="editorWrapper"
+                  editorClassName="editorBody"
+                  toolbar={{
+                    options: ["inline", "blockType", "fontSize", "list", "textAlign", "link"],
+                  }}
+                  onEditorStateChange={(newState) => {
+                    handleEditorChange(newState, field.name);
+                  }}
+                />
+              )}
+            </>)}
           </>
         );
 
@@ -942,6 +991,7 @@ const MyResume = () => {
             {getRepeaterField(field)}
           </div>
         );
+      default:
     }
   };
 

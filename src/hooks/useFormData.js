@@ -207,7 +207,7 @@ const useFormData = (props = {}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!editorState.getCurrentContent().hasText()) {
+    if (!props.useTinyMCE && !editorState.getCurrentContent().hasText()) {
       editorRef.focus();
       showAlert("The content cannot be empty");
     } else {
@@ -279,6 +279,7 @@ const useFormData = (props = {}) => {
     setEditorState,
     setFormData,
     setEditorRef,
+    formData,
   };
 };
 

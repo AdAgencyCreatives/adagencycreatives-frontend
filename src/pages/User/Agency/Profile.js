@@ -3,6 +3,7 @@ import "../../../styles/AgencyDashboard/Profile.scss";
 import Select from "../../../components/Select";
 import { EditorState, ContentState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
+import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Placeholder from "../../../assets/images/placeholder.png";
 import { FiFile, FiPaperclip, FiTrash2 } from "react-icons/fi";
@@ -14,6 +15,7 @@ import Loader from "../../../components/Loader";
 import { CircularProgress } from "@mui/material";
 
 const Profile = () => {
+  const editorRefTinyMCE = useRef(null);
   const cityRef = useRef();
   const imageUploadRef = useRef();
   const logoRef = useRef();
@@ -29,6 +31,26 @@ const Profile = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [isMounted, setIsMounted] = useState(false);
   const [videoItem, setVideoItem] = useState(false);
+
+  const [useTinyMCE, setUseTinyMCE] = useState(true);
+  const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
+
+  useEffect(() => {
+    /* Hack to resolve focus issue with TinyMCE editor in bootstrap model dialog */
+    const handler = (e) => {
+      if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
+        e.stopImmediatePropagation();
+      }
+    };
+    document.addEventListener("focusin", handler);
+    return () => document.removeEventListener("focusin", handler);
+  }, []);
+
+  const performInitTinyMCE = (evt, editor) => {
+    setIsLoadingTinyMCE(false);
+    editorRefTinyMCE.current = editor;
+    editor.focus();
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -529,22 +551,50 @@ const Profile = () => {
                         {field.label}
                         {field.required && <span className="required">*</span>}
                       </label>
-                      {isMounted && (
-                        <Editor
-                          editorState={editorState}
-                          toolbarClassName="editorToolbar"
-                          wrapperClassName="editorWrapper"
-                          editorClassName="editorBody"
-                          toolbar={{
-                            options: ["inline", "blockType", "fontSize", "list", "textAlign", "link"],
-                          }}
-                          onEditorStateChange={(newState) => {
-                            handleEditorChange(newState, field.name);
-                          }}
-                        />
-                      )}
+                      {isMounted && (<>
+                        {useTinyMCE ? (
+                          <>
+                            <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
+                              <CircularProgress />
+                            </div>
+                            <EditorTinyMCE
+                              onInit={(evt, editor) => performInitTinyMCE(evt, editor)}
+                              apiKey='0de1wvfzr5x0z7za5hi7txxvlhepurk5812ub5p0fu5tnywh'
+                              init={{
+                                height: 400,
+                                menubar: false,
+                                // plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                                // toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                                plugins: 'anchor autolink charmap codesample emoticons link lists searchreplace visualblocks wordcount',
+                                toolbar: 'bold italic underline strikethrough | blocks fontfamily fontsize | numlist bullist link | emoticons charmap | align lineheight | indent outdent | removeformat',
+                                content_style: 'body { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; font-size: 14pt }',
+                                placeholder: 'What do you want to talk about?',
+                              }}
+                              value={formData[field.name]}
+                              onEditorChange={(e) => {
+                                setFormData((prev) => ({ ...prev, [field.name]: (editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "") }));
+                              }
+                              }
+                            />
+                          </>
+                        ) : (
+                          <Editor
+                            editorState={editorState}
+                            toolbarClassName="editorToolbar"
+                            wrapperClassName="editorWrapper"
+                            editorClassName="editorBody"
+                            toolbar={{
+                              options: ["inline", "blockType", "fontSize", "list", "textAlign", "link"],
+                            }}
+                            onEditorStateChange={(newState) => {
+                              handleEditorChange(newState, field.name);
+                            }}
+                          />
+                        )}
+                      </>)}
                     </div>
                   );
+                default:
               }
             })}
           </div>

@@ -11,18 +11,13 @@ import { useContext, useEffect, useCallback } from "react";
 import { Context as AuthContext, containsOffensiveWords } from "../../context/AuthContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import Placeholder from "../../assets/images/placeholder.png";
-import { Editor } from '@tinymce/tinymce-react';
+import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';
 import { CircularProgress } from "@mui/material";
 import ContentEditable from 'react-contenteditable'
 
 const EditComment = (props) => {
 
-  const editorRef = useRef(null);
-  const editorLog = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
+  const editorRefTinyMCE = useRef(null);
 
   const {
     state: { token, user },
@@ -34,9 +29,9 @@ const EditComment = (props) => {
   } = useContext(CommunityContext);
 
   const [open, setOpen] = useState(false);
-  const [editorLoading, setEditorLoading] = useState(true);
+  const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
   const [hasOffensiveWords, setHasOffensiveWords] = useState(false);
-  const [useRichEditor, setUseRichEditor] = useState(false);
+  const [useTinyMCE, setUseTinyMCE] = useState(true);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [showPicker, setShowPicker] = useState(false);
@@ -91,7 +86,7 @@ const EditComment = (props) => {
   }, [content]);
 
   useEffect(() => {
-    if (useRichEditor) {
+    /* Hack to resolve focus issue with TinyMCE editor in bootstrap model dialog */
       const handler = (e) => {
         if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
           e.stopImmediatePropagation();
@@ -99,12 +94,11 @@ const EditComment = (props) => {
       };
       document.addEventListener("focusin", handler);
       return () => document.removeEventListener("focusin", handler);
-    }
   }, []);
 
-  const performInit = (evt, editor) => {
-    setEditorLoading(false);
-    editorRef.current = editor;
+  const performInitTinyMCE = (evt, editor) => {
+    setIsLoadingTinyMCE(false);
+    editorRefTinyMCE.current = editor;
     editor.focus();
   };
 
@@ -132,24 +126,28 @@ const EditComment = (props) => {
             </div>
           </div>
           <div className="postmodal-body">
-            {useRichEditor ? (
+            {useTinyMCE ? (
               <>
-                <div className={"d-" + (editorLoading ? 'show' : 'none')}>
+                <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
                   <CircularProgress />
                 </div>
-                <Editor
-                  onInit={(evt, editor) => performInit(evt, editor)}
+                <EditorTinyMCE
+                  onInit={(evt, editor) => performInitTinyMCE(evt, editor)}
                   apiKey='0de1wvfzr5x0z7za5hi7txxvlhepurk5812ub5p0fu5tnywh'
                   init={{
                     height: 250,
                     menubar: false,
-                    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                    content_style: 'body { font-family:Jost, Arial, sans-serify; font-size:14pt }',
-                    placeholder: 'Comment on this post',
+                    // plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                    // toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                    plugins: 'anchor autolink charmap codesample emoticons link lists searchreplace visualblocks wordcount',
+                    toolbar: 'bold italic underline strikethrough | blocks fontfamily fontsize | numlist bullist link | emoticons charmap | align lineheight | indent outdent | removeformat',
+                    content_style: 'body { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; font-size: 14pt }',
+                    placeholder: 'What do you want to talk about?',
                   }}
-                  initialValue={content}
-                  onChange={(e) => setContent(editorRef.current ? editorRef.current.getContent() : "")}
+                  value={content}
+                  onEditorChange={(e) => {
+                    setContent(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "");
+                  }}
                 />
               </>
             ) : (
@@ -183,7 +181,7 @@ const EditComment = (props) => {
                 )}
               </div>
               <div className="postmodal-action">
-                <button className={"btn btn-post" + (useRichEditor ? (!editorLoading ? ' d-show' : ' d-none') : "")} onClick={() => doUpdateComment()}>Update Comment</button>
+                <button className={"btn btn-post" + (useTinyMCE ? (!isLoadingTinyMCE ? ' d-show' : ' d-none') : "")} onClick={() => doUpdateComment()}>Update Comment</button>
               </div>
             </div>
             <ImagePicker open={imagePickerOpen} handleImagePickerClose={() => setImagePickerOpen(false)} />
