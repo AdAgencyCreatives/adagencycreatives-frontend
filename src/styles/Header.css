@@ -533,6 +533,6 @@ nav ul.dropdown-list li:nth-child(4) {
     margin-left: 3px;
 }
 
-.dropdown-container > * {
-    z-index: 9;
+.tox.tox-tinymce {
+    z-index: 0;
 }

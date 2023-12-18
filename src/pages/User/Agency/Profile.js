@@ -122,7 +122,7 @@ const Profile = () => {
     if (Object.keys(single_agency).length > 0 && industry.length && media.length && statesList.length && (single_agency.location?.city_id ? citiesList.length : true)) {
       setIsloading(false);
       setEditorState(EditorState.createWithContent(ContentState.createFromText(single_agency.about ? single_agency.about : "")));
-      console.log(single_agency,'single_agency');
+      console.log(single_agency, 'single_agency');
       setFields([
         {
           label: "Your Logo",
@@ -486,7 +486,7 @@ const Profile = () => {
   };
 
   const removeLogo = async (id) => {
-    console.log(id,'id');
+    console.log(id, 'id');
     logoRef.current.src = "";
     await removeAttachment(id);
     reloadUserData(user.uuid);
@@ -573,12 +573,13 @@ const Profile = () => {
                   );
                 case "dropdown":
                   return (
-                    <div className="col-sm-6 dropdown-container" key={index}>
+                    <div className="col-sm-6" key={index}>
                       <label htmlFor={field.name} className="form-label">
                         {field.label}
                         {field.required && <span className="required">*</span>}
                       </label>
                       <Select
+                        className="dropdown-container"
                         options={field.data.map((option) => ({
                           ...option,
                           // isDisabled: formData.length ? formData[field.name].length > 7 : false,

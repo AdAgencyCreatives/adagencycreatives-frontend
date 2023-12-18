@@ -108,7 +108,7 @@ const Profile = () => {
           required: true,
           type: "image",
           name: "profile_image",
-          accept:".jpg, .jpeg, .png, .bmp, image/jpeg, image/png",
+          accept: ".jpg, .jpeg, .png, .bmp, image/jpeg, image/png",
           image: single_creative.profile_image,
         },
         {
@@ -246,13 +246,13 @@ const Profile = () => {
   ]);
 
   // Cities update
- /*  useEffect(() => {
-    if (citiesList.length > 0 && fields.length) {
-      let updatedFields = [...fields];
-      updatedFields[4].data = citiesList;
-      setFields(updatedFields);
-    }
-  }, [citiesList, fields]); */
+  /*  useEffect(() => {
+     if (citiesList.length > 0 && fields.length) {
+       let updatedFields = [...fields];
+       updatedFields[4].data = citiesList;
+       setFields(updatedFields);
+     }
+   }, [citiesList, fields]); */
 
   //Set initial form data
   useEffect(() => {
@@ -371,12 +371,12 @@ const Profile = () => {
   }, [formData]);
 
   const handleSubmit = () => {
-    (async ()=>{
+    (async () => {
       await saveCreative(user.uuid, formData);
       reloadUserData(user.uuid);
       showAlert("Creative profile updated successfully");
     })();
-    
+
   };
 
   const removeLogo = () => {
@@ -391,7 +391,7 @@ const Profile = () => {
       formData.append("file", file);
       formData.append("user_id", user.uuid);
       formData.append("resource_type", "profile_picture");
-      (async ()=>{
+      (async () => {
         await saveCreativeImage(formData);
         reloadUserData(user.uuid);
         showAlert("Creative logo updated successfully");
@@ -487,7 +487,7 @@ const Profile = () => {
                           onChange={(e) => handleTextChange(e, field.name)}
                         />
                       </div>
-                      
+
                     </div>
                   );
                 case "email":
@@ -507,12 +507,13 @@ const Profile = () => {
                   );
                 case "dropdown":
                   return (
-                    <div className="col-sm-6 dropdown-container" key={index}>
+                    <div className="col-sm-6" key={index}>
                       <label htmlFor={field.name} className="form-label">
                         {field.label}
                         {field.required && <span className="required">*</span>}
                       </label>
                       <Select
+                        className="dropdown-container"
                         options={field.data}
                         isMulti={field.isMulti || false}
                         onChange={field.callback}
