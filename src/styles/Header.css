@@ -532,3 +532,7 @@ textarea.form-control:focus {
 nav ul.dropdown-list li:nth-child(4) {
     margin-left: 3px;
 }
+
+.dropdown-container > * {
+    z-index: 9;
+}

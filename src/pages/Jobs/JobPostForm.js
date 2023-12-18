@@ -362,7 +362,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                     );
                   case "dropdown":
                     return (
-                      <div className="col-sm-6" key={index}>
+                      <div className="col-sm-6 dropdown-container" key={index}>
                         <label htmlFor={field.name} className="form-label">
                           {field.label}
                           {field.required && <span className="required">*</span>}
