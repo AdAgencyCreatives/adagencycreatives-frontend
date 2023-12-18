@@ -12,7 +12,7 @@ import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, filledInputClasses } from "@mui/material";
 
 const Profile = () => {
   const editorRefTinyMCE = useRef(null);
@@ -31,6 +31,9 @@ const Profile = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [isMounted, setIsMounted] = useState(false);
   const [videoItem, setVideoItem] = useState(false);
+
+  const [isLogoUploaded, setIsLogoUploaded] = useState(false);
+  const [isVideoUploaded, setIsVideoUploaded] = useState(false);
 
   const [useTinyMCE, setUseTinyMCE] = useState(true);
   const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
@@ -99,6 +102,13 @@ const Profile = () => {
       getVideo(user.uuid);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (Object.keys(single_agency).length > 0 && single_agency.logo) {
+      setIsLogoUploaded(single_agency.logo.length > 0);
+      console.log("isLogoUploaded: " + isLogoUploaded);
+    }
+  }, [single_agency]);
 
   //Fetch initial Cities
   useEffect(() => {
@@ -294,6 +304,8 @@ const Profile = () => {
 
   useEffect(() => {
     setVideoItem(video);
+    setIsVideoUploaded(true);
+    console.log("isVideoUploaded: " + isVideoUploaded);
   }, [video]);
 
   useEffect(() => {
@@ -328,6 +340,22 @@ const Profile = () => {
     setIndustry(data);
   }, [industry_experiences]);
 
+  const getFieldByName = (name) => {
+    for (let index = 0; index < fields.length; index++) {
+      const element = fields[index];
+      if (element.name == name) {
+        return element;
+      }
+    }
+    return null;
+  };
+
+  const updateFieldValue = (name, value) => {
+    let field = getFieldByName(name);
+    field.value = value;
+    setFields(fields.map((item) => item.name == field.name ? field : item));
+  };
+
   const parseFieldsData = (data) => {
     const parsedValue = data.map((item) => {
       return { label: item.name, value: item.uuid || item.id, key: item.name };
@@ -354,6 +382,7 @@ const Profile = () => {
   const handleDropdownChange = (item, name) => {
     if (item) {
       setFormData((prev) => ({ ...prev, [name]: item.value }));
+      updateFieldValue(name, item.value);
     }
   };
 
@@ -388,7 +417,33 @@ const Profile = () => {
     console.log(formData);
   }, [formData]);
 
+  const validated = () => {
+
+    for (let index = 0; index < fields.length; index++) {
+      const field = fields[index];
+      let decision = true;
+
+      if (field.name == "company_logo") {
+        decision = isLogoUploaded;
+      } else if (field.name == "company_video") {
+        decision = isVideoUploaded;
+      } else if (field.required) {
+        decision = field.value || formData[field.name];
+      }
+
+      if (!decision) {
+        showAlert(field.label + " is required.");
+        return false;
+      }
+    }
+
+    return true;
+  };
   const handleSubmit = () => {
+    if (!validated()) {
+      return;
+    }
+
     (async () => {
       await saveAgency(user.uuid, formData);
       reloadUserData(user.uuid);
@@ -396,17 +451,26 @@ const Profile = () => {
     })();
   };
 
-  const handleFileChange = async (event, resource, ref) => {
+  const handleFileChange = async (event, resource, ref, field) => {
     const file = event.target.files[0];
     if (file) {
       if (resource == "agency_logo") ref.current.src = URL.createObjectURL(file);
       else setVideoItem({ name: file.name });
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("user_id", user.uuid);
-      formData.append("resource_type", resource);
-      await uploadAttachment(formData);
+      const localFormData = new FormData();
+      localFormData.append("file", file);
+      localFormData.append("user_id", user.uuid);
+      localFormData.append("resource_type", resource);
+      await uploadAttachment(localFormData);
       reloadUserData(user.uuid);
+
+      if (field.name == "company_logo") {
+        setIsLogoUploaded(true);
+        console.log("isLogoUploaded: " + isLogoUploaded);
+      } else if (field.name == "company_video") {
+        setIsVideoUploaded(true);
+        console.log("isVideoUploaded: " + isVideoUploaded);
+      }
+
       showAlert((resource == "agency_logo" ? "Logo" : "Video") + " uploaded successfully.");
     }
   };
@@ -414,6 +478,8 @@ const Profile = () => {
   const removeVideo = async (id) => {
     await removeAttachment(id);
     reloadUserData(user.uuid);
+    setIsVideoUploaded(false);
+    console.log("isVideoUploaded: " + isVideoUploaded);
     showAlert("Video removed successfully.");
   };
 
@@ -421,6 +487,8 @@ const Profile = () => {
     logoRef.current.src = "";
     await removeAttachment(id);
     reloadUserData(user.uuid);
+    setIsLogoUploaded(false);
+    console.log("isLogoUploaded: " + isLogoUploaded);
     showAlert("Logo removed successfully.");
   };
 
@@ -455,7 +523,7 @@ const Profile = () => {
                             <FiTrash2 /> Remove
                           </button>
                         </div>
-                        <input type="file" ref={imageUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_logo", logoRef)} accept={field.accept} />
+                        <input type="file" ref={imageUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_logo", logoRef, field)} accept={field.accept} />
                       </div>
                     </div>
                   );
@@ -485,7 +553,7 @@ const Profile = () => {
                             <FiTrash2 /> Remove
                           </button>
                         </div>
-                        <input type="file" ref={videoUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_reel", videoRef)} accept=".mp4, .avi, .mov, video/*" />
+                        <input type="file" ref={videoUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_reel", videoRef, field)} accept=".mp4, .avi, .mov, video/*" />
                       </div>
                     </div>
                   );
@@ -572,7 +640,9 @@ const Profile = () => {
                               }}
                               value={formData[field.name]}
                               onEditorChange={(e) => {
-                                setFormData((prev) => ({ ...prev, [field.name]: (editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "") }));
+                                let data = (editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "");
+                                setFormData((prev) => ({ ...prev, [field.name]: data }));
+                                updateFieldValue(field.name, data);
                               }
                               }
                             />
