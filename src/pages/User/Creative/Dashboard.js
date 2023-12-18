@@ -93,8 +93,16 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="row">
-        <div className="col-sm-8">
+        {/* <div className="col-sm-8">
           <Views title={"Your Profile Views"} />
+        </div> */}
+        <div className="col-sm-8">
+          <div className="card">
+            <div className="card-title">My Recent Applications</div>
+            <div className="card-body">
+              <JobList data={[]} />
+            </div>
+          </div>
         </div>
         <div className="col-sm-4">
           <div className="mb-4">
@@ -103,7 +111,7 @@ const Dashboard = () => {
           <Notifications />
         </div>
       </div>
-      <div className="row">
+      {/* <div className="row">
         <div className="col">
           <div className="card">
             <div className="card-title">My Recent Applications</div>
@@ -112,7 +120,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

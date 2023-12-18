@@ -16,7 +16,7 @@ export const creativeNav = [
   { name: "Job Dashboard", link: "/dashboard" },
   { name: "Profile", link: "/profile" },
   { name: "My Resume", link: "/my-resume" },
-  { name: "Job Messages", link: "/job-messages" },
+  { name: "Messages", link: "/job-messages" },
   { name: "My Opportunities", link: "/my-applied" },
   { name: "Job Alerts", link: "/job-alerts" },
   { name: "Creative Jobs", link: "/creative-jobs" },
