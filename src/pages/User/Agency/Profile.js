@@ -434,7 +434,7 @@ const Profile = () => {
       }
 
       if (!decision) {
-        showAlert(field.label + " is required.");
+        showAlert(field.label + " is required");
         return false;
       }
     }
@@ -449,7 +449,7 @@ const Profile = () => {
     (async () => {
       await saveAgency(user.uuid, formData);
       reloadUserData(user.uuid);
-      showAlert("Agency profile updated successfully.");
+      showAlert("Agency profile updated successfully");
     })();
   };
 
@@ -473,7 +473,7 @@ const Profile = () => {
         console.log("isVideoUploaded: " + isVideoUploaded);
       }
 
-      showAlert((resource == "agency_logo" ? "Logo" : "Video") + " uploaded successfully.");
+      showAlert((resource == "agency_logo" ? "Logo" : "Video") + " uploaded successfully");
     }
   };
 
@@ -482,7 +482,7 @@ const Profile = () => {
     reloadUserData(user.uuid);
     setIsVideoUploaded(false);
     console.log("isVideoUploaded: " + isVideoUploaded);
-    showAlert("Video removed successfully.");
+    showAlert("Video removed successfully");
   };
 
   const removeLogo = async (id) => {
@@ -492,7 +492,7 @@ const Profile = () => {
     reloadUserData(user.uuid);
     setIsLogoUploaded(false);
     console.log("isLogoUploaded: " + isLogoUploaded);
-    showAlert("Logo removed successfully.");
+    showAlert("Logo removed successfully");
   };
 
   return isLoading ? (

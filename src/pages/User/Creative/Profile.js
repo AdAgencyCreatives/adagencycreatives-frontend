@@ -374,7 +374,7 @@ const Profile = () => {
     (async ()=>{
       await saveCreative(user.uuid, formData);
       reloadUserData(user.uuid);
-      showAlert("Creative profile updated successfully.");
+      showAlert("Creative profile updated successfully");
     })();
     
   };
@@ -394,7 +394,7 @@ const Profile = () => {
       (async ()=>{
         await saveCreativeImage(formData);
         reloadUserData(user.uuid);
-        showAlert("Creative logo updated successfully.");
+        showAlert("Creative logo updated successfully");
       })();
     }
   };

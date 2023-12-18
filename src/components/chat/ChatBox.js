@@ -87,7 +87,7 @@ const ChatBox = ({
       });
     }
     await sendMessage(user.uuid, contact.uuid, messageBody);
-    showAlert("Message sent.");
+    showAlert("Message sent");
     const id = contact.uuid;
 
     let existingObject = contacts.find((obj) => obj.contact.uuid === id);

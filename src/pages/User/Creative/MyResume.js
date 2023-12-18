@@ -543,7 +543,7 @@ const MyResume = () => {
   const handleSubmit = async () => {
     console.log(educationList, experienceList);
     await saveResume(user.uuid, formData, educationList, experienceList);
-    showAlert("Resume updated successfully.");
+    showAlert("Resume updated successfully");
   };
 
   const removeItem = (name, ref) => {
@@ -559,7 +559,7 @@ const MyResume = () => {
   const removeVideo = async (id) => {
     await removeAttachment(id);
     setVideoItem(null);
-    showAlert("Video removed successfully.");
+    showAlert("Video removed successfully");
   };
 
   const handleFileChange = async (event, name, ref) => {
@@ -585,7 +585,7 @@ const MyResume = () => {
       const result = await saveAttachment(formData);
       if (result.data) {
         if (name == "creative_reel") setVideoItem({ name: file.name, id: result.data.id });
-        showAlert("Item uploaded successfully.");
+        showAlert("Item uploaded successfully");
       }
     }
   };
