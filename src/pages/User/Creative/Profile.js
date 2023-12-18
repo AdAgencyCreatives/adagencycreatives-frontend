@@ -23,12 +23,19 @@ const Profile = () => {
   const [formData, setFormData] = useState({});
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [isMounted, setIsMounted] = useState(false);
-
+  const [baseUrl, setBaseUrl] = useState([]);
   useEffect(() => {
     setIsMounted(true);
+
     return () => {
       setIsMounted(false);
     };
+  }, []);
+
+  useEffect(() => {
+    const baseUrl = window.location.origin;
+    setBaseUrl(baseUrl);
+
   }, []);
 
   const workplace_preference = [
@@ -222,9 +229,10 @@ const Profile = () => {
         {
           label: "Your Ad Agency Creatives Profile Link",
           required: true,
-          type: "text",
+          type: "slug",
           name: "slug",
           value: single_creative.slug,
+          baseUrl: baseUrl
         },
       ];
       setFields(fields);
@@ -461,6 +469,25 @@ const Profile = () => {
                         value={field.value}
                         onChange={(e) => handleTextChange(e, field.name)}
                       />
+                    </div>
+                  );
+                case "slug":
+                  return (
+                    <div className="col-sm-6" key={index}>
+                      <label htmlFor={field.name} className="form-label">
+                        {field.label}
+                        {field.required && <span className="required">*</span>}
+                      </label>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon3">{field.baseUrl}/creative/</span>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={field.value}
+                          onChange={(e) => handleTextChange(e, field.name)}
+                        />
+                      </div>
+                      
                     </div>
                   );
                 case "email":
