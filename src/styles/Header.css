@@ -523,3 +523,8 @@ textarea.form-control:focus {
     right: 35px !important;
     height: max-content !important;
 }
+
+.statistics.row > * {
+    padding-left: 5px;
+    padding-right: 5px;
+}
