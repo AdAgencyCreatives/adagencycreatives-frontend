@@ -10,7 +10,9 @@ const ResetPassword = () => {
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("token");
   const email = searchParams.get("email");
-
+  if(token  == undefined || token == '' || email  == undefined || email == ''){
+    window.location = "/";
+  }
   const [show, setShow] = useState({});
   const { state, resetPassword } = useContext(Context);
   const { formMessage } = state;

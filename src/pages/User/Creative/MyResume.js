@@ -641,7 +641,12 @@ const MyResume = () => {
 
   const updateEducationList = (index, key_name, key_value) => {
     let updatedEducationList = [...educationList];
-    updatedEducationList[index][key_name] = key_value;
+    if(updatedEducationList.length > 0){
+      updatedEducationList[index][key_name] = key_value;
+    }else{
+      updatedEducationList[0]  = {id: '', degree: 'a', college: 'a', completed_at: ''}
+    }
+    
     setEducationList(updatedEducationList);
   };
 

@@ -122,6 +122,7 @@ const Profile = () => {
     if (Object.keys(single_agency).length > 0 && industry.length && media.length && statesList.length && (single_agency.location?.city_id ? citiesList.length : true)) {
       setIsloading(false);
       setEditorState(EditorState.createWithContent(ContentState.createFromText(single_agency.about ? single_agency.about : "")));
+      console.log(single_agency,'single_agency');
       setFields([
         {
           label: "Your Logo",
@@ -130,6 +131,7 @@ const Profile = () => {
           image: single_agency.logo,
           name: "company_logo",
           accept: ".jpg, .jpeg, .png, .bmp, image/jpeg, image/png",
+          id: single_agency.logo_id,
         },
         {
           label: "Company Name",
@@ -484,6 +486,7 @@ const Profile = () => {
   };
 
   const removeLogo = async (id) => {
+    console.log(id,'id');
     logoRef.current.src = "";
     await removeAttachment(id);
     reloadUserData(user.uuid);
