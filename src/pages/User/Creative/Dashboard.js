@@ -56,7 +56,7 @@ const Dashboard = () => {
               </div>
               <div className="inner">
                 <div className="number-count">{stats && stats.review}</div>
-                <span>Review</span>
+                <span>Messages</span>
               </div>
             </div>
           </div>
