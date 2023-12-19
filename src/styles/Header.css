@@ -534,6 +534,8 @@ nav ul.dropdown-list .list-item-text.j-fix {
 
 .tox.tox-tinymce {
     z-index: 0;
+    min-height: 250px;
+    height: 100%;
 }
 
 .error-text {
