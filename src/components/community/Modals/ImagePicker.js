@@ -5,10 +5,14 @@ import ImageModalStyles from '../../../styles/Modal/ImageModal.scss';
 import { CircularProgress } from "@mui/material";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import { saveAttachment } from "../../../context/AttachmentsDataContext";
+import { Context as AlertContext } from "../../../context/AlertContext";
 
 const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAttachments, setPostAttachments }) => {
 
+  const { showAlert } = useContext(AlertContext);
+
   const [isFileUploading, setIsFileUploading] = useState(false);
+  const [errorText, setErrorText] = useState("");
   const [preview, setPreview] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [acceptFileTypes, setAcceptFileTypes] = useState("image/*");
@@ -29,6 +33,21 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
   // to handle the user-selected file 
   const handleChange = event => {
     const fileUploaded = event.target.files[0];
+
+    let isImage = fileUploaded.type.indexOf("image") >= 0;
+    let isVideo = fileUploaded.type.indexOf("video") >= 0;
+    let imageSizeLimit = 1024 * 1024 * 6; // 6 mb
+    let videoSizeLimit = 1024 * 1024 * 12; // 12 mb
+    let imageSizeLimitLabel = "6 mb"
+    let videoSizeLimitLabel = "12 mb";
+    let fileSize = fileUploaded.size;
+
+    setErrorText("");
+    if ((isImage && fileSize > imageSizeLimit) || (isVideo && fileSize > videoSizeLimit)) {
+      setErrorText("The selected file must be less than or equal to " + (isImage ? imageSizeLimitLabel : videoSizeLimitLabel));
+      return;
+    }
+
     setUploadedFile(fileUploaded);
 
     const fileReader = new FileReader();
@@ -48,6 +67,12 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
       saveAttachmentAsync(uploadedFile);
     }
   }, [uploadedFile]);
+
+  useEffect(() => {
+    if (!open) {
+      setErrorText("");
+    }
+  }, [open]);
 
   useEffect(() => {
     if (allowType) {
@@ -73,11 +98,17 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
     formData.append("file", file);
 
     let result = await saveAttachment(formData);
-    postAttachments.push(result);
 
-    setPreview("");
-    setIsFileUploading(false);
-    setOpen(false);
+    if (result && result.resource_type) {
+      postAttachments.push(result);
+      setPreview("");
+      setIsFileUploading(false);
+      setOpen(false);
+    } else {
+      setErrorText(result.message);
+      setPreview("");
+      setIsFileUploading(false);
+    }
   };
 
   const handleModalClose = (e) => {
@@ -102,12 +133,20 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
           </div>
         </div>
         <div className="image-picker-body">
-          {preview && (
-            <p><img className="image-to-upload" src={preview} alt="Upload preview" /></p>
-          )}
+          {preview && (<>
+            {allowType == "image" && (
+              <p><img className="image-to-upload" src={preview} alt="Upload preview" /></p>
+            )}
+            {allowType == "video" && (
+              <video controls muted playsInline>
+                <source src="" type={"video/" + uploadedFile.name.substring(uploadedFile.name.lastIndexOf('.') + 1)} />
+                Sorry, your browser doesn't support videos.
+              </video>
+            )}
+          </>)}
           {isFileUploading ? (<CircularProgress />) : (<></>)}
           <p className="m-0 h4">
-            {isFileUploading ? "Uploading file..." : "Select files to begin"}
+            {isFileUploading ? "Uploading file..." : "Select " + allowType + " file to begin (up to " + (allowType == "video" ? "12mb" : "6mb") + ")"}
           </p>
           <p className="m-0">
             {isFileUploading ? "Please wait while your file is being uploaded." : "Share images or a single video in your post."}
@@ -115,6 +154,9 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
           {!isFileUploading ? (
             <button className="btn btn-upload-img" onClick={handleClick}>Upload</button>
           ) : (<></>)}
+          {errorText && (
+            <p className="error-text">{errorText}</p>
+          )}
         </div>
         <input
           type="file"

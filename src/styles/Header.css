@@ -529,10 +529,16 @@ textarea.form-control:focus {
     padding-right: 5px;
 }
 
-nav ul.dropdown-list li:nth-child(4) {
+nav ul.dropdown-list .list-item-text.j-fix {
     margin-left: 3px;
 }
 
 .tox.tox-tinymce {
     z-index: 0;
+}
+
+.error-text {
+    color: red;
+    font-weight: 900;
+    font-size: larger;
 }

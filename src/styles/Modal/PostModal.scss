@@ -73,9 +73,11 @@
                 display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
+                max-height: 50px;
 
                 .post-attachment {
                     position: relative;
+                    margin-top: -20px;
 
                     img {
                         width: 75px;

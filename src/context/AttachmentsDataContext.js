@@ -18,6 +18,7 @@ export const saveAttachment = async (data) => {
         });
         return response.data.data;
     } catch (error) {
+        return error;
     }
     return null;
 };

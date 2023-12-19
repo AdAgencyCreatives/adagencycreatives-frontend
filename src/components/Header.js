@@ -226,7 +226,7 @@ function Header(props) {
                             {item.children.map((child) => (
                               <li key={child.name}>
                                 <NavLink to={child[childLink]} className={() => ""}>
-                                  {child.name}
+                                  <span className={"list-item-text" + (child.name.toLowerCase()[0] == 'j' ? ' j-fix' : '')}>{child.name}</span>
                                 </NavLink>
                               </li>
                             ))}
