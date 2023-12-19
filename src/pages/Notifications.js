@@ -8,31 +8,26 @@ import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../context/AuthContext";
 import { getCreativeById } from "../context/CreativesDataContext";
 
-import { getNotifications } from "../context/NotificationsDataContext";
 import { useState, useEffect, useContext } from "react";
 import TimeAgo from "../components/TimeAgo";
 import UtcToLocalDateTime from "../components/UtcToLocalDateTime";
 import NotificationWidget from "../components/community/NotificationWidget";
 import { CircularProgress } from "@mui/material";
 import RestrictedLounge from "../components/RestrictedLounge";
+import useNotifications from "../hooks/useNotifications";
+import { useScrollLoader } from "../hooks/useScrollLoader";
 
 const Notifications = () => {
+  const { notifications, loading, loadMore, updateNotifications } = useNotifications();
+  useScrollLoader(loading, loadMore);
+
   const [isLoading, setIsLoading] = useState(true);
-  const [notifications, setNotifications] = useState([]);
   const [creative, setCreative] = useState([]);
 
   const {
     state: { role, user, token, notifications_count },
     getNotificationsCount,
   } = useContext(AuthContext);
-
-  const getNotificationsAsync = async (user) => {
-    setIsLoading(true);
-    let result = await getNotifications(user.uuid);
-    setNotifications(result);
-    getNotificationsCount(user.uuid);
-    setIsLoading(false);
-  };
 
   const getCreativeByIdAsync = async (user) => {
     let result = await getCreativeById(user.uuid);
@@ -42,18 +37,22 @@ const Notifications = () => {
   useEffect(() => {
     if (role && user) {
       getCreativeByIdAsync(user);
-      getNotificationsAsync(user);
     }
   }, [user]);
 
   useEffect(() => {
-    if (role && user && notifications_count != notifications.length) {
-      getNotificationsAsync(user);
+    if (notifications && notifications.length) {
+      setIsLoading(false);
     }
-  }, [notifications_count]);
+  }, [notifications]);
 
   const loadNotifications = () => {
-    getNotificationsAsync(user);
+    getNotificationsCount(user.uuid);
+  };
+
+  const onDelete = (notification) => {
+    let remainingNotifications = notifications.filter((notif)=>notif.uuid != notification.uuid);
+    updateNotifications(remainingNotifications);
   };
 
   return (
@@ -88,6 +87,7 @@ const Notifications = () => {
                                 notification={notification}
                                 creative={creative}
                                 loadNotifications={loadNotifications}
+                                onDelete={onDelete}
                               />
                             );
                           })}

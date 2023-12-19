@@ -17,7 +17,7 @@ import { Provider as SubscriptionProvider } from "./context/SubscriptionContext"
 import { Provider as ChatProvider } from "./context/ChatContext";
 import { Provider as AlertProvider } from "./context/AlertContext";
 import ChatListener from "./components/chat/ChatListener";
-
+import { Provider as NotificationsProvider } from "./context/NotificationsContext";
 
 const theme = createTheme({
   typography: {
@@ -49,7 +49,7 @@ function App() {
 
   const isCurrentPage = (relativeUrl) => {
     return (window.location.pathname + (window.location.search && window.location.search.length > 1 ? window.location.search : '')) == relativeUrl;
-}
+  }
   return (
     <ThemeProvider theme={theme}>
       <AlertProvider>
@@ -62,17 +62,19 @@ function App() {
                     <JobsProvider>
                       <CommunityProvider>
                         <GroupsProvider>
-                          <div className="App">
-                            {!skipHeaderFooter ? (<>
-                              <ChatListener />
-                              <ScrollRestoration />
-                              <Header />
-                            </>) : (<></>)}
-                            <Outlet context={[setSkipHeaderFooter]} />
-                            {!skipHeaderFooter ? (<>
-                              <Footer />
-                            </>) : (<></>)}
-                          </div>
+                          <NotificationsProvider>
+                            <div className="App">
+                              {!skipHeaderFooter ? (<>
+                                <ChatListener />
+                                <ScrollRestoration />
+                                <Header />
+                              </>) : (<></>)}
+                              <Outlet context={[setSkipHeaderFooter]} />
+                              {!skipHeaderFooter ? (<>
+                                <Footer />
+                              </>) : (<></>)}
+                            </div>
+                          </NotificationsProvider>
                         </GroupsProvider>
                       </CommunityProvider>
                     </JobsProvider>

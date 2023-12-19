@@ -49,10 +49,10 @@ const NotificationWidget = (props) => {
 
     const onDeleteAsync = async () => {
         let result = await deleteNotification(props.notification.uuid);
-        if (result) {
+        if (result?.data?.uuid == props.notification.uuid) {
             showMessageModal("success", "Thanks!", "The notification is deleted", null);
-            if (props.loadNotifications) {
-                props.loadNotifications();
+            if (props.onDelete) {
+                props.onDelete(props.notification);
             }
         } else {
             showMessageModal("error", "Oops!", "Unfortunately not able to delete notification", null);
@@ -69,39 +69,43 @@ const NotificationWidget = (props) => {
 
     return (
         <>
-            <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
-            <div className="notif-item">
-                <div className="user-avatar">
-                    <img src={props.notification.user.image || Placeholder} alt="" height={50} width={50} />
-                </div>
-                <div className="notif-details">
-                    <div className="username">{props.creative ? props.creative.name : ""}</div>
-                    <div className="notif-time">
-                        <IoTimeOutline />
-                        <TimeAgo datetime={props.notification.created_at} />
-                        {/* <UtcToLocalDateTime datetime={props.notification.created_at} /> */}
+            {props?.notification && (
+                <>
+                    <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
+                    <div className="notif-item">
+                        <div className="user-avatar">
+                            <img src={props.notification.user.image || Placeholder} alt="" height={50} width={50} />
+                        </div>
+                        <div className="notif-details">
+                            <div className="username">{props.creative ? props.creative.name : ""}</div>
+                            <div className="notif-time">
+                                <IoTimeOutline />
+                                <TimeAgo datetime={props.notification.created_at} />
+                                {/* <UtcToLocalDateTime datetime={props.notification.created_at} /> */}
+                            </div>
+                            <Link to={props.notification.link} className="notif-content text-dark">
+                                {props.notification.message}
+                            </Link>
+                        </div>
+                        <div className="notif-actions">
+                            <Tooltip title="Mark as Read">
+                                <IconButton onClick={(e) => handleOnClick(e, "mark-as-read")}>
+                                    {props.notification.read_at ? (
+                                        <IoEyeOffOutline />
+                                    ) : (
+                                        <IoEyeOutline />
+                                    )}
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Delete">
+                                <IconButton onClick={(e) => handleOnClick(e, "delete")}>
+                                    <IoTrashOutline />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
                     </div>
-                    <Link to={props.notification.link} className="notif-content text-dark">
-                        {props.notification.message}
-                    </Link>
-                </div>
-                <div className="notif-actions">
-                    <Tooltip title="Mark as Read">
-                        <IconButton onClick={(e) => handleOnClick(e, "mark-as-read")}>
-                            {props.notification.read_at ? (
-                                <IoEyeOffOutline />
-                            ) : (
-                                <IoEyeOutline />
-                            )}
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete">
-                        <IconButton onClick={(e) => handleOnClick(e, "delete")}>
-                            <IoTrashOutline />
-                        </IconButton>
-                    </Tooltip>
-                </div>
-            </div>
+                </>
+            )}
         </>
     );
 };
