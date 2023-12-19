@@ -46,13 +46,10 @@ const Notifications = () => {
     }
   }, [notifications]);
 
-  const loadNotifications = () => {
-    getNotificationsCount(user.uuid);
-  };
-
   const onDelete = (notification) => {
     let remainingNotifications = notifications.filter((notif)=>notif.uuid != notification.uuid);
     updateNotifications(remainingNotifications);
+    getNotificationsCount(user.uuid);
   };
 
   return (
@@ -86,7 +83,6 @@ const Notifications = () => {
                                 key={"notification-" + notification.id}
                                 notification={notification}
                                 creative={creative}
-                                loadNotifications={loadNotifications}
                                 onDelete={onDelete}
                               />
                             );
