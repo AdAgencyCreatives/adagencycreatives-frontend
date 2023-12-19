@@ -263,7 +263,9 @@ function Header(props) {
                         <ul className="dropdown-list">
                           {loggedInNav.map((item, index) => (
                             <li key={`liul${index}`} className="testing">
-                              <Link to={item.link}>{item.name}</Link>
+                              <Link to={item.link}>
+                                <span className={"list-item-text" + (item.name.toLowerCase()[0] == 'j' ? ' j-fix' : '')}>{item.name}</span>
+                              </Link>
                             </li>
                           ))}
                         </ul>
