@@ -204,7 +204,6 @@ ul.dropdown-list:before {
     right: 0px;
     top: 65px;
     padding: 15px;
-    max-height: 450px;
     overflow: hidden;
 }
 
@@ -213,7 +212,7 @@ ul.dropdown-list:before {
 }
 
 .logged-in-dropdown ul li a {
-    padding: 10px 20px;
+    padding: 8px 20px;
     border-radius: 8px;
 }
 
