@@ -41,9 +41,7 @@ const Notifications = () => {
   }, [user]);
 
   useEffect(() => {
-    if (notifications && notifications.length) {
-      setIsLoading(false);
-    }
+    setIsLoading(false);
   }, [notifications]);
 
   const onDelete = (notification) => {
