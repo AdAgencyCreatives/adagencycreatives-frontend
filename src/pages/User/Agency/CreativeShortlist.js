@@ -137,7 +137,7 @@ const CreativeShortlist = () => {
                           onClick={(e) => {
                             if (subscription_status != "active") {
                               e.preventDefault();
-                              showAlert("Post A Job for message capabilities.");
+                              showAlert("Post A Job for message capabilities");
                             } else {
                               openMessageDialog(item);
                             }

@@ -71,7 +71,7 @@ const ApplyJob = ({ open, handleClose, job_id }) => {
       if (result.data) {
         let data = result.data;
         setResumeList((prev) => [...prev, { id: data.id, name: filename }]);
-        showAlert("Resume uploaded successfully.");
+        showAlert("Resume uploaded successfully");
       }
     }
   };

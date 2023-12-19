@@ -368,6 +368,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                           {field.required && <span className="required">*</span>}
                         </label>
                         <Select
+                          className="dropdown-container"
                           options={field.data}
                           isMulti={field.isMulti || false}
                           onChange={field.callback}

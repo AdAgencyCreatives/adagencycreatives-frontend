@@ -71,7 +71,7 @@ const MyJobs = () => {
                                 <Link
                                   to={`/job-location/${job.location.state}`}
                                 >
-                                  {job.location.state},
+                                  {job.location.state},&nbsp;
                                 </Link>
                                 <Link to={`/job-location/${job.location.city}`}>
                                   {job.location.city}

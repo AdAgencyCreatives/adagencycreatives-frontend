@@ -13,7 +13,7 @@
     .inner-header {
         border: 1px solid #ECEDF2;
         background: #ffffff;
-        padding: 30px;
+        padding: 20px 15px;
         -webkit-box-shadow: 0 6px 15px 0 rgba(64, 79, 104, 0.05);
         box-shadow: 0 6px 15px 0 rgba(64, 79, 104, 0.05);
         border-radius: 8px;
@@ -25,7 +25,7 @@
     }
 
     .list-item {
-        column-gap: 18px;
+        column-gap: 8px;
         display: flex;
         align-items: center;
 

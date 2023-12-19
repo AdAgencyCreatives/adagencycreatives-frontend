@@ -523,3 +523,16 @@ textarea.form-control:focus {
     right: 35px !important;
     height: max-content !important;
 }
+
+.statistics.row > * {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+nav ul.dropdown-list li:nth-child(4) {
+    margin-left: 3px;
+}
+
+.tox.tox-tinymce {
+    z-index: 0;
+}
