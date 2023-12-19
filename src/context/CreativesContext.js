@@ -82,9 +82,9 @@ const getHomeCreatives = (dispatch) => {
 };
 
 const getRelatedCreatives = (dispatch) => {
-  return async (title) => {
+  return async (user_id) => {
     try {
-      const response = await api.get("/creatives?filter[status]=1&filter[is_visible]=1&filter[title]=" + title);
+      const response = await api.get("/creatives/related?creative_id=" + user_id);
       dispatch({
         type: "set_creatives",
         payload: response.data,

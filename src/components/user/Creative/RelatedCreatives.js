@@ -13,7 +13,7 @@ const RelatedCreatives = ({ data }) => {
   } = useContext(Context);
 
   useEffect(() => {
-    getRelatedCreatives(data.title);
+    getRelatedCreatives(data.user_id);
   }, [data]);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const RelatedCreatives = ({ data }) => {
                         </h5>
                         <h2 className="employer-title mb-0">
                           <Link to={"/creative-category/" + item.category}>
-                            {item.title}
+                            {item.category}
                           </Link>
                         </h2>
                       </div>
