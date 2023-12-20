@@ -56,11 +56,11 @@ const reducer = (state, action) => {
 };
 
 const getMessages = (dispatch) => {
-  return async (id) => {
+  return async (id, type) => {
     setActiveContact(dispatch)(id);
     setLoading(dispatch, true);
     try {
-      const response = await api.get("/messages/" + id);
+      const response = await api.get("/messages/" + id + "?type=" + type);
       dispatch({
         type: "set_messages",
         payload: response.data,

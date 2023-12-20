@@ -53,7 +53,7 @@ const UserList = ({ data, handleItemClick }) => {
     }
 
     let lines = newMessage.indexOf("\n") >= 0 ? newMessage.split('\n') : [newMessage];
-    let shortMessage =  (lines.length > 3 ? lines.slice(0, 3) : lines).join("<br />");
+    let shortMessage = (lines.length > 3 ? lines.slice(0, 3) : lines).join("<br />");
 
     return shortMessage;
   };
@@ -63,7 +63,7 @@ const UserList = ({ data, handleItemClick }) => {
       {data.map((item) => (
         <li
           className={(item.contact.uuid == activeContact) ? "active" : ""}
-          onClick={() => handleItemClick(item.contact)}
+          onClick={() => handleItemClick(item.contact, item.type)}
           key={item.id}
         >
           <img src={item.contact.image || Avatar} height={40} width={40} alt="" />
