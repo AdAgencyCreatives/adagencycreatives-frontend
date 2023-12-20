@@ -17,6 +17,7 @@ const ChatBox = ({
   chatBoxMobile,
   handleBackButton,
   contact,
+  type,
   chatBox,
   setChatBox,
   setContact,
@@ -48,7 +49,7 @@ const ChatBox = ({
     if (!Object.keys(contact).length && contacts.length) {
       let item = contacts[0].contact;
       setContact(item)
-      getMessages(item.uuid);
+      getMessages(item.uuid, type);
     }
   }, [contacts, contact]);
 
@@ -93,7 +94,7 @@ const ChatBox = ({
     let existingObject = contacts.find((obj) => obj.contact.uuid === id);
     if (!existingObject) {
       setChatBox("list");
-      getMessages(id);
+      getMessages(id, type);
       await getContacts("private");
     }
   };
@@ -159,7 +160,7 @@ const ChatBox = ({
     <div className={`chat-box ${chatBoxMobile}`}>
       <div className="chat-mobile-top d-md-none d-flex">
         <IoArrowBack size={20} onClick={handleBackButton} />
-        <div className="name">{contact.first_name + " " +contact.last_name}</div>
+        <div className="name">{contact.first_name + " " + contact.last_name}</div>
       </div>
       <div className="chat-top">
         {chatBox == "new" ? (
@@ -192,7 +193,7 @@ const ChatBox = ({
                         ></div>
                         <div className="message_attachments">
                           {attachments.length > 0 &&
-                            attachments.map((item,index) => (
+                            attachments.map((item, index) => (
                               <a href={item} target="_blank" key={index}>
                                 <img src={item} />
                               </a>

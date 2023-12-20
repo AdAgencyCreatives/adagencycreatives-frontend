@@ -28,6 +28,7 @@ const Chat = () => {
   const [chatBoxMobile, setChatBoxMobile] = useState("mobile-hide");
   const [contactsList, setContactsList] = useState([]);
   const [contact, setContact] = useState({});
+  const [type, setType] = useState("job");
   const [friends, setFriends] = useState([]);
 
   useEffect(() => {
@@ -45,13 +46,14 @@ const Chat = () => {
     setContactsList(contacts);
   }, [contacts]);
 
-  const handleItemClick = (item) => {
+  const handleItemClick = (item, type) => {
     setChatBox("list");
     setUserListMobile("mobile-hide");
     setChatBoxMobile("");
     if (item.uuid != contact.uuid) {
-      getMessages(item.uuid);
+      getMessages(item.uuid, type);
       setContact(item);
+      setType(type);
     }
   };
 
@@ -85,6 +87,7 @@ const Chat = () => {
 
   const chatBoxProps = {
     contact,
+    type,
     chatBox,
     chatBoxMobile,
     setChatBox,
