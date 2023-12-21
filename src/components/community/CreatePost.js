@@ -49,6 +49,10 @@ const CreatePost = (props) => {
   const [postAttachments, setPostAttachments] = useState([]);
 
   const doSavePost = () => {
+    if(!content) {
+      return;
+    }
+
     if (containsOffensiveWords(content)) {
       setHasOffensiveWords(true);
       return;
@@ -287,6 +291,11 @@ const CreatePost = (props) => {
           <Divider />
           <div className="postmodal-footer">
             <div className="postmodal-offensive-words">
+              {!content && (
+                <div className="message">
+                  Write something...
+                </div>
+              )}
               {hasOffensiveWords && (
                 <div className="message">
                   Your post includes offensive language. Please rephrase.
