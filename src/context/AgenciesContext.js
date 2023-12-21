@@ -22,6 +22,13 @@ const reducer = (state, action) => {
         agencies: action.payload.data,
         nextPage: action.payload.links.next,
       };
+    case "set_agencie_roles":
+      console.log(action.payload.data);
+      return {
+        ...state,
+        agencies: action.payload.data,
+        nextPage: action.payload.links.next,
+      };
     case "set_single_agency":
       return { ...state, single_agency: action.payload };
     case "set_video":
@@ -60,7 +67,19 @@ const getAgencies = (dispatch) => {
         type: "set_agencies",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
+  };
+};
+
+const getAgencieRoles = (dispatch) => {
+  return async (page, role) => {
+    try {
+      const response = await api.get("/agencies?filter[status]=1&filter[is_visible]=1" + (role ? "&filter[role]=" + role : "") + (page == "home" ? "&per_page=30" : ""));
+      dispatch({
+        type: "set_agencie_roles",
+        payload: response.data,
+      });
+    } catch (error) { }
   };
 };
 
@@ -75,7 +94,7 @@ const getAgency = (dispatch) => {
         type: "set_single_agency",
         payload: data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -90,7 +109,7 @@ const getAgencyById = (dispatch) => {
         type: "set_single_agency",
         payload: data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -104,7 +123,7 @@ const loadAgencies = (dispatch) => {
         payload: response.data,
       });
       setLoading(dispatch, false);
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -118,7 +137,7 @@ const getOpenPositions = (dispatch) => {
         type: "set_open_positions",
         payload: data,
       });
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
@@ -143,7 +162,7 @@ const getStats = (dispatch) => {
         type: "set_stats",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -152,7 +171,7 @@ const saveAgency = (dispatch) => {
     setFormSubmit(dispatch, true);
     try {
       const response = await api.patch("/agency_profile/" + uid, data);
-    } catch (error) {}
+    } catch (error) { }
     setFormSubmit(dispatch, false);
   };
 };
@@ -165,7 +184,7 @@ const uploadAttachment = (dispatch) => {
           "Content-Type": "multipart/form-data",
         },
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -173,7 +192,7 @@ const removeAttachment = (dispatch) => {
   return async (id) => {
     try {
       const response = await api.delete("/attachments/" + id);
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -185,19 +204,19 @@ const getVideo = (dispatch) => {
         type: "set_video",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
 const searchAgencies = (dispatch) => {
-  return async (query) => {
+  return async (query, role) => {
     try {
-      const response = await api.get("/agencies?filter[status]=1&filter[is_visible]=1&filter[name]=" + query);
+      const response = await api.get("/agencies?filter[status]=1&filter[is_visible]=1" + (role ? "&filter[role]=" + role : "") + "&filter[name]=" + query);
       dispatch({
         type: "set_agencies",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -207,7 +226,7 @@ const requestPackage = (dispatch) => {
     try {
       console.log(data);
       const response = await api.post("/package-requests", data);
-    } catch (error) {}
+    } catch (error) { }
     setFormSubmit(dispatch, false);
   };
 };
@@ -246,7 +265,7 @@ const deleteJob = (dispatch) => {
         type: "delete_job",
         payload: id,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -275,6 +294,7 @@ export const { Context, Provider } = createDataContext(
     requestPackage,
     getSubscriptionStatus,
     sendJobInvite,
+    getAgencieRoles,
   },
   state
 );

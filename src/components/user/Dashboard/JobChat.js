@@ -17,21 +17,21 @@ const JobChat = ({ getMessages }) => {
   const [userListMobile, setUserListMobile] = useState("");
   const [chatBoxMobile, setChatBoxMobile] = useState("mobile-hide");
   const [contact, setContact] = useState({});
-  const [typeChat, setTypeChat] = useState("job");
+  const [type, setType] = useState("job");
   const [contactsList, setContactsList] = useState([]);
 
   useEffect(() => {
     setContactsList(contacts);
   }, [contacts]);
 
-  const handleItemClick = (item, typeChat) => {
+  const handleItemClick = (item, type) => {
     setChatBox("list");
     setUserListMobile("mobile-hide");
     setChatBoxMobile("");
     if (item.uuid != contact.uuid) {
-      getMessages(item.uuid, typeChat);
+      getMessages(item.uuid, type);
       setContact(item);
-      setTypeChat(typeChat);
+      setType(type);
     }
   };
 
@@ -53,7 +53,7 @@ const JobChat = ({ getMessages }) => {
 
   const chatBoxProps = {
     contact,
-    typeChat,
+    type,
     chatBox,
     chatBoxMobile,
     setChatBox,

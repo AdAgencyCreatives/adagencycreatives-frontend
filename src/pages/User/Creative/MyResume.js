@@ -18,6 +18,7 @@ import { CircularProgress } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
+import { api } from "../../../api/api";
 
 const MyResume = () => {
   const editorRefTinyMCE = useRef(null);
@@ -644,7 +645,7 @@ const MyResume = () => {
     if(updatedEducationList.length > 0){
       updatedEducationList[index][key_name] = key_value;
     }else{
-      updatedEducationList[0]  = {id: '', degree: 'a', college: 'a', completed_at: ''}
+      updatedEducationList[0]  = {id: '', degree: '', college: '', completed_at: ''}
     }
     
     setEducationList(updatedEducationList);
@@ -652,7 +653,11 @@ const MyResume = () => {
 
   const updateExperienceList = (index, key_name, key_value) => {
     let updatedExperienceList = [...experienceList];
-    updatedExperienceList[index][key_name] = key_value;
+    if(updatedExperienceList.length > 0){
+      updatedExperienceList[index][key_name] = key_value;
+    }else{
+      updatedExperienceList[0]  = {id: '',title: '',company: '',started_at: '',description: '',completed_at: ''}
+    }
     setExperienceList(updatedExperienceList);
   };
 
@@ -714,6 +719,20 @@ const MyResume = () => {
     setFields(newQualifications);
   };
 
+  const deleteEducation = async (id) => {
+    try {
+      const response = await api.delete(`/educations/${id}`);
+    } catch (error) {
+    }
+  };
+
+  const deleteExperience = async (id) => {
+    try {
+      const response = await api.delete(`/experiences/${id}`);
+    } catch (error) {
+    }
+  };
+
   const deleteDropdown = (field, index) => {
     let newQualifications = [...fields];
     newQualifications.forEach((item) => {
@@ -721,17 +740,33 @@ const MyResume = () => {
         item.items.splice(index, 1);
         if (field.name == "educations") {
           let list = [...educationList];
+          let item = educationList[index];
           list.splice(index, 1);
+
           setEducationList(list);
+          if(item != undefined ){
+            deleteEducation(item.id);
+          }
+          
         }
         if (field.name == "experiences") {
           let list = [...experienceList];
+          let item = experienceList[index];
           list.splice(index, 1);
           setExperienceList(list);
+          if(item != undefined ){
+            deleteExperience(item.id);
+          }
         }
       }
     });
     setFields(newQualifications);
+  };
+
+  const removeEducation = async (id) => {
+    await removeAttachment(id);
+    setVideoItem(null);
+    showAlert("Video removed successfully");
   };
 
   const handleDateChange = (name, item_index, data_index, key_name, date) => {

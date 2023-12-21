@@ -2,19 +2,24 @@ import { useContext, useEffect } from "react";
 import { Context as AgenciesContext } from "../context/AgenciesContext";
 import { useState } from "react";
 
-const useAgencies = (page) => {
+const useAgencies = (page, role) => {
   const {
     state: { agencies, nextPage, loading },
     getAgencies,
     loadAgencies,
     searchAgencies,
+    getAgencieRoles,
   } = useContext(AgenciesContext);
 
-  const [loadedAll,setLoadedAll] = useState(false)
+  const [loadedAll, setLoadedAll] = useState(false)
 
   useEffect(() => {
-    getAgencies(page);
-  }, []);
+    if (role) {
+      getAgencieRoles(page, role);
+    } else {
+      getAgencies(page);
+    }
+  }, [role]);
 
   const loadMore = () => {
     if (nextPage) loadAgencies(nextPage);
