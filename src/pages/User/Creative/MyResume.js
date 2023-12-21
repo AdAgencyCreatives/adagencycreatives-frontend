@@ -20,6 +20,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import { api } from "../../../api/api";
 
+import useUploadHelper from "../../../hooks/useUploadHelper";
+import IconMessage from "../../../components/IconMessage";
+
 const MyResume = () => {
   const editorRefTinyMCE = useRef(null);
   const cityRef = useRef();
@@ -53,6 +56,15 @@ const MyResume = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [isMounted, setIsMounted] = useState(false);
   const repeaterRef = useRef(null);
+  const [showVideoItem, setShowVideoItem] = useState(false);
+
+  const { isFileValid, getUploadGuide, getUploadGuideMessage } = useUploadHelper();
+  const imageUploadGuide = getUploadGuide('image', 'my-resume');
+  const videoUploadGuide = getUploadGuide('video', 'my-resume');
+  const fileUploadGuide = getUploadGuide('application', 'my-resume');
+  const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
+  const videoUploadGuideMessage = getUploadGuideMessage(videoUploadGuide);
+  const fileUploadGuideMessage = getUploadGuideMessage(fileUploadGuide);
 
   const educationObject = {
     showDropdown: false,
@@ -160,7 +172,6 @@ const MyResume = () => {
   const performInitTinyMCE = (evt, editor) => {
     setIsLoadingTinyMCE(false);
     editorRefTinyMCE.current = editor;
-    editor.focus();
   };
 
   useEffect(() => {
@@ -547,31 +558,56 @@ const MyResume = () => {
     showAlert("Resume updated successfully");
   };
 
-  const removeItem = (name, ref) => {
+  const removeItem = (name, ref, uploadRef) => {
     let updated = [...portfolio];
     let index = updated.findIndex((p) => p.name == name);
     let item = { ...updated[index] };
+    if (!item?.items?.length) {
+      return;
+    }
     let last = item.items.pop();
     updated[index] = item;
     setPortfolio([...updated]);
     removeAttachment(last.id);
+    uploadRef.current.value = '';
   };
 
   const removeVideo = async (id) => {
+    if (!id) {
+      return;
+    }
     await removeAttachment(id);
     setVideoItem(null);
+    videoUploadRef.current.value = '';
     showAlert("Video removed successfully");
   };
 
-  const handleFileChange = async (event, name, ref) => {
+  const handleFileChange = async (event, field) => {
+    let name = field.name;
+    let ref = field.ref;
+    let uploadRef = field.uploadRef;
+    const file = event.target.files[0];
+
+    let validationResult = isFileValid(file, (name == "portfolio_item" ? "image" : (name == "creative_reel" ? "video" : "application")), "my-resume");
+    if (!validationResult.status) {
+      uploadRef.current.value = '';
+      showAlert(validationResult.message);
+      return;
+    }
+
     let updated = [...portfolio];
     let index = updated.findIndex((p) => p.name == name);
     let item = { ...updated[index] };
-    const file = event.target.files[0];
+
     const filename = file.name;
     if (name == "resume") {
       item.items = [{ name: filename }];
     } else if (name == "portfolio_item") {
+
+      if (item?.items?.length >= 5) {
+        showAlert("Up to 5 images can be uploaded.");
+        return;
+      }
       item.items.push({ url: URL.createObjectURL(file) });
     }
     updated[index] = item;
@@ -642,12 +678,12 @@ const MyResume = () => {
 
   const updateEducationList = (index, key_name, key_value) => {
     let updatedEducationList = [...educationList];
-    if(updatedEducationList.length > 0){
+    if (updatedEducationList.length > 0) {
       updatedEducationList[index][key_name] = key_value;
     }else{
       updatedEducationList[0]  = {id: '', degree: '', college: '', completed_at: ''}
     }
-    
+
     setEducationList(updatedEducationList);
   };
 
@@ -843,25 +879,36 @@ const MyResume = () => {
               {field.required && <span className="required">*</span>}
             </label>
             <div className="row align-items-center upload-box">
-              <div className="col-md-12 col-sm-4 col-12">
+              <div className="col-md-12 col-sm-12 col-12">
                 {videoItem && (
-                  <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2">
-                    <span className="icon_type">
-                      <FiVideo />
-                    </span>
-                    <div className="filename">{videoItem.name}</div>
-                  </button>
+                  <>
+                    <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2" onClick={(e)=> setShowVideoItem(state => !state) }>
+                      <span className="icon_type">
+                        <FiVideo />
+                      </span>
+                      <div className="filename">{videoItem.name}</div>
+                    </button>
+                    {showVideoItem && videoItem?.url?.length && (
+                      <video controls muted playsInline>
+                        <source src={videoItem?.url} type={"video/" + videoItem?.url?.substring(videoItem?.url?.lastIndexOf('.') + 1)} />
+                        Sorry, your browser doesn't support videos.
+                      </video>
+                    )}
+                  </>
                 )}
               </div>
               <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                 <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => videoUploadRef.current.click()}>
                   <FiPaperclip /> Upload
                 </button>
-                <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeVideo(videoItem.id)}>
+                <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeVideo(videoItem?.id)}>
                   <FiTrash2 /> Remove
                 </button>
               </div>
-              <input type="file" ref={videoUploadRef} className="d-none" accept=".mp4, .avi, .mov, video/*" onChange={(e) => handleFileChange(e, "creative_reel", videoRef)} />
+              <div className="col-md-9 col-sm-8 col-12">
+                <IconMessage message={videoUploadGuideMessage} />
+              </div>
+              <input type="file" ref={videoUploadRef} className="d-none" accept=".mp4, .avi, .mov, video/*" onChange={(e) => handleFileChange(e, { name: "creative_reel", ref: videoRef, uploadRef: videoUploadRef })} />
             </div>
           </>
         );
@@ -895,11 +942,14 @@ const MyResume = () => {
                 <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => field.uploadRef.current.click()}>
                   <FiPaperclip /> Upload
                 </button>
-                <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeItem(field.name, field.ref)}>
+                <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeItem(field.name, field.ref, field.uploadRef)}>
                   <FiTrash2 /> Remove
                 </button>
               </div>
-              <input type="file" ref={field.uploadRef} className="d-none" accept={field.accept} onChange={(e) => handleFileChange(e, field.name, field.ref)} />
+              <div className="col-md-9 col-sm-4 col-12">
+                <IconMessage message={field.name == "resume" ? fileUploadGuideMessage : imageUploadGuideMessage} />
+              </div>
+              <input type="file" ref={field.uploadRef} className="d-none" accept={field.accept} onChange={(e) => handleFileChange(e, field)} />
             </div>
           </>
         );
@@ -1000,7 +1050,7 @@ const MyResume = () => {
                     onEditorChange={(e) => {
                       setFormData((prev) => ({ ...prev, [field.name]: (editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "") }));
                     }
-                  }
+                    }
                   />
                 </>
               ) : (
@@ -1038,7 +1088,7 @@ const MyResume = () => {
   return isLoading ? (
     <Loader />
   ) : (
-    <div className="agency-page-my-resume mb-5">
+    <div className="my-resume mb-5">
       <h3 className="page-title">Edit Resume</h3>
       <div className="card">
         <h4 className="text-uppercase mb-4">Qualifications</h4>

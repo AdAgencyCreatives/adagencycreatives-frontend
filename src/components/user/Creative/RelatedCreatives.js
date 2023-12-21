@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Placeholder from "../../../assets/images/placeholder.png";
 import { IoLocationOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { Context as AuthContext } from "../../../context/AuthContext";
 
 const RelatedCreatives = ({ data }) => {
   const [relatedCreatives, setRelatedCreatives] = useState([]);
@@ -11,6 +12,16 @@ const RelatedCreatives = ({ data }) => {
     state: { creatives },
     getRelatedCreatives,
   } = useContext(Context);
+
+  const {
+    state: {
+      role,
+    },
+  } = useContext(AuthContext);
+
+  const isAdmin = role == "admin";
+  const isAdvisor = role == "advisor";
+  const isAgency = role == "agency";
 
   useEffect(() => {
     getRelatedCreatives(data.user_id);
@@ -68,12 +79,12 @@ const RelatedCreatives = ({ data }) => {
                             <div className="job-location location">
                               <IoLocationOutline />
                               <Link
-                                to={`/creative-location/${item.location.state}`}
+                                to={`/creatives/search/state/${item.location.state}`}
                               >
                                 {item.location.state},&nbsp;
                               </Link>
                               <Link
-                                to={`/creative-location/${item.location.city}`}
+                                to={`/creatives/search/city/${item.location.city}`}
                               >
                                 {item.location.city}
                               </Link>

@@ -29,6 +29,10 @@ const Creatives = () => {
     },
   } = useContext(AuthContext);
 
+  const isAdmin = role == "admin";
+  const isAdvisor = role == "advisor";
+  const isAgency = role == "agency";
+
   const { showAlert } = useContext(AlertContext);
 
   const [creativeSearchPlaceholder, setCreativeSearchPlaceholder] = useState(
@@ -122,7 +126,7 @@ const Creatives = () => {
   };
 
   useEffect(() => {
-    if (user) getBookmarks(user.uuid,"creatives");
+    if (user) getBookmarks(user.uuid, "creatives");
   }, [user]);
 
   useEffect(() => {
@@ -216,10 +220,11 @@ const Creatives = () => {
                     {item.location.state && (
                       <div className="job-location location">
                         <IoLocationOutline />
-                        <Link to={`/creative-location/${item.location.state}`}>
-                          {item.location.state},&nbsp;
+                        <Link to={`/creatives/search/state/${item.location.state}`}>
+                          {item.location.state}
                         </Link>
-                        <Link to={`/creative-location/${item.location.city}`}>
+                        <span>,&nbsp;</span>
+                        <Link to={`/creatives/search/city/${item.location.city}`}>
                           {item.location.city}
                         </Link>
                       </div>

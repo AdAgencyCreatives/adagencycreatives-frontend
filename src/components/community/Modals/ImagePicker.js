@@ -7,9 +7,18 @@ import { Context as AuthContext } from "../../../context/AuthContext";
 import { saveAttachment } from "../../../context/AttachmentsDataContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 
+import useUploadHelper from "../../../hooks/useUploadHelper";
+import IconMessage from "../../IconMessage";
+
 const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAttachments, setPostAttachments }) => {
 
   const { showAlert } = useContext(AlertContext);
+
+  const { isFileValid, getUploadGuide, getUploadGuideMessage } = useUploadHelper();
+  const imageUploadGuide = getUploadGuide('image', 'lounge');
+  const videoUploadGuide = getUploadGuide('video', 'lounge');
+  const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
+  const videoUploadGuideMessage = getUploadGuideMessage(videoUploadGuide);
 
   const [isFileUploading, setIsFileUploading] = useState(false);
   const [errorText, setErrorText] = useState("");
@@ -36,15 +45,11 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
 
     let isImage = fileUploaded.type.indexOf("image") >= 0;
     let isVideo = fileUploaded.type.indexOf("video") >= 0;
-    let imageSizeLimit = 1024 * 1024 * 6; // 6 mb
-    let videoSizeLimit = 1024 * 1024 * 12; // 12 mb
-    let imageSizeLimitLabel = "6 mb"
-    let videoSizeLimitLabel = "12 mb";
-    let fileSize = fileUploaded.size;
 
     setErrorText("");
-    if ((isImage && fileSize > imageSizeLimit) || (isVideo && fileSize > videoSizeLimit)) {
-      setErrorText("The selected file must be less than or equal to " + (isImage ? imageSizeLimitLabel : videoSizeLimitLabel));
+    let validationResult = isFileValid(fileUploaded, (isImage ? "image" : "video"), "lounge");
+    if (!validationResult.status) {
+      setErrorText(validationResult.message);
       return;
     }
 
@@ -120,6 +125,7 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
 
   return (
     <Modal
+      className="image-picker"
       open={open}
       onClose={(e) => handleModalClose(e)}
       aria-labelledby="modal-modal-title"
@@ -133,6 +139,7 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
           </div>
         </div>
         <div className="image-picker-body">
+          <IconMessage message={(allowType == "video" ? videoUploadGuideMessage : imageUploadGuideMessage)} />
           {preview && (<>
             {allowType == "image" && (
               <p><img className="image-to-upload" src={preview} alt="Upload preview" /></p>
@@ -146,7 +153,7 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
           </>)}
           {isFileUploading ? (<CircularProgress />) : (<></>)}
           <p className="m-0 h4">
-            {isFileUploading ? "Uploading file..." : "Select " + allowType + " file to begin (up to " + (allowType == "video" ? "12mb" : "6mb") + ")"}
+            {isFileUploading ? "Uploading file..." : "Select " + allowType + " file to begin (up to " + (allowType == "video" ? videoUploadGuide.maxSizeLabel : imageUploadGuide.maxSizeLabel) + ")"}
           </p>
           <p className="m-0">
             {isFileUploading ? "Please wait while your file is being uploaded." : "Share images or a single video in your post."}

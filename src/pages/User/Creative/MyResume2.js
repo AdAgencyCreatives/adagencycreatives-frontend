@@ -719,7 +719,7 @@ const MyResume = () => {
   return isLoading ? (
     <Loader />
   ) : (
-    <div className="agency-page-my-resume mb-5">
+    <div className="my-resume mb-5">
       <h3 className="page-title">Edit Resume</h3>
       <div className="card">
         <h4 className="text-uppercase mb-4">Qualifications</h4>

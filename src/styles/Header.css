@@ -439,7 +439,7 @@ textarea.form-control:focus {
 }
 
 .relative {
-    position:  relative;
+    position: relative;
 }
 
 .page-film-festival {}
@@ -499,6 +499,11 @@ textarea.form-control:focus {
     font-weight: 500;
 }
 
+video {
+    width: 100%;
+    height: auto;
+}
+
 .page-film-festival .submission-form-upload {
     width: 100px;
     height: 100px;
@@ -523,7 +528,7 @@ textarea.form-control:focus {
     height: max-content !important;
 }
 
-.statistics.row > * {
+.statistics.row>* {
     padding-left: 5px;
     padding-right: 5px;
 }
@@ -542,4 +547,54 @@ nav ul.dropdown-list .list-item-text.j-fix {
     color: red;
     font-weight: 900;
     font-size: larger;
+}
+
+.icon-message {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    position: relative;
+    margin: 20px;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.icon-message .message-container {
+    display:flex;
+    align-items: center;
+    background-color: black;
+    width: 100%;
+    min-width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+    max-height: 0;
+    min-height: 0;
+    transition: min-height 0.5s;
+}
+
+.icon-message .message {
+    display:none;
+    padding: 10px;
+    color: white;
+    font-weight: 500;
+    font-size: normal;
+    line-height: 1.5;
+}
+
+.icon-message:hover .message-container {
+    min-height: 140px;
+}
+
+.icon-message:hover .message {
+    display:block;
+}
+
+.image-picker .icon-message {
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.image-picker .icon-message .message-container {
+    min-width: 600px;
 }

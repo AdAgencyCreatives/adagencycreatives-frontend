@@ -1,14 +1,25 @@
 import Placeholder from "../../assets/images/placeholder.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { PaginationStyle } from "../../styles/PaginationStyle";
 import { Link } from "react-router-dom";
 import useAgencies from "../../hooks/useAgencies";
+import { Context as AuthContext } from "../../context/AuthContext";
 
 const AdAgencies = () => {
   const swiperElRef = useRef(null);
   const {agencies} = useAgencies("home");
+
+  const {
+    state: {
+      role,
+    },
+  } = useContext(AuthContext);
+
+  const isAdmin = role == "admin";
+  const isAdvisor = role == "advisor";
+  const isAgency = role == "agency";
 
   useEffect(() => {
     const params = {
@@ -74,10 +85,10 @@ const AdAgencies = () => {
                     {item.location && (
                       <div className="job-location location">
                         <IoLocationOutline />
-                        <Link to={`/creative-location/${item.location.state}`}>
+                        <Link to={`/creatives/search/state/${item.location.state}`}>
                           {item.location.state},
                         </Link>
-                        <Link to={`/creative-location/${item.location.city}`}>
+                        <Link to={`/creatives/search/city/${item.location.city}`}>
                           {item.location.city}
                         </Link>
                       </div>

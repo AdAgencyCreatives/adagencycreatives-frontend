@@ -13,9 +13,14 @@ const AgencyCreatives = () => {
   const swiperElRef = useRef(null);
   const { creatives } = useCreatives("home");
   const { showAlert } = useContext(AlertContext);
+  
   const {
-    state: { token },
+    state: { token, role, },
   } = useContext(AuthContext);
+
+  const isAdmin = role == "admin";
+  const isAdvisor = role == "advisor";
+  const isAgency = role == "agency";
 
   useEffect(() => {
     const params = {
@@ -85,10 +90,10 @@ const AgencyCreatives = () => {
                     {item.location.state && (
                       <div className="job-location location">
                         <IoLocationOutline />
-                        <Link to={`/creative-location/${item.location.state}`}>
+                        <Link to={`/creatives/search/state/${item.location.state}`}>
                           {item.location.state},&nbsp;
                         </Link>
-                        <Link to={`/creative-location/${item.location.city}`}>
+                        <Link to={`/creatives/search/city/${item.location.city}`}>
                           {item.location.city}
                         </Link>
                       </div>

@@ -12,6 +12,9 @@ import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
 import { CircularProgress } from "@mui/material";
 
+import useUploadHelper from "../../../hooks/useUploadHelper";
+import IconMessage from "../../../components/IconMessage";
+
 const Profile = () => {
   const imageUploadRef = useRef();
   const logoRef = useRef();
@@ -24,6 +27,14 @@ const Profile = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [isMounted, setIsMounted] = useState(false);
   const [baseUrl, setBaseUrl] = useState([]);
+
+  const { isFileValid, getUploadGuide, getUploadGuideMessage } = useUploadHelper();
+  const imageUploadGuide = getUploadGuide('image', 'creative-profile');
+  const videoUploadGuide = getUploadGuide('video', 'creative-profile');
+  const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
+  const videoUploadGuideMessage = getUploadGuideMessage(videoUploadGuide);
+
+
   useEffect(() => {
     setIsMounted(true);
 
@@ -380,13 +391,23 @@ const Profile = () => {
   };
 
   const removeLogo = () => {
+    imageUploadRef.current.value = '';
     logoRef.current.src = "";
   };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    logoRef.current.src = URL.createObjectURL(file);
     if (file) {
+
+      let validationResult = isFileValid(file, "image", "creative-profile");
+      if (!validationResult.status) {
+        imageUploadRef.current.value = '';
+        showAlert(validationResult.message);
+        return;
+      }
+
+      logoRef.current.src = URL.createObjectURL(file);
+
       let formData = new FormData();
       formData.append("file", file);
       formData.append("user_id", user.uuid);
@@ -402,7 +423,7 @@ const Profile = () => {
   return isLoading ? (
     <Loader />
   ) : (
-    <div className="Creative-page-profile">
+    <div className="creative-page-profile">
       <h3 className="page-title">Edit Profile</h3>
       <div className="card">
         <h4 className="text-uppercase mb-4">Edit Profile</h4>
@@ -446,6 +467,9 @@ const Profile = () => {
                             <FiTrash2 /> Remove
                           </button>
                         </div>
+                        <div className="col-md-7 col-sm-4 col-12">
+                          <IconMessage message={imageUploadGuideMessage} />
+                        </div>
                         <input
                           type="file"
                           ref={imageUploadRef}
@@ -478,7 +502,7 @@ const Profile = () => {
                         {field.label}
                         {field.required && <span className="required">*</span>}
                       </label>
-                      <div class="input-group mb-3">
+                      <div class="input-group">
                         <span class="input-group-text" id="basic-addon3">{field.baseUrl}/creative/</span>
                         <input
                           type="text"

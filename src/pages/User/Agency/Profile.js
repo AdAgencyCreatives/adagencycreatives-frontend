@@ -14,6 +14,9 @@ import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
 import { CircularProgress, filledInputClasses } from "@mui/material";
 
+import useUploadHelper from "../../../hooks/useUploadHelper";
+import IconMessage from "../../../components/IconMessage";
+
 const Profile = () => {
   const editorRefTinyMCE = useRef(null);
   const cityRef = useRef();
@@ -31,12 +34,19 @@ const Profile = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [isMounted, setIsMounted] = useState(false);
   const [videoItem, setVideoItem] = useState(false);
+  const [showVideoItem, setShowVideoItem] = useState(false);
 
   const [isLogoUploaded, setIsLogoUploaded] = useState(false);
   const [isVideoUploaded, setIsVideoUploaded] = useState(false);
 
   const [useTinyMCE, setUseTinyMCE] = useState(true);
   const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
+
+  const { isFileValid, getUploadGuide, getUploadGuideMessage } = useUploadHelper();
+  const imageUploadGuide = getUploadGuide('image', 'agency-profile');
+  const videoUploadGuide = getUploadGuide('video', 'agency-profile');
+  const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
+  const videoUploadGuideMessage = getUploadGuideMessage(videoUploadGuide);
 
   useEffect(() => {
     /* Hack to resolve focus issue with TinyMCE editor in bootstrap model dialog */
@@ -52,7 +62,6 @@ const Profile = () => {
   const performInitTinyMCE = (evt, editor) => {
     setIsLoadingTinyMCE(false);
     editorRefTinyMCE.current = editor;
-    editor.focus();
   };
 
   useEffect(() => {
@@ -456,6 +465,18 @@ const Profile = () => {
   const handleFileChange = async (event, resource, ref, field) => {
     const file = event.target.files[0];
     if (file) {
+
+      let validationResult = isFileValid(file, (resource == "agency_logo" ? "image" : "video"), "agency-profile");
+      if (!validationResult.status) {
+        if (resource == "agency_logo") {
+          imageUploadRef.current.value = '';
+        } else {
+          videoUploadRef.current.value = '';
+        }
+        showAlert(validationResult.message);
+        return;
+      }
+
       if (resource == "agency_logo") ref.current.src = URL.createObjectURL(file);
       else setVideoItem({ name: file.name });
       const localFormData = new FormData();
@@ -478,15 +499,23 @@ const Profile = () => {
   };
 
   const removeVideo = async (id) => {
+    if (!id) {
+      return;
+    }
     await removeAttachment(id);
     reloadUserData(user.uuid);
     setIsVideoUploaded(false);
+    videoUploadRef.current.value = '';
     console.log("isVideoUploaded: " + isVideoUploaded);
     showAlert("Video removed successfully");
   };
 
   const removeLogo = async (id) => {
+    if (!id) {
+      return;
+    }
     console.log(id, 'id');
+    imageUploadRef.current.value = '';
     logoRef.current.src = "";
     await removeAttachment(id);
     reloadUserData(user.uuid);
@@ -522,9 +551,12 @@ const Profile = () => {
                           <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => imageUploadRef.current.click()}>
                             <FiPaperclip /> Upload
                           </button>
-                          <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeLogo(field.id)}>
+                          <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeLogo(field?.id)}>
                             <FiTrash2 /> Remove
                           </button>
+                        </div>
+                        <div className="col-md-7 col-sm-4 col-12">
+                          <IconMessage message={imageUploadGuideMessage} />
                         </div>
                         <input type="file" ref={imageUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_logo", logoRef, field)} accept={field.accept} />
                       </div>
@@ -538,23 +570,34 @@ const Profile = () => {
                         {field.required && <span className="required">*</span>}
                       </label>
                       <div className="row align-items-center upload-box">
-                        <div className="col-md-12 col-sm-4 col-12">
+                        <div className="col-md-12 col-sm-12 col-12">
                           {videoItem && (
-                            <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2">
-                              <span className="icon_type">
-                                <FiFile />
-                              </span>
-                              <div className="filename">{videoItem.name}</div>
-                            </button>
+                            <>
+                              <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2" onClick={(e)=> setShowVideoItem(state => !state) }>
+                                <span className="icon_type">
+                                  <FiFile />
+                                </span>
+                                <div className="filename">{videoItem.name}</div>
+                              </button>
+                              {showVideoItem && videoItem?.url?.length && (
+                              <video controls muted playsInline>
+                                <source src={videoItem?.url} type={"video/" + videoItem?.url?.substring(videoItem?.url?.lastIndexOf('.') + 1)} />
+                                Sorry, your browser doesn't support videos.
+                              </video>
+                              )}
+                            </>
                           )}
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                           <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => videoUploadRef.current.click()}>
                             <FiPaperclip /> Upload
                           </button>
-                          <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeVideo(videoItem.id)}>
+                          <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeVideo(videoItem?.id)}>
                             <FiTrash2 /> Remove
                           </button>
+                        </div>
+                        <div className="col-md-9 col-sm-8 col-12">
+                          <IconMessage message={videoUploadGuideMessage} />
                         </div>
                         <input type="file" ref={videoUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_reel", videoRef, field)} accept=".mp4, .avi, .mov, video/*" />
                       </div>
