@@ -9,6 +9,7 @@ const state = {
   creative_experience: [],
   creative_education: [],
   stats: null,
+  applications: null,
   formSubmit: false,
   applied_jobs: [],
   resume: [],
@@ -52,6 +53,8 @@ const reducer = (state, action) => {
       return { ...state, portfolio_items: action.payload.data };
     case "set_applied_jobs":
       return { ...state, applied_jobs: action.payload.data };
+    case "set_applications":
+      return { ...state, applications: action.payload.data };
     default:
       return state;
   }
@@ -337,6 +340,18 @@ const getStats = (dispatch) => {
   };
 };
 
+const getApplications = (dispatch) => {
+  return async (uid) => {
+    try {
+      const response = await api.get("/applications?filter[user_id]=" + uid);
+      dispatch({
+        type: "set_applications",
+        payload: response.data,
+      });
+    } catch (error) { }
+  };
+};
+
 const getAppliedJobs = (dispatch) => {
   return async () => {
     setLoading(dispatch, true);
@@ -369,6 +384,7 @@ export const { Context, Provider } = createDataContext(
     getRelatedCreatives,
     getHomeCreatives,
     getStats,
+    getApplications,
     loadCreatives,
     getCreative,
     getCreativeById,
