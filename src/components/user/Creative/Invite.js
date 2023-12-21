@@ -85,7 +85,7 @@ const Invite = ({ open, handleClose, item }) => {
                 </p>
                 <p className="fs-5">Select job to invite this user</p>
                 {message && (
-                  <div className={`alert alert-info`}>Invited successfully</div>
+                  <div className={`alert alert-info`}>{message}</div>
                 )}
                 {error && <div className={`alert alert-danger`}>{error}</div>}
                 {open_positions.length > 0 &&
