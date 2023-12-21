@@ -74,10 +74,10 @@ const AdAgencies = () => {
                     {item.location && (
                       <div className="job-location location">
                         <IoLocationOutline />
-                        <Link to={`/creative-location/${item.location.state}`}>
+                        <Link to={`/creatives/search/state/${item.location.state}`}>
                           {item.location.state},
                         </Link>
-                        <Link to={`/creative-location/${item.location.city}`}>
+                        <Link to={`/creatives/search/city/${item.location.city}`}>
                           {item.location.city}
                         </Link>
                       </div>

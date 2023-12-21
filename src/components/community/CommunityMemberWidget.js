@@ -56,7 +56,7 @@ const CommunityMemberWidget = (props) => {
                                     ) : (
                                         <></>
                                     )}
-                                    <Link to={`/creative-location/${props.creative.location.state}`}>
+                                    <Link to={`/creatives/search/state/${props.creative.location.state}`}>
                                         {props.creative.location.state}
                                     </Link>
                                     {props.creative.location && props.creative.location.state && props.creative.location.city ? (
@@ -64,7 +64,7 @@ const CommunityMemberWidget = (props) => {
                                     ) : (
                                         <></>
                                     )}
-                                    <Link to={`/creative-location/${props.creative.location.city}`}>
+                                    <Link to={`/creatives/search/city/${props.creative.location.city}`}>
                                         {props.creative.location.city}
                                     </Link>
                                 </div>

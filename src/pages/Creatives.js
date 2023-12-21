@@ -216,10 +216,10 @@ const Creatives = () => {
                     {item.location.state && (
                       <div className="job-location location">
                         <IoLocationOutline />
-                        <Link to={`/creative-location/${item.location.state}`}>
+                        <Link to={`/creatives/search/state/${item.location.state}`}>
                           {item.location.state},&nbsp;
                         </Link>
-                        <Link to={`/creative-location/${item.location.city}`}>
+                        <Link to={`/creatives/search/city/${item.location.city}`}>
                           {item.location.city}
                         </Link>
                       </div>
