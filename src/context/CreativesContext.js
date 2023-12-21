@@ -102,8 +102,11 @@ const getCreative = (dispatch) => {
       const response = await api.get("/creatives?filter[status]=1&filter[slug]=" + slug);
       const data = response.data.data[0];
       const uid = data.user_id;
-      getCreativeEducation(dispatch, uid);
-      getCreativeExperience(dispatch, uid);
+      const currentPage = window.location.pathname;
+      if( currentPage != '/change-password' && currentPage != '/change-password/' && currentPage != 'change-password/'){
+        getCreativeEducation(dispatch, uid);
+        getCreativeExperience(dispatch, uid);
+      }
       dispatch({
         type: "set_single_creative",
         payload: data,
@@ -120,8 +123,12 @@ const getCreativeById = (dispatch) => {
       const response = await api.get("/creatives?filter[status]=1&filter[user_id]=" + id);
       const data = response.data.data[0];
       const uid = data.user_id;
-      getCreativeEducation(dispatch, uid);
-      getCreativeExperience(dispatch, uid);
+      const currentPage = window.location.pathname;
+      if( currentPage != '/change-password' && currentPage != '/change-password/' && currentPage != 'change-password/'){
+        getCreativeEducation(dispatch, uid);
+        getCreativeExperience(dispatch, uid);
+      }
+      
       dispatch({
         type: "set_single_creative",
         payload: data,
