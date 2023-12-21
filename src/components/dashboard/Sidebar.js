@@ -3,10 +3,18 @@ import Placeholder from "../../assets/images/placeholder.png";
 import "../../styles/AgencyDashboard/Sidebar.scss";
 import { useContext, useState } from "react";
 import { Box, Drawer } from "@mui/material";
-// import { Context } from "../../context/AuthContext";
+import { Context as AuthContext } from "../../context/AuthContext";
 
 const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
-  // const {state:{user}} = useContext(Context)
+  const {
+    state: {
+      role,
+    } } = useContext(AuthContext);
+
+  const isAdmin = role == "admin";
+  const isAdvisor = role == "advisor";
+  const isAgency = role == "agency";
+
   const profileLink = user?.type == "creatives" ? "/creative/" : "/agency/";
 
   const container =

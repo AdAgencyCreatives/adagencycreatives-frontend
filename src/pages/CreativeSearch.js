@@ -35,6 +35,10 @@ const CreativeSearch = () => {
         },
     } = useContext(AuthContext);
 
+    const isAdmin = role == "admin";
+    const isAdvisor = role == "advisor";
+    const isAgency = role == "agency";
+
     const { showAlert } = useContext(AlertContext);
 
     const [creativeSearchPlaceholder, setCreativeSearchPlaceholder] = useState(
@@ -215,7 +219,15 @@ const CreativeSearch = () => {
                                                 {item.name}
                                             </Link>
                                         </div>
-                                        <div className="position">{item.category || ""}</div>
+                                        <div className="position">
+                                            {isAdmin || isAdvisor ? (<>
+                                                <Link className="" to={`/creatives/search/industry-title/${item.category}`} reloadDocument>
+                                                    {item.category || ""}
+                                                </Link>
+                                            </>) : (<>
+                                                {item.category || ""}
+                                            </>)}
+                                        </div>
                                         {item.location.state && (
                                             <div className="job-location location">
                                                 <IoLocationOutline />

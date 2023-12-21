@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Placeholder from "../../../assets/images/placeholder.png";
 import { IoLocationOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { Context as AuthContext } from "../../../context/AuthContext";
 
 const RelatedCreatives = ({ data }) => {
   const [relatedCreatives, setRelatedCreatives] = useState([]);
@@ -11,6 +12,16 @@ const RelatedCreatives = ({ data }) => {
     state: { creatives },
     getRelatedCreatives,
   } = useContext(Context);
+
+  const {
+    state: {
+      role,
+    },
+  } = useContext(AuthContext);
+
+  const isAdmin = role == "admin";
+  const isAdvisor = role == "advisor";
+  const isAgency = role == "agency";
 
   useEffect(() => {
     getRelatedCreatives(data.user_id);

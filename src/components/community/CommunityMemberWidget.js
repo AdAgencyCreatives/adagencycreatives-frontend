@@ -29,6 +29,10 @@ const CommunityMemberWidget = (props) => {
         state: { role, user, token },
     } = useContext(AuthContext);
 
+    const isAdmin = role == "admin";
+    const isAdvisor = role == "advisor";
+    const isAgency = role == "agency";
+
     const isOwnProfile = user?.uuid == props.creative?.user_id;
 
     return (

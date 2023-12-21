@@ -6,11 +6,22 @@ import { PaginationStyle } from "../../styles/PaginationStyle";
 import Tooltip from "../Tooltip";
 import { Context as JobsContext } from "../../context/JobsContext";
 import { Link } from "react-router-dom";
+import { Context as AuthContext } from "../../context/AuthContext";
 
 const CreativeJobs = () => {
   const swiperElRef = useRef(null);
   const jobSlides = 3;
 
+  const {
+    state: {
+      role,
+    },
+  } = useContext(AuthContext);
+
+  const isAdmin = role == "admin";
+  const isAdvisor = role == "advisor";
+  const isAgency = role == "agency";
+  
   const {
     state: { jobs },
     getFeaturedJobs,
