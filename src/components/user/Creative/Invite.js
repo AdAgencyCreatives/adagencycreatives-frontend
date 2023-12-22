@@ -53,10 +53,11 @@ const Invite = ({ open, handleClose, item }) => {
     setLoading(true);
     try {
       for (var i = 0; i < jobId.length; i++) {
-        await sendJobInvite(item.user_id, jobId[i]);
+        let check = await sendJobInvite(item.user_id, jobId[i]);
+        setMessage(check.data.message);
       }
       setError(false);
-      setMessage(true);
+      // setMessage(true);
     } catch (error) {
       setMessage(false);
       setError("There was an error sending the invite");

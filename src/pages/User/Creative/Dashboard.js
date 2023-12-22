@@ -14,6 +14,7 @@ import Views from "../../../components/dashboard/Views";
 import Notifications from "../../../components/dashboard/Notifications";
 import Applicants from "../../../components/dashboard/Applicants";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
+import { Context as AuthContext} from "../../../context/AuthContext";
 import { useContext, useEffect } from "react";
 import Loader from "../../../components/Loader";
 import JobList from "../../../components/job/JobList";
@@ -23,6 +24,10 @@ import { Link } from "react-router-dom";
 const Dashboard = () => {
 
   const {
+    state: { user },
+  } = useContext(AuthContext);
+
+  const {
     state: { stats, applications, loading },
     getStats,
     getApplications,
@@ -30,7 +35,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     getStats();
-    getApplications("944e99c4-7e74-4571-9ad1-635a1f7f357d");
+    getApplications(user.uuid);
   }, []);
 
   { console.log(applications) }
