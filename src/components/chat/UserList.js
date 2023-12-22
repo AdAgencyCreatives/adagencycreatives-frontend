@@ -63,7 +63,7 @@ const UserList = ({ data, handleItemClick }) => {
       {data.map((item) => (
         <li
           className={(item.contact.uuid == activeContact) ? "active" : ""}
-          onClick={() => handleItemClick(item.contact, item.type)}
+          onClick={() => handleItemClick(item.contact, 'job,private')}
           key={item.id}
         >
           <img src={item.contact.image || Avatar} height={40} width={40} alt="" />

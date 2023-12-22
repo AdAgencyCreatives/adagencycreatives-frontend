@@ -4,6 +4,7 @@
     font-size: 61px;
     text-align: center;
     font-weight: bold;
+    min-height: 73.2px;
 }
 
 .community-subtitle {
@@ -15,6 +16,7 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    min-height: 24px;
 }
 
 .post-form {
