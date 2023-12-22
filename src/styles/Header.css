@@ -555,26 +555,25 @@ nav ul.dropdown-list .list-item-text.j-fix {
     align-items: flex-start;
     flex-direction: column;
     position: relative;
-    margin: 20px;
+    margin-bottom: 20px;
     gap: 10px;
+}
+
+.icon-message .icon {
     cursor: pointer;
 }
 
 .icon-message .message-container {
-    display:flex;
+    display: none;
     align-items: center;
     background-color: black;
     width: 100%;
     min-width: 100%;
     border-radius: 5px;
     overflow: hidden;
-    max-height: 0;
-    min-height: 0;
-    transition: min-height 0.5s;
 }
 
 .icon-message .message {
-    display:none;
     padding: 10px;
     color: white;
     font-weight: 500;
@@ -582,12 +581,14 @@ nav ul.dropdown-list .list-item-text.j-fix {
     line-height: 1.5;
 }
 
-.icon-message:hover .message-container {
+/* .icon-message:hover .message-container, */
+.icon-message.show .message-container {
+    display: flex;
     min-height: 140px;
 }
 
 .icon-message:hover .message {
-    display:block;
+    display: block;
 }
 
 .image-picker .icon-message {
@@ -595,6 +596,23 @@ nav ul.dropdown-list .list-item-text.j-fix {
     align-items: center;
 }
 
-.image-picker .icon-message .message-container {
-    min-width: 600px;
+
+.image-picker video {
+    max-width: 500px;
+}
+
+.image-picker .circular-progress-with-label .circular-progress-typography {
+    font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.image-picker-body p {
+    text-align: center;
+}
+
+@media (max-width: 375px) {
+    .image-picker-body {
+        justify-content: flex-start !important;
+    }
 }

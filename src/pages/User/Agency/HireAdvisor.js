@@ -46,7 +46,7 @@ const HireAdvisor = () => {
     handleDropdownChange,
     setFields,
     setFormData,
-  } = useFormData();
+  } = useFormData({uploadGuidePage: 'hire-advisor'});
 
   const [isLoading, setIsloading] = useState(true);
 

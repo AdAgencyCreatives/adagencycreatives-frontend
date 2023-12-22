@@ -15,10 +15,17 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import useFormData from "../../hooks/useFormData";
 
+import useUploadHelper from "../../hooks/useUploadHelper";
+import IconMessage from "../../components/IconMessage";
+
 const JobPostForm = ({ id, setJobStatus }) => {
   const editorRefTinyMCE = useRef(null);
   const [useTinyMCE, setUseTinyMCE] = useState(true);
   const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
+
+  const { getUploadGuide, getUploadGuideMessage } = useUploadHelper();
+  const imageUploadGuide = getUploadGuide('image', 'job-post-form');
+  const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
 
   const {
     states: {
@@ -59,7 +66,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
     setFormData,
     setEditorRef,
     formData,
-  } = useFormData({ id, setJobStatus, useTinyMCE });
+  } = useFormData({ id, setJobStatus, useTinyMCE, uploadGuidePage: 'job-post-form' });
 
   useEffect(() => {
     /* Hack to resolve focus issue with TinyMCE editor in bootstrap model dialog */
@@ -75,7 +82,6 @@ const JobPostForm = ({ id, setJobStatus }) => {
   const performInitTinyMCE = (evt, editor) => {
     setIsLoadingTinyMCE(false);
     editorRefTinyMCE.current = editor;
-    editor.focus();
   };
 
   const [isLoading, setIsloading] = useState(true);
@@ -110,6 +116,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           type: "image",
           image: isEdit ? single_job.agency.logo : "",
           name: "company_logo",
+          accept: ".jpg, .jpeg, .png, .bmp, image/jpeg, image/png",
         },
         {
           label: "Agency Job Title",
@@ -327,7 +334,10 @@ const JobPostForm = ({ id, setJobStatus }) => {
                               <FiTrash2 /> Remove
                             </button>
                           </div>
-                          <input type="file" ref={imageUploadRef} className="d-none" onChange={handleFileChange} />
+                          <div className="col-md-7 col-sm-4 col-12">
+                            <IconMessage message={imageUploadGuideMessage} />
+                          </div>
+                          <input type="file" ref={imageUploadRef} className="d-none" onChange={handleFileChange} accept={field.accept} />
                         </div>
                       </div>
                     );

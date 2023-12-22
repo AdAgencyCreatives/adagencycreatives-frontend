@@ -7,7 +7,12 @@ import { EditorState, ContentState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import moment from "moment";
 
+import useUploadHelper from "./useUploadHelper";
+
 const useFormData = (props = {}) => {
+
+  const { isFileValid } = useUploadHelper();
+
   const id = props.id;
   const setJobStatus = props.setJobStatus;
   const cityRef = useRef();
@@ -228,8 +233,16 @@ const useFormData = (props = {}) => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    logoRef.current.src = URL.createObjectURL(file);
     if (file) {
+      let validationResult = isFileValid(file, "image", props?.uploadGuidePage);
+      if (!validationResult.status) {
+        imageUploadRef.current.value = '';
+        showAlert(validationResult.message);
+        return;
+      }
+
+      logoRef.current.src = URL.createObjectURL(file);
+
       const formData = new FormData();
       formData.append("file", file);
       formData.append("user_id", user.uuid);

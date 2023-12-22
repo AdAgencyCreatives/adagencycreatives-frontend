@@ -9,12 +9,13 @@ export const getAttachments = async (user_id) => {
     return null;
 };
 
-export const saveAttachment = async (data) => {
+export const saveAttachment = async (data, progressHandler) => {
     try {
         const response = await api.post("/attachments", data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
+            onUploadProgress: progressHandler
         });
         return response.data.data;
     } catch (error) {

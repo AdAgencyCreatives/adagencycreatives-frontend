@@ -7,6 +7,8 @@ import { Context as AuthContext } from "../../../context/AuthContext";
 import { saveAttachment } from "../../../context/AttachmentsDataContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 
+import CircularProgressWithLabel from "../../CircularProgressWithLabel";
+
 import useUploadHelper from "../../../hooks/useUploadHelper";
 import IconMessage from "../../IconMessage";
 
@@ -25,6 +27,8 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
   const [preview, setPreview] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [acceptFileTypes, setAcceptFileTypes] = useState("image/*");
+
+  const [fileUploadProgress, setFileUploadProgress] = useState(0);
 
   // Create a reference to the hidden file input element
   const hiddenFileInput = useRef(null);
@@ -102,7 +106,7 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
     formData.append("resource_type", "post_attachment_" + allowType);
     formData.append("file", file);
 
-    let result = await saveAttachment(formData);
+    let result = await saveAttachment(formData, progressHandler);
 
     if (result && result.resource_type) {
       postAttachments.push(result);
@@ -114,6 +118,12 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
       setPreview("");
       setIsFileUploading(false);
     }
+  };
+
+  const progressHandler = (progressEvent) => {
+    let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+    //console.log(percentCompleted);
+    setFileUploadProgress(percentCompleted)
   };
 
   const handleModalClose = (e) => {
@@ -144,19 +154,28 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
             {allowType == "image" && (
               <p><img className="image-to-upload" src={preview} alt="Upload preview" /></p>
             )}
-            {allowType == "video" && (
-              <video controls muted playsInline>
-                <source src="" type={"video/" + uploadedFile.name.substring(uploadedFile.name.lastIndexOf('.') + 1)} />
-                Sorry, your browser doesn't support videos.
-              </video>
-            )}
+            {allowType == "video" && (<>
+              {/* <video controls muted playsInline>
+                 <source src="" type={"video/" + uploadedFile.name.substring(uploadedFile.name.lastIndexOf('.') + 1)} />
+                 Sorry, your browser doesn't support videos.
+              </video> */}
+            </>)}
           </>)}
-          {isFileUploading ? (<CircularProgress />) : (<></>)}
+          {isFileUploading && (
+            <>
+              {fileUploadProgress < 100 && <CircularProgressWithLabel value={fileUploadProgress} />}
+            </>)}
           <p className="m-0 h4">
-            {isFileUploading ? "Uploading file..." : "Select " + allowType + " file to begin (up to " + (allowType == "video" ? videoUploadGuide.maxSizeLabel : imageUploadGuide.maxSizeLabel) + ")"}
+            {isFileUploading ? (
+              <>
+                {fileUploadProgress < 100 ? "Uploading file: " + fileUploadProgress + "% complete..." : ""}
+                {fileUploadProgress >= 100 ? "Upload Success" : ""}
+              </>
+            ) : "Select " + allowType + " file to begin (up to " + (allowType == "video" ? videoUploadGuide.maxSizeLabel : imageUploadGuide.maxSizeLabel) + ")"}
+
           </p>
           <p className="m-0">
-            {isFileUploading ? "Please wait while your file is being uploaded." : "Share images or a single video in your post."}
+            {isFileUploading ? (fileUploadProgress >= 100 ? "Attaching file to your message" : "Please wait while your file is being uploaded.") : "Share images or a single video in your post."}
           </p>
           {!isFileUploading ? (
             <button className="btn btn-upload-img" onClick={handleClick}>Upload</button>
