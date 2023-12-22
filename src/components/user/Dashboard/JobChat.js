@@ -7,9 +7,9 @@ import UserList from "../../chat/UserList";
 import ChatBox from "../../chat/ChatBox";
 import { Context } from "../../../context/ChatContext";
 
-const JobChat = ({ getMessages }) => {
+const JobChat = ({ getMessages, getContacts }) => {
   const {
-    state: { contacts },
+    state: { contacts }
   } = useContext(Context);
   const [search, setSearch] = useState();
   const [tab, setTab] = useState("all");
@@ -17,7 +17,7 @@ const JobChat = ({ getMessages }) => {
   const [userListMobile, setUserListMobile] = useState("");
   const [chatBoxMobile, setChatBoxMobile] = useState("mobile-hide");
   const [contact, setContact] = useState({});
-  const [type, setType] = useState("job");
+  const [type, setType] = useState("job,private");
   const [contactsList, setContactsList] = useState([]);
 
   useEffect(() => {

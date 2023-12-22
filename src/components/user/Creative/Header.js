@@ -153,8 +153,9 @@ const Header = ({ data, role, user }) => {
                       open={open}
                       handleClose={handleClose}
                       item={data}
-                      type={isCreative ? "private" : "job"}
+                      type="private"
                     />
+                    {/* {isCreative ? "private" : "job"} */}
                   </>
                 )}
                 {isCreative && <FriendshipWidget creative={data} />}
