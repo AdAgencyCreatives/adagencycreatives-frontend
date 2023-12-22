@@ -110,7 +110,7 @@ const ApplyJob = ({ open, handleClose, job_id }) => {
                 )}
                 <p className="fs-5 text-center mt-3">Select your Resume</p>
                 <div className="d-flex flex-wrap gap-3 mb-2 justify-content-center">
-                  {resumeList.length > 0 ?
+                  {resumeList.length > 0 &&
                     resumeList.map((item) => (
                       <button
                         className={
@@ -124,9 +124,7 @@ const ApplyJob = ({ open, handleClose, job_id }) => {
                         </span>
                         <div className="filename">{item.name}</div>
                       </button>
-                    )) : (
-
-                    )}
+                    ))}
                 </div>
                 <p className="fs-5 text-center mt-3">or upload your CV</p>
                 <div class="form-group upload-file-btn-wrapper">
