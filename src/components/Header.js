@@ -101,6 +101,22 @@ function Header(props) {
     return true;
   };
 
+  const validateChildren = (item) => {
+    if (item && item.children && item.children.length > 0) {
+      if (item.roles_children && item.roles_children.length > 0) {
+        for (let index = 0; index < item.roles_children.length; index++) {
+          const role = item.roles_children[index];
+          if (state.role == role) {
+            return true;
+          }
+        }
+        return false;
+      }
+      return true;
+    }
+    return false;
+  };
+
   const drawer = (
     <Box onClick={handleDrawerToggle}>
       <ScrollToHash />
@@ -214,13 +230,13 @@ function Header(props) {
                   }}
                 >
                   {navItems.map((item) => (
-                    <div key={item.name} className={`nav-item${item.children ? " has-children" : ""}`}>
+                    <div key={item.name} className={`nav-item${validateChildren(item) ? " has-children" : ""}`}>
                       <NavLink to={item.link}>
-                        <StyledButton color="link" className={`menu-link-btn ${item.children ? " dropdown-toggle" : ""}`} onClick={(e) => validateAccess(e, item)}>
+                        <StyledButton color="link" className={`menu-link-btn ${validateChildren(item) ? " dropdown-toggle" : ""}`} onClick={(e) => validateAccess(e, item)}>
                           {item.name}
                         </StyledButton>
                       </NavLink>
-                      {item.children && item.children.length > 0 && (
+                      {validateChildren(item) && (
                         <div className="dropdown-menu show">
                           <ul className="dropdown-list">
                             {item.children.map((child) => (

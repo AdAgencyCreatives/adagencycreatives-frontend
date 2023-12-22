@@ -25,7 +25,9 @@ export const navItems = [
   { name: "Creatives", link: "/creatives", auth: true },
   { name: "The Lounge", link: "/community", roles: ["admin", "creative"], restrictedMessage: 'Please login as Creative to access' },
   {
-    name: "Agencies", link: "/agencies",
+    name: "Agencies",
+    link: "/agencies",
+    roles_children: ["admin"],
     children: [
       { name: "Advisor", hashLink: "agencies/advisor", link: "/agencies/advisor" },
       { name: "Recruiter", hashLink: "agencies/recruiter", link: "/agencies/recruiter" },
