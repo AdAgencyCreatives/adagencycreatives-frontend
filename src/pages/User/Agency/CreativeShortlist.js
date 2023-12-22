@@ -45,6 +45,7 @@ const CreativeShortlist = () => {
   }, [user]);
 
   const openMessageDialog = (item) => {
+    console.log(item);
     setItem(item);
     setOpen(true);
   };

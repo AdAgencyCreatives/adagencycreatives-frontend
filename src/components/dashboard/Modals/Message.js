@@ -2,11 +2,12 @@ import { Modal, Dialog, CircularProgress } from "@mui/material";
 import { useContext, useEffect } from "react";
 import { Context as AuthContext, logActivity } from "../../../context/AuthContext";
 import { Context as ChatContext } from "../../../context/ChatContext";
+import { Context as AlertContext } from "../../../context/AlertContext";
 import { useState } from "react";
 
 const Message = ({ open, handleClose, item, type }) => {
   const [data, setData] = useState({ subject: "", message: "" });
-  const [message, setMessage] = useState(false);
+
   const {
     state: { loading },
     sendMessage,
@@ -16,14 +17,21 @@ const Message = ({ open, handleClose, item, type }) => {
     state: { user },
   } = useContext(AuthContext);
 
-  useEffect(() => {
-    setMessage(false)
-  },[open])
+  const {
+    state: { message },
+    showAlert,
+  } = useContext(AlertContext);
+
+  // useEffect(() => {
+  //   showAlert(false)
+  // },[open])
 
   const handleSubmit = () => {
-    sendMessage(user.uuid, item.user_id, data.message, type, () =>
-      setMessage(true)
-    );
+    sendMessage(user.uuid, item.user_id, data.message, type, () => {
+      handleClose();
+      showAlert('Message sent successfully.');
+      setData({ subject: "", message: "" });
+    });
     logActivity(user.uuid, "message_sent", "You sent message to Creative: " + item.name, "{user_id:'" + user.uuid + "', creative_id:'" + item.user_id + "'}");
   };
 
@@ -47,11 +55,11 @@ const Message = ({ open, handleClose, item, type }) => {
                 >
                   Send Message to "{item.name}"
                 </p>
-                {message && (
+                {/* {message && (
                   <div className={`alert alert-info`}>
                     Sent message successful.
                   </div>
-                )}
+                )} */}
                 <div className="form-group" style={{display: "none" }}>
                   <input
                     className="form-control mb-4"

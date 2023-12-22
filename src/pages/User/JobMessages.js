@@ -7,13 +7,13 @@ const JobMessages = () => {
   const { getContacts, getMessages } = useContext(ChatContext);
 
   useEffect(() => {
-    getContacts("job");
+    getContacts("job,private");
   }, []);
 
   return (
     <div className="agency-page-myjobs">
       <h3 className="page-title">Messages</h3>
-      <JobChat getMessages={getMessages} />
+      <JobChat getMessages={getMessages} getContacts={getContacts} />
     </div>
   );
 };
