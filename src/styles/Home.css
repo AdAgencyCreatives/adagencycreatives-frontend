@@ -10,7 +10,7 @@ h1.bannerHeading {
     margin: 0;
     color: white;
     font-weight: 400;
-
+    min-height: 73.2px;
 }
 
 .banner {
@@ -40,6 +40,7 @@ p.subHeading {
     font-size: 20px;
     margin: 0px;
     color: white;
+    min-height: 73.2px;
 }
 
 .searchArea {

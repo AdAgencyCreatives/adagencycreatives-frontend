@@ -87,7 +87,8 @@ const ChatBox = ({
         messageBody += item.url;
       });
     }
-    await sendMessage(user.uuid, contact.uuid, messageBody);
+    const type = messageData.slice(-1).pop()?.type ?? 'job';
+    await sendMessage(user.uuid, contact.uuid, messageBody, type);
     showAlert("Message sent");
     const id = contact.uuid;
 

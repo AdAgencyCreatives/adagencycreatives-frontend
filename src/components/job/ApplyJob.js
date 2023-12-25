@@ -45,6 +45,8 @@ const ApplyJob = ({ open, handleClose, job_id }) => {
       setMessage(true);
       setError(false);
       setTimeout(handleClose, 700);
+      // setResumeList([]);
+      setJobMessage('');
     } catch (e) {
       console.log(e);
       setMessage(false);
