@@ -84,9 +84,9 @@ const getAgencieRoles = (dispatch) => {
 };
 
 const getAgency = (dispatch) => {
-  return async (slug, self = false) => {
+  return async (slug, self = false, role = false) => {
     try {
-      const response = await api.get("/agencies?filter[status]=1&filter[slug]=" + slug + (self ? "" : "&filter[is_visible]=1"));
+      const response = await api.get("/agencies?filter[status]=1&filter[slug]=" + slug + (self ? "" : "&filter[is_visible]=1") + (role ? "&filter[role]=" + role : ""));
       const data = response.data.data[0];
       const uid = data.user_id;
       getOpenPositions(dispatch, uid);
