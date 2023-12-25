@@ -68,7 +68,7 @@ const Profile = () => {
     <Loader />
   ) : (
     <>
-      {token && user && (role == "admin") ? (
+      {token && user ? (
         <>
           <div className="profile-header">
             {page === "creative" ? (

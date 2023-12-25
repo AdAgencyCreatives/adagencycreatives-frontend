@@ -163,7 +163,7 @@ export const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: "/:type/:username/:role_name",
+        path: "/:type/:username",
         element: <Profile />,
       },
       {
