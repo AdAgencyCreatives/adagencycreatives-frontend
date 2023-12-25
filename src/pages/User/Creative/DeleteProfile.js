@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import "../../../styles/AgencyDashboard/ChangePassword.scss";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import { CircularProgress } from "@mui/material";
