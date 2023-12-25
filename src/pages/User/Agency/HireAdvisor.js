@@ -35,7 +35,8 @@ const HireAdvisor = () => {
       isMounted,
       fields,
       formData,
-      user
+      user,
+      cityRef,
     },
     changeState,
     handleTextChange,
@@ -90,7 +91,6 @@ const HireAdvisor = () => {
           callback: (item) => handleDropdownChange(item, "start_date"),
           placeholder: "When do you need to start",
         },
-
         {
           label: "Job Location (State / Major City)",
           required: true,
@@ -118,7 +118,7 @@ const HireAdvisor = () => {
         },
         {
           label: "Salary Range",
-          required: true,
+          required: false,
           type: "text",
           name: "salary_range",
           placeholder: "if required by your state",
@@ -186,6 +186,8 @@ const HireAdvisor = () => {
       is_opentoremote: 0,
       is_opentorelocation: 0,
       comments: "",
+      state_id: "",
+      city_id: "",
     });
   }, []);
 
@@ -202,6 +204,7 @@ const HireAdvisor = () => {
       <div className="card">
         <h4 className="text-uppercase mb-4">Tell us about your creative needs</h4>
         <div className="profile-edit-form">
+        <form onSubmit={handleSubmit}>
           <div className="row gx-3 gy-5 align-items-end">
             {fields.map((field, index) => {
               switch (field.type) {
@@ -216,6 +219,7 @@ const HireAdvisor = () => {
                         type="text"
                         className="form-control"
                         value={field.value}
+                        required={field.required}
                         onChange={(e) => handleTextChange(e, field.name)}
                       />
                     </div>
@@ -247,6 +251,7 @@ const HireAdvisor = () => {
                       <DatePicker
                         className="form-control"
                         selected={field.value}
+                        required={field.required}
                         onChange={(date) => handleDateChange(date, field.name)}
                         dateFormat="MMMM d, yyyy"
                       />
@@ -265,6 +270,8 @@ const HireAdvisor = () => {
                         onChange={field.callback}
                         placeholder={field.placeholder}
                         defaultValue={field.value}
+                        required={field.required}
+                        ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}
                         styles={{
                           control: (baseStyles) => ({
                             ...baseStyles,
@@ -300,6 +307,7 @@ const HireAdvisor = () => {
                           name={field.name}
                           value={1}
                           checked={field.value}
+                          required={field.required}
                           onChange={(e) => handleRadioChange(e, field.name)}
                         />
                         <label
@@ -316,6 +324,7 @@ const HireAdvisor = () => {
                           name={field.name}
                           value={0}
                           checked={!field.value}
+                          required={field.required}
                           onChange={(e) => handleRadioChange(e, field.name)}
                         />
                         <label
@@ -364,13 +373,13 @@ const HireAdvisor = () => {
           <div className="submit-btn mt-4">
             <button
               className="btn btn-dark btn-hover-primary border-0 px-3 py-2"
-              onClick={handleSubmit}
               disabled={formSubmit}
             >
               Send Request
               {formSubmit && <CircularProgress size={20} />}
             </button>
           </div>
+        </form>
         </div>
       </div>
     </div>
