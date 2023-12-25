@@ -13,6 +13,7 @@ const state = {
   role: null,
   user: null,
   formSubmit: false,
+  modal: false,
   notifications_count: 0,
   activities_count: 0,
   messageAlert: { type: "", message: "", display: "" },
@@ -28,7 +29,6 @@ const authReducer = (state, action) => {
         token: action.payload.token,
         role: action.payload.role,
       };
-
     case "set_form_message":
       return { ...state, formMessage: action.payload };
     case "set_user":
@@ -43,15 +43,14 @@ const authReducer = (state, action) => {
       return { ...state, fetchingToken: action.payload };
     case "set_form_submit":
       return { ...state, formSubmit: action.payload };
-
+    case "set_modal":
+      return { ...state, modal: action.payload };
     case "set_notifications_count":
       return { ...state, notifications_count: action.payload };
     case "set_activities_count":
       return { ...state, activities_count: action.payload };
-
     case "show_message_alert":
       return { ...state, messageAlert: action.payload };
-
     default:
       return state;
   }
@@ -170,7 +169,7 @@ const reloadUserData = (dispatch) => {
     try {
       const response = await api.get("/users/" + user_id);
       setUserData(dispatch, response.data.data);
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -209,6 +208,40 @@ const updatePassword = (dispatch) => {
   };
 };
 
+const confirmPassword = (dispatch) => {
+  return async (data) => {
+    setFormSubmit(dispatch, true);
+    try {
+      const response = await api.patch("/confirm_password", data);
+      setModal(dispatch, true);
+      showMessageAlert(dispatch, {
+        type: "",
+        message: "",
+        display: "",
+      });
+    } catch (error) {
+      showMessageAlert(dispatch, {
+        type: "error",
+        message: error.response.data.message,
+        display: "true",
+      });
+    }
+    setFormSubmit(dispatch, false);
+  };
+};
+
+const deleteProfile = (dispatch) => {
+  return async (user_id, callback) => {
+    setFormSubmit(dispatch, true);
+    try {
+      const response = await api.delete("/users/" + user_id);
+      logout();
+      callback();
+    } catch (error) { }
+    setFormSubmit(dispatch, false);
+  };
+};
+
 const getNotificationsCount = (dispatch) => {
   return async (user_id) => {
     try {
@@ -217,7 +250,7 @@ const getNotificationsCount = (dispatch) => {
         type: "set_notifications_count",
         payload: response.data.count,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -229,7 +262,7 @@ const getActivitiesCount = (dispatch) => {
         type: "set_activities_count",
         payload: response.data.count,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -332,6 +365,13 @@ const setFormSubmit = (dispatch, state) => {
   });
 };
 
+const setModal = (dispatch, state) => {
+  dispatch({
+    type: "set_modal",
+    payload: state,
+  });
+};
+
 const showMessageAlert = (dispatch, globalState) => {
   dispatch({
     type: "show_message_alert",
@@ -354,8 +394,14 @@ export const logActivity = async (user_id, type, message, body) => {
       body: body && body.length ? body : "{}",
     });
     return response.data;
-  } catch (error) {}
+  } catch (error) { }
   return null;
+};
+
+const handleClose = (dispatch) => {
+  return async (data) => {
+    setModal(dispatch, false);
+  };
 };
 
 export const { Context, Provider } = createDataContext(
@@ -375,6 +421,9 @@ export const { Context, Provider } = createDataContext(
     getActivitiesCount,
     reloadUserData,
     verifyToken,
+    deleteProfile,
+    confirmPassword,
+    handleClose,
   },
   state
 );
