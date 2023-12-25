@@ -19,7 +19,7 @@ import useHelper from "../../../hooks/useHelper";
 
 const Sidebar = ({ data, role, user }) => {
 
-  const { encodeSpecial, decodeSpecial } = useHelper();
+  const { encodeSpecial, decodeSpecial, formatPhone } = useHelper();
 
   const {
     state: { resume, video },
@@ -120,18 +120,6 @@ const Sidebar = ({ data, role, user }) => {
           ))}
       </>
     );
-  };
-
-  const formatPhone = (phone) => {
-    let result = [];
-    for (let i = 0; i < phone.length; i++) {
-      const element = phone[i];
-      result.push(element);
-      if (i == 2 || i == 5) {
-        result.push('-');
-      }
-    }
-    return result.join('');
   };
 
   return (

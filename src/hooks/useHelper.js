@@ -24,10 +24,10 @@ const useHelper = () => {
     })();
 
     const replacer = (matched) => {
-        if(matched.indexOf("href=")>=0 || matched.indexOf("</a>")>=0) {
+        if (matched.indexOf("href=") >= 0 || matched.indexOf("</a>") >= 0) {
             return matched;
         }
-        
+
         let withProtocol = matched;
 
         if (!withProtocol.startsWith("http")) {
@@ -59,11 +59,11 @@ const useHelper = () => {
     };
 
     const specialCharsToEncode = {
-        "/":"%2F",
-        "'":"%27",
-        "+":"%2B",
-        "&":"%26",
-        "#":"%23",
+        "/": "%2F",
+        "'": "%27",
+        "+": "%2B",
+        "&": "%26",
+        "#": "%23",
     };
 
     const encodeSpecial = (text) => {
@@ -71,8 +71,8 @@ const useHelper = () => {
         for (const key in specialCharsToEncode) {
             if (Object.hasOwnProperty.call(specialCharsToEncode, key)) {
                 const element = specialCharsToEncode[key];
-                while(result.indexOf(key)>= 0) {
-                    result= result.replace(key, element);
+                while (result.indexOf(key) >= 0) {
+                    result = result.replace(key, element);
                 }
             }
         }
@@ -84,15 +84,54 @@ const useHelper = () => {
         for (const key in specialCharsToEncode) {
             if (Object.hasOwnProperty.call(specialCharsToEncode, key)) {
                 const element = specialCharsToEncode[key];
-                while(result.indexOf(element)>= 0) {
-                    result= result.replace(element, key);
+                while (result.indexOf(element) >= 0) {
+                    result = result.replace(element, key);
                 }
             }
         }
         return result;
     };
 
-    return { decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial };
+    const strReplaceAll = (source, search, replace) => {
+        if (replace.indexOf(search) >= 0) {
+            throw "Replace text should not contain search text, it will create infinite search replace.";
+        }
+        let sourceCopy = source;
+        while (sourceCopy.indexOf(search) >= 0) {
+            sourceCopy = sourceCopy.replace(search, replace);
+        }
+        return sourceCopy;
+    };
+
+    function isCharNumber(c) {
+        return typeof c === 'string' && c.length == 1 && c >= '0' && c <= '9';
+    }
+
+    const getNumericString = (phone) => {
+        let result = [];
+        for (let i = 0; i < phone.length; i++) {
+            const element = phone[i];
+            if (isCharNumber(element)) {
+                result.push(element);
+            }
+        }
+        return result.join('');
+    };
+
+    const formatPhone = (phone) => {
+        phone = getNumericString(phone);
+        let result = [];
+        for (let i = 0; i < phone.length; i++) {
+            const element = phone[i];
+            result.push(element);
+            if (i == 2 || i == 5) {
+                result.push('-');
+            }
+        }
+        return result.join('');
+    };
+
+    return { decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial, strReplaceAll, isCharNumber, getNumericString, formatPhone };
 }
 
 export default useHelper;
