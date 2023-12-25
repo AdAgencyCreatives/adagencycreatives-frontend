@@ -6,7 +6,7 @@ import { Editor } from "react-draft-wysiwyg";
 import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Placeholder from "../../../assets/images/placeholder.png";
-import { FiFile, FiPaperclip, FiTrash2 } from "react-icons/fi";
+import { FiFile, FiPaperclip, FiTrash2, FiUnderline } from "react-icons/fi";
 import { Context as DataContext } from "../../../context/DataContext";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
@@ -141,6 +141,7 @@ const Profile = () => {
           name: "company_logo",
           accept: ".jpg, .jpeg, .png, .bmp, image/jpeg, image/png",
           id: single_agency.logo_id,
+          value: single_agency.logo ? single_agency.logo : "",
         },
         {
           label: "Company Name",
@@ -216,7 +217,7 @@ const Profile = () => {
           required: true,
           type: "editor",
           name: "about",
-          value: user.about,
+          value: single_agency.about,
         },
         {
           label: "Industry Specialty",
@@ -276,6 +277,7 @@ const Profile = () => {
           required: false,
           type: "video",
           name: "company_video",
+          value: videoItem ? videoItem.name : "",
         },
       ]);
     }
@@ -314,9 +316,11 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    setVideoItem(video);
-    setIsVideoUploaded(true);
-    console.log("isVideoUploaded: " + isVideoUploaded);
+    if (video) {
+      setVideoItem(video);
+      setIsVideoUploaded(true);
+      console.log("isVideoUploaded: " + isVideoUploaded);
+    }
   }, [video]);
 
   useEffect(() => {
@@ -428,21 +432,33 @@ const Profile = () => {
     console.log(formData);
   }, [formData]);
 
+  const isObject = (value) => {
+    return value?.constructor?.toString()?.indexOf("Object") > -1;
+  };
+
   const validated = () => {
 
     for (let index = 0; index < fields.length; index++) {
       const field = fields[index];
-      let decision = true;
+      let isValid = true;
 
-      if (field.name == "company_logo") {
-        decision = isLogoUploaded;
-      } else if (field.name == "company_video") {
-        decision = isVideoUploaded;
-      } else if (field.required) {
-        decision = field.value || formData[field.name];
+      if (field.required) {
+        isValid = field?.value?.length > 0;
+
+        if (isObject(field?.value)) {
+          isValid = Object.keys(field?.value).length > 0;
+        }
+
+        if (field.type == "dropdown" && (field.name == 'industry_experience' || field.name == 'media_experience')) {
+          isValid = formData[field.name].length > 0;
+        }
+
+        if (field.name == "workplace_preference") {
+          isValid = formData['is_remote'] == 1 || formData['is_hybrid'] == 1 || formData['is_onsite'] == 1;
+        }
       }
 
-      if (!decision) {
+      if (!isValid) {
         showAlert(field.label + " is required");
         return false;
       }
@@ -450,6 +466,7 @@ const Profile = () => {
 
     return true;
   };
+  
   const handleSubmit = () => {
     if (!validated()) {
       return;
@@ -477,8 +494,12 @@ const Profile = () => {
         return;
       }
 
-      if (resource == "agency_logo") ref.current.src = URL.createObjectURL(file);
-      else setVideoItem({ name: file.name });
+      if (resource == "agency_logo") {
+        ref.current.src = URL.createObjectURL(file);
+      } else {
+        setVideoItem({ name: file.name });
+      }
+
       const localFormData = new FormData();
       localFormData.append("file", file);
       localFormData.append("user_id", user.uuid);
@@ -494,6 +515,8 @@ const Profile = () => {
         console.log("isVideoUploaded: " + isVideoUploaded);
       }
 
+      updateFieldValue(field.name, file.name);
+
       showAlert((resource == "agency_logo" ? "Logo" : "Video") + " uploaded successfully");
     }
   };
@@ -507,6 +530,7 @@ const Profile = () => {
     setIsVideoUploaded(false);
     videoUploadRef.current.value = '';
     console.log("isVideoUploaded: " + isVideoUploaded);
+    setVideoItem(null);
     showAlert("Video removed successfully");
   };
 
@@ -573,17 +597,17 @@ const Profile = () => {
                         <div className="col-md-12 col-sm-12 col-12">
                           {videoItem && (
                             <>
-                              <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2" onClick={(e)=> setShowVideoItem(state => !state) }>
+                              <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2" onClick={(e) => setShowVideoItem(state => !state)}>
                                 <span className="icon_type">
                                   <FiFile />
                                 </span>
                                 <div className="filename">{videoItem.name}</div>
                               </button>
                               {showVideoItem && videoItem?.url?.length && (
-                              <video controls muted playsInline>
-                                <source src={videoItem?.url} type={"video/" + videoItem?.url?.substring(videoItem?.url?.lastIndexOf('.') + 1)} />
-                                Sorry, your browser doesn't support videos.
-                              </video>
+                                <video controls muted playsInline>
+                                  <source src={videoItem?.url} type={"video/" + videoItem?.url?.substring(videoItem?.url?.lastIndexOf('.') + 1)} />
+                                  Sorry, your browser doesn't support videos.
+                                </video>
                               )}
                             </>
                           )}

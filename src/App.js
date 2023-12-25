@@ -64,9 +64,9 @@ function App() {
                         <GroupsProvider>
                           <NotificationsProvider>
                             <div className="App">
+                              <ChatListener />
+                              <ScrollRestoration />
                               {!skipHeaderFooter ? (<>
-                                <ChatListener />
-                                <ScrollRestoration />
                                 <Header />
                               </>) : (<></>)}
                               <Outlet context={[setSkipHeaderFooter]} />

@@ -121,6 +121,7 @@ const Profile = () => {
           name: "profile_image",
           accept: ".jpg, .jpeg, .png, .bmp, image/jpeg, image/png",
           image: single_creative.profile_image,
+          value: single_creative.profile_image,
         },
         {
           label: "First Name",
@@ -381,7 +382,55 @@ const Profile = () => {
     // console.log(formData);
   }, [formData]);
 
+  
+  const getFieldByName = (name) => {
+    for (let index = 0; index < fields.length; index++) {
+      const element = fields[index];
+      if (element.name == name) {
+        return element;
+      }
+    }
+    return null;
+  };
+
+  const updateFieldValue = (name, value) => {
+    let field = getFieldByName(name);
+    field.value = value;
+    setFields(fields.map((item) => item.name == field.name ? field : item));
+  };
+
+  const isObject = (value) => {
+    return value?.constructor?.toString()?.indexOf("Object") > -1;
+  };
+
+  const validated = () => {
+
+    for (let index = 0; index < fields.length; index++) {
+      const field = fields[index];
+      let isValid = true;
+
+      if (field.required) {
+        isValid = field?.value?.length > 0;
+
+        if (isObject(field?.value)) {
+          isValid = Object.keys(field?.value).length > 0;
+        }
+      }
+
+      if (!isValid) {
+        showAlert(field.label + " is required");
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const handleSubmit = () => {
+    if (!validated()) {
+      return;
+    }
+
     (async () => {
       await saveCreative(user.uuid, formData);
       reloadUserData(user.uuid);
@@ -393,6 +442,7 @@ const Profile = () => {
   const removeLogo = () => {
     imageUploadRef.current.value = '';
     logoRef.current.src = "";
+    updateFieldValue("profile_image", '');
   };
 
   const handleFileChange = (event) => {
@@ -415,6 +465,7 @@ const Profile = () => {
       (async () => {
         await saveCreativeImage(formData);
         reloadUserData(user.uuid);
+        updateFieldValue("profile_image", file.name);
         showAlert("Creative logo updated successfully");
       })();
     }
