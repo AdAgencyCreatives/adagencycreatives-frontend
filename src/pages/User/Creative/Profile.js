@@ -381,7 +381,6 @@ const Profile = () => {
   useEffect(() => {
     // console.log(formData);
   }, [formData]);
-
   
   const getFieldByName = (name) => {
     for (let index = 0; index < fields.length; index++) {

@@ -17,6 +17,7 @@ import useFormData from "../../hooks/useFormData";
 
 import useUploadHelper from "../../hooks/useUploadHelper";
 import IconMessage from "../../components/IconMessage";
+import { Context as AlertContext } from "../../context/AlertContext";
 
 const JobPostForm = ({ id, setJobStatus }) => {
   const editorRefTinyMCE = useRef(null);
@@ -26,6 +27,10 @@ const JobPostForm = ({ id, setJobStatus }) => {
   const { getUploadGuide, getUploadGuideMessage } = useUploadHelper();
   const imageUploadGuide = getUploadGuide('image', 'job-post-form');
   const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
+
+  const {
+    showAlert
+  } = useContext(AlertContext);
 
   const {
     states: {
