@@ -10,6 +10,7 @@ const state = {
   stats: null,
   formSubmit: false,
   subscription: null,
+  request_package: null,
   video: null,
 };
 
@@ -54,6 +55,8 @@ const reducer = (state, action) => {
       return { ...state, stats: action.payload.stats };
     case "set_subscription":
       return { ...state, subscription: action.payload };
+    case "set_request_package":
+      return { ...state, request_package: action.payload };
     default:
       return state;
   }
@@ -221,11 +224,12 @@ const searchAgencies = (dispatch) => {
 };
 
 const requestPackage = (dispatch) => {
-  return async (data) => {
+  return async (data, callback) => {
     setFormSubmit(dispatch, true);
     try {
-      console.log(data);
       const response = await api.post("/package-requests", data);
+      setRequestPackage(dispatch, data);
+      callback();
     } catch (error) { }
     setFormSubmit(dispatch, false);
   };
@@ -254,6 +258,13 @@ const setFormSubmit = (dispatch, status) => {
   dispatch({
     type: "set_form_submit",
     payload: status,
+  });
+};
+
+const setRequestPackage = (dispatch, state) => {
+  dispatch({
+    type: "set_request_package",
+    payload: state,
   });
 };
 
