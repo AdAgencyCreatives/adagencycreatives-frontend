@@ -160,10 +160,9 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
     }); */
     try {
       const result = await signup(fields[tab], tab);
-      showAlert("Registration Success");
+      handleClose();
+      showAlert("registration-success"); // never change this as it displays registration success message.
     } catch (e) {
-      
-    } finally {
       dialogRef.current.getElementsByClassName("MuiDialog-container")[0].scrollTo({
         top: 0,
         behavior: "smooth",
