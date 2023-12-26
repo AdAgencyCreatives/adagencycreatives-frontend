@@ -479,7 +479,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                                   plugins: 'anchor autolink charmap codesample emoticons link lists searchreplace visualblocks wordcount',
                                   toolbar: 'bold italic underline strikethrough | blocks fontfamily fontsize | numlist bullist link | emoticons charmap | align lineheight | indent outdent | removeformat',
                                   content_style: 'body { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; font-size: 14pt }',
-                                  placeholder: 'What do you want to talk about?',
+                                  placeholder: '',
                                 }}
                                 value={formData[field.name]}
                                 onEditorChange={(e) => {
