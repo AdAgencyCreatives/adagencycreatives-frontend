@@ -84,7 +84,7 @@ const Profile = () => {
   ];
 
   const {
-    state: { user },
+    state: { user, },
     reloadUserData,
   } = useContext(AuthContext);
 
@@ -109,7 +109,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (user) {
-      getAgencyById(user.uuid, true);
+      getAgencyById(user, true);
       getVideo(user.uuid);
     }
   }, [user]);

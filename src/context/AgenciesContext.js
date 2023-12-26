@@ -102,9 +102,13 @@ const getAgency = (dispatch) => {
 };
 
 const getAgencyById = (dispatch) => {
-  return async (id, self = false) => {
+  return async (user, self = false) => {
+    let role = 3; // agency
     try {
-      const response = await api.get("/agencies?filter[status]=1&filter[user_id]=" + id + (self ? "" : "&filter[is_visible]=1"));
+      if(user?.role) {
+        role = (user.role == 'advisor' ? 2 : ( user.role == 'recruiter' ? 5 : 3));
+      }
+      const response = await api.get("/agencies?filter[status]=1&filter[user_id]=" + user.uuid + "&filter[role]=" + role + (self ? "" : "&filter[is_visible]=1"));
       const data = response.data.data[0];
       const uid = data.user_id;
       getOpenPositions(dispatch)(uid);
