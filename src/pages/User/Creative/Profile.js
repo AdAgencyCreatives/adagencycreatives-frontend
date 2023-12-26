@@ -425,7 +425,7 @@ const Profile = () => {
       }
 
       if(field.name == "phone_number" && getNumericString(field.value).length != 10) {
-        showAlert(field.label + " must be exactly 10 digits");
+        showAlert("Please enter your 10-digit number");
           return false;
       }
     }
