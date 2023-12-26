@@ -12,6 +12,7 @@ import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
 import { CircularProgress } from "@mui/material";
 
+import useHelper from "../../../hooks/useHelper";
 import useUploadHelper from "../../../hooks/useUploadHelper";
 import IconMessage from "../../../components/IconMessage";
 
@@ -28,6 +29,7 @@ const Profile = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [baseUrl, setBaseUrl] = useState([]);
 
+  const { getNumericString } = useHelper();
   const { isFileValid, getUploadGuide, getUploadGuideMessage } = useUploadHelper();
   const imageUploadGuide = getUploadGuide('image', 'creative-profile');
   const videoUploadGuide = getUploadGuide('video', 'creative-profile');
@@ -168,6 +170,7 @@ const Profile = () => {
           type: "text",
           name: "phone_number",
           value: single_creative.phone_number,
+          placeholder: "###-###-####",
         },
         // {
         //   label: "About",
@@ -420,6 +423,11 @@ const Profile = () => {
         showAlert(field.label + " is required");
         return false;
       }
+
+      if(field.name == "phone_number" && getNumericString(field.value).length != 10) {
+        showAlert(field.label + " must be exactly 10 digits");
+          return false;
+      }
     }
 
     return true;
@@ -542,6 +550,7 @@ const Profile = () => {
                         className="form-control"
                         value={field.value}
                         onChange={(e) => handleTextChange(e, field.name)}
+                        placeholder={field.placeholder || ""}
                       />
                     </div>
                   );
