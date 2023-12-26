@@ -1,24 +1,26 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "../../../styles/AgencyDashboard/Profile.scss";
 import Select from "../../../components/Select";
-import { EditorState, ContentState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import htmlToDraft from "html-to-draftjs";
-import draftToHtml from "draftjs-to-html";
-import { FiPaperclip, FiTrash2 } from "react-icons/fi";
 import Loader from "../../../components/Loader";
 import { CircularProgress } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import useFormData from "../../../hooks/useFormData";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
+import { Context as AlertContext } from "../../../context/AlertContext";
 
 const HireAdvisor = () => {
+
   const {
     state: { formSubmit },
     requestPackage,
   } = useContext(AgenciesContext);
+
+  const {
+    showAlert
+  } = useContext(AlertContext);
 
   const {
     states: {
@@ -191,9 +193,12 @@ const HireAdvisor = () => {
     });
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     formData.user_id = user.uuid;
-    requestPackage(formData);
+    requestPackage(formData, () => {
+      showAlert("The request has been sent successfully!");
+    });
   };
 
   return isLoading ? (
@@ -204,182 +209,182 @@ const HireAdvisor = () => {
       <div className="card">
         <h4 className="text-uppercase mb-4">Tell us about your creative needs</h4>
         <div className="profile-edit-form">
-        <form onSubmit={handleSubmit}>
-          <div className="row gx-3 gy-5 align-items-end">
-            {fields.map((field, index) => {
-              switch (field.type) {
-                case "text":
-                  return (
-                    <div className="col-sm-6" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={field.value}
-                        required={field.required}
-                        onChange={(e) => handleTextChange(e, field.name)}
-                      />
-                    </div>
-                  );
-
-                case "textarea":
-                  return (
-                    <div className="col-sm-12" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      <textarea
-                        className="form-control"
-                        value={field.value}
-                        onChange={(e) => handleTextChange(e, field.name)}
-                        placeholder={field.placeholder}
-                      ></textarea>
-                    </div>
-                  );
-                case "date":
-                  return (
-                    <div className="col-sm-6" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      <br />
-                      <DatePicker
-                        className="form-control"
-                        selected={field.value}
-                        required={field.required}
-                        onChange={(date) => handleDateChange(date, field.name)}
-                        dateFormat="MMMM d, yyyy"
-                      />
-                    </div>
-                  );
-                case "dropdown":
-                  return (
-                    <div className="col-sm-6" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      <Select
-                        options={field.data}
-                        isMulti={field.isMulti || false}
-                        onChange={field.callback}
-                        placeholder={field.placeholder}
-                        defaultValue={field.value}
-                        required={field.required}
-                        ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}
-                        styles={{
-                          control: (baseStyles) => ({
-                            ...baseStyles,
-                            padding: "11px",
-                            backgroundColor: "#F6F6F6",
-                            border: "none",
-                          }),
-                          valueContainer: (baseStyles) => ({
-                            ...baseStyles,
-                            padding: "0px",
-                            fontSize: 20,
-                          }),
-                          singleValue: (baseStyles) => ({
-                            ...baseStyles,
-                            color: "#696969",
-                          }),
-                        }}
-                      />
-                    </div>
-                  );
-                case "radio":
-                  return (
-                    <div className="col-sm-6" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      <br />
-                      <div className="form-check">
-                        <input
-                          type="radio"
-                          className="form-check-input me-2"
-                          name={field.name}
-                          value={1}
-                          checked={field.value}
-                          required={field.required}
-                          onChange={(e) => handleRadioChange(e, field.name)}
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor={field.name}
-                        >
-                          Yes
+          <form onSubmit={handleSubmit}>
+            <div className="row gx-3 gy-5 align-items-end">
+              {fields.map((field, index) => {
+                switch (field.type) {
+                  case "text":
+                    return (
+                      <div className="col-sm-6" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
                         </label>
-                      </div>
-                      <div className="form-check">
                         <input
-                          type="radio"
-                          className="form-check-input me-2"
-                          name={field.name}
-                          value={0}
-                          checked={!field.value}
+                          type="text"
+                          className="form-control"
+                          value={field.value}
                           required={field.required}
-                          onChange={(e) => handleRadioChange(e, field.name)}
+                          onChange={(e) => handleTextChange(e, field.name)}
                         />
-                        <label
-                          className="form-check-label"
-                          htmlFor={field.name}
-                        >
-                          No
-                        </label>
                       </div>
-                    </div>
-                  );
+                    );
 
-                case "editor":
-                  return (
-                    <div className="col-12" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      {isMounted && (
-                        <Editor
-                          editorState={editorState}
-                          toolbarClassName="editorToolbar"
-                          wrapperClassName="editorWrapper"
-                          editorClassName="editorBody"
-                          toolbar={{
-                            options: [
-                              "inline",
-                              "blockType",
-                              "fontSize",
-                              "list",
-                              "textAlign",
-                              "link",
-                            ],
-                          }}
-                          onEditorStateChange={(newState) => {
-                            handleEditorChange(newState, field.name);
+                  case "textarea":
+                    return (
+                      <div className="col-sm-12" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
+                        <textarea
+                          className="form-control"
+                          value={field.value}
+                          onChange={(e) => handleTextChange(e, field.name)}
+                          placeholder={field.placeholder}
+                        ></textarea>
+                      </div>
+                    );
+                  case "date":
+                    return (
+                      <div className="col-sm-6" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
+                        <br />
+                        <DatePicker
+                          className="form-control"
+                          selected={field.value}
+                          required={field.required}
+                          onChange={(date) => handleDateChange(date, field.name)}
+                          dateFormat="MMMM d, yyyy"
+                        />
+                      </div>
+                    );
+                  case "dropdown":
+                    return (
+                      <div className="col-sm-6" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
+                        <Select
+                          options={field.data}
+                          isMulti={field.isMulti || false}
+                          onChange={field.callback}
+                          placeholder={field.placeholder}
+                          defaultValue={field.value}
+                          required={field.required}
+                          ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}
+                          styles={{
+                            control: (baseStyles) => ({
+                              ...baseStyles,
+                              padding: "11px",
+                              backgroundColor: "#F6F6F6",
+                              border: "none",
+                            }),
+                            valueContainer: (baseStyles) => ({
+                              ...baseStyles,
+                              padding: "0px",
+                              fontSize: 20,
+                            }),
+                            singleValue: (baseStyles) => ({
+                              ...baseStyles,
+                              color: "#696969",
+                            }),
                           }}
                         />
-                      )}
-                    </div>
-                  );
-              }
-            })}
-          </div>
-          <div className="submit-btn mt-4">
-            <button
-              className="btn btn-dark btn-hover-primary border-0 px-3 py-2"
-              disabled={formSubmit}
-            >
-              Send Request
-              {formSubmit && <CircularProgress size={20} />}
-            </button>
-          </div>
-        </form>
+                      </div>
+                    );
+                  case "radio":
+                    return (
+                      <div className="col-sm-6" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
+                        <br />
+                        <div className="form-check">
+                          <input
+                            type="radio"
+                            className="form-check-input me-2"
+                            name={field.name}
+                            value={1}
+                            checked={field.value}
+                            required={field.required}
+                            onChange={(e) => handleRadioChange(e, field.name)}
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor={field.name}
+                          >
+                            Yes
+                          </label>
+                        </div>
+                        <div className="form-check">
+                          <input
+                            type="radio"
+                            className="form-check-input me-2"
+                            name={field.name}
+                            value={0}
+                            checked={!field.value}
+                            required={field.required}
+                            onChange={(e) => handleRadioChange(e, field.name)}
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor={field.name}
+                          >
+                            No
+                          </label>
+                        </div>
+                      </div>
+                    );
+
+                  case "editor":
+                    return (
+                      <div className="col-12" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
+                        {isMounted && (
+                          <Editor
+                            editorState={editorState}
+                            toolbarClassName="editorToolbar"
+                            wrapperClassName="editorWrapper"
+                            editorClassName="editorBody"
+                            toolbar={{
+                              options: [
+                                "inline",
+                                "blockType",
+                                "fontSize",
+                                "list",
+                                "textAlign",
+                                "link",
+                              ],
+                            }}
+                            onEditorStateChange={(newState) => {
+                              handleEditorChange(newState, field.name);
+                            }}
+                          />
+                        )}
+                      </div>
+                    );
+                }
+              })}
+            </div>
+            <div className="submit-btn mt-4">
+              <button
+                className="btn btn-dark btn-hover-primary border-0 px-3 py-2"
+                disabled={formSubmit}
+              >
+                Send Request
+                {formSubmit && <CircularProgress size={20} />}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
