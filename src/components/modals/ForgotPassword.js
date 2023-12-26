@@ -66,7 +66,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                   {error}
                 </div>
               )}
-              <form className="login-form" onSubmit={handleSubmit}>
+              <form className="login-form" onSubmit={(e)=>handleSubmit(e)}>
                 <div className="form-group">
 {/*                   <label className="form-label">Email</label> */}
                   <input

@@ -160,15 +160,17 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
     }); */
     try {
       const result = await signup(fields[tab], tab);
-      handleClose();
       showAlert("Registration Success");
     } catch (e) {
+      
+    } finally {
       dialogRef.current.getElementsByClassName("MuiDialog-container")[0].scrollTo({
         top: 0,
         behavior: "smooth",
       });
     }
     setFormSubmit(false);
+    return false;
   };
 
   const toggleShow = (field, visible) => {
@@ -221,7 +223,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
                 </li>
               </ul>
               {message && <div className={`alert alert-${message.class}`}>{message.content}</div>}
-              <form id="register-form" onSubmit={handleFormSubmit}>
+              <form id="register-form" onSubmit={(e) => handleFormSubmit(e)}>
                 {fields[tab].map((field, index) => (
                   <div className="form-group position-relative" key={field.name}>
                     <label className="form-label">{field.label}</label>
