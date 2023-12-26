@@ -605,7 +605,7 @@ const MyResume = () => {
     } else if (name == "portfolio_item") {
 
       if (item?.items?.length >= 5) {
-        showAlert("Up to 5 images can be uploaded.");
+        showAlert("Up to 5 images can be uploaded");
         return;
       }
       item.items.push({ url: URL.createObjectURL(file) });

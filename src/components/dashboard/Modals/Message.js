@@ -29,7 +29,7 @@ const Message = ({ open, handleClose, item, type }) => {
   const handleSubmit = () => {
     sendMessage(user.uuid, item.user_id, data.message, type, () => {
       handleClose();
-      showAlert('Message sent successfully.');
+      showAlert('Message sent successfully');
       setData({ subject: "", message: "" });
     });
     logActivity(user.uuid, "message_sent", "You sent message to Creative: " + item.name, "{user_id:'" + user.uuid + "', creative_id:'" + item.user_id + "'}");
