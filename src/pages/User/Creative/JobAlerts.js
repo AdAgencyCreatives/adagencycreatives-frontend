@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Context as JobsContext } from "../../../context/JobsContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
@@ -6,30 +6,29 @@ import { FormControlLabel, FormGroup, Switch } from "@mui/material";
 import Loader from "../../../components/Loader";
 
 const JobAlerts = () => {
+
   const {
     state: { job_alerts, loading },
     getJobAlerts,
     setJobAlert,
   } = useContext(JobsContext);
+
   const { showAlert } = useContext(AlertContext);
-  const [checked, setChecked] = useState(false);
 
   const {
-    state: { user, token },
+    state: { user },
   } = useContext(AuthContext);
 
-  useEffect(() => {
-    setChecked(job_alerts?.status == "Active" ? true : false);
-  }, [job_alerts]);
+  const handleChange = async (e, item) => {
+    const active = e.target.checked ? 1 : 0;
+    await setJobAlert(item.uuid, item.user_id, item.category_id, active);
+    showAlert(active ? "Notifications enabled" : "Notifications disabled");
+  };
 
   useEffect(() => {
     if (user) getJobAlerts(user.uuid);
   }, [user]);
-  const handleChange = async (e) => {
-    const active = e.target.checked ? 1 : 0;
-    await setJobAlert(job_alerts.user_id, job_alerts.category_id, active);
-    showAlert(active ? "Notifications enabled" : "Notifications disabled");
-  };
+
   return (
     <div className="agency-page-myjobs">
       <h3 className="page-title">Job Alerts</h3>
@@ -37,14 +36,18 @@ const JobAlerts = () => {
         {loading ? (
           <Loader />
         ) : (
-          <FormGroup>
-            <FormControlLabel
-              control={<Switch />}
-              label="Enable Notifications"
-              checked={checked}
-              onChange={handleChange}
-            />
-          </FormGroup>
+          job_alerts && job_alerts?.map((item) => {
+            return (
+              <FormGroup key={item.uuid}>
+                <FormControlLabel
+                  control={<Switch />}
+                  label={item.category}
+                  checked={item.status === "Active" ? true : false}
+                  onChange={(e) => handleChange(e, item)}
+                />
+              </FormGroup>
+            )
+          })
         )}
       </div>
     </div>

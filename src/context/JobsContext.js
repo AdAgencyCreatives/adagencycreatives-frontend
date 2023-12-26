@@ -1,6 +1,5 @@
 import { api, getAuthToken } from "../api/api";
 import createDataContext from "./createDataContext";
-import { Context as AuthContext } from "./AuthContext";
 
 const state = {
   jobs: [],
@@ -19,7 +18,7 @@ const state = {
   formSubmit: false,
   isLoading: false,
   notes: [],
-  job_alerts: null,
+  job_alerts: [],
 };
 
 const reducer = (state, action) => {
@@ -97,7 +96,7 @@ const getFeaturedJobs = (dispatch) => {
         type: "set_jobs",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -111,7 +110,7 @@ const getJobs = (dispatch) => {
         type: "set_jobs",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -121,17 +120,17 @@ const searchJobs = (dispatch) => {
       const token = getAuthToken();
       const response = await api.get(
         "/home/jobs/search" +
-          (token ? "/logged_in" : "") +
-          "?search=" +
-          q +
-          "&filter[status]=" +
-          status
+        (token ? "/logged_in" : "") +
+        "?search=" +
+        q +
+        "&filter[status]=" +
+        status
       );
       dispatch({
         type: "set_jobs",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -152,7 +151,7 @@ const getJob = (dispatch) => {
         type: "set_single_job",
         payload: response.data.data[0],
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -164,7 +163,7 @@ const getJobById = (dispatch) => {
         type: "set_single_job",
         payload: response.data.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -177,7 +176,7 @@ const getRelatedJobs = async (dispatch, category) => {
       type: "set_related_jobs",
       payload: response.data,
     });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const getApplications = (dispatch) => {
@@ -202,7 +201,7 @@ const getApplications = (dispatch) => {
           payload: applications,
         });
       }
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
@@ -216,7 +215,7 @@ const getRecentApplications = (dispatch) => {
         type: "set_recent_applications",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
@@ -226,7 +225,7 @@ const updateApplication = (dispatch) => {
     try {
       const response = await api.patch("/applications/" + id, data);
       cb && cb();
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -239,7 +238,7 @@ const deleteApplication = (dispatch) => {
         type: "delete_application",
         payload: { app_id: id, job_id },
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -252,15 +251,15 @@ const getJobAlerts = (dispatch) => {
         type: "set_job_alert",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
 
 const setJobAlert = (dispatch) => {
-  return async (user_id, category_id, status) => {
+  return async (uuid, user_id, category_id, status) => {
     try {
-      const response = await api.post("/job-alerts", {
+      const response = await api.patch(`/job-alerts/${uuid}`, {
         user_id,
         category_id,
         status,
@@ -269,7 +268,7 @@ const setJobAlert = (dispatch) => {
         type: "set_job_alert",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -282,7 +281,7 @@ const addNote = (dispatch) => {
         type: "add_note",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
@@ -297,7 +296,7 @@ const getNotes = (dispatch) => {
         type: "set_notes",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -309,7 +308,7 @@ const getCategories = (dispatch) => {
         type: "set_categories",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -321,7 +320,7 @@ const getStates = (dispatch) => {
         type: "set_states",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -335,7 +334,7 @@ const getCities = (dispatch) => {
         type: "set_cities",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -347,7 +346,7 @@ const getEmploymentTypes = (dispatch) => {
         type: "set_employment_type",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -359,7 +358,7 @@ const getMediaExperiences = (dispatch) => {
         type: "set_media_experiences",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -374,7 +373,7 @@ const paginateJob = (dispatch) => {
         type: "set_jobs",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -394,7 +393,7 @@ const filterJobs = (dispatch) => {
         type: "set_jobs",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -431,7 +430,8 @@ const requestNotifications = (dispatch) => {
         category_id: cat_id,
         status: 1,
       });
-    } catch (error) {}
+
+    } catch (error) { }
   };
 };
 
@@ -444,7 +444,7 @@ const saveJob = (dispatch) => {
         type: "set_single_job",
         payload: response.data.data,
       });
-    } catch (error) {}
+    } catch (error) { }
     setFormSubmit(dispatch, false);
   };
 };
@@ -471,7 +471,7 @@ const createJob = (dispatch) => {
         type: "set_single_job",
         payload: response.data.data,
       });
-    } catch (error) {}
+    } catch (error) { }
     setFormSubmit(dispatch, false);
   };
 };
@@ -484,7 +484,7 @@ const deleteJob = (dispatch) => {
         type: "delete_job",
         payload: id,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 

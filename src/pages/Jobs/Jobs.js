@@ -22,14 +22,15 @@ const Jobs = () => {
   const [statesList, setStates] = useState([]);
   const [citiesList, setCities] = useState([]);
   const [jobTitles, setJobTitles] = useState([]);
+  const [jobTitlesSelected, setJobTitlesSelected] = useState([]);
   const [employment, setEmployment] = useState([]);
   const [media, setMedia] = useState([]);
   const [filters, setFilters] = useState({});
-  const [notifCategory, setNotifCategory] = useState(false);
+  const [notifCategory, setNotifCategory] = useState([]);
   const params = useParams();
 
   const {
-    state: { jobs, meta, links, categories, states, cities, employment_type, media_experiences },
+    state: { jobs, meta, links, categories, states, cities, employment_type, media_experiences, job_alerts },
     getJobs,
     getCategories,
     getStates,
@@ -40,6 +41,7 @@ const Jobs = () => {
     searchJobs,
     paginateJob,
     requestNotifications,
+    getJobAlerts,
   } = useContext(JobsContext);
 
   const {
@@ -65,10 +67,22 @@ const Jobs = () => {
       getJobs();
     }
     getCategories();
+    getJobAlerts(user?.uuid);
     getStates();
     getEmploymentTypes();
     getMediaExperiences();
   }, [token]);
+
+  useEffect(() => {
+    if (job_alerts.length) {
+      const categories_selected = job_alerts.map((item) => {
+        return item.category;
+        // return { label: item.category, value: item.category_id };
+      });
+      console.log("categories_selected", categories_selected);
+      setJobTitlesSelected(categories_selected);
+    }
+  }, [job_alerts]);
 
   useEffect(() => {
     console.log({ selectRef });
@@ -80,6 +94,7 @@ const Jobs = () => {
     }
   }, [params]);
  */
+
   useEffect(() => {
     let data = categories;
     if (categories.length) {
@@ -237,11 +252,11 @@ const Jobs = () => {
         <div className="filter-label">Remote Opportunity</div>
         <div className="filter-box">
           <div className="form-check">
-            <input className="form-check-input" type="radio" name="remote" value={1} onChange={() => addFilter({ label: "Yes", value: 1 }, {action:"select-option"},"remote")} />
+            <input className="form-check-input" type="radio" name="remote" value={1} onChange={() => addFilter({ label: "Yes", value: 1 }, { action: "select-option" }, "remote")} />
             <label className="form-check-label">Yes</label>
           </div>
           <div className="form-check">
-            <input className="form-check-input" type="radio" name="remote" value={0} onChange={() => addFilter({ label: "No", value: 0 }, {action:"select-option"},"remote")} />
+            <input className="form-check-input" type="radio" name="remote" value={0} onChange={() => addFilter({ label: "No", value: 0 }, { action: "select-option" }, "remote")} />
             <label className="form-check-label">No</label>
           </div>
         </div>
@@ -256,20 +271,24 @@ const Jobs = () => {
         <form
           onSubmit={async (e) => {
             e.preventDefault();
-            await requestNotifications(user.uuid, notifCategory);
+            await requestNotifications(user.uuid, notifCategory.notif_title);
             showAlert("Job notifications enabled successfully");
           }}
         >
           <div className="notif-input-box">
             <h5 className="notif-title fw-normal">Title</h5>
+            {console.log(jobTitles.filter((item) => jobTitlesSelected.includes(item.label)))}
             <Select
+              className="dropdown-container"
               options={jobTitles}
+              isMulti={true}
               placeholder="Select title"
-              onChange={(item) => setNotifCategory(item.value)}
+              onChange={(item) => handleMultiChange(item, "notif_title")}
+              defaultValue={jobTitles && jobTitlesSelected && jobTitles.filter((item) => jobTitlesSelected.includes(item.label))}
               required={true}
               name="notif_title"
               ref={(ref) => (selectRef.current["notif_title" + (drawer ? "-d" : "")] = ref)}
-              // value={filters.state}
+            // value={1}
             />
           </div>
           <div className="job-alert-button">
@@ -279,6 +298,11 @@ const Jobs = () => {
       </div>
     </div>
   );
+
+  const handleMultiChange = (item, name) => {
+    const values = item.map((i) => i.value);
+    setNotifCategory((prev) => ({ ...prev, [name]: values }));
+  };
 
   const getDrawer = () => (
     <Drawer
