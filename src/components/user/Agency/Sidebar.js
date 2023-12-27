@@ -3,9 +3,21 @@ import { Link } from "react-router-dom";
 import sample from "../../../assets/images/sample.mp4";
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../../context/AgenciesContext";
-import { IoAdd } from "react-icons/io5";
+import { IoAdd, IoCallOutline, IoMailOutline } from "react-icons/io5";
 
-const Sidebar = ({ data }) => {
+import useHelper from "../../../hooks/useHelper";
+
+const Sidebar = ({ data, user }) => {
+
+  const { formatPhone } = useHelper();
+
+  const isCreative = user?.role == "creative";
+  const isAdmin = user?.role == "admin";
+  const isAdvisor = user?.role == "advisor";
+  const isAgency = user?.role == "agency";
+  const isRecruiter = user?.role == "recruiter";
+  const isOwnProfile = user?.uuid == data.user_id;
+
   const workplacePreference = data.workplace_preference;
   const linkedin = data.links.find((link) => link.label == "linkedin")?.url;
   const website = data.links.find((link) => link.label == "website")?.url;
@@ -63,8 +75,8 @@ const Sidebar = ({ data }) => {
       <>
         {listKey == "industry"
           ? renderedList.map((item, index) =>
-              renderLinkList(item, index == renderedList.length - 1)
-            )
+            renderLinkList(item, index == renderedList.length - 1)
+          )
           : renderedList.join(", ")}
         {list.length > maxItemsToShow && !showAllItems[listKey] && (
           <React.Fragment>
@@ -86,6 +98,24 @@ const Sidebar = ({ data }) => {
       <div className="sidebar-item">
         <h4 className="title">Agency Details</h4>
         <div className="content">
+          {data.email && (isOwnProfile || isAdmin) && (
+            <div className="item">
+              <IoMailOutline size={22} />
+              <div className="details">
+                <div className="text">Email</div>
+                <div className="value">{data.email}</div>
+              </div>
+            </div>
+          )}
+          {data.phone_number && (isOwnProfile || isAdmin) && (
+            <div className="item">
+              <IoCallOutline size={22} />
+              <div className="details">
+                <div className="text">Phone Number</div>
+                <div className="value">{formatPhone(data.phone_number)}</div>
+              </div>
+            </div>
+          )}
           {preferences.length ? (
             <div className="mt-4">
               <div className="details">
@@ -142,8 +172,8 @@ const Sidebar = ({ data }) => {
                         {data.location.state}
                       </Link>
                       {data.location &&
-                      data.location.state &&
-                      data.location.city ? (
+                        data.location.state &&
+                        data.location.city ? (
                         <>,&nbsp;</>
                       ) : (
                         <></>

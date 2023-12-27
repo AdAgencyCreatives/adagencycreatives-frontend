@@ -17,7 +17,7 @@ import { getMyFriends } from "../../../context/FriendsDataContext";
 import { Link } from "react-router-dom";
 import useHelper from "../../../hooks/useHelper";
 
-const Sidebar = ({ data, role, user }) => {
+const Sidebar = ({ data, user }) => {
 
   const { encodeSpecial, decodeSpecial, formatPhone } = useHelper();
 
@@ -32,17 +32,19 @@ const Sidebar = ({ data, role, user }) => {
     getSubscriptionStatus,
   } = useContext(AgenciesContext);
 
-  const isCreative = role == "creative";
-  const isAdmin = role == "admin";
-  const isAdvisor = role == "advisor";
-  const isAgency = role == "agency";
-  const isOwnProfile = isCreative && user?.uuid == data.user_id;
+  const isCreative = user?.role == "creative";
+  const isAdmin = user?.role == "admin";
+  const isAdvisor = user?.role == "advisor";
+  const isAgency = user?.role == "agency";
+  const isRecruiter = user?.role == "recruiter";
+  const isOwnProfile = user?.uuid == data.user_id;
+
   const checkPermissions = () => {
     if (Cookies.get("token")) {
       if (isOwnProfile || isFriend) {
         // check if current profile is the profie of logged in user
         return true;
-      } else if (role == "admin" || subscription) {
+      } else if (user?.role == "admin" || subscription) {
         return true;
       }
       return false;
@@ -63,7 +65,7 @@ const Sidebar = ({ data, role, user }) => {
   }, [user, subscription, isFriend]);
 
   useEffect(() => {
-    if (user?.role == "agency" || user?.role == "advisor") {
+    if (user?.role == "agency" || user?.role == "advisor" || user?.role == "recruiter") {
       getSubscriptionStatus();
     }
   }, [user]);
