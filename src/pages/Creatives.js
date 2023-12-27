@@ -164,8 +164,6 @@ const Creatives = () => {
     }
   }, [role]);
 
-
-
   return (
     <div className="dark-container">
       <div className="container p-md-0 px-5">
