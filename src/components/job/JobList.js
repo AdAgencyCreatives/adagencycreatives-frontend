@@ -3,15 +3,28 @@ import { Link } from "react-router-dom";
 import Tooltip from "../../components/Tooltip";
 import moment from "moment";
 import Placeholder from "../../assets/images/placeholder.png";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as AlertContext } from "../../context/AlertContext";
 import ApplyJob from "./ApplyJob";
 
 const JobList = ({ data, user, showAgency = true }) => {
+
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const [job, setJob] = useState(null);
+
+  const handleJob = async (job_id) => {
+    console.log("job_id parent", job_id);
+    if (job_id != null) {
+      data = data.map((item) => {
+        if (item.id == job_id && item.logged_in_user) {
+          item.logged_in_user.user_has_applied = true
+        }
+      });
+    }
+    console.log("data", data);
+  };
 
   const {
     state: { role },
@@ -20,9 +33,13 @@ const JobList = ({ data, user, showAgency = true }) => {
 
   const isCreative = role == "creative";
 
+  useEffect(() => {
+    console.log({ data });
+  }, [data]);
+
   return (
     <div className="jobs-list-container">
-      <ApplyJob open={open} handleClose={handleClose} job_id={job} />
+      <ApplyJob open={open} handleClose={handleClose} job_id={job} handleJob={handleJob} />
       {data.map((item) => (
         <div className="job-item" key={item.id}>
           <div className="d-flex align-items-center flex-md-nowrap flex-wrap gap-md-0 gap-3">
