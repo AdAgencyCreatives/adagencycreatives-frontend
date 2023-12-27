@@ -7,7 +7,7 @@ const DelayedOutput = ({ children, delay }) => {
     useEffect(() => {
         window.setTimeout(() => {
             setShowDelayed(true);
-        }, (delay ? delay : 1000));
+        }, (delay ? delay : 250));
     }, []);
 
     return (
