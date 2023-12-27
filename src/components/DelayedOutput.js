@@ -11,7 +11,7 @@ const DelayedOutput = ({ children, delay }) => {
     }, []);
 
     return (
-        <div className={showDelayed ? "" : "show-delayed"} style={{ visibility: "hidden" }}>
+        <div className={showDelayed ? "show-delayed" : ""} style={{ visibility: "hidden" }}>
             {children}
         </div>
     );
