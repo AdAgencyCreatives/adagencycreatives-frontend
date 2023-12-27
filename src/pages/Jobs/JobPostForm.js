@@ -18,7 +18,6 @@ import { Context as AlertContext } from "../../context/AlertContext";
 
 import useUploadHelper from "../../hooks/useUploadHelper";
 import IconMessage from "../../components/IconMessage";
-import { Context as AlertContext } from "../../context/AlertContext";
 
 const JobPostForm = ({ id, setJobStatus }) => {
   const editorRefTinyMCE = useRef(null);
