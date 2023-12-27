@@ -618,5 +618,5 @@ nav ul.dropdown-list .list-item-text.j-fix {
 }
 
 .delayed {
-    display: none;
+    visibility: hidden;
 }

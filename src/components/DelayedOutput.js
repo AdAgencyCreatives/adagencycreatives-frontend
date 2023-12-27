@@ -6,17 +6,15 @@ const DelayedOutput = ({ children, delay }) => {
 
     useEffect(() => {
         window.setTimeout(() => {
-          setShowDelayed(true);
+            setShowDelayed(true);
         }, (delay ? delay : 1000));
-      }, []);
+    }, []);
 
-  return (
-    <>
-    {showDelayed && (
-        <>{children}</>
-    )}
-    </>
-  );
+    return (
+        <div className={showDelayed ? "" : "delayed"}>
+            {children}
+        </div>
+    );
 };
 
 export default DelayedOutput;
