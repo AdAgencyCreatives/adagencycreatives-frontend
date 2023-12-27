@@ -29,10 +29,6 @@ const JobPostForm = ({ id, setJobStatus }) => {
   const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
 
   const {
-    showAlert
-  } = useContext(AlertContext);
-
-  const {
     states: {
       single_job,
       employment_type,
