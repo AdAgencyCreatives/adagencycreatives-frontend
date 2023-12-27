@@ -169,7 +169,7 @@ const Creatives = () => {
   return (
     <div className="dark-container">
       <div className="container p-md-0 px-5">
-        <DelayedOutput delay={1000}>
+        <DelayedOutput>
           <h1 className="community-title text-white text-center mb-4">
             Creatives
           </h1>

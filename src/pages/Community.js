@@ -26,7 +26,7 @@ const Community = () => {
       {token && role && (role == "admin" || role == "creative") ? (
         <>
           <div className="dark-container page-community mb-0 mt-0">
-            <DelayedOutput delay={1000}>
+            <DelayedOutput>
               <h1 className="community-title" dangerouslySetInnerHTML={{ __html: pageTitle }}></h1>
               <h2 className="community-subtitle" dangerouslySetInnerHTML={{ __html: pageSubTitle }}></h2>
             </DelayedOutput>

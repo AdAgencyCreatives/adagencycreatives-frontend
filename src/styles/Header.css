@@ -617,6 +617,6 @@ nav ul.dropdown-list .list-item-text.j-fix {
     }
 }
 
-.delayed {
-    visibility: hidden;
+.show-delayed {
+    visibility: visible !important;
 }
