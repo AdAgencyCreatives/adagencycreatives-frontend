@@ -616,3 +616,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
         justify-content: flex-start !important;
     }
 }
+
+.delayed {
+    display: none;
+}

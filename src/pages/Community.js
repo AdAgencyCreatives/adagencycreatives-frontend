@@ -10,6 +10,7 @@ import { Context as AuthContext } from "../context/AuthContext";
 import RestrictedLounge from "../components/RestrictedLounge";
 
 import usePageDataHelper from "../hooks/usePageDataHelper";
+import DelayedOutput from "../components/DelayedOutput";
 
 const Community = () => {
 
@@ -25,8 +26,10 @@ const Community = () => {
       {token && role && (role == "admin" || role == "creative") ? (
         <>
           <div className="dark-container page-community mb-0 mt-0">
-            <h1 className="community-title" dangerouslySetInnerHTML={{ __html: pageTitle }}></h1>
-            <h2 className="community-subtitle" dangerouslySetInnerHTML={{ __html: pageSubTitle }}></h2>
+            <DelayedOutput delay={500}>
+              <h1 className="community-title" dangerouslySetInnerHTML={{ __html: pageTitle }}></h1>
+              <h2 className="community-subtitle" dangerouslySetInnerHTML={{ __html: pageSubTitle }}></h2>
+            </DelayedOutput>
             <div className="container-fluid mt-4">
               <div className="row">
                 <div className="col-md-2 mb-4 mb-md-0">

@@ -9,6 +9,7 @@ import { Context as DataContext } from "../context/DataContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
 import Tooltip from "../components/Tooltip";
 import { Context as AlertContext } from "../context/AlertContext";
+import DelayedOutput from "../components/DelayedOutput";
 
 const Creatives = () => {
   const { creatives, loading, loadMore, searchCreativesAdvanced } = useCreatives();
@@ -163,12 +164,16 @@ const Creatives = () => {
     }
   }, [role]);
 
+
+
   return (
     <div className="dark-container">
       <div className="container p-md-0 px-5">
-        <h1 className="community-title text-white text-center mb-4">
-          Creatives
-        </h1>
+        <DelayedOutput delay={500}>
+          <h1 className="community-title text-white text-center mb-4">
+            Creatives
+          </h1>
+        </DelayedOutput>
         {token && (
           <SearchBar
             placeholder={creativeSearchPlaceholder}

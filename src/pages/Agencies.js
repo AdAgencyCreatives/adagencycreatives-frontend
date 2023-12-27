@@ -10,6 +10,7 @@ import { useScrollLoader } from "../hooks/useScrollLoader";
 import { useContext, useEffect, useState } from "react";
 import Tooltip from "../components/Tooltip";
 import AuthModal from "../components/modals/AuthModal";
+import DelayedOutput from "../components/DelayedOutput";
 
 const Agencies = () => {
   const { agencies, loading, loadMore, loadedAll, searchAgencies } = useAgencies();
@@ -47,8 +48,9 @@ const Agencies = () => {
   return (
     <div className="dark-container">
       <div className="container p-md-0 px-5">
-        <h1 className="community-title text-white text-center mb-4">Agencies</h1>
-
+        <DelayedOutput delay={500}>
+          <h1 className="community-title text-white text-center mb-4">Agencies</h1>
+        </DelayedOutput>
         <SearchBar onSearch={searchUser} />
         <div className="row g-4">
           {agencies &&
