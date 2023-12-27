@@ -94,7 +94,7 @@ const HireAdvisor = () => {
           placeholder: "When do you need to start",
         },
         {
-          label: "Job Location (State / Major City)",
+          label: "Job Location (State)",
           required: true,
           type: "dropdown",
           name: "state_id",
@@ -103,7 +103,7 @@ const HireAdvisor = () => {
           placeholder: "Select State",
         },
         {
-          label: "",
+          label: "Nearest Major City",
           type: "dropdown",
           name: "city_id",
           data: citiesList,
