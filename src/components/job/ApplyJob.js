@@ -6,12 +6,13 @@ import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { FiFile } from "react-icons/fi";
 
-const ApplyJob = ({ open, handleClose, job_id }) => {
+const ApplyJob = ({ open, handleClose, job_id, handleJob }) => {
   const [message, setMessage] = useState(false);
   const [error, setError] = useState(false);
   const [jobMessage, setJobMessage] = useState("");
   const [resumeId, setResumeId] = useState(false);
   const [resumeList, setResumeList] = useState([]);
+  const [isSubmit, setIsSubmit] = useState(false);
   const resumeRef = useRef();
 
   const {
@@ -34,23 +35,33 @@ const ApplyJob = ({ open, handleClose, job_id }) => {
     user && getResume(user.uuid);
   }, [user]);
 
+
+  useEffect(() => {
+    setMessage(false);
+    setError(false);
+    setIsSubmit(false);
+  }, [open]);
+
   useEffect(() => {
     setResumeList(resume);
   }, [resume]);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log("job_id", job_id);
       const response = await applyJob(user.uuid, job_id, jobMessage, resumeId);
       setMessage(true);
       setError(false);
-      setTimeout(handleClose, 700);
-      // setResumeList([]);
       setJobMessage('');
+      handleJob(job_id);
+      setIsSubmit(true);
     } catch (e) {
       console.log(e);
       setMessage(false);
       setError(true);
+      handleJob(null);
     }
 
     /*  logActivity(
@@ -72,7 +83,7 @@ const ApplyJob = ({ open, handleClose, job_id }) => {
       const result = await saveAttachment(formData);
       if (result.data) {
         let data = result.data;
-        setResumeList((prev) => [...prev, { id: data.id, name: filename }]);
+        setResumeList(() => [{ id: data.id, name: filename }]);
         showAlert("Resume uploaded successfully");
       }
     }
@@ -127,7 +138,7 @@ const ApplyJob = ({ open, handleClose, job_id }) => {
                     ))}
                 </div>
                 <p className="fs-5 text-center mt-3">or upload your CV</p>
-                <div class="form-group upload-file-btn-wrapper">
+                <div className="form-group upload-file-btn-wrapper">
                   <input
                     type="file"
                     name="cv_file"
@@ -138,15 +149,15 @@ const ApplyJob = ({ open, handleClose, job_id }) => {
                   />
 
                   <div
-                    class="label-can-drag"
+                    className="label-can-drag"
                     onClick={() => resumeRef.current.click()}
                   >
-                    <div class="form-group group-upload">
+                    <div className="form-group group-upload">
                       <div
-                        class="upload-file-btn"
+                        className="upload-file-btn"
                         data-text="Upload CV (txt, doc, docx, pdf)"
                       >
-                        <span class="text">
+                        <span className="text">
                           Upload Resume (txt, doc, docs, pdf)
                         </span>
                       </div>
@@ -191,7 +202,7 @@ const ApplyJob = ({ open, handleClose, job_id }) => {
                     </label>
                   </div>
                 </div>
-                <button className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3">
+                <button className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3" disabled={isSubmit || isLoading}>
                   Apply Job {isLoading && <CircularProgress size={20} />}
                 </button>
               </form>
