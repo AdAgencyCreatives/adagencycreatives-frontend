@@ -14,6 +14,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import useFormData from "../../hooks/useFormData";
+import { Context as AlertContext } from "../../context/AlertContext";
 
 const JobPostForm = ({ id, setJobStatus }) => {
   const editorRefTinyMCE = useRef(null);
@@ -61,6 +62,8 @@ const JobPostForm = ({ id, setJobStatus }) => {
     formData,
   } = useFormData({ id, setJobStatus, useTinyMCE });
 
+  const { showAlert } = useContext(AlertContext);
+
   useEffect(() => {
     /* Hack to resolve focus issue with TinyMCE editor in bootstrap model dialog */
     const handler = (e) => {
@@ -71,6 +74,16 @@ const JobPostForm = ({ id, setJobStatus }) => {
     document.addEventListener("focusin", handler);
     return () => document.removeEventListener("focusin", handler);
   }, []);
+
+
+  const handleSubmitCurrent = (e) => {
+    e.preventDefault();
+    if (formData.description == '' || formData.description == null) {
+      showAlert("The job description cannot be empty");
+    } else {
+      handleSubmit(e);
+    }
+  };
 
   const performInitTinyMCE = (evt, editor) => {
     setIsLoadingTinyMCE(false);
@@ -303,7 +316,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
       <div className="card">
         <h4 className="text-uppercase mb-4">Opportunity Details</h4>
         <div className="profile-edit-form">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmitCurrent}>
             <div className="row gx-3 gy-5 align-items-end">
               {fields.map((field, index) => {
                 switch (field.type) {
