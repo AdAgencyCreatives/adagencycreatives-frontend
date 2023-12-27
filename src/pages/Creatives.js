@@ -217,7 +217,17 @@ const Creatives = () => {
                       }}
                     />
                     <div className="agencyName">
-                      <Link className="text-dark" to={`/creative/${item.slug}`} reloadDocument>
+                      <Link
+                        className="text-dark"
+                        to={token ? `/creative/${item.slug}` : "#"}
+                        onClick={(e) => {
+                          if (!token) {
+                            e.preventDefault();
+                            showAlert("Please login to access");
+                          }
+                          return false;
+                        }}
+                        reloadDocument>
                         {item.name}
                       </Link>
                     </div>
@@ -225,11 +235,29 @@ const Creatives = () => {
                     {item.location.state && (
                       <div className="job-location location">
                         <IoLocationOutline />
-                        <Link to={`/creatives/search/state/${item.location.state}`}>
+                        <Link
+                          to={token ? `/creatives/search/state/${item.location.state}` : "#"}
+                          onClick={(e) => {
+                            if (!token) {
+                              e.preventDefault();
+                              showAlert("Please login to access");
+                            }
+                            return false;
+                          }}
+                          reloadDocument>
                           {item.location.state}
                         </Link>
                         <span>,&nbsp;</span>
-                        <Link to={`/creatives/search/city/${item.location.city}`}>
+                        <Link
+                          to={token ? `/creatives/search/city/${item.location.city}` : "#"}
+                          onClick={(e) => {
+                            if (!token) {
+                              e.preventDefault();
+                              showAlert("Please login to access");
+                            }
+                            return false;
+                          }}
+                          reloadDocument>
                           {item.location.city}
                         </Link>
                       </div>
@@ -244,8 +272,7 @@ const Creatives = () => {
                           }
                           return false;
                         }}
-                        reloadDocument
-                      >
+                        reloadDocument>
                         View Profile
                       </Link>
                     </div>
