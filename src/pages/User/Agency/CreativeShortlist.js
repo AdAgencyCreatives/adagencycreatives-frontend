@@ -33,14 +33,14 @@ const CreativeShortlist = () => {
   } = useContext(DataContext);
 
   const {
-    state: { subscription_status,user },
+    state: { subscription_status, user },
   } = useContext(AuthContext);
 
   const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
     if (user) {
-      getBookmarks(user.uuid,"creatives");
+      getBookmarks(user.uuid, "creatives");
     }
   }, [user]);
 
@@ -104,13 +104,8 @@ const CreativeShortlist = () => {
                           {resource.location && (
                             <div className="candidate-location with-icon">
                               <TfiLocationPin />
-                              <span className="restrict-location-search">
-                                {resource.location.state}
-                              </span>
-                              ,
-                              <span className="restrict-location-search">
-                                {resource.location.city}
-                              </span>
+                              <span className="restrict-location-search">{resource.location.state}</span>,
+                              <span className="restrict-location-search"> {resource.location.city}</span>
                             </div>
                           )}
                         </div>
