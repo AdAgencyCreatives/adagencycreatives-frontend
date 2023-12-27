@@ -80,11 +80,11 @@ const Creatives = () => {
       return "search3";
     }
 
-    if (role == "creative" || (role == 'agency' && subscription_status == "active")) {
+    if (role == "creative" || ((role == 'agency' || role == 'recruiter') && subscription_status == "active")) {
       return "search2";
     }
 
-    if (role == 'agency' && subscription_status != "active") {
+    if ((role == 'agency' || role == 'recruiter') && subscription_status != "active") {
       return "search1";
     }
 
@@ -105,21 +105,21 @@ const Creatives = () => {
       return { message: "", proceed: true, terms_allowed: searchTerms.length };
     }
 
-    if (role == "agency" && advance_search_capabilities) {
+    if ((role == 'agency' || role == 'recruiter') && advance_search_capabilities) {
       return { message: "", proceed: true, terms_allowed: searchTerms.length };
     }
 
-    if (role == "agency" && subscription_status && subscription_status == "active" && searchTerms.length <= 2) {
+    if ((role == 'agency' || role == 'recruiter') && subscription_status && subscription_status == "active" && searchTerms.length <= 2) {
       return { message: "", proceed: true, terms_allowed: Math.min(searchTerms.length, 2) };
     }
 
     //Special case: If agency does have a subscription status: active but trying to search for more than two terms. e.g.: a,b,c
-    if (role == "agency" && subscription_status && subscription_status == "active" && searchTerms.length > 2) {
+    if ((role == 'agency' || role == 'recruiter') && subscription_status && subscription_status == "active" && searchTerms.length > 2) {
       return { message: "", proceed: true, terms_allowed: Math.min(searchTerms.length, 2) };
     }
 
     //Special case: If agency doesn't have a subscription status: active and trying to search for more than one terms. e.g.: a,b
-    if (role == "agency" && (!subscription_status || subscription_status != "active") && searchTerms.length > 1) {
+    if ((role == 'agency' || role == 'recruiter') && (!subscription_status || subscription_status != "active") && searchTerms.length > 1) {
       return { message: "Post a Job for advance search capabilities", proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
     }
 
@@ -135,7 +135,7 @@ const Creatives = () => {
       return;
     }
 
-    if (role == "agency" && advance_search_capabilities) {
+    if ((role == 'agency' || role == 'recruiter') && advance_search_capabilities) {
       setCreativeSearchPlaceholder(
         "Search by name, title, location, company, industry experience, media, full-time etc."
       );
@@ -147,7 +147,7 @@ const Creatives = () => {
       return;
     }
 
-    if (role == "creative" || (role == "agency" && subscription_status == "active")) {
+    if (role == "creative" || ((role == 'agency' || role == 'recruiter') && subscription_status == "active")) {
       setCreativeSearchPlaceholder("Search by name, location, or title");
     }
   }, [role, subscription_status]);
