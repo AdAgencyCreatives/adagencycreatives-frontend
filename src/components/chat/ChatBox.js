@@ -71,7 +71,10 @@ const ChatBox = ({
   };
 
   const handleSubmit = async () => {
-    setContent("");
+    if(!content || content.length == 0) {
+      showAlert("Enter your Message");
+      return;
+    }
     /* setMessageData((prev) => [
       ...prev,
       {
@@ -90,6 +93,7 @@ const ChatBox = ({
     const type = messageData.slice(-1).pop()?.type ?? 'job';
     await sendMessage(user.uuid, contact.uuid, messageBody, type);
     showAlert("Message sent");
+    setContent("");
     const id = contact.uuid;
 
     let existingObject = contacts.find((obj) => obj.contact.uuid === id);
