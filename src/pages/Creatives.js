@@ -214,7 +214,7 @@ const Creatives = () => {
               placeholder={creativeSearchPlaceholder}
               onSearch={searchUser}
             />
-            {/* {isCategorySearch && ((role == 'agency' || role == 'recruiter') && (!subscription_status || subscription_status != "active")) && (<h6 style={{ color:'#fff' }}>Post a Job to view ({categoryCreativeCount.creative_count}) {categoryCreativeCount.name}</h6>)} */}
+            {isCategorySearch && ((role == 'agency' || role == 'recruiter') && (!subscription_status || subscription_status != "active")) && (<h6 style={{ color:'#fff' }}>Post a Job to view ({categoryCreativeCount.creative_count}) {categoryCreativeCount.name}</h6>)}
           </>
         )}
         <div className="row g-4">
