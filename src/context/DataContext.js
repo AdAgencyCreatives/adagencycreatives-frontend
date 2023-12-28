@@ -14,6 +14,8 @@ const state = {
   reviews: [],
   featured_cities: [],
   reviewsMeta: {},
+  mentors: [],
+  resources: []
 };
 
 const reducer = (state, action) => {
@@ -34,6 +36,10 @@ const reducer = (state, action) => {
       return { ...state, industry_experiences: action.payload.data };
     case "set_strengths":
       return { ...state, strengths: action.payload.data };
+    case "set_mentors":
+      return { ...state, mentors: action.payload.data };
+    case "set_resources":
+      return { ...state, resources: action.payload.data };
     case "set_years_experience":
       return { ...state, years_experience: action.payload.data };
     case "set_bookmarks":
@@ -297,6 +303,30 @@ const deleteReview = (dispatch) => {
   };
 };
 
+const getMentorTopics = (dispatch) => {
+  return async (slug) => {
+    try {
+      const response = await api.get(`/topics?filter[slug]=${slug}`);
+      dispatch({
+        type: "set_mentors",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
+const getMentorResources = (dispatch) => {
+  return async (slug) => {
+    try {
+      const response = await api.get(`/mentor-resources?filter[topic]=${slug}`);
+      dispatch({
+        type: "set_resources",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
@@ -317,6 +347,8 @@ export const { Context, Provider } = createDataContext(
     postReview,
     updateReview,
     deleteReview,
+    getMentorTopics,
+    getMentorResources
   },
   state
 );

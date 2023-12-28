@@ -70,6 +70,30 @@ const getMessages = (dispatch) => {
   };
 };
 
+const appendMessages = (dispatch) => {
+  return async (id, type, page) => {
+    setActiveContact(dispatch)(id);
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get("/messages/" + id + "?type=" + type + "&page=" + page);
+      if(response.data.data){
+        for (var i = response.data.data.length - 1; i >= 0; i--) {
+          if(response.data.data[i] && response.data.data[i] != undefined ){
+            dispatch({
+            type: "add_message",
+            payload: response.data.data[i],
+          });
+          }
+          
+        }
+      }
+      
+      
+    } catch (error) {}
+    setLoading(dispatch, false);
+  };
+};
+
 const getContacts = (dispatch) => {
   return async (type) => {
     try {
@@ -163,6 +187,7 @@ export const { Context, Provider } = createDataContext(
     addMessage,
     addNewContact,
     uploadAttachment,
+    appendMessages
   },
   state
 );
