@@ -123,7 +123,7 @@ const ApplyJob = ({ open, handleClose, job_id, handleJob }) => {
                 <div className="d-flex flex-wrap gap-3 mb-2 justify-content-center">
                   {resumeList.length > 0 &&
                     resumeList.map((item) => (
-                      <button
+                      <button type="button"
                         className={
                           "btn-resume" + (resumeId == item.id ? " active" : "")
                         }
