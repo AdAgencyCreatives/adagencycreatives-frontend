@@ -12,12 +12,17 @@ import { Context as AlertContext } from "../context/AlertContext";
 import DelayedOutput from "../components/DelayedOutput";
 
 const Creatives = () => {
+
+  const [isCategorySearch, setIsCategorySearch] = useState(false);
+  const [categoryCreativeCount, setCategoryCreativeCount] = useState(false);
+
   const { creatives, loading, loadMore, searchCreativesAdvanced } = useCreatives();
   const {
-    state: { bookmarks },
+    state: { bookmarks, categories_creative_count },
     createBookmark,
     getBookmarks,
     removeBookmark,
+    getCategoriesCreativeCount,
   } = useContext(DataContext);
 
   const {
@@ -47,11 +52,32 @@ const Creatives = () => {
 
   useScrollLoader(loading, loadMore);
 
+  const getCategorySearch = (searchTerms) => {
+    for (let index = 0; index < searchTerms.length; index++) {
+      const element = searchTerms[index];
+      for (let cccIndex = 0; cccIndex < categories_creative_count.length; cccIndex++) {
+        const cccElement = categories_creative_count[cccIndex];
+        if(cccElement.name.toLowerCase() == element.toLowerCase()) {
+          return cccElement;
+        }
+      }
+    }
+    return null;
+  };
   const searchUser = (value) => {
+
+    setIsCategorySearch(false);
 
     let searchString = "" + (value ? value : "");
     let searchTerms = searchString.indexOf(",") >= 0 ? searchString.split(',') : [searchString];
 
+    let cccResult = getCategorySearch(searchTerms);
+    if(cccResult) {
+      setCategoryCreativeCount(cccResult);
+      setIsCategorySearch(true);
+    }
+    
+    
     let permission = proceed_search(searchString, searchTerms);
 
     showAlert(permission.message);
@@ -164,6 +190,10 @@ const Creatives = () => {
     }
   }, [role]);
 
+  useEffect(() => {
+    getCategoriesCreativeCount();
+  }, []);
+
   return (
     <div className="dark-container">
       <div className="container p-md-0 px-5">
@@ -173,10 +203,13 @@ const Creatives = () => {
           </h1>
         </DelayedOutput>
         {token && (
-          <SearchBar
-            placeholder={creativeSearchPlaceholder}
-            onSearch={searchUser}
-          />
+          <>
+            <SearchBar
+              placeholder={creativeSearchPlaceholder}
+              onSearch={searchUser}
+            />
+            {isCategorySearch && (<h6 style={{ color:'#fff' }}>Post a Job to view ({categoryCreativeCount.creative_count}) {categoryCreativeCount.name}</h6>)}
+          </>
         )}
         <div className="row g-4">
           {creatives &&

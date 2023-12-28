@@ -3,6 +3,7 @@ import createDataContext from "./createDataContext";
 
 const state = {
   categories: [],
+  categories_creative_count:[],
   states: [],
   cities: [],
   employment_type: [],
@@ -22,6 +23,8 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "set_categories":
       return { ...state, categories: action.payload.data };
+      case "set_categories_creative_count":
+      return { ...state, categories_creative_count: action.payload.data };
     case "set_states":
       return { ...state, states: action.payload.data };
     case "set_cities":
@@ -84,6 +87,19 @@ const getCategories = (dispatch) => {
       const response = await api.get("/get_categories");
       dispatch({
         type: "set_categories",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
+
+const getCategoriesCreativeCount = (dispatch) => {
+  return async () => {
+    try {
+      const response = await api.get("/get_categories/creative_count");
+      dispatch({
+        type: "set_categories_creative_count",
         payload: response.data,
       });
     } catch (error) {}
@@ -331,6 +347,7 @@ export const { Context, Provider } = createDataContext(
   reducer,
   {
     getCategories,
+    getCategoriesCreativeCount,
     getStates,
     getCities,
     getFeaturedCities,
