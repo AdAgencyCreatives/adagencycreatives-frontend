@@ -22,23 +22,23 @@ const SingleMentorList = ({ items }) => {
             // className={`box link-light ${item.img ? "flip" : ""}`}
             className={`box link-light ${
               activeIndex === index ? "active" : ""
-            } ${item.img ? "flip" : ""}`}
-            onClick={(e) => handleItemClick(e, item.img, index)}
-            to={item.url}
+            } ${item.preview_link ? "flip" : ""}`}
+            onClick={(e) => handleItemClick(e, item.preview_link, index)}
+            to={item.link}
             target="__blank"
           >
             <div className="flip-card-front">
               <div className="main-title">{item.title}</div>
-              <div className="title-small">{item.subtitle}</div>
+              <div className="title-small">{item.description}</div>
               <div className="box-link">
                 <div className="link">
                   <IoArrowForward />
                 </div>
               </div>
             </div>
-            {item.img && (
+            {item.preview_link && (
               <div className="flip-card-back">
-                <img src={item.img} alt="Avatar" />
+                <img src={item.preview_link} alt="Avatar" />
               </div>
             )}
           </Link>

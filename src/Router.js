@@ -91,6 +91,10 @@ export const router = createBrowserRouter([
         element: <MentorResources />,
       },
       {
+        path: "/mentoring-resources/:slug",
+        element: <MentorResources />,
+      },
+      {
         path: "/publication-resources",
         element: <Publications />,
       },
