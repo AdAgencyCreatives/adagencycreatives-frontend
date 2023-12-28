@@ -86,7 +86,9 @@ const JobPostForm = ({ id, setJobStatus }) => {
   const handleSubmitCurrent = (e) => {
     e.preventDefault();
     if (formData.description == '' || formData.description == null) {
-      showAlert("The job description cannot be empty");
+      showAlert("The Job Description cannot be empty");
+    } else if (formData.expired_at == '' || formData.expired_at == "Invalid date") {
+      showAlert("The Job Post Expires date is invalid");
     } else {
       handleSubmit(e);
     }
