@@ -20,7 +20,6 @@ const UserList = ({ data, handleItemClick }) => {
     }
     return result;
   };
-
   const { state: { activeContact } } = useContext(Context)
   function sanitizeText(text) {
     // Remove links with <br/>
@@ -61,7 +60,7 @@ const UserList = ({ data, handleItemClick }) => {
   return (
     <ul className="users-list">
       {data.map((item) => (
-        <li
+        <li data-id={item.contact.uuid}
           className={(item.contact.uuid == activeContact) ? "active" : ""}
           onClick={() => handleItemClick(item.contact, 'job,private')}
           key={item.id}
