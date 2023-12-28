@@ -146,7 +146,13 @@ const Creatives = () => {
 
     //Special case: If agency doesn't have a subscription status: active and trying to search for more than one terms. e.g.: a,b
     if ((role == 'agency' || role == 'recruiter') && (!subscription_status || subscription_status != "active") && searchTerms.length > 1) {
-      return { message: "Post a Job for advance search capabilities", proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
+      let appendText = isCategorySearch ? "\n<br />Found: (" + categoryCreativeCount.creative_count + ") " + categoryCreativeCount.name : "";
+      return { message: "Post a Job for advance search capabilities"+appendText, proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
+    }
+
+    //Special case: If agency doesn't have a subscription status: active and trying to search for cateogry
+    if ((role == 'agency' || role == 'recruiter') && (!subscription_status || subscription_status != "active") && isCategorySearch) {
+      return { message: "Post a Job to view (" + categoryCreativeCount.creative_count + ") " + categoryCreativeCount.name, proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
     }
 
     return { message: "", proceed: true, terms_allowed: 1 };
@@ -208,7 +214,7 @@ const Creatives = () => {
               placeholder={creativeSearchPlaceholder}
               onSearch={searchUser}
             />
-            {isCategorySearch && (<h6 style={{ color:'#fff' }}>Post a Job to view ({categoryCreativeCount.creative_count}) {categoryCreativeCount.name}</h6>)}
+            {/* {isCategorySearch && ((role == 'agency' || role == 'recruiter') && (!subscription_status || subscription_status != "active")) && (<h6 style={{ color:'#fff' }}>Post a Job to view ({categoryCreativeCount.creative_count}) {categoryCreativeCount.name}</h6>)} */}
           </>
         )}
         <div className="row g-4">

@@ -31,7 +31,7 @@ const SlideInMessage = (props) => {
     }
 
     return (
-        <div className={"sliding-message" + (props.message && props.message.length > 0 ? ' active' : '')}>{props.message}</div>
+        <div className={"sliding-message" + (props.message && props.message.length > 0 ? ' active' : '')} dangerouslySetInnerHTML={{ __html: props.message }}></div>
     );
 };
 
