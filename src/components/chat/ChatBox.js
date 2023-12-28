@@ -21,13 +21,14 @@ const ChatBox = ({
   chatBox,
   setChatBox,
   setContact,
-  getMessages,
+  getMessages
 }) => {
   const {
     state: { messages, loading, contacts, attachments },
     sendMessage,
     getContacts,
     uploadAttachment,
+    appendMessages
   } = useContext(ChatContext);
 
   const {
@@ -44,6 +45,7 @@ const ChatBox = ({
   const containerRef = useRef();
   const uploadRef = useRef();
   const logoRef = useRef();
+  const [dataId, setDataId] = useState(0);
 
   useEffect(() => {
     if (!Object.keys(contact).length && contacts.length) {
@@ -87,6 +89,7 @@ const ChatBox = ({
         messageBody += item.url;
       });
     }
+
     const type = messageData.slice(-1).pop()?.type ?? 'job';
     await sendMessage(user.uuid, contact.uuid, messageBody, type);
     showAlert("Message sent");
@@ -133,6 +136,22 @@ const ChatBox = ({
       await uploadAttachment(formData, src);
     }
   };
+  const parseDateShort = (dateString) => {
+    const parsedDate = moment(dateString);
+
+    const currentDate = moment();
+
+    let result = "";
+
+    if (currentDate.isSame(parsedDate, "day")) {
+      result = `${parsedDate.format("h:mm a")}`;
+    } else if (currentDate.isSame(parsedDate, "week")) {
+      result = `${parsedDate.format("dddd")}`;
+    } else {
+      result = `${parsedDate.format("M/D/YYYY")}`;
+    }
+    return result;
+  };
 
   function parseMessage(message) {
     const result = {
@@ -156,6 +175,28 @@ const ChatBox = ({
 
     return result;
   }
+  let paged = 1;
+  const [isLoading, setIsLoading] = useState(false);
+    useEffect(() => {
+      const loadMoreMessages = async () => {
+        if (containerRef.current && containerRef.current.scrollTop === 0) {
+          paged++;
+          const type = messages.slice(-1).pop()?.type ?? 'job';
+          appendMessages(contact.uuid, type, paged);
+        }
+      };
+
+      // Bắt sự kiện scroll trên khung chat
+      const handleScroll = () => {
+        // loadMoreMessages();
+      };
+      if(containerRef.current)
+        containerRef.current.addEventListener('scroll', handleScroll);
+      return () => {
+        if(containerRef.current)
+          containerRef.current.removeEventListener('scroll', handleScroll);
+      };
+    }, [messages]);
 
   return (
     <div className={`chat-box ${chatBoxMobile}`}>
@@ -171,10 +212,37 @@ const ChatBox = ({
             {loading ? (
               <Loader fullHeight={false} />
             ) : (
-              messageData.map((item, index) => {
+              messages.map((item, index) => {
+                const elements = document.querySelectorAll('.users-list .active');
+                let dataIdValue = 0;
+                elements.forEach((element) => {
+                   dataIdValue = element.getAttribute('data-id');
+                });
                 const sender = item.message_type == "sent" ? user : contact;
                 const time = parseDate(item.created_at);
+                const created_at = parseDateShort(item.created_at);
                 const { message, attachments } = parseMessage(item.message);
+                if(item.message_type == 'received'){
+                  if(item.sender_id != dataIdValue){
+                    const myDiv = document.querySelector('[data-id="'+item.sender_id+'"]');
+                    if (myDiv) {
+                      const childElement = myDiv.querySelector('.message-time');
+
+                      if (childElement) {
+                        childElement.classList.add('unread');
+                        childElement.innerHTML =  created_at;
+                      }
+                      const childMess = myDiv.querySelector('.user-message');
+
+                      if (childMess) {
+                        childMess.innerHTML = item.message;
+                      }
+                    }
+                    // console.log(myDiv,'myDiv');
+                    return null;
+                  }
+                }
+                
                 return (
                   <div className="chat-item" key={"message" + index}>
                     <img

@@ -19,6 +19,7 @@ const JobChat = ({ getMessages, getContacts }) => {
   const [contact, setContact] = useState({});
   const [type, setType] = useState("job,private");
   const [contactsList, setContactsList] = useState([]);
+  const [checkClick, setCheckClick] = useState(false);
 
   useEffect(() => {
     setContactsList(contacts);
@@ -28,6 +29,7 @@ const JobChat = ({ getMessages, getContacts }) => {
     setChatBox("list");
     setUserListMobile("mobile-hide");
     setChatBoxMobile("");
+    setCheckClick(true);
     if (item.uuid != contact.uuid) {
       getMessages(item.uuid, type);
       setContact(item);
@@ -59,11 +61,11 @@ const JobChat = ({ getMessages, getContacts }) => {
     setChatBox,
     handleBackButton,
     setContact,
-    getMessages,
+    getMessages
   };
 
   return (
-    <div className="chat-container mb-4">
+    <div className="chat-container mb-4 bbb">
       <div className="row g-0">
         <div className="col-md-4 col-12">
           <div className={`users-box ${userListMobile}`}>
