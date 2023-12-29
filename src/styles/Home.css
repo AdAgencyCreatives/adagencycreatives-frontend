@@ -660,7 +660,7 @@ a.employer-logo img {
 img.publication-image {
     width: 100%;
     max-width: 410px;
-    object-fit: contain;
+    object-fit: cover;
     transition: all 0.2s ease;
 }
 

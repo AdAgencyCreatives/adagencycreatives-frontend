@@ -35,9 +35,7 @@ const MentorResources = () => {
           <div className="container-fluid">
             <div className="mentor-wrapper">
               <h2 className="title">{mentors[0]?.title}</h2>
-              <p className="subtitle">
-                {mentors[0]?.description}
-              </p>
+              <p className="subtitle"  dangerouslySetInnerHTML={{ __html: mentors[0]?.description }}></p>
               <SingleMentorList items={resources} />
             </div>
           </div>
@@ -56,7 +54,7 @@ const MentorResources = () => {
                 return (
                   <div className="col-sm-4">
                     <div className="mentor" key={`m_${index}`}>
-                      <a href={`mentoring-resources/${item.slug}`}>{item.title}</a>
+                      <a href={`mentoring-resources/${item.slug}`} style={{ fontSize: '40px' }}>{item.title}</a>
                       <img src={AdAgency} height={150} width={150} />
                     </div>
                   </div>

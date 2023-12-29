@@ -20,6 +20,7 @@ const Profile = () => {
   const page = type;
 
   const [roleId, setRoleId] = useState(role_name);
+  const [isLoading, setLoading] = useState(true);
 
   const {
     state: { single_creative, creative_education, creative_experience },
@@ -37,6 +38,10 @@ const Profile = () => {
   } = useContext(AuthContext);
 
   const [data, setData] = useState({});
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 2000);
+  }, []);
 
   useEffect(() => {
     if (token) {
@@ -71,10 +76,14 @@ const Profile = () => {
   const isRecruiter = user?.role == "recruiter";
   const isOwnProfile = user?.uuid == data.user_id;
 
+  if (isLoading) {
+    return <Loader />; 
+  }
+
   return <>
     {Object.keys(data).length === 0 ? (
       <>
-        {!token || !user ? (
+        {!token && !user ? (
           <RestrictedUser role={role_name ? role_name : page} />
         ) : (
           <Loader />
