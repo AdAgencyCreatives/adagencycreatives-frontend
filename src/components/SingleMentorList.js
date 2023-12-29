@@ -28,7 +28,7 @@ const SingleMentorList = ({ items }) => {
             target="__blank"
           >
             <div className="flip-card-front">
-              <div className="main-title">{item.title}</div>
+              <div className="main-title"  dangerouslySetInnerHTML={{ __html: item.title }}></div>
               <div className="title-small">{item.description}</div>
               <div className="box-link">
                 <div className="link">
