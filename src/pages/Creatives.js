@@ -13,9 +13,6 @@ import DelayedOutput from "../components/DelayedOutput";
 
 const Creatives = () => {
 
-  const [isCategorySearch, setIsCategorySearch] = useState(false);
-  const [categoryCreativeCount, setCategoryCreativeCount] = useState(false);
-
   const { creatives, loading, loadMore, searchCreativesAdvanced } = useCreatives();
   const {
     state: { bookmarks, categories_creative_count },
@@ -57,7 +54,7 @@ const Creatives = () => {
       const element = searchTerms[index];
       for (let cccIndex = 0; cccIndex < categories_creative_count.length; cccIndex++) {
         const cccElement = categories_creative_count[cccIndex];
-        if(cccElement.name.toLowerCase() == element.toLowerCase()) {
+        if (cccElement.name.toLowerCase() == element.toLowerCase()) {
           return cccElement;
         }
       }
@@ -66,18 +63,9 @@ const Creatives = () => {
   };
   const searchUser = (value) => {
 
-    setIsCategorySearch(false);
-
     let searchString = "" + (value ? value : "");
     let searchTerms = searchString.indexOf(",") >= 0 ? searchString.split(',') : [searchString];
 
-    let cccResult = getCategorySearch(searchTerms);
-    if(cccResult) {
-      setCategoryCreativeCount(cccResult);
-      setIsCategorySearch(true);
-    }
-    
-    
     let permission = proceed_search(searchString, searchTerms);
 
     showAlert(permission.message);
@@ -144,10 +132,13 @@ const Creatives = () => {
       return { message: "", proceed: true, terms_allowed: Math.min(searchTerms.length, 2) };
     }
 
+    let categoryCreativeCount = getCategorySearch(searchTerms);
+    let isCategorySearch = categoryCreativeCount != null;
+
     //Special case: If agency doesn't have a subscription status: active and trying to search for more than one terms. e.g.: a,b
     if ((role == 'agency' || role == 'recruiter') && (!subscription_status || subscription_status != "active") && searchTerms.length > 1) {
       let appendText = isCategorySearch ? "\n<br />Found: (" + categoryCreativeCount.creative_count + ") " + categoryCreativeCount.name : "";
-      return { message: "Post a Job for advance search capabilities"+appendText, proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
+      return { message: "Post a Job for advance search capabilities" + appendText, proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
     }
 
     //Special case: If agency doesn't have a subscription status: active and trying to search for cateogry
@@ -214,7 +205,6 @@ const Creatives = () => {
               placeholder={creativeSearchPlaceholder}
               onSearch={searchUser}
             />
-            {/* {isCategorySearch && ((role == 'agency' || role == 'recruiter') && (!subscription_status || subscription_status != "active")) && (<h6 style={{ color:'#fff' }}>Post a Job to view ({categoryCreativeCount.creative_count}) {categoryCreativeCount.name}</h6>)} */}
           </>
         )}
         <div className="row g-4">
