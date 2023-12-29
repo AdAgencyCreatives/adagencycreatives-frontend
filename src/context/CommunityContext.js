@@ -1,6 +1,8 @@
 import { api } from "../api/api";
 import createDataContext from "./createDataContext";
 
+const default_feed_group = "715bfe90-833e-3459-9700-036ac28d3fd4";
+
 const state = {
   posts: [],
   trending_posts: [],
@@ -138,7 +140,7 @@ const reducer = (state, action) => {
         posts: [...state.posts, ...action.payload.data],
         nextPage: action.payload.links.next,
       };
-      case "reset_posts":
+    case "reset_posts":
       return {
         ...state,
         posts: action.payload,
@@ -199,17 +201,19 @@ const reducer = (state, action) => {
 const getPosts = (dispatch) => {
   return async (group_id) => {
     try {
-      const response = await api.get(
-        "/posts?filter[group_id]=" +
-          group_id +
-          "&sort=-created_at&filter[status]=1"
-      ); // only published posts in Feeds
+      let apiEndPoint = "/lounge/main_feed/?sort=-created_at&filter[status]=1"; // default will be main feed
+      if (group_id != default_feed_group) {
+        apiEndPoint = "/posts?filter[group_id]=" + group_id + "&sort=-created_at&filter[status]=1"
+      }
+      // filter[status]=1, i.e., only published posts in Feeds
+
+      const response = await api.get(apiEndPoint);
       //console.log("fetched new posts at: " + (new Date()).toString());
       dispatch({
         type: "set_posts",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -221,7 +225,7 @@ const getTrendingPosts = (dispatch) => {
         type: "set_trending_posts",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -235,7 +239,7 @@ const getNewMembers = (dispatch) => {
         type: "set_new_members",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -244,11 +248,13 @@ const loadPosts = (dispatch) => {
     let nextPageNumber = page.substring(
       page.indexOf("?page=") + "?page=".length
     );
-    let nextPageUrl =
-      "/posts?filter[group_id]=" +
-      group_id +
-      "&sort=-created_at&filter[status]=1&page=" +
-      nextPageNumber;
+
+    let apiEndPoint = "/lounge/main_feed/?sort=-created_at&filter[status]=1"; // default will be main feed
+    if (group_id != default_feed_group) {
+      apiEndPoint = "/posts?filter[group_id]=" + group_id + "&sort=-created_at&filter[status]=1"
+    }
+    let nextPageUrl = apiEndPoint + "&page=" + nextPageNumber;
+    
     setLoading(dispatch, true);
     try {
       const response = await api.get(nextPageUrl);
@@ -257,7 +263,7 @@ const loadPosts = (dispatch) => {
         payload: response.data,
       });
       setLoading(dispatch, false);
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -268,7 +274,7 @@ const resetPosts = (dispatch) => {
         type: "reset_posts",
         payload: [],
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -283,7 +289,7 @@ const getComments = (dispatch) => {
         type: "set_post_comments",
         payload: { post_id: uid, data: response.data },
       });
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
@@ -296,7 +302,7 @@ const getLikes = (dispatch) => {
         type: "set_post_likes",
         payload: { post_id: data.post_id, data: response.data },
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -326,14 +332,14 @@ const getLove = (dispatch) => {
     try {
       const response = await api.get(
         "/post-reactions?filter[post_id]=" +
-          data.post_id +
-          "&filter[type]=heart"
+        data.post_id +
+        "&filter[type]=heart"
       );
       dispatch({
         type: "set_post_loves",
         payload: { post_id: data.post_id, data: response.data },
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -371,14 +377,14 @@ const getLaugh = (dispatch) => {
     try {
       const response = await api.get(
         "/post-reactions?filter[post_id]=" +
-          data.post_id +
-          "&filter[type]=laugh"
+        data.post_id +
+        "&filter[type]=laugh"
       );
       dispatch({
         type: "set_post_laughs",
         payload: { post_id: data.post_id, data: response.data },
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -424,7 +430,7 @@ const savePost = (dispatch) => {
         type: "add_post",
         payload: response.data.data.id,
       });
-    } catch (error) {}
+    } catch (error) { }
     dispatch({
       type: "set_form_submit",
       payload: false,
@@ -447,7 +453,7 @@ const saveComment = (dispatch) => {
           comment_uuid: response.data.data.uuid,
         },
       });
-    } catch (error) {}
+    } catch (error) { }
     dispatch({
       type: "set_form_submit",
       payload: false,
@@ -467,7 +473,7 @@ const updatePost = (dispatch) => {
         type: "update_post",
         payload: response.data.data,
       });
-    } catch (error) {}
+    } catch (error) { }
     dispatch({
       type: "set_form_submit",
       payload: false,
@@ -490,7 +496,7 @@ const updateComment = (dispatch) => {
           comment_uuid: response.data.data.uuid,
         },
       });
-    } catch (error) {}
+    } catch (error) { }
     dispatch({
       type: "set_form_submit",
       payload: false,
@@ -506,7 +512,7 @@ const savePostImage = (dispatch) => {
           "Content-Type": "multipart/form-data",
         },
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -518,7 +524,7 @@ const deletePost = (dispatch) => {
         type: "delete_post",
         payload: id,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -531,7 +537,7 @@ const deleteComment = (dispatch) => {
         type: "delete_comment",
         payload: { post_id: post_id, comment_uuid: comment_uuid },
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
