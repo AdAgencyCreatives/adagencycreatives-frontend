@@ -16,7 +16,8 @@ const state = {
   featured_cities: [],
   reviewsMeta: {},
   mentors: [],
-  resources: []
+  resources: [],
+  publications: []
 };
 
 const reducer = (state, action) => {
@@ -43,6 +44,8 @@ const reducer = (state, action) => {
       return { ...state, mentors: action.payload.data };
     case "set_resources":
       return { ...state, resources: action.payload.data };
+    case "set_publications":
+      return { ...state, publications: action.payload.data };
     case "set_years_experience":
       return { ...state, years_experience: action.payload.data };
     case "set_bookmarks":
@@ -343,6 +346,18 @@ const getMentorResources = (dispatch) => {
   };
 };
 
+const getPublications = (dispatch) => {
+  return async () => {
+    try {
+      const response = await api.get('/publication-resources');
+      dispatch({
+        type: "set_publications",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
@@ -365,7 +380,8 @@ export const { Context, Provider } = createDataContext(
     updateReview,
     deleteReview,
     getMentorTopics,
-    getMentorResources
+    getMentorResources,
+    getPublications
   },
   state
 );
