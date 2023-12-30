@@ -877,6 +877,7 @@ const MyResume = () => {
             <label htmlFor={field.name} className="form-label">
               {field.label}
               {field.required && <span className="required">*</span>}
+              <IconMessage message={videoUploadGuideMessage} />
             </label>
             <div className="row align-items-center upload-box">
               <div className="col-md-12 col-sm-12 col-12">
@@ -905,9 +906,6 @@ const MyResume = () => {
                   <FiTrash2 /> Remove
                 </button>
               </div>
-              <div className="col-md-9 col-sm-8 col-12">
-                <IconMessage message={videoUploadGuideMessage} />
-              </div>
               <input type="file" ref={videoUploadRef} className="d-none" accept=".mp4, .avi, .mov, video/*" onChange={(e) => handleFileChange(e, { name: "creative_reel", ref: videoRef, uploadRef: videoUploadRef })} />
             </div>
           </>
@@ -919,6 +917,7 @@ const MyResume = () => {
             <label htmlFor={field.name} className="form-label">
               {field.label}
               {field.required && <span className="required">*</span>}
+              <IconMessage message={field.name == "resume" ? fileUploadGuideMessage : imageUploadGuideMessage} />
             </label>
             <input type="hidden" className="input-text" name={field.name} value="" />
             <div className="row align-items-center upload-box">
@@ -945,9 +944,6 @@ const MyResume = () => {
                 <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeItem(field.name, field.ref, field.uploadRef)}>
                   <FiTrash2 /> Remove
                 </button>
-              </div>
-              <div className="col-md-9 col-sm-4 col-12">
-                <IconMessage message={field.name == "resume" ? fileUploadGuideMessage : imageUploadGuideMessage} />
               </div>
               <input type="file" ref={field.uploadRef} className="d-none" accept={field.accept} onChange={(e) => handleFileChange(e, field)} />
             </div>

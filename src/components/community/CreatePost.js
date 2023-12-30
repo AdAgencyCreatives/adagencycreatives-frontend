@@ -48,8 +48,12 @@ const CreatePost = (props) => {
   const [allowType, setAllowType] = useState("image");
   const [postAttachments, setPostAttachments] = useState([]);
 
+  const [requireContent, setRequireContent] = useState(false);
+
   const doSavePost = () => {
     if(!content) {
+      setRequireContent(true);
+      editorRefTinyMCE?.current?.focus();
       return;
     }
 
@@ -206,6 +210,7 @@ const CreatePost = (props) => {
                   }}
                   initialValue=""
                   onEditorChange={(e) => setContent(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "")}
+                  onFocus={(e) => setRequireContent(false)}
                 />
               </>
             ) : (
@@ -291,11 +296,11 @@ const CreatePost = (props) => {
           <Divider />
           <div className="postmodal-footer">
             <div className="postmodal-offensive-words">
-              {!content && (
+              {/* {requireContent && (
                 <div className="message">
                   Write something...
                 </div>
-              )}
+              )} */}
               {hasOffensiveWords && (
                 <div className="message">
                   Your post includes offensive language. Please rephrase.

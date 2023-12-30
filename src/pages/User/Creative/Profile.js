@@ -496,6 +496,7 @@ const Profile = () => {
                       <label htmlFor={field.name} className="form-label">
                         {field.label}
                         {field.required && <span className="required">*</span>}
+                        <IconMessage message={imageUploadGuideMessage} />
                       </label>
                       <input
                         type="hidden"
@@ -509,6 +510,7 @@ const Profile = () => {
                             src={field.image}
                             className="w-100"
                             ref={logoRef}
+                            alt=""
                           />
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
@@ -524,9 +526,6 @@ const Profile = () => {
                           >
                             <FiTrash2 /> Remove
                           </button>
-                        </div>
-                        <div className="col-md-7 col-sm-4 col-12">
-                          <IconMessage message={imageUploadGuideMessage} />
                         </div>
                         <input
                           type="file"

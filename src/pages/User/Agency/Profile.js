@@ -573,6 +573,7 @@ const Profile = () => {
                       <label htmlFor={field.name} className="form-label">
                         {field.label}
                         {field.required && <span className="required">*</span>}
+                        <IconMessage message={imageUploadGuideMessage} />
                       </label>
                       <input type="hidden" className="input-text" name={field.name} value="" />
                       <div className="row align-items-center upload-box">
@@ -587,9 +588,6 @@ const Profile = () => {
                             <FiTrash2 /> Remove
                           </button>
                         </div>
-                        <div className="col-md-7 col-sm-4 col-12">
-                          <IconMessage message={imageUploadGuideMessage} />
-                        </div>
                         <input type="file" ref={imageUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_logo", logoRef, field)} accept={field.accept} />
                       </div>
                     </div>
@@ -600,6 +598,7 @@ const Profile = () => {
                       <label htmlFor={field.name} className="form-label">
                         {field.label}
                         {field.required && <span className="required">*</span>}
+                        <IconMessage message={videoUploadGuideMessage} />
                       </label>
                       <div className="row align-items-center upload-box">
                         <div className="col-md-12 col-sm-12 col-12">
@@ -627,9 +626,6 @@ const Profile = () => {
                           <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeVideo(videoItem?.id)}>
                             <FiTrash2 /> Remove
                           </button>
-                        </div>
-                        <div className="col-md-9 col-sm-8 col-12">
-                          <IconMessage message={videoUploadGuideMessage} />
                         </div>
                         <input type="file" ref={videoUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_reel", videoRef, field)} accept=".mp4, .avi, .mov, video/*" />
                       </div>

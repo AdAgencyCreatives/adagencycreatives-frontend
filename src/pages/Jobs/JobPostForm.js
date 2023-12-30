@@ -335,6 +335,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                         <label htmlFor={field.name} className="form-label">
                           {field.label}
                           {field.required && <span className="required">*</span>}
+                          <IconMessage message={imageUploadGuideMessage} />
                         </label>
                         <input type="hidden" className="input-text" name={field.name} value="" />
                         <div className="row align-items-center upload-box">
@@ -348,9 +349,6 @@ const JobPostForm = ({ id, setJobStatus }) => {
                             <button className="btn btn-secondary w-100 text-uppercase" onClick={removeLogo}>
                               <FiTrash2 /> Remove
                             </button>
-                          </div>
-                          <div className="col-md-7 col-sm-4 col-12">
-                            <IconMessage message={imageUploadGuideMessage} />
                           </div>
                           <input type="file" ref={imageUploadRef} className="d-none" onChange={handleFileChange} accept={field.accept} />
                         </div>
