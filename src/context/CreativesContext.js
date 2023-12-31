@@ -84,6 +84,16 @@ const getHomeCreatives = (dispatch) => {
   };
 };
 
+const getLoungeCreativesForTag = (dispatch) => {
+  return async (search) => {
+    try {
+      const response = await api.get("/creatives/search/tag?name=" + search);
+      return response.data;
+    } catch (error) { }
+    return null;
+  };
+};
+
 const getRelatedCreatives = (dispatch) => {
   return async (user_id) => {
     try {
@@ -409,6 +419,7 @@ export const { Context, Provider } = createDataContext(
     getVideo,
     resetVideo,
     removeAttachment,
+    getLoungeCreativesForTag,
   },
   state
 );

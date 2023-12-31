@@ -18,9 +18,11 @@ import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';
 import { CircularProgress } from "@mui/material";
 import ContentEditable from 'react-contenteditable'
 import ConfirmDeleteModal from "../community/Modals/ConfirmDeleteModal";
+import { Context as CreativesContext } from "../../context/CreativesContext";
 
 const CreatePost = (props) => {
 
+  const taggerRef = useRef(null);
   const editorRefTinyMCE = useRef(null);
 
   const {
@@ -36,12 +38,19 @@ const CreatePost = (props) => {
     savePost, setHaltRefresh,
   } = useContext(CommunityContext);
 
+  const {
+    getLoungeCreativesForTag,
+  } = useContext(CreativesContext);
+
   const [open, setOpen] = useState(false);
   const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
   const [hasOffensiveWords, setHasOffensiveWords] = useState(false);
   const [useTinyMCE, setUseTinyMCE] = useState(true);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    closeTagger();
+    setOpen(false);
+  };
   const [showPicker, setShowPicker] = useState(false);
   const [content, setContent] = useState("");
   const [imagePickerOpen, setImagePickerOpen] = useState(false);
@@ -50,8 +59,81 @@ const CreatePost = (props) => {
 
   const [requireContent, setRequireContent] = useState(false);
 
+  const [taggerOpened, setTaggerOpened] = useState(false);
+  const [taggerSearchText, setTaggerSearchText] = useState("");
+  const [taggerSearchResults, setTaggerSearchResults] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      let data = await getLoungeCreativesForTag(taggerSearchText);
+      setTaggerSearchResults(data);
+      //console.log(data);
+    })();
+  }, [taggerSearchText]);
+
+  const onTaggerItemSelected = (e, item) => {
+    let html = '<a href="/creative/' + item.username + '" target="_blank">@' + item.first_name + ' ' + item.last_name + '</a>'
+    editorRefTinyMCE?.current?.execCommand('mceInsertContent', false, html);
+    //console.log(item);
+    closeTagger();
+  };
+
+  const closeTagger = () => {
+    if (taggerRef.current) {
+      taggerRef.current.canQuitTagger = true;
+    }
+    handleTaggerBlur(null);
+  };
+  const handleTaggerKeyDown = (e) => {
+    if (taggerRef?.current) {
+      if (e && e.keyCode == 27) { /* i.e., pressed '@' */
+        if (taggerRef.current) {
+          taggerRef.current.canQuitTagger = true;
+        }
+        handleTaggerBlur(e);
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const handleTaggerBlur = (e) => {
+    if (taggerRef?.current?.canQuitTagger) {
+      setTaggerOpened(false);
+      setTaggerSearchText("");
+      editorRefTinyMCE?.current?.focus();
+      return;
+    }
+    window.setTimeout(function () {
+      taggerRef?.current?.focus();
+    }, 100);
+  };
+
+  const handleKeyDown = (e) => {
+    if (editorRefTinyMCE?.current) {
+      if (e && e.keyCode == 50) { /* i.e., pressed '@' */
+        if (taggerRef.current) {
+          taggerRef.current.canQuitTagger = false;
+        }
+        setTaggerOpened(true);
+        setTaggerSearchText("");
+        window.setTimeout(function () {
+          taggerRef?.current?.focus();
+        }, 250);
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const doSavePost = () => {
-    if(!content) {
+    if (!content) {
       setRequireContent(true);
       editorRefTinyMCE?.current?.focus();
       return;
@@ -102,13 +184,13 @@ const CreatePost = (props) => {
 
   useEffect(() => {
     /* Hack to resolve focus issue with TinyMCE editor in bootstrap model dialog */
-      const handler = (e) => {
-        if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
-          e.stopImmediatePropagation();
-        }
-      };
-      document.addEventListener("focusin", handler);
-      return () => document.removeEventListener("focusin", handler);
+    const handler = (e) => {
+      if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
+        e.stopImmediatePropagation();
+      }
+    };
+    document.addEventListener("focusin", handler);
+    return () => document.removeEventListener("focusin", handler);
   }, []);
 
   const performInitTinyMCE = (evt, editor) => {
@@ -121,21 +203,21 @@ const CreatePost = (props) => {
     console.log(emojiData.getEmojiUrl);
     setContent((prev) => (prev += emojiData.emoji));
     setShowPicker(false);
-    if(editableRef) {
+    if (editableRef) {
       setCursorToEnd(editableRef);
       editableRef?.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
     }
-    
+
   };
 
-  function setCursorToEnd(ele){
+  function setCursorToEnd(ele) {
     var range = document.createRange();
     var sel = window.getSelection();
     range.setStart(ele, 1);
     range.collapse(true);
     sel.removeAllRanges();
     sel.addRange(range);
-}
+  }
 
   const removeAttachment = (e, postAttachment) => {
     setPostAttachments(postAttachments.filter((item) => item.id != postAttachment.id));
@@ -145,7 +227,7 @@ const CreatePost = (props) => {
     <div className="post-form">
       <div className="status-box">
         <div className="user-avatar">
-          <img src={user ? user.image : Placeholder} />
+          <img src={user ? user.image : Placeholder} alt="" />
         </div>
         <div className="textarea">
           <textarea
@@ -178,6 +260,24 @@ const CreatePost = (props) => {
         aria-describedby="modal-modal-description"
       >
         <div className="create-post-modal post-modal">
+          <div id="tagger" className="tagger" style={{ display: taggerOpened ? 'block' : 'none' }}>
+            <input type="text"
+              ref={taggerRef}
+              onKeyDown={(e) => handleTaggerKeyDown(e)}
+              onChange={(e) => setTaggerSearchText(e.target.value.substring(1))}
+              value={"@" + taggerSearchText}
+              onBlur={(e) => handleTaggerBlur(e)}
+            />
+            <select name="taggerDropDown" size="5">
+              {taggerSearchResults && taggerSearchResults.map((item, index) => {
+                return (
+                  <option onClick={(e) => onTaggerItemSelected(e, item)}>
+                    {item?.first_name + ' ' + item?.last_name}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
           <div className="postmodal-header">
             <div className="user-avatar">
               <img src={user ? user.image : Placeholder} height={50} width={50} alt="" />
@@ -211,6 +311,7 @@ const CreatePost = (props) => {
                   initialValue=""
                   onEditorChange={(e) => setContent(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "")}
                   onFocus={(e) => setRequireContent(false)}
+                  onKeyDown={(e) => handleKeyDown(e)}
                 />
               </>
             ) : (
