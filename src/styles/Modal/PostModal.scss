@@ -243,3 +243,11 @@
     background: transparent;
     cursor: pointer;
 }
+
+.post-modal .tagger .tagger-exit {
+    position: absolute;
+    font-size: 18pt;
+    cursor: pointer;
+    right: -16px;
+    top: -16px;
+}

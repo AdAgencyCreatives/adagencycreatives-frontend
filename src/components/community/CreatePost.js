@@ -64,11 +64,15 @@ const CreatePost = (props) => {
   const [taggerSearchResults, setTaggerSearchResults] = useState(null);
 
   useEffect(() => {
-    (async () => {
-      let data = await getLoungeCreativesForTag(taggerSearchText);
-      setTaggerSearchResults(data);
-      //console.log(data);
-    })();
+    if(taggerSearchText && taggerSearchText.length) {
+      (async () => {
+        let data = await getLoungeCreativesForTag(taggerSearchText);
+        setTaggerSearchResults(data);
+        //console.log(data);
+      })();
+    } else {
+      setTaggerSearchResults(null);
+    }
   }, [taggerSearchText]);
 
   const onTaggerItemSelected = (e, item) => {
@@ -104,6 +108,7 @@ const CreatePost = (props) => {
     if (taggerRef?.current?.canQuitTagger) {
       setTaggerOpened(false);
       setTaggerSearchText("");
+      setTaggerSearchResults(null);
       editorRefTinyMCE?.current?.focus();
       return;
     }
@@ -261,6 +266,7 @@ const CreatePost = (props) => {
       >
         <div className="create-post-modal post-modal">
           <div id="tagger" className="tagger" style={{ display: taggerOpened ? 'block' : 'none' }}>
+            <IoCloseCircleSharp className="tagger-exit" onClick={(e) => closeTagger()} />
             <input type="text"
               ref={taggerRef}
               onKeyDown={(e) => handleTaggerKeyDown(e)}
@@ -268,7 +274,7 @@ const CreatePost = (props) => {
               value={"@" + taggerSearchText}
               onBlur={(e) => handleTaggerBlur(e)}
             />
-            <select name="taggerDropDown" size="5">
+            <select name="taggerDropDown" size="5" style={{ display: taggerSearchResults?.length ? 'block' : 'none' }}>
               {taggerSearchResults && taggerSearchResults.map((item, index) => {
                 return (
                   <option onClick={(e) => onTaggerItemSelected(e, item)}>
