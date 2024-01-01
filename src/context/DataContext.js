@@ -16,8 +16,11 @@ const state = {
   featured_cities: [],
   reviewsMeta: {},
   mentors: [],
+  mentorsNextPage: null,
   resources: [],
-  publications: []
+  publications: [],
+  publicationsNextPage: null,
+  loading: false
 };
 
 const reducer = (state, action) => {
@@ -40,12 +43,6 @@ const reducer = (state, action) => {
       return { ...state, industry_experiences: action.payload.data };
     case "set_strengths":
       return { ...state, strengths: action.payload.data };
-    case "set_mentors":
-      return { ...state, mentors: action.payload.data };
-    case "set_resources":
-      return { ...state, resources: action.payload.data };
-    case "set_publications":
-      return { ...state, publications: action.payload.data };
     case "set_years_experience":
       return { ...state, years_experience: action.payload.data };
     case "set_bookmarks":
@@ -79,6 +76,34 @@ const reducer = (state, action) => {
         ...state,
         bookmarks: state.bookmarks.filter((item) => item.id != action.payload),
       };
+    case "set_mentors":
+      return { 
+        ...state,
+        mentors: action.payload.data,
+        mentorsNextPage: action.payload.links.next
+      };
+    case "load_mentors":
+      return {
+        ...state,
+        mentors: [...state.mentors, ...action.payload.data],
+        mentorsNextPage: action.payload.links.next,
+      };
+    case "set_resources":
+      return { ...state, resources: action.payload.data };
+    case "set_publications":
+      return {
+        ...state,
+        publications: action.payload.data,
+        publicationsNextPage: action.payload.links.next
+      };
+    case "load_publications":
+      return {
+        ...state,
+        publications: [...state.publications, ...action.payload.data],
+        publicationsNextPage: action.payload.links.next,
+      };
+    case "set_loading":
+      return { ...state, loading: action.payload };
     default:
       return state;
   }
@@ -323,9 +348,9 @@ const deleteReview = (dispatch) => {
 };
 
 const getMentorTopics = (dispatch) => {
-  return async (slug) => {
+  return async (slug, perPage = 9) => {
     try {
-      const response = await api.get(`/topics?filter[slug]=${slug}`);
+      const response = await api.get(`/topics?filter[slug]=${slug}&per_page=${perPage}`);
       dispatch({
         type: "set_mentors",
         payload: response.data,
@@ -358,6 +383,40 @@ const getPublications = (dispatch) => {
   };
 };
 
+const loadNextPage = (dispatch) => {
+  return async (page) => {
+    console.log(page);
+    if (!page) {
+      return;
+    }
+
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get(page);
+      if (page.includes('publication-resources')) {
+        dispatch({
+          type: "load_publications",
+          payload: response.data,
+        });
+      }
+      if (page.includes('topics')) {
+        dispatch({
+          type: "load_mentors",
+          payload: response.data,
+        });
+      }      
+    } catch (error) { }
+    setLoading(dispatch, false);
+  };
+};
+
+const setLoading = (dispatch, status) => {
+  dispatch({
+    type: "set_loading",
+    payload: status,
+  });
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
@@ -381,7 +440,8 @@ export const { Context, Provider } = createDataContext(
     deleteReview,
     getMentorTopics,
     getMentorResources,
-    getPublications
+    getPublications,
+    loadNextPage
   },
   state
 );

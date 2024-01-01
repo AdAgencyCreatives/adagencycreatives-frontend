@@ -1,16 +1,4 @@
 import { Link } from "react-router-dom";
-import aaa from "../../assets/images/publications/aaa.jpeg";
-import adage from "../../assets/images/publications/adage.jpeg";
-import adsworld from "../../assets/images/publications/adsworld.jpeg";
-import adweek from "../../assets/images/publications/adweek.jpeg";
-import adweekagency from "../../assets/images/publications/adweekagency.jpeg";
-import aiga from "../../assets/images/publications/aiga.jpeg";
-import ca from "../../assets/images/publications/ca.jpeg";
-import campaign from "../../assets/images/publications/campaign.jpeg";
-import howdesign from "../../assets/images/publications/howdesign.jpeg";
-import littleblack from "../../assets/images/publications/littleblack.jpeg";
-import muse from "../../assets/images/publications/muse.jpeg";
-import thedrum from "../../assets/images/publications/thedrum.jpeg";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { Context } from "../../context/DataContext";
 import { useContext, useEffect } from "react";
@@ -24,61 +12,6 @@ const PublicationResources = () => {
   useEffect(() => {
     getPublications();
   }, []);
-
-  useEffect(() => {
-    console.log(publications);
-  }, [publications]);
-
-  // const publications = [
-  //   {
-  //     image: aaa,
-  //     url: "https://www.aaaa.org/",
-  //   },
-  //   {
-  //     image: adweek,
-  //     url: "https://www.adweek.com/",
-  //   },
-  //   {
-  //     image: adsworld,
-  //     url: "https://www.adsoftheworld.com",
-  //   },
-  //   {
-  //     image: howdesign,
-  //     url: "https://howdesignlive.com",
-  //   },
-  //   {
-  //     image: adage,
-  //     url: "https://adage.com",
-  //   },
-  //   {
-  //     image: aiga,
-  //     url: "https://www.aiga.org",
-  //   },
-  //   {
-  //     image: ca,
-  //     url: "https://www.commarts.com",
-  //   },
-  //   {
-  //     image: muse,
-  //     url: "https://musebycl.io",
-  //   },
-  //   {
-  //     image: littleblack,
-  //     url: "https://www.lbbonline.com",
-  //   },
-  //   {
-  //     image: adweekagency,
-  //     url: "https://www.adweek.com/agencyspy/",
-  //   },
-  //   {
-  //     image: campaign,
-  //     url: "https://www.campaignlive.com",
-  //   },
-  //   {
-  //     image: thedrum,
-  //     url: "https://www.thedrum.com",
-  //   },
-  // ];
 
   return (
     <div id="publications">
