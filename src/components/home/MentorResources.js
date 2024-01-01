@@ -16,35 +16,8 @@ const MentorResources = () => {
   } = useContext(Context);
 
   useEffect(() => {
-    getMentorTopics('');
+    getMentorTopics('', 6);
   }, []);
-
-  // const mentors2 = [
-  //   {
-  //     image: copy,
-  //     url: "/copywriting-mentors",
-  //   },
-  //   {
-  //     image: art,
-  //     url: "/art-mentors",
-  //   },
-  //   {
-  //     image: portfolio,
-  //     url: "/portfolio-mentors",
-  //   },
-  //   {
-  //     image: inspire,
-  //     url: "/inspire-mentors",
-  //   },
-  //   {
-  //     image: business,
-  //     url: "/business-mentors",
-  //   },
-  //   {
-  //     image: tech,
-  //     url: "/tech-mentors",
-  //   },
-  // ];
 
   return (
     <div id="mentors">
@@ -58,16 +31,6 @@ const MentorResources = () => {
       </div>
 
       <div className="sectionContent mentors-section">
-        {/* {mentors2.map((item, index) => {
-          return (
-            <div className="mentor" key={`m_${index}`}>
-              <a href={item.slug}>
-                <h3></h3>
-                <img src={item.image} height={150} width={150} />
-              </a>
-            </div>
-          );
-        })} */}
         {mentors.map((item, index) => {
           return (
             <div className="mentor" key={`m_${index}`}>
