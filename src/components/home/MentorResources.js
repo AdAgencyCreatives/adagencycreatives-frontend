@@ -1,8 +1,3 @@
-import portfolio from "../../assets/images/portfolio.jpg";
-import business from "../../assets/images/business.jpg";
-import tech from "../../assets/images/tech.jpg";
-import copy from "../../assets/images/copy.jpg";
-import inspire from "../../assets/images/inspire.jpg";
 import AdAgency from "../../assets/images/AdAgency.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -18,6 +13,10 @@ const MentorResources = () => {
   useEffect(() => {
     getMentorTopics('', 6);
   }, []);
+
+  useEffect(() => {
+    console.log(mentors);
+  }, [mentors]);
 
   return (
     <div id="mentors">

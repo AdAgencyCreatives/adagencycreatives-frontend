@@ -34,7 +34,7 @@ const reducer = (state, action) => {
     case "set_cities":
       return { ...state, cities: action.payload.data };
     case "set_featured_cities":
-      return { ...state, featured_cities: action.payload };
+      return { ...state, featured_cities: action.payload.data };
     case "set_employment_type":
       return { ...state, employment_type: action.payload };
     case "set_media_experiences":
