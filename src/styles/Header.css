@@ -646,3 +646,24 @@ nav ul.dropdown-list .list-item-text.j-fix {
     width: 33.33%;
     height: auto;
 }
+
+.page-messages .emoji-picker-container {
+    display: block;
+    position: relative;
+}
+.page-messages .chat-container .chat-footer aside.EmojiPickerReact.epr-main {
+    top: unset !important;
+    bottom: 25px !important;
+    height: 350px !important;
+    width: 300px !important;
+    left: -30px;
+}
+
+.page-messages .emoji-exit {
+    display: block;
+    position: absolute;
+    cursor: pointer;
+    z-index: 2;
+    top: -395px;
+    left: 250px;
+}

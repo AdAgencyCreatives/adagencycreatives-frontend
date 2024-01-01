@@ -1,6 +1,6 @@
 import ContentEditable from "react-contenteditable";
 import Loader from "../Loader";
-import { IoArrowBack } from "react-icons/io5";
+import { IoArrowBack, IoCloseCircleSharp } from "react-icons/io5";
 import Avatar from "../../assets/images/placeholder.png";
 import UploadPlaceholder from "../../assets/images/Mischief-1.png";
 import { useEffect, useState, useRef, useContext } from "react";
@@ -73,7 +73,7 @@ const ChatBox = ({
   };
 
   const handleSubmit = async () => {
-    if(!content || content.length == 0) {
+    if (!content || content.length == 0) {
       showAlert("Enter your Message");
       return;
     }
@@ -181,26 +181,30 @@ const ChatBox = ({
   }
   let paged = 1;
   const [isLoading, setIsLoading] = useState(false);
-    useEffect(() => {
-      const loadMoreMessages = async () => {
-        if (containerRef.current && containerRef.current.scrollTop === 0) {
-          paged++;
-          const type = messages.slice(-1).pop()?.type ?? 'job';
-          appendMessages(contact.uuid, type, paged);
-        }
-      };
+  useEffect(() => {
+    const loadMoreMessages = async () => {
+      if (containerRef.current && containerRef.current.scrollTop === 0) {
+        paged++;
+        const type = messages.slice(-1).pop()?.type ?? 'job';
+        appendMessages(contact.uuid, type, paged);
+      }
+    };
 
-      // Bắt sự kiện scroll trên khung chat
-      const handleScroll = () => {
-        // loadMoreMessages();
-      };
-      if(containerRef.current)
-        containerRef.current.addEventListener('scroll', handleScroll);
-      return () => {
-        if(containerRef.current)
-          containerRef.current.removeEventListener('scroll', handleScroll);
-      };
-    }, [messages]);
+    // Bắt sự kiện scroll trên khung chat
+    const handleScroll = () => {
+      // loadMoreMessages();
+    };
+    if (containerRef.current)
+      containerRef.current.addEventListener('scroll', handleScroll);
+    return () => {
+      if (containerRef.current)
+        containerRef.current.removeEventListener('scroll', handleScroll);
+    };
+  }, [messages]);
+
+  const closeEmojiHandler = () => {
+    setShowPicker(false);
+  };
 
   return (
     <div className={`chat-box ${chatBoxMobile}`}>
@@ -220,21 +224,21 @@ const ChatBox = ({
                 const elements = document.querySelectorAll('.users-list .active');
                 let dataIdValue = 0;
                 elements.forEach((element) => {
-                   dataIdValue = element.getAttribute('data-id');
+                  dataIdValue = element.getAttribute('data-id');
                 });
                 const sender = item.message_type == "sent" ? user : contact;
                 const time = parseDate(item.created_at);
                 const created_at = parseDateShort(item.created_at);
                 const { message, attachments } = parseMessage(item.message);
-                if(item.message_type == 'received'){
-                  if(item.sender_id != dataIdValue){
-                    const myDiv = document.querySelector('[data-id="'+item.sender_id+'"]');
+                if (item.message_type == 'received') {
+                  if (item.sender_id != dataIdValue) {
+                    const myDiv = document.querySelector('[data-id="' + item.sender_id + '"]');
                     if (myDiv) {
                       const childElement = myDiv.querySelector('.message-time');
 
                       if (childElement) {
                         childElement.classList.add('unread');
-                        childElement.innerHTML =  created_at;
+                        childElement.innerHTML = created_at;
                       }
                       const childMess = myDiv.querySelector('.user-message');
 
@@ -246,7 +250,7 @@ const ChatBox = ({
                     return null;
                   }
                 }
-                
+
                 return (
                   <div className="chat-item" key={"message" + index}>
                     <img
@@ -254,6 +258,7 @@ const ChatBox = ({
                       height={35}
                       width={35}
                       className="chat-avatar"
+                      alt=""
                     />
                     <div className="details">
                       <div className="sender">
@@ -299,7 +304,7 @@ const ChatBox = ({
                 {!item.uploaded ? (
                   <Loader fullHeight={false} />
                 ) : (
-                  <img src={item.src} />
+                  <img src={item.src} alt="" />
                 )}
               </div>
             ))}
@@ -310,23 +315,26 @@ const ChatBox = ({
             <>
               <FaRegSmile onClick={() => setShowPicker((val) => !val)} />
               {showPicker && (
-                <EmojiPicker
-                  previewConfig={{ showPreview: false }}
-                  skinTonesDisabled={true}
-                  height={250}
-                  suggestedEmojisMode=""
-                  categories={[
-                    "smileys_people",
-                    "animals_nature",
-                    "food_drink",
-                    "travel_places",
-                    "activities",
-                    "objects",
-                    "symbols",
-                    "flags",
-                  ]}
-                  onEmojiClick={selectEmoji}
-                />
+                <div className="emoji-picker-container">
+                  <EmojiPicker
+                    previewConfig={{ showPreview: false }}
+                    skinTonesDisabled={true}
+                    height={250}
+                    suggestedEmojisMode=""
+                    categories={[
+                      "smileys_people",
+                      "animals_nature",
+                      "food_drink",
+                      "travel_places",
+                      "activities",
+                      "objects",
+                      "symbols",
+                      "flags",
+                    ]}
+                    onEmojiClick={selectEmoji}
+                  />
+                  <IoCloseCircleSharp className="emoji-exit" onClick={(e) => setShowPicker(false)} />
+                </div>
               )}
               <FaPaperclip onClick={() => uploadRef.current.click()} />
               <input
