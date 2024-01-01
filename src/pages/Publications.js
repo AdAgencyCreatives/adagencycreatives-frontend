@@ -1,79 +1,24 @@
 import "../styles/Publications.css";
-import aaa from "../assets/images/publications/AAA.png";
-import adage from "../assets/images/publications/adage.png";
-import adsworld from "../assets/images/publications/adsworld.png";
-import adweek from "../assets/images/publications/adweek.png";
-import adweekagency from "../assets/images/publications/adweekagency.png";
-import aiga from "../assets/images/publications/aiga.png";
-import ca from "../assets/images/publications/ca.png";
-import campaign from "../assets/images/publications/campaign.png";
-import howdesign from "../assets/images/publications/howdesign.png";
-import littleblack from "../assets/images/publications/littleblack.png";
-import muse from "../assets/images/publications/muse.png";
-import thedrum from "../assets/images/publications/thedrum.png";
 import { Context } from "../context/DataContext";
 import { useContext, useEffect } from "react";
+import { useScrollLoader } from "../hooks/useScrollLoader";
 
 const Publications = () => {
   const { 
-    state:{ publications },
-    getPublications
+    state:{ publications, publicationsNextPage, loading },
+    getPublications,
+    loadNextPage
   } = useContext(Context);
 
   useEffect(() => {
     getPublications();
   }, []);
 
-  // const publications = [
-  //   {
-  //     image: aaa,
-  //     url: "https://www.aaaa.org/",
-  //   },
-  //   {
-  //     image: adweek,
-  //     url: "https://www.adweek.com/",
-  //   },
-  //   {
-  //     image: adsworld,
-  //     url: "https://www.adsoftheworld.com",
-  //   },
-  //   {
-  //     image: howdesign,
-  //     url: "https://howdesignlive.com",
-  //   },
-  //   {
-  //     image: adage,
-  //     url: "https://adage.com",
-  //   },
-  //   {
-  //     image: aiga,
-  //     url: "https://www.aiga.org",
-  //   },
-  //   {
-  //     image: ca,
-  //     url: "https://www.commarts.com",
-  //   },
-  //   {
-  //     image: muse,
-  //     url: "https://musebycl.io",
-  //   },
-  //   {
-  //     image: littleblack,
-  //     url: "https://www.lbbonline.com",
-  //   },
-  //   {
-  //     image: adweekagency,
-  //     url: "https://www.adweek.com/agencyspy/",
-  //   },
-  //   {
-  //     image: campaign,
-  //     url: "https://www.campaignlive.com",
-  //   },
-  //   {
-  //     image: thedrum,
-  //     url: "https://www.thedrum.com",
-  //   },
-  // ];
+  const loadMore = () => {
+    if (publicationsNextPage) loadNextPage(publicationsNextPage);
+  };
+
+  useScrollLoader(loading, loadMore);
 
   return (
     <div className="dark-container page-mentors mb-0 mt-4">
@@ -100,6 +45,13 @@ const Publications = () => {
               );
             })}
           </div>
+      </div>
+      <div className="load-more text-center">
+        {loading && (
+          <div className="spinner-border text-light" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        )}
       </div>
     </div>
   );

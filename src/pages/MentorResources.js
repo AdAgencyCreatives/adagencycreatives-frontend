@@ -1,24 +1,19 @@
 import "../styles/MentorResources.scss";
-import portfolio from "../assets/images/portfolio.jpg";
-import business from "../assets/images/business.jpg";
-import tech from "../assets/images/tech.jpg";
-import copy from "../assets/images/copy.jpg";
-import inspire from "../assets/images/inspire.jpg";
-import art from "../assets/images/art.jpg";
-import { Link } from "react-router-dom";
 import AdAgency from "../assets/images/AdAgency.png";
 import { Context } from "../context/DataContext";
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import SingleMentorList from "../components/SingleMentorList";
+import { useScrollLoader } from "../hooks/useScrollLoader";
 
 const MentorResources = () => {
   const { slug } = useParams();
 
   const { 
-    state:{ mentors, resources },
+    state:{ mentors, resources, mentorsNextPage, loading },
     getMentorTopics,
-    getMentorResources
+    getMentorResources,
+    loadNextPage
   } = useContext(Context);
 
   useEffect(() => {
@@ -27,6 +22,12 @@ const MentorResources = () => {
       getMentorResources(slug);
     }
   }, []);
+
+  const loadMore = () => {
+    if (mentorsNextPage) loadNextPage(mentorsNextPage);
+  };
+
+  useScrollLoader(loading, loadMore);
 
   return (
     <>
@@ -60,6 +61,13 @@ const MentorResources = () => {
                   </div>
                 );
               })}
+            </div>
+            <div className="load-more text-center mt-4">
+              {loading && (
+                <div className="spinner-border text-light" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
