@@ -19,6 +19,8 @@ const state = {
   isLoading: false,
   notes: [],
   job_alerts: [],
+  applicationsNextPage: null,
+  notesNextPage: null
 };
 
 const reducer = (state, action) => {
@@ -26,7 +28,17 @@ const reducer = (state, action) => {
     case "set_jobs":
       return { ...state, jobs: action.payload.data, meta: action.payload.meta };
     case "set_applications":
-      return { ...state, applications: action.payload };
+      return { 
+        ...state, 
+        applications: action.payload.data,
+        applicationsNextPage: action.payload.links.next
+      };
+    case "set_nextpage_applications":
+      return { 
+        ...state, 
+        applications: [ ...state.applications, ...action.payload ],
+        // applicationsNextPage: action.payload.links.next
+      };
     case "set_recent_applications":
       return { ...state, recent_applications: action.payload.data };
     case "delete_application": {
@@ -68,7 +80,17 @@ const reducer = (state, action) => {
     case "set_media_experiences":
       return { ...state, media_experiences: action.payload.data };
     case "set_notes":
-      return { ...state, notes: action.payload.data };
+      return { 
+        ...state, 
+        notes: action.payload.data,
+        notesNextPage: action.payload.links.next
+      };
+    case "set_nextpage_notes":
+      return { 
+        ...state, 
+        notes: [ ...state.notes, ...action.payload.data ],
+        notesNextPage: action.payload.links.next
+      };
     case "add_note":
       return { ...state, notes: [...state.notes, action.payload.data] };
     case "set_job_alert":
@@ -196,9 +218,40 @@ const getApplications = (dispatch) => {
         job.applications = data;
         applications.push(job);
 
+        response2.data.data = applications;
+
         dispatch({
           type: "set_applications",
-          payload: applications,
+          payload: response2.data,
+        });
+      }
+    } catch (error) { }
+    setLoading(dispatch, false);
+  };
+};
+
+const getNextPageApplications = (dispatch) => {
+  return async (uid, page) => {
+    let applications = [];
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get(
+        `${page}&filter[status]=${status}&filter[user_id]=${uid}`
+      ); // have to set filter[status]=1 later
+      const jobs = response.data.data;
+      for (const job of jobs) {
+        const response2 = await api.get(
+          "applications?filter[job_id]=" + job.id
+        );
+        const data = response2.data.data;
+        job.applications = data;
+        applications.push(job);
+
+        response2.data.data = applications;
+
+        dispatch({
+          type: "set_applications",
+          payload: response2.data,
         });
       }
     } catch (error) { }
@@ -288,6 +341,7 @@ const addNote = (dispatch) => {
 
 const getNotes = (dispatch) => {
   return async (uid, resource_id, type) => {
+    setLoading(dispatch, true);
     try {
       const response = await api.get(
         `/notes?filter[user_id]=${uid}&resource_id=${resource_id}&resource_type=${type}`
@@ -297,6 +351,23 @@ const getNotes = (dispatch) => {
         payload: response.data,
       });
     } catch (error) { }
+    setLoading(dispatch, false);
+  };
+};
+
+const getNextPageNotes = (dispatch) => {
+  return async (uid, resource_id, type, page) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get(
+        `${page}&filter[user_id]=${uid}&resource_id=${resource_id}&resource_type=${type}`
+      );
+      dispatch({
+        type: "set_nextpage_notes",
+        payload: response.data,
+      });
+    } catch (error) { }
+    setLoading(dispatch, false);
   };
 };
 
@@ -514,6 +585,32 @@ const setFormSubmit = (dispatch, state) => {
   });
 };
 
+const loadNextPage = (dispatch) => {
+  return async (page) => {
+    if (!page) {
+      return;
+    }
+
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get(page);
+      if (page.includes('publication-resources')) {
+        dispatch({
+          type: "load_publications",
+          payload: response.data,
+        });
+      }
+      if (page.includes('topics')) {
+        dispatch({
+          type: "load_mentors",
+          payload: response.data,
+        });
+      }      
+    } catch (error) { }
+    setLoading(dispatch, false);
+  };
+};
+
 const setLoading = (dispatch, state) => {
   dispatch({
     type: "set_loading",
@@ -537,6 +634,7 @@ export const { Context, Provider } = createDataContext(
     deleteJob,
     addNote,
     getNotes,
+    getNextPageNotes,
     getFeaturedJobs,
     getCategories,
     getStates,

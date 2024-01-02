@@ -3,6 +3,7 @@ import "../../../styles/Modal/AddNotesModal.scss";
 import { useContext, useEffect, useState } from "react";
 import { Context as JobsContext } from "../../../context/JobsContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
+import { usePopupScrollLoader } from "../../../hooks/usePopupScrollLoader";
 import moment from "moment";
 import { CircularProgress } from "@mui/material";
 
@@ -11,9 +12,10 @@ const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
   const [message, setMessage] = useState(false);
 
   const {
-    state: { notes, isLoading },
+    state: { notes, notesNextPage, isLoading },
     getNotes,
     addNote,
+    getNextPageNotes
   } = useContext(JobsContext);
 
   const {
@@ -28,17 +30,24 @@ const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
     };
     await addNote(data);
     setMessage(true)
+    setNote('');
   };
 
   useEffect(() => {
     if (open && user) {
-      getNotes(user.uuid, resource_id, type);
+      getNotes(user.uuid, resource_id, type);      
     }
   }, [open, user]);
 
   useEffect(() => {
-    setMessage(false)
-  },[open])
+    setMessage(false);
+  },[open]);
+
+  const loadMore = () => {
+    if (notesNextPage) getNextPageNotes(user.uuid, resource_id, type, notesNextPage);
+  };
+
+  usePopupScrollLoader(isLoading, loadMore);
 
   return (
     <Dialog
@@ -101,6 +110,13 @@ const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
                         </p>
                       </div>
                     ))}
+                    <div className="load-more text-center">
+                      {isLoading && (
+                        <div className="spinner-border text-light" role="status">
+                          <span className="visually-hidden">Loading...</span>
+                        </div>
+                      )}
+                    </div>
                   </>
                 ) : (
                   <p>You currently have no notes entered.</p>

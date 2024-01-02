@@ -6,7 +6,7 @@ const Terms = () => {
         <span>
           Welcome to Ad Agency Creatives website (the “Site”) which is comprised
           of various web pages and platforms operated through
-          www.aacstagingsite.wpengine.com. This site and resource are offered to
+          adagencycreatives.com. This site and resource are offered to
           you conditioned on your acceptance without modification of the terms,
           conditions, and notices contained herein (the “Terms”). We
         </span>
@@ -21,7 +21,7 @@ const Terms = () => {
       <ul>
         <li>
           <p>
-            You agree to engage with www.aacstagingsite.wpengine.com to share
+            You agree to engage with adagencycreatives.com to share
             job opportunities and understand that posting jobs to create
             pipelines is strictly prohibited.&nbsp;
           </p>
@@ -78,7 +78,7 @@ const Terms = () => {
       <ul>
         <li>
           <p>
-            You agree to engage with www.aacstagingsite.wpengine.com and will be
+            You agree to engage with adagencycreatives.com and will be
             respect the community where you share and grow our industry. You
             will not participate or allow arguing or defaming other users and
             you will be held fully liable under this agreement. You account will
@@ -131,9 +131,9 @@ const Terms = () => {
         <b>Privacy</b>
       </p>
       <p>
-        Your use of www.aacstagingsite.wpengine.com is subject to Ad Agency
+        Your use of adagencycreatives.com is subject to Ad Agency
         Creatives’s Privacy Policy. Please review our{" "}
-        <a href="https://aacstagingsite.wpengine.com/privacy-policy/">
+        <a href="https://adagencycreatives.com/privacy-policy/">
           Privacy Policy
         </a>
         , which also governs the Site and informs users of our data collection
@@ -144,7 +144,7 @@ const Terms = () => {
         <b>Electronic Communications</b>
       </p>
       <p>
-        Visiting www.aacstagingsite.wpengine.com or sending emails to Ad Agency
+        Visiting adagencycreatives.com or sending emails to Ad Agency
         Creatives constitutes electronic communications. You consent to receive
         electronic communications and you agree that all agreements, notices,
         disclosures and other communications that we provide to you
@@ -201,7 +201,7 @@ const Terms = () => {
         <b>Links to Third Party Sites/Third Party Services</b>
       </p>
       <p>
-        www.aacstagingsite.wpengine.com contains links to other websites
+        adagencycreatives.com contains links to other websites
         (“Linked Sites”). The Linked Sites are not under the control of Ad
         Agency Creatives and Ad Agency Creatives is not responsible for the
         contents of any Linked Site, including without limitation any link
@@ -211,21 +211,21 @@ const Terms = () => {
         Ad Agency Creatives of the site or any association with its operators.
       </p>
       <p>
-        Certain services made available via www.aacstagingsite.wpengine.com are
+        Certain services made available via adagencycreatives.com are
         delivered by third party sites and organizations. By using any product,
         service or functionality originating from the
-        www.aacstagingsite.wpengine.com domain, you hereby acknowledge and
+        adagencycreatives.com domain, you hereby acknowledge and
         consent that Ad Agency Creatives may share such information and data
         with any third party with whom Ad Agency Creatives has a contractual
         relationship to provide the requested product, service or functionality
-        on behalf of www.aacstagingsite.wpengine.com users and customers.
+        on behalf of adagencycreatives.com users and customers.
       </p>
       <p>
         <b>No Unlawful or Prohibited Use/Intellectual Property</b>
       </p>
       <p>
         You are granted a non-exclusive, non-transferable, revocable license to
-        access and use www.aacstagingsite.wpengine.com strictly in accordance
+        access and use adagencycreatives.com strictly in accordance
         with these terms of use. As a condition of your use of the Site, you
         warrant to Ad Agency Creatives that you will not use the Site for any
         purpose that is unlawful or prohibited by these Terms. You may not use
@@ -333,13 +333,13 @@ const Terms = () => {
       </p>
       <p>
         <b>
-          Materials Provided to www.aacstagingsite.wpengine.com or Posted on Any
+          Materials Provided to adagencycreatives.com or Posted on Any
           Ad Agency Creatives Web Page
         </b>
       </p>
       <p>
         Ad Agency Creatives does not claim ownership of the materials you
-        provide to www.aacstagingsite.wpengine.com (including feedback and
+        provide to adagencycreatives.com (including feedback and
         suggestions) or post, upload, input or submit to any Ad Agency Creatives
         Site or our associated services (collectively “Submissions”). However,
         by posting, uploading, inputting, providing or submitting your
@@ -383,7 +383,7 @@ const Terms = () => {
         Creatives from our offices within the USA. If you access the Service
         from a location outside the USA, you are responsible for compliance with
         all local laws. You agree that you will not use the Ad Agency Creatives
-        Content accessed through www.aacstagingsite.wpengine.com in any country
+        Content accessed through adagencycreatives.com in any country
         or in any manner prohibited by any applicable laws, restrictions or
         regulations.
       </p>
@@ -536,7 +536,7 @@ const Terms = () => {
       </p>
       <p>
         Ad Agency Creatives reserves the right, in its sole discretion, to
-        change the Terms under which www.aacstagingsite.wpengine.com is offered.
+        change the Terms under which adagencycreatives.com is offered.
         The most current version of the Terms will supersede all previous
         versions. Ad Agency Creatives encourages you to periodically review the
         Terms to stay informed of our updates.
