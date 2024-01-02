@@ -32,6 +32,8 @@ const Chat = () => {
   const [friends, setFriends] = useState([]);
 
   const [userSelected, setUserSelected] = useState(null);
+  const [paged, setPaged] = useState(2);
+  const [hasMoreData, setHasMoreData] = useState(false);
 
   useEffect(() => {
     getContacts("private");
@@ -97,7 +99,11 @@ const Chat = () => {
     setContact,
     getMessages,
     userSelected, 
-    setUserSelected
+    setUserSelected,
+    setPaged,
+    paged,
+    setHasMoreData,
+    hasMoreData
   };
 
   return (
