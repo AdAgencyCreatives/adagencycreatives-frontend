@@ -276,7 +276,7 @@ const Privacy = () => {
               discontinue receiving communications from us by way of email or
               newsletters. To discontinue or unsubscribe from our website please
               send an email that you wish to unsubscribe to
-              unsubcribe@aacstagingsite.wpengine.com. If you wish to unsubscribe
+              unsubcribe@adagencycreatives.com. If you wish to unsubscribe
               or opt-out from any third-party websites, you must go to that
               specific website to unsubscribe or opt-out. Ad Agency Creatives
               will continue to adhere to this Policy with respect to any
@@ -350,7 +350,7 @@ const Privacy = () => {
               The right to restrict processing: this means you can change your
               communication preferences or opt-out of certain communications.
               You can do this by sending an email to
-              unsubcribe@aacstagingsite.wpengine.com.
+              unsubcribe@adagencycreatives.com.
             </p>
           </div>
         </div>
