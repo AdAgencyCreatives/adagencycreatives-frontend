@@ -31,6 +31,8 @@ const Chat = () => {
   const [type, setType] = useState("job");
   const [friends, setFriends] = useState([]);
 
+  const [userSelected, setUserSelected] = useState(null);
+
   useEffect(() => {
     getContacts("private");
   }, []);
@@ -94,6 +96,8 @@ const Chat = () => {
     handleBackButton,
     setContact,
     getMessages,
+    userSelected, 
+    setUserSelected
   };
 
   return (
@@ -105,7 +109,12 @@ const Chat = () => {
               <div className="header-top d-flex justify-space-between">
                 <div className="box-title">Messaging</div>
                 <div className="new-chat">
-                  <FaRegEdit onClick={() => setChatBox("new")} />
+                  <FaRegEdit onClick={() => {
+                    setChatBox("new");
+                    setUserListMobile("mobile-hide");
+                    setChatBoxMobile("");
+                    setUserSelected(null);
+                  }} />
                 </div>
               </div>
               <div className="message-search-box">

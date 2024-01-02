@@ -21,7 +21,9 @@ const ChatBox = ({
   chatBox,
   setChatBox,
   setContact,
-  getMessages
+  getMessages,
+  userSelected, 
+  setUserSelected
 }) => {
   const {
     state: { messages, loading, contacts, attachments },
@@ -210,11 +212,14 @@ const ChatBox = ({
     <div className={`chat-box ${chatBoxMobile}`}>
       <div className="chat-mobile-top d-md-none d-flex">
         <IoArrowBack size={20} onClick={handleBackButton} />
-        <div className="name">{contact.first_name + " " + contact.last_name}</div>
+        
+        <div className="name">
+        {chatBox != "new" ? (contact.first_name + " " + contact.last_name) : "Back" }
+        </div>
       </div>
       <div className="chat-top">
         {chatBox == "new" ? (
-          <NewChat setContact={setContact} contacts={contacts} />
+          <NewChat setContact={setContact} contacts={contacts} userSelected={userSelected} setUserSelected={setUserSelected} />
         ) : (
           <div ref={containerRef} className="chat-area">
             {loading ? (
