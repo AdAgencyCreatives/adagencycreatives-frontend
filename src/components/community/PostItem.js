@@ -41,6 +41,7 @@ import Comment from "./Comment";
 import useHelper from "../../hooks/useHelper";
 
 import { CookiesProvider, useCookies } from "react-cookie";
+import { Link } from "@mui/material";
 
 const useRefDimensions = (ref) => {
     const [dimensions, setDimensions] = useState({ width: 1, height: 2 })
@@ -416,12 +417,12 @@ const PostItem = (props) => {
 
             </div>
             {!showMoreClicked && displayShowMore && (
-                <>
-                    <button className="btn btn-gray btn-show-more" onClick={(e) => {
+                <div className="show-more-container">
+                    <Link className="show-more" onClick={(e) => {
                         setShowMoreClicked(true);
                         setDisplayShowMore(false);
-                    }}>Show More ...</button>
-                </>
+                    }}>... Show More</Link>
+                </div>
             )}
             <div className="post-images">
                 {props.post.attachments && props.post.attachments.map((attachment, index) => {

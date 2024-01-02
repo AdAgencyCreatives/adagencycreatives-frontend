@@ -667,3 +667,21 @@ nav ul.dropdown-list .list-item-text.j-fix {
     top: -395px;
     left: 250px;
 }
+
+.show-more {
+    color: #d3a11f !important;
+    text-decoration: none !important;
+    position: absolute;
+    bottom: -5px;
+    cursor: pointer;
+}
+
+.show-more:hover {
+    color: #000 !important;
+}
+
+.show-more-container {
+    display: flex;
+    justify-content: end;
+    position: relative;
+}
