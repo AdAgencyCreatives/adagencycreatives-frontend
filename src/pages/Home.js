@@ -28,7 +28,7 @@ register();
 
 const Home = () => {
 
-  const { pageData, getPateDataItem, getPateDataItemStripped } = usePageDataHelper("home");
+  const { pageData, getPateDataItem } = usePageDataHelper("home");
 
   const [messageModalOptions, setMessageModalOptions] = useState({ "open": false, "type": "message", "title": "Message", "message": "Thanks.", "data": {}, "onClose": null });
   const showMessageModal = (type, title, message, data) => {
@@ -96,7 +96,7 @@ const Home = () => {
                     <input
                       className="searchInput form-control"
                       type="text"
-                      placeholder={getPateDataItemStripped("searchbar_placeholder", pageData)}
+                      placeholder={getPateDataItem("searchbar_placeholder", pageData)}
                       onChange={(e) => setSearch(e.target.value)}
                     />
                   </div>

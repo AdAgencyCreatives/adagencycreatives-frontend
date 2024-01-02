@@ -35,7 +35,7 @@ const usePageDataHelper = (currentPage) => {
         })();
     }, []);
 
-    return { page, pageData, getPateDataItem, getPateDataItemStripped };
+    return { page, pageData, getPateDataItem };
 }
 
 export default usePageDataHelper;
