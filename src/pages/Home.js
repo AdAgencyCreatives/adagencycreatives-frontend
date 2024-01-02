@@ -28,7 +28,7 @@ register();
 
 const Home = () => {
 
-  const { pageData, getPateDataItem } = usePageDataHelper("home");
+  const { pageData, getPateDataItem, getPateDataItemStripped } = usePageDataHelper("home");
 
   const [messageModalOptions, setMessageModalOptions] = useState({ "open": false, "type": "message", "title": "Message", "message": "Thanks.", "data": {}, "onClose": null });
   const showMessageModal = (type, title, message, data) => {
@@ -77,7 +77,7 @@ const Home = () => {
             Film Festival
           </Link>
           <div className="searchArea">
-            <p className="searchHeader">{getPateDataItem("searchbar_heading", pageData)}</p>
+            <p className="searchHeader" dangerouslySetInnerHTML={{ __html: getPateDataItem("searchbar_heading", pageData) }}></p>
             <div className="searchBox">
               <form action={"/creative-jobs" + (search ? "/search/" + search : "")} onSubmit={(e) => {
                 // if (!search || search.length == 0) {
@@ -96,7 +96,7 @@ const Home = () => {
                     <input
                       className="searchInput form-control"
                       type="text"
-                      placeholder={getPateDataItem("searchbar_placeholder", pageData)}
+                      placeholder={getPateDataItemStripped("searchbar_placeholder", pageData)}
                       onChange={(e) => setSearch(e.target.value)}
                     />
                   </div>
@@ -125,29 +125,28 @@ const Home = () => {
                       restrictedMessage: "Please login as Creative to access",
                     })
                   }
-                >
-                  {getPateDataItem("motive_title_gather", pageData)}
-                </Link>
+                  dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_gather", pageData) }}></Link>
                 <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_gather", pageData) }}></span>
               </div>
               <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
                 <img src={Mentoring} className="featureImg" />
-                <Link to={"/mentoring-resources"} className="featureTitle">
-                  {getPateDataItem("motive_title_inspire", pageData)}
-                </Link>
-                <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_inspire", pageData) }}></span>
-              </div>
-              <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
-                <img src={Money} className="featureImg" />
-                <Link to={"/creative-jobs"} className="featureTitle">
-                  {getPateDataItem("motive_title_do_cool_shit", pageData)}
-                </Link>
-                <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_do_cool_shit", pageData) }}></span>
-              </div>
+                <Link
+                  to={"/mentoring-resources"}
+                  className="featureTitle"}
+                dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_inspire", pageData) }}></Link>
+              <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_inspire", pageData) }}></span>
+            </div>
+            <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
+              <img src={Money} className="featureImg" />
+              <Link to={"/creative-jobs"}
+                className="featureTitle"
+                dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_do_cool_shit", pageData) }}></Link>
+              <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_do_cool_shit", pageData) }}></span>
             </div>
           </div>
+        </div>
 
-          {/* <div className="ticker" id="about">
+        {/* <div className="ticker" id="about">
             <div className="ticker-text">
               <h1 className="mt-3">• • • • •</h1>
               <h1 className="mb-0">About Us:</h1>
@@ -160,53 +159,53 @@ const Home = () => {
             </div>
           </div> */}
 
-          <div className="wrapper">
-            <div className="marquee">
-              <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
-              <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
-              <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
-            </div>
+        <div className="wrapper">
+          <div className="marquee">
+            <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
+            <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
+            <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
           </div>
         </div>
+      </div >
 
-        <div className="creative-section">
-          <AgencyCreatives />
+      <div className="creative-section">
+        <AgencyCreatives />
 
-          {/* Spotlighting Creatives Section */}
-          <SpotlightCreative />
+        {/* Spotlighting Creatives Section */}
+        <SpotlightCreative />
 
-          {/* Creative Jobs Section */}
-          <CreativeJobs />
+        {/* Creative Jobs Section */}
+        <CreativeJobs />
 
-          <FeaturedCities />
+        <FeaturedCities />
 
-          <AdAgencies />
+        <AdAgencies />
 
-          <MentorResources />
+        <MentorResources />
 
-          <PublicationResources />
-          <div id="feedback">
-            <div className="sectionHeader">
-              <h1 className="sectionTitle">Say, Hello</h1>
-            </div>
-            <div className="contact-section">
-              <div className="row">
-                <div className="text-center text-sm-start col-xs-12 col-sm-8 col-md-12">
-                  <h3 className="title">
-                    Do you have feedback or want to become a contributor?
-                  </h3>
-                  <div className="contact-btn">
-                    <Link to="/contact">
-                      <span>Contact Us</span>
-                    </Link>
-                  </div>
+        <PublicationResources />
+        <div id="feedback">
+          <div className="sectionHeader">
+            <h1 className="sectionTitle">Say, Hello</h1>
+          </div>
+          <div className="contact-section">
+            <div className="row">
+              <div className="text-center text-sm-start col-xs-12 col-sm-8 col-md-12">
+                <h3 className="title">
+                  Do you have feedback or want to become a contributor?
+                </h3>
+                <div className="contact-btn">
+                  <Link to="/contact">
+                    <span>Contact Us</span>
+                  </Link>
                 </div>
-                <div className="col"></div>
               </div>
+              <div className="col"></div>
             </div>
           </div>
         </div>
       </div>
+    </div >
     </>
   );
 };
