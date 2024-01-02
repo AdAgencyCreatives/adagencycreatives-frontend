@@ -20,6 +20,8 @@ const JobChat = ({ getMessages, getContacts }) => {
   const [type, setType] = useState("job,private");
   const [contactsList, setContactsList] = useState([]);
   const [checkClick, setCheckClick] = useState(false);
+  const [paged, setPaged] = useState(2);
+  const [hasMoreData, setHasMoreData] = useState(false);
 
   useEffect(() => {
     setContactsList(contacts);
@@ -30,6 +32,8 @@ const JobChat = ({ getMessages, getContacts }) => {
     setUserListMobile("mobile-hide");
     setChatBoxMobile("");
     setCheckClick(true);
+    setPaged(2);
+    setHasMoreData(false);
     if (item.uuid != contact.uuid) {
       getMessages(item.uuid, type);
       setContact(item);
@@ -61,7 +65,11 @@ const JobChat = ({ getMessages, getContacts }) => {
     setChatBox,
     handleBackButton,
     setContact,
-    getMessages
+    getMessages,
+    setPaged,
+    paged,
+    setHasMoreData,
+    hasMoreData
   };
 
   return (

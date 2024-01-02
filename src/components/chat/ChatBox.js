@@ -11,6 +11,7 @@ import moment from "moment";
 import NewChat from "./NewChat";
 import { FaRegSmile, FaPaperclip } from "react-icons/fa";
 import EmojiPicker, { Emoji } from "emoji-picker-react";
+import { api } from "../../api/api";
 
 const ChatBox = ({
   page,
@@ -23,7 +24,11 @@ const ChatBox = ({
   setContact,
   getMessages,
   userSelected,
-  setUserSelected
+  setUserSelected,
+  setPaged,
+  paged,
+  setHasMoreData,
+  hasMoreData
 }) => {
   const {
     state: { messages, loading, contacts, attachments },
@@ -47,7 +52,6 @@ const ChatBox = ({
   const containerRef = useRef();
   const uploadRef = useRef();
   const logoRef = useRef();
-  const [dataId, setDataId] = useState(0);
 
   useEffect(() => {
     if (!Object.keys(contact).length && contacts.length) {
@@ -56,13 +60,16 @@ const ChatBox = ({
       getMessages(item.uuid, type);
     }
   }, [contacts, contact]);
+  
 
   useEffect(() => {
     setMessageData(messages);
   }, [messages]);
 
   useEffect(() => {
-    scrollToBottom();
+    if(!hasMoreData){
+      scrollToBottom();
+    }
   }, [messageData]);
 
   const scrollToBottom = () => {
@@ -181,28 +188,35 @@ const ChatBox = ({
 
     return result;
   }
-  let paged = 1;
+  
   const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    const loadMoreMessages = async () => {
-      if (containerRef.current && containerRef.current.scrollTop === 0) {
-        paged++;
-        const type = messages.slice(-1).pop()?.type ?? 'job';
-        appendMessages(contact.uuid, type, paged);
-      }
-    };
+    useEffect(() => {
+      const loadMoreMessages = async () => {
+        if (containerRef.current && containerRef.current.scrollTop === 0) {
+          const id = contact.uuid;
+          const type = messageData.slice(-1).pop()?.type ?? 'job';
 
-    // Bắt sự kiện scroll trên khung chat
-    const handleScroll = () => {
-      // loadMoreMessages();
-    };
-    if (containerRef.current)
-      containerRef.current.addEventListener('scroll', handleScroll);
-    return () => {
-      if (containerRef.current)
-        containerRef.current.removeEventListener('scroll', handleScroll);
-    };
-  }, [messages]);
+          const response = await api.get("/messages/" + id + "?type=" + type + "&page=" + paged);
+          const newMessages = response.data.data ?? [];
+          if (newMessages.length !== 0) {
+            setHasMoreData(true);
+            setMessageData((prevMessages) => [...newMessages, ...prevMessages]);
+            setPaged((prevPaged) => prevPaged + 1);
+          }
+        }
+      };
+
+      // Bắt sự kiện scroll trên khung chat
+      const handleScroll = () => {
+        loadMoreMessages();
+      };
+      if(containerRef.current)
+        containerRef.current.addEventListener('scroll', handleScroll);
+      return () => {
+        if(containerRef.current)
+          containerRef.current.removeEventListener('scroll', handleScroll);
+      };
+    }, [messageData, hasMoreData, paged]);
 
   const closeEmojiHandler = () => {
     setShowPicker(false);
@@ -231,71 +245,71 @@ const ChatBox = ({
             {loading ? (
               <Loader fullHeight={false} />
             ) : (
-              messages.map((item, index) => {
-                const elements = document.querySelectorAll('.users-list .active');
-                let dataIdValue = 0;
-                elements.forEach((element) => {
-                  dataIdValue = element.getAttribute('data-id');
-                });
-                const sender = item.message_type == "sent" ? user : contact;
-                const time = parseDate(item.created_at);
-                const created_at = parseDateShort(item.created_at);
-                const { message, attachments } = parseMessage(item.message);
-                if (item.message_type == 'received') {
-                  if (item.sender_id != dataIdValue) {
-                    const myDiv = document.querySelector('[data-id="' + item.sender_id + '"]');
-                    if (myDiv) {
-                      const childElement = myDiv.querySelector('.message-time');
+              
+                messageData.map((item, index) => {
+                  const elements = document.querySelectorAll('.users-list .active');
+                  let dataIdValue = 0;
+                  elements.forEach((element) => {
+                     dataIdValue = element.getAttribute('data-id');
+                  });
+                  const sender = item.message_type == "sent" ? user : contact;
+                  const time = parseDate(item.created_at);
+                  const created_at = parseDateShort(item.created_at);
+                  const { message, attachments } = parseMessage(item.message);
+                  if(item.message_type == 'received'){
+                    if(item.sender_id != dataIdValue && item.human_readable_date.includes('second')){
+                      const myDiv = document.querySelector('[data-id="'+item.sender_id+'"]');
+                      if (myDiv) {
+                        const childElement = myDiv.querySelector('.message-time');
 
-                      if (childElement) {
-                        childElement.classList.add('unread');
-                        childElement.innerHTML = created_at;
-                      }
-                      const childMess = myDiv.querySelector('.user-message');
+                        if (childElement) {
+                          childElement.classList.add('unread');
+                          childElement.innerHTML =  created_at;
+                        }
+                        const childMess = myDiv.querySelector('.user-message');
 
-                      if (childMess) {
-                        childMess.innerHTML = item.message;
+                        if (childMess) {
+                          childMess.innerHTML = item.message;
+                        }
                       }
+                      return null;
                     }
-                    // console.log(myDiv,'myDiv');
-                    return null;
                   }
-                }
-
-                return (
-                  <div className="chat-item" key={"message" + index}>
-                    <img
-                      src={sender.image || Avatar}
-                      height={35}
-                      width={35}
-                      className="chat-avatar"
-                      alt=""
-                    />
-                    <div className="details">
-                      <div className="sender">
-                        {sender.first_name + " " + sender.last_name}
-                        <span className="time">{time}</span>
-                      </div>
-                      <div className="text">
-                        <div
-                          dangerouslySetInnerHTML={{ __html: message }}
-                        ></div>
-                        <div className="message_attachments">
-                          {attachments.length > 0 &&
-                            attachments.map((item, index) => (
-                              <a href={item} target="_blank" key={index}>
-                                <img src={item} />
-                              </a>
-                            ))}
+                  
+                  return (
+                    <div className="chat-item" key={"message" + index}>
+                      <img
+                        src={sender.image || Avatar}
+                        height={35}
+                        width={35}
+                        className="chat-avatar"
+                      />
+                      <div className="details">
+                        <div className="sender">
+                          {sender.first_name + " " + sender.last_name}
+                          <span className="time">{time}</span>
+                        </div>
+                        <div className="text">
+                          <div
+                            dangerouslySetInnerHTML={{ __html: message }}
+                          ></div>
+                          <div className="message_attachments">
+                            {attachments.length > 0 &&
+                              attachments.map((item, index) => (
+                                <a href={item} target="_blank" key={index}>
+                                  <img src={item} />
+                                </a>
+                              ))}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        )}
+                  );
+                })
+
+              )}
+            </div>
+          )}
       </div>
       <div className="chat-footer">
         <div className="message-box">
