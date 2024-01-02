@@ -31,7 +31,7 @@ const Privacy = () => {
             <p>
               This Policy applies to AdAgencyCreatives.com, and it governs any
               and all data collection and usage by us. Through the use of
-              www.aacstagingsite.wpengine.com, you are therefore consenting to
+              adagencycreatives.com, you are therefore consenting to
               the data collection procedures expressed in this Policy.
             </p>
             <p>
@@ -174,7 +174,7 @@ const Privacy = () => {
               may find it necessary to use personally identifiable information
               as a means to keep you informed of other possible products and/or
               services that may be available to you from
-              www.aacstagingsite.wpengine.com
+              adagencycreatives.com
             </p>
             <p>
               Ad Agency Creatives may also be in contact with you with regards
@@ -376,7 +376,7 @@ const Privacy = () => {
               event that we suffer a data breach and we will contact you if your
               personal information is ever at risk. For more details regarding
               our security protections see the section below or visit our
-              website at www.aacstagingsite.wpengine.com.
+              website at adagencycreatives.com.
             </p>
             <p>
               <strong>Security</strong>

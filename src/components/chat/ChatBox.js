@@ -1,6 +1,6 @@
 import ContentEditable from "react-contenteditable";
 import Loader from "../Loader";
-import { IoArrowBack } from "react-icons/io5";
+import { IoArrowBack, IoCloseCircleSharp } from "react-icons/io5";
 import Avatar from "../../assets/images/placeholder.png";
 import UploadPlaceholder from "../../assets/images/Mischief-1.png";
 import { useEffect, useState, useRef, useContext } from "react";
@@ -23,6 +23,8 @@ const ChatBox = ({
   setChatBox,
   setContact,
   getMessages,
+  userSelected,
+  setUserSelected,
   setPaged,
   paged,
   setHasMoreData,
@@ -80,7 +82,7 @@ const ChatBox = ({
   };
 
   const handleSubmit = async () => {
-    if(!content || content.length == 0) {
+    if (!content || content.length == 0) {
       showAlert("Enter your Message");
       return;
     }
@@ -216,15 +218,28 @@ const ChatBox = ({
       };
     }, [messageData, hasMoreData, paged]);
 
+  const closeEmojiHandler = () => {
+    setShowPicker(false);
+  };
+
+  useEffect(() => {
+    if (!userSelected) {
+      setContent("");
+    }
+  }, [userSelected]);
+
   return (
     <div className={`chat-box ${chatBoxMobile}`}>
       <div className="chat-mobile-top d-md-none d-flex">
         <IoArrowBack size={20} onClick={handleBackButton} />
-        <div className="name">{contact.first_name + " " + contact.last_name}</div>
+
+        <div className="name">
+          {chatBox != "new" ? (contact.first_name + " " + contact.last_name) : "Back"}
+        </div>
       </div>
       <div className="chat-top">
         {chatBox == "new" ? (
-          <NewChat setContact={setContact} contacts={contacts} />
+          <NewChat setContact={setContact} contacts={contacts} userSelected={userSelected} setUserSelected={setUserSelected} />
         ) : (
           <div ref={containerRef} className="chat-area">
             {loading ? (
@@ -314,7 +329,7 @@ const ChatBox = ({
                 {!item.uploaded ? (
                   <Loader fullHeight={false} />
                 ) : (
-                  <img src={item.src} />
+                  <img src={item.src} alt="" />
                 )}
               </div>
             ))}
@@ -325,23 +340,26 @@ const ChatBox = ({
             <>
               <FaRegSmile onClick={() => setShowPicker((val) => !val)} />
               {showPicker && (
-                <EmojiPicker
-                  previewConfig={{ showPreview: false }}
-                  skinTonesDisabled={true}
-                  height={250}
-                  suggestedEmojisMode=""
-                  categories={[
-                    "smileys_people",
-                    "animals_nature",
-                    "food_drink",
-                    "travel_places",
-                    "activities",
-                    "objects",
-                    "symbols",
-                    "flags",
-                  ]}
-                  onEmojiClick={selectEmoji}
-                />
+                <div className="emoji-picker-container">
+                  <EmojiPicker
+                    previewConfig={{ showPreview: false }}
+                    skinTonesDisabled={true}
+                    height={250}
+                    suggestedEmojisMode=""
+                    categories={[
+                      "smileys_people",
+                      "animals_nature",
+                      "food_drink",
+                      "travel_places",
+                      "activities",
+                      "objects",
+                      "symbols",
+                      "flags",
+                    ]}
+                    onEmojiClick={selectEmoji}
+                  />
+                  <IoCloseCircleSharp className="emoji-exit" onClick={(e) => setShowPicker(false)} />
+                </div>
               )}
               <FaPaperclip onClick={() => uploadRef.current.click()} />
               <input

@@ -4,9 +4,8 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as CreativesContext } from "../../context/CreativesContext";
 import Loader from "../Loader";
 
-const NewChat = ({ setContact, contacts }) => {
+const NewChat = ({ setContact, contacts, userSelected, setUserSelected }) => {
   const [search, setSearch] = useState();
-  const [userSelected, setUserSelected] = useState(null);
 
   const {
     state: { user },
@@ -29,6 +28,12 @@ const NewChat = ({ setContact, contacts }) => {
     setUserSelected(item);
     setContact({ ...item, uuid: item.user_id });
   };
+
+  useEffect(() => {
+    if (!userSelected) {
+      setSearch("");
+    }
+  }, [userSelected]);
 
   return (
     <div className="new-chat-box">
