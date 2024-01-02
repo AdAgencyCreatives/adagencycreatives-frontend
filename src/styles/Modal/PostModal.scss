@@ -218,9 +218,8 @@
     width: 250px;
     height: max-content;
     background-color: #d3a11f;
-    color: #000;
     border-radius: 3px;
-    border: 1px solid #000;
+    // border: 1px solid #000;
     left: calc(50% - 125px);
     top: 200px;
     z-index: 1;
@@ -229,7 +228,8 @@
 .post-modal .tagger input {
     width: 100%;
     height: 36px;
-    background: transparent;
+    background: #000;
+    color: #fff;
 }
 
 .post-modal .tagger .tagger-preview {
@@ -237,11 +237,29 @@
     height: 36px;
 }
 
-.post-modal .tagger select {
+.post-modal .tagger .tagger-dropdown {
     width: 100%;
     overflow: hidden;
-    background: transparent;
+    background: #000;
+    color: #fff;
     cursor: pointer;
+}
+
+.post-modal .tagger .tagger-dropdown .tagger-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 3px;
+}
+
+.post-modal .tagger .tagger-dropdown .tagger-item img {
+    border-radius: 100%;
+}
+
+.post-modal .tagger .tagger-dropdown .tagger-item:hover,
+.post-modal .tagger .tagger-dropdown .tagger-item:focus {
+    background-color: #d3a11f;
+    color:#000;
 }
 
 .post-modal .tagger .tagger-exit {
@@ -250,4 +268,18 @@
     cursor: pointer;
     right: -16px;
     top: -16px;
+}
+
+.btn.btn-gray.btn-show-more {
+    width: 100% !important;
+}
+
+.btn.btn-gray.btn-show-more:hover {
+    background-color: #d3a11f;
+}
+
+.post-preview {
+    max-height: 150px !important;
+    overflow: hidden !important;
+    margin-bottom: 10px !important;
 }

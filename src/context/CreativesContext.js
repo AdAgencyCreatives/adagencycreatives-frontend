@@ -88,7 +88,7 @@ const getLoungeCreativesForTag = (dispatch) => {
   return async (search) => {
     try {
       const response = await api.get("/creatives/search/tag?name=" + search);
-      return response.data;
+      return response.data.data;
     } catch (error) { }
     return null;
   };
