@@ -20,6 +20,9 @@ const SpotlightCreatives = () => {
     getSCreatives();
   }, []);
 
+  const searchSCreative = (keyword) => {
+    getSCreatives(keyword);
+  };
 
   return (
     <div className="dark-container page-spotlight mb-0 mt-4">
@@ -27,7 +30,7 @@ const SpotlightCreatives = () => {
         <h1 className="community-title text-white text-center mb-4">
           Creative Spotlights
         </h1>
-        <SearchBar />
+        <SearchBar onSearch={searchSCreative} />
         <div className="row g-4">
           {screatives &&
             screatives.map((item, index) => {

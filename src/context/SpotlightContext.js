@@ -26,9 +26,9 @@ const reducer = (state, action) => {
 };
 
 const getSCreatives = (dispatch) => {
-  return async () => {
+  return async (keyword = '') => {
     try {
-      const response = await api.get("/creative-spotlights?per_page=30");
+      const response = await api.get(`/creative-spotlights?per_page=30&filter[title]=${keyword}`);
       dispatch({
         type: "set_screatives",
         payload: response.data,
