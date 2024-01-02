@@ -45,7 +45,7 @@ import { CookiesProvider, useCookies } from "react-cookie";
 const useRefDimensions = (ref) => {
     const [dimensions, setDimensions] = useState({ width: 1, height: 2 })
     useEffect(() => {
-        window.setInterval(function(){
+        window.setInterval(function () {
             if (ref.current) {
                 const { current } = ref
                 const boundingRect = current.getBoundingClientRect()
@@ -413,34 +413,35 @@ const PostItem = (props) => {
             </div>
             <div className={"post-content" + (!showMoreClicked && displayShowMore ? " post-preview" : "")} ref={postContentRef}>
                 <div className="post-body" dangerouslySetInnerHTML={{ __html: processPostContent(postContent) }}></div>
-                <div className="post-images">
-                    {props.post.attachments && props.post.attachments.map((attachment, index) => {
-                        return (<>
-                            {attachment.resource_type && attachment.resource_type == "post_attachment_video" ? (
-                                <div className="video-container">
-                                    <video className="video" controls muted playsInline>
-                                        <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
-                                        Sorry, your browser doesn't support videos.
-                                    </video>
-                                </div>
-                            ) : (
-                                <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
-                                    <img className="post-image" src={attachment.url || ""} alt="" />
-                                </a>
-                            )}
 
-                        </>);
-                    })}
-                </div>
             </div>
             {!showMoreClicked && displayShowMore && (
                 <>
-                <button className="btn btn-gray btn-show-more" onClick={(e)=> {
-                    setShowMoreClicked(true);
-                    setDisplayShowMore(false);
-                }}>Show More ...</button>
+                    <button className="btn btn-gray btn-show-more" onClick={(e) => {
+                        setShowMoreClicked(true);
+                        setDisplayShowMore(false);
+                    }}>Show More ...</button>
                 </>
             )}
+            <div className="post-images">
+                {props.post.attachments && props.post.attachments.map((attachment, index) => {
+                    return (<>
+                        {attachment.resource_type && attachment.resource_type == "post_attachment_video" ? (
+                            <div className="video-container">
+                                <video className="video" controls muted playsInline>
+                                    <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
+                                    Sorry, your browser doesn't support videos.
+                                </video>
+                            </div>
+                        ) : (
+                            <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                                <img className="post-image" src={attachment.url || ""} alt="" />
+                            </a>
+                        )}
+
+                    </>);
+                })}
+            </div>
             <div className="post-actions">
 
                 {/* Like Section */}

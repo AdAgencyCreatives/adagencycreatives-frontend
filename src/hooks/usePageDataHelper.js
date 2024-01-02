@@ -10,17 +10,16 @@ const usePageDataHelper = (currentPage) => {
             for (let index = 0; index < data.length; index++) {
                 const element = data[index];
                 if (element.key == key) {
-                    return element.value;
+                    return removeTinyMceParagraph(element.value); // remove tinyMCE added paragraph
                 }
             }
         }
         return "";
     }
 
-    const getPateDataItemStripped = (key, data) => {
-        let pageData = getPateDataItem(key, data);
-        pageData = pageData.replace("<p>", "");
-        pageData = pageData.replace("</p>", "");
+    const removeTinyMceParagraph = (pageData) => {
+        pageData = pageData.replace(/^<p?[^>]+>/g, "");
+        pageData = pageData.replace(/<\/p?[^>]+>$/g, "");
         pageData = pageData.trim();
 
         return pageData;
