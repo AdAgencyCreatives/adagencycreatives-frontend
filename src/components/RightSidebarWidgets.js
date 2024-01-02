@@ -31,8 +31,7 @@ const RightSidebarWidgets = () => {
   return (
     <div className="right-sidebar">
       <div className="widgets">
-        {/* Calendar */}
-        <div className="widget">
+        <div className="widget mobile-hidden">
           <div className="widget-content mt-0">
             <Calendar />
           </div>

@@ -692,3 +692,23 @@ img.post-avatar {
 h2.epr-emoji-category-label {
     backdrop-filter: unset !important;
 }
+
+@media (max-width:767px) {
+    .mobile-displayed {
+        display: block;
+    }
+
+    .mobile-hidden {
+        display: none;
+    }
+}
+
+@media (min-width:768px) {
+    .mobile-displayed {
+        display: none;
+    }
+
+    .mobile-hidden {
+        display: block;
+    }
+}

@@ -11,6 +11,7 @@ import RestrictedLounge from "../components/RestrictedLounge";
 
 import usePageDataHelper from "../hooks/usePageDataHelper";
 import DelayedOutput from "../components/DelayedOutput";
+import Calendar from "react-calendar";
 
 const Community = () => {
 
@@ -35,11 +36,20 @@ const Community = () => {
                 <div className="col-md-2 mb-4 mb-md-0">
                   <LeftSidebar />
                 </div>
-                <div className="col-md-7 order-md-2 order-3">
+                <div className="col-md-7 order-md-2 order-2">
+                  <div className="right-sidebar mobile-displayed">
+                    <div className="widgets">
+                      <div className="widget">
+                        <div className="widget-content mt-0">
+                          <Calendar />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <CreatePost feed_group={feed_group} />
                   <PostList feed_group={feed_group} />
                 </div>
-                <div className="col-md-3 order-md-3 order-2">
+                <div className="col-md-3 order-md-3 order-3">
                   <RightSidebarWidgets />
                 </div>
               </div>

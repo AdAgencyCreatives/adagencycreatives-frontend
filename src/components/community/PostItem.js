@@ -370,14 +370,6 @@ const PostItem = (props) => {
         return injectHyperlinks(plainText);
     };
 
-    useEffect(() => {
-        window.setTimeout(function () {
-            if (postContentRef?.current) {
-                console.log(postContentRef.current.offsetHeight);
-            }
-        }, 1000);
-    }, [postContentRef]);
-
     return (
         <div className="post-item">
             <div className="post-header">
