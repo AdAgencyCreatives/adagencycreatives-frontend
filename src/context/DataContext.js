@@ -385,7 +385,6 @@ const getPublications = (dispatch) => {
 
 const loadNextPage = (dispatch) => {
   return async (page) => {
-    console.log(page);
     if (!page) {
       return;
     }

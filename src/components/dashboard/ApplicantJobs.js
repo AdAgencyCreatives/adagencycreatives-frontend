@@ -42,6 +42,7 @@ const ApplicantJobs = () => {
 
   useEffect(() => {
     setData(applications);
+    console.log(applications);
   }, [applications]);
 
   const switchTab = (id, tab) => {
@@ -78,7 +79,7 @@ const ApplicantJobs = () => {
         open={open}
         handleClose={handleClose}
         resource_id={appId}
-        type="applications"
+        type="creatives"
       />
       <h3 className="page-title">All Applicants</h3>
       <div className="card">
@@ -200,7 +201,7 @@ const ApplicantJobs = () => {
                               <button
                                 className="btn p-0 border-0 btn-hover-primary"
                                 onClick={() => {
-                                  setAppId(application.id);
+                                  setAppId(application.creative_id);
                                   setOpen(true);
                                 }}
                               >

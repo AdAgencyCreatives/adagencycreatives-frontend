@@ -3,7 +3,7 @@ import { getPageData } from "../context/PagesDataContext";
 import { useCallback } from "react";
 
 const usePageDataHelper = (currentPage) => {
-    const pageData =  JSON.parse(localStorage.getItem(currentPage)) ?? [];
+    const localPageData =  JSON.parse(localStorage.getItem(currentPage)) ?? [];
 
     const getPateDataItem = (key, data) => {
         if (data.length > 0) {
@@ -18,18 +18,19 @@ const usePageDataHelper = (currentPage) => {
     }
 
     const [page,] = useState(currentPage);
-    const [pageTitle, setPageTitle] = useState(getPateDataItem("title", pageData) ?? '');
-    const [pageSubTitle, setPageSubTitle] = useState(getPateDataItem("sub_title", pageData) ?? '');
+    const [pageData, setPageData] = useState(localPageData);
+    // const [pageTitle, setPageTitle] = useState(getPateDataItem("title", pageData) ?? '');
+    // const [pageSubTitle, setPageSubTitle] = useState(getPateDataItem("sub_title", pageData) ?? '');
 
     useEffect(() => {
         (async () => {
             const data = await getPageData(currentPage);
-            setPageTitle(getPateDataItem("title", data) ?? '');
-            setPageSubTitle(getPateDataItem("sub_title", data) ?? '');
+            setPageData(data);
         })();
     }, []);
 
-    return { page, pageData, pageTitle, pageSubTitle, getPateDataItem };
+    return { page, pageData, getPateDataItem };
+    // pageTitle, pageSubTitle,
 }
 
 export default usePageDataHelper;
