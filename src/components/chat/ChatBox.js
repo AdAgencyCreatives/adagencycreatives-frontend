@@ -22,7 +22,7 @@ const ChatBox = ({
   setChatBox,
   setContact,
   getMessages,
-  userSelected, 
+  userSelected,
   setUserSelected
 }) => {
   const {
@@ -208,13 +208,19 @@ const ChatBox = ({
     setShowPicker(false);
   };
 
+  useEffect(() => {
+    if (!userSelected) {
+      setContent("");
+    }
+  }, [userSelected]);
+
   return (
     <div className={`chat-box ${chatBoxMobile}`}>
       <div className="chat-mobile-top d-md-none d-flex">
         <IoArrowBack size={20} onClick={handleBackButton} />
-        
+
         <div className="name">
-        {chatBox != "new" ? (contact.first_name + " " + contact.last_name) : "Back" }
+          {chatBox != "new" ? (contact.first_name + " " + contact.last_name) : "Back"}
         </div>
       </div>
       <div className="chat-top">
