@@ -42,7 +42,33 @@ import useHelper from "../../hooks/useHelper";
 
 import { CookiesProvider, useCookies } from "react-cookie";
 
+const useRefDimensions = (ref) => {
+    const [dimensions, setDimensions] = useState({ width: 1, height: 2 })
+    useEffect(() => {
+        window.setInterval(function(){
+            if (ref.current) {
+                const { current } = ref
+                const boundingRect = current.getBoundingClientRect()
+                const { width, height } = boundingRect
+                setDimensions({ width: Math.round(width), height: Math.round(height) })
+            }
+        }, [1000]);
+    }, [ref])
+    return dimensions
+}
+
 const PostItem = (props) => {
+
+    const postContentRef = useRef(null);
+    const dimensions = useRefDimensions(postContentRef);
+    const [displayShowMore, setDisplayShowMore] = useState(false);
+    const [showMoreClicked, setShowMoreClicked] = useState(false);
+
+    useEffect(() => {
+        if (dimensions && dimensions?.height > 150 && !showMoreClicked) {
+            setDisplayShowMore(true);
+        }
+    }, [dimensions]);
 
     const { injectHyperlinks } = useHelper();
 
@@ -343,6 +369,14 @@ const PostItem = (props) => {
         return injectHyperlinks(plainText);
     };
 
+    useEffect(() => {
+        window.setTimeout(function () {
+            if (postContentRef?.current) {
+                console.log(postContentRef.current.offsetHeight);
+            }
+        }, 1000);
+    }, [postContentRef]);
+
     return (
         <div className="post-item">
             <div className="post-header">
@@ -377,28 +411,36 @@ const PostItem = (props) => {
                     </div>
                 )}
             </div>
-            <div className="post-content">
+            <div className={"post-content" + (!showMoreClicked && displayShowMore ? " post-preview" : "")} ref={postContentRef}>
                 <div className="post-body" dangerouslySetInnerHTML={{ __html: processPostContent(postContent) }}></div>
-            </div>
-            <div className="post-images">
-                {props.post.attachments && props.post.attachments.map((attachment, index) => {
-                    return (<>
-                        {attachment.resource_type && attachment.resource_type == "post_attachment_video" ? (
-                            <div className="video-container">
-                                <video className="video" controls muted playsInline>
-                                    <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
-                                    Sorry, your browser doesn't support videos.
-                                </video>
-                            </div>
-                        ) : (
-                            <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
-                                <img className="post-image" src={attachment.url || ""} alt="" />
-                            </a>
-                        )}
+                <div className="post-images">
+                    {props.post.attachments && props.post.attachments.map((attachment, index) => {
+                        return (<>
+                            {attachment.resource_type && attachment.resource_type == "post_attachment_video" ? (
+                                <div className="video-container">
+                                    <video className="video" controls muted playsInline>
+                                        <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
+                                        Sorry, your browser doesn't support videos.
+                                    </video>
+                                </div>
+                            ) : (
+                                <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                                    <img className="post-image" src={attachment.url || ""} alt="" />
+                                </a>
+                            )}
 
-                    </>);
-                })}
+                        </>);
+                    })}
+                </div>
             </div>
+            {!showMoreClicked && displayShowMore && (
+                <>
+                <button className="btn btn-gray btn-show-more" onClick={(e)=> {
+                    setShowMoreClicked(true);
+                    setDisplayShowMore(false);
+                }}>Show More ...</button>
+                </>
+            )}
             <div className="post-actions">
 
                 {/* Like Section */}
@@ -473,11 +515,11 @@ const PostItem = (props) => {
                 </CookiesProvider>
 
                 <div className="post-action post-comments" onClick={() => toggleShowComments()}>
-                        {showComments ? (
-                            <img src={LoungePostIconCommentGold} style={{ width: "20px" }} alt="" />
-                        ) : (
-                            <img src={LoungePostIconCommentBlack} style={{ width: "20px" }} alt="" />
-                        )}
+                    {showComments ? (
+                        <img src={LoungePostIconCommentGold} style={{ width: "20px" }} alt="" />
+                    ) : (
+                        <img src={LoungePostIconCommentBlack} style={{ width: "20px" }} alt="" />
+                    )}
                     <NumUnit number={commentsCount} />
                 </div>
 

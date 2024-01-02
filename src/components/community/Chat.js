@@ -160,7 +160,7 @@ const Chat = () => {
           </div>
         </div>
         <div className="col-md-8 col-12">
-          <ChatBox page="lounge" {...chatBoxProps} />
+          <ChatBox messageType="private" page="lounge" {...chatBoxProps} />
         </div>
       </div>
     </div>

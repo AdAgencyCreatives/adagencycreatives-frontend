@@ -64,7 +64,7 @@ const CreatePost = (props) => {
   const [taggerSearchResults, setTaggerSearchResults] = useState(null);
 
   useEffect(() => {
-    if(taggerSearchText && taggerSearchText.length) {
+    if (taggerSearchText && taggerSearchText.length) {
       (async () => {
         let data = await getLoungeCreativesForTag(taggerSearchText);
         setTaggerSearchResults(data);
@@ -274,15 +274,16 @@ const CreatePost = (props) => {
               value={"@" + taggerSearchText}
               onBlur={(e) => handleTaggerBlur(e)}
             />
-            <select name="taggerDropDown" size="5" style={{ display: taggerSearchResults?.length ? 'block' : 'none' }}>
-              {taggerSearchResults && taggerSearchResults.map((item, index) => {
+            <div class="tagger-dropdown" style={{ display: taggerSearchResults?.length ? 'block' : 'none' }}>
+              {taggerSearchResults?.length && taggerSearchResults?.map((item, index) => {
                 return (
-                  <option onClick={(e) => onTaggerItemSelected(e, item)}>
-                    {item?.first_name + ' ' + item?.last_name}
-                  </option>
+                  <div className="tagger-item" onClick={(e) => onTaggerItemSelected(e, item)}>
+                    <img src={item?.image} alt="" width={30} height={30} />
+                    <div>{item?.first_name + ' ' + item?.last_name}</div>
+                  </div>
                 )
               })}
-            </select>
+            </div>
           </div>
           <div className="postmodal-header">
             <div className="user-avatar">
@@ -311,7 +312,9 @@ const CreatePost = (props) => {
                     // toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
                     plugins: 'anchor autolink charmap codesample emoticons link lists searchreplace visualblocks wordcount',
                     toolbar: 'bold italic underline strikethrough | blocks fontfamily fontsize | numlist bullist link | emoticons charmap | align lineheight | indent outdent | removeformat',
-                    content_style: 'body { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; font-size: 14pt }',
+                    content_css: ['https://fonts.googleapis.com/css?family=Jost:400,500,600,700,800&#038;subset=latin%2Clatin-ext'],
+                    font_family_formats: 'JOST=JOST',
+                    content_style: 'body { font-family: "JOST"; font-size: 14pt } a { color: #d3a11f; cursor: pointer; } a:hover { color: #000; }',
                     placeholder: 'What do you want to talk about?',
                   }}
                   initialValue=""

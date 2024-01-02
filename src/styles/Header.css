@@ -565,7 +565,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .icon-message .message-container {
     display: none;
     align-items: center;
-    background-color: #d3a11f;
+    background-color: #000;
     width: 100%;
     min-width: 100%;
     border-radius: 5px;
@@ -574,7 +574,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
 
 .icon-message .message {
     padding: 10px;
-    color: #000;
+    color: #fff;
     font-weight: 500;
     font-size: normal;
     line-height: 1.5;

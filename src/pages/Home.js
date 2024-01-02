@@ -28,7 +28,7 @@ register();
 
 const Home = () => {
 
-  const { pageData, getPateDataItem } = usePageDataHelper("home");
+  const { pageData, getPateDataItem, getPateDataItemStripped } = usePageDataHelper("home");
 
   const [messageModalOptions, setMessageModalOptions] = useState({ "open": false, "type": "message", "title": "Message", "message": "Thanks.", "data": {}, "onClose": null });
   const showMessageModal = (type, title, message, data) => {
@@ -77,7 +77,7 @@ const Home = () => {
             Film Festival
           </Link>
           <div className="searchArea">
-            <p className="searchHeader">{getPateDataItem("searchbar_heading", pageData)}</p>
+            <p className="searchHeader" dangerouslySetInnerHTML={{ __html: getPateDataItem("searchbar_heading", pageData) }}></p>
             <div className="searchBox">
               <form action={"/creative-jobs" + (search ? "/search/" + search : "")} onSubmit={(e) => {
                 // if (!search || search.length == 0) {
@@ -96,7 +96,7 @@ const Home = () => {
                     <input
                       className="searchInput form-control"
                       type="text"
-                      placeholder={getPateDataItem("searchbar_placeholder", pageData)}
+                      placeholder={getPateDataItemStripped("searchbar_placeholder", pageData)}
                       onChange={(e) => setSearch(e.target.value)}
                     />
                   </div>
@@ -125,23 +125,22 @@ const Home = () => {
                       restrictedMessage: "Please login as Creative to access",
                     })
                   }
-                >
-                  {getPateDataItem("motive_title_gather", pageData)}
-                </Link>
+                  dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_gather", pageData) }}></Link>
                 <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_gather", pageData) }}></span>
               </div>
               <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
                 <img src={Mentoring} className="featureImg" />
-                <Link to={"/mentoring-resources"} className="featureTitle">
-                  {getPateDataItem("motive_title_inspire", pageData)}
-                </Link>
+                <Link
+                  to={"/mentoring-resources"}
+                  className="featureTitle"
+                  dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_inspire", pageData) }}></Link>
                 <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_inspire", pageData) }}></span>
               </div>
               <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
                 <img src={Money} className="featureImg" />
-                <Link to={"/creative-jobs"} className="featureTitle">
-                  {getPateDataItem("motive_title_do_cool_shit", pageData)}
-                </Link>
+                <Link to={"/creative-jobs"}
+                  className="featureTitle"
+                  dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_do_cool_shit", pageData) }}></Link>
                 <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_do_cool_shit", pageData) }}></span>
               </div>
             </div>
@@ -167,7 +166,7 @@ const Home = () => {
               <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
             </div>
           </div>
-        </div>
+        </div >
 
         <div className="creative-section">
           <AgencyCreatives />
@@ -206,7 +205,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 };

@@ -28,7 +28,8 @@ const ChatBox = ({
   setPaged,
   paged,
   setHasMoreData,
-  hasMoreData
+  hasMoreData,
+  messageType
 }) => {
   const {
     state: { messages, loading, contacts, attachments },
@@ -102,7 +103,8 @@ const ChatBox = ({
       });
     }
 
-    const type = messageData.slice(-1).pop()?.type ?? 'job';
+    // const type = messageData.slice(-1).pop()?.type ?? 'job';
+    const type = messageType ?? (messageData.slice(-1).pop()?.type ?? 'job');
     await sendMessage(user.uuid, contact.uuid, messageBody, type);
     showAlert("Message sent");
     setContent("");
@@ -194,7 +196,8 @@ const ChatBox = ({
       const loadMoreMessages = async () => {
         if (containerRef.current && containerRef.current.scrollTop === 0) {
           const id = contact.uuid;
-          const type = messageData.slice(-1).pop()?.type ?? 'job';
+          // const type = messageData.slice(-1).pop()?.type ?? 'job';
+          const type = messageType ?? (messageData.slice(-1).pop()?.type ?? 'job');
 
           const response = await api.get("/messages/" + id + "?type=" + type + "&page=" + paged);
           const newMessages = response.data.data ?? [];

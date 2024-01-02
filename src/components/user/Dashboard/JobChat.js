@@ -118,7 +118,7 @@ const JobChat = ({ getMessages, getContacts }) => {
           </div>
         </div>
         <div className="col-md-8 col-12">
-          <ChatBox page="job" {...chatBoxProps} />
+          <ChatBox messageType="job" page="job" {...chatBoxProps} />
         </div>
       </div>
     </div>

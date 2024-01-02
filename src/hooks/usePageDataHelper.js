@@ -17,10 +17,17 @@ const usePageDataHelper = (currentPage) => {
         return "";
     }
 
+    const getPateDataItemStripped = (key, data) => {
+        let pageData = getPateDataItem(key, data);
+        pageData = pageData.replace("<p>", "");
+        pageData = pageData.replace("</p>", "");
+        pageData = pageData.trim();
+
+        return pageData;
+    }
+
     const [page,] = useState(currentPage);
     const [pageData, setPageData] = useState(localPageData);
-    // const [pageTitle, setPageTitle] = useState(getPateDataItem("title", pageData) ?? '');
-    // const [pageSubTitle, setPageSubTitle] = useState(getPateDataItem("sub_title", pageData) ?? '');
 
     useEffect(() => {
         (async () => {
@@ -29,8 +36,7 @@ const usePageDataHelper = (currentPage) => {
         })();
     }, []);
 
-    return { page, pageData, getPateDataItem };
-    // pageTitle, pageSubTitle,
+    return { page, pageData, getPateDataItem, getPateDataItemStripped };
 }
 
 export default usePageDataHelper;

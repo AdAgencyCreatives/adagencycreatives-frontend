@@ -569,7 +569,7 @@ export const offensiveWords = [
     "smut",
     "snatch",
     "son-of-a-bitch",
-    "spac",
+    "spanc",
     "spunk",
     "t1tt1e5",
     "t1tties",
