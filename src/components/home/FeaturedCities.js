@@ -31,7 +31,7 @@ const FeaturedCities = () => {
 
       <div className="sectionContent featured-cities">
         <div className="row gx-3">
-          {featured_cities.map((item, index) => {
+          {featured_cities && featured_cities.map((item, index) => {
             if (index > 0) {
               return <></>;
             }
@@ -59,7 +59,7 @@ const FeaturedCities = () => {
           })}
           <div className="col-12 col-md-8">
             <div className="row">
-              {featured_cities.map((item, index) => {
+              {featured_cities && featured_cities.map((item, index) => {
                 if (index === 0) {
                   return <></>;
                 }
