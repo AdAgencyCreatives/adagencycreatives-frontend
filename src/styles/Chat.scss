@@ -11,6 +11,19 @@
         overflow: auto;
         border-right: 1px solid #dbdbdb;
     }
+    .user-details{
+        position: relative;
+        .job-action{
+            position: absolute;
+            right: 0px;
+            top: 20px;
+            a{
+                width: 20px;
+                height: 20px;
+                line-height: 20px;
+            }
+        }
+    }
 
     .box-header {
         border-bottom: 1px solid #e7e7e7;
