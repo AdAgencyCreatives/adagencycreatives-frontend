@@ -20,6 +20,7 @@ const state = {
   resources: [],
   publications: [],
   publicationsNextPage: null,
+  resourcesNextPage: null,
   loading: false
 };
 
@@ -85,11 +86,21 @@ const reducer = (state, action) => {
     case "load_mentors":
       return {
         ...state,
-        mentors: [...state.mentors, ...action.payload.data],
-        mentorsNextPage: action.payload.links.next,
+        mentors: [ ...state.mentors, ...action.payload.data ],
+        mentorsNextPage: action.payload.links.next
       };
     case "set_resources":
-      return { ...state, resources: action.payload.data };
+      return { 
+        ...state, 
+        resources: action.payload.data,
+        resourcesNextPage: action.payload.links.next
+      };
+    case "load_resources":
+      return { 
+        ...state, 
+        resources: [ ...state.resources, ...action.payload.data ],
+        resourcesNextPage: action.payload.links.next
+      };
     case "set_publications":
       return {
         ...state,
@@ -99,7 +110,7 @@ const reducer = (state, action) => {
     case "load_publications":
       return {
         ...state,
-        publications: [...state.publications, ...action.payload.data],
+        publications: [ ...state.publications, ...action.payload.data ],
         publicationsNextPage: action.payload.links.next,
       };
     case "set_loading":
@@ -371,10 +382,28 @@ const getMentorResources = (dispatch) => {
   };
 };
 
+const getNextPageMentorResources = (dispatch) => {
+  return async (page, slug) => {
+    if (!page) {
+      return;
+    }
+
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get(`${page}&filter[topic]=${slug}`);
+      dispatch({
+        type: "load_resources",
+        payload: response.data,
+      });
+    } catch (error) {}
+    setLoading(dispatch, false);
+  };
+};
+
 const getPublications = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get('/publication-resources?per_page=12');
+      const response = await api.get('/publication-resources');
       dispatch({
         type: "set_publications",
         payload: response.data,
@@ -403,7 +432,7 @@ const loadNextPage = (dispatch) => {
           type: "load_mentors",
           payload: response.data,
         });
-      }      
+      }
     } catch (error) { }
     setLoading(dispatch, false);
   };
@@ -440,7 +469,8 @@ export const { Context, Provider } = createDataContext(
     getMentorTopics,
     getMentorResources,
     getPublications,
-    loadNextPage
+    loadNextPage,
+    getNextPageMentorResources
   },
   state
 );
