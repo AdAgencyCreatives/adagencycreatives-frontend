@@ -28,15 +28,15 @@ const reducer = (state, action) => {
     case "set_jobs":
       return { ...state, jobs: action.payload.data, meta: action.payload.meta };
     case "set_applications":
-      return { 
-        ...state, 
+      return {
+        ...state,
         applications: action.payload.data,
         applicationsNextPage: action.payload.links.next
       };
     case "set_nextpage_applications":
-      return { 
-        ...state, 
-        applications: [ ...state.applications, ...action.payload ],
+      return {
+        ...state,
+        applications: [...state.applications, ...action.payload],
         // applicationsNextPage: action.payload.links.next
       };
     case "set_recent_applications":
@@ -80,15 +80,15 @@ const reducer = (state, action) => {
     case "set_media_experiences":
       return { ...state, media_experiences: action.payload.data };
     case "set_notes":
-      return { 
-        ...state, 
+      return {
+        ...state,
         notes: action.payload.data,
         notesNextPage: action.payload.links.next
       };
     case "set_nextpage_notes":
-      return { 
-        ...state, 
-        notes: [ ...state.notes, ...action.payload.data ],
+      return {
+        ...state,
+        notes: [...state.notes, ...action.payload.data],
         notesNextPage: action.payload.links.next
       };
     case "add_note":
@@ -202,12 +202,12 @@ const getRelatedJobs = async (dispatch, category) => {
 };
 
 const getApplications = (dispatch) => {
-  return async (uid) => {
+  return async (uid, applications_count = 0) => {
     let applications = [];
     setLoading(dispatch, true);
     try {
       const response = await api.get(
-        "/jobs?filter[status]=" + status + "&filter[user_id]=" + uid
+        "/jobs?filter[status]=" + status + "&filter[user_id]=" + uid + "&applications_count=" + applications_count
       ); // have to set filter[status]=1 later
       const jobs = response.data.data;
       for (const job of jobs) {
@@ -605,7 +605,7 @@ const loadNextPage = (dispatch) => {
           type: "load_mentors",
           payload: response.data,
         });
-      }      
+      }
     } catch (error) { }
     setLoading(dispatch, false);
   };
