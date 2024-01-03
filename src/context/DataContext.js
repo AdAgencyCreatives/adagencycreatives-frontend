@@ -374,7 +374,7 @@ const getMentorResources = (dispatch) => {
 const getPublications = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get('/publication-resources');
+      const response = await api.get('/publication-resources?per_page=12');
       dispatch({
         type: "set_publications",
         payload: response.data,
