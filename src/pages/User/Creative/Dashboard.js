@@ -206,7 +206,7 @@ const Dashboard = () => {
           <div className="mb-4">
             <Calendar />
           </div>
-          <Notifications />
+          <Notifications creative={user} type="job_alert" />
         </div>
       </div>
       {/* <div className="row">

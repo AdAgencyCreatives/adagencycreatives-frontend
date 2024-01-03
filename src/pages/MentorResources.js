@@ -10,10 +10,11 @@ const MentorResources = () => {
   const { slug } = useParams();
 
   const { 
-    state:{ mentors, resources, mentorsNextPage, loading },
+    state:{ mentors, resources, mentorsNextPage, resourcesNextPage, loading },
     getMentorTopics,
     getMentorResources,
-    loadNextPage
+    loadNextPage,
+    getNextPageMentorResources
   } = useContext(Context);
 
   useEffect(() => {
@@ -21,10 +22,11 @@ const MentorResources = () => {
     if (slug) {
       getMentorResources(slug);
     }
-  }, []);
+  }, [slug]);
 
   const loadMore = () => {
-    if (mentorsNextPage) loadNextPage(mentorsNextPage);
+    if (slug && resourcesNextPage) getNextPageMentorResources(resourcesNextPage, slug);
+    if (!slug && mentorsNextPage) loadNextPage(mentorsNextPage);
   };
 
   useScrollLoader(loading, loadMore);
@@ -38,6 +40,13 @@ const MentorResources = () => {
               <h2 className="title">{mentors[0]?.title}</h2>
               <p className="subtitle"  dangerouslySetInnerHTML={{ __html: mentors[0]?.description }}></p>
               <SingleMentorList items={resources} />
+              <div className="load-more text-center mt-4">
+                {loading && (
+                  <div className="spinner-border text-light" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
