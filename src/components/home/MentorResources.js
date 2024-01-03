@@ -5,8 +5,8 @@ import { Context } from "../../context/DataContext";
 import { useContext, useEffect } from "react";
 
 const MentorResources = () => {
-  const { 
-    state:{ mentors },
+  const {
+    state: { mentors },
     getMentorTopics
   } = useContext(Context);
 
@@ -32,12 +32,10 @@ const MentorResources = () => {
       <div className="sectionContent mentors-section">
         {mentors.map((item, index) => {
           return (
-            <div className="mentor" key={`m_${index}`}>
-              <img src={AdAgency} height={150} width={150} />
-              <a href={`mentoring-resources/${item.slug}`}>
-                {item.title}
-              </a>
-            </div>
+            <Link to={`/mentoring-resources/${item.slug}`} className="mentor" key={`m_${index}`}>
+              <span>{item.title}</span>
+              <img src={AdAgency} height={150} width={150} alt="" />
+            </Link>
           );
         })}
       </div>

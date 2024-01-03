@@ -2,7 +2,7 @@ import "../styles/MentorResources.scss";
 import AdAgency from "../assets/images/AdAgency.png";
 import { Context } from "../context/DataContext";
 import { useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import SingleMentorList from "../components/SingleMentorList";
 import { useScrollLoader } from "../hooks/useScrollLoader";
 
@@ -62,11 +62,11 @@ const MentorResources = () => {
             <div className="row gy-5 mt-3">
               {mentors.map((item, index) => {
                 return (
-                  <div className="col-sm-4">
-                    <div className="mentor" key={`m_${index}`}>
-                      <a href={`mentoring-resources/${item.slug}`} style={{ fontSize: '40px' }}>{item.title}</a>
-                      <img src={AdAgency} height={150} width={150} />
-                    </div>
+                  <div className="col-sm-4 mentor-container">
+                    <Link to={`/mentoring-resources/${item.slug}`} className="mentor" key={`m_${index}`}>
+                      <span style={{ fontSize: '40px' }}>{item.title}</span>
+                      <img src={AdAgency} height={150} width={150} alt="" />
+                    </Link>
                   </div>
                 );
               })}
