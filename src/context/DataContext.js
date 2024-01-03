@@ -359,7 +359,7 @@ const deleteReview = (dispatch) => {
 };
 
 const getMentorTopics = (dispatch) => {
-  return async (slug, perPage = 9) => {
+  return async (slug, perPage = 100) => {
     try {
       const response = await api.get(`/topics?filter[slug]=${slug}&per_page=${perPage}`);
       dispatch({
@@ -371,9 +371,9 @@ const getMentorTopics = (dispatch) => {
 };
 
 const getMentorResources = (dispatch) => {
-  return async (slug) => {
+  return async (slug, perPage = 100) => {
     try {
-      const response = await api.get(`/mentor-resources?filter[topic]=${slug}`);
+      const response = await api.get(`/mentor-resources?filter[topic]=${slug}&per_page=${perPage}`);
       dispatch({
         type: "set_resources",
         payload: response.data,
@@ -401,9 +401,9 @@ const getNextPageMentorResources = (dispatch) => {
 };
 
 const getPublications = (dispatch) => {
-  return async () => {
+  return async (perPage=100) => {
     try {
-      const response = await api.get('/publication-resources');
+      const response = await api.get(`/publication-resources?per_page=${perPage}`);
       dispatch({
         type: "set_publications",
         payload: response.data,
