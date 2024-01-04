@@ -4,26 +4,22 @@ import { Context as AuthContext } from "../context/AuthContext";
 
 const useNotifications = () => {
 
-  const {
-    state: { role, user, token },
-  } = useContext(AuthContext);
+  const { state: { user } } = useContext(AuthContext);
 
   const {
-    state: { notifications, nextPage, loading },
+    state: { notifications, nextPage, loading, meta },
     getNotifications, loadNotifications, updateNotifications,
   } = useContext(NotificationsContext);
 
   useEffect(() => {
-    if(user) {
-        getNotifications(user.uuid);
-    }
+    user && getNotifications(user.uuid);
   }, [user]);
 
   const loadMore = () => {
-    if (nextPage) loadNotifications(nextPage);
+    nextPage && loadNotifications(nextPage);
   };
 
-  return { notifications, loading, loadMore, updateNotifications };
+  return { notifications, loading, meta, loadMore, updateNotifications, getNotifications };
 };
 
 export default useNotifications;
