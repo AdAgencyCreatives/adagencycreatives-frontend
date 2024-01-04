@@ -3,6 +3,7 @@ import createDataContext from "./createDataContext";
 
 const state = {
   agencies: null,
+  meta: {},
   nextPage: null,
   loading: false,
   single_agency: {},
@@ -35,7 +36,7 @@ const reducer = (state, action) => {
     case "set_video":
       return { ...state, video: action.payload.data[0] };
     case "set_open_positions":
-      return { ...state, open_positions: action.payload.data };
+      return { ...state, open_positions: action.payload.data, meta: action.payload.meta };
     case "delete_job":
       return {
         ...state,
@@ -105,8 +106,8 @@ const getAgencyById = (dispatch) => {
   return async (user, self = false) => {
     let role = 3; // agency
     try {
-      if(user?.role) {
-        role = (user.role == 'advisor' ? 2 : ( user.role == 'recruiter' ? 5 : 3));
+      if (user?.role) {
+        role = (user.role == 'advisor' ? 2 : (user.role == 'recruiter' ? 5 : 3));
       }
       const response = await api.get("/agencies?filter[status]=1&filter[user_id]=" + user.uuid + "&filter[role]=" + role + (self ? "" : "&filter[is_visible]=1"));
       const data = response.data.data[0];
@@ -135,10 +136,10 @@ const loadAgencies = (dispatch) => {
 };
 
 const getOpenPositions = (dispatch) => {
-  return async (uid) => {
+  return async (uid, page = false) => {
     setLoading(dispatch, true);
     try {
-      const response = await api.get("/jobs?sort=-created_at&filter[status]=1&filter[user_id]=" + uid);
+      const response = await api.get("/jobs?sort=-created_at&filter[status]=1&filter[user_id]=" + uid + (page ? "&page=" + page : ""));
       const data = response.data;
       dispatch({
         type: "set_open_positions",

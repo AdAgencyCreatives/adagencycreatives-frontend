@@ -14,10 +14,11 @@ import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 import moment from "moment";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import Loader from "../../../components/Loader";
+import Paginate from "../../../components/Paginate";
 
 const MyJobs = () => {
   const {
-    state: { open_positions, loading },
+    state: { open_positions, loading, meta },
     getOpenPositions,
     deleteJob,
   } = useContext(AgenciesContext);
@@ -25,6 +26,10 @@ const MyJobs = () => {
   const {
     state: { user },
   } = useContext(AuthContext);
+
+  const paginate = (page) => {
+    getOpenPositions(user.uuid, page);
+  };
 
   useEffect(() => {
     if (user) getOpenPositions(user.uuid);
@@ -140,6 +145,7 @@ const MyJobs = () => {
               </tbody>
             </table>
           </div>
+          {open_positions && meta.total > 10 && <Paginate meta={meta} paginate={paginate} />}
         </div>
       )}
     </div>
