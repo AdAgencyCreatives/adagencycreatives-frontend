@@ -266,36 +266,37 @@ const Jobs = () => {
         <button className="btn btn-filter">Find Jobs</button>
       </div>
 
-      <div className="job_notification">
-        <h1 className="jobs-filter-title">Request Job Notifications</h1>
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            await requestNotifications(user.uuid, notifCategory.notif_title);
-            showAlert("Job notifications enabled successfully");
-          }}
-        >
-          <div className="notif-input-box">
-            <h5 className="notif-title fw-normal">Title</h5>
-            {console.log(jobTitles.filter((item) => jobTitlesSelected.includes(item.label)))}
-            <Select
-              className="dropdown-container"
-              options={jobTitles}
-              isMulti={true}
-              placeholder="Select title"
-              onChange={(item) => handleMultiChange(item, "notif_title")}
-              defaultValue={jobTitles && jobTitlesSelected && jobTitles.filter((item) => jobTitlesSelected.includes(item.label))}
-              required={true}
-              name="notif_title"
-              ref={(ref) => (selectRef.current["notif_title" + (drawer ? "-d" : "")] = ref)}
-            // value={1}
-            />
-          </div>
-          <div className="job-alert-button">
-            <button className="btn btn-filter w-100">Save Job Alert</button>
-          </div>
-        </form>
-      </div>
+      {user && user.role !== 'agency' &&
+        <div className="job_notification">
+          <h1 className="jobs-filter-title">Request Job Notifications</h1>
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              await requestNotifications(user.uuid, notifCategory.notif_title);
+              showAlert("Job notifications enabled successfully");
+            }}
+          >
+            <div className="notif-input-box">
+              <h5 className="notif-title fw-normal">Title</h5>
+              {console.log(jobTitles.filter((item) => jobTitlesSelected.includes(item.label)))}
+              <Select
+                className="dropdown-container"
+                options={jobTitles}
+                isMulti={true}
+                placeholder="Select title"
+                onChange={(item) => handleMultiChange(item, "notif_title")}
+                defaultValue={jobTitles && jobTitlesSelected && jobTitles.filter((item) => jobTitlesSelected.includes(item.label))}
+                required={true}
+                name="notif_title"
+                ref={(ref) => (selectRef.current["notif_title" + (drawer ? "-d" : "")] = ref)}
+              // value={1}
+              />
+            </div>
+            <div className="job-alert-button">
+              <button className="btn btn-filter w-100">Save Job Alert</button>
+            </div>
+          </form>
+        </div>}
     </div>
   );
 
