@@ -52,6 +52,13 @@
             letter-spacing: 3px;
             padding: 15px 30px;
             word-wrap: normal;
+            .filename {
+                word-wrap: break-word;
+            }
+            
+            @media (max-width: 767px) {
+                max-width: 100%;
+            }
         }
     }
     .react-datepicker-wrapper {
