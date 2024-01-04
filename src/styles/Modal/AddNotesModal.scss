@@ -51,6 +51,8 @@
         }
     }
 
-  
-
+    @media screen and (max-width: 767px) {
+        width: 100%;
+        padding: 40px 15px;
+    }
 }

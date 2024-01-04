@@ -12,7 +12,7 @@ const IconMessage = (props) => {
     return (
         <div className={"icon-message" + (show ? " show" : "")}>
             <div className="icon" onClick={(e) => setShow(state => !state)}>
-                <img src={InfoIconImage} alt="Info" title="Click to expand/collapse information" />
+                <img src={InfoIconImage} alt="Info" title="Click to expand/collapse information" width={20} height={20} />
             </div>
             <div className="message-container">
                 <div className="message" dangerouslySetInnerHTML={{ __html: props?.message }}></div>
