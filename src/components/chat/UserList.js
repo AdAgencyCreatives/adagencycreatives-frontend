@@ -3,6 +3,7 @@ import Avatar from "../../assets/images/placeholder.png";
 import { useContext } from "react";
 import { Context } from "../../context/ChatContext";
 import { Tooltip, Dialog, CircularProgress } from "@mui/material";
+import { Context as AuthContext } from "../../context/AuthContext";
 import React, { useState } from 'react';
 import {
   IoClose,
@@ -77,105 +78,113 @@ const UserList = ({ data, handleItemClick }) => {
     } catch (error) { }
     setIsDialogOpen(false);
     window.location.reload();
-    
+
   };
   const handleEdit = async () => {
     setFormEdit(true);
-    const data = {id:isId, message: messageTmp};
-    console.log(data,'data');
+    const data = { id: isId, message: messageTmp };
+    console.log(data, 'data');
     try {
-      const response = await api.patch("/messages/"+ isId, data);
+      const response = await api.patch("/messages/" + isId, data);
     } catch (error) { }
     setIsDialogOpenEdit(false);
     window.location.reload();
   };
 
+  const {
+    state: { user },
+  } = useContext(AuthContext);
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpenEdit, setIsDialogOpenEdit] = useState(false);
   const [isId, setIsId] = useState(false);
   const [messageTmp, setMessageTmp] = useState();
-    const deleteMessage = (item) => {
+  const deleteMessage = (item) => {
+    if (item.sender_id == user.id) {
       setIsDialogOpen(true);
       setIsId(item.id);
-    };
+    }
+  };
 
-    const closeDeleteMessage = () => {
-      setIsDialogOpen(false);
-      setIsId(0);
-    };
-    const closeEditMessage = () => {
-      setIsDialogOpenEdit(false);
-      setIsId(0);
-    };
-  const editMessage =  (item) => {
-    console.log(item,'item');
-    setIsDialogOpenEdit(true);
-    setIsId(item.id);
-    setMessageTmp(item.message);
-
+  const closeDeleteMessage = () => {
+    setIsDialogOpen(false);
+    setIsId(0);
+  };
+  const closeEditMessage = () => {
+    setIsDialogOpenEdit(false);
+    setIsId(0);
+  };
+  const editMessage = (item) => {
+    console.log(item, 'item');
+    if (item.sender_id == user.id) {
+      setIsDialogOpenEdit(true);
+      setIsId(item.id);
+      setMessageTmp(item.message);
+    }
   };
   const handleChange = (key, value) => {
     setMessageTmp(value);
   };
+
   return (
     <ul className="users-list">
-    <Dialog
-      open={isDialogOpen} onClose={closeDeleteMessage}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      scroll="body"
-    >
-      <div className="auth-modal">
-        <div className="auth-header"></div>
-        <div className="auth-body">
-          <div className="job-apply-email-form-wrapper">
-            <div className="inner">
-              <div className="d-flex align-items-center justify-content-between mb-4">
-                <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
-                  Delete Profile
-                </h3>
-                <button
-                  className="border-0 bg-transparent text-primary"
-                  onClick={() => closeDeleteMessage()}>
-                  <IoCloseOutline size={30} />
-                </button>
-              </div>
-              <p className="text-center">
-                Are you sure you want to delete this message ?
-              </p>
-              <div className="d-flex align-items-center justify-content-end">
-                <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={formDelete} onClick={handleDelete}>
-                  Delete {formDelete && <CircularProgress size={20} />}
-                </button>
+      <Dialog
+        open={isDialogOpen} onClose={closeDeleteMessage}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        scroll="body"
+      >
+        <div className="auth-modal">
+          <div className="auth-header"></div>
+          <div className="auth-body">
+            <div className="job-apply-email-form-wrapper">
+              <div className="inner">
+                <div className="d-flex align-items-center justify-content-between mb-4">
+                  <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
+                    Delete message
+                  </h3>
+                  <button
+                    className="border-0 bg-transparent text-primary"
+                    onClick={() => closeDeleteMessage()}>
+                    <IoCloseOutline size={30} />
+                  </button>
+                </div>
+                <p className="text-center">
+                  Are you sure you want to delete this message ?
+                </p>
+                <div className="d-flex align-items-center justify-content-end">
+                  <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={formDelete} onClick={handleDelete}>
+                    Delete {formDelete && <CircularProgress size={20} />}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </Dialog>
-    <Dialog
-      open={isDialogOpenEdit} onClose={closeEditMessage}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      scroll="body"
-    >
-      <div className="auth-modal">
-        <div className="auth-header"></div>
-        <div className="auth-body">
-          <div className="job-apply-email-form-wrapper">
-            <div className="inner">
-              <div className="d-flex align-items-center justify-content-between mb-4">
-                <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
-                  Edit message
-                </h3>
-                <button
-                  className="border-0 bg-transparent text-primary"
-                  onClick={() => closeEditMessage()}>
-                  <IoCloseOutline size={30} />
-                </button>
-              </div>
-              <p className="text-center">
-                <input
+      </Dialog>
+      <Dialog
+        open={isDialogOpenEdit} onClose={closeEditMessage}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        scroll="body"
+      >
+        <div className="auth-modal">
+          <div className="auth-header"></div>
+          <div className="auth-body">
+            <div className="job-apply-email-form-wrapper">
+              <div className="inner">
+                <div className="d-flex align-items-center justify-content-between mb-4">
+                  <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
+                    Edit message
+                  </h3>
+                  <button
+                    className="border-0 bg-transparent text-primary"
+                    onClick={() => closeEditMessage()}>
+                    <IoCloseOutline size={30} />
+                  </button>
+                </div>
+                <p className="text-center">
+                  <input
                     type="text"
                     className="form-control"
                     placeholder="Message"
@@ -183,17 +192,17 @@ const UserList = ({ data, handleItemClick }) => {
                     value={messageTmp}
                     onChange={(e) => handleChange("message", e.target.value)}
                   />
-              </p>
-              <div className="d-flex align-items-center justify-content-end">
-                <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={formEdit} onClick={handleEdit}>
-                  Save {formEdit && <CircularProgress size={20} />}
-                </button>
+                </p>
+                <div className="d-flex align-items-center justify-content-end">
+                  <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={formEdit} onClick={handleEdit}>
+                    Save {formEdit && <CircularProgress size={20} />}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </Dialog>
+      </Dialog>
       {data.map((item) => (
         <li data-id={item.contact.uuid}
           className={(item.contact.uuid == activeContact) ? "active" : ""}
@@ -208,26 +217,26 @@ const UserList = ({ data, handleItemClick }) => {
               </div>
               <div className={"message-time" + ((item.read_at || item.message_type == "sent") ? "" : " unread")}>
                 {parseDateShort(item.created_at)}
-                  
+
               </div>
               <div className="job-action">
                 <Tooltip title="Edit">
-                      <Link
-                        className="btn p-0 border-0 btn-hover-primary"
-                        onClick={() => editMessage(item)}
-                      >
-                        <IoPencil className="icon-rounded" />
-                      </Link>
-                    </Tooltip>
+                  <Link
+                    className="btn p-0 border-0 btn-hover-primary"
+                    onClick={() => editMessage(item)}
+                  >
+                    <IoPencil className="icon-rounded" />
+                  </Link>
+                </Tooltip>
 
-                    <Tooltip title="Remove">
-                      <Link
-                        className="btn p-0 border-0 btn-hover-primary"
-                        onClick={() => deleteMessage(item)}
-                      >
-                        <IoClose className="icon-rounded" />
-                      </Link>
-                    </Tooltip>
+                <Tooltip title="Remove">
+                  <Link
+                    className="btn p-0 border-0 btn-hover-primary"
+                    onClick={() => deleteMessage(item)}
+                  >
+                    <IoClose className="icon-rounded" />
+                  </Link>
+                </Tooltip>
               </div>
             </div>
             <div className="user-message" dangerouslySetInnerHTML={{ __html: getShortMessage(sanitizeText(item.message)) }}></div>
