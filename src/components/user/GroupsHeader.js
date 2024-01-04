@@ -8,7 +8,7 @@ import { useContext, useEffect, useState } from "react";
 import CreateGroup from "../community/CreateGroup";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 
-const GroupsHeader = ({ username }) => {
+const GroupsHeader = ({ currentView, setCurrentView }) => {
 
     const {
         state: { role, user, token },
@@ -28,9 +28,9 @@ const GroupsHeader = ({ username }) => {
         <div className="groups-header">
             <div className="post-form">
                 <CreateGroup />
-                <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/groups') ? ' btn-selected' : '')} to="/groups"><HiOutlineUserGroup /> Public Groups</Link>
-                <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/groups?view=my') ? ' btn-selected' : '')} to="/groups?view=my"><HiOutlineUserGroup /> My Groups</Link>
-                <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/groups?view=joined') ? ' btn-selected' : '')} to="/groups?view=joined"><HiOutlineUserGroup /> Joined Groups</Link>
+                <Link className={"btn btn-dark btn-outline" + (!currentView ? ' btn-selected' : '')} to="/groups" onClick={() => setCurrentView(null)}><HiOutlineUserGroup /> Public Groups</Link>
+                <Link className={"btn btn-dark btn-outline" + (currentView == 'my' ? ' btn-selected' : '')} to="/groups?view=my" onClick={() => setCurrentView('my')}><HiOutlineUserGroup /> My Groups</Link>
+                <Link className={"btn btn-dark btn-outline" + (currentView == 'joined' ? ' btn-selected' : '')} to="/groups?view=joined" onClick={() => setCurrentView('joined')}><HiOutlineUserGroup /> Joined Groups</Link>
             </div>
         </div>
     );

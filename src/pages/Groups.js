@@ -20,6 +20,8 @@ const Groups = () => {
   const queryParams = new URLSearchParams(window.location.search);
   const viewQueryParam = queryParams.get("view");
 
+  const [currentView, setCurrentView] = useState(viewQueryParam);
+
   const {
     state: { groups, nextPage, loading },
     getGroups, loadGroups, searchGroups, getUserGroups, updateGroup, deleteGroup, getMembershipGroups,
@@ -34,12 +36,13 @@ const Groups = () => {
   } = useContext(AlertContext);
 
   useEffect(() => {
+    // console.log(user);
     if (user) {
       if (
-        !viewQueryParam ||
+        !currentView ||
         !(
-          viewQueryParam == "my" ||
-          viewQueryParam == "joined"
+          currentView == "my" ||
+          currentView == "joined"
         )
       ) {
         setIsLoading(true);
@@ -48,16 +51,14 @@ const Groups = () => {
       } else {
         setIsLoading(true);
         setGroupsFound(null);
-        if (viewQueryParam == "my") {
+        if (currentView == "my") {
           getUserGroups(user.uuid);
-        } else if (viewQueryParam == "joined") {
+        } else if (currentView == "joined") {
           getMembershipGroups(user.uuid);
         }
       }
     }
-    console.log(viewQueryParam);
-
-  }, [user, viewQueryParam]);
+  }, [user, currentView]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -111,7 +112,7 @@ const Groups = () => {
                 <LeftSidebar />
               </div>
               <div className="col-md-10">
-                <GroupsHeader />
+                <GroupsHeader currentView={currentView} setCurrentView={setCurrentView} />
                 {isLoading ? (
                   <div className="center-page">
                     <CircularProgress />
@@ -119,7 +120,7 @@ const Groups = () => {
                   </div>
                 ) : (
                   <>
-                    {!viewQueryParam && <SearchBar
+                    {!currentView && <SearchBar
                       onSearch={searchGroups}
                     />}
 
@@ -129,7 +130,7 @@ const Groups = () => {
                           groupsFound.map((group, index) => {
                             return (
                               <>
-                                {group.name == "Feed" || (viewQueryParam != "my" && viewQueryParam != "joined" && group.status != "public") ? (<></>) : (<GroupWidget key={group.uuid} group={group} onUpdateGroup={onUpdateGroup} onDeleteGroup={onDeleteGroup} />)}
+                                {group.name == "Feed" || (currentView != "my" && currentView != "joined" && group.status != "public") ? (<></>) : (<GroupWidget key={group.uuid} group={group} onUpdateGroup={onUpdateGroup} onDeleteGroup={onDeleteGroup} />)}
                               </>
                             );
                           })}
