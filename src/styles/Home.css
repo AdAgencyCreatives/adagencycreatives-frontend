@@ -430,6 +430,10 @@ img.spotlight-image {
     margin: 20px 0;
 }
 
+#spotlight .sectionContent.full-width {
+    margin-bottom: 50px;
+}
+
 .sliderContent.spotlight-slider {
     padding: 10px;
 }
@@ -634,7 +638,7 @@ a.employer-logo img {
     }
 
     .mentor {
-        width: 30%;
+        width: 45%;
     }
 
 }
