@@ -5,6 +5,7 @@ const state = {
   notifications: null,
   nextPage: null,
   loading: false,
+  meta: {},
 };
 
 const reducer = (state, action) => {
@@ -14,6 +15,7 @@ const reducer = (state, action) => {
         ...state,
         notifications: action.payload.data,
         nextPage: action.payload.links.next,
+        meta: action.payload.meta,
       };
     case "update_notifications":
       return {
@@ -34,14 +36,16 @@ const reducer = (state, action) => {
 };
 
 const getNotifications = (dispatch) => {
-  return async (user_id) => {
+  return async (user_id, page = false) => {
+    setLoading(dispatch, true);
     try {
-      const response = await api.get("/notifications?sort=-created_at&filter[user_id]=" + user_id);
+      const response = await api.get("/notifications?sort=-created_at&filter[user_id]=" + user_id + (page ? "&page=" + page : ""));
       dispatch({
         type: "set_notifications",
         payload: response.data,
       });
     } catch (error) { }
+    setLoading(dispatch, false);
   };
 };
 
