@@ -578,6 +578,11 @@ a.employer-logo img {
     gap: 10px;
 }
 
+.mentor-container {
+    display: flex;
+    justify-content: center;
+}
+
 .mentor img {
     position: absolute;
     bottom: 10px;
@@ -592,15 +597,16 @@ a.employer-logo img {
     transition: all 0.2s ease;
     align-items: center;
     justify-content: center;
-    border: 10px solid #fff;
+    border: 2px solid #fff;
     text-align: center;
     padding: 10px;
     height: 195px;
     width: 195px;
     position: relative;
+    background-color: #000;
 }
 
-.mentor a {
+.mentor span {
     color: #fff;
     font-family: 'Alta';
     font-weight: 600;

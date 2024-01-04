@@ -15,6 +15,7 @@ const state = {
   resume: [],
   portfolio_items: [],
   video: null,
+  notifications: []
 };
 
 const reducer = (state, action) => {
@@ -55,6 +56,8 @@ const reducer = (state, action) => {
       return { ...state, applied_jobs: action.payload.data };
     case "set_applications":
       return { ...state, applications: action.payload.data };
+    case "set_notifications":
+      return { ...state, notifications: action.payload.data };
     default:
       return state;
   }
@@ -243,6 +246,8 @@ const saveCreative = (dispatch) => {
     });
     try {
       const response = await api.patch("/creative_profile/" + uid, data);
+      console.log("Creative Update Response: ");
+      console.log(response);
     } catch (error) { }
     dispatch({
       type: "set_form_submit",
@@ -369,6 +374,19 @@ const getApplications = (dispatch) => {
   };
 };
 
+const getNotifications = (dispatch) => {
+  return async (uid, type) => {
+    try {
+      const response = await api.get(`/notifications?filter[user_id]=${uid}`);
+      // &filter[type]=${type}
+      dispatch({
+        type: "set_notifications",
+        payload: response.data,
+      });
+    } catch (error) { }
+  };
+};
+
 const getAppliedJobs = (dispatch) => {
   return async () => {
     setLoading(dispatch, true);
@@ -420,6 +438,7 @@ export const { Context, Provider } = createDataContext(
     resetVideo,
     removeAttachment,
     getLoungeCreativesForTag,
+    getNotifications
   },
   state
 );

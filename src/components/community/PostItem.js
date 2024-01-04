@@ -408,12 +408,11 @@ const PostItem = (props) => {
                 <div className="post-body" dangerouslySetInnerHTML={{ __html: processPostContent(postContent) }}></div>
 
             </div>
-            {!showMoreClicked && displayShowMore && (
+            {displayShowMore && (
                 <div className="show-more-container">
                     <Link className="show-more" onClick={(e) => {
-                        setShowMoreClicked(true);
-                        setDisplayShowMore(false);
-                    }}>... Show More</Link>
+                        setShowMoreClicked(value => !value);
+                    }}>... Show {showMoreClicked ? "Less" : "More"}</Link>
                 </div>
             )}
             <div className="post-images">

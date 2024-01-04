@@ -57,6 +57,18 @@ const JobChat = ({ getMessages, getContacts }) => {
     setTab(name);
   };
 
+  const filterContacts = (value) => {
+    setSearch(value);
+    let updatedList = contacts.filter((item) => {
+      let name = value.toLowerCase();
+      let contact = item.contact;
+      let fname = contact.first_name.toLowerCase();
+      let lname = contact.last_name.toLowerCase();
+      return fname.includes(name) || lname.includes(name);
+    });
+    setContactsList([...updatedList])
+  };
+
   const chatBoxProps = {
     contact,
     type,
@@ -87,9 +99,9 @@ const JobChat = ({ getMessages, getContacts }) => {
                   className="message-search-input"
                   value={search}
                   placeholder="Search Contacts..."
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(e) => filterContacts(e.target.value)}
                 />
-                {search && <IoClose className="clear-message" />}
+                {search && <IoClose className="clear-message" onClick={() => filterContacts("")} />}
               </div>
               <div className="message-tabs">
                 <div

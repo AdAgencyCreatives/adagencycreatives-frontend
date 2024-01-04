@@ -37,7 +37,7 @@ const Contact = () => {
 
   return (
     <div className="dark-container page-mentors mb-0 mt-4">
-      <h1 className="page-title" style={{ fontSize: 35 }}>
+      <h1 className="page-title">
         Contact Us
       </h1>
       <form onSubmit={submitContact}>

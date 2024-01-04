@@ -131,7 +131,7 @@ const Chat = () => {
                   placeholder="Search messages..."
                   onChange={(e) => filterContacts(e.target.value)}
                 />
-                {search && <IoClose className="clear-message" onClick={() => filterContacts("")} />}
+                {search && <IoClose className="clear-message" onClick={() => filterContacts("")} /> }
               </div>
               <div className="message-tabs">
                 <div

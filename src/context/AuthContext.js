@@ -14,6 +14,7 @@ const state = {
   user: null,
   formSubmit: false,
   modal: false,
+  messages_count: 0,
   notifications_count: 0,
   activities_count: 0,
   messageAlert: { type: "", message: "", display: "" },
@@ -45,7 +46,9 @@ const authReducer = (state, action) => {
       return { ...state, formSubmit: action.payload };
     case "set_modal":
       return { ...state, modal: action.payload };
-    case "set_notifications_count":
+    case "set_messages_count":
+      return { ...state, messages_count: action.payload };
+      case "set_notifications_count":
       return { ...state, notifications_count: action.payload };
     case "set_activities_count":
       return { ...state, activities_count: action.payload };
@@ -254,6 +257,18 @@ const getNotificationsCount = (dispatch) => {
   };
 };
 
+const getMessagesCount = (dispatch) => {
+  return async (user_id, type="job") => {
+    try {
+      const response = await api.get("/messages/count?status=0&filter[type]=" + type + "&filter[user_id]=" + user_id);
+      dispatch({
+        type: "set_messages_count",
+        payload: response.data.count,
+      });
+    } catch (error) { }
+  };
+};
+
 const getActivitiesCount = (dispatch) => {
   return async (user_id) => {
     try {
@@ -417,6 +432,7 @@ export const { Context, Provider } = createDataContext(
     logout,
     updatePassword,
     hideMessageAlert,
+    getMessagesCount,
     getNotificationsCount,
     getActivitiesCount,
     reloadUserData,
