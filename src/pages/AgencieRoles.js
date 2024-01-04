@@ -103,7 +103,7 @@ const AgencieRoles = () => {
                             </div>
                           )}
                           <div className="open-jobs-btn">
-                            <Link to={`/agency/${item.slug}/${role}`} reloadDocument>
+                            <Link to={`/agency/${item.slug}/${role}`}>
                               Open Jobs - {item.open_jobs}
                             </Link>
                           </div>

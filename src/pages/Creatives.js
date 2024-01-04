@@ -300,8 +300,7 @@ const Creatives = () => {
                             showAlert("Please login to access");
                           }
                           return false;
-                        }}
-                        reloadDocument>
+                        }}>
                         View Profile
                       </Link>
                     </div>
