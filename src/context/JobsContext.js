@@ -4,6 +4,7 @@ import createDataContext from "./createDataContext";
 const state = {
   jobs: [],
   meta: {},
+  applicationMeta: {},
   links: {},
   categories: [],
   states: [],
@@ -31,7 +32,8 @@ const reducer = (state, action) => {
       return {
         ...state,
         applications: action.payload.data,
-        applicationsNextPage: action.payload.links.next
+        applicationsNextPage: action.payload.links.next,
+        applicationMeta: action.payload.meta
       };
     case "set_nextpage_applications":
       return {
@@ -202,12 +204,12 @@ const getRelatedJobs = async (dispatch, category) => {
 };
 
 const getApplications = (dispatch) => {
-  return async (uid, applications_count = 0) => {
+  return async (uid, applications_count = 0, page = false) => {
     let applications = [];
     setLoading(dispatch, true);
     try {
       const response = await api.get(
-        "/jobs?filter[status]=" + status + "&filter[user_id]=" + uid + "&applications_count=" + applications_count
+        "/jobs?filter[status]=" + status + "&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "")
       ); // have to set filter[status]=1 later
       const jobs = response.data.data;
       for (const job of jobs) {
@@ -438,7 +440,7 @@ const paginateJob = (dispatch) => {
     try {
       let filter = getFilters(filters);
       const response = await api.get(
-        "/jobs?filter[status]=" + status + "&" + filter + "&page=" + page
+        getJobEndpoint() + "?filter[status]=" + status + "&sort=-created_at&" + filter + "&page=" + page
       );
       dispatch({
         type: "set_jobs",
