@@ -26,24 +26,22 @@ const Notifications = () => {
                 <div className="card">
                     <div className="card-title">Notifications</div>
                     {notifications && notifications.length ? (
-                        <>
-                            <div className="notif-list">
-                                {notifications && notifications.map((notification) => {
-                                    return (
-                                        <div className="notif-item-dashboard">
-                                            <div className="notif-details">
-                                                <Link to={notification.link} className="notif-content text-dark">{notification.message}</Link>
-                                                <div className="notif-time">
-                                                    <IoTimeOutline />
-                                                    <TimeAgo datetime={notification.created_at} />
-                                                </div>
+                        <div className="notif-list">
+                            {notifications.map((notification) => {
+                                return (
+                                    <div className="notif-item-dashboard" key={notification.id}>
+                                        <div className="notif-details">
+                                            <Link to={notification.link} className="notif-content text-dark">{notification.message}</Link>
+                                            <div className="notif-time">
+                                                <IoTimeOutline />
+                                                <TimeAgo datetime={notification.created_at} />
                                             </div>
                                         </div>
-                                    )
-                                })}
-                            </div>
+                                    </div>
+                                )
+                            })}
                             {meta.total > 10 && <Paginate meta={meta} paginate={paginate} />}
-                        </>
+                        </div>
                     ) : (
                         <div className="center-page">Sorry, nothing here.</div>
                     )}

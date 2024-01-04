@@ -78,10 +78,10 @@ const Applicants = () => {
               <span>Loading ...</span>
             </div>
           ) : (
-            data.map((item, index) => (
-              <div className="applicants-inner" key={index}>
-                {item.applications.length && item.applications.map((application) => (
-                  <>
+            <>
+              {data.map((item, index) => (
+                <div className="applicants-inner" key={index}>
+                  {item.applications.length && item.applications.map((application) => (
                     <div key={application.id}>
                       <div className="candidate-list candidate-archive-layout d-flex align-items-center">
                         <div className="candidate-info col-sm-8">
@@ -227,11 +227,11 @@ const Applicants = () => {
                         </div>
                       </div>
                     </div>
-                    {applicationMeta.total > 10 && <Paginate meta={applicationMeta} paginate={paginate} />}
-                  </>
-                ))}
-              </div>
-            ))
+                  ))}
+                </div>
+              ))}
+              {applicationMeta.total > 10 && <Paginate meta={applicationMeta} paginate={paginate} />}
+            </>
           )}
         </div>
       </div>

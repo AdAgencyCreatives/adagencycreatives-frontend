@@ -224,7 +224,7 @@ const getApplications = (dispatch) => {
 
         dispatch({
           type: "set_applications",
-          payload: response2.data,
+          payload: response.data,
         });
       }
     } catch (error) { }
