@@ -246,6 +246,8 @@ const saveCreative = (dispatch) => {
     });
     try {
       const response = await api.patch("/creative_profile/" + uid, data);
+      console.log("Creative Update Response: ");
+      console.log(response);
     } catch (error) { }
     dispatch({
       type: "set_form_submit",

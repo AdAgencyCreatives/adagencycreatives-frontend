@@ -17,20 +17,26 @@ import { useContext, useEffect, useState } from "react";
 const LeftSidebar = (props) => {
 
   const [refreshCounts, setRefreshCounts] = useState({ num: 0 });
+  const [messagesCount, setMessagesCount] = useState(0);
   const [notificationsCount, setNotificationsCount] = useState(0);
   const [activitiesCount, setActivitiesCount] = useState(0);
 
   const {
-    state: { role, user, token, notifications_count, activities_count },
-    getNotificationsCount, getActivitiesCount
+    state: { role, user, token, messages_count, notifications_count, activities_count },
+    getMessagesCount, getNotificationsCount, getActivitiesCount
   } = useContext(AuthContext);
 
   useEffect(() => {
     if (user) {
+      getMessagesCount(user.uuid, 'private');
       getNotificationsCount(user.uuid);
       // getActivitiesCount(user.uuid);
     }
   }, [user, refreshCounts]);
+
+  useEffect(() => {
+    setMessagesCount(messages_count);
+  }, [messages_count]);
 
   useEffect(() => {
     setNotificationsCount(notifications_count);
@@ -87,6 +93,7 @@ const LeftSidebar = (props) => {
             <NavLink to="/messages">
               <IoFileTrayOutline />
               <div className="item-name">Messages</div>
+              <span className="count">{messagesCount ? messagesCount : 0}</span>
             </NavLink>
           </li>
           <li className="menu-item">
