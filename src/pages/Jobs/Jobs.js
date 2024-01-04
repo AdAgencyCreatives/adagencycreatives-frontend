@@ -391,7 +391,7 @@ const Jobs = () => {
               )}
               <div className="jobs-list-container">
                 {jobs.length ? <JobList data={jobs} /> : <p>No Jobs found</p>}
-                {meta.total > 10 ? (
+                {meta && meta.total > 10 && (
                   <div className="row mt-3">
                     <div className="col-12">
                       <p className="user-count">
@@ -422,8 +422,6 @@ const Jobs = () => {
                       </div>
                     </div>
                   </div>
-                ) : (
-                  ""
                 )}
               </div>
             </div>
