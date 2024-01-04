@@ -1,35 +1,55 @@
-import { useContext, useEffect } from "react";
-import { Context as CreativesContext } from "../../context/CreativesContext";
-import TimeAgo from "../TimeAgo";
+import Paginate from "../../components/Paginate";
+import { CircularProgress } from "@mui/material";
 import { IoTimeOutline } from "react-icons/io5";
-import moment from "moment";
+import { Context as AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import TimeAgo from "../TimeAgo";
+import useNotifications from "../../hooks/useNotifications";
 
-const Notifications = ({ creative, type }) => {
-  const {
-    state: { notifications },
-    getNotifications,
-  } = useContext(CreativesContext);
+const Notifications = () => {
 
-  useEffect(() => {
-    getNotifications(creative.uuid, type);
-  }, []);
+    const { notifications, meta, loading, getNotifications } = useNotifications();
+    const { state: { user } } = useContext(AuthContext);
+    const paginate = (page) => {
+        getNotifications(user.uuid, page);
+    };
 
-  return (
-    <div className="card notifications">
-      <div className="card-title mb-2">Notifications</div>
-      {notifications.map((item) => {
-        return (
-          <div className="item border-bottom py-2">
-            <p className="mb-0">{item.message}</p>
-            <div style={{ fontSize: '12px', color: '#858585', display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <IoTimeOutline />
-              <TimeAgo datetime={item.created_at} />
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
+    return (
+        <>
+            {loading ? (
+                <div className="center-page">
+                    <CircularProgress />
+                    <span>Loading ...</span>
+                </div>
+            ) : (
+                <div className="card">
+                    <div className="card-title">Notifications</div>
+                    {notifications && notifications.length ? (
+                        <>
+                            <div className="notif-list">
+                                {notifications && notifications.map((notification) => {
+                                    return (
+                                        <div className="notif-item-dashboard">
+                                            <div className="notif-details">
+                                                <Link to={notification.link} className="notif-content text-dark">{notification.message}</Link>
+                                                <div className="notif-time">
+                                                    <IoTimeOutline />
+                                                    <TimeAgo datetime={notification.created_at} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                            {meta.total > 10 && <Paginate meta={meta} paginate={paginate} />}
+                        </>
+                    ) : (
+                        <div className="center-page">Sorry, nothing here.</div>
+                    )}
+                </div>
+            )}
+        </>
+    );
 }
- 
 export default Notifications;

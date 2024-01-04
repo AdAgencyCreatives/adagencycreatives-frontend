@@ -14,7 +14,7 @@ import Views from "../../../components/dashboard/Views";
 import Notifications from "../../../components/dashboard/Notifications";
 import Applicants from "../../../components/dashboard/Applicants";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
-import { Context as AuthContext} from "../../../context/AuthContext";
+import { Context as AuthContext } from "../../../context/AuthContext";
 import { useContext, useEffect } from "react";
 import Loader from "../../../components/Loader";
 import JobList from "../../../components/job/JobList";
@@ -38,7 +38,6 @@ const Dashboard = () => {
     getApplications(user.uuid);
   }, []);
 
-  { console.log(applications) }
   return (
     <div className="dashboard-wrapper agency-page-dashboard">
       <h3 className="page-title">Dashboard Statistics</h3>

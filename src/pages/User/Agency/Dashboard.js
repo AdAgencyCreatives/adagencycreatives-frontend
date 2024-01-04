@@ -101,7 +101,7 @@ const Dashboard = () => {
           <div className="mb-4">
             <Calendar />
           </div>
-          {/* <Notifications /> */}
+          <Notifications />
         </div>
       </div>
       {/* <div className="row">
