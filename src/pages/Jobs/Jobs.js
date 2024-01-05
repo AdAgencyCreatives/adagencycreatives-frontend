@@ -67,7 +67,7 @@ const Jobs = () => {
       getJobs();
     }
     getCategories();
-    getJobAlerts(user?.uuid);
+    user?.uuid && getJobAlerts(user?.uuid);
     getStates();
     getEmploymentTypes();
     getMediaExperiences();
@@ -278,7 +278,7 @@ const Jobs = () => {
           >
             <div className="notif-input-box">
               <h5 className="notif-title fw-normal">Title</h5>
-              {console.log(jobTitles.filter((item) => jobTitlesSelected.includes(item.label)))}
+              {/* {console.log(jobTitles.filter((item) => jobTitlesSelected.includes(item.label)))} */}
               <Select
                 className="dropdown-container"
                 options={jobTitles}

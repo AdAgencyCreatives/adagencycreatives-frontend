@@ -13,13 +13,17 @@ import DelayedOutput from "../components/DelayedOutput";
 import Calendar from "react-calendar";
 
 const Community = () => {
-
   const { pageData, getPateDataItem } = usePageDataHelper("community");
+  const [loaded, setLoaded] = useState(false);
 
   const feed_group = "715bfe90-833e-3459-9700-036ac28d3fd4";
   const {
     state: { token, role },
   } = useContext(AuthContext);
+
+  useEffect(() => {
+    setTimeout(() => setLoaded(true), 1000);
+  }, []);
 
   return (
     <>
@@ -33,7 +37,28 @@ const Community = () => {
             <div className="col-md-2 mb-4 mb-md-0">
               <LeftSidebar />
             </div>
-            {token && role && (role == "admin" || role == "creative") ? (
+            {!token && !role && (role != "admin" || role != "creative") ? (
+              <>
+                {loaded ? (
+                  <div className="col-md-7 order-md-2 order-2">
+                    <div className="container-fluid mt-4">
+                      <div className="row">
+                        <div className="col-md-12 mb-4 mb-md-0">
+                          <div className="restricted-creatives-only">
+                            <div className="restricted-message">
+                              <h4>The Lounge is restricted for creatives only.</h4>
+                              <h5>Please login as a creative to access the lounge.</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="col-md-7 order-md-2 order-2"></div>
+                )}
+              </>
+            ) : (
               <div className="col-md-7 order-md-2 order-2">
                 <div className="right-sidebar mobile-displayed">
                   <div className="widgets">
@@ -46,21 +71,6 @@ const Community = () => {
                 </div>
                 <CreatePost feed_group={feed_group} />
                 <PostList feed_group={feed_group} />
-              </div>
-            ) : (
-              <div className="col-md-7 order-md-2 order-2">
-                <div className="container-fluid mt-4">
-                  <div className="row">
-                    <div className="col-md-12 mb-4 mb-md-0">
-                      <div className="restricted-creatives-only">
-                        <div className="restricted-message">
-                          <h4>The Lounge is restricted for creatives only.</h4>
-                          <h5>Please login as a creative to access the lounge.</h5>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             )}
             <div className="col-md-3 order-md-3 order-3">
