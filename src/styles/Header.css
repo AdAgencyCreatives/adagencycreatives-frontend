@@ -2,6 +2,11 @@
     width: 93%;
 }
 
+a.site-logo {
+    min-width: 200px;
+    display: inline-block;
+}
+
 .btn-showmenu>* {
     background-color: #202124;
     display: inline-block;
@@ -648,7 +653,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .agency-page-profile .icon-message .icon img,
 .creative-page-profile .icon-message .icon img,
 .my-resume .icon-message .icon img {
-    width: 33.33%;
+    width: 20px;
     height: auto;
 }
 
