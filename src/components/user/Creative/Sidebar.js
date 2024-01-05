@@ -9,7 +9,12 @@ import "../../../styles/User/ProfileSidebar.scss";
 import adicon from "../../../assets/images/icons/adicon.png";
 import bullseye from "../../../assets/images/icons/bulleyes.png";
 import time from "../../../assets/images/icons/duration-icon.png";
+<<<<<<< HEAD
+import star from "../../../assets/images/icons/star_1.png";
+import sample from "../../../assets/images/sample.mp4";
+=======
 import strength from "../../../assets/images/icons/strength.png";
+>>>>>>> staging
 import React, { useContext, useEffect, useState } from "react";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
@@ -205,7 +210,11 @@ const Sidebar = ({ data, user }) => {
           )}
           {data.character_strengths?.length ? (
             <div className="item">
+<<<<<<< HEAD
+              <img src={star} height={22} width={22} />
+=======
               <img src={strength} height={22} width={22} />
+>>>>>>> staging
               <div className="details">
                 <div className="text">Strengths</div>
                 <div className="value">

@@ -121,12 +121,12 @@ function Header(props) {
     <Box onClick={handleDrawerToggle}>
       <ScrollToHash />
       <Grid container justifyContent="space-between" alignItems="center" backgroundColor="white" sx={{ paddingY: 3, paddingX: 1 }}>
-        <Grid item xs={8}>
+        <Grid item xs={9}>
           <Link className="site-logo" to="/">
             <img className="" src={Logo} alt="Adagency Creatives" />
           </Link>
         </Grid>
-        <Grid item xs={4} sx={{ textAlign: "right" }} className="right-menu">
+        <Grid item xs={3} sx={{ textAlign: "right" }} className="right-menu">
           <Box sx={{ display: { sm: "none" } }}>
             <IconButton href="#" sx={{ mr: 1 }}>
               <AiOutlineUser />
@@ -187,13 +187,13 @@ function Header(props) {
         <AppBar elevation={0} component="nav" id="top-nav-fixed" sx={{ backgroundColor: "#fff", padding: { sm: "10px 0", xs: "0" } }}>
           <Toolbar>
             <Grid container justifyContent="space-between" alignItems="center">
-              <Grid item lg={3} md={2} xs={6}>
+              <Grid item lg={3} md={2} xs={8}>
                 <Link className="site-logo">
                   <img className="" src={Logo} alt="Adagency Creatives" />
                 </Link>
               </Grid>
-              <Grid item lg={9} md={10} xs={6} sx={{ textAlign: "right", padding: "10px" }} className="right-menu">
-                <Box sx={{ display: { md: "none" } }}>
+              <Grid item lg={9} md={10} xs={4} sx={{ textAlign: "right", padding: "10px" }} className="right-menu">
+                <Box sx={{ display: { md: "none", display: "flex", alignItems: "center", justifyContent: "center" } }}>
                   <IconButton href={state.token ? "/dashboard" : "#"} color="primary" onClick={() => (!state.token ? setAuthModalOpen(true) : "")}>
                     <AiOutlineUser />
                   </IconButton>
