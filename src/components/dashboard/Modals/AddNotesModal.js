@@ -6,6 +6,7 @@ import { Context as AuthContext } from "../../../context/AuthContext";
 import { usePopupScrollLoader } from "../../../hooks/usePopupScrollLoader";
 import moment from "moment";
 import { CircularProgress } from "@mui/material";
+import TimeAgo from "../../TimeAgo";
 
 const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
   const [note, setNote] = useState("");
@@ -23,25 +24,25 @@ const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
   } = useContext(AuthContext);
 
   const submitNote = async () => {
-    const data = {
+    await addNote({
       resource_type: type,
       resource_id,
       body: note,
-    };
-    await addNote(data);
+    });
     setMessage(true)
     setNote('');
+    getNotes(user.uuid, resource_id, type)
   };
 
   useEffect(() => {
     if (open && user) {
-      getNotes(user.uuid, resource_id, type);      
+      getNotes(user.uuid, resource_id, type);
     }
   }, [open, user]);
 
   useEffect(() => {
     setMessage(false);
-  },[open]);
+  }, [open]);
 
   const loadMore = () => {
     if (notesNextPage) getNextPageNotes(user.uuid, resource_id, type, notesNextPage);
@@ -103,6 +104,7 @@ const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
                         <p className="mb-0">{note.body}</p>
                         <p className="mb-0">
                           <small>
+                            <TimeAgo datetime={note.updated_at} />,&nbsp;
                             {moment(note.created_at).format(
                               "D MMMM, YYYY hh:mm A"
                             )}
