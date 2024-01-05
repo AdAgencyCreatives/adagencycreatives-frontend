@@ -27,7 +27,10 @@ const TimeAgo = (props) => {
             timeCalc = parseInt(timeCalc / 60) + " minute ago";
         } else if (timeCalc > 0) {
             timeCalc += " seconds ago";
+        }  else if (timeCalc == 0) {
+            timeCalc = "Just Now";
         }
+
         return timeCalc;
     }
 
