@@ -62,6 +62,7 @@ const CreatePost = (props) => {
   const [taggerOpened, setTaggerOpened] = useState(false);
   const [taggerSearchText, setTaggerSearchText] = useState("");
   const [taggerSearchResults, setTaggerSearchResults] = useState(null);
+  const [taggerPosLeft, setTaggerPosLeft] = useState(0);
 
   useEffect(() => {
     if (taggerSearchText && taggerSearchText.length) {
@@ -123,6 +124,11 @@ const CreatePost = (props) => {
         if (taggerRef.current) {
           taggerRef.current.canQuitTagger = false;
         }
+        let posLeft = 30 + (editorRefTinyMCE?.current?.selection?.getRng()?.startOffset || 0) * 10;
+        setTaggerPosLeft(posLeft);
+        let posTop = (editorRefTinyMCE?.current?.selection?.getRng()?.startOffset || 0) * 12;
+        setTaggerPosLeft(posTop);
+
         setTaggerOpened(true);
         setTaggerSearchText("");
         window.setTimeout(function () {
@@ -265,7 +271,7 @@ const CreatePost = (props) => {
         aria-describedby="modal-modal-description"
       >
         <div className="create-post-modal post-modal">
-          <div id="tagger" className="tagger" style={{ display: taggerOpened ? 'block' : 'none' }}>
+          <div id="tagger" className="tagger" style={{ display: taggerOpened ? 'block' : 'none', left: taggerPosLeft + 'px' }}>
             <IoCloseCircleSharp className="tagger-exit" onClick={(e) => closeTagger()} />
             <input type="text"
               ref={taggerRef}
@@ -320,7 +326,9 @@ const CreatePost = (props) => {
                   initialValue=""
                   onEditorChange={(e) => setContent(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "")}
                   onFocus={(e) => setRequireContent(false)}
-                  onKeyDown={(e) => handleKeyDown(e)}
+                  onKeyDown={(e) => {
+                    handleKeyDown(e)
+                  }}
                 />
               </>
             ) : (
