@@ -64,7 +64,7 @@ const MentorResources = () => {
                 return (
                   <div className="col-sm-4 mentor-container">
                     <Link to={`/mentoring-resources/${item.slug}`} className="mentor" key={`m_${index}`}>
-                      <span style={{ fontSize: '40px' }}>{item.title}</span>
+                      <span>{item.title}</span>
                       <img src={AdAgency} height={150} width={150} alt="" />
                     </Link>
                   </div>

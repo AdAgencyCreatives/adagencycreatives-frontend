@@ -2,6 +2,26 @@
 
     .mentor {
         width:95%;
+
+        span {
+            font-family: Alta;
+            font-size: 3rem;
+            font-weight: 600;
+            line-height: 45px;
+            text-shadow: 1px 0 #fff;
+        }
+
+        @media (max-width:1300px) {
+            span {
+                font-size: 2rem;
+            }
+        }
+    
+        @media (max-width:900px) {
+            span {
+                font-size: 1.5rem;
+            }
+        }
     }
 
     .mentor img:hover {
