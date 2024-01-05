@@ -562,6 +562,11 @@ nav ul.dropdown-list .list-item-text.j-fix {
     cursor: pointer;
 }
 
+.icon-message .icon img{
+    width: 18px !important;
+    height: 18px !important;
+}
+
 .icon-message .message-container {
     display: none;
     align-items: center;

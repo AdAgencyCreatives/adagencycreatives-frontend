@@ -9,6 +9,7 @@ import "../../../styles/User/ProfileSidebar.scss";
 import adicon from "../../../assets/images/icons/adicon.png";
 import bullseye from "../../../assets/images/icons/bulleyes.png";
 import time from "../../../assets/images/icons/duration-icon.png";
+import star from "../../../assets/images/icons/star_1.png";
 import sample from "../../../assets/images/sample.mp4";
 import React, { useContext, useEffect, useState } from "react";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
@@ -205,7 +206,7 @@ const Sidebar = ({ data, user }) => {
           )}
           {data.character_strengths?.length ? (
             <div className="item">
-              <img src={time} height={22} width={22} />
+              <img src={star} height={22} width={22} />
               <div className="details">
                 <div className="text">Strengths</div>
                 <div className="value">

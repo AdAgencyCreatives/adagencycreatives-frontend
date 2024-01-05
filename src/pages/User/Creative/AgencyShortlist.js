@@ -47,10 +47,10 @@ const AgencyShortlist = () => {
             return (
               <div className="employer-list" key={index}>
                 <div className="row align-items-center justify-content-between">
-                  <div className="col-12 d-flex align-items-top">
+                  <div className="col-12 d-md-flex align-items-top d-sm-block">
                     <div className="avatar employer me-3">
                       <img
-                        src={resource.logo || Placeholder}
+                        src={resource?.logo || Placeholder}
                         height={50}
                         width={50}
                       />
@@ -59,32 +59,32 @@ const AgencyShortlist = () => {
                       <div className="col-sm-6">
                         <div className="username">
                           <Link
-                            to={"/agency/" + resource.slug}
+                            to={"/agency/" + resource?.slug}
                             className="link-dark link-hover-dark"
                           >
-                            {resource.name}
+                            {resource?.name}
                           </Link>
                         </div>
                         <div className="user-meta">
-                          {resource.location.state && (
+                          {resource?.location.state && (
                             <div className="job-location location">
                               <IoLocationOutline />
                               <Link
-                                to={`/agency-location/${resource.location.state}`}
+                                to={`/agency-location/${resource?.location.state}`}
                               >
-                                {resource.location.state},
+                                {resource?.location.state},&nbsp;
                               </Link>
                               <Link
-                                to={`/agency-location/${resource.location.city}`}
+                                to={`/agency-location/${resource?.location.city}`}
                               >
-                                {resource.location.city}
+                                {resource?.location.city}
                               </Link>
                             </div>
                           )}
-                          {resource.industry_experience.length ? (
+                          {resource?.industry_experience.length ? (
                             <div className="position">
                               <IoBriefcaseOutline />
-                              {resource.industry_experience.map(
+                              {resource?.industry_experience.map(
                                 (item, index) => (
                                   <React.Fragment key={"i_"+index}>
                                     <Link
@@ -100,7 +100,7 @@ const AgencyShortlist = () => {
                                       {item}
                                     </Link>
                                     {index <
-                                      resource.industry_experience.length - 1 &&
+                                      resource?.industry_experience.length - 1 &&
                                       ","}
                                   </React.Fragment>
                                 )
@@ -113,8 +113,8 @@ const AgencyShortlist = () => {
                       </div>
                       <div className="col-sm-6 d-flex gap-2 flex-wrap flex-md-nowrap mt-2 mt-sm-0 justify-content-md-end">
                         <div className="open-jobs-btn m-0">
-                          <Link to={`/agency/${resource.slug}`}>
-                            Open Jobs - {resource.open_jobs}
+                          <Link to={`/agency/${resource?.slug}`}>
+                            Open Jobs - {resource?.open_jobs}
                           </Link>
                         </div>
                         <div className="open-jobs-btn m-0">
