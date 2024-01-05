@@ -87,15 +87,17 @@ const AgencyCreatives = () => {
                     />
                     <div className="agencyName">{item.name}</div>
                     <div className="position">{item.title}</div>
-                    {item.location.state && (
+                    {item.location.state && item.location.state != '' && (
                       <div className="job-location location">
                         <IoLocationOutline />
                         <Link to={`/creatives/search/state/${item.location.state}`}>
-                          {item.location.state},&nbsp;
+                          {item.location.state}
                         </Link>
-                        <Link to={`/creatives/search/city/${item.location.city}`}>
-                          {item.location.city}
-                        </Link>
+                        {item.location.city && (
+                          <Link to={`/creatives/search/city/${item.location.city}`}>
+                            ,&nbsp;{item.location.city}
+                            </Link>
+                        )}
                       </div>
                     )}
                     <div className="profileLink">
