@@ -9,6 +9,8 @@ import "../../../styles/User/ProfileSidebar.scss";
 import adicon from "../../../assets/images/icons/adicon.png";
 import bullseye from "../../../assets/images/icons/bulleyes.png";
 import time from "../../../assets/images/icons/duration-icon.png";
+import star from "../../../assets/images/icons/star_1.png";
+import sample from "../../../assets/images/sample.mp4";
 import strength from "../../../assets/images/icons/strength.png";
 import React, { useContext, useEffect, useState } from "react";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
@@ -148,7 +150,7 @@ const Sidebar = ({ data, user }) => {
           ) : (
             ""
           )}
-          {data.email && (isOwnProfile || isAdmin || isAdvisor || isFriend) && (
+          {data.email && (isOwnProfile || isAdmin || isAgency || isAdvisor || isFriend) && (
             <div className="item">
               <IoMailOutline size={22} />
               <div className="details">
@@ -157,7 +159,7 @@ const Sidebar = ({ data, user }) => {
               </div>
             </div>
           )}
-          {data.phone_number && (isOwnProfile || isAdmin || isAdvisor) && (
+          {data.phone_number && (isOwnProfile || isAdmin || isAgency || isAdvisor || isFriend) && (
             <div className="item">
               <IoCallOutline size={22} />
               <div className="details">
@@ -209,7 +211,7 @@ const Sidebar = ({ data, user }) => {
               <div className="details">
                 <div className="text">Strengths</div>
                 <div className="value">
-                {renderListData(data.character_strengths, "c", isAdmin, isAdvisor, 'strengths')}
+                  {renderListData(data.character_strengths, "c", isAdmin, isAdvisor, 'strengths')}
                 </div>
               </div>
             </div>

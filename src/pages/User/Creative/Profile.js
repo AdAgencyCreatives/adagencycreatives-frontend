@@ -560,8 +560,8 @@ const Profile = () => {
                         {field.label}
                         {field.required && <span className="required">*</span>}
                       </label>
-                      <div class="input-group">
-                        <span class="input-group-text" id="basic-addon3">{field.baseUrl}/creative/</span>
+                      <div className="input-group">
+                        <span className="input-group-text" id="basic-addon3">{field.baseUrl}/creative/</span>
                         <input
                           type="text"
                           className="form-control"

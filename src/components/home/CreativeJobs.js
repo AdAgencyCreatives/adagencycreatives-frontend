@@ -146,7 +146,7 @@ const CreativeJobs = () => {
                       <div className="job-location location">
                         <IoLocationOutline />
                         <Link to={`/creatives/search/state/${item.location.state}`}>
-                          {item.location.state},
+                          {item.location.state},&nbsp;
                         </Link>&nbsp;
                         <Link to={`/creatives/search/city/${item.location.city}`}>
                           {item.location.city}

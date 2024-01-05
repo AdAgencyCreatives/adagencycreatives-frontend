@@ -86,7 +86,7 @@ const AdAgencies = () => {
                       <div className="job-location location">
                         <IoLocationOutline />
                         <Link to={`/creatives/search/state/${item.location.state}`}>
-                          {item.location.state},
+                          {item.location.state},&nbsp;
                         </Link>
                         <Link to={`/creatives/search/city/${item.location.city}`}>
                           {item.location.city}
@@ -94,7 +94,7 @@ const AdAgencies = () => {
                       </div>
                     )}
                     <div className="open-jobs-btn">
-                      <Link to={`/agency/${item.slug}`}>Open Jobs - 0</Link>
+                      <Link to={`/agency/${item.slug}`}>Open Jobs - {item.open_jobs}</Link>
                     </div>
                   </div>
                 </swiper-slide>
