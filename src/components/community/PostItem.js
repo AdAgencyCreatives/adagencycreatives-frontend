@@ -66,7 +66,7 @@ const PostItem = (props) => {
     const [showMoreClicked, setShowMoreClicked] = useState(false);
 
     useEffect(() => {
-        if (dimensions && dimensions?.height > 150 && !showMoreClicked) {
+        if (dimensions && postContent?.length > 500 && !showMoreClicked) {
             setDisplayShowMore(true);
         }
     }, [dimensions]);
@@ -404,10 +404,10 @@ const PostItem = (props) => {
                     </div>
                 )}
             </div>
-            <div className={"post-content" + (!showMoreClicked && displayShowMore ? " post-preview" : "")} ref={postContentRef}>
+            <div className={"post-content" + (!showMoreClicked && postContent?.length > 500 ? " post-preview" : "")} ref={postContentRef}>
                 <div className="post-body" dangerouslySetInnerHTML={{ __html: postContent }}></div>
             </div>
-            {displayShowMore && (
+            {postContent?.length > 500 && (
                 <div className="show-more-container">
                     <Link className="show-more" onClick={(e) => {
                         setShowMoreClicked(value => !value);
