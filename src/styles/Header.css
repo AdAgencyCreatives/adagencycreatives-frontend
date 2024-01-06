@@ -695,3 +695,13 @@ nav ul.dropdown-list .list-item-text.j-fix {
     justify-content: end;
     position: relative;
 }
+
+.show-more-less-clickable {
+    color: #d3a11f !important;
+    text-decoration: none !important;
+    cursor: pointer;   
+}
+
+.show-more-less-clickable:hover {
+    color: #000 !important;
+}

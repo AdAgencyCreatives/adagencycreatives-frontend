@@ -42,6 +42,7 @@ import useHelper from "../../hooks/useHelper";
 
 import { CookiesProvider, useCookies } from "react-cookie";
 import { Link } from "@mui/material";
+import ShowMoreText from "react-show-more-text";
 
 const useRefDimensions = (ref) => {
     const [dimensions, setDimensions] = useState({ width: 1, height: 2 })
@@ -373,7 +374,7 @@ const PostItem = (props) => {
     return (
         <div className="post-item">
             <div className="post-header">
-                <img className="post-avatar" src={props.post.author_avatar || defaultAvatar} />
+                <img className="post-avatar" src={props.post.author_avatar || defaultAvatar} alt="" />
                 <div className="post-meta">
                     <div className="post-username">
                         <a className="user-slug" href={"/creative/" + props.post.author_slug}>
@@ -404,7 +405,7 @@ const PostItem = (props) => {
                     </div>
                 )}
             </div>
-            <div className={"post-content" + (!showMoreClicked && postContent?.length > 500 ? " post-preview" : "")} ref={postContentRef}>
+            {/* <div className={"post-content" + (!showMoreClicked && postContent?.length > 500 ? " post-preview" : "")} ref={postContentRef}>
                 <div className="post-body" dangerouslySetInnerHTML={{ __html: postContent }}></div>
             </div>
             {postContent?.length > 500 && (
@@ -413,7 +414,23 @@ const PostItem = (props) => {
                         setShowMoreClicked(value => !value);
                     }}>... Show {showMoreClicked ? "Less" : "More"}</Link>
                 </div>
-            )}
+            )} */}
+            <div className="post-content">
+                <ShowMoreText
+                    /* Default options */
+                    lines={3}
+                    more="... Show more"
+                    less="... Show less"
+                    className=""
+                    anchorClass="show-more-less-clickable"
+                    // onClick={this.executeOnClick}
+                    expanded={false}
+                    // width={280}
+                    truncatedEndingComponent={""}
+                >
+                    <div className="post-body" dangerouslySetInnerHTML={{ __html: postContent }}></div>
+                </ShowMoreText>
+            </div>
             <div className="post-images">
                 {props.post.attachments && props.post.attachments.map((attachment, index) => {
                     return (<>
