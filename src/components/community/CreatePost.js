@@ -13,7 +13,7 @@ import { useContext, useEffect, useCallback } from "react";
 import { Context as AuthContext, containsOffensiveWords } from "../../context/AuthContext";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
-import Placeholder from "../../assets/images/placeholder.png";
+import Placeholder from "../../assets/images/placeholder.jpeg";
 import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';
 import { CircularProgress } from "@mui/material";
 import ContentEditable from 'react-contenteditable'

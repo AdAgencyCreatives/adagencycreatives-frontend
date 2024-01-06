@@ -1,4 +1,4 @@
-import Placeholder from "../assets/images/placeholder.png";
+import Placeholder from "../assets/images/placeholder.jpeg";
 import { IoBookmarkOutline, IoLocationOutline } from "react-icons/io5";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";

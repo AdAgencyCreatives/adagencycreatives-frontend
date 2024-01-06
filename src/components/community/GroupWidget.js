@@ -1,4 +1,4 @@
-import Placeholder from "../../assets/images/placeholder.png";
+import Placeholder from "../../assets/images/placeholder.jpeg";
 import { IoBanSharp, IoCloseCircleSharp, IoEyeOffOutline, IoEyeOutline, IoPencil, IoRemoveCircleSharp, IoTimeOutline, IoTrashOutline, IoTrashSharp } from "react-icons/io5";
 import { CircularProgress, IconButton, Tooltip } from "@mui/material";
 import "../../styles/Groups.scss";

@@ -3,7 +3,7 @@ import Select from "../../../components/Select";
 import { EditorState, ContentState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import Placeholder from "../../../assets/images/placeholder.png";
+import Placeholder from "../../../assets/images/placeholder.jpeg";
 import {
   FiChevronDown,
   FiChevronUp,

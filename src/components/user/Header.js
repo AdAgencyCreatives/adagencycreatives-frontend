@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Placeholder from "../../assets/images/placeholder.png";
+import Placeholder from "../../assets/images/placeholder.jpeg";
 import { IoLocationOutline, IoMailOpen, IoPeopleOutline, IoPersonAdd } from "react-icons/io5";
 
 import { Context as AuthContext } from "../../context/AuthContext";

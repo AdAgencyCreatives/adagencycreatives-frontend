@@ -4,7 +4,7 @@ import { EditorState, ContentState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import Placeholder from "../../../assets/images/placeholder.png";
+import Placeholder from "../../../assets/images/placeholder.jpeg";
 import { FiChevronDown, FiChevronUp, FiPaperclip, FiTrash2, FiX, FiFile, FiVideo } from "react-icons/fi";
 import "../../../styles/AgencyDashboard/MyResume.scss";
 import htmlToDraft from "html-to-draftjs";

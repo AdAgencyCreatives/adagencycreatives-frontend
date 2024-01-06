@@ -1,4 +1,4 @@
-import Placeholder from "../assets/images/placeholder.png";
+import Placeholder from "../assets/images/placeholder.jpeg";
 import LeftSidebar from "../components/community/LeftSidebar";
 import Nathan from "../assets/images/NathanWalker_ProfilePic-150x150.jpg";
 import { IoEyeOutline, IoTimeOutline, IoTrashOutline } from "react-icons/io5";

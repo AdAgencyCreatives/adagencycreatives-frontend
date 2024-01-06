@@ -1,4 +1,4 @@
-import Placeholder from "../../assets/images/placeholder.png";
+import Placeholder from "../../assets/images/placeholder.jpeg";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
 import { useContext, useEffect, useRef } from "react";

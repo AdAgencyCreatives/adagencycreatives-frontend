@@ -1,7 +1,7 @@
 import ContentEditable from "react-contenteditable";
 import Loader from "../Loader";
 import { IoArrowBack, IoCloseCircleSharp } from "react-icons/io5";
-import Avatar from "../../assets/images/placeholder.png";
+import Avatar from "../../assets/images/placeholder.jpeg";
 import UploadPlaceholder from "../../assets/images/Mischief-1.png";
 import { useEffect, useState, useRef, useContext } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";

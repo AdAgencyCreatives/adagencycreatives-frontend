@@ -1,4 +1,4 @@
-import Placeholder from "../../assets/images/placeholder.png";
+import Placeholder from "../../assets/images/placeholder.jpeg";
 import { IoEarth, IoBookmarkOutline, IoLocationOutline, IoMailOpen, IoPersonAdd, IoClose, IoCloseSharp, IoCheckmarkCircleSharp, IoBandageOutline, IoBanSharp, IoTrash } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";

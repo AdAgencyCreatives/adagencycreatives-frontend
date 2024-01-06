@@ -3,7 +3,7 @@ import {
   IoLocationOutline,
   IoPersonAdd,
 } from "react-icons/io5";
-import Placeholder from "../../../assets/images/placeholder.png";
+import Placeholder from "../../../assets/images/placeholder.jpeg";
 import "../../../styles/User/ProfileHeader.scss";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";

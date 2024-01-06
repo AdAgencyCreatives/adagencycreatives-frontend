@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Context } from "../../../context/CreativesContext";
 import { useEffect } from "react";
-import Placeholder from "../../../assets/images/placeholder.png";
+import Placeholder from "../../../assets/images/placeholder.jpeg";
 import { IoLocationOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../../context/AuthContext";
