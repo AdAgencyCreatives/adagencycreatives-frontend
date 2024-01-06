@@ -81,7 +81,7 @@ const Applicants = () => {
             <>
               {data.map((item, index) => (
                 <div className="applicants-inner" key={index}>
-                  {item.applications.length && item.applications.map((application) => (
+                  {item?.applications?.length && item?.applications.map((application) => (
                     <div key={application.id}>
                       <div className="candidate-list candidate-archive-layout d-flex align-items-center">
                         <div className="candidate-info col-sm-8">

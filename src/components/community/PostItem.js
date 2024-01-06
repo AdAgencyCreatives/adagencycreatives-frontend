@@ -66,7 +66,7 @@ const PostItem = (props) => {
     const [showMoreClicked, setShowMoreClicked] = useState(false);
 
     useEffect(() => {
-        if (dimensions && dimensions?.height > 150 && !showMoreClicked) {
+        if (dimensions && postContent?.length > 500 && !showMoreClicked) {
             setDisplayShowMore(true);
         }
     }, [dimensions]);
@@ -315,14 +315,18 @@ const PostItem = (props) => {
         }
     }, [viewAllCommentsClicked]);
 
+    const processPostContent = (plainText) => {
+        return injectHyperlinks(plainText);
+    };
+
     useEffect(() => {
         if (post_updated && post_updated.id == props.post.id) {
-            setPostContent(post_updated.content);
+            setPostContent(processPostContent(post_updated.content));
         }
     }, [post_updated]);
 
     useEffect(() => {
-        setPostContent(props.post.content);
+        setPostContent(processPostContent(props.post.content));
     }, []);
 
     const onShowLikedBy = (e) => {
@@ -366,10 +370,6 @@ const PostItem = (props) => {
         deletePost(props.post.id);
     };
 
-    const processPostContent = (plainText) => {
-        return injectHyperlinks(plainText);
-    };
-
     return (
         <div className="post-item">
             <div className="post-header">
@@ -404,11 +404,10 @@ const PostItem = (props) => {
                     </div>
                 )}
             </div>
-            <div className={"post-content" + (!showMoreClicked && displayShowMore ? " post-preview" : "")} ref={postContentRef}>
-                <div className="post-body" dangerouslySetInnerHTML={{ __html: processPostContent(postContent) }}></div>
-
+            <div className={"post-content" + (!showMoreClicked && postContent?.length > 500 ? " post-preview" : "")} ref={postContentRef}>
+                <div className="post-body" dangerouslySetInnerHTML={{ __html: postContent }}></div>
             </div>
-            {displayShowMore && (
+            {postContent?.length > 500 && (
                 <div className="show-more-container">
                     <Link className="show-more" onClick={(e) => {
                         setShowMoreClicked(value => !value);

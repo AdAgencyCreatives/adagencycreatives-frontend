@@ -261,7 +261,7 @@ const Creatives = () => {
                       </Link>
                     </div>
                     <div className="position">{item.category || ""}</div>
-                    {item.location.state && (
+                    {item.location.state && item.location.state != '' && (
                       <div className="job-location location">
                         <IoLocationOutline />
                         <Link
@@ -276,19 +276,20 @@ const Creatives = () => {
                           reloadDocument>
                           {item.location.state}
                         </Link>
-                        <span>,&nbsp;</span>
-                        <Link
-                          to={token ? `/creatives/search/city/${item.location.city}` : "#"}
-                          onClick={(e) => {
-                            if (!token) {
-                              e.preventDefault();
-                              showAlert("Please login to access");
-                            }
-                            return false;
-                          }}
-                          reloadDocument>
-                          {item.location.city}
-                        </Link>
+                        {item.location.city && item.location.city != '' && (
+                          <Link
+                            to={token ? `/creatives/search/city/${item.location.city}` : "#"}
+                            onClick={(e) => {
+                              if (!token) {
+                                e.preventDefault();
+                                showAlert("Please login to access");
+                              }
+                              return false;
+                            }}
+                            reloadDocument>
+                            <span>,&nbsp;</span>{item.location.city}
+                          </Link>
+                        )}
                       </div>
                     )}
                     <div className="profileLink">

@@ -18,6 +18,7 @@ const state = {
   recent_applications: [],
   formSubmit: false,
   isLoading: false,
+  isLoadingApp: false,
   notes: [],
   job_alerts: [],
   applicationsNextPage: null,
@@ -94,13 +95,15 @@ const reducer = (state, action) => {
         notesNextPage: action.payload.links.next
       };
     case "add_note":
-      return { ...state, notes: [...state.notes, action.payload.data] };
+      return { ...state, notes: [ action.payload.data, ...state.notes] };
     case "set_job_alert":
       return { ...state, job_alerts: action.payload.data };
     case "set_form_submit":
       return { ...state, formSubmit: action.payload };
     case "set_loading":
       return { ...state, isLoading: action.payload };
+    case "set_loading_app":
+      return { ...state, isLoadingApp: action.payload };
     default:
       return state;
   }
@@ -206,7 +209,7 @@ const getRelatedJobs = async (dispatch, category) => {
 const getApplications = (dispatch) => {
   return async (uid, applications_count = 0, page = false) => {
     let applications = [];
-    setLoading(dispatch, true);
+    setLoadingApp(dispatch, true);
     try {
       const response = await api.get(
         "/jobs?filter[status]=" + status + "&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "")
@@ -228,7 +231,7 @@ const getApplications = (dispatch) => {
         });
       }
     } catch (error) { }
-    setLoading(dispatch, false);
+    setLoadingApp(dispatch, false);
   };
 };
 
@@ -346,7 +349,7 @@ const getNotes = (dispatch) => {
     setLoading(dispatch, true);
     try {
       const response = await api.get(
-        `/notes?filter[user_id]=${uid}&resource_id=${resource_id}&resource_type=${type}`
+        `/notes?filter[user_id]=${uid}&resource_id=${resource_id}&resource_type=${type}&sort=-created_at`
       );
       dispatch({
         type: "set_notes",
@@ -616,6 +619,13 @@ const loadNextPage = (dispatch) => {
 const setLoading = (dispatch, state) => {
   dispatch({
     type: "set_loading",
+    payload: state,
+  });
+};
+
+const setLoadingApp = (dispatch, state) => {
+  dispatch({
+    type: "set_loading_app",
     payload: state,
   });
 };

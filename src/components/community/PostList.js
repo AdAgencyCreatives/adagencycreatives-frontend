@@ -5,8 +5,8 @@ import PostItem from "./PostItem";
 import { useScrollLoader } from "../../hooks/useScrollLoader";
 
 const PostList = (props) => {
-
   const [refreshPosts, setRefreshPosts] = useState({ num: 0 });
+  const [loaded, setLoaded] = useState(false);
 
   const {
     state: { token },
@@ -22,6 +22,10 @@ const PostList = (props) => {
   };
 
   useScrollLoader(loading, loadMore);
+
+  useEffect(() => {
+    setLoaded(true);
+  }, [posts]);
 
   useEffect(() => {
     if (halt_refresh) {
@@ -54,6 +58,10 @@ const PostList = (props) => {
 
     return () => clearInterval(interval);
   }, []);
+
+  if (!loaded) {
+    return <></>;
+  }
 
   return (
     <div className="postlist">
