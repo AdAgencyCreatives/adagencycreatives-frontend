@@ -126,8 +126,6 @@ const CreatePost = (props) => {
         }
         let posLeft = 30 + (editorRefTinyMCE?.current?.selection?.getRng()?.startOffset || 0) * 10;
         setTaggerPosLeft(posLeft);
-        let posTop = (editorRefTinyMCE?.current?.selection?.getRng()?.startOffset || 0) * 12;
-        setTaggerPosLeft(posTop);
 
         setTaggerOpened(true);
         setTaggerSearchText("");
@@ -326,9 +324,8 @@ const CreatePost = (props) => {
                   initialValue=""
                   onEditorChange={(e) => setContent(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "")}
                   onFocus={(e) => setRequireContent(false)}
-                  onKeyDown={(e) => {
-                    handleKeyDown(e)
-                  }}
+                  onKeyDown={(e) => handleKeyDown(e)}
+                  onKeyUp={(e) => console.log(e)}
                 />
               </>
             ) : (
