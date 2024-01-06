@@ -9,7 +9,7 @@ import {
   IoMailOpen,
   IoPersonAdd,
 } from "react-icons/io5";
-import Placeholder from "../../assets/images/placeholder.jpeg";
+import Placeholder from "../../assets/images/placeholder.png";
 import { useContext, useEffect, useState } from "react";
 import RestrictedLounge from "../../components/RestrictedLounge";
 import { Context as AuthContext } from "../../context/AuthContext";

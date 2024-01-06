@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Placeholder from "../../../assets/images/placeholder.jpeg";
+import Placeholder from "../../../assets/images/placeholder.png";
 import "../../../styles/CreativeDashboard/AgencyShortlist.scss";
 import React, { useContext, useEffect, useState } from "react";
 import {

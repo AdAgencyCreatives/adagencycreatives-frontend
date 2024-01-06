@@ -1,5 +1,5 @@
 import moment from "moment";
-import Avatar from "../../assets/images/placeholder.jpeg";
+import Avatar from "../../assets/images/placeholder.png";
 import { useContext } from "react";
 import { Context } from "../../context/ChatContext";
 import { Tooltip, Dialog, CircularProgress } from "@mui/material";

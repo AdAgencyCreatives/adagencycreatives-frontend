@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import Avatar from "../../assets/images/placeholder.jpeg";
+import Avatar from "../../assets/images/placeholder.png";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as CreativesContext } from "../../context/CreativesContext";
 import Loader from "../Loader";

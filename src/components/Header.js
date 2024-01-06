@@ -27,7 +27,7 @@ import AuthModal from "./modals/AuthModal";
 import { Context as AuthContext } from "../context/AuthContext";
 import { Context as AlertContext } from "../context/AlertContext";
 import { Context as SubscriptionContext } from "../context/SubscriptionContext";
-import Placeholder from "../assets/images/placeholder.jpeg";
+import Placeholder from "../assets/images/placeholder.png";
 import { agencyNav, creativeNav } from "../nav/DashboardNav";
 
 import SlidingMessage from "./SlidingMessage";

@@ -1,7 +1,7 @@
 import "../../../styles/AgencyDashboard/MyJobs.scss";
 import { Tooltip } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import Placeholder from "../../../assets/images/placeholder.jpeg";
+import Placeholder from "../../../assets/images/placeholder.png";
 import {
   IoClose,
   IoArrowForward,

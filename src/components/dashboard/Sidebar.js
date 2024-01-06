@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import Placeholder from "../../assets/images/placeholder.jpeg";
+import Placeholder from "../../assets/images/placeholder.png";
 import "../../styles/AgencyDashboard/Sidebar.scss";
 import { useContext, useState } from "react";
 import { Box, Drawer } from "@mui/material";

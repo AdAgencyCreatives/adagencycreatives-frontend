@@ -2,7 +2,7 @@ import { IoBriefcaseOutline, IoStar } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import Tooltip from "../../components/Tooltip";
 import moment from "moment";
-import Placeholder from "../../assets/images/placeholder.jpeg";
+import Placeholder from "../../assets/images/placeholder.png";
 import { useContext, useState, useEffect } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as AlertContext } from "../../context/AlertContext";

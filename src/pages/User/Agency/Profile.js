@@ -5,7 +5,7 @@ import { EditorState, ContentState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import Placeholder from "../../../assets/images/placeholder.jpeg";
+import Placeholder from "../../../assets/images/placeholder.png";
 import { FiFile, FiPaperclip, FiTrash2, FiUnderline } from "react-icons/fi";
 import { Context as DataContext } from "../../../context/DataContext";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";

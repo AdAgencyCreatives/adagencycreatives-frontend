@@ -18,7 +18,7 @@ import { Context as AuthContext } from "../../../context/AuthContext";
 import { useContext, useEffect } from "react";
 import Loader from "../../../components/Loader";
 import JobList from "../../../components/job/JobList";
-import Placeholder from "../../../assets/images/placeholder.jpeg";
+import Placeholder from "../../../assets/images/placeholder.png";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
