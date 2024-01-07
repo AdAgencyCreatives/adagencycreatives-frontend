@@ -285,7 +285,7 @@ const ChatBox = ({
                         src={sender.image || Avatar}
                         height={35}
                         width={35}
-                        className="chat-avatar"
+                        className="chat-avatar" alt=""
                       />
                       <div className="details">
                         <div className="sender">
