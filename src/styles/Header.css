@@ -705,3 +705,13 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .show-more-less-clickable:hover {
     color: #000 !important;
 }
+
+.edited {
+    margin-left: 10px;
+    padding: 2px 7px;
+    font-size: 8pt;
+    line-height: 1.1;
+    background-color: #d3a11f;
+    color: #000;
+    border-radius: 5px;
+}

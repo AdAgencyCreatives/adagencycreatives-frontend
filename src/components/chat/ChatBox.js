@@ -422,6 +422,7 @@ const ChatBox = ({
                       <div className="sender">
                         {sender.first_name + " " + sender.last_name}
                         <span className="time">{time}</span>
+                        {item.created_at != item.updated_at && (<span className="edited">Edited</span>)}
                       </div>
                       <div className="text">
                         <div
