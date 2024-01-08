@@ -53,7 +53,7 @@ const Notifications = () => {
   return (
     <>
       {token && role && (role == "admin" || role == "creative") ? (
-        <div className="dark-container">
+        <div className="dark-container mb-0">
           <div className="container-fluid px-2 px-md-5">
             {/* <div className="row">
           <div className="col-12">

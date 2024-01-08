@@ -95,8 +95,16 @@
         color: #D3A11F;
         font-size: 14px;
         margin-left: 10px;
+        
     }
-
+    .work_experience{
+        span.year{
+            margin-left: 0;
+            span{
+                padding: 0px 5px;
+            }
+        }
+    }
     .content:after {
         border-left: 2px dashed rgba(25, 103, 210, 0.15);
         content: "";

@@ -3,3 +3,28 @@
   background: black;
   margin-bottom: 10px;
 }
+.scroll-button{
+  z-index: 999!important;
+}
+.adagencies-slider .shortlist-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.no_result{
+  min-height: 400px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.no_result p{
+  font-size: 24px;
+  color: #000;
+}
+
+@media (max-width: 767px){
+  .no_result{
+    min-height: 200px;
+  }
+}
