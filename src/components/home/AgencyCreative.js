@@ -13,7 +13,6 @@ const AgencyCreatives = () => {
   const swiperElRef = useRef(null);
   const { creatives } = useCreatives("home");
   const { showAlert } = useContext(AlertContext);
-  
   const {
     state: { token, role, },
   } = useContext(AuthContext);
@@ -90,13 +89,15 @@ const AgencyCreatives = () => {
                     {item.location.state && item.location.state != '' && (
                       <div className="job-location location">
                         <IoLocationOutline />
-                        <Link to={`/creatives/search/state/${item.location.state}`}>
-                          {item.location.state}
-                        </Link>
+                        {item.location.state && (
+                          <Link to={`/creatives/search/state/${item.location.state}`}>
+                            {item.location.state}
+                          </Link>
+                        )}
                         {item.location.city && (
                           <Link to={`/creatives/search/city/${item.location.city}`}>
                             ,&nbsp;{item.location.city}
-                            </Link>
+                          </Link>
                         )}
                       </div>
                     )}
