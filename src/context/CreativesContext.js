@@ -116,7 +116,7 @@ const getCreative = (dispatch) => {
       const data = response.data.data[0];
       const uid = data.user_id;
       const currentPage = window.location.pathname;
-      if( currentPage != '/change-password' && currentPage != '/change-password/' && currentPage != 'change-password/'){
+      if (currentPage != '/change-password' && currentPage != '/change-password/' && currentPage != 'change-password/') {
         getCreativeEducation(dispatch, uid);
         getCreativeExperience(dispatch, uid);
       }
@@ -137,11 +137,11 @@ const getCreativeById = (dispatch) => {
       const data = response.data.data[0];
       const uid = data.user_id;
       const currentPage = window.location.pathname;
-      if( currentPage != '/change-password' && currentPage != '/change-password/' && currentPage != 'change-password/'){
+      if (currentPage != '/change-password' && currentPage != '/change-password/' && currentPage != 'change-password/') {
         getCreativeEducation(dispatch, uid);
         getCreativeExperience(dispatch, uid);
       }
-      
+
       dispatch({
         type: "set_single_creative",
         payload: data,
@@ -239,16 +239,17 @@ const setLoading = (dispatch, status) => {
 };
 
 const saveCreative = (dispatch) => {
-  return async (uid, data) => {
+  return async (uid, data, callback, callbackError) => {
     dispatch({
       type: "set_form_submit",
       payload: true,
     });
     try {
-      const response = await api.patch("/creative_profile/" + uid, data);
-      console.log("Creative Update Response: ");
-      console.log(response);
-    } catch (error) { }
+      await api.patch("/creative_profile/" + uid, data);
+      callback("Creative profile updated successfully");
+    } catch (error) {
+      callbackError(error.response.data.message);
+    }
     dispatch({
       type: "set_form_submit",
       payload: false,
