@@ -95,7 +95,7 @@ const ApplicantJobs = () => {
         </div>
       ) : (
         <div className="card">
-          {data && data.map((item, index) => (
+          {data && data.length > 0 ? data.map((item, index) => (
             <div className="job-applicants" key={index}>
               <div className="heading row d-flex align-items-center">
                 <div className="col-sm-8 col-xs-12">
@@ -305,7 +305,7 @@ const ApplicantJobs = () => {
                 </div>) : (<p>No applicants found</p>)
               }
             </div>
-          ))}
+          )) : (<p>No jobs found</p>)}
           {applicationMeta.total > 10 && <Paginate meta={applicationMeta} paginate={paginate} />}
         </div>
       )}
