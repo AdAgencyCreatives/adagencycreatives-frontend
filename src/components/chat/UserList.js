@@ -16,7 +16,19 @@ import {
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { api } from "../../api/api";
-const UserList = ({ data, handleItemClick }) => {
+
+const UserList = ({ messageType, page, data, handleItemClick }) => {
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogOpenEdit, setIsDialogOpenEdit] = useState(false);
+  const [isId, setIsId] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [messageTmp, setMessageTmp] = useState();
+
+  const {
+    state: { user },
+  } = useContext(AuthContext);
+
   const parseDateShort = (dateString) => {
     const parsedDate = moment(dateString);
 
@@ -33,7 +45,9 @@ const UserList = ({ data, handleItemClick }) => {
     }
     return result;
   };
+
   const { state: { activeContact } } = useContext(Context)
+  
   function sanitizeText(text) {
     // Remove links with <br/>
     const sanitizedText = text.replace(/<br\/>.*?s3\.amazonaws\.com.*?(\s|$)/g, ' ');
@@ -69,17 +83,25 @@ const UserList = ({ data, handleItemClick }) => {
 
     return shortMessage;
   };
+
   const [formDelete, setFormDelete] = useState(false);
   const [formEdit, setFormEdit] = useState(false);
+
   const handleDelete = async () => {
     setFormDelete(true);
+    let deletedCount = 0;
     try {
-      const response = await api.delete("/messages/" + isId);
+      const response = await api.post(`/delete-conversation?message_type=${messageType}&user1=${selectedItem.sender_id}&user2=${selectedItem.receiver_id}`);
+      deletedCount = response.data;
     } catch (error) { }
     setIsDialogOpen(false);
-    window.location.reload();
+    setFormDelete(false);
+    if (deletedCount) {
+      window.location.reload();
+    }
 
   };
+  
   const handleEdit = async () => {
     setFormEdit(true);
     const data = { id: isId, message: messageTmp };
@@ -91,36 +113,16 @@ const UserList = ({ data, handleItemClick }) => {
     window.location.reload();
   };
 
-  const {
-    state: { user },
-  } = useContext(AuthContext);
-
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isDialogOpenEdit, setIsDialogOpenEdit] = useState(false);
-  const [isId, setIsId] = useState(false);
-  const [messageTmp, setMessageTmp] = useState();
-  const deleteMessage = (item) => {
-    if (item.sender_id == user.id) {
-      setIsDialogOpen(true);
-      setIsId(item.id);
-    }
+  const deleteConversation = (item) => {
+    setIsDialogOpen(true);
+    setSelectedItem(item);
+    setIsId(item.id);
   };
 
-  const closeDeleteMessage = () => {
+  const closeDeleteConversation = () => {
     setIsDialogOpen(false);
+    setSelectedItem(null);
     setIsId(0);
-  };
-  const closeEditMessage = () => {
-    setIsDialogOpenEdit(false);
-    setIsId(0);
-  };
-  const editMessage = (item) => {
-    console.log(item, 'item');
-    if (item.sender_id == user.id) {
-      setIsDialogOpenEdit(true);
-      setIsId(item.id);
-      setMessageTmp(item.message);
-    }
   };
   const handleChange = (key, value) => {
     setMessageTmp(value);
@@ -129,7 +131,7 @@ const UserList = ({ data, handleItemClick }) => {
   return (
     <ul className="users-list">
       <Dialog
-        open={isDialogOpen} onClose={closeDeleteMessage}
+        open={isDialogOpen} onClose={closeDeleteConversation}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         scroll="body"
@@ -141,11 +143,11 @@ const UserList = ({ data, handleItemClick }) => {
               <div className="inner">
                 <div className="d-flex align-items-center justify-content-between mb-4">
                   <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
-                    Delete message
+                    Delete Conversation?
                   </h3>
                   <button
                     className="border-0 bg-transparent text-primary"
-                    onClick={() => closeDeleteMessage()}>
+                    onClick={() => closeDeleteConversation()}>
                     <IoCloseOutline size={30} />
                   </button>
                 </div>
@@ -162,51 +164,10 @@ const UserList = ({ data, handleItemClick }) => {
           </div>
         </div>
       </Dialog>
-      <Dialog
-        open={isDialogOpenEdit} onClose={closeEditMessage}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        scroll="body"
-      >
-        <div className="auth-modal">
-          <div className="auth-header"></div>
-          <div className="auth-body">
-            <div className="job-apply-email-form-wrapper">
-              <div className="inner">
-                <div className="d-flex align-items-center justify-content-between mb-4">
-                  <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
-                    Edit message
-                  </h3>
-                  <button
-                    className="border-0 bg-transparent text-primary"
-                    onClick={() => closeEditMessage()}>
-                    <IoCloseOutline size={30} />
-                  </button>
-                </div>
-                <p className="text-center">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Message"
-                    name="message"
-                    value={messageTmp}
-                    onChange={(e) => handleChange("message", e.target.value)}
-                  />
-                </p>
-                <div className="d-flex align-items-center justify-content-end">
-                  <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={formEdit} onClick={handleEdit}>
-                    Save {formEdit && <CircularProgress size={20} />}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Dialog>
       {data.map((item) => (
         <li data-id={item.contact.uuid}
           className={(item.contact.uuid == activeContact) ? "active" : ""}
-          onClick={() => handleItemClick(item.contact, 'job,private')}
+          onClick={() => handleItemClick(item.contact, messageType)}
           key={item.id}
         >
           <img src={item.contact.image || Avatar} height={40} width={40} alt="" />
@@ -220,19 +181,10 @@ const UserList = ({ data, handleItemClick }) => {
 
               </div>
               <div className="job-action">
-                <Tooltip title="Edit">
-                  <Link
-                    className="btn p-0 border-0 btn-hover-primary"
-                    onClick={() => editMessage(item)}
-                  >
-                    <IoPencil className="icon-rounded" />
-                  </Link>
-                </Tooltip>
-
                 <Tooltip title="Remove">
                   <Link
                     className="btn p-0 border-0 btn-hover-primary"
-                    onClick={() => deleteMessage(item)}
+                    onClick={() => deleteConversation(item)}
                   >
                     <IoClose className="icon-rounded" />
                   </Link>

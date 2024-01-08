@@ -28,7 +28,7 @@ const Chat = () => {
   const [chatBoxMobile, setChatBoxMobile] = useState("mobile-hide");
   const [contactsList, setContactsList] = useState([]);
   const [contact, setContact] = useState({});
-  const [type, setType] = useState("job");
+  const [type, setType] = useState("private");
   const [friends, setFriends] = useState([]);
 
   const [userSelected, setUserSelected] = useState(null);
@@ -36,8 +36,8 @@ const Chat = () => {
   const [hasMoreData, setHasMoreData] = useState(false);
 
   useEffect(() => {
-    getContacts("private");
-  }, []);
+    getContacts(type);
+  }, [type]);
 
   useEffect(() => {
     (async () => {
@@ -155,12 +155,12 @@ const Chat = () => {
               </div>
             </div>
             <div className="box-content">
-              <UserList data={contactsList} handleItemClick={handleItemClick} />
+              <UserList messageType={type} page="lounge" data={contactsList} handleItemClick={handleItemClick} />
             </div>
           </div>
         </div>
         <div className="col-md-8 col-12">
-          <ChatBox messageType="private" page="lounge" {...chatBoxProps} />
+          <ChatBox messageType={type} page="lounge" {...chatBoxProps} />
         </div>
       </div>
     </div>

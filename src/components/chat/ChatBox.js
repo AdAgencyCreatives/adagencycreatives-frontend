@@ -1,6 +1,6 @@
 import ContentEditable from "react-contenteditable";
 import Loader from "../Loader";
-import { IoArrowBack, IoCloseCircleSharp } from "react-icons/io5";
+import { IoArrowBack, IoClose, IoCloseCircleSharp, IoCloseOutline, IoPencil } from "react-icons/io5";
 import Avatar from "../../assets/images/placeholder.png";
 import UploadPlaceholder from "../../assets/images/Mischief-1.png";
 import { useEffect, useState, useRef, useContext } from "react";
@@ -12,6 +12,8 @@ import NewChat from "./NewChat";
 import { FaRegSmile, FaPaperclip } from "react-icons/fa";
 import EmojiPicker, { Emoji } from "emoji-picker-react";
 import { api } from "../../api/api";
+import { CircularProgress, Dialog, Tooltip } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const ChatBox = ({
   page,
@@ -61,14 +63,14 @@ const ChatBox = ({
       getMessages(item.uuid, type);
     }
   }, [contacts, contact]);
-  
+
 
   useEffect(() => {
     setMessageData(messages);
   }, [messages]);
 
   useEffect(() => {
-    if(!hasMoreData){
+    if (!hasMoreData) {
       scrollToBottom();
     }
   }, [messageData]);
@@ -114,7 +116,7 @@ const ChatBox = ({
     if (!existingObject) {
       setChatBox("list");
       getMessages(id, type);
-      await getContacts("private");
+      await getContacts(type);
     }
   };
 
@@ -190,36 +192,36 @@ const ChatBox = ({
 
     return result;
   }
-  
+
   const [isLoading, setIsLoading] = useState(false);
-    useEffect(() => {
-      const loadMoreMessages = async () => {
-        if (containerRef.current && containerRef.current.scrollTop === 0) {
-          const id = contact.uuid;
-          // const type = messageData.slice(-1).pop()?.type ?? 'job';
-          const type = messageType ?? (messageData.slice(-1).pop()?.type ?? 'job');
+  useEffect(() => {
+    const loadMoreMessages = async () => {
+      if (containerRef.current && containerRef.current.scrollTop === 0) {
+        const id = contact.uuid;
+        // const type = messageData.slice(-1).pop()?.type ?? 'job';
+        const type = messageType ?? (messageData.slice(-1).pop()?.type ?? 'job');
 
-          const response = await api.get("/messages/" + id + "?type=" + type + "&page=" + paged);
-          const newMessages = response.data.data ?? [];
-          if (newMessages.length !== 0) {
-            setHasMoreData(true);
-            setMessageData((prevMessages) => [...newMessages, ...prevMessages]);
-            setPaged((prevPaged) => prevPaged + 1);
-          }
+        const response = await api.get("/messages/" + id + "?type=" + type + "&page=" + paged);
+        const newMessages = response.data.data ?? [];
+        if (newMessages.length !== 0) {
+          setHasMoreData(true);
+          setMessageData((prevMessages) => [...newMessages, ...prevMessages]);
+          setPaged((prevPaged) => prevPaged + 1);
         }
-      };
+      }
+    };
 
-      // Bắt sự kiện scroll trên khung chat
-      const handleScroll = () => {
-        loadMoreMessages();
-      };
-      if(containerRef.current)
-        containerRef.current.addEventListener('scroll', handleScroll);
-      return () => {
-        if(containerRef.current)
-          containerRef.current.removeEventListener('scroll', handleScroll);
-      };
-    }, [messageData, hasMoreData, paged]);
+    // Bắt sự kiện scroll trên khung chat
+    const handleScroll = () => {
+      loadMoreMessages();
+    };
+    if (containerRef.current)
+      containerRef.current.addEventListener('scroll', handleScroll);
+    return () => {
+      if (containerRef.current)
+        containerRef.current.removeEventListener('scroll', handleScroll);
+    };
+  }, [messageData, hasMoreData, paged]);
 
   const closeEmojiHandler = () => {
     setShowPicker(false);
@@ -230,6 +232,60 @@ const ChatBox = ({
       setContent("");
     }
   }, [userSelected]);
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogOpenEdit, setIsDialogOpenEdit] = useState(false);
+  const [isId, setIsId] = useState(false);
+  const [messageTmp, setMessageTmp] = useState();
+
+  const deleteMessage = (item) => {
+    if ((item.sender_id == user.uuid)) {
+      setIsDialogOpen(true);
+      setIsId(item.id);
+    }
+  };
+
+  const closeDeleteMessage = () => {
+    setIsDialogOpen(false);
+    setIsId(0);
+  };
+  const closeEditMessage = () => {
+    setIsDialogOpenEdit(false);
+    setIsId(0);
+  };
+  const editMessage = (item) => {
+    console.log(item, 'item');
+    if (item.sender_id == user.uuid) {
+      setIsDialogOpenEdit(true);
+      setIsId(item.id);
+      setMessageTmp(item.message);
+    }
+  };
+  const handleChange = (key, value) => {
+    setMessageTmp(value);
+  };
+
+  const [formDelete, setFormDelete] = useState(false);
+  const [formEdit, setFormEdit] = useState(false);
+  const handleDelete = async () => {
+    setFormDelete(true);
+    try {
+      const response = await api.delete("/messages/" + isId);
+    } catch (error) { }
+    setIsDialogOpen(false);
+    window.location.reload();
+
+  };
+  const handleEdit = async () => {
+    setFormEdit(true);
+    const data = { id: isId, message: messageTmp };
+    console.log(data, 'data');
+    try {
+      const response = await api.patch("/messages/" + isId, data);
+    } catch (error) { }
+    setIsDialogOpenEdit(false);
+    window.location.reload();
+  };
 
   return (
     <div className={`chat-box ${chatBoxMobile}`}>
@@ -248,71 +304,167 @@ const ChatBox = ({
             {loading ? (
               <Loader fullHeight={false} />
             ) : (
-              
-                messageData.map((item, index) => {
-                  const elements = document.querySelectorAll('.users-list .active');
-                  let dataIdValue = 0;
-                  elements.forEach((element) => {
-                     dataIdValue = element.getAttribute('data-id');
-                  });
-                  const sender = item.message_type == "sent" ? user : contact;
-                  const time = parseDate(item.created_at);
-                  const created_at = parseDateShort(item.created_at);
-                  const { message, attachments } = parseMessage(item.message);
-                  if(item.message_type == 'received'){
-                    if(item.sender_id != dataIdValue && item.human_readable_date.includes('second')){
-                      const myDiv = document.querySelector('[data-id="'+item.sender_id+'"]');
-                      if (myDiv) {
-                        const childElement = myDiv.querySelector('.message-time');
 
-                        if (childElement) {
-                          childElement.classList.add('unread');
-                          childElement.innerHTML =  created_at;
-                        }
-                        const childMess = myDiv.querySelector('.user-message');
+              messageData.map((item, index) => {
+                const elements = document.querySelectorAll('.users-list .active');
+                let dataIdValue = 0;
+                elements.forEach((element) => {
+                  dataIdValue = element.getAttribute('data-id');
+                });
+                const sender = item.message_type == "sent" ? user : contact;
+                const time = parseDate(item.created_at);
+                const created_at = parseDateShort(item.created_at);
+                const { message, attachments } = parseMessage(item.message);
+                if (item.message_type == 'received') {
+                  if (item.sender_id != dataIdValue && item.human_readable_date.includes('second')) {
+                    const myDiv = document.querySelector('[data-id="' + item.sender_id + '"]');
+                    if (myDiv) {
+                      const childElement = myDiv.querySelector('.message-time');
 
-                        if (childMess) {
-                          childMess.innerHTML = item.message;
-                        }
+                      if (childElement) {
+                        childElement.classList.add('unread');
+                        childElement.innerHTML = created_at;
                       }
-                      return null;
+                      const childMess = myDiv.querySelector('.user-message');
+
+                      if (childMess) {
+                        childMess.innerHTML = item.message;
+                      }
                     }
+                    return null;
                   }
-                  
-                  return (
-                    <div className="chat-item" key={"message" + index}>
-                      <img
-                        src={sender.image || Avatar}
-                        height={35}
-                        width={35}
-                        className="chat-avatar" alt=""
-                      />
-                      <div className="details">
-                        <div className="sender">
-                          {sender.first_name + " " + sender.last_name}
-                          <span className="time">{time}</span>
-                        </div>
-                        <div className="text">
-                          <div
-                            dangerouslySetInnerHTML={{ __html: message }}
-                          ></div>
-                          <div className="message_attachments">
-                            {attachments.length > 0 &&
-                              attachments.map((item, index) => (
-                                <a href={item} target="_blank" key={index}>
-                                  <img src={item} />
-                                </a>
-                              ))}
+                }
+
+                return (
+                  <div className="chat-item" key={"message" + index}>
+                    <Dialog
+                      open={isDialogOpen} onClose={closeDeleteMessage}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+                      scroll="body"
+                    >
+                      <div className="auth-modal">
+                        <div className="auth-header"></div>
+                        <div className="auth-body">
+                          <div className="job-apply-email-form-wrapper">
+                            <div className="inner">
+                              <div className="d-flex align-items-center justify-content-between mb-4">
+                                <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
+                                  Delete message?
+                                </h3>
+                                <button
+                                  className="border-0 bg-transparent text-primary"
+                                  onClick={() => closeDeleteMessage()}>
+                                  <IoCloseOutline size={30} />
+                                </button>
+                              </div>
+                              <p className="text-center">
+                                Are you sure you want to delete this message ?
+                              </p>
+                              <div className="d-flex align-items-center justify-content-end">
+                                <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={formDelete} onClick={handleDelete}>
+                                  Delete {formDelete && <CircularProgress size={20} />}
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
+                    </Dialog>
+                    <Dialog
+                      open={isDialogOpenEdit} onClose={closeEditMessage}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+                      scroll="body"
+                    >
+                      <div className="auth-modal">
+                        <div className="auth-header"></div>
+                        <div className="auth-body">
+                          <div className="job-apply-email-form-wrapper">
+                            <div className="inner">
+                              <div className="d-flex align-items-center justify-content-between mb-4">
+                                <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
+                                  Edit message
+                                </h3>
+                                <button
+                                  className="border-0 bg-transparent text-primary"
+                                  onClick={() => closeEditMessage()}>
+                                  <IoCloseOutline size={30} />
+                                </button>
+                              </div>
+                              <p className="text-center">
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="Message"
+                                  name="message"
+                                  value={messageTmp}
+                                  onChange={(e) => handleChange("message", e.target.value)}
+                                />
+                              </p>
+                              <div className="d-flex align-items-center justify-content-end">
+                                <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={formEdit} onClick={handleEdit}>
+                                  Save {formEdit && <CircularProgress size={20} />}
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Dialog>
+                    <img
+                      src={sender.image || Avatar}
+                      height={35}
+                      width={35}
+                      className="chat-avatar" alt=""
+                    />
+                    <div className="details">
+                      <div className="sender">
+                        {sender.first_name + " " + sender.last_name}
+                        <span className="time">{time}</span>
+                      </div>
+                      <div className="text">
+                        <div
+                          dangerouslySetInnerHTML={{ __html: message }}
+                        ></div>
+                        <div className="message_attachments">
+                          {attachments.length > 0 &&
+                            attachments.map((item, index) => (
+                              <a href={item} target="_blank" key={index}>
+                                <img src={item} />
+                              </a>
+                            ))}
+                        </div>
+                      </div>
                     </div>
-                  );
-                })
+                    {sender == user && (
+                      <div className="job-action">
+                        <Tooltip title="Edit">
+                          <Link
+                            className="btn p-0 border-0 btn-hover-primary"
+                            onClick={() => editMessage(item)}
+                          >
+                            <IoPencil className="icon-rounded" />
+                          </Link>
+                        </Tooltip>
 
-              )}
-            </div>
-          )}
+                        <Tooltip title="Remove">
+                          <Link
+                            className="btn p-0 border-0 btn-hover-primary"
+                            onClick={() => deleteMessage(item)}
+                          >
+                            <IoClose className="icon-rounded" />
+                          </Link>
+                        </Tooltip>
+                      </div>
+                    )}
+                  </div>
+                );
+              })
+
+            )}
+          </div>
+        )}
       </div>
       <div className="chat-footer">
         <div className="message-box">

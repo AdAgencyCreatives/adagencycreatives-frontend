@@ -125,12 +125,12 @@ const JobChat = ({ getMessages, getContacts }) => {
               </div>
             </div>
             <div className="box-content">
-              <UserList data={contactsList} handleItemClick={handleItemClick} />
+              <UserList messageType="job,private" page="job" data={contactsList} handleItemClick={handleItemClick} />
             </div>
           </div>
         </div>
         <div className="col-md-8 col-12">
-          <ChatBox messageType="job" page="job" {...chatBoxProps} />
+          <ChatBox messageType="job,private" page="job" {...chatBoxProps} />
         </div>
       </div>
     </div>
