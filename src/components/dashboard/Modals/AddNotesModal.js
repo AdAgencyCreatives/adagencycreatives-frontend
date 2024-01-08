@@ -7,6 +7,7 @@ import { usePopupScrollLoader } from "../../../hooks/usePopupScrollLoader";
 import moment from "moment";
 import { CircularProgress } from "@mui/material";
 import TimeAgo from "../../TimeAgo";
+import { convertUTCDateToLocalDate } from "../../UtcToLocalDateTime";
 
 const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
   const [note, setNote] = useState("");
@@ -105,7 +106,8 @@ const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
                         <p className="mb-0">
                           <small>
                             <TimeAgo datetime={note.updated_at} />,&nbsp;
-                            {moment(note.created_at).format(
+                            {/* {convertUTCDateToLocalDate(note.created_at).toString()} */}
+                            {moment(convertUTCDateToLocalDate(note.created_at)).format(
                               "D MMMM, YYYY hh:mm A"
                             )}
                           </small>

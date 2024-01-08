@@ -16,3 +16,9 @@ const UtcToLocalDateTime = (props) => {
 };
 
 export default UtcToLocalDateTime;
+
+export const convertUTCDateToLocalDate = (datetime) => {
+    let date = new Date(datetime);
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return date;
+};
