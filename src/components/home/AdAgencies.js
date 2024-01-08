@@ -9,7 +9,7 @@ import { Context as AuthContext } from "../../context/AuthContext";
 
 const AdAgencies = () => {
   const swiperElRef = useRef(null);
-  const {agencies} = useAgencies("home");
+  const { agencies } = useAgencies("home");
 
   const {
     state: {
@@ -64,7 +64,7 @@ const AdAgencies = () => {
           space-between="30"
           loop="true"
         >
-          {agencies && agencies.length && 
+          {agencies && agencies.length &&
             agencies.sort(() => Math.random() - 0.5).map((item, index) => {
               return (
                 <swiper-slide key={`slide${index}`}>
@@ -82,15 +82,19 @@ const AdAgencies = () => {
                     <h3 className="employer-title">
                       <Link to={`/agency/${item.slug}`}>{item.name}</Link>
                     </h3>
-                    {item.location && (
+                    {item.location.state && item.location.state != '' && (
                       <div className="job-location location">
                         <IoLocationOutline />
-                        <Link to={`/creatives/search/state/${item.location.state}`}>
-                          {item.location.state},&nbsp;
-                        </Link>
-                        <Link to={`/creatives/search/city/${item.location.city}`}>
-                          {item.location.city}
-                        </Link>
+                        {item.location.state && (
+                          <Link to={`/creatives/search/state/${item.location.state}`}>
+                            {item.location.state}
+                          </Link>
+                        )}
+                        {item.location.city && (
+                          <Link to={`/creatives/search/city/${item.location.city}`}>
+                            ,&nbsp;{item.location.city}
+                          </Link>
+                        )}
                       </div>
                     )}
                     <div className="open-jobs-btn">

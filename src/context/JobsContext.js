@@ -214,22 +214,20 @@ const getApplications = (dispatch) => {
       const response = await api.get(
         "/jobs?filter[status]=" + status + "&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "")
       ); // have to set filter[status]=1 later
-      const jobs = response.data.data;
-      for (const job of jobs) {
-        const response2 = await api.get(
-          "applications?filter[job_id]=" + job.id
-        );
-        const data = response2.data.data;
-        job.applications = data;
-        applications.push(job);
-
-        response2.data.data = applications;
-
-        dispatch({
-          type: "set_applications",
-          payload: response.data,
-        });
-      }
+      // const jobs = response.data.data;
+      // for (const job of jobs) {
+      //   const response2 = await api.get(
+      //     "applications?filter[job_id]=" + job.id
+      //   );
+      //   const data = response2.data.data;
+      //   job.applications = data;
+      //   applications.push(job);
+      //   response2.data.data = applications;
+      // }
+      dispatch({
+        type: "set_applications",
+        payload: response.data,
+      });
     } catch (error) { }
     setLoadingApp(dispatch, false);
   };

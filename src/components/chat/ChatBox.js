@@ -31,7 +31,9 @@ const ChatBox = ({
   paged,
   setHasMoreData,
   hasMoreData,
-  messageType
+  messageData,
+  setMessageData,
+  messageType,
 }) => {
   const {
     state: { messages, loading, contacts, attachments },
@@ -50,7 +52,7 @@ const ChatBox = ({
   } = useContext(AlertContext);
 
   const [showPicker, setShowPicker] = useState(false);
-  const [messageData, setMessageData] = useState([]);
+  // const [messageData, setMessageData] = useState([]);
   const [content, setContent] = useState("");
   const containerRef = useRef();
   const uploadRef = useRef();

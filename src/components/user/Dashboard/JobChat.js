@@ -22,6 +22,7 @@ const JobChat = ({ getMessages, getContacts }) => {
   const [checkClick, setCheckClick] = useState(false);
   const [paged, setPaged] = useState(2);
   const [hasMoreData, setHasMoreData] = useState(false);
+  const [messageData, setMessageData] = useState([]);
 
   useEffect(() => {
     setContactsList(contacts);
@@ -35,6 +36,8 @@ const JobChat = ({ getMessages, getContacts }) => {
     setPaged(2);
     setHasMoreData(false);
     if (item.uuid != contact.uuid) {
+      console.log("item.uuid", item.uuid);
+      setMessageData([]);
       getMessages(item.uuid, type);
       setContact(item);
       setType(type);
@@ -81,7 +84,9 @@ const JobChat = ({ getMessages, getContacts }) => {
     setPaged,
     paged,
     setHasMoreData,
-    hasMoreData
+    hasMoreData,
+    messageData,
+    setMessageData
   };
 
   return (
@@ -125,12 +130,12 @@ const JobChat = ({ getMessages, getContacts }) => {
               </div>
             </div>
             <div className="box-content">
-              <UserList messageType="job,private" page="job" data={contactsList} handleItemClick={handleItemClick} />
+              <UserList messageType={type} page="job" data={contactsList} handleItemClick={handleItemClick} />
             </div>
           </div>
         </div>
         <div className="col-md-8 col-12">
-          <ChatBox messageType="job,private" page="job" {...chatBoxProps} />
+          <ChatBox messageType={type} page="job" {...chatBoxProps} />
         </div>
       </div>
     </div>
