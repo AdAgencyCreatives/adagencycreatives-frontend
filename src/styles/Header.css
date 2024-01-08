@@ -567,7 +567,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
     cursor: pointer;
 }
 
-.icon-message .icon img{
+.icon-message .icon img {
     width: 18px !important;
     height: 18px !important;
 }
@@ -661,6 +661,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
     display: block;
     position: relative;
 }
+
 .page-messages .chat-container .chat-footer aside.EmojiPickerReact.epr-main {
     top: unset !important;
     bottom: 25px !important;
@@ -699,7 +700,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .show-more-less-clickable {
     color: #d3a11f !important;
     text-decoration: none !important;
-    cursor: pointer;   
+    cursor: pointer;
 }
 
 .show-more-less-clickable:hover {
@@ -714,4 +715,10 @@ nav ul.dropdown-list .list-item-text.j-fix {
     background-color: #d3a11f;
     color: #000;
     border-radius: 5px;
+}
+
+.chat-box .job-action a {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
 }
