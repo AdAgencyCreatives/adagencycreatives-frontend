@@ -466,24 +466,27 @@ const Profile = () => {
         return false;
       }
 
-      if(field.name == "phone_number" && getNumericString(field.value).length != 10) {
+      if (field.name == "phone_number" && getNumericString(field.value).length != 10) {
         showAlert("Please enter your 10-digit number");
-          return false;
+        return false;
       }
     }
 
     return true;
   };
-  
+
   const handleSubmit = () => {
     if (!validated()) {
       return;
     }
 
     (async () => {
-      await saveAgency(user.uuid, formData);
-      reloadUserData(user.uuid);
-      showAlert("Agency profile updated successfully");
+      await saveAgency(user.uuid, formData, (message) => {
+        reloadUserData(user.uuid);
+        showAlert(message);
+      }, (message) => {
+        showAlert(message);
+      });
     })();
   };
 
@@ -639,12 +642,12 @@ const Profile = () => {
                         {field.label}
                         {field.required && <span className="required">*</span>}
                       </label>
-                      <input 
-                      type="text" 
-                      className="form-control" 
-                      value={field.value || ""} 
-                      onChange={(e) => handleTextChange(e, field.name)} 
-                      placeholder={field.placeholder || ""}
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={field.value || ""}
+                        onChange={(e) => handleTextChange(e, field.name)}
+                        placeholder={field.placeholder || ""}
                       />
                     </div>
                   );

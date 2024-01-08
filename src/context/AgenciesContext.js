@@ -175,11 +175,14 @@ const getStats = (dispatch) => {
 };
 
 const saveAgency = (dispatch) => {
-  return async (uid, data) => {
+  return async (uid, data, callback, callbackError) => {
     setFormSubmit(dispatch, true);
     try {
-      const response = await api.patch("/agency_profile/" + uid, data);
-    } catch (error) { }
+      await api.patch("/agency_profile/" + uid, data);
+      callback("Agency profile updated successfully");
+    } catch (error) {
+      callbackError(error.response.data.message);
+    }
     setFormSubmit(dispatch, false);
   };
 };

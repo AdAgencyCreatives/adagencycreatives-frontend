@@ -384,7 +384,7 @@ const Profile = () => {
   useEffect(() => {
     // console.log(formData);
   }, [formData]);
-  
+
   const getFieldByName = (name) => {
     for (let index = 0; index < fields.length; index++) {
       const element = fields[index];
@@ -424,9 +424,9 @@ const Profile = () => {
         return false;
       }
 
-      if(field.name == "phone_number" && getNumericString(field.value).length != 10) {
+      if (field.name == "phone_number" && getNumericString(field.value).length != 10) {
         showAlert("Please enter your 10-digit number");
-          return false;
+        return false;
       }
     }
 
@@ -439,9 +439,12 @@ const Profile = () => {
     }
 
     (async () => {
-      await saveCreative(user.uuid, formData);
-      reloadUserData(user.uuid);
-      showAlert("Creative profile updated successfully");
+      await saveCreative(user.uuid, formData, (message) => {
+        reloadUserData(user.uuid);
+        showAlert(message);
+      }, (message) => {
+        showAlert(message);
+      });
     })();
 
   };
