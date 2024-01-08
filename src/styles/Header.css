@@ -715,6 +715,9 @@ nav ul.dropdown-list .list-item-text.j-fix {
     background-color: #d3a11f;
     color: #000;
     border-radius: 5px;
+    cursor: default;
+    user-select: none;
+    -moz-user-select: none;
 }
 
 .chat-box .job-action a {
