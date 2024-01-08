@@ -46,12 +46,12 @@ const Agencies = () => {
   }, [user]);
 
   return (
-    <div className="dark-container">
+    <div className="dark-container mb-0">
       <div className="container p-md-0 px-5">
         <DelayedOutput>
           <h1 className="community-title text-white text-center mb-4">Agencies</h1>
         </DelayedOutput>
-        <SearchBar onSearch={searchUser} />
+        <SearchBar placeholder="Search by name, or location" onSearch={searchUser} />
         <div className="row g-4">
           {agencies &&
             agencies.map((item, index) => {
@@ -118,6 +118,13 @@ const Agencies = () => {
           )}
         </div>
       </div>
+      {agencies && agencies.length === 0 ? (
+        <div className="no_result">
+          <p>There is no result.</p>
+        </div>
+      ) : (
+       <span></span>
+      )}
     </div>
   );
 };

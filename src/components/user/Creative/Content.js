@@ -95,17 +95,22 @@ const Content = ({ user, role, data, education, experience }) => {
             {experience.map((item) => (
               <div className="content" key={item.id}>
                 <div className="circle">{item.company?.charAt(0)}</div>
-                <div className="top-info">
+                
+                <div className="top-info work_experience">
                   {/* <span className="edu_stats">{item.company}</span> */}
 
                   <span className="year">
-                    {item.started_at &&
-                      moment(item.started_at).format("M/D/YYYY")}
-                    -
+                    {item.started_at && (
+                      <>
+                        {moment(item.started_at).format("M/D/YYYY")}
+                        {item.completed_at && <span>-</span>}
+                      </>
+                    )}
                     {item.completed_at &&
                       moment(item.completed_at).format("M/D/YYYY")}
                   </span>
                 </div>
+
                 <div className="edu_center">
                   <span className="university">
                     {isAdmin || isAdvisor ? (<>
