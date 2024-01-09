@@ -20,12 +20,12 @@ const Header = ({ data, role, user }) => {
   return (
     <div className="container">
       <div className="row align-items-center justify-content-between">
-        <div className="col-12 d-flex align-items-top">
+        <div className="col-12 d-flex align-items-top flex-md-row flex-column">
           <div className="avatar employer">
             <img src={data.logo || Placeholder} height={100} width={100} />
           </div>
           <div className="meta row w-100 align-items-center">
-            <div className="col-md-6">
+            <div className="col-md-6 px-md-3 px-0">
               <div className="username">{data.name}</div>
               {data.industry_experience.length > 0 && (
                 <div className="position">

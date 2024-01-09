@@ -42,6 +42,7 @@ const Profile = () => {
 
   const [useTinyMCE, setUseTinyMCE] = useState(true);
   const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
+  const [baseUrl, setBaseUrl] = useState([]);
 
   const { getNumericString } = useHelper();
   const { isFileValid, getUploadGuide, getUploadGuideMessage } = useUploadHelper();
@@ -49,6 +50,11 @@ const Profile = () => {
   const videoUploadGuide = getUploadGuide('video', 'agency-profile');
   const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
   const videoUploadGuideMessage = getUploadGuideMessage(videoUploadGuide);
+
+  useEffect(() => {
+    const baseUrl = window.location.origin;
+    setBaseUrl(baseUrl);
+  }, []);
 
   useEffect(() => {
     /* Hack to resolve focus issue with TinyMCE editor in bootstrap model dialog */
@@ -269,11 +275,12 @@ const Profile = () => {
           value: showProfile.filter((item) => item.value == user.is_visible),
         },
         {
-          label: "Your Ad Agency Creatives Profile URL",
+          label: "Your Ad Agency Creatives Profile Link",
           required: true,
-          type: "text",
+          type: "slug",
           name: "slug",
           value: single_agency.slug,
+          baseUrl: baseUrl
         },
         {
           label: "Upload your agency reel",
@@ -649,6 +656,24 @@ const Profile = () => {
                         onChange={(e) => handleTextChange(e, field.name)}
                         placeholder={field.placeholder || ""}
                       />
+                    </div>
+                  );
+                case "slug":
+                  return (
+                    <div className="col-sm-6" key={index}>
+                      <label htmlFor={field.name} className="form-label">
+                        {field.label}
+                        {field.required && <span className="required">*</span>}
+                      </label>
+                      <div className="input-group">
+                        <span className="input-group-text" id="basic-addon3">{field.baseUrl}/agency/</span>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={field.value}
+                          onChange={(e) => handleTextChange(e, field.name)}
+                        />
+                      </div>
                     </div>
                   );
                 case "dropdown":

@@ -344,6 +344,10 @@ swiper-slide {
     text-decoration: none;
 }
 
+.job-location>*{
+    color: inherit !important;
+}
+
 .profileLink {
     background: black;
     color: white;
