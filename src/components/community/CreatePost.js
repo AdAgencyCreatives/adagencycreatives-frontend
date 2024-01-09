@@ -129,9 +129,9 @@ const CreatePost = (props) => {
         let top = editorRefTinyMCE?.current?.selection?.getRng()?.getClientRects()[0]?.top ?? 40;
         let height = editorRefTinyMCE?.current?.selection?.getRng()?.getClientRects()[0]?.height ?? 0;
         top = 140 + top + height;
-        const left = 20 + editorRefTinyMCE?.current?.selection?.getRng()?.getClientRects()[0]?.left ?? 20;
-        // console.log(top);
-        // console.log(left);
+        let left = editorRefTinyMCE?.current?.selection?.getRng()?.getClientRects()[0]?.left ?? 10;
+        left = 20 + left;
+        
         setTaggerPosLeft(left);
         setTaggerPosTop(top);
 
@@ -326,7 +326,7 @@ const CreatePost = (props) => {
                     // plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                     // toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
                     plugins: 'anchor autolink charmap codesample emoticons link lists searchreplace visualblocks wordcount',
-                    toolbar: 'bold italic underline strikethrough | blocks fontfamily fontsize | numlist bullist link | emoticons charmap | align lineheight | indent outdent | removeformat',
+                    toolbar: 'bold italic underline strikethrough | blocks fontsize | numlist bullist link | emoticons charmap | align lineheight | indent outdent | removeformat',
                     content_css: ['https://fonts.googleapis.com/css?family=Jost:400,500,600,700,800&#038;subset=latin%2Clatin-ext'],
                     font_family_formats: 'JOST=JOST',
                     content_style: 'body { font-family: "JOST"; font-size: 14pt } a { color: #d3a11f; cursor: pointer; } a:hover { color: #000; }',
