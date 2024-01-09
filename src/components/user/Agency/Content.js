@@ -5,10 +5,14 @@ import { IoBriefcaseOutline, IoStar } from "react-icons/io5";
 import Tooltip from "../../Tooltip";
 import moment from "moment";
 import Reviews from "../Reviews";
+import AuthModal from "../../modals/AuthModal";
+import { useState } from "react";
 
 const Content = ({ user, data, jobs }) => {
   const isAgency = user?.role == "agency";
   const isOwnProfile = isAgency && user?.uuid == data.user_id;
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const handleClose = () => setAuthModalOpen(false);
 
   return (
     <>
@@ -97,12 +101,21 @@ const Content = ({ user, data, jobs }) => {
                         <a className="btn-follow btn-action-job btn-add-job-shortlist">
                           <i className="flaticon-bookmark"></i>
                         </a>
-                        {user && data && !isOwnProfile && (
+                        {user && data ? (
+                          !isOwnProfile && (
+                            <Link
+                              to={item.external_link}
+                              target="_blank"
+                              className="btn btn-apply btn-apply-job-external"
+                            >
+                              Apply Now
+                              <i className="next flaticon-right-arrow"></i>
+                            </Link>
+                          )
+                        ) : (
                           <Link
-                            to={item.external_link}
-                            target="_blank"
-                            className="btn btn-apply btn-apply-job-external "
-                          >
+                            onClick={() => setAuthModalOpen(true)}
+                            className="btn btn-apply btn-apply-job-external">
                             Apply Now
                             <i className="next flaticon-right-arrow"></i>
                           </Link>
@@ -117,6 +130,7 @@ const Content = ({ user, data, jobs }) => {
         </div>
       </div>
       {user && data && !isOwnProfile && <Reviews user={user} data={data} />}
+      <AuthModal open={authModalOpen} handleClose={handleClose} />
     </>
   );
 };
