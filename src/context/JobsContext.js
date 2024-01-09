@@ -95,7 +95,7 @@ const reducer = (state, action) => {
         notesNextPage: action.payload.links.next
       };
     case "add_note":
-      return { ...state, notes: [ action.payload.data, ...state.notes] };
+      return { ...state, notes: [action.payload.data, ...state.notes] };
     case "set_job_alert":
       return { ...state, job_alerts: action.payload.data };
     case "set_form_submit":
