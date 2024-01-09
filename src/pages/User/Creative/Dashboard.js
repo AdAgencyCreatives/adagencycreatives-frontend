@@ -135,7 +135,7 @@ const Dashboard = () => {
                                   <div className="d-flex">
                                     <div className="avatar employer">
                                       <img
-                                        src={job.agency.logo || Placeholder}
+                                        src={job?.agency?.logo || Placeholder}
                                         height={100}
                                         width={100}
                                       />
@@ -143,11 +143,11 @@ const Dashboard = () => {
                                     <div className="ms-3">
                                       <div className="title-wrapper">
                                         <h3 className="job-table-info-content-title">
-                                          <Link to={"/job/" + job.slug}>
-                                            {job.title}
+                                          <Link to={"/job/" + job?.slug}>
+                                            {job?.title}
                                           </Link>
                                         </h3>
-                                        {job.priority.is_featured ? (
+                                        {job?.priority.is_featured ? (
                                           <IoCheckmarkCircle
                                             color="#34A853"
                                             size={30}
@@ -157,22 +157,22 @@ const Dashboard = () => {
                                         )}
                                       </div>
                                       <div className="job-metas">
-                                        {job.category && (
+                                        {job?.category && (
                                           <div className="position">
                                             <IoBriefcaseOutline className="me-2" />
                                             <Link
-                                              to={"/job-category/" + job.category}
+                                              to={"/job-category/" + job?.category}
                                               className="link-gray"
                                             >
-                                              {job.category}
+                                              {job?.category}
                                             </Link>
                                           </div>
                                         )}
-                                        {job.location && (
+                                        {job?.location && (
                                           <div className="job-location location">
                                             <IoLocationOutline />
-                                            <Link to={`/job-location/${job.location.state}`}>{job.location.state}</Link>
-                                            <Link to={`/job-location/${job.location.city}`}>, {job.location.city}</Link>
+                                            <Link to={`/job-location/${job?.location.state}`}>{job?.location.state}</Link>
+                                            <Link to={`/job-location/${job?.location.city}`}>, {job?.location.city}</Link>
                                           </div>
                                         )}
                                       </div>
