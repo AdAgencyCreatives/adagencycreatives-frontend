@@ -89,6 +89,8 @@ const Chat = () => {
     setContactsList([...updatedList])
   };
 
+  const [messageData, setMessageData] = useState([]);
+
   const chatBoxProps = {
     contact,
     type,
@@ -103,7 +105,9 @@ const Chat = () => {
     setPaged,
     paged,
     setHasMoreData,
-    hasMoreData
+    hasMoreData,
+    messageData,
+    setMessageData,
   };
 
   return (

@@ -307,7 +307,7 @@ const ChatBox = ({
               <Loader fullHeight={false} />
             ) : (
 
-              messageData.map((item, index) => {
+              messageData && messageData.map((item, index) => {
                 const elements = document.querySelectorAll('.users-list .active');
                 let dataIdValue = 0;
                 elements.forEach((element) => {
