@@ -55,7 +55,7 @@ const Agencies = () => {
         <div className="row g-4">
           {agencies &&
             agencies.map((item, index) => {
-              const isShortlisted = bookmarks.find((bookmark) => bookmark.resource.user_id == item.user_id) || false;
+              const isShortlisted = bookmarks.find((bookmark) => bookmark?.resource?.user_id == item?.user_id) || false;
               return (
                 <div className="col-md-4 col-sm-6 col-12" key={`ag-${index}`}>
                   <div className="sliderContent adagencies-slider">

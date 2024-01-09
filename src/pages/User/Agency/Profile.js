@@ -136,7 +136,7 @@ const Profile = () => {
 
   // Set initial fields
   useEffect(() => {
-    if (Object.keys(single_agency).length > 0 && industry.length && media.length && statesList.length && (single_agency.location?.city_id ? citiesList.length : true)) {
+    if (Object.keys(single_agency).length > 0 && industry.length && media.length) {
       setIsloading(false);
       setEditorState(EditorState.createWithContent(ContentState.createFromText(single_agency.about ? single_agency.about : "")));
       console.log(single_agency, 'single_agency');
@@ -291,7 +291,19 @@ const Profile = () => {
         },
       ]);
     }
-  }, [single_agency, user, media, industry, statesList, citiesList]);
+  }, [single_agency, user, media, industry]);
+
+  //Set citiesList api form data
+  useEffect(() => {
+    if (statesList.length && (single_agency.location?.city_id ? citiesList.length : true)) {
+      console.log("load List Cities", citiesList);
+      console.log(fields);
+      let newFields = [...fields];
+      const fieldIndex = newFields.findIndex((item) => item.name == 'city_id');
+      newFields[fieldIndex].data = citiesList;
+      setFields([...newFields]);
+    }
+  }, [statesList, citiesList]);
 
   //Set initial form data
   useEffect(() => {
@@ -378,6 +390,7 @@ const Profile = () => {
   const updateFieldValue = (name, value) => {
     let field = getFieldByName(name);
     field.value = value;
+    console.log("fields", fields);
     setFields(fields.map((item) => item.name == field.name ? field : item));
   };
 
@@ -407,7 +420,7 @@ const Profile = () => {
   const handleDropdownChange = (item, name) => {
     if (item) {
       setFormData((prev) => ({ ...prev, [name]: item.value }));
-      updateFieldValue(name, item.value);
+      // updateFieldValue(name, item.value);
     }
   };
 
