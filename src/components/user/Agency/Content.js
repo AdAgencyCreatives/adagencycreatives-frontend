@@ -104,7 +104,7 @@ const Content = ({ user, data, jobs }) => {
                         {user && data ? (
                           !isOwnProfile && (
                             <Link
-                              to={item.external_link}
+                              to={item.apply_type === "Internal" || (item.apply_type === "External" && item.external_link === null) ? "/job/" + item.slug : item.external_link}
                               target="_blank"
                               className="btn btn-apply btn-apply-job-external"
                             >
