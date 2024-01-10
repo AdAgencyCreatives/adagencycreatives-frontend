@@ -230,10 +230,10 @@ const getTrendingPosts = (dispatch) => {
 };
 
 const getNewMembers = (dispatch) => {
-  return async () => {
+  return async (per_page) => {
     try {
       const response = await api.get(
-        "/creatives?sort=-created_at&filter[status]=1&filter[is_visible]=1"
+        "/creatives?sort=-created_at&filter[status]=1&filter[is_visible]=1&per_page=" + per_page
       ); // only active members
       dispatch({
         type: "set_new_members",
@@ -254,7 +254,7 @@ const loadPosts = (dispatch) => {
       apiEndPoint = "/posts?filter[group_id]=" + group_id + "&sort=-created_at&filter[status]=1"
     }
     let nextPageUrl = apiEndPoint + "&page=" + nextPageNumber;
-    
+
     setLoading(dispatch, true);
     try {
       const response = await api.get(nextPageUrl);

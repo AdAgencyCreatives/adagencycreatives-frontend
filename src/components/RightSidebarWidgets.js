@@ -12,6 +12,8 @@ import NewMemberWidgetRightSidebar from "./NewMemberWidgetRightSidebar";
 
 const RightSidebarWidgets = () => {
 
+  const new_members_show_limit = 5;
+
   const {
     state: { token },
   } = useContext(AuthContext);
@@ -23,7 +25,7 @@ const RightSidebarWidgets = () => {
 
   useEffect(() => {
     if (token) {
-      getNewMembers();
+      getNewMembers(new_members_show_limit);
       getTrendingPosts();
     }
   }, [token]);
@@ -53,7 +55,7 @@ const RightSidebarWidgets = () => {
                 aria-atomic="true"
               >
                 {new_members &&
-                  new_members.slice(0, Math.min(5, new_members.length)).map((item, index) => (
+                  new_members.slice(0, Math.min(new_members_show_limit, new_members.length)).map((item, index) => (
                     <NewMemberWidgetRightSidebar key={"new-member-widget-" + item.id} new_member={item} />
                   ))}
               </ul>

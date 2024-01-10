@@ -66,9 +66,7 @@ const GroupPosts = () => {
                             </div>
                         </>) : (<>
                             <h1 className="community-title">{single_group?.name || ""}</h1>
-                            <h2 className="community-subtitle" dangerouslySetInnerHTML={{ __html: single_group?.description || "" }}>
-                                
-                            </h2>
+                            <h2 className="community-subtitle" dangerouslySetInnerHTML={{ __html: single_group?.description || "" }}></h2>
                         </>)}
 
                         <div className="container-fluid mt-4">
@@ -81,6 +79,9 @@ const GroupPosts = () => {
                                         <div className="post-form">
                                             <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/groups/' + group_uuid) ? ' btn-selected' : '')} to={'/groups/' + group_uuid}><HiOutlineUserGroup /> Group Posts</Link>
                                             <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/group-members/' + group_uuid) ? ' btn-selected' : '')} to={'/group-members/' + group_uuid}><HiOutlineUserGroup /> Group Members</Link>
+                                            {single_group?.status == 'private' && (
+                                            <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/group-requests/' + group_uuid) ? ' btn-selected' : '')} to={'/group-requests/' + group_uuid}><HiOutlineUserGroup /> Group Requests</Link>
+                                        )}
                                         </div>
                                     </div>
                                     {isLoading ? (<>

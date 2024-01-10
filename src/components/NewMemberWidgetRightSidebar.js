@@ -5,21 +5,6 @@ const NewMemberWidgetRightSidebar = (props) => {
 
     const showMaxIndustryExperiences = 1;
     const [defaultAvatar, setDefaultAvatar] = useState("https://adagencycreatives.noorsofttechdev.com/static/media/placeholder.12b7e9aaed5e5566bc6a.png");
-    const [singleCreative, setSingleCreative] = useState(null);
-    const {
-        state: { single_creative, },
-        getCreativeById,
-    } = useContext(CreativesContext);
-
-    useEffect(() => {
-        if (single_creative && single_creative.user_id == props.new_member.user_id) {
-            setSingleCreative(single_creative);
-        }
-    }, [single_creative]);
-
-    useEffect(() => {
-        getCreativeById(props.new_member.user_id);
-    }, []);
 
     return (
         <li className="vcard">
@@ -31,7 +16,7 @@ const NewMemberWidgetRightSidebar = (props) => {
                 </div>
                 <div className="item-industry-experience">
                     {/* {singleCreative && singleCreative.industry_experience && singleCreative.industry_experience.length ? singleCreative.industry_experience.slice(0, Math.min(showMaxIndustryExperiences, singleCreative.industry_experience.length)).join(', ') : ""} */}
-                    {singleCreative && singleCreative.category ? singleCreative.category : ""}
+                    {props.new_member.category}
                 </div>
                 <div className="item-meta">
                     <a href={"/creative/" + props.new_member.slug}>

@@ -41,6 +41,7 @@ const Groups = () => {
       if (
         !currentView ||
         !(
+          currentView == "private" ||
           currentView == "my" ||
           currentView == "joined"
         )
@@ -51,7 +52,9 @@ const Groups = () => {
       } else {
         setIsLoading(true);
         setGroupsFound(null);
-        if (currentView == "my") {
+        if (currentView == "private") {
+          getGroups(1);
+        } else if (currentView == "my") {
           getUserGroups(user.uuid);
         } else if (currentView == "joined") {
           getMembershipGroups(user.uuid);
@@ -130,7 +133,7 @@ const Groups = () => {
                           groupsFound.map((group, index) => {
                             return (
                               <>
-                                {group.name == "Feed" || (currentView != "my" && currentView != "joined" && group.status != "public") ? (
+                                {group.name == "Feed" || (currentView != "private" && currentView != "my" && currentView != "joined" && group.status != "public") ? (
                                   <></>
                                 ) : (
                                   <GroupWidget key={group.uuid} group={group} onUpdateGroup={onUpdateGroup} onDeleteGroup={onDeleteGroup} />

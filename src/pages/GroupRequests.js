@@ -14,17 +14,18 @@ import SearchBar from "../components/SearchBar";
 
 import { Link, useParams } from "react-router-dom";
 import { Context as GroupsContext } from "../context/GroupsContext";
-import { getGroupMembership } from "../context/GroupMembersDataContext";
+import { getGroupRequests } from "../context/GroupMembersDataContext";
 import { HiOutlineUserGroup } from "react-icons/hi2";
+import GroupRequestWidget from "../components/community/GroupRequestWidget";
 
-const GroupMembers = () => {
+const GroupRequests = () => {
     const { creatives, loading, loadMore, searchCreatives } = useCreatives();
     const [isLoading, setIsLoading] = useState(true);
-    const [isGroupMember, setIsGroupMember] = useState(false);
+    const [groupRequests, setGroupRequests] = useState(null);
 
     const {
-        state: { single_group, group_members },
-        getGroup, getGroupMembers,
+        state: { single_group, },
+        getGroup,
     } = useContext(GroupsContext);
 
     const { group_uuid } = useParams();
@@ -42,10 +43,6 @@ const GroupMembers = () => {
     };
 
     useEffect(() => {
-        setIsLoading(false);
-    }, [group_members]);
-
-    useEffect(() => {
         if (token) {
             setIsLoading(true);
             getGroup(group_uuid);
@@ -55,20 +52,17 @@ const GroupMembers = () => {
     useEffect(() => {
         if (token && single_group && single_group.uuid == group_uuid) {
             (async () => {
-                let result = await getGroupMembership(group_uuid, user.uuid)
-                if(result && result.creative.user_id == user.uuid) {
-                    setIsGroupMember(true);
-                    getGroupMembers(group_uuid);
-                }
+                let result = await getGroupRequests(group_uuid);
+                setGroupRequests(result || [])
             })();
         }
     }, [token, single_group]);
 
     useEffect(() => {
-        if (token && group_members) {
+        if (token && groupRequests) {
             setIsLoading(false);
         }
-    }, [token, group_members]);
+    }, [token, groupRequests]);
 
     const isCurrentPage = (relativeUrl) => {
         return (window.location.pathname + (window.location.search && window.location.search.length > 1 ? window.location.search : '')) == relativeUrl;
@@ -109,17 +103,16 @@ const GroupMembers = () => {
                                     </div>
                                 ) : (
                                     <>
-                                        {isGroupMember && group_members && group_members.length ? (
+                                        {groupRequests && groupRequests.length ? (
                                             <div className="row g-4 px-1">
-                                                {group_members &&
-                                                    group_members.map((group_member, index) => {
-                                                        return (
-                                                            <CommunityMemberWidget
-                                                                key={"community-member-creative-" + group_member.creative.id}
-                                                                creative={group_member.creative}
-                                                            />
-                                                        );
-                                                    })}
+                                                {groupRequests.map((group_request, index) => {
+                                                    return (
+                                                        <GroupRequestWidget
+                                                            key={"group-request-creative-" + group_request.invited_to.id}
+                                                            creative={group_request.invited_to}
+                                                        />
+                                                    );
+                                                })}
                                                 <div className="load-more text-center">
                                                     {loading && (
                                                         <div
@@ -134,13 +127,7 @@ const GroupMembers = () => {
                                                 </div>
                                             </div>
                                         ) : (
-                                            <>
-                                                {!isGroupMember ? (<>
-                                                    <div className="center-page">Sorry, your are not a member of this group.</div>
-                                                </>) : (<>
-                                                    <div className="center-page">Sorry, nothing here.</div>
-                                                </>)}
-                                            </>
+                                            <div className="center-page">Sorry, nothing here.</div>
                                         )}
                                     </>
                                 )}
@@ -155,4 +142,4 @@ const GroupMembers = () => {
     );
 };
 
-export default GroupMembers;
+export default GroupRequests;
