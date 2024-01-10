@@ -130,7 +130,11 @@ const Groups = () => {
                           groupsFound.map((group, index) => {
                             return (
                               <>
-                                {group.name == "Feed" || (currentView != "my" && currentView != "joined" && group.status != "public") ? (<></>) : (<GroupWidget key={group.uuid} group={group} onUpdateGroup={onUpdateGroup} onDeleteGroup={onDeleteGroup} />)}
+                                {group.name == "Feed" || (currentView != "my" && currentView != "joined" && group.status != "public") ? (
+                                  <></>
+                                ) : (
+                                  <GroupWidget key={group.uuid} group={group} onUpdateGroup={onUpdateGroup} onDeleteGroup={onDeleteGroup} />
+                                )}
                               </>
                             );
                           })}

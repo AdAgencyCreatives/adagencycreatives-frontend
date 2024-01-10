@@ -300,8 +300,10 @@ const Profile = () => {
       console.log(fields);
       let newFields = [...fields];
       const fieldIndex = newFields.findIndex((item) => item.name == 'city_id');
-      newFields[fieldIndex].data = citiesList;
-      setFields([...newFields]);
+      if(fieldIndex >= 0) {
+        newFields[fieldIndex].data = citiesList;
+        setFields([...newFields]);
+      }
     }
   }, [statesList, citiesList]);
 
