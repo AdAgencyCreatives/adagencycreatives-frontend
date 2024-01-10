@@ -29,3 +29,13 @@ export const getGroupMembership = async (group_id, user_id) => {
     }
     return null;
 };
+
+export const getGroupInvitations = async (group_id, user_id) => {
+    try {
+        const response = await api.get("/group-invitations?filter[group_id]=" + group_id + "&filter[user_id]=" + user_id);
+        return response.data.data[0];
+    } catch (error) { 
+        return null;
+    }
+    return null;
+};
