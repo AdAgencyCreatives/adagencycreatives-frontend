@@ -131,7 +131,7 @@ const Content = ({ user, role, data, education, experience }) => {
         ""
       )}
       {role && (role == "admin" || role == "advisor") ? (<RelatedCreatives data={data} />) : (<></>)}
-      {user && data && !isOwnProfile && <Reviews user={user} data={data} />}
+      {user && data && <Reviews user={user} data={data} />}
     </>
   );
 };

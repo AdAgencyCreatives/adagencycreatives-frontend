@@ -300,10 +300,10 @@ const removeBookmark = (dispatch) => {
 };
 
 const getReviews = (dispatch) => {
-  return async (target_id) => {
+  return async (target_id, isOwnProfile = false) => {
     try {
       const response = await api.get(
-        "/reviews?filter[target_id]=" + target_id + "&sort=-created_at"
+        "/reviews?filter[target_id]=" + target_id + "&sort=-created_at" + (isOwnProfile ? "&is_own_profile=" + isOwnProfile : "")
       );
       // console.log(response);
       dispatch({
