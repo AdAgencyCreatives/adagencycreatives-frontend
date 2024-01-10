@@ -302,10 +302,10 @@ const ApplicantJobs = () => {
                       </article>
                     ))}
                   </div>
-                </div>) : (<p>No applicants found</p>)
+                </div>) : (<p>No New Applicants To Show</p>)
               }
             </div>
-          )) : (<p>No jobs found</p>)}
+          )) : (<p>No New Applicants To Show</p>)}
           {applicationMeta.total > 10 && <Paginate meta={applicationMeta} paginate={paginate} />}
         </div>
       )}
