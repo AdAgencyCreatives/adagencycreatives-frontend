@@ -122,7 +122,7 @@ const Home = () => {
                   onClick={(e) =>
                     validateAccess(e, {
                       roles: ["admin", "creative"],
-                      restrictedMessage: "Please login as Creative to access",
+                      restrictedMessage: "Please login as a Creative to access",
                     })
                   }
                   dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_gather", pageData) }}></Link>
