@@ -66,17 +66,17 @@ const GroupPosts = () => {
                             </div>
                         </>) : (<>
                             <h1 className="community-title">{single_group?.name || ""}</h1>
-                            <h2 className="community-subtitle">
-                                {single_group?.description || ""}
+                            <h2 className="community-subtitle" dangerouslySetInnerHTML={{ __html: single_group?.description || "" }}>
+                                
                             </h2>
                         </>)}
 
                         <div className="container-fluid mt-4">
                             <div className="row">
-                                <div className="col-md-2 mb-4 mb-md-0">
+                                <div className="col-md-2 mb-4 mb-md-0 menu_left">
                                     <LeftSidebar />
                                 </div>
-                                <div className="col-md-7 order-md-2 order-3">
+                                <div className="col-md-7 order-md-2 order-3 div_content_center">
                                     <div className="groups-header">
                                         <div className="post-form">
                                             <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/groups/' + group_uuid) ? ' btn-selected' : '')} to={'/groups/' + group_uuid}><HiOutlineUserGroup /> Group Posts</Link>
@@ -97,7 +97,7 @@ const GroupPosts = () => {
 
                                     </>)}
                                 </div>
-                                <div className="col-md-3 order-md-3 order-2">
+                                <div className="col-md-3 order-md-3 order-2 sidebar_right">
                                     <RightSidebarWidgets />
                                 </div>
                             </div>
