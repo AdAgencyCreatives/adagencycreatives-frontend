@@ -61,7 +61,7 @@ const GroupWidget = (props) => {
         } else if (props?.group?.status == 'private') {
             getGroupInvitationAsync(group_id, user_id);
         }
-        
+
     };
 
     const getGroupInvitationAsync = async (group_id, user_id) => {
@@ -81,7 +81,7 @@ const GroupWidget = (props) => {
             if (result) {
                 if (result.invited_by && result.invited_to) {
                     showMessageModal("success", "Thanks!", "Request Sent Successfully.", result);
-                    setMemberRole("");
+                    setMemberRole("pending");
                     setGroupMembership(null);
                 } else {
                     showMessageModal("success", "Thanks!", "Group Joined Successfully.", result);

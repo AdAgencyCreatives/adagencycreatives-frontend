@@ -44,7 +44,7 @@ const GroupPosts = () => {
             setIsLoading(false);
             (async () => {
                 let result = await getGroupMembership(group_uuid, user.uuid)
-                if(result && result.creative.user_id == user.uuid) {
+                if (result && result.creative.user_id == user.uuid) {
                     setIsGroupMember(true);
                 }
             })();
@@ -79,7 +79,7 @@ const GroupPosts = () => {
                                         <div className="post-form">
                                             <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/groups/' + group_uuid) ? ' btn-selected' : '')} to={'/groups/' + group_uuid}><HiOutlineUserGroup /> Group Posts</Link>
                                             <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/group-members/' + group_uuid) ? ' btn-selected' : '')} to={'/group-members/' + group_uuid}><HiOutlineUserGroup /> Group Members</Link>
-                                            {single_group?.status == 'private' && (
+                                            {user && single_group.user && single_group.user.id == user.id && single_group?.status == 'private' && (
                                             <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/group-requests/' + group_uuid) ? ' btn-selected' : '')} to={'/group-requests/' + group_uuid}><HiOutlineUserGroup /> Group Requests</Link>
                                         )}
                                         </div>

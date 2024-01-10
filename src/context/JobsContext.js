@@ -1,3 +1,4 @@
+import { IoReturnUpForwardOutline } from "react-icons/io5";
 import { api, getAuthToken } from "../api/api";
 import createDataContext from "./createDataContext";
 
@@ -49,13 +50,13 @@ const reducer = (state, action) => {
       const job_id = action.payload.job_id;
       let jobIndex = state.applications.findIndex((job) => job.id === job_id);
       console.log(app_id, job_id, jobIndex, state.applications);
-      const updatedJob = { ...state.applications[jobIndex] };
-      let updatedApplications = updatedJob.applications.filter(
+      const updateJob = { ...state.applications[jobIndex] };
+      let updatedApplications = updateJob.applications.filter(
         (app) => app.id !== app_id
       );
-      updatedJob.applications = updatedApplications;
+      updateJob.applications = updatedApplications;
       const updatedData = [...state.applications];
-      updatedData[jobIndex] = { ...updatedJob };
+      updatedData[jobIndex] = { ...updateJob };
       return { ...state, applications: updatedData };
     }
     case "set_single_job":
@@ -295,6 +296,18 @@ const deleteApplication = (dispatch) => {
         payload: { app_id: id, job_id },
       });
     } catch (error) { }
+  };
+};
+
+const markFilled = (dispatch) => {
+  return async (uuid, status) => {
+    try {
+      const response = await api.patch("/jobs/" + uuid, {status: status});
+      return response.data.data;
+    } catch (error) { 
+      return null;
+    }
+    return null;
   };
 };
 
@@ -657,6 +670,7 @@ export const { Context, Provider } = createDataContext(
     saveJob,
     createJob,
     applyJob,
+    markFilled,
   },
   state
 );

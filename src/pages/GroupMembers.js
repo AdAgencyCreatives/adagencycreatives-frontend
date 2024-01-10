@@ -53,7 +53,8 @@ const GroupMembers = () => {
     }, [token, group_uuid]);
 
     useEffect(() => {
-        if (token && single_group && single_group.uuid == group_uuid) {
+        if (token && user && single_group && single_group.uuid == group_uuid) {
+            setIsLoading(false);
             (async () => {
                 let result = await getGroupMembership(group_uuid, user.uuid)
                 if(result && result.creative.user_id == user.uuid) {
@@ -97,7 +98,7 @@ const GroupMembers = () => {
                                     <div className="post-form">
                                         <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/groups/' + group_uuid) ? ' btn-selected' : '')} to={'/groups/' + group_uuid}><HiOutlineUserGroup /> Group Posts</Link>
                                         <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/group-members/' + group_uuid) ? ' btn-selected' : '')} to={'/group-members/' + group_uuid}><HiOutlineUserGroup /> Group Members</Link>
-                                        {single_group?.status == 'private' && (
+                                        {user && single_group.user && single_group.user.id == user.id && single_group?.status == 'private' && (
                                             <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/group-requests/' + group_uuid) ? ' btn-selected' : '')} to={'/group-requests/' + group_uuid}><HiOutlineUserGroup /> Group Requests</Link>
                                         )}
                                     </div>

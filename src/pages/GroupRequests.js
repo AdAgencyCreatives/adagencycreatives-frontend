@@ -31,7 +31,7 @@ const GroupRequests = () => {
     const { group_uuid } = useParams();
 
     const {
-        state: { role, user, token },
+        state: { token, role, user },
     } = useContext(AuthContext);
 
     useScrollLoader(loading, loadMore);
@@ -50,11 +50,14 @@ const GroupRequests = () => {
     }, [token, group_uuid]);
 
     useEffect(() => {
-        if (token && single_group && single_group.uuid == group_uuid) {
-            (async () => {
-                let result = await getGroupRequests(group_uuid);
-                setGroupRequests(result || [])
-            })();
+        if (token && user && single_group && single_group.uuid == group_uuid) {
+            setIsLoading(false);
+            if(user && single_group.user && single_group.user.id == user.id) {
+                (async () => {
+                    let result = await getGroupRequests(group_uuid);
+                    setGroupRequests(result || [])
+                })();
+            }
         }
     }, [token, single_group]);
 
@@ -70,7 +73,7 @@ const GroupRequests = () => {
 
     return (
         <>
-            {token && role && (role == "admin" || role == "creative") ? (
+            {user && role && (role == "admin" || role == "creative") ? (
                 <div className="dark-container page-community-members">
                     <div className="container-fluid">
                         {isLoading ? (<>
@@ -91,7 +94,7 @@ const GroupRequests = () => {
                                     <div className="post-form">
                                         <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/groups/' + group_uuid) ? ' btn-selected' : '')} to={'/groups/' + group_uuid}><HiOutlineUserGroup /> Group Posts</Link>
                                         <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/group-members/' + group_uuid) ? ' btn-selected' : '')} to={'/group-members/' + group_uuid}><HiOutlineUserGroup /> Group Members</Link>
-                                        {single_group?.status == 'private' && (
+                                        {user && single_group.user && single_group.user.id == user.id && single_group?.status == 'private' && (
                                             <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/group-requests/' + group_uuid) ? ' btn-selected' : '')} to={'/group-requests/' + group_uuid}><HiOutlineUserGroup /> Group Requests</Link>
                                         )}
                                     </div>
@@ -107,7 +110,7 @@ const GroupRequests = () => {
                                             <div className="row g-4 px-1">
                                                 {groupRequests.map((group_request, index) => {
                                                     return (
-                                                        <GroupRequestWidget
+                                                        <CommunityMemberWidget
                                                             key={"group-request-creative-" + group_request.invited_to.id}
                                                             creative={group_request.invited_to}
                                                         />
@@ -127,7 +130,13 @@ const GroupRequests = () => {
                                                 </div>
                                             </div>
                                         ) : (
-                                            <div className="center-page">Sorry, nothing here.</div>
+                                            <>
+                                                {user ? (<>
+                                                    <div className="center-page">Sorry, your are not a member of this group.</div>
+                                                </>) : (<>
+                                                    <div className="center-page">Sorry, nothing here.</div>
+                                                </>)}
+                                            </>
                                         )}
                                     </>
                                 )}

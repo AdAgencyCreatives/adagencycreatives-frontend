@@ -26,7 +26,7 @@ export const leaveMembership = async (group_id, user_id) => {
             group_id: group_id,
             receiver_id: user_id,
         });
-        return response.data.data;
+        return response.data;
     } catch (error) { 
         return null;
     }
@@ -56,6 +56,16 @@ export const getGroupInvitation = async (group_id, user_id) => {
 export const getGroupRequests = async (group_id, status = 0) => {
     try {
         const response = await api.get("/group-invitations?filter[group_id]=" + group_id + "&filter[status]=" + status);
+        return response.data.data;
+    } catch (error) { 
+        return null;
+    }
+    return null;
+};
+
+export const respondGroupRequest = async (uuid, data) => {
+    try {
+        const response = await api.patch("/group-invitations/" + uuid, data);
         return response.data.data;
     } catch (error) { 
         return null;

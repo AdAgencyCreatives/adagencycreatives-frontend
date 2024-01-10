@@ -96,7 +96,7 @@ const FriendshipWidget = (props) => {
         let result = await requestFriendship({
             "receiver_id": creative.user_id
         });
-        logActivity(user.uuid, "friendship_requested", "Friendship requested with Creative: " + creative.name, "{user_id:'" + user.uuid + "', creative_id:'" + creative.id + "'}");
+        logActivity(user.uuid, "lounge_friendship_requested", "Friendship requested with Creative: " + creative.name, "{user_id:'" + user.uuid + "', creative_id:'" + creative.id + "'}");
         getSingleFriendshipAsync();
         setFriendshipRequestResult(result);
     };
@@ -116,7 +116,7 @@ const FriendshipWidget = (props) => {
             "request_id": friendshipRecord.id,
             "response": "cancelled"
         });
-        logActivity(user.uuid, "friendship_responded", "Friendship cancelled with Creative: " + creative.name, "{user_id:'" + user.uuid + "', creative_id:'" + creative.id + "', status:'cancelled'}");
+        logActivity(user.uuid, "lounge_friendship_responded", "Friendship cancelled with Creative: " + creative.name, "{user_id:'" + user.uuid + "', creative_id:'" + creative.id + "', status:'cancelled'}");
         setFriendshipRequestResult(result);
         getSingleFriendshipAsync();
     };
@@ -126,7 +126,7 @@ const FriendshipWidget = (props) => {
             "friend_id": creative.user_id
         });
         showMessageModal("success", "Thanks!", result.data.message, null);
-        logActivity(user.uuid, "friendship_responded", "Unfriended with Creative: " + creative.name, "{user_id:'" + user.uuid + "', creative_id:'" + creative.id + "', status:'cancelled'}");
+        logActivity(user.uuid, "lounge_friendship_responded", "Unfriended with Creative: " + creative.name, "{user_id:'" + user.uuid + "', creative_id:'" + creative.id + "', status:'cancelled'}");
         getSingleFriendshipAsync();
         getSingleFriendRequestAsync();
     };
@@ -136,7 +136,7 @@ const FriendshipWidget = (props) => {
             "request_id": friendRequestRecord.id,
             "response": status
         });
-        logActivity(user.uuid, "friendship_responded", "Friendship " + status + " with Creative: " + creative.name, "{user_id:'" + user.uuid + "', creative_id:'" + creative.id + "', status:'" + status + "'}");
+        logActivity(user.uuid, "lounge_friendship_responded", "Friendship " + status + " with Creative: " + creative.name, "{user_id:'" + user.uuid + "', creative_id:'" + creative.id + "', status:'" + status + "'}");
         setFriendshipRequestResult(result);
         getSingleFriendRequestAsync();
     };
@@ -154,7 +154,7 @@ const FriendshipWidget = (props) => {
     const sendFriendshipRequestedNotificationAsync = async (creative) => {
         let result = await saveNotification({
             "user_id": creative.user_id,
-            "type": "friendship_requested",
+            "type": "lounge_friendship_requested",
             "message": user.first_name + " " + user.last_name + " has sent friendship request.",
             "body": "{}"
         });
@@ -163,7 +163,7 @@ const FriendshipWidget = (props) => {
     const sendFriendshipRespondedNotificationAsync = async (creative, status) => {
         let result = await saveNotification({
             "user_id": creative.user_id ? creative.user_id : creative.user.uuid,
-            "type": "friendship_responded",
+            "type": "lounge_friendship_responded",
             "message": user.first_name + " " + user.last_name + " has " + status + (status == "cancelled" ? "" : " your") + " friendship request.",
             "body": "{}"
         });

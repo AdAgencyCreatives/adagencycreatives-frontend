@@ -1,99 +1,132 @@
 import Placeholder from "../../assets/images/placeholder.png";
-import { IoEarth, IoBookmarkOutline, IoLocationOutline, IoMailOpen, IoPersonAdd, IoClose, IoCloseSharp, IoCheckmarkCircleSharp, IoBandageOutline, IoBanSharp } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { IoEarth, IoBookmarkOutline, IoLocationOutline, IoMailOpen, IoPersonAdd, IoClose, IoCloseSharp, IoCheckmarkCircleSharp, IoBandageOutline, IoBanSharp, IoTrash } from "react-icons/io5";
+import { Link, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { Context as AuthContext, logActivity } from "../../context/AuthContext";
-import { getSingleFriendship, requestFriendship, respondFriendship } from "../../context/FriendsDataContext";
+import { getGroupInvitation, respondGroupRequest } from "../../context/GroupMembersDataContext";
 import MessageModal from "../MessageModal";
 
 import SlidingMessage from "../../components/SlidingMessage";
 import { Tooltip } from "@mui/material";
 import { CircularProgress } from "@mui/material";
 import { saveNotification } from "../../context/NotificationsDataContext";
-
-import FriendshipWidget from "./FriendshipWidget";
+import { Context as GroupsContext } from "../../context/GroupsContext";
 
 const GroupRequestWidget = (props) => {
 
+    const { group_uuid } = useParams();
+
+    const {
+        state: { single_group, },
+        getGroup,
+    } = useContext(GroupsContext);
+
+    const [messageModalOptions, setMessageModalOptions] = useState({ "open": false, "type": "message", "title": "Message", "message": "Thanks.", "data": {}, "onClose": null });
+    const [loadingGroupRequestRecord, setLoadingGroupRequestRecord] = useState(false);
+    const [hasGroupRequestRecord, setHasGroupRequestRecord] = useState(false);
+    const [groupRequestRecord, setGroupRequestRecord] = useState(null);
+
     const [isMounted, setIsMounted] = useState(false);
-    const [visibleAfterProcess, setVisibleAfterProcess] = useState(true);
 
     useEffect(() => {
+        (async () => {
+            await getGroup(group_uuid);
+        })();
+
         setIsMounted(true);
         return () => {
             setIsMounted(false);
         };
     }, []);
 
+    const group_request_statuses = {
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "rejected": "Rejected",
+    };
+
+    const showMessageModal = (type, title, message, data) => {
+        setMessageModalOptions({ "open": true, "type": type, "title": title, "message": message, "data": data });
+    };
+
     const {
         state: { role, user, token },
     } = useContext(AuthContext);
 
-    const isAdmin = role == "admin";
-    const isAdvisor = role == "advisor";
-    const isAgency = role == "agency";
-
     const isOwnProfile = user?.uuid == props.creative?.user_id;
+
+    useEffect(() => {
+        if (user) {
+            getGroupRequestRecordAsync();
+        }
+    }, [user]);
+
+    const getGroupRequestRecordAsync = async () => {
+        setLoadingGroupRequestRecord(true);
+        let result = await getGroupInvitation(group_uuid, props.creative?.user_id);
+        setLoadingGroupRequestRecord(false);
+        setGroupRequestRecord(result);
+        setHasGroupRequestRecord(result ? true : false);
+    };
+
+    const handleRespondGroupRequest = (evt, creative, status) => {
+        respondGroupRequestAsync(creative, status);
+        sendGroupRequestRespondedNotificationAsync(creative, status);
+    };
+
+    const respondGroupRequestAsync = async (creative, status) => {
+        let result = await respondGroupRequest(groupRequestRecord.id, {
+            "status": status
+        });
+        if (result) {
+            logActivity(user.uuid, "lounge_group_request_responded", "Group Request " + status + " with Creative: " + creative.name, "{user_id:'" + user.uuid + "', creative_id:'" + creative.id + "', status:'" + status + "'}");
+            setGroupRequestRecord(result);
+            getGroupRequestRecordAsync();
+        } else {
+
+        }
+    };
+
+    const sendGroupRequestRespondedNotificationAsync = async (creative, status) => {
+        let result = await saveNotification({
+            "user_id": creative.user_id ? creative.user_id : creative.user.uuid,
+            "type": "lounge_group_request_responded",
+            "message": user.first_name + " " + user.last_name + " has " + status + (status == "cancelled" ? "" : " your") + " your request to join group: " + single_group.name + ".",
+            "body": "{}"
+        });
+    };
 
     return (
         <>
-            {visibleAfterProcess && (
-                <div className="col-lg-4 col-md-6 col-12" style={{ "marginBottom": "10px" }}>
-                    <div className="sliderContent members-list">
-                        <img
-                            src={props.creative.profile_image || Placeholder}
-                            className="candidateLogo"
-                            width={150}
-                            height={150}
-                            alt=""
-                        />
-                        <div className="member-data">
-                            <div className="agencyName">
-                                <Link className="text-dark" to={`/creative/${props.creative.slug}`}>
-                                    {props.creative.name}
-                                </Link></div>
-                            <div className="position">{props.creative.title}</div>
-                            {props.creative.location && (
-                                <div className="job-location location">
-                                    {props.creative.location && (props.creative.location.state || props.creative.location.city) ? (
-                                        <IoLocationOutline />
-                                    ) : (
-                                        <></>
-                                    )}
-                                    <Link to={`/creatives/search/state/${props.creative.location.state}`}>
-                                        {props.creative.location.state}
-                                    </Link>
-                                    {props.creative.location && props.creative.location.state && props.creative.location.city ? (
-                                        <span>,&nbsp;</span>
-                                    ) : (
-                                        <></>
-                                    )}
-                                    <Link to={`/creatives/search/city/${props.creative.location.city}`}>
-                                        {props.creative.location.city}
-                                    </Link>
-                                </div>
-                            )}
-                        </div>
-                        <div className="user-actions">
-                            <FriendshipWidget creative={props.creative} visibleAfterProcess={visibleAfterProcess} setVisibleAfterProcess={setVisibleAfterProcess} />
-                            {!isOwnProfile && (
-                                <Tooltip title="View Messages">
-                                    <Link className="btn btn-dark no-border" to={"/messages/" + props.creative.user_id}>
-                                        <IoMailOpen />
-                                    </Link>
-                                </Tooltip>
-                            )}
-
-                            {isOwnProfile && (
+            {!isOwnProfile ? (
+                <>
+                    <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
+                    {loadingGroupRequestRecord || loadingGroupRequestRecord ? (
+                        <CircularProgress />
+                    ) : (<>
+                        {(hasGroupRequestRecord && groupRequestRecord && groupRequestRecord.status) ? (<>
+                            <Tooltip title="Membership Status">
                                 <div className="friendship-request-status">
-                                    Your Profile
+                                    {group_request_statuses[(groupRequestRecord ? groupRequestRecord.status : (groupRequestRecord ? groupRequestRecord.status : ""))]}
                                 </div>
-                            )}
+                            </Tooltip>
+                        </>) : (<></>)}
 
-                        </div>
-                    </div>
-                </div >
-            )}
+                        {hasGroupRequestRecord && !(groupRequestRecord.status == "accepted" || groupRequestRecord.status == "rejected" || groupRequestRecord.status == "unfriended") ? (<>
+                            <Tooltip title="Accept Member">
+                                <button className="btn btn-dark no-border" onClick={(e) => handleRespondGroupRequest(e, props.creative, "accepted")}>
+                                    <IoCheckmarkCircleSharp />
+                                </button>
+                            </Tooltip>
+                            <Tooltip title="Reject Member">
+                                <button className="btn btn-dark no-border" onClick={(e) => handleRespondGroupRequest(e, props.creative, "rejected")}>
+                                    <IoBanSharp />
+                                </button>
+                            </Tooltip>
+                        </>) : (<></>)}
+                    </>)}
+                </>
+            ) : (<></>)}
         </>
     );
 };
