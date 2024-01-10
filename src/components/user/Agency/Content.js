@@ -129,7 +129,7 @@ const Content = ({ user, data, jobs }) => {
           ))}
         </div>
       </div>
-      {user && data && !isOwnProfile && <Reviews user={user} data={data} />}
+      {user && data && <Reviews user={user} data={data} />}
       <AuthModal open={authModalOpen} handleClose={handleClose} />
     </>
   );
