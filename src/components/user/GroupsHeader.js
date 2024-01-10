@@ -28,9 +28,9 @@ const GroupsHeader = ({ currentView, setCurrentView }) => {
         <div className="groups-header">
             <div className="post-form">
                 <CreateGroup />
-                <Link className={"btn btn-dark btn-outline" + (!currentView ? ' btn-selected' : '')} to="/groups" onClick={() => setCurrentView(null)}><HiOutlineUserGroup /> Public Groups</Link>
-                <Link className={"btn btn-dark btn-outline" + (currentView == 'my' ? ' btn-selected' : '')} to="/groups?view=my" onClick={() => setCurrentView('my')}><HiOutlineUserGroup /> My Groups</Link>
-                <Link className={"btn btn-dark btn-outline" + (currentView == 'joined' ? ' btn-selected' : '')} to="/groups?view=joined" onClick={() => setCurrentView('joined')}><HiOutlineUserGroup /> Joined Groups</Link>
+                <Link className={"btn btn-dark btn-outline" + (!currentView ? ' btn-selected' : '')} to="/groups" onClick={() => setCurrentView(null)}><HiOutlineUserGroup /> <span className="m-2">Public Groups</span></Link>
+                <Link className={"btn btn-dark btn-outline" + (currentView == 'my' ? ' btn-selected' : '')} to="/groups?view=my" onClick={() => setCurrentView('my')}><HiOutlineUserGroup /> <span className="m-2">My Groups</span></Link>
+                <Link className={"btn btn-dark btn-outline" + (currentView == 'joined' ? ' btn-selected' : '')} to="/groups?view=joined" onClick={() => setCurrentView('joined')}><HiOutlineUserGroup /> <span className="m-2">Joined Groups</span></Link>
             </div>
         </div>
     );

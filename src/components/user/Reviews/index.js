@@ -5,6 +5,7 @@ import ReviewForm from "./ReviewForm";
 import ReviewsList from "./ReviewsList";
 
 const Reviews = ({ user, data }) => {
+  const isOwnProfile = user?.uuid == data.user_id;
   const [dispalyForm, setDispalyForm] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
   const [userReview, setUserReview] = useState(null);
@@ -22,7 +23,7 @@ const Reviews = ({ user, data }) => {
   }, [data]);
 
   const mutateReviews = () => {
-    getReviews(data?.user_id);
+    getReviews(data?.user_id, isOwnProfile);
   };
 
   useEffect(() => {
@@ -55,7 +56,7 @@ const Reviews = ({ user, data }) => {
           <IoStar size={22} color="#000" />
           {reviewsMeta?.average_rating?.toFixed(2) ?? 0.0}
         </div>
-        {!dispalyForm && (
+        {!dispalyForm && !isOwnProfile && (
           <>
             {!userReview ? (
               <button

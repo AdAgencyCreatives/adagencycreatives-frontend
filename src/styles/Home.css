@@ -674,6 +674,10 @@ a.employer-logo img {
     .location>* {
         font-size: 15px;
     }
+
+    .job-location>*{
+        font-size: 20px;
+    }
 }
 
 /* Publications Section */
