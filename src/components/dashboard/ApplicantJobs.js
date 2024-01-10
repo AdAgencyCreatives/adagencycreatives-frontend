@@ -39,7 +39,7 @@ const ApplicantJobs = () => {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    getApplications(user.uuid, 1);
+    getApplications(user.uuid, 0);
   }, []);
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const ApplicantJobs = () => {
   };
 
   const paginate = (page) => {
-    getApplications(user.uuid, 1, page);
+    getApplications(user.uuid, 0, page);
   };
 
   return (
