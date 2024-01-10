@@ -39,7 +39,7 @@ const getNotifications = (dispatch) => {
   return async (user_id, page = false) => {
     setLoading(dispatch, true);
     try {
-      const response = await api.get("/notifications?sort=-created_at&filter[user_id]=" + user_id + (page ? "&page=" + page : ""));
+      const response = await api.get("/notifications?sort=-created_at&status=0&filter[type]=job_alert,job_board&filter[user_id]=" + user_id + (page ? "&page=" + page : ""));
       dispatch({
         type: "set_notifications",
         payload: response.data,
