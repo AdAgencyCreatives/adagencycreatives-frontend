@@ -601,7 +601,9 @@ const Profile = () => {
                       <input type="hidden" className="input-text" name={field.name} value="" />
                       <div className="row align-items-center upload-box">
                         <div className="col-md-2 col-sm-4 col-12">
-                          <img src={field.image} className="w-100" ref={logoRef} />
+                          <div className="img">
+                            <img src={field.image} className="w-100" ref={logoRef} />
+                          </div>  
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                           <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => imageUploadRef.current.click()}>

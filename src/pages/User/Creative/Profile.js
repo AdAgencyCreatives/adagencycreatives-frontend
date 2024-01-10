@@ -509,12 +509,14 @@ const Profile = () => {
                       />
                       <div className="row align-items-center upload-box">
                         <div className="col-md-2 col-sm-4 col-12">
-                          <img
-                            src={field.image}
-                            className="w-100"
-                            ref={logoRef}
-                            alt=""
-                          />
+                          <div className="img">
+                            <img
+                              src={field.image}
+                              className="w-100"
+                              ref={logoRef}
+                              alt=""
+                            />
+                          </div>
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                           <button

@@ -120,7 +120,7 @@ const Groups = () => {
                   </div>
                 ) : (
                   <>
-                    {!currentView && <SearchBar
+                    {!currentView && <SearchBar placeholder="Search by group name"
                       onSearch={searchGroups}
                     />}
 
