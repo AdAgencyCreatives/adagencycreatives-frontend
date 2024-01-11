@@ -16,8 +16,9 @@ const ApplyJob = ({ open, handleClose, job_id, handleJob }) => {
   const resumeRef = useRef();
 
   const {
-    state: { resume },
+    state: { resume, profile_resume },
     getResume,
+    getProfileResume,
     saveAttachment,
   } = useContext(CreativesContext);
 
@@ -33,8 +34,8 @@ const ApplyJob = ({ open, handleClose, job_id, handleJob }) => {
 
   useEffect(() => {
     user && getResume(user.uuid);
+    user && getProfileResume(user.uuid);
   }, [user]);
-
 
   useEffect(() => {
     setMessage(false);
@@ -121,6 +122,15 @@ const ApplyJob = ({ open, handleClose, job_id, handleJob }) => {
                 )}
                 <p className="fs-5 text-center mt-3">Select your Resume</p>
                 <div className="d-flex flex-wrap gap-3 mb-2 justify-content-center">
+                  <button type="button"
+                    className={`btn-resume ${!resumeId ? "active" : ""}`}
+                    onClick={() => setResumeId(false)}
+                  >
+                    <span className="icon_type">
+                      <FiFile />
+                    </span>
+                    <div className="filename">Profile Resume</div>
+                  </button>
                   {resumeList.length > 0 &&
                     resumeList.map((item) => (
                       <button type="button"
