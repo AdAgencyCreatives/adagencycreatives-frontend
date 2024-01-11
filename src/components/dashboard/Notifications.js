@@ -1,18 +1,22 @@
 import Paginate from "../../components/Paginate";
-import { CircularProgress } from "@mui/material";
-import { IoTimeOutline } from "react-icons/io5";
 import { Context as AuthContext } from "../../context/AuthContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import TimeAgo from "../TimeAgo";
 import useNotifications from "../../hooks/useNotifications";
+import { IoEyeOffOutline, IoEyeOutline, IoTimeOutline } from "react-icons/io5";
+import { IconButton, Tooltip, CircularProgress } from "@mui/material";
 
 const Notifications = () => {
-
-    const { notifications, meta, loading, getNotifications, markReadNotification } = useNotifications();
+    const { notifications, meta, loading, getNotifications, updateNotifications } = useNotifications();
     const { state: { user } } = useContext(AuthContext);
     const paginate = (page) => {
         getNotifications(user.uuid, page);
+    };
+
+    const handleMarkAsRead = async (notification_id) => {
+        await updateNotifications(notification_id);
+        getNotifications(user.uuid, meta.current_page);
     };
 
     return (
@@ -23,19 +27,26 @@ const Notifications = () => {
                     <span>Loading ...</span>
                 </div>
             ) : (
-                <div className="card">
+                <div className="card notification_sidebar">
                     <div className="card-title">Notifications</div>
                     {notifications && notifications.length ? (
                         <div className="notif-list">
                             {notifications.map((notification) => {
                                 return (
-                                    <div className="notif-item-dashboard" key={notification.id}>
+                                    <div className="notif-item-dashboard d-flex gap-2 align-items-start" key={notification.uuid}>
                                         <div className="notif-details">
-                                            <Link to={notification.link} className="notif-content text-dark">{notification.message}</Link>
+                                            <div className="notif-content text-dark m-0" dangerouslySetInnerHTML={{ __html: notification.message }}></div>
                                             <div className="notif-time">
                                                 <IoTimeOutline />
                                                 <TimeAgo datetime={notification.created_at} />
                                             </div>
+                                        </div>
+                                        <div className="notif-actions">
+                                            <Tooltip title="Mark as Read">
+                                                <IconButton size='small' onClick={() => handleMarkAsRead(notification.uuid)}>
+                                                    <IoEyeOutline />
+                                                </IconButton>
+                                            </Tooltip>
                                         </div>
                                     </div>
                                 )
@@ -43,7 +54,7 @@ const Notifications = () => {
                             {meta.total > 10 && <Paginate meta={meta} paginate={paginate} />}
                         </div>
                     ) : (
-                        <div className="center-page">Sorry, nothing here.</div>
+                        <div className="center-page nothing">Sorry, nothing here.</div>
                     )}
                 </div>
             )}

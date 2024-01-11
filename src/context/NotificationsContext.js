@@ -85,11 +85,16 @@ const setLoading = (dispatch, status) => {
 };
 
 const updateNotifications = (dispatch) => {
-  return async (notifications) => {
-    dispatch({
-      type: "update_notifications",
-      payload: notifications,
-    });
+  return async (notification_id) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.patch(`/notifications/${notification_id}`);
+      // dispatch({
+      //   type: "set_notifications",
+      //   payload: response.data,
+      // });
+    } catch (error) { }
+    setLoading(dispatch, false);
   };
 };
 

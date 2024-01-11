@@ -30,3 +30,9 @@ input.search-input {
     background: var(--color-primary);
     border: 1px solid black;
 }
+
+@media (max-width: 767px){
+    .search-bar input.search-input{
+        padding-left: 15px;
+    }
+}

@@ -61,7 +61,7 @@ const Creative = () => {
     <div className="agency-dashboard-container">
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-3 pt-3">
+          <div className="col-md-3 pt-3 menu_left">
             <Sidebar
               nav={creativeNav}
               user={single_creative}
@@ -69,7 +69,7 @@ const Creative = () => {
               setMobileOpen={setMobileOpen}
             />
           </div>
-          <div className="col-md-9 pt-5">
+          <div className="col-md-9 pt-5 div_content-right">
             <div className="sidebar-toggle d-md-none d-inline-block">
               <IoMenu
                 onClick={() => setMobileOpen((prevState) => !prevState)}

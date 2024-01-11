@@ -726,7 +726,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
     line-height: 20px;
 }
 
-@media (max-width: 992px) and (min-width: 900px){
+@media (max-width: 1024px) and (min-width: 900px){
     .header_container{
         flex-direction: column!important;
     }
@@ -737,5 +737,8 @@ nav ul.dropdown-list .list-item-text.j-fix {
     .header_container .left-logo{
         flex-basis: 50%;
         max-width: 50%;
+    }
+    .agency-dashboard-container{
+        padding-top: 95px;
     }
 }

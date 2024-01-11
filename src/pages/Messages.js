@@ -14,7 +14,7 @@ const Messages = () => {
       {token && role && (role == "admin" || role == "creative") ? (
         <div className="dark-container page-messages mb-0">
           <h1 className="community-title">Messages</h1>
-          <div className="container-fluid mt-4">
+          <div className="container-fluid mt-4 px-2 px-md-5">
             <div className="row gy-3">
               <div className="col-lg-2">
                 <LeftSidebar />
