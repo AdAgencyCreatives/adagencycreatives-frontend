@@ -186,8 +186,8 @@ function Header(props) {
         <CssBaseline />
         <AppBar elevation={0} component="nav" id="top-nav-fixed" sx={{ backgroundColor: "#fff", padding: { sm: "10px 0", xs: "0" } }}>
           <Toolbar>
-            <Grid container justifyContent="space-between" alignItems="center">
-              <Grid item lg={3} md={2} xs={8}>
+            <Grid container justifyContent="space-between" alignItems="center" className="header_container">
+              <Grid item lg={3} md={2} xs={8} className="left-logo">
                 <Link className="site-logo">
                   <img className="" src={Logo} alt="Adagency Creatives" />
                 </Link>

@@ -347,6 +347,9 @@ swiper-slide {
 .job-location>*{
     color: inherit !important;
 }
+.no_location svg,.no_location a{
+    opacity: 0;
+}
 
 .profileLink {
     background: black;
@@ -479,7 +482,8 @@ img.spotlight-image {
 
 a.employer-logo img {
     width: 90px;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
 }
 
 .employer-logo {
@@ -976,5 +980,11 @@ img.publication-image {
 
     100% {
         transform: translate3d(-60.8%, 0, 0);
+    }
+}
+
+@media (max-width: 767px){
+    .creative-section .sectionTitle{
+        text-align: center;
     }
 }

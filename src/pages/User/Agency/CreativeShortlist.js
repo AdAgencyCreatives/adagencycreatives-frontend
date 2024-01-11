@@ -16,7 +16,7 @@ import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 import { Context as DataContext } from "../../../context/DataContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
-
+console.log(Avatar,'Avatar');
 const CreativeShortlist = () => {
   const [open, setOpen] = useState(false);
   const [item, setItem] = useState({});
