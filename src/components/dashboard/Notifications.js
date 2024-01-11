@@ -23,7 +23,7 @@ const Notifications = () => {
                     <span>Loading ...</span>
                 </div>
             ) : (
-                <div className="card">
+                <div className="card notification_sidebar">
                     <div className="card-title">Notifications</div>
                     {notifications && notifications.length ? (
                         <div className="notif-list">
@@ -43,7 +43,7 @@ const Notifications = () => {
                             {meta.total > 10 && <Paginate meta={meta} paginate={paginate} />}
                         </div>
                     ) : (
-                        <div className="center-page">Sorry, nothing here.</div>
+                        <div className="center-page nothing">Sorry, nothing here.</div>
                     )}
                 </div>
             )}

@@ -221,7 +221,7 @@ const Sidebar = ({ data, user }) => {
           )}
         </div>
       </div>
-      <div className="sidebar-item mt-4 mb-4">
+      <div className="sidebar-item my-4">
         <h4 className="title">Video</h4>
         {video ? (
           <div className="video-section mt-4">

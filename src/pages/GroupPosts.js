@@ -61,7 +61,7 @@ const GroupPosts = () => {
                 <>
                     <div className="dark-container page-community mb-0 mt-0">
                         {isLoading ? (<>
-                            <div className="center-page mx-3">
+                            <div className="center-page">
                                 <CircularProgress />
                             </div>
                         </>) : (<>
@@ -71,8 +71,8 @@ const GroupPosts = () => {
                             </h2>
                         </>)}
 
-                        <div className="container-fluid mt-4">
-                            <div className="row">
+                        <div className="container-fluid mt-4 px-2 px-md-5">
+                            <div className="row div_row">
                                 <div className="col-md-2 mb-4 mb-md-0 menu_left">
                                     <LeftSidebar />
                                 </div>

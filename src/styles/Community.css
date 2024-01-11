@@ -704,14 +704,20 @@ h2.epr-emoji-category-label {
     margin-bottom: 0;
 }
 @media (max-width: 1200px){
-    .menu_left{
+    .div_row .menu_left{
         width: 20%;
     }
-    .div_content_center{
+    .div_row .div_content_center{
         width: 50%;
     }
-    .sidebar_right{
+    .div_row .sidebar_right{
         width: 30%;
+    }
+    .div_row .div_content-right{
+        width: 80%;
+    }
+    .sidebar-menu li.menu-item a{
+        font-size: 14px;
     }
 }
 @media (max-width:992px) {
@@ -724,17 +730,25 @@ h2.epr-emoji-category-label {
     .page-groups .search-btn{
         width: 25%;
     }
-    .menu_left{
-        width: 25%;
+   .div_row .menu_left{
+        width: 100%;
     }
-    .div_content_center{
-        width: 45%;
+    .div_row .div_content_center{
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
-    .sidebar_right{
-        width: 30%;
+    .div_row .sidebar_right{
+        width: 100%;
+    }
+    .div_row .div_content-right{
+        width: 100%;
     }
     .item.new-member-widget .item-industry-experience{
         padding-left: 10px;
+    }
+    .sidebar-menu li.menu-item a{
+        padding: 5px;
     }
 }
 @media (max-width:767px) {
@@ -756,15 +770,6 @@ h2.epr-emoji-category-label {
     }
     .page-groups .search-btn{
         width: 35%;
-    }
-    .menu_left{
-        width: 100%;
-    }
-    .div_content_center{
-        width: 100%;
-    }
-    .sidebar_right{
-        width: 100%;
     }
     .community-title,.community-subtitle{
         padding: 0px 15px;

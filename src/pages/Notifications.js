@@ -54,17 +54,18 @@ const Notifications = () => {
     <>
       {token && role && (role == "admin" || role == "creative") ? (
         <div className="dark-container mb-0">
-          <div className="container-fluid px-2 px-md-5">
+          <h1 className="community-title">Notifications</h1>
+          <div className="container-fluid mt-4 px-2 px-md-5">
             {/* <div className="row">
           <div className="col-12">
             <Header username={username} />
           </div>
         </div> */}
-            <div className="row">
-              <div className="col-md-2 mb-3">
+            <div className="row div_row">
+              <div className="col-md-2 mb-3 menu_left">
                 <LeftSidebar />
               </div>
-              <div className="col-md-10">
+              <div className="col-md-10 div_content-right">
                 {isLoading ? (
                   <div className="center-page">
                     <CircularProgress />

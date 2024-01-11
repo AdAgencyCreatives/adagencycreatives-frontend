@@ -78,9 +78,9 @@ const GroupMembers = () => {
         <>
             {token && role && (role == "admin" || role == "creative") ? (
                 <div className="dark-container page-community-members">
-                    <div className="container-fluid">
+                    <div className="container-fluid mt-4 px-2 px-md-5">
                         {isLoading ? (<>
-                            <div className="center-page mx-3">
+                            <div className="center-page">
                                 <CircularProgress />
                             </div>
                         </>) : (<>
@@ -88,11 +88,11 @@ const GroupMembers = () => {
                                 {single_group?.name || ""} Group Members
                             </h1>
                         </>)}
-                        <div className="row">
-                            <div className="col-md-2 mb-3">
+                        <div className="row div_row mt-4">
+                            <div className="col-md-2 mb-3 menu_left">
                                 <LeftSidebar />
                             </div>
-                            <div className="col-md-10">
+                            <div className="col-md-10 div_content-right">
                                 <div className="groups-header">
                                     <div className="post-form">
                                         <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/groups/' + group_uuid) ? ' btn-selected' : '')} to={'/groups/' + group_uuid}><HiOutlineUserGroup /> Group Posts</Link>

@@ -28,3 +28,9 @@
     min-height: 200px;
   }
 }
+
+@media (max-width: 1024px) and (min-width: 900px){
+  .dark-container{
+    padding-top: 95px;
+  }
+}
