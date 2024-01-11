@@ -461,18 +461,19 @@ const PostItem = (props) => {
                             <img src={LoungePostIconLikeBlack} style={{ width: "20px" }} alt="" />
                         )}
                         <NumUnit number={likesCount} onClick={(e) => onShowLikedBy(e)} />
-                    </div>
-
-                    <div className={"post-liked-by-dropdown" + (getShowLikedBy() ? ' d-show' : ' d-none')}>
-                        {likedByData && likedByData.slice(0, Math.min(showMaxLikedBy, likedByData.length)).map((like, index) => (
-                            <div key={"liked-by-post-" + props.post.id + "-" + like.id} className="liked-by">
-                                <img src={like.profile_picture || defaultAvatar} alt="" />
+                        <div className={"post-liked-by-dropdown" + (getShowLikedBy() ? ' d-show' : ' d-none')}>
+                            {likedByData && likedByData.slice(0, Math.min(showMaxLikedBy, likedByData.length)).map((like, index) => (
+                                <div key={"liked-by-post-" + props.post.id + "-" + like.id} className="liked-by">
+                                    <img src={like.profile_picture || defaultAvatar} alt="" />
+                                </div>
+                            ))}
+                            <div className="total-likes">
+                                {likesCount > showMaxLikedBy ? '+' : ''}{likesCount > 0 ? (likesCount > showMaxLikedBy ? likesCount - showMaxLikedBy : likesCount) : 0} like{likesCount > 1 ? 's' : ''}
                             </div>
-                        ))}
-                        <div className="total-likes">
-                            {likesCount > showMaxLikedBy ? '+' : ''}{likesCount > 0 ? (likesCount > showMaxLikedBy ? likesCount - showMaxLikedBy : likesCount) : 0} like{likesCount > 1 ? 's' : ''}
                         </div>
                     </div>
+
+                    
                 </CookiesProvider>
 
                 {/* Laugh Section */}
