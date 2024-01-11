@@ -19,6 +19,7 @@ import { CircularProgress } from "@mui/material";
 import ContentEditable from 'react-contenteditable'
 import ConfirmDeleteModal from "../community/Modals/ConfirmDeleteModal";
 import { Context as CreativesContext } from "../../context/CreativesContext";
+import { api } from "../../api/api";
 
 const CreatePost = (props) => {
 
@@ -64,6 +65,7 @@ const CreatePost = (props) => {
   const [taggerSearchResults, setTaggerSearchResults] = useState(null);
   const [taggerPosLeft, setTaggerPosLeft] = useState(0);
   const [taggerPosTop, setTaggerPosTop] = useState(0);
+  const [taggerUsers, setTaggerUsers] = useState([]);
 
   useEffect(() => {
     if (taggerSearchText && taggerSearchText.length) {
@@ -78,6 +80,12 @@ const CreatePost = (props) => {
   }, [taggerSearchText]);
 
   const onTaggerItemSelected = (e, item) => {
+    if (item != null) {
+      setTaggerUsers([
+        ...taggerUsers,
+        item?.uuid
+      ]);
+    }
     let html = '<a href="/creative/' + item.username + '" target="_blank">@' + item.first_name + ' ' + item.last_name + '</a>'
     editorRefTinyMCE?.current?.execCommand('mceInsertContent', false, html);
     //console.log(item);
@@ -131,7 +139,7 @@ const CreatePost = (props) => {
         top = 140 + top + height;
         let left = editorRefTinyMCE?.current?.selection?.getRng()?.getClientRects()[0]?.left ?? 10;
         left = 20 + left;
-        
+
         setTaggerPosLeft(left);
         setTaggerPosTop(top);
 
@@ -174,6 +182,19 @@ const CreatePost = (props) => {
       "group_id": props.feed_group,
       "content": content,
       "attachment_ids": uploadPostAttachments
+    }, (response) => {
+      if (taggerUsers.length > 0) {
+        const schedule_data = {
+          "sender_id": response.data.data.user_id,
+          "recipient_id": taggerUsers,
+          "post_id": response.data.data.id,
+          "type": 0,
+          "notification_text": `${response.data.data.author} commented you in his post`,
+        };
+        const response_schedule = api.post("/schedule-notifications", schedule_data);
+        console.log("schedule data", schedule_data);
+        console.log("schedule response", response_schedule);
+      }
     });
   };
 
@@ -289,7 +310,7 @@ const CreatePost = (props) => {
               value={"@" + taggerSearchText}
               onBlur={(e) => handleTaggerBlur(e)}
             />
-            <div class="tagger-dropdown" style={{ display: taggerSearchResults?.length ? 'block' : 'none' }}>
+            <div className="tagger-dropdown" style={{ display: taggerSearchResults?.length ? 'block' : 'none' }}>
               {taggerSearchResults?.length && taggerSearchResults?.map((item, index) => {
                 return (
                   <div className="tagger-item" onClick={(e) => onTaggerItemSelected(e, item)}>
