@@ -766,6 +766,13 @@ h2.epr-emoji-category-label {
     .sidebar_right{
         width: 100%;
     }
+    .community-title,.community-subtitle{
+        padding: 0px 15px;
+        text-align: center!important;
+    }
+    .community-subtitle span{
+        text-align: center!important;
+    }
 }
 
 @media (min-width:768px) {

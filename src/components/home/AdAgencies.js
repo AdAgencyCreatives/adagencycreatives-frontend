@@ -82,7 +82,7 @@ const AdAgencies = () => {
                     <h3 className="employer-title">
                       <Link to={`/agency/${item.slug}`}>{item.name}</Link>
                     </h3>
-                    {item.location.state && item.location.state != '' && (
+                    {item.location.state && item.location.state !== '' ? (
                       <div className="job-location location">
                         <IoLocationOutline />
                         {item.location.state && (
@@ -95,6 +95,11 @@ const AdAgencies = () => {
                             ,&nbsp;{item.location.city}
                           </Link>
                         )}
+                      </div>
+                    ) : (
+                      <div className="job-location location no_location">
+                        <IoLocationOutline />
+                        <a href="">No Location</a>
                       </div>
                     )}
                     <div className="open-jobs-btn">

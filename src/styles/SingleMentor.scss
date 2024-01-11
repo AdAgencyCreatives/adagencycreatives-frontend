@@ -38,6 +38,7 @@
         font-weight: 600;
         width: 100%;
         text-shadow: 1px 0px white;
+        padding: 0px 10px;
     }
 
     .box-link {
@@ -60,6 +61,8 @@
         margin-top: 10px;
         width: 80%;
         position: absolute;
+        width: calc(100% - 50px);
+        left: 10px;
         bottom: 17px;
     }
 
