@@ -21,6 +21,10 @@ const MyJobWidget = (props) => {
     } = useContext(AgenciesContext);
 
     const handleMarkFilled = (e, job) => {
+        if(job?.status == 'filled') {
+            showAlert("Job Vaccany Already Filled");
+            return;
+        }
         (async () => {
             let result = await markFilled(job.id, 'filled');
             if (result && result.status == 'filled') {

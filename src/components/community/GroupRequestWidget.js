@@ -79,6 +79,7 @@ const GroupRequestWidget = (props) => {
             "status": status
         });
         if (result) {
+            
             logActivity(user.uuid, "lounge_group_request_responded", "Group Request " + status + " with Creative: " + creative.name, "{user_id:'" + user.uuid + "', creative_id:'" + creative.id + "', status:'" + status + "'}");
             setGroupRequestRecord(result);
             getGroupRequestRecordAsync();
@@ -88,11 +89,24 @@ const GroupRequestWidget = (props) => {
     };
 
     const sendGroupRequestRespondedNotificationAsync = async (creative, status) => {
-        let result = await saveNotification({
+        // let result = await saveNotification({
+        //     "user_id": creative.user_id ? creative.user_id : creative.user.uuid,
+        //     "type": "lounge_group_request_responded",
+        //     "message": user.first_name + " " + user.last_name + " has " + status + (status == "cancelled" ? "" : " your") + " your request to join group: " + single_group.name + ".",
+        //     "body": "{}"
+        // });
+        let result1 = await saveNotification({
             "user_id": creative.user_id ? creative.user_id : creative.user.uuid,
-            "type": "lounge_group_request_responded",
-            "message": user.first_name + " " + user.last_name + " has " + status + (status == "cancelled" ? "" : " your") + " your request to join group: " + single_group.name + ".",
-            "body": "{}"
+            "type": "lounge_group_activity",
+            "message": "Your request to join " + single_group.status + " " + single_group.name + " has been " + status + ".",
+            "body": "{activity_key:'lounge_group_request_responded'}"
+        });
+
+        let result2 = await saveNotification({
+            "user_id": user.uuid,
+            "type": "lounge_group_activity",
+            "message": "You have " + status + " the " + creative.name + "'s request to join your " + single_group.status + " group: " + single_group.name + ".",
+            "body": "{activity_key:'lounge_group_request_responded'}"
         });
     };
 

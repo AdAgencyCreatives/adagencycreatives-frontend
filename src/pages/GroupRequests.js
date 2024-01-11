@@ -52,7 +52,7 @@ const GroupRequests = () => {
     useEffect(() => {
         if (token && user && single_group && single_group.uuid == group_uuid) {
             setIsLoading(false);
-            if(user && single_group.user && single_group.user.id == user.id) {
+            if (user && single_group.user && single_group.user.id == user.id) {
                 (async () => {
                     let result = await getGroupRequests(group_uuid);
                     setGroupRequests(result || [])
@@ -131,11 +131,7 @@ const GroupRequests = () => {
                                             </div>
                                         ) : (
                                             <>
-                                                {user ? (<>
-                                                    <div className="center-page">Sorry, your are not a member of this group.</div>
-                                                </>) : (<>
-                                                    <div className="center-page">Sorry, nothing here.</div>
-                                                </>)}
+                                                <div className="center-page">Sorry, nothing here.</div>
                                             </>
                                         )}
                                     </>

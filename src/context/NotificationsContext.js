@@ -53,7 +53,7 @@ const getLoungeNotifications = (dispatch) => {
   return async (user_id, page = false) => {
     setLoading(dispatch, true);
     try {
-      const response = await api.get("/notifications?sort=-created_at&status=0&filter[type]=lounge_friendship_requested,lounge_friendship_responded,lounge_group_request_responded,lounge_mention&filter[user_id]=" + user_id + (page ? "&page=" + page : ""));
+      const response = await api.get("/notifications?sort=-created_at&status=0&filter[type]=lounge_friends_activity,lounge_group_activity,lounge_mention&filter[user_id]=" + user_id + (page ? "&page=" + page : ""));
       dispatch({
         type: "set_notifications",
         payload: response.data,

@@ -28,7 +28,7 @@ const Groups = () => {
   } = useContext(GroupsContext);
 
   const {
-    state: { role, user, token },
+    state: { role, user, token, },
   } = useContext(AuthContext);
 
   const {
