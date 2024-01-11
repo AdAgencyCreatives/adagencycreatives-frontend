@@ -418,7 +418,7 @@ const Profile = () => {
           isValid = Object.keys(field?.value).length > 0;
         }
 
-        if (field.type == "dropdown" && (field.name == 'state_id' || field.name == 'city_id') {
+        if (field.type == "dropdown" && (field.name == 'state_id' || field.name == 'city_id')) {
           isValid = formData[field.name].length > 0;
         }
       }
