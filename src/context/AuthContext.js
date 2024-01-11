@@ -262,7 +262,8 @@ const deleteProfile = (dispatch) => {
 const getNotificationsCount = (dispatch) => {
   return async (user_id) => {
     try {
-      const response = await api.get("/notifications/count?filter[user_id]=" + user_id);
+      // const response = await api.get("/notifications/count?filter[user_id]=" + user_id);
+      const response = await api.get("/notifications/count?status=0&filter[type]=lounge_friends_activity,lounge_group_activity,lounge_mention&filter[user_id]=" + user_id);
       dispatch({
         type: "set_notifications_count",
         payload: response.data.count,
