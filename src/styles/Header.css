@@ -725,3 +725,17 @@ nav ul.dropdown-list .list-item-text.j-fix {
     height: 20px;
     line-height: 20px;
 }
+
+@media (max-width: 992px) and (min-width: 900px){
+    .header_container{
+        flex-direction: column!important;
+    }
+    .header_container .right-menu{
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+    .header_container .left-logo{
+        flex-basis: 50%;
+        max-width: 50%;
+    }
+}

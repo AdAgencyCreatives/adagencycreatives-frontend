@@ -156,7 +156,8 @@
 }
 
 .item.new-member-widget .item-meta {
-    width: 20%;
+    width: 30%;
+    text-align: right;
 }
 
 .item-title a,
@@ -174,4 +175,14 @@
 .item-meta a:hover,
 .item-meta a:hover .activity {
     color: #d3a11f !important;
+}
+
+@media (max-width: 992px){
+    .right-sidebar .item-list li.vcard .new-member-widget .item-meta a{
+        padding: 5px;
+    }
+}
+
+@media (max-width: 767px){
+    
 }

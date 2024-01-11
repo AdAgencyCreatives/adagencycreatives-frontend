@@ -42,6 +42,20 @@
         -webkit-justify-content: center;
         -moz-justify-content: center;
         -ms-justify-content: center;
+        a{
+            position: relative;
+            padding-top: 100%;
+            width: 100%;
+            display: block;
+
+            img{
+                height: 100%;
+                position: absolute;
+                width: 100%;
+                left: 0;
+                top: 0;
+            }
+        }
     }
 
     img {
