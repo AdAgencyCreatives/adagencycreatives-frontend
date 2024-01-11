@@ -418,14 +418,14 @@ const toggleLaugh = (dispatch) => {
 };
 
 const savePost = (dispatch) => {
-  return async (data) => {
+  return async (data, callback) => {
     dispatch({
       type: "set_form_submit",
       payload: true,
     });
     try {
-      console.log(data);
       const response = await api.post("/posts", data);
+      callback(response);
       dispatch({
         type: "add_post",
         payload: response.data.data.id,
@@ -439,13 +439,14 @@ const savePost = (dispatch) => {
 };
 
 const saveComment = (dispatch) => {
-  return async (data) => {
+  return async (data, callback) => {
     dispatch({
       type: "set_form_submit",
       payload: true,
     });
     try {
       const response = await api.post("/comments", data);
+      callback(response);
       dispatch({
         type: "add_comment",
         payload: {

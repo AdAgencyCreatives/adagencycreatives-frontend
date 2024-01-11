@@ -108,3 +108,12 @@ span.count-number {
     -moz-user-select: none;
     min-height: 40px;
 }
+
+@media (max-width: 1024px){
+    .page-community-members .search-box .search-bar{
+        width: calc(100% - 160px);
+    }
+    .page-community-members .search-box .search-btn{
+        width: 140px;
+    }
+}

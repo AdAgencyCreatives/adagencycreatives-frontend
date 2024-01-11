@@ -220,7 +220,7 @@ const Sidebar = ({ data, user }) => {
           )}
         </div>
       </div>
-      <div className="sidebar-item mt-4">
+      <div className="sidebar-item my-4">
         <h4 className="title">Video</h4>
         {video ? (
           <div className="video-section mt-4">
@@ -232,7 +232,7 @@ const Sidebar = ({ data, user }) => {
       </div>
 
       {resume?.length ? (
-        <div className="sidebar-item mt-4">
+        <div className="sidebar-item my-4">
           <h4 className="title">Resume</h4>
           <div className="content">
             {resume.map((item) => (

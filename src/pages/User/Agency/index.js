@@ -65,8 +65,8 @@ const Agency = () => {
   return (
     <div className="agency-dashboard-container">
       <div className="container-fluid">
-        <div className="row">
-          <div className="col-md-3 pt-3">
+        <div className="row div_row">
+          <div className="col-md-3 pt-3 menu_left">
             <Sidebar
               nav={agencyNav}
               user={single_agency}
@@ -74,7 +74,7 @@ const Agency = () => {
               setMobileOpen={setMobileOpen}
             />
           </div>
-          <div className="col-md-9 pt-5">
+          <div className="col-md-9 pt-5 div_content-right">
             <div className="sidebar-toggle d-md-none d-inline-block">
               <IoMenu
                 onClick={() => setMobileOpen((prevState) => !prevState)}
