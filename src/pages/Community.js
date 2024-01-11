@@ -32,7 +32,7 @@ const Community = () => {
           <h1 className="community-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('title', pageData) }}></h1>
           <h2 className="community-subtitle" dangerouslySetInnerHTML={{ __html: getPateDataItem('sub_title', pageData) }}></h2>
         </DelayedOutput>
-        <div className="container-fluid mt-4">
+        <div className="container-fluid mt-4 px-2 px-md-5">
           {!token || !role || (role != "admin" && role != "creative") ? (
             <>
               {loaded && (
@@ -53,11 +53,11 @@ const Community = () => {
               )}
             </>
           ) : (
-            <div className="row">
-              <div className="col-md-2 mb-4 mb-md-0">
+            <div className="row div_row">
+              <div className="col-md-2 mb-4 mb-md-0 menu_left">
                 <LeftSidebar />
               </div>
-              <div className="col-md-7 order-md-2 order-2">
+              <div className="col-md-7 order-md-2 order-2 div_content_center">
                 <div className="right-sidebar mobile-displayed">
                   <div className="widgets">
                     <div className="widget">
@@ -70,7 +70,7 @@ const Community = () => {
                 <CreatePost feed_group={feed_group} />
                 <PostList feed_group={feed_group} />
               </div>
-              <div className="col-md-3 order-md-3 order-3">
+              <div className="col-md-3 order-md-3 order-3 sidebar_right">
                 <RightSidebarWidgets />
               </div>
             </div>

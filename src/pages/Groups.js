@@ -110,11 +110,11 @@ const Groups = () => {
             <h1 className="community-title text-white text-center mb-4">
               Groups
             </h1>
-            <div className="row">
-              <div className="col-md-2 mb-3">
+            <div className="row div_row">
+              <div className="col-md-2 mb-3 menu_left">
                 <LeftSidebar />
               </div>
-              <div className="col-md-10">
+              <div className="col-md-10 div_content-right">
                 <GroupsHeader currentView={currentView} setCurrentView={setCurrentView} />
                 {isLoading ? (
                   <div className="center-page">

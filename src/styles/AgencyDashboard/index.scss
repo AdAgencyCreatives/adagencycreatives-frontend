@@ -34,3 +34,25 @@
         padding: 0
     }
 }
+.notification_sidebar .nothing{
+    display:inline-block;
+    min-width:inherit;
+    padding:0;
+}
+
+@media (max-width: 1024px){
+    .agency-dashboard-container .menu_left{
+        width:35%;
+    }
+    .agency-dashboard-container .div_content-right{
+        width:65%;
+    }   
+}
+@media (max-width: 767px){
+    .agency-dashboard-container .menu_left{
+        width:100%;
+    }
+    .agency-dashboard-container .div_content-right{
+        width:100%;
+    }   
+}

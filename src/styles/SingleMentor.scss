@@ -64,6 +64,11 @@
         width: calc(100% - 50px);
         left: 10px;
         bottom: 17px;
+        overflow: hidden;
+       display: -webkit-box;
+       -webkit-line-clamp: 2; /* number of lines to show */
+               line-clamp: 2; 
+       -webkit-box-orient: vertical;
     }
 
     .flip-card-front,
