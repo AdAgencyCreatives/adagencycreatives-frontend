@@ -187,6 +187,19 @@ const saveAgency = (dispatch) => {
   };
 };
 
+const saveAdvisorRecruiter = (dispatch) => {
+  return async (role, uid, data, callback, callbackError) => {
+    setFormSubmit(dispatch, true);
+    try {
+      await api.patch("/advisor_profile/" + uid, data);
+      callback(role + " Profile updated successfully");
+    } catch (error) {
+      callbackError(error.response.data.message);
+    }
+    setFormSubmit(dispatch, false);
+  };
+};
+
 const uploadAttachment = (dispatch) => {
   return async (data) => {
     try {
@@ -314,6 +327,7 @@ export const { Context, Provider } = createDataContext(
     getSubscriptionStatus,
     sendJobInvite,
     getAgencieRoles,
+    saveAdvisorRecruiter,
   },
   state
 );
