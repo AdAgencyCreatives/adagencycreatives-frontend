@@ -18,7 +18,7 @@ import useNotifications from "../hooks/useNotifications";
 import { useScrollLoader } from "../hooks/useScrollLoader";
 
 const Notifications = () => {
-  const { notifications, loading, loadMore, updateNotifications } = useNotifications();
+  const { notifications, loading, loadMore, updateNotifications } = useNotifications('lounge');
   useScrollLoader(loading, loadMore);
 
   const [isLoading, setIsLoading] = useState(true);

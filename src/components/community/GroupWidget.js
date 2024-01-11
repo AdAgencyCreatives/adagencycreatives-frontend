@@ -4,7 +4,7 @@ import { CircularProgress, IconButton, Tooltip } from "@mui/material";
 import "../../styles/Groups.scss";
 import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../context/AuthContext";
-import { joinGroup, leaveGroup, getGroupMembership } from "../../context/GroupMembersDataContext";
+import { joinGroup, leaveGroup, getGroupMembership, getGroupInvitation, leaveMembership } from "../../context/GroupMembersDataContext";
 import { useState, useEffect, useContext } from "react";
 import TimeAgo from "../TimeAgo";
 import UtcToLocalDateTime from "../UtcToLocalDateTime";
@@ -47,15 +47,27 @@ const GroupWidget = (props) => {
     } = useContext(AuthContext);
 
     useEffect(() => {
-        if (user) {
+        if (user && props.group) {
             getGroupMembershipAsync(props.group.uuid, user.uuid);
         }
     }, [user, props.group]);
 
     const getGroupMembershipAsync = async (group_id, user_id) => {
         const result = await getGroupMembership(group_id, user_id);
-        setMemberRole(result ? result.role : "");
-        setGroupMembership(result)
+        if (result) {
+            setMemberRole(result ? result.role : "");
+            setGroupMembership(result)
+            setIsLoading(false);
+        } else if (props?.group?.status == 'private') {
+            getGroupInvitationAsync(group_id, user_id);
+        }
+
+    };
+
+    const getGroupInvitationAsync = async (group_id, user_id) => {
+        const result = await getGroupInvitation(group_id, user_id);
+        setMemberRole(result?.status || "");
+        setGroupMembership(null);
         setIsLoading(false);
     };
 
@@ -67,9 +79,15 @@ const GroupWidget = (props) => {
                 "role": "member"
             });
             if (result) {
-                showMessageModal("success", "Thanks!", "Group Joined Successfully.", result);
-                setMemberRole(result.role);
-                setGroupMembership(result);
+                if (result.invited_by && result.invited_to) {
+                    showMessageModal("success", "Thanks!", "Request Sent Successfully.", result);
+                    setMemberRole("pending");
+                    setGroupMembership(null);
+                } else {
+                    showMessageModal("success", "Thanks!", "Group Joined Successfully.", result);
+                    setMemberRole(result.role);
+                    setGroupMembership(result);
+                }
             } else {
                 showMessageModal("error", "Oops!", "Unable to join group at the moment.", result);
             }
@@ -91,6 +109,19 @@ const GroupWidget = (props) => {
                 setGroupMembership(null);
             } else {
                 showMessageModal("error", "Oops!", "Unable to leave group at the moment.", result);
+            }
+        })();
+    };
+
+    const handleLeaveMembership = () => {
+        (async () => {
+            const result = await leaveMembership(props.group.uuid, user.uuid);
+            if (result) {
+                showMessageModal("success", "Thanks!", "Request Withdrawn Successfully.", result);
+                setMemberRole("");
+                setGroupMembership(null);
+            } else {
+                showMessageModal("error", "Oops!", "Unable to withdraw request at the moment.", result);
             }
         })();
     };
@@ -121,7 +152,16 @@ const GroupWidget = (props) => {
                                 <>
                                     <Tooltip title="Membership Status">
                                         <div className="group-membership-status">
-                                            Group {memberRole}
+                                            {!groupMembership && props.group.status == 'private' ? (
+                                                <>
+                                                    Membership {memberRole}
+                                                </>
+                                            ) : (
+                                                <>
+                                                    Group {memberRole}
+                                                </>
+                                            )}
+
                                         </div>
                                     </Tooltip>
                                     {memberRole == "Admin" || memberRole == "Moderator" ? (<>
@@ -153,7 +193,7 @@ const GroupWidget = (props) => {
                                             setOpenModal={setOpenConfirmLeaveModal}
                                             title="Confirm Leave Group?"
                                             message="Are you sure to leave this group?"
-                                            onConfirm={handleLeaveGroup}
+                                            onConfirm={handleLeaveMembership}
                                         />
                                     </>) : (<></>)}
 
@@ -166,7 +206,7 @@ const GroupWidget = (props) => {
                         </div>
                     )}
                 </div>
-            </div>
+            </div >
         </>
     );
 };

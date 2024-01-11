@@ -14,23 +14,24 @@ import SearchBar from "../components/SearchBar";
 
 import { Link, useParams } from "react-router-dom";
 import { Context as GroupsContext } from "../context/GroupsContext";
-import { getGroupMembership } from "../context/GroupMembersDataContext";
+import { getGroupRequests } from "../context/GroupMembersDataContext";
 import { HiOutlineUserGroup } from "react-icons/hi2";
+import GroupRequestWidget from "../components/community/GroupRequestWidget";
 
-const GroupMembers = () => {
+const GroupRequests = () => {
     const { creatives, loading, loadMore, searchCreatives } = useCreatives();
     const [isLoading, setIsLoading] = useState(true);
-    const [isGroupMember, setIsGroupMember] = useState(false);
+    const [groupRequests, setGroupRequests] = useState(null);
 
     const {
-        state: { single_group, group_members },
-        getGroup, getGroupMembers,
+        state: { single_group, },
+        getGroup,
     } = useContext(GroupsContext);
 
     const { group_uuid } = useParams();
 
     const {
-        state: { role, user, token },
+        state: { token, role, user },
     } = useContext(AuthContext);
 
     useScrollLoader(loading, loadMore);
@@ -42,10 +43,6 @@ const GroupMembers = () => {
     };
 
     useEffect(() => {
-        setIsLoading(false);
-    }, [group_members]);
-
-    useEffect(() => {
         if (token) {
             setIsLoading(true);
             getGroup(group_uuid);
@@ -55,21 +52,20 @@ const GroupMembers = () => {
     useEffect(() => {
         if (token && user && single_group && single_group.uuid == group_uuid) {
             setIsLoading(false);
-            (async () => {
-                let result = await getGroupMembership(group_uuid, user.uuid)
-                if(result && result.creative.user_id == user.uuid) {
-                    setIsGroupMember(true);
-                    getGroupMembers(group_uuid);
-                }
-            })();
+            if(user && single_group.user && single_group.user.id == user.id) {
+                (async () => {
+                    let result = await getGroupRequests(group_uuid);
+                    setGroupRequests(result || [])
+                })();
+            }
         }
     }, [token, single_group]);
 
     useEffect(() => {
-        if (token && group_members) {
+        if (token && groupRequests) {
             setIsLoading(false);
         }
-    }, [token, group_members]);
+    }, [token, groupRequests]);
 
     const isCurrentPage = (relativeUrl) => {
         return (window.location.pathname + (window.location.search && window.location.search.length > 1 ? window.location.search : '')) == relativeUrl;
@@ -77,11 +73,11 @@ const GroupMembers = () => {
 
     return (
         <>
-            {token && role && (role == "admin" || role == "creative") ? (
+            {user && role && (role == "admin" || role == "creative") ? (
                 <div className="dark-container page-community-members">
-                    <div className="container-fluid mt-4 px-2 px-md-5">
+                    <div className="container-fluid">
                         {isLoading ? (<>
-                            <div className="center-page">
+                            <div className="center-page mx-3">
                                 <CircularProgress />
                             </div>
                         </>) : (<>
@@ -89,11 +85,11 @@ const GroupMembers = () => {
                                 {single_group?.name || ""} Group Members
                             </h1>
                         </>)}
-                        <div className="row div_row mt-4">
-                            <div className="col-md-2 mb-3 menu_left">
+                        <div className="row">
+                            <div className="col-md-2 mb-3">
                                 <LeftSidebar />
                             </div>
-                            <div className="col-md-10 div_content-right">
+                            <div className="col-md-10">
                                 <div className="groups-header">
                                     <div className="post-form">
                                         <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/groups/' + group_uuid) ? ' btn-selected' : '')} to={'/groups/' + group_uuid}><HiOutlineUserGroup /> Group Posts</Link>
@@ -110,17 +106,16 @@ const GroupMembers = () => {
                                     </div>
                                 ) : (
                                     <>
-                                        {isGroupMember && group_members && group_members.length ? (
+                                        {groupRequests && groupRequests.length ? (
                                             <div className="row g-4 px-1">
-                                                {group_members &&
-                                                    group_members.map((group_member, index) => {
-                                                        return (
-                                                            <CommunityMemberWidget
-                                                                key={"community-member-creative-" + group_member.creative.id}
-                                                                creative={group_member.creative}
-                                                            />
-                                                        );
-                                                    })}
+                                                {groupRequests.map((group_request, index) => {
+                                                    return (
+                                                        <CommunityMemberWidget
+                                                            key={"group-request-creative-" + group_request.invited_to.id}
+                                                            creative={group_request.invited_to}
+                                                        />
+                                                    );
+                                                })}
                                                 <div className="load-more text-center">
                                                     {loading && (
                                                         <div
@@ -136,7 +131,7 @@ const GroupMembers = () => {
                                             </div>
                                         ) : (
                                             <>
-                                                {!isGroupMember ? (<>
+                                                {user ? (<>
                                                     <div className="center-page">Sorry, your are not a member of this group.</div>
                                                 </>) : (<>
                                                     <div className="center-page">Sorry, nothing here.</div>
@@ -156,4 +151,4 @@ const GroupMembers = () => {
     );
 };
 
-export default GroupMembers;
+export default GroupRequests;

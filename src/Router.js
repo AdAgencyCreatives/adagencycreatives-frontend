@@ -38,6 +38,7 @@ import Business from "./pages/Mentor/Business";
 import Tech from "./pages/Mentor/Tech";
 import ResetPassword from "./pages/ResetPassword";
 import FilmFestival1 from "./pages/FilmFestival1";
+import GroupRequests from "./pages/GroupRequests";
 
 export const router = createBrowserRouter([
   {
@@ -136,6 +137,11 @@ export const router = createBrowserRouter([
       {
         path: "/group-members/:group_uuid",
         element: <GroupMembers />,
+      },
+
+      {
+        path: "/group-requests/:group_uuid",
+        element: <GroupRequests />,
       },
 
       {

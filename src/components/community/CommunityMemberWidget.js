@@ -12,6 +12,7 @@ import { CircularProgress } from "@mui/material";
 import { saveNotification } from "../../context/NotificationsDataContext";
 
 import FriendshipWidget from "./FriendshipWidget";
+import GroupRequestWidget from "./GroupRequestWidget";
 
 const CommunityMemberWidget = (props) => {
 
@@ -34,6 +35,7 @@ const CommunityMemberWidget = (props) => {
     const isAgency = role == "agency";
 
     const isOwnProfile = user?.uuid == props.creative?.user_id;
+    const isGroupRequestsPage = window.location.href.indexOf("/group-requests/") > 0;
 
     return (
         <>
@@ -75,7 +77,11 @@ const CommunityMemberWidget = (props) => {
                             )}
                         </div>
                         <div className="user-actions">
-                            <FriendshipWidget creative={props.creative} visibleAfterProcess={visibleAfterProcess} setVisibleAfterProcess={setVisibleAfterProcess} />
+                            {isGroupRequestsPage ? (
+                                <GroupRequestWidget creative={props.creative} visibleAfterProcess={visibleAfterProcess} setVisibleAfterProcess={setVisibleAfterProcess} />
+                            ) : (
+                                <FriendshipWidget creative={props.creative} visibleAfterProcess={visibleAfterProcess} setVisibleAfterProcess={setVisibleAfterProcess} />
+                            )}
                             {!isOwnProfile && (
                                 <Tooltip title="View Messages">
                                     <Link className="btn btn-dark no-border" to={"/messages/" + props.creative.user_id}>

@@ -9,7 +9,7 @@ import useNotifications from "../../hooks/useNotifications";
 
 const Notifications = () => {
 
-    const { notifications, meta, loading, getNotifications } = useNotifications();
+    const { notifications, meta, loading, getNotifications, markReadNotification } = useNotifications();
     const { state: { user } } = useContext(AuthContext);
     const paginate = (page) => {
         getNotifications(user.uuid, page);

@@ -60,9 +60,9 @@ const reducer = (state, action) => {
 };
 
 const getGroups = (dispatch) => {
-  return async () => {
+  return async (status = 0) => {
     try {
-      const response = await api.get("/groups?sort=-created_at&filter[status]=0");
+      const response = await api.get("/groups?sort=-created_at&filter[status]=" + status);
       dispatch({
         type: "set_groups",
         payload: response.data,
