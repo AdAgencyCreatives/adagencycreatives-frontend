@@ -118,7 +118,7 @@ const AdvisorRecruiterProfile = () => {
 
   // Set initial fields
   useEffect(() => {
-    if (Object.keys(single_agency).length > 0) {
+    if (user && Object.keys(single_agency).length > 0) {
       setIsloading(false);
       console.log(single_agency, 'single_agency');
       setFields([
@@ -147,7 +147,7 @@ const AdvisorRecruiterProfile = () => {
           data: statesList,
           callback: (item) => changeState(item, "state_id"),
           placeholder: "Select State",
-          value: statesList.find((state) => state.value == single_agency.location?.state_id),
+          value: single_agency.location?.state_id && statesList.find((state) => state.value == single_agency.location?.state_id),
         },
         {
           label: "Nearest Major City",
@@ -156,7 +156,7 @@ const AdvisorRecruiterProfile = () => {
           required: true,
           data: citiesList,
           placeholder: "Select City",
-          callback: (item) => handleDropdownChange(item, "city_id"),
+          callback: (item) => changeCity(item, "city_id"),
           value: single_agency.location?.city_id && citiesList.find((city) => city.value == single_agency.location.city_id),
         },
         {
@@ -295,8 +295,16 @@ const AdvisorRecruiterProfile = () => {
   const changeState = (item, name) => {
     getCities(item.value);
     handleDropdownChange(item, name);
-    cityRef.current?.clearValue();
+    if(isMounted) {
+      cityRef.current?.clearValue();
+    }
     // handleDropdownChange({ value: "" }, "city_id");
+  };
+
+  const changeCity = (item, name) => {
+    if (item) {
+      handleDropdownChange(item, name);
+    }
   };
 
   const handleTextChange = (e, name) => {
@@ -311,7 +319,6 @@ const AdvisorRecruiterProfile = () => {
   const handleDropdownChange = (item, name) => {
     if (item) {
       setFormData((prev) => ({ ...prev, [name]: item.value }));
-      // updateFieldValue(name, item.value);
     }
   };
 
@@ -342,6 +349,10 @@ const AdvisorRecruiterProfile = () => {
 
         if (isObject(field?.value)) {
           isValid = Object.keys(field?.value).length > 0;
+        }
+
+        if (field.type == "dropdown" && (field.name == 'state_id' || field.name == 'city_id')) {
+          isValid = formData[field.name].length > 0;
         }
 
       }

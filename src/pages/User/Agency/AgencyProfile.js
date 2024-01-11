@@ -300,7 +300,7 @@ const AgencyProfile = () => {
       console.log(fields);
       let newFields = [...fields];
       const fieldIndex = newFields.findIndex((item) => item.name == 'city_id');
-      if(fieldIndex >= 0) {
+      if (fieldIndex >= 0) {
         newFields[fieldIndex].data = citiesList;
         setFields([...newFields]);
       }
@@ -474,7 +474,7 @@ const AgencyProfile = () => {
           isValid = Object.keys(field?.value).length > 0;
         }
 
-        if (field.type == "dropdown" && (field.name == 'industry_experience' || field.name == 'media_experience')) {
+        if (field.type == "dropdown" && (field.name == 'state_id' || field.name == 'city_id' || field.name == 'media_experience' || field.name == 'media_experience')) {
           isValid = formData[field.name].length > 0;
         }
 
@@ -605,7 +605,7 @@ const AgencyProfile = () => {
                         <div className="col-md-2 col-sm-4 col-12">
                           <div className="img">
                             <img src={field.image} className="w-100" ref={logoRef} />
-                          </div>  
+                          </div>
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                           <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => imageUploadRef.current.click()}>
