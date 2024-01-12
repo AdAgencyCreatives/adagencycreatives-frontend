@@ -41,6 +41,22 @@ const MyJobWidget = (props) => {
         })();
     };
 
+    const handleMarkApprove = (e, job) => {
+        if (job?.status == 'approved') {
+            showAlert("Job Vaccany Already Approved");
+            return;
+        }
+        (async () => {
+            let result = await markFilled(job.id, 'approved');
+            if (result && result.status == 'approved') {
+                showAlert("Job Vaccancy Approved Successfully");
+                setJob({ ...job, status: result.status });
+            } else {
+                showAlert("Oops! Unable to fill Job Vaccancy at the moment");
+            }
+        })();
+    };
+
     return (
         <tr key={job.id}>
             {user?.role == 'advisor' && (
@@ -107,15 +123,20 @@ const MyJobWidget = (props) => {
 
             <td className="job-table-actions nowrap">
                 <div className="action-button">
-                    <Tooltip title="Mark filled">
-                        <Link className="btn p-0 border-0 btn-hover-primary" onClick={(e) => handleMarkFilled(e, job)}>
-                            {job?.status == 'filled' ? (
-                                <IoLockClosed className="icon-rounded" />
-                            ) : (
-                                <IoLockOpen className="icon-rounded" />
-                            )}
+                    {job?.status == 'filled' ? (
+                    <Tooltip title="Approve">
+                        <Link className="btn p-0 border-0 btn-hover-primary" onClick={(e) => handleMarkApprove(e, job)}>
+                            <IoCheckmarkCircle className="icon-rounded" />
                         </Link>
                     </Tooltip>
+                    ): (
+                    <Tooltip title="Mark filled">
+                        <Link className="btn p-0 border-0 btn-hover-primary" onClick={(e) => handleMarkFilled(e, job)}>
+                           
+                            <IoLockOpen className="icon-rounded" />
+                        </Link>
+                    </Tooltip>
+                    )}
 
                     <Tooltip title="Edit">
                         <Link
