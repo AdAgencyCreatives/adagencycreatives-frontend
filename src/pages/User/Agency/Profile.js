@@ -136,10 +136,10 @@ const Profile = () => {
 
   // Set initial fields
   useEffect(() => {
-    if (Object.keys(single_agency).length > 0 && industry.length && media.length) {
+    if (Object.keys(single_agency).length > 0 && industry.length && media.length && statesList.length) {
       setIsloading(false);
       setEditorState(EditorState.createWithContent(ContentState.createFromText(single_agency.about ? single_agency.about : "")));
-      console.log(single_agency, 'single_agency');
+      console.log("single_agency", single_agency);
       setFields([
         {
           label: "Your Logo",
@@ -296,15 +296,15 @@ const Profile = () => {
   //Set citiesList api form data
   useEffect(() => {
     if (statesList.length && (single_agency.location?.city_id ? citiesList.length : true)) {
-      console.log("load List Cities", citiesList);
-      console.log(fields);
-      let newFields = [...fields];
+      const newFields = [...fields];
       const fieldIndex = newFields.findIndex((item) => item.name == 'city_id');
-      if(fieldIndex >= 0) {
+      if (fieldIndex >= 0) {
         newFields[fieldIndex].data = citiesList;
+        newFields[fieldIndex].value = single_agency.location.city_id && citiesList.find((city) => city.value === single_agency.location.city_id);
         setFields([...newFields]);
       }
     }
+
   }, [statesList, citiesList]);
 
   //Set initial form data
@@ -605,7 +605,7 @@ const Profile = () => {
                         <div className="col-md-2 col-sm-4 col-12">
                           <div className="img">
                             <img src={field.image} className="w-100" ref={logoRef} />
-                          </div>  
+                          </div>
                         </div>
                         <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                           <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => imageUploadRef.current.click()}>
@@ -700,41 +700,77 @@ const Profile = () => {
                         {field.label}
                         {field.required && <span className="required">*</span>}
                       </label>
-                      <Select
-                        className="dropdown-container"
-                        options={field.data.map((option) => ({
-                          ...option,
-                          // isDisabled: formData.length ? formData[field.name].length > 7 : false,
-                        }))}
-                        isMulti={field.isMulti || false}
-                        ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}
-                        onChange={field.callback}
-                        placeholder={field.placeholder}
-                        defaultValue={field.value}
-                        // isOptionDisabled={(option) => {return field.value.length > 7}}
-                        styles={{
-                          control: (baseStyles) => ({
-                            ...baseStyles,
-                            padding: "11px",
-                            backgroundColor: "#F6F6F6",
-                            border: "none",
-                          }),
-                          valueContainer: (baseStyles) => ({
-                            ...baseStyles,
-                            padding: "0px",
-                            fontSize: 20,
-                          }),
-                          singleValue: (baseStyles) => ({
-                            ...baseStyles,
-                            color: "#696969",
-                          }),
-                          // control:(baseStyles) => ({
-                          //   ...baseStyles,
-                          //   backgroundColor:"#F6F6F6",
-                          //   borderColor:"white"
-                          // }),
-                        }}
-                      />
+                      {
+                        field.name === 'city_id' ? (
+                          <Select
+                            className="dropdown-container"
+                            options={field.data.map((option) => ({
+                              ...option,
+                            }))}
+                            isMulti={field.isMulti || false}
+                            ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}
+                            onChange={field.callback}
+                            placeholder={field.placeholder}
+                            value={field.value}
+                            defaultValue={field.value}
+                            styles={{
+                              control: (baseStyles) => ({
+                                ...baseStyles,
+                                padding: "11px",
+                                backgroundColor: "#F6F6F6",
+                                border: "none",
+                              }),
+                              valueContainer: (baseStyles) => ({
+                                ...baseStyles,
+                                padding: "0px",
+                                fontSize: 20,
+                              }),
+                              singleValue: (baseStyles) => ({
+                                ...baseStyles,
+                                color: "#696969",
+                              }),
+                            }}
+                          />
+                        ) : (
+                          <Select
+                            className="dropdown-container"
+                            options={field.data.map((option) => ({
+                              ...option,
+                              // isDisabled: formData.length ? formData[field.name].length > 7 : false,
+                            }))}
+                            isMulti={field.isMulti || false}
+                            ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}
+                            onChange={field.callback}
+                            placeholder={field.placeholder}
+                            defaultValue={field.value}
+                            // value={field.value}
+                            // isOptionDisabled={(option) => { return field.value.length > 7 }}
+                            styles={{
+                              control: (baseStyles) => ({
+                                ...baseStyles,
+                                padding: "11px",
+                                backgroundColor: "#F6F6F6",
+                                border: "none",
+                              }),
+                              valueContainer: (baseStyles) => ({
+                                ...baseStyles,
+                                padding: "0px",
+                                fontSize: 20,
+                              }),
+                              singleValue: (baseStyles) => ({
+                                ...baseStyles,
+                                color: "#696969",
+                              }),
+                              // control:(baseStyles) => ({
+                              //   ...baseStyles,
+                              //   backgroundColor:"#F6F6F6",
+                              //   borderColor:"white"
+                              // }),
+                            }}
+                          />
+                        )
+                      }
+
                     </div>
                   );
 
