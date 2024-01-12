@@ -14,6 +14,7 @@ const useFormData = (props = {}) => {
   const { isFileValid } = useUploadHelper();
 
   const id = props.id;
+  const [agenciesList, setAgencies] = useState([]);
   const setJobStatus = props.setJobStatus;
   const cityRef = useRef();
   const imageUploadRef = useRef();
@@ -56,7 +57,8 @@ const useFormData = (props = {}) => {
   } = useContext(JobsContext);
 
   const {
-    state: { categories, states, cities, media_experiences, industry_experiences, employment_type, years_experience, strengths },
+    state: { agencies, categories, states, cities, media_experiences, industry_experiences, employment_type, years_experience, strengths },
+    getAgencies,
     getCategories,
     getStates,
     getCities,
@@ -72,6 +74,7 @@ const useFormData = (props = {}) => {
       if (id) {
         getJobById(id);
       }
+      getAgencies();
       getCategories();
       getStates();
       getMediaExperiences();
@@ -88,6 +91,14 @@ const useFormData = (props = {}) => {
       getCities(single_job.location.state_id);
     }
   }, [single_job, citiesList]);
+
+  useEffect(() => {
+    let data = agencies;
+    if (agencies.length) {
+      data = parseAgenciesFieldsData(agencies);
+    }
+    setAgencies(data);
+  }, [agencies]);
 
   useEffect(() => {
     let data = categories;
@@ -152,6 +163,13 @@ const useFormData = (props = {}) => {
   const parseFieldsData = (data) => {
     const parsedValue = data.map((item) => {
       return { label: item.name, value: item.uuid || item.id, key: item.name };
+    });
+    return parsedValue;
+  };
+
+  const parseAgenciesFieldsData = (data) => {
+    const parsedValue = data.map((item) => {
+      return { label: item.agency_name, value: item.agency_id, key: item.name, agency: item };
     });
     return parsedValue;
   };
@@ -257,6 +275,7 @@ const useFormData = (props = {}) => {
       formData,
       single_job,
       employment_type,
+      agenciesList,
       categoriesList,
       statesList,
       citiesList,

@@ -38,6 +38,10 @@ const MyJobWidget = (props) => {
 
     return (
         <tr key={job.id}>
+            <td className="job-table-status">
+                {job.agency.name}
+            </td>
+
             <td className="job-table-info">
                 <div className="job-table-info-content">
                     <div className="title-wrapper">

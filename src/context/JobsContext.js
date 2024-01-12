@@ -558,7 +558,9 @@ const createJob = (dispatch) => {
         type: "set_single_job",
         payload: response.data.data,
       });
-    } catch (error) { }
+    } catch (error) {
+      console.log(error);
+     }
     setFormSubmit(dispatch, false);
   };
 };

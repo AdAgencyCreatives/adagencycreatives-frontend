@@ -43,6 +43,7 @@ const MyJobs = () => {
             <table className="job-table">
               <thead>
                 <tr>
+                  <th className="title">Agency</th>
                   <th className="title">Title</th>
                   <th className="applicants">Applicants</th>
                   <th className="date">Created &amp; Expired</th>
