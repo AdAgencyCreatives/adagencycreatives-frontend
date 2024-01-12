@@ -65,7 +65,7 @@ const PostJob = ({ id }) => {
         return <Loader />;
     }
   };
-  return <div className="agency-page-post-job">{getView()}</div>;
+  return <div className="agency-page-post-job bbb">{getView()}</div>;
 };
 
 export default PostJob;
