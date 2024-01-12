@@ -13,6 +13,7 @@ const state = {
   formSubmit: false,
   applied_jobs: [],
   resume: [],
+  profile_resume: null,
   portfolio_items: [],
   video: null,
   notifications: []
@@ -50,6 +51,8 @@ const reducer = (state, action) => {
       return { ...state, stats: action.payload.stats };
     case "set_resume":
       return { ...state, resume: action.payload.data };
+    case "set_profile_resume":
+      return { ...state, profile_resume: action.payload };
     case "set_portfolio_items":
       return { ...state, portfolio_items: action.payload.data };
     case "set_applied_jobs":
@@ -308,6 +311,18 @@ const getResume = (dispatch) => {
   };
 };
 
+const getProfileResume = (dispatch) => {
+  return async (uid) => {
+    try {
+      const response = await api.get("/resume/system-generated");
+      dispatch({
+        type: "set_profile_resume",
+        payload: response.data,
+      });
+    } catch (error) { }
+  };
+};
+
 const getPortfolio = (dispatch) => {
   return async (uid) => {
     try {
@@ -434,6 +449,7 @@ export const { Context, Provider } = createDataContext(
     getAppliedJobs,
     deleteApplication,
     getResume,
+    getProfileResume,
     getPortfolio,
     getVideo,
     resetVideo,

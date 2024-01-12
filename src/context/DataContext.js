@@ -2,6 +2,7 @@ import { api } from "../api/api";
 import createDataContext from "./createDataContext";
 
 const state = {
+  agencies: [],
   categories: [],
   categories_creative_count:[],
   states: [],
@@ -26,7 +27,9 @@ const state = {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "set_categories":
+    case "set_agencies":
+      return { ...state, agencies: action.payload.data };
+      case "set_categories":
       return { ...state, categories: action.payload.data };
       case "set_categories_creative_count":
       return { ...state, categories_creative_count: action.payload.data };
@@ -118,6 +121,18 @@ const reducer = (state, action) => {
     default:
       return state;
   }
+};
+
+const getAgencies = (dispatch) => {
+  return async () => {
+    try {
+      const response = await api.get("/get_assigned_agencies");
+      dispatch({
+        type: "set_agencies",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
 };
 
 const getCategories = (dispatch) => {
@@ -470,7 +485,8 @@ export const { Context, Provider } = createDataContext(
     getMentorResources,
     getPublications,
     loadNextPage,
-    getNextPageMentorResources
+    getNextPageMentorResources,
+    getAgencies,
   },
   state
 );

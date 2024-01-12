@@ -14,8 +14,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import useFormData from "../../hooks/useFormData";
+import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as AlertContext } from "../../context/AlertContext";
-
 import useUploadHelper from "../../hooks/useUploadHelper";
 import IconMessage from "../../components/IconMessage";
 
@@ -23,15 +23,22 @@ const JobPostForm = ({ id, setJobStatus }) => {
   const editorRefTinyMCE = useRef(null);
   const [useTinyMCE, setUseTinyMCE] = useState(true);
   const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
+  const [isJobPostAllowed, setIsJobPostAllowed] = useState(false);
+  const [selectedAgency, setSelectedAgency] = useState(false);
 
   const { getUploadGuide, getUploadGuideMessage } = useUploadHelper();
   const imageUploadGuide = getUploadGuide('image', 'job-post-form');
   const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
 
   const {
+    state: { user, token },
+  } = useContext(AuthContext);
+
+  const {
     states: {
       single_job,
       employment_type,
+      agenciesList,
       categoriesList,
       statesList,
       citiesList,
@@ -82,6 +89,12 @@ const JobPostForm = ({ id, setJobStatus }) => {
     return () => document.removeEventListener("focusin", handler);
   }, []);
 
+  const changeAgency = (item, name) => {
+    let selected_agency = agenciesList.find((agency) => agency.agency_name == item.name);
+    setSelectedAgency(selected_agency);
+    setIsJobPostAllowed(selected_agency?.agency?.status?.status == 'active' && selected_agency?.agency?.status?.quota_left > 0);
+    handleDropdownChange(item, name);
+  };
 
   const handleSubmitCurrent = (e) => {
     e.preventDefault();
@@ -89,6 +102,8 @@ const JobPostForm = ({ id, setJobStatus }) => {
       showAlert("The Job Description cannot be empty");
     } else if (formData.expired_at == '' || formData.expired_at == "Invalid date") {
       showAlert("The Job Post Expires date is invalid");
+    } else if (user?.role == 'advisor' && !isJobPostAllowed) {
+      showAlert("Agency with Active package and Quota is required");
     } else {
       handleSubmit(e);
     }
@@ -125,6 +140,16 @@ const JobPostForm = ({ id, setJobStatus }) => {
         setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(single_job.description).contentBlocks)));
       }
       setFields([
+        {
+          label: "Assigned Agencies",
+          required: true,
+          type: "dropdown",
+          name: "agency_id",
+          data: agenciesList,
+          callback: (item) => changeAgency(item, "agency_id"),
+          placeholder: "Select Agency",
+          value: isEdit && agenciesList.find((agency) => agency.value == single_job.agency_id),
+        },
         {
           label: "Agency Logo only upload if it's different from your profile logo",
           required: false,
@@ -328,6 +353,9 @@ const JobPostForm = ({ id, setJobStatus }) => {
           <form onSubmit={handleSubmitCurrent}>
             <div className="row gx-3 gy-5 align-items-end">
               {fields.map((field, index) => {
+                if(user?.role != 'advisor' && field.name == 'agency_id') {
+                  return (<></>);
+                }
                 switch (field.type) {
                   case "image":
                     return (

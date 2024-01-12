@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AgenciesContext } from "../../context/AgenciesContext";
+import { Context as AuthContext } from "../../context/AuthContext";
 import { Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import { IoCheckmarkCircle, IoClose, IoLocationOutline, IoLockClosed, IoLockOpen, IoPencil } from "react-icons/io5";
@@ -13,6 +14,10 @@ const MyJobWidget = (props) => {
     const { showAlert } = useContext(AlertContext);
 
     const {
+        state: { user },
+      } = useContext(AuthContext);
+      
+    const {
         markFilled,
     } = useContext(JobsContext);
 
@@ -21,11 +26,15 @@ const MyJobWidget = (props) => {
     } = useContext(AgenciesContext);
 
     const handleMarkFilled = (e, job) => {
+        if (job?.status == 'filled') {
+            showAlert("Job Vaccany Already Filled");
+            return;
+        }
         (async () => {
             let result = await markFilled(job.id, 'filled');
             if (result && result.status == 'filled') {
                 showAlert("Job Vaccancy Filled Successfully");
-                setJob({...job, status: result.status});
+                setJob({ ...job, status: result.status });
             } else {
                 showAlert("Oops! Unable to fill Job Vaccancy at the moment");
             }
@@ -34,6 +43,12 @@ const MyJobWidget = (props) => {
 
     return (
         <tr key={job.id}>
+            {user?.role == 'advisor' && (
+                <td className="job-table-status">
+                    {job.agency.name}
+                </td>
+            )}
+
             <td className="job-table-info">
                 <div className="job-table-info-content">
                     <div className="title-wrapper">

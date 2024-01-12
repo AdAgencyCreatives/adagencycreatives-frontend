@@ -14,6 +14,7 @@ import Nathan from "../../assets/images/NathanWalker_ProfilePic-150x150.jpg";
 import EditGroup from "./EditGroup";
 import ConfirmDeleteModal from "./Modals/ConfirmDeleteModal";
 import ConfirmModal from "./Modals/ConfirmModal";
+import { saveNotification } from "../../context/NotificationsDataContext";
 
 const GroupWidget = (props) => {
 
@@ -60,8 +61,9 @@ const GroupWidget = (props) => {
             setIsLoading(false);
         } else if (props?.group?.status == 'private') {
             getGroupInvitationAsync(group_id, user_id);
+        } else {
+            setIsLoading(false);
         }
-
     };
 
     const getGroupInvitationAsync = async (group_id, user_id) => {
@@ -71,22 +73,57 @@ const GroupWidget = (props) => {
         setIsLoading(false);
     };
 
-    const handleJoinGroup = (e, group) => {
+    const sendGroupJoinRequestedNotificationAsync = async (group) => {
+        let result1 = await saveNotification({
+            "user_id": user.uuid,
+            "type": "lounge_group_activity",
+            "message": " You have requested to join the " + group.status + " group named: " + group.name + ".",
+            "body": "{activity_key:'lounge_group_join_requested'}"
+        });
+
+        let result2 = await saveNotification({
+            "user_id": group.user.uuid,
+            "type": "lounge_group_activity",
+            "message": user.first_name + " " + user.last_name + " has requested to join your " + group.status + " group named: " + group.name + ".",
+            "body": "{activity_key:'lounge_group_join_requested'}"
+        });
+    };
+
+    const sendGroupJoinedNotificationAsync = async (group) => {
+        let result1 = await saveNotification({
+            "user_id": user.uuid,
+            "type": "lounge_group_activity",
+            "message": " You have successfully joined the " + group.status + " group named: " + group.name + ".",
+            "body": "{activity_key:'lounge_group_joined'}"
+        });
+
+        let result2 = await saveNotification({
+            "user_id": group.user.uuid,
+            "type": "lounge_group_activity",
+            "message": user.first_name + " " + user.last_name + " has joined your " + group.status + " group named: " + group.name + ".",
+            "body": "{activity_key:'lounge_group_joined'}"
+        });
+    };
+
+
+    const handleJoinGroup = (e) => {
         (async () => {
             const result = await joinGroup({
                 "user_id": user.uuid,
-                "group_id": group.uuid,
+                "group_id": props.group.uuid,
                 "role": "member"
             });
             if (result) {
-                if (result.invited_by && result.invited_to) {
+                if (props.group.status == 'private') {
                     showMessageModal("success", "Thanks!", "Request Sent Successfully.", result);
                     setMemberRole("pending");
                     setGroupMembership(null);
+                    sendGroupJoinRequestedNotificationAsync(props.group);
                 } else {
                     showMessageModal("success", "Thanks!", "Group Joined Successfully.", result);
                     setMemberRole(result.role);
                     setGroupMembership(result);
+                    sendGroupJoinedNotificationAsync(props.group);
                 }
             } else {
                 showMessageModal("error", "Oops!", "Unable to join group at the moment.", result);
@@ -100,28 +137,70 @@ const GroupWidget = (props) => {
         }
     };
 
-    const handleLeaveGroup = () => {
-        (async () => {
-            const result = await leaveGroup(groupMembership.id);
-            if (result) {
-                showMessageModal("success", "Thanks!", "Group Left Successfully.", result);
-                setMemberRole("");
-                setGroupMembership(null);
-            } else {
-                showMessageModal("error", "Oops!", "Unable to leave group at the moment.", result);
-            }
-        })();
+    // const handleLeaveGroup = () => {
+    //     (async () => {
+    //         const result = await leaveGroup(groupMembership.id);
+    //         if (result) {
+    //             showMessageModal("success", "Thanks!", "Group Left Successfully.", result);
+    //             setMemberRole("");
+    //             setGroupMembership(null);
+    //         } else {
+    //             showMessageModal("error", "Oops!", "Unable to leave group at the moment.", result);
+    //         }
+    //     })();
+    // };
+
+    const sendGroupWithdrawNotificationAsync = async (group) => {
+        let result1 = await saveNotification({
+            "user_id": user.uuid,
+            "type": "lounge_group_activity",
+            "message": " You have successfully withrawn your request to join the " + group.status + " group named: " + group.name + ".",
+            "body": "{activity_key:'lounge_group_left'}"
+        });
+
+        let result2 = await saveNotification({
+            "user_id": group.user.uuid,
+            "type": "lounge_group_activity",
+            "message": user.first_name + " " + user.last_name + " has withdrawn request to join your " + group.status + " group named: " + group.name + ".",
+            "body": "{activity_key:'lounge_group_left'}"
+        });
+    };
+
+    const sendGroupLeftNotificationAsync = async (group) => {
+        let result1 = await saveNotification({
+            "user_id": user.uuid,
+            "type": "lounge_group_activity",
+            "message": " You have successfully left the " + group.status + " group named: " + group.name + ".",
+            "body": "{activity_key:'lounge_group_left'}"
+        });
+
+        let result2 = await saveNotification({
+            "user_id": group.user.uuid,
+            "type": "lounge_group_activity",
+            "message": user.first_name + " " + user.last_name + " has left your " + group.status + " group named: " + group.name + ".",
+            "body": "{activity_key:'lounge_group_left'}"
+        });
     };
 
     const handleLeaveMembership = () => {
         (async () => {
             const result = await leaveMembership(props.group.uuid, user.uuid);
             if (result) {
-                showMessageModal("success", "Thanks!", "Request Withdrawn Successfully.", result);
+                if (!groupMembership && props.group.status == 'private') {
+                    showMessageModal("success", "Thanks!", "Request Withdrawn Successfully.", result);
+                    sendGroupWithdrawNotificationAsync(props.group);
+                } else {
+                    showMessageModal("success", "Thanks!", "Group Left Successfully.", result);
+                    sendGroupLeftNotificationAsync(props.group);
+                }
                 setMemberRole("");
                 setGroupMembership(null);
             } else {
-                showMessageModal("error", "Oops!", "Unable to withdraw request at the moment.", result);
+                if (props.group.status == 'private') {
+                    showMessageModal("error", "Oops!", "Unable to withdraw request at the moment.", result);
+                } else {
+                    showMessageModal("error", "Oops!", "Unable to leave group at the moment.", result);
+                }
             }
         })();
     };
@@ -199,7 +278,7 @@ const GroupWidget = (props) => {
 
                                 </>
                             ) : (
-                                <button className="btn btn-dark group-btn" onClick={(e) => handleJoinGroup(e, props.group)}>
+                                <button className="btn btn-dark group-btn" onClick={(e) => handleJoinGroup(e)}>
                                     <FaRightToBracket /> Join Group
                                 </button>
                             )}

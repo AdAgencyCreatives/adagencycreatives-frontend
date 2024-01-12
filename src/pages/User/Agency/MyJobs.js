@@ -43,6 +43,9 @@ const MyJobs = () => {
             <table className="job-table">
               <thead>
                 <tr>
+                  {user?.role == 'advisor' && (
+                    <th className="title">Agency</th>
+                  )}
                   <th className="title">Title</th>
                   <th className="applicants">Applicants</th>
                   <th className="date">Created &amp; Expired</th>

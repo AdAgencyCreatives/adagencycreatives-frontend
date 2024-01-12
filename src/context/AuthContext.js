@@ -12,6 +12,7 @@ const state = {
   fetchingToken: true,
   role: null,
   user: null,
+  auth_creative: null,
   formSubmit: false,
   modal: false,
   messages_count: 0,
@@ -34,6 +35,8 @@ const authReducer = (state, action) => {
       return { ...state, formMessage: action.payload };
     case "set_user":
       return { ...state, user: action.payload };
+      case "set_auth_creative":
+      return { ...state, auth_creative: action.payload };
     case "set_advance_search_capabilities":
       return { ...state, advance_search_capabilities: action.payload };
     case "set_subscription_status":
@@ -130,6 +133,10 @@ const signin = (dispatch) => {
       const response = await api.post("/login", data);
       setToken(dispatch)(response.data.token, response.data.user.role);
       setUserData(dispatch, response.data.user);
+
+      let creative = await getCreativeById(response.data.user.uuid);
+      setAuthCreative(dispatch, creative);
+      
       setAdvanceSearchCapabilities(dispatch, response.data.advance_search_capabilities ? response.data.advance_search_capabilities : false);
       setSubscriptionStatus(dispatch, response.data.subscription_status ? response.data.subscription_status : "");
       dispatch({
@@ -142,6 +149,13 @@ const signin = (dispatch) => {
       setErrorMessage(dispatch, error.response.data.message);
     }
   };
+};
+
+export const getCreativeById = async (id) => {
+  try {
+      const response = await api.get("/creatives?filter[user_id]=" + id);
+      return response.data.data[0];
+  } catch (error) { }
 };
 
 const sendResetLink = (dispatch) => {
@@ -248,7 +262,8 @@ const deleteProfile = (dispatch) => {
 const getNotificationsCount = (dispatch) => {
   return async (user_id) => {
     try {
-      const response = await api.get("/notifications/count?filter[user_id]=" + user_id);
+      // const response = await api.get("/notifications/count?filter[user_id]=" + user_id);
+      const response = await api.get("/notifications/count?status=0&filter[type]=lounge_friends_activity,lounge_group_activity,lounge_mention&filter[user_id]=" + user_id);
       dispatch({
         type: "set_notifications_count",
         payload: response.data.count,
@@ -347,6 +362,13 @@ const verifyToken = (dispatch) => async (token) => {
 const setUserData = (dispatch, data) => {
   dispatch({
     type: "set_user",
+    payload: data,
+  });
+};
+
+const setAuthCreative = (dispatch, data) => {
+  dispatch({
+    type: "set_auth_creative",
     payload: data,
   });
 };
