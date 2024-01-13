@@ -39,7 +39,7 @@ const JobList = ({ data, user, showAgency = true }) => {
 
   return (
     <div className="jobs-list-container">
-      <ApplyJob open={open} handleClose={handleClose} job_id={job} handleJob={handleJob} />
+      <ApplyJob open={open} setOpen={setOpen} handleClose={handleClose} job_id={job} handleJob={handleJob} />
       {data.map((item) => (
         <div className="job-item" key={item.id}>
           <div className="d-flex align-items-center flex-md-nowrap flex-wrap gap-md-0 gap-3">

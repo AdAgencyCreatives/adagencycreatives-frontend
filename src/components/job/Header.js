@@ -13,13 +13,14 @@ import Tooltip from "../Tooltip";
 import moment from "moment";
 import { Context } from "../../context/AuthContext";
 import { Context as AlertContext } from "../../context/AlertContext";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ApplyJob from "./ApplyJob";
 
 const Header = ({ data }) => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const [job, setJob] = useState(null);
+  const [isJobApplied, setIsJobApplied] = useState(false);
   const {
     state: { role },
   } = useContext(Context);
@@ -28,9 +29,18 @@ const Header = ({ data }) => {
 
   const isCreative = role == "creative";
 
+  useEffect(() => {
+    setIsJobApplied(data.logged_in_user?.user_has_applied);
+  }, [data]);
+
+  const handleJob = async (job_id) => {
+    console.log(job);
+    setIsJobApplied(true);
+  };
+
   return (
     <div className="container">
-      <ApplyJob open={open} handleClose={handleClose} job_id={job} />
+      <ApplyJob open={open} setOpen={setOpen} handleClose={handleClose} job_id={job} handleJob={handleJob} />
 
       <div className="row align-items-center justify-content-between">
         <div className="col-12 d-flex align-items-top">
@@ -137,7 +147,7 @@ const Header = ({ data }) => {
             </div>
             <div className="col-md-4">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0">
-                {data.logged_in_user?.user_has_applied ? (
+                {isJobApplied ? (
                   <Link className="btn btn-apply active">Applied</Link>
                 ) : (
                   <Link

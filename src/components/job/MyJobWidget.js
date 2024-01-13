@@ -15,8 +15,8 @@ const MyJobWidget = (props) => {
 
     const {
         state: { user },
-      } = useContext(AuthContext);
-      
+    } = useContext(AuthContext);
+
     const {
         markFilled,
     } = useContext(JobsContext);
@@ -122,40 +122,42 @@ const MyJobWidget = (props) => {
             </td>
 
             <td className="job-table-actions nowrap">
-                <div className="action-button">
-                    {job?.status == 'filled' ? (
-                    <Tooltip title="Approve">
-                        <Link className="btn p-0 border-0 btn-hover-primary" onClick={(e) => handleMarkApprove(e, job)}>
-                            <IoCheckmarkCircle className="icon-rounded" />
-                        </Link>
-                    </Tooltip>
-                    ): (
-                    <Tooltip title="Mark filled">
-                        <Link className="btn p-0 border-0 btn-hover-primary" onClick={(e) => handleMarkFilled(e, job)}>
-                           
-                            <IoLockOpen className="icon-rounded" />
-                        </Link>
-                    </Tooltip>
-                    )}
+                {job?.advisor_id && user?.role != 'advisor' ? (<></>) : (
+                    <div className="action-button">
+                        {job?.status == 'filled' ? (
+                            <Tooltip title="Approve">
+                                <Link className="btn p-0 border-0 btn-hover-primary" onClick={(e) => handleMarkApprove(e, job)}>
+                                    <IoCheckmarkCircle className="icon-rounded" />
+                                </Link>
+                            </Tooltip>
+                        ) : (
+                            <Tooltip title="Mark filled">
+                                <Link className="btn p-0 border-0 btn-hover-primary" onClick={(e) => handleMarkFilled(e, job)}>
 
-                    <Tooltip title="Edit">
-                        <Link
-                            className="btn p-0 border-0 btn-hover-primary"
-                            to={"/job/edit/" + job.id}
-                        >
-                            <IoPencil className="icon-rounded" />
-                        </Link>
-                    </Tooltip>
+                                    <IoLockOpen className="icon-rounded" />
+                                </Link>
+                            </Tooltip>
+                        )}
 
-                    <Tooltip title="Remove">
-                        <Link
-                            className="btn p-0 border-0 btn-hover-primary"
-                            onClick={() => deleteJob(job.id)}
-                        >
-                            <IoClose className="icon-rounded" />
-                        </Link>
-                    </Tooltip>
-                </div>
+                        <Tooltip title="Edit">
+                            <Link
+                                className="btn p-0 border-0 btn-hover-primary"
+                                to={"/job/edit/" + job.id}
+                            >
+                                <IoPencil className="icon-rounded" />
+                            </Link>
+                        </Tooltip>
+
+                        <Tooltip title="Remove">
+                            <Link
+                                className="btn p-0 border-0 btn-hover-primary"
+                                onClick={() => deleteJob(job.id)}
+                            >
+                                <IoClose className="icon-rounded" />
+                            </Link>
+                        </Tooltip>
+                    </div>
+                )}
             </td>
         </tr>
     );

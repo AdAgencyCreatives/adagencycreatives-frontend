@@ -6,7 +6,7 @@ import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { FiFile } from "react-icons/fi";
 
-const ApplyJob = ({ open, handleClose, job_id, handleJob }) => {
+const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
   const [message, setMessage] = useState(false);
   const [error, setError] = useState(false);
   const [jobMessage, setJobMessage] = useState("");
@@ -212,9 +212,15 @@ const ApplyJob = ({ open, handleClose, job_id, handleJob }) => {
                     </label>
                   </div>
                 </div>
-                <button className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3" disabled={isSubmit || isLoading}>
-                  Apply Job {isLoading && <CircularProgress size={20} />}
-                </button>
+                {isSubmit ? (
+                  <button className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3" onClick={(e) => setOpen(false)}>
+                    Finish
+                  </button>
+                ) : (
+                  <button className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3" disabled={isSubmit || isLoading}>
+                    Apply Job {isLoading && <CircularProgress size={20} />}
+                  </button>
+                )}
               </form>
             </div>
           </div>

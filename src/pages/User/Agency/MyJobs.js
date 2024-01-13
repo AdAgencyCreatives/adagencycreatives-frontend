@@ -22,8 +22,6 @@ const MyJobs = () => {
     state: { user },
   } = useContext(AuthContext);
 
-
-
   const paginate = (page) => {
     getOpenPositions(user.uuid, page);
   };

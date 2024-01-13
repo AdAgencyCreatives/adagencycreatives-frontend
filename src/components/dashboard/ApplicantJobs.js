@@ -208,6 +208,7 @@ const ApplicantJobs = () => {
                             </div>
                           </div>
                           <div className="ali-right col-sm-4">
+                          {item?.advisor_id && user?.role != 'advisor' ? (<>Status: {application.status}</>) : (
                             <div className="applicant-action-button action-button">
                               <Tooltip title="Add Notes">
                                 <button
@@ -297,6 +298,7 @@ const ApplicantJobs = () => {
                                 </button>
                               </Tooltip>
                             </div>
+                          )}
                           </div>
                         </div>
                       </article>
