@@ -405,7 +405,7 @@ const PostItem = (props) => {
                     </div>
                 )}
             </div>
-            {/* <div className={"post-content" + (!showMoreClicked && postContent?.length > 500 ? " post-preview" : "")} ref={postContentRef}>
+            <div className={"post-content" + (!showMoreClicked && postContent?.length > 500 ? " post-preview" : "")} ref={postContentRef}>
                 <div className="post-body" dangerouslySetInnerHTML={{ __html: postContent }}></div>
             </div>
             {postContent?.length > 500 && (
@@ -414,10 +414,10 @@ const PostItem = (props) => {
                         setShowMoreClicked(value => !value);
                     }}>... Show {showMoreClicked ? "Less" : "More"}</Link>
                 </div>
-            )} */}
-            <div className="post-content">
+            )}
+            {/* <div className="post-content">
                 <ShowMoreText
-                    /* Default options */
+                    // Default options
                     lines={3}
                     more="... Show more"
                     less="... Show less"
@@ -430,7 +430,7 @@ const PostItem = (props) => {
                 >
                     <div className="post-body" dangerouslySetInnerHTML={{ __html: postContent }}></div>
                 </ShowMoreText>
-            </div>
+            </div> */}
             <div className="post-images">
                 {props.post.attachments && props.post.attachments.map((attachment, index) => {
                     return (<>
