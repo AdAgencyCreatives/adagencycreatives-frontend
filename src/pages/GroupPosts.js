@@ -41,12 +41,12 @@ const GroupPosts = () => {
 
     useEffect(() => {
         if (token && single_group && single_group.uuid == group_uuid) {
-            setIsLoading(false);
             (async () => {
                 let result = await getGroupMembership(group_uuid, user.uuid)
                 if (result && result.creative.user_id == user.uuid) {
                     setIsGroupMember(true);
                 }
+                setIsLoading(false);
             })();
         }
     }, [token, single_group]);

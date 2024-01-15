@@ -6,6 +6,7 @@ import createDataContext from "./createDataContext";
 // import { Context as AgenciesContext } from "../context/AgenciesContext";
 
 const state = {
+  isLoading: false,
   isSignedIn: false,
   formMessage: null,
   token: null,
@@ -35,7 +36,7 @@ const authReducer = (state, action) => {
       return { ...state, formMessage: action.payload };
     case "set_user":
       return { ...state, user: action.payload };
-      case "set_auth_creative":
+    case "set_auth_creative":
       return { ...state, auth_creative: action.payload };
     case "set_advance_search_capabilities":
       return { ...state, advance_search_capabilities: action.payload };
@@ -45,13 +46,15 @@ const authReducer = (state, action) => {
       return { ...state, formMessage: null };
     case "set_fetching_token":
       return { ...state, fetchingToken: action.payload };
+    case "set_is_loading":
+      return { ...state, isLoading: action.payload };
     case "set_form_submit":
       return { ...state, formSubmit: action.payload };
     case "set_modal":
       return { ...state, modal: action.payload };
     case "set_messages_count":
       return { ...state, messages_count: action.payload };
-      case "set_notifications_count":
+    case "set_notifications_count":
       return { ...state, notifications_count: action.payload };
     case "set_activities_count":
       return { ...state, activities_count: action.payload };
@@ -136,7 +139,7 @@ const signin = (dispatch) => {
 
       let creative = await getCreativeById(response.data.user.uuid);
       setAuthCreative(dispatch, creative);
-      
+
       setAdvanceSearchCapabilities(dispatch, response.data.advance_search_capabilities ? response.data.advance_search_capabilities : false);
       setSubscriptionStatus(dispatch, response.data.subscription_status ? response.data.subscription_status : "");
       dispatch({
@@ -153,8 +156,8 @@ const signin = (dispatch) => {
 
 export const getCreativeById = async (id) => {
   try {
-      const response = await api.get("/creatives?filter[user_id]=" + id);
-      return response.data.data[0];
+    const response = await api.get("/creatives?filter[user_id]=" + id);
+    return response.data.data[0];
   } catch (error) { }
 };
 
@@ -273,7 +276,7 @@ const getNotificationsCount = (dispatch) => {
 };
 
 const getMessagesCount = (dispatch) => {
-  return async (user_id, type="job") => {
+  return async (user_id, type = "job") => {
     try {
       const response = await api.get("/messages/count?status=0&filter[type]=" + type + "&filter[user_id]=" + user_id);
       dispatch({
@@ -326,6 +329,7 @@ const setToken = (dispatch) => {
 
 const verifyToken = (dispatch) => async (token) => {
   try {
+    setIsLoading(dispatch, true);
     const response = await api.post(
       "/re_login",
       {},
@@ -335,6 +339,7 @@ const verifyToken = (dispatch) => async (token) => {
         },
       }
     );
+    setIsLoading(dispatch, false);
     setToken(dispatch)(response.data.token, response.data.user.role);
     setUserData(dispatch, response.data.user);
     setSubscriptionStatus(dispatch, response.data.subscription_status);
@@ -398,6 +403,13 @@ const prepareFields = (data) => {
 const setFormSubmit = (dispatch, state) => {
   dispatch({
     type: "set_form_submit",
+    payload: state,
+  });
+};
+
+const setIsLoading = (dispatch, state) => {
+  dispatch({
+    type: "set_is_loading",
     payload: state,
   });
 };

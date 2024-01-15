@@ -75,8 +75,8 @@ const Groups = () => {
 
   useEffect(() => {
     if (user && groups) {
-      setIsLoading(false);
       setGroupsFound(groups);
+      setIsLoading(false);
     }
     // console.log("Groups Fetched: ");
     // console.log(groups);
@@ -132,13 +132,11 @@ const Groups = () => {
                         {groupsFound &&
                           groupsFound.map((group, index) => {
                             return (
-                              <>
-                                {group.name == "Feed" || (currentView != "private" && currentView != "my" && currentView != "joined" && group.status != "public") ? (
-                                  <></>
-                                ) : (
-                                  <GroupWidget key={group.uuid} group={group} onUpdateGroup={onUpdateGroup} onDeleteGroup={onDeleteGroup} />
-                                )}
-                              </>
+                              group.name == "Feed" || (currentView != "private" && currentView != "my" && currentView != "joined" && group.status != "public") ? (
+                                <></>
+                              ) : (
+                                <GroupWidget key={group.uuid} group={group} onUpdateGroup={onUpdateGroup} onDeleteGroup={onDeleteGroup} />
+                              )
                             );
                           })}
                         <div className="load-more text-center">

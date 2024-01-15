@@ -16,7 +16,8 @@ import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 import { Context as DataContext } from "../../../context/DataContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
-console.log(Avatar,'Avatar');
+import Loader from "../../../components/Loader";
+
 const CreativeShortlist = () => {
   const [open, setOpen] = useState(false);
   const [item, setItem] = useState({});
@@ -25,6 +26,7 @@ const CreativeShortlist = () => {
   const [openNotes, setOpenNotes] = useState(false);
   const handleCloseNotes = () => setOpenNotes(false);
   const [appId, setAppId] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     state: { bookmarks },
@@ -44,6 +46,10 @@ const CreativeShortlist = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    bookmarks && bookmarks.length > 0 && setIsLoading(false);
+  }, [bookmarks]);
+
   const openMessageDialog = (item) => {
     console.log(item);
     setItem(item);
@@ -55,11 +61,13 @@ const CreativeShortlist = () => {
     setOpenNotes(true);
   };
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="agency-page-creative-shortlist">
       <h3 className="page-title">Creatives Shortlist</h3>
       <div className="card">
-        {bookmarks.length ? (
+        {bookmarks && bookmarks.length ? (
           bookmarks.map((item, index) => {
             const resource = item.resource;
             return (

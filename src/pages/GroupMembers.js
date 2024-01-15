@@ -54,22 +54,21 @@ const GroupMembers = () => {
 
     useEffect(() => {
         if (token && user && single_group && single_group.uuid == group_uuid) {
-            setIsLoading(false);
             (async () => {
                 let result = await getGroupMembership(group_uuid, user.uuid)
-                if(result && result.creative.user_id == user.uuid) {
-                    setIsGroupMember(true);
+                if (result && result.creative.user_id == user.uuid) {
                     getGroupMembers(group_uuid);
+                    setIsGroupMember(true);
                 }
             })();
         }
     }, [token, single_group]);
 
-    useEffect(() => {
-        if (token && group_members) {
-            setIsLoading(false);
-        }
-    }, [token, group_members]);
+    // useEffect(() => {
+    //     if (token && group_members) {
+    //         setIsLoading(false);
+    //     }
+    // }, [token, group_members]);
 
     const isCurrentPage = (relativeUrl) => {
         return (window.location.pathname + (window.location.search && window.location.search.length > 1 ? window.location.search : '')) == relativeUrl;

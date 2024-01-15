@@ -33,26 +33,26 @@ const MyJobWidget = (props) => {
         (async () => {
             let result = await markFilled(job.id, 'filled');
             if (result && result.status == 'filled') {
-                showAlert("Job Vaccancy Filled Successfully");
+                showAlert("Job Filled Successfully");
                 setJob({ ...job, status: result.status });
             } else {
-                showAlert("Oops! Unable to fill Job Vaccancy at the moment");
+                showAlert("Oops! Unable to fill Job at the moment");
             }
         })();
     };
 
     const handleMarkApprove = (e, job) => {
         if (job?.status == 'approved') {
-            showAlert("Job Vaccany Already Approved");
+            showAlert("Job Already Approved");
             return;
         }
         (async () => {
             let result = await markFilled(job.id, 'approved');
             if (result && result.status == 'approved') {
-                showAlert("Job Vaccancy Approved Successfully");
+                showAlert("Job Approved Successfully");
                 setJob({ ...job, status: result.status });
             } else {
-                showAlert("Oops! Unable to fill Job Vaccancy at the moment");
+                showAlert("Oops! Unable to fill Job at the moment");
             }
         })();
     };
