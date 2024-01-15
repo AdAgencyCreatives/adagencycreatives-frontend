@@ -18,6 +18,7 @@ import { Provider as ChatProvider } from "./context/ChatContext";
 import { Provider as AlertProvider } from "./context/AlertContext";
 import ChatListener from "./components/chat/ChatListener";
 import { Provider as NotificationsProvider } from "./context/NotificationsContext";
+import Loader from "./components/Loader";
 
 const theme = createTheme({
   typography: {
@@ -35,11 +36,13 @@ const theme = createTheme({
   },
 });
 
+
 function App() {
 
   const [skipHeaderFooter, setSkipHeaderFooter] = useState(false);
+
   const {
-    state: { token, user },
+    state: { token, user, isLoading },
     getToken,
   } = useContext(AuthContext);
 
@@ -50,6 +53,7 @@ function App() {
   const isCurrentPage = (relativeUrl) => {
     return (window.location.pathname + (window.location.search && window.location.search.length > 1 ? window.location.search : '')) == relativeUrl;
   }
+
   return (
     <ThemeProvider theme={theme}>
       <AlertProvider>
@@ -63,17 +67,21 @@ function App() {
                       <CommunityProvider>
                         <GroupsProvider>
                           <NotificationsProvider>
-                            <div className="App">
-                              <ChatListener />
-                              <ScrollRestoration />
-                              {!skipHeaderFooter ? (<>
-                                <Header />
-                              </>) : (<></>)}
-                              <Outlet context={[setSkipHeaderFooter]} />
-                              {!skipHeaderFooter ? (<>
-                                <Footer />
-                              </>) : (<></>)}
-                            </div>
+                            {isLoading ? (
+                              <Loader />
+                            ) : (
+                              <div className="App">
+                                <ChatListener />
+                                <ScrollRestoration />
+                                {!skipHeaderFooter ? (<>
+                                  <Header />
+                                </>) : (<></>)}
+                                <Outlet context={[setSkipHeaderFooter]} />
+                                {!skipHeaderFooter ? (<>
+                                  <Footer />
+                                </>) : (<></>)}
+                              </div>
+                            )}
                           </NotificationsProvider>
                         </GroupsProvider>
                       </CommunityProvider>
