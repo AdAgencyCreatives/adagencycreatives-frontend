@@ -110,11 +110,12 @@ const MyResume = () => {
         label: "Start Date",
         type: "date",
         name: "started_at",
+        futureDisable: true
       },
       {
         label: "End Date",
         type: "date",
-        name: "completed_at",
+        name: "completed_at"
       },
       {
         label: "Company",
@@ -847,6 +848,7 @@ const MyResume = () => {
                         selected={child.value ? new Date(child.value) : ""}
                         onChange={(date) => handleDateChange(field.name, index, cindex, child.name, date)}
                         dateFormat="MMMM d, yyyy"
+                        maxDate={child?.futureDisable ? new Date() : false}
                       />
                     ) : (
                       ""

@@ -1,10 +1,11 @@
 import Dialog from "@mui/material/Dialog";
 import { useContext, useEffect, useRef, useState } from "react";
 import { IoCloseOutline, IoEye, IoEyeOff } from "react-icons/io5";
+import { TfiAlert } from "react-icons/tfi";
 import "../../styles/Modal/AuthModal.scss";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as AlertContext } from "../../context/AlertContext";
-import ScrollToHash from "../ScrollToHash";
+import { isValidHttpUrl } from "../common";
 
 const RegisterModal = ({ open, handleClose, setModal, form }) => {
   const { state, signup } = useContext(AuthContext);
@@ -67,7 +68,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
       {
         label: "Portfolio Site *",
         required: true,
-        type: "text",
+        type: "url",
         name: "portfolio_site",
         placeholder: "Portfolio Site *",
       },
@@ -143,6 +144,11 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
     const updatedFields = { ...fields };
 
     updatedFields[type][index].value = value;
+    if (updatedFields[type][index].type === 'url' && !isValidHttpUrl(value)) {
+      updatedFields[type][index].error = 'Please enter a valid url.';
+    } else if (updatedFields[type][index].type === 'url' && isValidHttpUrl(value)) {
+      updatedFields[type][index].error = '';
+    }
 
     setFields(updatedFields);
   };
@@ -150,6 +156,9 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setFormSubmit(true);
+    const errors = fields[tab].filter((field, index) => (
+      field?.error && field?.error != ''
+    ));
     /* signup(fields[tab], tab, () => {
       dialogRef.current
         .getElementsByClassName("MuiDialog-container")[0]
@@ -224,11 +233,11 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
               {message && <div className={`alert alert-${message.class}`}>{message.content}</div>}
               <form id="register-form" onSubmit={(e) => handleFormSubmit(e)}>
                 {fields[tab].map((field, index) => (
-                  <div className="form-group position-relative" key={field.name}>
+                  <div className={`form-group position-relative ${field.type !== 'hidden' ? 'mb-4' : ''}`} key={field.name}>
                     <label className="form-label">{field.label}</label>
                     <input
                       key={tab + field.name}
-                      className="form-control mb-4"
+                      className="form-control"
                       name={field.name}
                       placeholder={field.placeholder}
                       type={field.type == "password" ? (show[field.name] ? "text" : "password") : field.type}
@@ -238,6 +247,12 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
                     />
                     {field.type == "password" && (
                       <div className="showToggle">{show[field.name] ? <IoEye onClick={() => toggleShow(field.name, false)} /> : <IoEyeOff onClick={() => toggleShow(field.name, true)} />}</div>
+                    )}
+                    {field?.error && field?.error != '' && (
+                      <div className="d-flex gap-2 text-danger align-items-center">
+                        <TfiAlert />
+                        <p className="mt-1 mb-0">{field?.error}</p>
+                      </div>
                     )}
                   </div>
                 ))}
