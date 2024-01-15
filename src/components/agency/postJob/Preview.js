@@ -26,7 +26,7 @@ const Preview = ({ single_job, setJobStatus }) => {
   ) : (
     <>
       <div className="job-actions mt-3 mb-3 justify-content-center d-flex gap-3">
-        {single_job?.status != 'approved' && (
+        {single_job?.status === 'draft' && (
           <button
             className="btn btn-gray btn-hover-primary text-uppercase ls-3 p-3 px-4"
             onClick={submitJob}
@@ -35,8 +35,9 @@ const Preview = ({ single_job, setJobStatus }) => {
           </button>
         )}
         <Link
-          to={"/job/edit/" + single_job.id}
-          reloadDocument={true}
+          // to={"/job/edit/" + single_job.id}
+          // reloadDocument={true}
+          to={"/my-jobs"}
           className="btn btn-gray btn-hover-primary text-uppercase ls-3 p-3 px-4"
         >
           Edit Job

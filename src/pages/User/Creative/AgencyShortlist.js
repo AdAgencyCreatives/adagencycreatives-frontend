@@ -10,11 +10,13 @@ import {
 import { Context as DataContext } from "../../../context/DataContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
+import Loader from "../../../components/Loader";
 
 const AgencyShortlist = () => {
   const [openNotes, setOpenNotes] = useState(false);
   const handleCloseNotes = () => setOpenNotes(false);
   const [appId, setAppId] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     state: { bookmarks },
@@ -28,16 +30,22 @@ const AgencyShortlist = () => {
 
   useEffect(() => {
     if (user) {
-      getBookmarks(user.uuid,"agencies");
+      getBookmarks(user.uuid, "agencies");
     }
   }, [user]);
+
+  useEffect(() => {
+    bookmarks && bookmarks.length > 0 && setIsLoading(false);
+  }, [bookmarks]);
 
   const openNotesDialog = (item) => {
     setAppId(item.resource.id);
     setOpenNotes(true);
   };
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="creative-page-agency-shortlist">
       <h3 className="page-title">Agencies Shortlist</h3>
       <div className="card">
@@ -86,7 +94,7 @@ const AgencyShortlist = () => {
                               <IoBriefcaseOutline />
                               {resource?.industry_experience.map(
                                 (item, index) => (
-                                  <React.Fragment key={"i_"+index}>
+                                  <React.Fragment key={"i_" + index}>
                                     <Link
                                       to={
                                         "/agency-category/" +
