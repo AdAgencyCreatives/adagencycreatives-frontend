@@ -9,6 +9,7 @@ import {
   TfiLoop,
   TfiPlus,
   TfiBackRight,
+  TfiCheckBox
 } from "react-icons/tfi";
 import { Link } from "react-router-dom";
 import AddNotesModal from "./Modals/AddNotesModal";
@@ -223,6 +224,21 @@ const ApplicantJobs = () => {
                               </Tooltip>
                               {application.status == "pending" ? (
                                 <>
+                                  <Tooltip
+                                    title="Shortlisted"
+                                    onClick={() =>
+                                      setApplicationStatus(
+                                        item.id,
+                                        application.id,
+                                        "shortlisted"
+                                      )
+                                    }
+                                  >
+                                    <button className="btn p-0 border-0 btn-hover-primary">
+                                      <TfiCheckBox className="icon-rounded" />
+                                    </button>
+                                  </Tooltip>
+
                                   <Tooltip
                                     title="Interested"
                                     onClick={() =>

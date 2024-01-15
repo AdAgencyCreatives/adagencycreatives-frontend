@@ -27,13 +27,13 @@ const MyJobWidget = (props) => {
 
     const handleMarkFilled = (e, job) => {
         if (job?.status == 'filled') {
-            showAlert("Job Vaccany Already Filled");
+            showAlert("Job Vacancy Already Filled");
             return;
         }
         (async () => {
             let result = await markFilled(job.id, 'filled');
             if (result && result.status == 'filled') {
-                showAlert("Job Filled Successfully");
+                showAlert("Job Marked Filled");
                 setJob({ ...job, status: result.status });
             } else {
                 showAlert("Oops! Unable to fill Job at the moment");
@@ -131,7 +131,7 @@ const MyJobWidget = (props) => {
                                 </Link>
                             </Tooltip>
                         ) : (
-                            <Tooltip title="Mark filled">
+                            <Tooltip title="Mark Filled">
                                 <Link className="btn p-0 border-0 btn-hover-primary" onClick={(e) => handleMarkFilled(e, job)}>
 
                                     <IoLockOpen className="icon-rounded" />
