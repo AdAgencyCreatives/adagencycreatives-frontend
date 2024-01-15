@@ -27,6 +27,7 @@ const Profile = () => {
   const videoRef = useRef();
   const [statesList, setStates] = useState([]);
   const [citiesList, setCities] = useState([]);
+  const [selectChange, setSelectChange] = useState();
   const [media, setMedia] = useState([]);
   const [industry, setIndustry] = useState([]);
   const [isLoading, setIsloading] = useState(true);
@@ -136,7 +137,7 @@ const Profile = () => {
 
   // Set initial fields
   useEffect(() => {
-    if (Object.keys(single_agency).length > 0 && industry.length && media.length && statesList.length) {
+    if (Object.keys(single_agency).length > 0 && industry.length && media.length && statesList.length && (single_agency.location?.city_id ? citiesList.length : true)) {
       setIsloading(false);
       setEditorState(EditorState.createWithContent(ContentState.createFromText(single_agency.about ? single_agency.about : "")));
       console.log("single_agency", single_agency);
@@ -291,7 +292,7 @@ const Profile = () => {
         },
       ]);
     }
-  }, [single_agency, user, media, industry]);
+  }, [single_agency, user, media, industry, statesList, citiesList]);
 
   //Set citiesList api form data
   useEffect(() => {
@@ -300,12 +301,12 @@ const Profile = () => {
       const fieldIndex = newFields.findIndex((item) => item.name == 'city_id');
       if (fieldIndex >= 0) {
         newFields[fieldIndex].data = citiesList;
-        newFields[fieldIndex].value = single_agency.location.city_id && citiesList.find((city) => city.value === single_agency.location.city_id);
-        setFields([...newFields]);
+        newFields[fieldIndex].value = single_agency.location?.city_id && citiesList.find((city) => city.value === single_agency.location.city_id);
+        console.log("setFields in cities load");
+        setFields(newFields);
       }
     }
-
-  }, [statesList, citiesList]);
+  }, [citiesList]);
 
   //Set initial form data
   useEffect(() => {
@@ -379,6 +380,19 @@ const Profile = () => {
     setIndustry(data);
   }, [industry_experiences]);
 
+  useEffect(() => {
+    console.log("fields", fields);
+  }, [fields]);
+
+  useEffect(() => {
+    console.log("formData", formData);
+  }, [formData]);
+
+  useEffect(() => {
+    console.log("selectChange", selectChange);
+    selectChange && updateFieldValue(selectChange?.name, selectChange)
+  }, [selectChange]);
+
   const getFieldByName = (name) => {
     for (let index = 0; index < fields.length; index++) {
       const element = fields[index];
@@ -390,10 +404,12 @@ const Profile = () => {
   };
 
   const updateFieldValue = (name, value) => {
+    console.log("update Fields", fields);
     let field = getFieldByName(name);
-    field.value = value;
-    console.log("fields", fields);
-    setFields(fields.map((item) => item.name == field.name ? field : item));
+    if (field) {
+      field.value = value;
+      setFields(fields.map((item) => item.name === field.name ? field : item));
+    }
   };
 
   const parseFieldsData = (data) => {
@@ -413,6 +429,7 @@ const Profile = () => {
   const handleTextChange = (e, name) => {
     const value = e.target.value;
     let newFields = [...fields];
+    console.log("newFields", newFields);
     const fieldIndex = newFields.findIndex((item) => item.name == name);
     newFields[fieldIndex].value = value;
     setFields([...newFields]);
@@ -421,8 +438,10 @@ const Profile = () => {
 
   const handleDropdownChange = (item, name) => {
     if (item) {
+      console.log("onchange " + name, item);
       setFormData((prev) => ({ ...prev, [name]: item.value }));
-      // updateFieldValue(name, item.value);
+      item.name = name;
+      setSelectChange(item);
     }
   };
 
@@ -453,16 +472,12 @@ const Profile = () => {
     setFormData((prev) => ({ ...prev, [name]: contentStateText }));
   };
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
-
   const isObject = (value) => {
     return value?.constructor?.toString()?.indexOf("Object") > -1;
   };
 
   const validated = () => {
-
+    console.log("validated", fields);
     for (let index = 0; index < fields.length; index++) {
       const field = fields[index];
       let isValid = true;
@@ -700,77 +715,42 @@ const Profile = () => {
                         {field.label}
                         {field.required && <span className="required">*</span>}
                       </label>
-                      {
-                        field.name === 'city_id' ? (
-                          <Select
-                            className="dropdown-container"
-                            options={field.data.map((option) => ({
-                              ...option,
-                            }))}
-                            isMulti={field.isMulti || false}
-                            ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}
-                            onChange={field.callback}
-                            placeholder={field.placeholder}
-                            value={field.value}
-                            defaultValue={field.value}
-                            styles={{
-                              control: (baseStyles) => ({
-                                ...baseStyles,
-                                padding: "11px",
-                                backgroundColor: "#F6F6F6",
-                                border: "none",
-                              }),
-                              valueContainer: (baseStyles) => ({
-                                ...baseStyles,
-                                padding: "0px",
-                                fontSize: 20,
-                              }),
-                              singleValue: (baseStyles) => ({
-                                ...baseStyles,
-                                color: "#696969",
-                              }),
-                            }}
-                          />
-                        ) : (
-                          <Select
-                            className="dropdown-container"
-                            options={field.data.map((option) => ({
-                              ...option,
-                              // isDisabled: formData.length ? formData[field.name].length > 7 : false,
-                            }))}
-                            isMulti={field.isMulti || false}
-                            ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}
-                            onChange={field.callback}
-                            placeholder={field.placeholder}
-                            defaultValue={field.value}
-                            // value={field.value}
-                            // isOptionDisabled={(option) => { return field.value.length > 7 }}
-                            styles={{
-                              control: (baseStyles) => ({
-                                ...baseStyles,
-                                padding: "11px",
-                                backgroundColor: "#F6F6F6",
-                                border: "none",
-                              }),
-                              valueContainer: (baseStyles) => ({
-                                ...baseStyles,
-                                padding: "0px",
-                                fontSize: 20,
-                              }),
-                              singleValue: (baseStyles) => ({
-                                ...baseStyles,
-                                color: "#696969",
-                              }),
-                              // control:(baseStyles) => ({
-                              //   ...baseStyles,
-                              //   backgroundColor:"#F6F6F6",
-                              //   borderColor:"white"
-                              // }),
-                            }}
-                          />
-                        )
-                      }
-
+                      <Select
+                        className="dropdown-container"
+                        options={field.data.map((option) => ({
+                          ...option,
+                          // isDisabled: formData.length ? formData[field.name].length > 7 : false,
+                        }))}
+                        isMulti={field.isMulti || false}
+                        ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}
+                        onChange={field.callback}
+                        placeholder={field.placeholder}
+                        defaultValue={field.value}
+                        // value={field.value}
+                        // isOptionDisabled={(option) => { return field.value.length > 7 }}
+                        styles={{
+                          control: (baseStyles) => ({
+                            ...baseStyles,
+                            padding: "11px",
+                            backgroundColor: "#F6F6F6",
+                            border: "none",
+                          }),
+                          valueContainer: (baseStyles) => ({
+                            ...baseStyles,
+                            padding: "0px",
+                            fontSize: 20,
+                          }),
+                          singleValue: (baseStyles) => ({
+                            ...baseStyles,
+                            color: "#696969",
+                          }),
+                          // control:(baseStyles) => ({
+                          //   ...baseStyles,
+                          //   backgroundColor:"#F6F6F6",
+                          //   borderColor:"white"
+                          // }),
+                        }}
+                      />
                     </div>
                   );
 
