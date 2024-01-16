@@ -60,7 +60,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (page == "agency" && Object.keys(data).length) {
-      getOpenPositions(data.user_id);
+      getOpenPositions(data.user_id, 0, 1);
     }
   }, [page, data]);
 
@@ -77,7 +77,7 @@ const Profile = () => {
   const isOwnProfile = user?.uuid == data.user_id;
 
   if (isLoading) {
-    return <Loader />; 
+    return <Loader />;
   }
 
   return <>

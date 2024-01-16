@@ -92,7 +92,7 @@ const NewChat = ({ setContact, contacts, userSelected, setUserSelected }) => {
                       </div>
                       <div className="user-details">
                         <div className="username">{item.name} </div>
-                        <div className="user-meta">{item.title} </div>
+                        <div className="user-meta">{item.category} </div>
                       </div>
                     </div>
                   );

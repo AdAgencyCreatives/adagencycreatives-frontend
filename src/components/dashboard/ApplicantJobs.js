@@ -178,14 +178,17 @@ const ApplicantJobs = () => {
                                         ? "info"
                                         : application.status == "accepted"
                                           ? "success"
-                                          : "danger")
+                                          : application.status == "shortlisted"
+                                            ? "primary"
+                                            : "danger")
                                     }
                                   >
                                     {application.status == "pending"
                                       ? "Pending"
                                       : application.status == "accepted"
                                         ? "Approved"
-                                        : "Rejected"}
+                                        : application.status == "shortlisted"
+                                          ? "Shortlisted" : "Rejected"}
                                   </span>
                                 </div>
                                 <div className="job-metas">

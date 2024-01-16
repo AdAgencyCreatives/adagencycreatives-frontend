@@ -57,71 +57,73 @@ const ResetPassword = () => {
   return (
     <>
       <div className="container my-5">
-        <form className="password-reset-form" onSubmit={handleSubmit}>
-          <div className="form-group position-relative mb-4">
-            {message && <div className={`alert alert-info`}>{message}</div>}
-            {error && (
-              <div className={`alert alert-warning`}>
-                {error}
+        <div className="password-reset">
+          <form className="password-reset-form" onSubmit={handleSubmit}>
+            <div className="form-group position-relative mb-4">
+              {message && <div className={`alert alert-info`}>{message}</div>}
+              {error && (
+                <div className={`alert alert-warning`}>
+                  {error}
+                </div>
+              )}
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <input
+                type={show.password ? "text" : "password"}
+                name="password"
+                className="form-control"
+                placeholder="Password"
+                onChange={(e) => handleChange("password", e.target.value)}
+              />
+              <div className="showToggle">
+                {show.password ? (
+                  <IoEye onClick={() => toggleShow("password", false)} />
+                ) : (
+                  <IoEyeOff onClick={() => toggleShow("password", true)} />
+                )}
               </div>
-            )}
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              type={show.password ? "text" : "password"}
-              name="password"
-              className="form-control"
-              placeholder="Password"
-              onChange={(e) => handleChange("password", e.target.value)}
-            />
-            <div className="showToggle">
-              {show.password ? (
-                <IoEye onClick={() => toggleShow("password", false)} />
-              ) : (
-                <IoEyeOff onClick={() => toggleShow("password", true)} />
-              )}
             </div>
-          </div>
 
-          <div className="form-group position-relative mb-4">
-            <label htmlFor="password_confirmation" className="form-label">
-              Confirm Password
-            </label>
-            <input
-              type={show.password_confirmation ? "text" : "password"}
-              name="password_confirmation"
-              className="form-control"
-              placeholder="Confirm Password"
-              onChange={(e) => handleChange("password_confirmation", e.target.value)}
-            />
-            <div className="showToggle">
-              {show.password_confirmation ? (
-                <IoEye
-                  onClick={() => toggleShow("password_confirmation", false)}
-                />
-              ) : (
-                <IoEyeOff
-                  onClick={() => toggleShow("password_confirmation", true)}
-                />
-              )}
+            <div className="form-group position-relative mb-4">
+              <label htmlFor="password_confirmation" className="form-label">
+                Confirm Password
+              </label>
+              <input
+                type={show.password_confirmation ? "text" : "password"}
+                name="password_confirmation"
+                className="form-control"
+                placeholder="Confirm Password"
+                onChange={(e) => handleChange("password_confirmation", e.target.value)}
+              />
+              <div className="showToggle">
+                {show.password_confirmation ? (
+                  <IoEye
+                    onClick={() => toggleShow("password_confirmation", false)}
+                  />
+                ) : (
+                  <IoEyeOff
+                    onClick={() => toggleShow("password_confirmation", true)}
+                  />
+                )}
+              </div>
             </div>
-          </div>
-          <div
-            style={{
-              display: showLoading ? "flex" : "none",
-              justifyContent: "center",
-            }}
-          >
-            <CircularProgress />
-          </div>
-          <button
-            disabled={showLoading ? "disabled" : ""}
-            className="btn btn-dark btn-hover-primary border-0 px-3 py-2"
-          >
-            Update Password
-          </button>
-        </form>
+            <div
+              style={{
+                display: showLoading ? "flex" : "none",
+                justifyContent: "center",
+              }}
+            >
+              <CircularProgress />
+            </div>
+            <button
+              disabled={showLoading ? "disabled" : ""}
+              className="btn btn-dark btn-hover-primary border-0 px-3 py-2"
+            >
+              Update Password
+            </button>
+          </form>
+        </div>
       </div>
     </>
   );

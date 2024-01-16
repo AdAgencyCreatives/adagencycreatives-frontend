@@ -988,3 +988,9 @@ img.publication-image {
         text-align: center;
     }
 }
+
+@media (max-width: 1024px) and (min-width: 900px){
+    .banner {
+        padding-top: 95px;
+    }
+}
