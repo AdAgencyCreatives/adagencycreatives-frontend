@@ -742,3 +742,12 @@ nav ul.dropdown-list .list-item-text.j-fix {
         padding-top: 95px;
     }
 }
+@media (max-width: 440px){
+    .header_container .right-menu,.header_container .left-logo{
+        width: 50%;
+        max-width: 50%;
+    }
+    .left-logo a.site-logo{
+        min-width: 100%;
+    }
+}

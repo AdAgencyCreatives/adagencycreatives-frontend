@@ -100,14 +100,14 @@ const EditPost = (props) => {
 
     useEffect(() => {
         /* Hack to resolve focus issue with TinyMCE editor in bootstrap model dialog */
-          const handler = (e) => {
+        const handler = (e) => {
             if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
-              e.stopImmediatePropagation();
+                e.stopImmediatePropagation();
             }
-          };
-          document.addEventListener("focusin", handler);
-          return () => document.removeEventListener("focusin", handler);
-      }, []);
+        };
+        document.addEventListener("focusin", handler);
+        return () => document.removeEventListener("focusin", handler);
+    }, []);
 
     const performInitTinyMCE = (evt, editor) => {
         setIsLoadingTinyMCE(false);
@@ -163,8 +163,10 @@ const EditPost = (props) => {
                                         // plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                                         // toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
                                         plugins: 'anchor autolink charmap codesample emoticons link lists searchreplace visualblocks wordcount',
-                                        toolbar: 'bold italic underline strikethrough | blocks fontfamily fontsize | numlist bullist link | emoticons charmap | align lineheight | indent outdent | removeformat',
-                                        content_style: 'body { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; font-size: 14pt }',
+                                        toolbar: 'bold italic underline strikethrough | blocks fontsize | numlist bullist link | emoticons charmap | align lineheight | indent outdent | removeformat',
+                                        content_css: ['https://fonts.googleapis.com/css?family=Jost:400,500,600,700,800&#038;subset=latin%2Clatin-ext'],
+                                        font_family_formats: 'JOST=JOST',
+                                        content_style: 'body { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; font-size: 14pt } a { color: #d3a11f; cursor: pointer; } a:hover { color: #000; }',
                                         placeholder: 'What do you want to talk about?',
                                     }}
                                     value={content}

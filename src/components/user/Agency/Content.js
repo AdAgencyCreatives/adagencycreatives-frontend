@@ -19,7 +19,7 @@ const Content = ({ user, data, jobs }) => {
       <div className="content-section">
         <h1 className="content-title">Open Positions</h1>
         <div className="jobs-list-container">
-          {jobs.map((item) => (
+          {jobs && jobs.map((item) => (
             <div className="job-item" key={item.id}>
               <div className="d-flex align-items-center flex-md-nowrap flex-wrap gap-md-0 gap-3">
                 <div className="inner-left">
