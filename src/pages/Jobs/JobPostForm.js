@@ -18,6 +18,7 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as AlertContext } from "../../context/AlertContext";
 import useUploadHelper from "../../hooks/useUploadHelper";
 import IconMessage from "../../components/IconMessage";
+import { Context as AgenciesContext } from "../../context/AgenciesContext";
 
 const JobPostForm = ({ id, setJobStatus }) => {
   const editorRefTinyMCE = useRef(null);
@@ -25,10 +26,10 @@ const JobPostForm = ({ id, setJobStatus }) => {
   const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
   const [isJobPostAllowed, setIsJobPostAllowed] = useState(false);
   const [selectedAgency, setSelectedAgency] = useState(false);
-
-  const { getUploadGuide, getUploadGuideMessage } = useUploadHelper();
+  const { isFileValid, getUploadGuide, getUploadGuideMessage } = useUploadHelper();
   const imageUploadGuide = getUploadGuide('image', 'job-post-form');
   const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
+  const [isLogoUploaded, setIsLogoUploaded] = useState(false);
 
   const {
     state: { user, token },
@@ -68,7 +69,6 @@ const JobPostForm = ({ id, setJobStatus }) => {
     handleDropdownChange,
     handleSubmit,
     removeLogo,
-    handleFileChange,
     setFields,
     setEditorState,
     setFormData,
@@ -139,6 +139,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
       if (id) {
         setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(single_job.description).contentBlocks)));
       }
+      console.log("single_job", single_job);
       setFields([
         {
           label: "Assigned Agencies",
@@ -155,7 +156,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           required: false,
           type: "image",
           image: isEdit ? single_job.agency.logo : "",
-          name: "company_logo",
+          name: "attachment_id",
           accept: ".jpg, .jpeg, .png, .bmp, image/jpeg, image/png",
         },
         {
@@ -342,6 +343,71 @@ const JobPostForm = ({ id, setJobStatus }) => {
     }
   }, [isLoading, media_experiences, industry_experiences]);
 
+  const {
+    uploadAttachment,
+  } = useContext(AgenciesContext);
+
+  const getFieldByName = (name) => {
+    for (let index = 0; index < fields.length; index++) {
+      const element = fields[index];
+      if (element.name == name) {
+        return element;
+      }
+    }
+    return null;
+  };
+
+  const updateFieldValue = (name, value) => {
+    console.log("update Fields", fields);
+    let field = getFieldByName(name);
+    if (field) {
+      field.value = value;
+      setFields(fields.map((item) => item.name === field.name ? field : item));
+    }
+  };
+
+  const handleFileChange = async (event, resource, ref, field) => {
+    const file = event.target.files[0];
+    if (file) {
+
+      let validationResult = isFileValid(file, (resource == "sub_agency_logo" ? "image" : "video"), "agency-profile");
+      if (!validationResult.status) {
+        if (resource == "sub_agency_logo") {
+          imageUploadRef.current.value = '';
+        }
+        showAlert(validationResult.message);
+        return;
+      }
+
+      if (resource == "sub_agency_logo") {
+        ref.current.src = URL.createObjectURL(file);
+      }
+
+      const localFormData = new FormData();
+      localFormData.append("file", file);
+      localFormData.append("user_id", user.uuid);
+      localFormData.append("resource_type", resource);
+
+      await uploadAttachment(localFormData, (response) => {
+
+        if (field.name == "company_logo") {
+          setIsLogoUploaded(true);
+          console.log("isLogoUploaded: " + isLogoUploaded);
+        }
+
+        console.log("responnse", response);
+
+        setFormData((prev) => ({ ...prev, ["attachment_id"]: response.data.data.id }));
+
+        // updateFieldValue("attachment_id", response.data.data.id);
+        updateFieldValue(field.name, file.name);
+
+        showAlert((resource == "sub_agency_logo" ? "Logo" : "Video") + " uploaded successfully");
+
+      });
+    }
+  };
+
   return isLoading ? (
     <Loader />
   ) : (
@@ -353,7 +419,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           <form onSubmit={handleSubmitCurrent}>
             <div className="row gx-3 gy-5 align-items-end">
               {fields.map((field, index) => {
-                if(user?.role != 'advisor' && field.name == 'agency_id') {
+                if (user?.role != 'advisor' && field.name == 'agency_id') {
                   return (<></>);
                 }
                 switch (field.type) {
@@ -378,7 +444,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                               <FiTrash2 /> Remove
                             </button>
                           </div>
-                          <input type="file" ref={imageUploadRef} className="d-none" onChange={handleFileChange} accept={field.accept} />
+                          <input type="file" ref={imageUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "sub_agency_logo", logoRef, field)} accept={field.accept} />
                         </div>
                       </div>
                     );

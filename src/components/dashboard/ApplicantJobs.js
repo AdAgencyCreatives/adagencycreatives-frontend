@@ -27,6 +27,7 @@ const ApplicantJobs = () => {
   const [appId, setAppId] = useState("");
   const [data, setData] = useState([]);
   const [tab, setTab] = useState({});
+  const [statusApplication, setStatusApplication] = useState(false);
 
   const {
     state: { applications, isLoadingApp, applicationMeta },
@@ -40,7 +41,12 @@ const ApplicantJobs = () => {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    getApplications(user.uuid, 0);
+    if (user.role === 'agency') {
+      setStatusApplication('shortlisted');
+      getApplications(user.uuid, 0, 0, 1, 'shortlisted');
+    } else {
+      getApplications(user.uuid, 0, 0, 1, statusApplication);
+    }
   }, []);
 
   useEffect(() => {
@@ -76,7 +82,7 @@ const ApplicantJobs = () => {
   };
 
   const paginate = (page) => {
-    getApplications(user.uuid, 0, page);
+    getApplications(user.uuid, 0, page, 1, statusApplication);
   };
 
   return (
