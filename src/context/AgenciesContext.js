@@ -201,13 +201,14 @@ const saveAdvisorRecruiter = (dispatch) => {
 };
 
 const uploadAttachment = (dispatch) => {
-  return async (data) => {
+  return async (data, callback) => {
     try {
       const response = await api.post("/attachments", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+      callback(response);
     } catch (error) { }
   };
 };
