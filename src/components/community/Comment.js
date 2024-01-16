@@ -88,7 +88,7 @@ const Comment = (props) => {
                     Reply Comment
                 </div> */}
             </div>
-        </div >
+        </div>
     );
 };
 

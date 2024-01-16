@@ -136,10 +136,10 @@ const loadAgencies = (dispatch) => {
 };
 
 const getOpenPositions = (dispatch) => {
-  return async (uid, page = false) => {
+  return async (uid, page = false, status = null, applications_count = 0) => {
     setLoading(dispatch, true);
     try {
-      const response = await api.get("/jobs?sort=-created_at&filter[user_id]=" + uid + (page ? "&page=" + page : ""));
+      const response = await api.get("/jobs?sort=-created_at&filter[user_id]=" + uid + (status != null && status != '' ? "&filter[status]=" + status : "") + ("&applications_count=" + applications_count) + (page ? "&page=" + page : ""));
       const data = response.data;
       dispatch({
         type: "set_open_positions",
@@ -201,13 +201,14 @@ const saveAdvisorRecruiter = (dispatch) => {
 };
 
 const uploadAttachment = (dispatch) => {
-  return async (data) => {
+  return async (data, callback) => {
     try {
       const response = await api.post("/attachments", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+      callback(response);
     } catch (error) { }
   };
 };

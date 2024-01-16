@@ -27,6 +27,7 @@ const ApplicantJobs = () => {
   const [appId, setAppId] = useState("");
   const [data, setData] = useState([]);
   const [tab, setTab] = useState({});
+  const [statusApplication, setStatusApplication] = useState(false);
 
   const {
     state: { applications, isLoadingApp, applicationMeta },
@@ -40,12 +41,16 @@ const ApplicantJobs = () => {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    getApplications(user.uuid, 0);
+    if (user.role === 'agency') {
+      setStatusApplication('shortlisted');
+      getApplications(user.uuid, 0, 0, 1, 'shortlisted');
+    } else {
+      getApplications(user.uuid, 0, 0, 1, statusApplication);
+    }
   }, []);
 
   useEffect(() => {
     setData(applications);
-    console.log(applications);
   }, [applications]);
 
   const switchTab = (id, tab) => {
@@ -77,7 +82,7 @@ const ApplicantJobs = () => {
   };
 
   const paginate = (page) => {
-    getApplications(user.uuid, 0, page);
+    getApplications(user.uuid, 0, page, 1, statusApplication);
   };
 
   return (
@@ -178,14 +183,17 @@ const ApplicantJobs = () => {
                                         ? "info"
                                         : application.status == "accepted"
                                           ? "success"
-                                          : "danger")
+                                          : application.status == "shortlisted"
+                                            ? "primary"
+                                            : "danger")
                                     }
                                   >
                                     {application.status == "pending"
                                       ? "Pending"
                                       : application.status == "accepted"
                                         ? "Approved"
-                                        : "Rejected"}
+                                        : application.status == "shortlisted"
+                                          ? "Shortlisted" : "Rejected"}
                                   </span>
                                 </div>
                                 <div className="job-metas">
@@ -209,7 +217,6 @@ const ApplicantJobs = () => {
                             </div>
                           </div>
                           <div className="ali-right col-sm-4">
-                          {item?.advisor_id && user?.role != 'advisor' ? (<>Status: {application.status}</>) : (
                             <div className="applicant-action-button action-button">
                               <Tooltip title="Add Notes">
                                 <button
@@ -314,7 +321,6 @@ const ApplicantJobs = () => {
                                 </button>
                               </Tooltip>
                             </div>
-                          )}
                           </div>
                         </div>
                       </article>
