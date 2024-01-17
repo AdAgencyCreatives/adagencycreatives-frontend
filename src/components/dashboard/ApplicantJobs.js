@@ -193,7 +193,7 @@ const ApplicantJobs = () => {
                                       : application.status == "accepted"
                                         ? "Approved"
                                         : application.status == "shortlisted"
-                                          ? "Shortlisted" : "Rejected"}
+                                          ? "Recommended" : "Rejected"}
                                   </span>
                                 </div>
                                 <div className="job-metas">
@@ -232,7 +232,7 @@ const ApplicantJobs = () => {
                               {application.status == "pending" ? (
                                 <>
                                   <Tooltip
-                                    title="Shortlisted"
+                                    title="Share Recommended Talent"
                                     onClick={() =>
                                       setApplicationStatus(
                                         item.id,

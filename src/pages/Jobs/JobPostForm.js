@@ -140,6 +140,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
         setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(single_job.description).contentBlocks)));
       }
       console.log("single_job", single_job);
+      console.log("agenciesList", agenciesList);
       setFields([
         {
           label: "Assigned Agencies",
@@ -149,7 +150,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           data: agenciesList,
           callback: (item) => changeAgency(item, "agency_id"),
           placeholder: "Select Agency",
-          value: isEdit && agenciesList.find((agency) => agency.value == single_job.agency_id),
+          value: isEdit && agenciesList.find((agency) => agency.value == single_job.agency.id),
         },
         {
           label: "Agency Logo only upload if it's different from your profile logo",
@@ -343,6 +344,12 @@ const JobPostForm = ({ id, setJobStatus }) => {
     }
   }, [isLoading, media_experiences, industry_experiences]);
 
+  useEffect(() => {
+    if (single_job?.agency?.id) {
+      setIsJobPostAllowed(true);
+    }
+  }, [agenciesList, single_job]);
+
   const {
     uploadAttachment,
   } = useContext(AgenciesContext);
@@ -408,6 +415,10 @@ const JobPostForm = ({ id, setJobStatus }) => {
     }
   };
 
+  const handleUpload = (e) => {
+    imageUploadRef.current.click()
+  }
+
   return isLoading ? (
     <Loader />
   ) : (
@@ -437,7 +448,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                             <img src={field.image} className="w-100" ref={logoRef} alt="" />
                           </div>
                           <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
-                            <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => imageUploadRef.current.click()}>
+                            <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={(e) => handleUpload(e)} type="button">
                               <FiPaperclip /> Upload
                             </button>
                             <button className="btn btn-secondary w-100 text-uppercase" onClick={removeLogo}>
