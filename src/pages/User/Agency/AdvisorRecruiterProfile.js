@@ -23,15 +23,23 @@ const AdvisorRecruiterProfile = () => {
   const cityRef = useRef();
   const imageUploadRef = useRef();
   const logoRef = useRef();
+  const videoUploadRef = useRef();
+  const videoRef = useRef();
   const [statesList, setStates] = useState([]);
   const [citiesList, setCities] = useState([]);
+  const [selectChange, setSelectChange] = useState();
+  const [media, setMedia] = useState([]);
+  const [industry, setIndustry] = useState([]);
   const [isLoading, setIsloading] = useState(true);
   const [fields, setFields] = useState([]);
   const [formData, setFormData] = useState({});
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [isMounted, setIsMounted] = useState(false);
+  const [videoItem, setVideoItem] = useState(false);
+  const [showVideoItem, setShowVideoItem] = useState(false);
 
   const [isLogoUploaded, setIsLogoUploaded] = useState(false);
+  const [isVideoUploaded, setIsVideoUploaded] = useState(false);
 
   const [useTinyMCE, setUseTinyMCE] = useState(true);
   const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
@@ -40,7 +48,9 @@ const AdvisorRecruiterProfile = () => {
   const { getNumericString } = useHelper();
   const { isFileValid, getUploadGuide, getUploadGuideMessage } = useUploadHelper();
   const imageUploadGuide = getUploadGuide('image', 'agency-profile');
+  const videoUploadGuide = getUploadGuide('video', 'agency-profile');
   const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
+  const videoUploadGuideMessage = getUploadGuideMessage(videoUploadGuide);
 
   useEffect(() => {
     const baseUrl = window.location.origin;
@@ -70,6 +80,11 @@ const AdvisorRecruiterProfile = () => {
     };
   }, []);
 
+  const workplace_preference = [
+    { label: "Remote", value: "remote", key: "is_remote" },
+    { label: "Hybrid", value: "hybrid", key: "is_hybrid" },
+    { label: "Onsite", value: "onsite", key: "is_onsite" },
+  ];
   const showProfile = [
     { label: "Show", value: 1, key: "show" },
     { label: "Hide", value: 0, key: "hide" },
@@ -83,22 +98,26 @@ const AdvisorRecruiterProfile = () => {
   const { showAlert } = useContext(AlertContext);
 
   const {
-    state: { single_agency, formSubmit },
+    state: { single_agency, formSubmit, video },
     getAgencyById,
     saveAdvisorRecruiter,
     uploadAttachment,
+    getVideo,
     removeAttachment,
   } = useContext(AgenciesContext);
 
   const {
-    state: { states, cities, },
+    state: { states, cities, media_experiences, industry_experiences },
     getStates,
     getCities,
+    getMediaExperiences,
+    getIndustryExperiences,
   } = useContext(DataContext);
 
   useEffect(() => {
     if (user) {
       getAgencyById(user, true);
+      getVideo(user.uuid);
     }
   }, [user]);
 
@@ -118,9 +137,10 @@ const AdvisorRecruiterProfile = () => {
 
   // Set initial fields
   useEffect(() => {
-    if (user && Object.keys(single_agency).length > 0) {
+    if (Object.keys(single_agency).length > 0 && industry.length && media.length && statesList.length && (single_agency.location?.city_id ? citiesList.length : true)) {
       setIsloading(false);
-      console.log(single_agency, 'single_agency');
+      setEditorState(EditorState.createWithContent(ContentState.createFromText(single_agency.about ? single_agency.about : "")));
+      console.log("single_agency", single_agency);
       setFields([
         {
           label: "Your Logo",
@@ -139,6 +159,13 @@ const AdvisorRecruiterProfile = () => {
           name: "company_name",
           value: single_agency.name,
         },
+        // {
+        //   label: "Company Website",
+        //   required: true,
+        //   type: "text",
+        //   name: "website",
+        //   value: single_agency.links.find((link) => link.label == "website")?.url ?? "",
+        // },
         {
           label: "Location (State)",
           required: true,
@@ -147,7 +174,7 @@ const AdvisorRecruiterProfile = () => {
           data: statesList,
           callback: (item) => changeState(item, "state_id"),
           placeholder: "Select State",
-          value: single_agency.location?.state_id && statesList.find((state) => state.value == single_agency.location?.state_id),
+          value: statesList.find((state) => state.value == single_agency.location?.state_id),
         },
         {
           label: "Nearest Major City",
@@ -195,6 +222,50 @@ const AdvisorRecruiterProfile = () => {
           value: single_agency.phone_number,
           placeholder: "###-###-####",
         },
+        // {
+        //   label: "About Your Company",
+        //   required: true,
+        //   type: "editor",
+        //   name: "about",
+        //   value: single_agency.about,
+        // },
+        // {
+        //   label: "Industry Specialty",
+        //   required: true,
+        //   type: "dropdown",
+        //   data: industry,
+        //   isMulti: true,
+        //   name: "industry_experience",
+        //   callback: (item) => handleMultiChange(item, "industry_experience"),
+        //   value: industry.filter((item) => single_agency.industry_experience.includes(item.label)),
+        // },
+        // {
+        //   label: "Media Speciality",
+        //   required: true,
+        //   type: "dropdown",
+        //   data: media,
+        //   isMulti: true,
+        //   name: "media_experience",
+        //   callback: (item) => handleMultiChange(item, "media_experience"),
+        //   value: media.filter((item) => single_agency.media_experience.includes(item.label)),
+        // },
+        // {
+        //   label: "Workplace Preference",
+        //   required: true,
+        //   type: "dropdown",
+        //   isMulti: true,
+        //   data: workplace_preference,
+        //   name: "workplace_preference",
+        //   callback: (item) => handleWorkplaceChange(item, "workplace_preference"),
+        //   value: workplace_preference.filter((item) => single_agency[item.key]),
+        // },
+        // {
+        //   label: "Company Size",
+        //   required: true,
+        //   type: "text",
+        //   name: "size",
+        //   value: single_agency.size,
+        // },
         {
           label: "Show Company Profile",
           required: true,
@@ -212,29 +283,37 @@ const AdvisorRecruiterProfile = () => {
           value: single_agency.slug,
           baseUrl: baseUrl
         },
+        // {
+        //   label: "Upload your agency reel",
+        //   required: false,
+        //   type: "video",
+        //   name: "company_video",
+        //   value: videoItem ? videoItem.name : "",
+        // },
       ]);
     }
-  }, [single_agency, user]);
+  }, [single_agency, user, media, industry, statesList, citiesList]);
 
   //Set citiesList api form data
   useEffect(() => {
     if (statesList.length && (single_agency.location?.city_id ? citiesList.length : true)) {
-      console.log("load List Cities", citiesList);
-      console.log(fields);
-      let newFields = [...fields];
+      const newFields = [...fields];
       const fieldIndex = newFields.findIndex((item) => item.name == 'city_id');
       if (fieldIndex >= 0) {
         newFields[fieldIndex].data = citiesList;
-        setFields([...newFields]);
+        newFields[fieldIndex].value = single_agency.location?.city_id && citiesList.find((city) => city.value === single_agency.location.city_id);
+        console.log("setFields in cities load");
+        setFields(newFields);
       }
     }
-  }, [statesList, citiesList]);
+  }, [citiesList]);
 
   //Set initial form data
   useEffect(() => {
     if (Object.keys(single_agency).length > 0 && !isLoading) {
       setFormData({
         company_name: single_agency.name,
+        website: single_agency.links.find((link) => link.label == "website")?.url ?? "",
         state_id: single_agency.location?.state_id,
         city_id: single_agency.location?.city_id,
         linkedin: single_agency.links.find((link) => link.label == "linkedin")?.url ?? "",
@@ -242,15 +321,32 @@ const AdvisorRecruiterProfile = () => {
         first_name: user.first_name,
         last_name: user.last_name,
         phone_number: "",
+        about: single_agency.about,
+        industry_experience: single_agency.industry_experience.map((item) => industry_experiences.find((j) => j.name == item).id),
+        media_experience: single_agency.media_experience.map((item) => media_experiences.find((j) => j.name == item).id),
+        is_onsite: single_agency.workplace_preference.is_onsite,
+        is_hybrid: single_agency.workplace_preference.is_hybrid,
+        is_remote: single_agency.workplace_preference.is_remote,
+        size: single_agency.size,
         show_profile: user.is_visible,
         slug: single_agency.slug,
       });
     }
-  }, [isLoading]);
+  }, [isLoading, media_experiences, industry_experiences]);
 
   useEffect(() => {
     getStates();
+    getMediaExperiences();
+    getIndustryExperiences();
   }, []);
+
+  useEffect(() => {
+    if (video) {
+      setVideoItem(video);
+      setIsVideoUploaded(true);
+      console.log("isVideoUploaded: " + isVideoUploaded);
+    }
+  }, [video]);
 
   useEffect(() => {
     let data = states;
@@ -268,6 +364,35 @@ const AdvisorRecruiterProfile = () => {
     setCities(data);
   }, [cities]);
 
+  useEffect(() => {
+    let data = media_experiences;
+    if (media_experiences.length) {
+      data = parseFieldsData(media_experiences);
+    }
+    setMedia(data);
+  }, [media_experiences]);
+
+  useEffect(() => {
+    let data = industry_experiences;
+    if (industry_experiences.length) {
+      data = parseFieldsData(industry_experiences);
+    }
+    setIndustry(data);
+  }, [industry_experiences]);
+
+  useEffect(() => {
+    console.log("fields", fields);
+  }, [fields]);
+
+  useEffect(() => {
+    console.log("formData", formData);
+  }, [formData]);
+
+  useEffect(() => {
+    console.log("selectChange", selectChange);
+    selectChange && updateFieldValue(selectChange?.name, selectChange)
+  }, [selectChange]);
+
   const getFieldByName = (name) => {
     for (let index = 0; index < fields.length; index++) {
       const element = fields[index];
@@ -279,10 +404,12 @@ const AdvisorRecruiterProfile = () => {
   };
 
   const updateFieldValue = (name, value) => {
+    console.log("update Fields", fields);
     let field = getFieldByName(name);
-    field.value = value;
-    console.log("fields", fields);
-    setFields(fields.map((item) => item.name == field.name ? field : item));
+    if (field) {
+      field.value = value;
+      setFields(fields.map((item) => item.name === field.name ? field : item));
+    }
   };
 
   const parseFieldsData = (data) => {
@@ -295,21 +422,19 @@ const AdvisorRecruiterProfile = () => {
   const changeState = (item, name) => {
     getCities(item.value);
     handleDropdownChange(item, name);
-    if(isMounted) {
-      cityRef.current?.clearValue();
-    }
+    cityRef.current?.clearValue();
+    setFormData((prev) => ({ ...prev, 'city_id': '' }));
     // handleDropdownChange({ value: "" }, "city_id");
   };
 
   const changeCity = (item, name) => {
-    if (item) {
-      handleDropdownChange(item, name);
-    }
+    handleDropdownChange(item, name);
   };
 
   const handleTextChange = (e, name) => {
     const value = e.target.value;
     let newFields = [...fields];
+    console.log("newFields", newFields);
     const fieldIndex = newFields.findIndex((item) => item.name == name);
     newFields[fieldIndex].value = value;
     setFields([...newFields]);
@@ -318,8 +443,30 @@ const AdvisorRecruiterProfile = () => {
 
   const handleDropdownChange = (item, name) => {
     if (item) {
+      console.log("onchange " + name, item);
       setFormData((prev) => ({ ...prev, [name]: item.value }));
+      item.name = name;
+      setSelectChange(item);
     }
+  };
+
+  const handleMultiChange = (item, name) => {
+    const values = item.map((i) => i.value);
+    setFormData((prev) => ({ ...prev, [name]: values }));
+  };
+
+  const handleWorkplaceChange = (item, name) => {
+    const result = {};
+
+    item.forEach((item) => {
+      result[item.key] = 1;
+    });
+    setFormData((prev) => ({
+      ...prev,
+      is_hybrid: result.hasOwnProperty("is_hybrid") ? 1 : 0,
+      is_onsite: result.hasOwnProperty("is_onsite") ? 1 : 0,
+      is_remote: result.hasOwnProperty("is_remote") ? 1 : 0,
+    }));
   };
 
   const handleEditorChange = (editorState, name) => {
@@ -330,16 +477,12 @@ const AdvisorRecruiterProfile = () => {
     setFormData((prev) => ({ ...prev, [name]: contentStateText }));
   };
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
-
   const isObject = (value) => {
     return value?.constructor?.toString()?.indexOf("Object") > -1;
   };
 
   const validated = () => {
-
+    console.log("validated", fields);
     for (let index = 0; index < fields.length; index++) {
       const field = fields[index];
       let isValid = true;
@@ -351,10 +494,13 @@ const AdvisorRecruiterProfile = () => {
           isValid = Object.keys(field?.value).length > 0;
         }
 
-        if (field.type == "dropdown" && (field.name == 'state_id' || field.name == 'city_id')) {
+        if (field.type == "dropdown" && (field.name == 'state_id' || field.name == 'city_id' || field.name == 'industry_experience' || field.name == 'media_experience')) {
           isValid = formData[field.name].length > 0;
         }
 
+        if (field.name == "workplace_preference") {
+          isValid = formData['is_remote'] == 1 || formData['is_hybrid'] == 1 || formData['is_onsite'] == 1;
+        }
       }
 
       if (!isValid) {
@@ -377,7 +523,6 @@ const AdvisorRecruiterProfile = () => {
     }
 
     let current_role = user?.role == 'recruiter' ? 'Recruiter' : 'Advisor';
-
     (async () => {
       await saveAdvisorRecruiter(current_role, user.uuid, formData, (message) => {
         reloadUserData(user.uuid);
@@ -392,10 +537,12 @@ const AdvisorRecruiterProfile = () => {
     const file = event.target.files[0];
     if (file) {
 
-      let validationResult = isFileValid(file, (resource == "agency_logo" ? "image" : ""), "agency-profile");
+      let validationResult = isFileValid(file, (resource == "agency_logo" ? "image" : "video"), "agency-profile");
       if (!validationResult.status) {
         if (resource == "agency_logo") {
           imageUploadRef.current.value = '';
+        } else {
+          videoUploadRef.current.value = '';
         }
         showAlert(validationResult.message);
         return;
@@ -403,6 +550,8 @@ const AdvisorRecruiterProfile = () => {
 
       if (resource == "agency_logo") {
         ref.current.src = URL.createObjectURL(file);
+      } else {
+        setVideoItem({ name: file.name });
       }
 
       const localFormData = new FormData();
@@ -415,12 +564,28 @@ const AdvisorRecruiterProfile = () => {
       if (field.name == "company_logo") {
         setIsLogoUploaded(true);
         console.log("isLogoUploaded: " + isLogoUploaded);
+      } else if (field.name == "company_video") {
+        setIsVideoUploaded(true);
+        console.log("isVideoUploaded: " + isVideoUploaded);
       }
 
       updateFieldValue(field.name, file.name);
 
-      showAlert((resource == "agency_logo" ? "Logo" : "") + " uploaded successfully");
+      showAlert((resource == "agency_logo" ? "Logo" : "Video") + " uploaded successfully");
     }
+  };
+
+  const removeVideo = async (id) => {
+    if (!id) {
+      return;
+    }
+    await removeAttachment(id);
+    reloadUserData(user.uuid);
+    setIsVideoUploaded(false);
+    videoUploadRef.current.value = '';
+    console.log("isVideoUploaded: " + isVideoUploaded);
+    setVideoItem(null);
+    showAlert("Video removed successfully");
   };
 
   const removeLogo = async (id) => {
@@ -475,6 +640,46 @@ const AdvisorRecruiterProfile = () => {
                       </div>
                     </div>
                   );
+                case "video":
+                  return (
+                    <div className="col-12" key={index}>
+                      <label htmlFor={field.name} className="form-label">
+                        {field.label}
+                        {field.required && <span className="required">*</span>}
+                        <IconMessage message={videoUploadGuideMessage} />
+                      </label>
+                      <div className="row align-items-center upload-box">
+                        <div className="col-md-12 col-sm-12 col-12">
+                          {videoItem && (
+                            <>
+                              <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2" onClick={(e) => setShowVideoItem(state => !state)}>
+                                <span className="icon_type">
+                                  <FiFile />
+                                </span>
+                                <div className="filename">{videoItem.name}</div>
+                              </button>
+                              {showVideoItem && videoItem?.url?.length && (
+                                <video controls muted playsInline>
+                                  <source src={videoItem?.url} type={"video/" + videoItem?.url?.substring(videoItem?.url?.lastIndexOf('.') + 1)} />
+                                  Sorry, your browser doesn't support videos.
+                                </video>
+                              )}
+                            </>
+                          )}
+                        </div>
+                        <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
+                          <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => videoUploadRef.current.click()}>
+                            <FiPaperclip /> Upload
+                          </button>
+                          <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeVideo(videoItem?.id)}>
+                            <FiTrash2 /> Remove
+                          </button>
+                        </div>
+                        <input type="file" ref={videoUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_reel", videoRef, field)} accept=".mp4, .avi, .mov, video/*" />
+                      </div>
+                    </div>
+                  );
+
                 case "text":
                   return (
                     <div className="col-sm-6" key={index}>
@@ -527,7 +732,8 @@ const AdvisorRecruiterProfile = () => {
                         onChange={field.callback}
                         placeholder={field.placeholder}
                         defaultValue={field.value}
-                        // isOptionDisabled={(option) => {return field.value.length > 7}}
+                        // value={field.value}
+                        // isOptionDisabled={(option) => { return field.value.length > 7 }}
                         styles={{
                           control: (baseStyles) => ({
                             ...baseStyles,
@@ -544,6 +750,11 @@ const AdvisorRecruiterProfile = () => {
                             ...baseStyles,
                             color: "#696969",
                           }),
+                          // control:(baseStyles) => ({
+                          //   ...baseStyles,
+                          //   backgroundColor:"#F6F6F6",
+                          //   borderColor:"white"
+                          // }),
                         }}
                       />
                     </div>
