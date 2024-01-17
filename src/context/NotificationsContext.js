@@ -84,18 +84,23 @@ const setLoading = (dispatch, status) => {
   });
 };
 
-const updateNotifications = (dispatch) => {
+const markAsReadNotifications = (dispatch) => {
   return async (notification_id) => {
     setLoading(dispatch, true);
     try {
       const response = await api.patch(`/notifications/${notification_id}`);
-      // dispatch({
-      //   type: "set_notifications",
-      //   payload: response.data,
-      // });
     } catch (error) { }
     setLoading(dispatch, false);
   };
+};
+
+const updateNotifications = (dispatch) => {
+  return async (notifications) => {
+    dispatch({
+      type: "update_notifications",
+      payload: notifications,
+    });
+  }
 };
 
 export const { Context, Provider } = createDataContext(
@@ -103,8 +108,9 @@ export const { Context, Provider } = createDataContext(
   {
     getNotifications,
     loadNotifications,
-    updateNotifications,
+    markAsReadNotifications,
     getLoungeNotifications,
+    updateNotifications
   },
   state
 );

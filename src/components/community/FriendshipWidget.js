@@ -173,7 +173,7 @@ const FriendshipWidget = (props) => {
         <>
             {!isOwnProfile ? (
                 <>
-                    <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
+                    <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} size="xs" />
                     {loadingFriendshipRecord || loadingFriendRequestRecord ? (
                         <CircularProgress />
                     ) : (<>

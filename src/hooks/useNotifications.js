@@ -8,7 +8,7 @@ const useNotifications = (page) => {
 
   const {
     state: { notifications, nextPage, loading, meta },
-    getNotifications, loadNotifications, updateNotifications, getLoungeNotifications,
+    getNotifications, loadNotifications, markAsReadNotifications, updateNotifications, getLoungeNotifications,
   } = useContext(NotificationsContext);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const useNotifications = (page) => {
     nextPage && loadNotifications(nextPage);
   };
 
-  return { notifications, loading, meta, loadMore, updateNotifications, getNotifications, getLoungeNotifications };
+  return { notifications, loading, meta, loadMore, markAsReadNotifications, updateNotifications, getNotifications, getLoungeNotifications };
 };
 
 export default useNotifications;
