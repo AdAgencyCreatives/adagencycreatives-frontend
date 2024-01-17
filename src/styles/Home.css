@@ -198,6 +198,10 @@ button.searchBtn:hover {
     -webkit-animation: updown .8s ease-in-out 0s infinite;
     animation: updown .8s ease-in-out 0s infinite;
 }
+.location-name{
+    font-size: 18px;
+    color: rgb(105, 105, 105);
+}
 
 @keyframes updown {
 

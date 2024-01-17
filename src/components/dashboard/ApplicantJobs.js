@@ -105,7 +105,7 @@ const ApplicantJobs = () => {
             <div className="job-applicants" key={index}>
               <div className="heading row d-flex align-items-center">
                 <div className="col-sm-8 col-xs-12">
-                  <h3 className="job-title">{item.agency.name} - {item.title}</h3>
+                  <h3 className="job-title">{item.agency.name} - {item.title} {item.location && (<span className="location-name">{"(" + item.location.city + ", " + item.location.state + ")"}</span>)}</h3>
                 </div>
                 <div className="col-sm-4 col-xs-12">
                   <div className="inner-result d-flex align-items-center">

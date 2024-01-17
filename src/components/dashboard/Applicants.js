@@ -85,6 +85,7 @@ const Applicants = () => {
                     <div key={application.id}>
                       <div className="candidate-list candidate-archive-layout d-flex align-items-center">
                         <div className="candidate-info col-sm-8">
+                          <p className="mb-0">{item.location && (item.location.city + ", " + item.location.state)}</p>
                           <div className="d-flex align-items-center">
                             <div className="candidate-info-content">
                               <div className="title-wrapper d-flex align-items-center">
