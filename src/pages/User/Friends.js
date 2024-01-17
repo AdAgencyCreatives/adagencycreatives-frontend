@@ -91,7 +91,7 @@ const Friends = () => {
   return (
     <>
       {token && role && (role == "admin" || role == "creative") ? (
-        <div className="dark-container">
+        <div className="dark-container mb-0">
           <div className="container-fluid px-2 px-md-5">
             <h1 className="community-title text-white text-center mb-4">
               Friends

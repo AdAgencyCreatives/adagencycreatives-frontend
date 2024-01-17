@@ -435,6 +435,7 @@ img.post-avatar {
     background-color: #fff;
     color: var(--color-primary);
     border-radius: 10px;
+    min-height: calc(100vh - 544px);
 }
 
 .restricted-message h4 {

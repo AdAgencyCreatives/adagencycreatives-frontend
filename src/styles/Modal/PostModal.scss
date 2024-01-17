@@ -272,7 +272,10 @@
 }
 
 .post-preview {
-    max-height: 150px !important;
+   display: -webkit-box;
+   -webkit-line-clamp: 6;
+   line-clamp: 6; 
+   -webkit-box-orient: vertical;
     overflow: hidden !important;
     margin-bottom: 10px !important;
 }
