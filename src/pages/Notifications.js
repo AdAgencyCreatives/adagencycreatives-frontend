@@ -88,7 +88,7 @@ const Notifications = () => {
                           })}
                       </div>
                     ) : (
-                      <div className="center-page">Sorry, nothing here.</div>
+                      <div className="center-page nothing">Sorry, nothing here.</div>
                     )}
                   </>
                 )}
