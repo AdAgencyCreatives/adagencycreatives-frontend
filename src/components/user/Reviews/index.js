@@ -58,7 +58,7 @@ const Reviews = ({ user, data }) => {
         </div>
         {!dispalyForm && !isOwnProfile && (
           <>
-            {!userReview ? (
+            {!userReview && (
               <button
                 className="btn btn-dark fs-5 my-2"
                 type="button"
@@ -68,13 +68,23 @@ const Reviews = ({ user, data }) => {
               >
                 Submit Review
               </button>
-            ) : (
-              <>
-                Your Review{" "}
+            )}
+          </>
+        )}
+      </div>
+      <div>
+        {userReview && (
+          <>
+            <div className="average-rating my-4">
+              <div className="d-flex gap-2 p-0 bg-transparent">
+                Your Review
                 <span className="rating-submitted">
                   <IoStar size={14} color="#000" />{" "}
                   {userReview?.rating?.toFixed(2)}
-                </span>
+                </span>  
+              </div>
+              <p><small>{userReview?.comment ?? ''}</small></p>
+              <div className="d-flex gap-2 p-0 bg-transparent">
                 <span className="d-flex gap-2">
                   <button
                     className="btn btn-dark btn-review"
@@ -98,8 +108,8 @@ const Reviews = ({ user, data }) => {
                     )}
                   </button>
                 </span>
-              </>
-            )}
+              </div>
+            </div>
           </>
         )}
       </div>

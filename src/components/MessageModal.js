@@ -18,7 +18,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function MessageModal(props) {
     const [fullWidth, setFullWidth] = React.useState(true);
-    const [maxWidth, setMaxWidth] = React.useState('sm');
+    const [maxWidth, setMaxWidth] = React.useState(props?.size ?? 'sm');
 
     const handleClose = () => {
         if (props.setOptions) {
@@ -38,12 +38,12 @@ export default function MessageModal(props) {
                 maxWidth={maxWidth}
             >
                 <DialogTitle>{props.options.title || "Error"}</DialogTitle>
-                <DialogContent>
+                <DialogContent className="text-center py-2">
                     <DialogContentText>
                         {props.options.message || "An error occured."}
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions>
+                <DialogActions className="justify-content-center pt-0">
                     <Button className="btn btn-dark" onClick={handleClose}>OK</Button>
                 </DialogActions>
             </Dialog>

@@ -45,10 +45,20 @@ const Notifications = () => {
   }, [notifications]);
 
   const onDelete = (notification) => {
-    let remainingNotifications = notifications.filter((notif)=>notif.uuid != notification.uuid);
+    const remainingNotifications = notifications.filter((notif)=>notif.uuid != notification.uuid);
     updateNotifications(remainingNotifications);
     getNotificationsCount(user.uuid);
   };
+
+  const onMarkRead = (notification) => {
+    const readNotifications = notifications.map(notif =>
+      notif.uuid == notification.uuid
+        ? { ...notif, read_at: true }
+        : notif
+    );
+    updateNotifications(readNotifications);
+    getNotificationsCount(user.uuid);
+  }
 
   return (
     <>
@@ -83,6 +93,7 @@ const Notifications = () => {
                                 notification={notification}
                                 creative={creative}
                                 onDelete={onDelete}
+                                onMarkRead={onMarkRead}
                               />
                             );
                           })}

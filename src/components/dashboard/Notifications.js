@@ -8,14 +8,14 @@ import { IoEyeOffOutline, IoEyeOutline, IoTimeOutline } from "react-icons/io5";
 import { IconButton, Tooltip, CircularProgress } from "@mui/material";
 
 const Notifications = () => {
-    const { notifications, meta, loading, getNotifications, updateNotifications } = useNotifications();
+    const { notifications, meta, loading, getNotifications, markAsReadNotifications } = useNotifications();
     const { state: { user } } = useContext(AuthContext);
     const paginate = (page) => {
         getNotifications(user.uuid, page);
     };
 
     const handleMarkAsRead = async (notification_id) => {
-        await updateNotifications(notification_id);
+        await markAsReadNotifications(notification_id);
         getNotifications(user.uuid, meta.current_page);
     };
 
