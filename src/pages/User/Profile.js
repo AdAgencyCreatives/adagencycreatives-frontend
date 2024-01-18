@@ -105,7 +105,7 @@ const Profile = () => {
             <div className="profile-content mt-5">
               <div className="container">
                 <div className="row">
-                  <div className="col-md-8">
+                  <div className="col-lg-8 col-md-6 col-12">
                     {page == "creative" && <Portfolio id={data.user_id} />}
                     <div className="content-section">
                       <h1 className="content-title mt-0">About</h1>
@@ -130,7 +130,7 @@ const Profile = () => {
                       <AgencyContent user={user} role={role} data={data} jobs={open_positions} />
                     )}
                   </div>
-                  <div className="col-md-4 d-none d-md-block">
+                  <div className="col-lg-4 col-md-6 col-12 d-none d-md-block">
                     <div className="profile-sidebar">
                       {page === "creative" ? (
                         <CreativeSidebar data={data} role={role} user={user} />

@@ -233,6 +233,7 @@ li.page-item {
   margin-top: 50px;
 }
 
+
 @media (min-width: 576px) {
   .container {
     max-width: 650px;
@@ -241,13 +242,13 @@ li.page-item {
 
 @media (min-width: 800px) {
   .container {
-    max-width: 760px;
+    max-width: calc(100% - 40px);
   }
 }
 
 @media (min-width: 1200px) {
   .container {
-    max-width: 1160px;
+    max-width: calc(100% - 40px);
   }
 }
 

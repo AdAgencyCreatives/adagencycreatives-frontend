@@ -47,7 +47,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
       {
         label: "Email*",
         required: true,
-        type: "text",
+        type: "email",
         name: "email",
         placeholder: "Email *",
       },

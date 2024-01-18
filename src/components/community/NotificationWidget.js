@@ -42,6 +42,9 @@ const NotificationWidget = (props) => {
             if (props.loadNotifications) {
                 props.loadNotifications();
             }
+            if (props.onMarkRead) {
+                props.onMarkRead(props.notification);
+            }
         } else {
             showMessageModal("error", "Oops!", "Unfortunately not able to mark as read notification", null);
         }
@@ -59,8 +62,10 @@ const NotificationWidget = (props) => {
         }
     };
 
-    const handleOnClick = (e, action) => {
+    const handleOnClick = (e, action, read) => {
         if (action == "mark-as-read") {
+            if (read) return;
+            
             onMarkAsReadAsync();
         } else if (action == "delete") {
             onDeleteAsync();
@@ -71,7 +76,7 @@ const NotificationWidget = (props) => {
         <>
             {props?.notification && (
                 <>
-                    <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
+                    <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} size="xs" />
                     <div className="notif-item">
                         <div className="user-avatar">
                             <img src={props.notification.user.image || Placeholder} alt="" height={50} width={50} />
@@ -88,8 +93,8 @@ const NotificationWidget = (props) => {
                             </Link>
                         </div>
                         <div className="notif-actions">
-                            <Tooltip title="Mark as Read">
-                                <IconButton onClick={(e) => handleOnClick(e, "mark-as-read")}>
+                            <Tooltip title={`${props.notification.read_at ? "Marked as Read" : "Mark as Read"}`}>
+                                <IconButton onClick={(e) => handleOnClick(e, "mark-as-read", props.notification.read_at)}>
                                     {props.notification.read_at ? (
                                         <IoEyeOffOutline />
                                     ) : (
