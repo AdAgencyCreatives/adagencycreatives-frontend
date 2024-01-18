@@ -52,5 +52,22 @@
         vertical-align: middle;
         border-radius: 10px;
         overflow: hidden;
+        position: relative;
+
+        button {
+            position: absolute;
+            cursor: pointer;
+            top: 8px;
+            right: 8px;
+            width: 25px;
+            background: #FFF;
+            height: 25px;
+            padding: 5px;
+            border-radius: 100rem;
+            border: 1px solid;
+            display: flex;
+            align-items: center;
+
+        }
     }
 }

@@ -561,18 +561,41 @@ const MyResume = () => {
     showAlert("Resume updated successfully");
   };
 
-  const removeItem = (name, ref, uploadRef) => {
+
+  const removeItemCurrent = (name, ref, uploadRef, field, item) => {
+    let updated = [...portfolio];
+    let index = updated.findIndex((p) => p.name == name);
+    if (!field?.items?.length) {
+      return;
+    }
+    field.items = field.items.filter((image, i) => image.url ? (image.url !== item.url) : (image.id !== item.id));
+    updated[index] = field;
+    setPortfolio([...updated]);
+    removeAttachment(item.id);
+    uploadRef.current.value = '';
+  };
+
+  const removeItem = (name, ref, uploadRef, field) => {
     let updated = [...portfolio];
     let index = updated.findIndex((p) => p.name == name);
     let item = { ...updated[index] };
     if (!item?.items?.length) {
       return;
     }
-    let last = item.items.pop();
-    updated[index] = item;
-    setPortfolio([...updated]);
-    removeAttachment(last.id);
-    uploadRef.current.value = '';
+    if (field.name === "portfolio_item" && field.multiple) {
+      field.items.map((item) => {
+        removeAttachment(item.id)
+      });
+      updated[index].items = [];
+      setPortfolio([...updated]);
+      uploadRef.current.value = '';
+    } else {
+      let last = item.items.pop();
+      updated[index] = item;
+      setPortfolio([...updated]);
+      removeAttachment(last.id);
+      uploadRef.current.value = '';
+    }
   };
 
   const removeVideo = async (id) => {
@@ -585,47 +608,88 @@ const MyResume = () => {
     showAlert("Video removed successfully");
   };
 
+  const packFiles = (files, user_uuid, name) => {
+    const data = new FormData();
+    [...files].forEach((file, i) => {
+      data.append(`file[]`, file, file.name)
+    })
+    data.append(`user_id`, user.uuid);
+    data.append(`resource_type`, name);
+    return data
+  }
+
   const handleFileChange = async (event, field) => {
     let name = field.name;
     let ref = field.ref;
     let uploadRef = field.uploadRef;
-    const file = event.target.files[0];
-
-    let validationResult = isFileValid(file, (name == "portfolio_item" ? "image" : (name == "creative_reel" ? "video" : "application")), "my-resume");
-    if (!validationResult.status) {
-      uploadRef.current.value = '';
-      showAlert(validationResult.message);
-      return;
-    }
-
     let updated = [...portfolio];
-    let index = updated.findIndex((p) => p.name == name);
-    let item = { ...updated[index] };
-
-    const filename = file.name;
-    if (name == "resume") {
-      item.items = [{ name: filename }];
-    } else if (name == "portfolio_item") {
-
-      if (item?.items?.length >= 5) {
-        showAlert("Up to 5 images can be uploaded");
+    // Upload Multipe
+    if (field.multiple) {
+      const files = event.target.files;
+      if (files && files.length) {
+        // Validated File
+        [...files].forEach((file, i) => {
+          let validationResult = isFileValid(file, (name == "portfolio_item" ? "image" : (name == "creative_reel" ? "video" : "application")), "my-resume");
+          if (!validationResult.status) {
+            uploadRef.current.value = '';
+            showAlert(validationResult.message);
+            return;
+          }
+        })
+        //  Validated Length and Set Portfolio
+        let index = updated.findIndex((p) => p.name == name);
+        let item = { ...updated[index] };
+        if (name == "portfolio_item") {
+          const total = item?.items?.length + files.length;
+          if (files.length > 5 || item?.items?.length > 5 || total > 5) {
+            showAlert("Up to 5 images can be uploaded");
+            return;
+          }
+          // Upload File Attachment
+          const formData = packFiles(files, user.uuid, name);
+          const result = await saveAttachment(formData);
+          result.data.length > 0 && showAlert("File uploaded successfully");
+          updated[index].items = item.items.concat(result.data);
+          setPortfolio([...updated]);
+        }
+      }
+    } else {
+      // Upload Not Multiple
+      const file = event.target.files[0];
+      let validationResult = isFileValid(file, (name == "portfolio_item" ? "image" : (name == "creative_reel" ? "video" : "application")), "my-resume");
+      if (!validationResult.status) {
+        uploadRef.current.value = '';
+        showAlert(validationResult.message);
         return;
       }
-      item.items.push({ url: URL.createObjectURL(file) });
-    }
-    updated[index] = item;
-    setPortfolio([...updated]);
-    console.log(file);
 
-    if (file) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("user_id", user.uuid);
-      formData.append("resource_type", name);
-      const result = await saveAttachment(formData);
-      if (result.data) {
-        if (name == "creative_reel") setVideoItem({ name: file.name, id: result.data.id });
-        showAlert("Item uploaded successfully");
+      let index = updated.findIndex((p) => p.name == name);
+      let item = { ...updated[index] };
+
+      const filename = file.name;
+      if (name == "resume") {
+        item.items = [{ name: filename }];
+      } else if (name == "portfolio_item") {
+        if (item?.items?.length >= 5) {
+          showAlert("Up to 5 images can be uploaded");
+          return;
+        }
+        item.items.push({ url: URL.createObjectURL(file) });
+      }
+      updated[index] = item;
+      setPortfolio([...updated]);
+      console.log(file);
+
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("user_id", user.uuid);
+        formData.append("resource_type", name);
+        const result = await saveAttachment(formData);
+        if (result.data) {
+          if (name == "creative_reel") setVideoItem({ name: file.name, id: result.data.id });
+          showAlert("File uploaded successfully");
+        }
       }
     }
   };
@@ -646,6 +710,7 @@ const MyResume = () => {
       name: "portfolio_item",
       items: [],
       accept: ".jpg, .jpeg, .png, .gif, .bmp, image/jpeg, image/png, image/gif, image/bmp",
+      multiple: true,
       ref: portfolioRef,
       uploadRef: portfolioUploadRef,
     },
@@ -655,6 +720,7 @@ const MyResume = () => {
       type: "upload",
       name: "resume",
       accept: ".doc, .docx, .pdf, .txt",
+      multiple: false,
       items: [],
       ref: resumeRef,
       uploadRef: resumeUploadRef,
@@ -662,6 +728,7 @@ const MyResume = () => {
     {
       label: "Upload your reel, spotlight or a video resume",
       required: false,
+      multiple: false,
       type: "video",
       name: "company_video",
     },
@@ -683,8 +750,8 @@ const MyResume = () => {
     let updatedEducationList = [...educationList];
     if (updatedEducationList.length > 0) {
       updatedEducationList[index][key_name] = key_value;
-    }else{
-      updatedEducationList[0]  = {id: '', degree: '', college: '', completed_at: ''}
+    } else {
+      updatedEducationList[0] = { id: '', degree: '', college: '', completed_at: '' }
     }
 
     setEducationList(updatedEducationList);
@@ -692,10 +759,10 @@ const MyResume = () => {
 
   const updateExperienceList = (index, key_name, key_value) => {
     let updatedExperienceList = [...experienceList];
-    if(updatedExperienceList.length > 0){
+    if (updatedExperienceList.length > 0) {
       updatedExperienceList[index][key_name] = key_value;
-    }else{
-      updatedExperienceList[0]  = {id: '',title: '',company: '',started_at: '',description: '',completed_at: ''}
+    } else {
+      updatedExperienceList[0] = { id: '', title: '', company: '', started_at: '', description: '', completed_at: '' }
     }
     setExperienceList(updatedExperienceList);
   };
@@ -783,17 +850,17 @@ const MyResume = () => {
           list.splice(index, 1);
 
           setEducationList(list);
-          if(item != undefined ){
+          if (item != undefined) {
             deleteEducation(item.id);
           }
-          
+
         }
         if (field.name == "experiences") {
           let list = [...experienceList];
           let item = experienceList[index];
           list.splice(index, 1);
           setExperienceList(list);
-          if(item != undefined ){
+          if (item != undefined) {
             deleteExperience(item.id);
           }
         }
@@ -887,7 +954,7 @@ const MyResume = () => {
               <div className="col-md-12 col-sm-12 col-12">
                 {videoItem && (
                   <>
-                    <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2" onClick={(e)=> setShowVideoItem(state => !state) }>
+                    <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2" onClick={(e) => setShowVideoItem(state => !state)}>
                       <span className="icon_type">
                         <FiVideo />
                       </span>
@@ -910,7 +977,7 @@ const MyResume = () => {
                   <FiTrash2 /> Remove
                 </button>
               </div>
-              <input type="file" ref={videoUploadRef} className="d-none" accept=".mp4, .avi, .mov, video/*" onChange={(e) => handleFileChange(e, { name: "creative_reel", ref: videoRef, uploadRef: videoUploadRef })} />
+              <input type="file" ref={videoUploadRef} className="d-none" multiple={field.multiple} accept=".mp4, .avi, .mov, video/*" onChange={(e) => handleFileChange(e, { name: "creative_reel", ref: videoRef, uploadRef: videoUploadRef })} />
             </div>
           </>
         );
@@ -926,17 +993,20 @@ const MyResume = () => {
             <input type="hidden" className="input-text" name={field.name} value="" />
             <div className="row align-items-center upload-box">
               <div className="col-md-12 col-sm-4 col-12 mb-3">
-                {field.items.map((item) =>
+                {field.items.map((item, index) =>
                   field.name == "resume" ? (
-                    <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2" key={item.name}>
+                    <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2" key={`${index}_` + item.id}>
                       <span className="icon_type">
                         <FiFile />
                       </span>
                       <div className="filename">{item.name}</div>
                     </button>
                   ) : (
-                    <div className="portfolio_item">
-                      <img src={item.url} key={item.name} className="w-100 h-100" alt="" />
+                    <div className="portfolio_item" key={`${index}_` + item.id}>
+                      <button onClick={() => removeItemCurrent(field.name, field.ref, field.uploadRef, field, item)}>
+                        <FiTrash2 />
+                      </button>
+                      <img src={item.url} className="w-100 h-100" alt="" />
                     </div>
                   )
                 )}
@@ -945,11 +1015,11 @@ const MyResume = () => {
                 <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => field.uploadRef.current.click()}>
                   <FiPaperclip /> Upload
                 </button>
-                <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeItem(field.name, field.ref, field.uploadRef)}>
+                <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeItem(field.name, field.ref, field.uploadRef, field)}>
                   <FiTrash2 /> Remove
                 </button>
               </div>
-              <input type="file" ref={field.uploadRef} className="d-none" accept={field.accept} onChange={(e) => handleFileChange(e, field)} />
+              <input type="file" ref={field.uploadRef} className="d-none" multiple={field.multiple} accept={field.accept} onChange={(e) => handleFileChange(e, field)} />
             </div>
           </>
         );
@@ -1109,7 +1179,7 @@ const MyResume = () => {
         <h4 className="text-uppercase mb-4">Portfolio</h4>
         <div className="profile-edit-form">
           <div className="row gx-3 gy-5 align-items-end">
-            {portfolio.map((field) => {
+            {portfolio && portfolio.map((field) => {
               return (
                 <div className={`col-${field.column}`} key={field.name}>
                   {getFormField(field)}
