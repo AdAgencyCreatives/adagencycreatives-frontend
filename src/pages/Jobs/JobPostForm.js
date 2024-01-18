@@ -102,8 +102,8 @@ const JobPostForm = ({ id, setJobStatus }) => {
       showAlert("The Job Description cannot be empty");
     } else if (formData.expired_at == '' || formData.expired_at == "Invalid date") {
       showAlert("The Job Post Expires date is invalid");
-    } else if (user?.role == 'advisor' && !isJobPostAllowed) {
-      showAlert("Agency with Active package and Quota is required");
+    } else if ((user?.role == 'advisor' || user?.role == 'recruiter') && !isJobPostAllowed) {
+      showAlert("Post A Job Package Required");
     } else {
       handleSubmit(e);
     }
@@ -430,7 +430,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           <form onSubmit={handleSubmitCurrent}>
             <div className="row gx-3 gy-5 align-items-end">
               {fields.map((field, index) => {
-                if (user?.role != 'advisor' && field.name == 'agency_id') {
+                if ((user?.role != 'advisor' || user?.role != 'recruiter') && field.name == 'agency_id') {
                   return (<></>);
                 }
                 switch (field.type) {
