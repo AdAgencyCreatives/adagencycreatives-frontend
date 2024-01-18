@@ -22,7 +22,7 @@ const Header = ({ data, role, user }) => {
       <div className="row align-items-center justify-content-between">
         <div className="col-12 d-flex align-items-top flex-md-row flex-column">
           <div className="avatar employer">
-            <img src={data.logo || Placeholder} height={100} width={100} />
+            <img src={data.logo || Placeholder} height={100} width={100} onError={(e) => { e.target.src = Placeholder; }} />
           </div>
           <div className="meta row w-100 align-items-center">
             <div className="col-md-6 px-md-3 px-0">

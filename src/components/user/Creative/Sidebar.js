@@ -200,7 +200,7 @@ const Sidebar = ({ data, user }) => {
               <div className="details">
                 <div className="text">Type of Work</div>
                 <div className="value">
-                  {renderListData(data.employment_type.split(','), "e", isAdmin, isAdvisor, 'work-type')}
+                  {renderListData(String(data.employment_type).split(','), "e", isAdmin, isAdvisor, 'work-type')}
                 </div>
               </div>
             </div>
@@ -218,6 +218,13 @@ const Sidebar = ({ data, user }) => {
           ) : (
             ""
           )}
+          {isOwnProfile || isAdmin ? (
+            <Link to="/my-resume">
+              <button className="btn btn-dark w-100 py-3 fs-5 mb-3">
+                Edit My Resume
+              </button>
+            </Link>
+          ) : ("")}
         </div>
       </div>
       <div className="sidebar-item my-4">

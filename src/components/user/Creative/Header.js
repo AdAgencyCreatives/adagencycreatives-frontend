@@ -78,6 +78,9 @@ const Header = ({ data, role, user }) => {
               src={data.profile_image || Placeholder}
               height={100}
               width={100}
+              onError={(e) => {
+                e.target.src = Placeholder; // Set the backup image source
+              }}
             />
           </div>
           <div className="meta row w-100 align-items-center">

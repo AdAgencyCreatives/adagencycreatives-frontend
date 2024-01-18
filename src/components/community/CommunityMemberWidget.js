@@ -48,6 +48,9 @@ const CommunityMemberWidget = (props) => {
                             width={150}
                             height={150}
                             alt=""
+                            onError={(e) => {
+                                e.target.src = Placeholder; // Set the backup image source
+                            }}
                         />
                         <div className="member-data">
                             <div className="agencyName">

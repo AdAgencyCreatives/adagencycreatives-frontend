@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import { useContext } from "react";
 import useHelper from "../../../hooks/useHelper";
+import Placeholder from "../../../assets/images/placeholder.png";
 
 const Content = ({ user, role, data, education, experience }) => {
 
@@ -42,7 +43,11 @@ const Content = ({ user, role, data, education, experience }) => {
       <div className="content-section">
         <h1 className="content-title">Portfolio Site</h1>
         <a href={portfolio_link} target="_blank">
-          <img src={data.portfolio_website || ""} />
+          <img
+            src={data.portfolio_website || Placeholder}
+            onError={(e) => {
+              e.target.src = Placeholder; // Set the backup image source
+            }} />
         </a>
       </div>
       {/* Education */}
@@ -95,7 +100,7 @@ const Content = ({ user, role, data, education, experience }) => {
             {experience.map((item) => (
               <div className="content" key={item.id}>
                 <div className="circle">{item.company?.charAt(0)}</div>
-                
+
                 <div className="top-info work_experience">
                   {/* <span className="edu_stats">{item.company}</span> */}
 
