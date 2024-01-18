@@ -103,7 +103,7 @@ const Sidebar = ({ data, user }) => {
               {/* <IoMailOutline size={22} /> */}
               <div className="details">
                 <div className="text">Email</div>
-                <div className="value">{data.email}</div>
+                <div className="value" style={{ wordBreak: 'break-word' }}>{data.email}</div>
               </div>
             </div>
           )}
