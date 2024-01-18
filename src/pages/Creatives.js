@@ -323,10 +323,9 @@ const Creatives = () => {
           <p>There is no result.</p>
         </div>
       ) : (
-       <span></span>
+        <span></span>
       )}
     </div>
-    
   );
 };
 

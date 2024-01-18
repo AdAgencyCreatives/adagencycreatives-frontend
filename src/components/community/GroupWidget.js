@@ -216,6 +216,9 @@ const GroupWidget = (props) => {
                         width={150}
                         height={150}
                         alt=""
+                        onError={(e) => {
+                            e.target.src = Placeholder; // Set the backup image source
+                        }}
                     />
                     <div className="agencyName ">
                         <Link to={"/groups/" + props.group.uuid}>
