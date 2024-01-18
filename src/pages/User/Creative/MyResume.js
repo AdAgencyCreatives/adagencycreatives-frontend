@@ -323,6 +323,7 @@ const MyResume = () => {
           name: "is_opentorelocation",
           value: single_creative.is_opentorelocation,
           column: "6",
+          hide:true,
         },
         {
           label: "Open to Remote",
@@ -331,6 +332,7 @@ const MyResume = () => {
           name: "is_remote",
           value: single_creative.workplace_preference.is_remote,
           column: "6",
+          hide:true,
         },
 
         {
@@ -1093,7 +1095,7 @@ const MyResume = () => {
         <div className="profile-edit-form">
           <div className="row gx-3 gy-5 align-items-end">
             {fields.map((field) => {
-              return (
+              return field?.hide ? (<></>) : (
                 <div className={`col-sm-${field.column}`} key={field.name}>
                   {getFormField(field)}
                 </div>

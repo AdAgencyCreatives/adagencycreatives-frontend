@@ -5,13 +5,22 @@
         background: #eee !important;
         border-radius: 8px;
         // width: 100%;
+        overflow: auto;
     }
 
     .item {
         display: flex;
         gap: 15px;
         margin-bottom: 25px;
+
+        // .details {
+        //     .value {
+        //         word-break: break-all;
+        //     }
+        // }
     }
+
+
 
 
     .text {
@@ -45,9 +54,9 @@
     }
 }
 
-@media (max-width: 1024px){
-    .profile-sidebar .value{
+@media (max-width: 1024px) {
+    .profile-sidebar .value {
         font-size: 14px;
     }
-    
+
 }
