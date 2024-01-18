@@ -200,7 +200,7 @@ const Sidebar = ({ data, user }) => {
               <div className="details">
                 <div className="text">Type of Work</div>
                 <div className="value">
-                  {renderListData(data.employment_type.split(','), "e", isAdmin, isAdvisor, 'work-type')}
+                  {renderListData(String(data.employment_type).split(','), "e", isAdmin, isAdvisor, 'work-type')}
                 </div>
               </div>
             </div>
