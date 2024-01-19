@@ -1,9 +1,14 @@
 import "../../../styles/User/ProfileSidebar.scss";
 import { Link } from "react-router-dom";
+import adicon from "../../../assets/images/icons/adicon.png";
+import bullseye from "../../../assets/images/icons/bulleyes.png";
+import time from "../../../assets/images/icons/duration-icon.png";
 import sample from "../../../assets/images/sample.mp4";
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../../context/AgenciesContext";
-import { IoAdd, IoCallOutline, IoMailOutline } from "react-icons/io5";
+import { IoAdd, IoCallOutline, IoLocationOutline, IoMailOutline } from "react-icons/io5";
+import { VscTextSize } from "react-icons/vsc";
+import { MdHomeWork } from "react-icons/md";
 
 import useHelper from "../../../hooks/useHelper";
 
@@ -117,7 +122,8 @@ const Sidebar = ({ data, user }) => {
             </div>
           )}
           {preferences.length ? (
-            <div className="mt-4">
+            <div className="item mt-4">
+              <MdHomeWork />
               <div className="details">
                 <div className="text">Workplace Preference</div>
                 <div className="value">{preferences.join(",")}</div>
@@ -126,20 +132,22 @@ const Sidebar = ({ data, user }) => {
           ) : (
             ""
           )}
-          <div className="mt-4">
-            {data.industry_experience.length ? (
+          {data.industry_experience.length ? (
+            <div className="item mt-4">
+              <img src={bullseye} height={22} width={22} alt="" />
               <div className="details">
                 <div className="text">Industry Specialty:</div>
                 <div className="value">
                   {renderListData(data.industry_experience, "industry")}
                 </div>
               </div>
-            ) : (
-              ""
-            )}
-          </div>
+            </div>
+          ) : (
+            ""
+          )}
           {data.media_experience.length ? (
-            <div className="mt-4">
+            <div className="item mt-4">
+              <img src={adicon} height={22} width={22} alt="" />
               <div className="details">
                 <div className="text">Media Specialty</div>
                 <div className="value">
@@ -151,7 +159,8 @@ const Sidebar = ({ data, user }) => {
             ""
           )}
           {data.size && (
-            <div className="mt-4">
+            <div className="item mt-4">
+              <VscTextSize />
               <div className="details">
                 <div className="text">Company Size</div>
                 <div className="value">{data.size}</div>
@@ -159,7 +168,8 @@ const Sidebar = ({ data, user }) => {
             </div>
           )}
           {data.location.state && (
-            <div className="mt-4">
+            <div className="item mt-4">
+              <IoLocationOutline />
               <div className="details">
                 <div className="text">Location:</div>
                 <div className="value">
