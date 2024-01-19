@@ -100,7 +100,7 @@ const Sidebar = ({ data, user }) => {
         <div className="content">
           {data.email && (isOwnProfile || isAdmin) && (
             <div className="item">
-              {/* <IoMailOutline size={22} /> */}
+              <IoMailOutline size={22} />
               <div className="details">
                 <div className="text">Email</div>
                 <div className="value" style={{ wordBreak: 'break-word' }}>{data.email}</div>
@@ -109,7 +109,7 @@ const Sidebar = ({ data, user }) => {
           )}
           {data.phone_number && (isOwnProfile || isAdmin) && (
             <div className="item">
-              {/* <IoCallOutline size={22} /> */}
+              <IoCallOutline size={22} />
               <div className="details">
                 <div className="text">Phone Number</div>
                 <div className="value">{formatPhone(data.phone_number)}</div>
