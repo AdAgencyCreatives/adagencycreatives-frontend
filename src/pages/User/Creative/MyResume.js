@@ -151,6 +151,7 @@ const MyResume = () => {
     getEmploymentTypes,
     getYearsExperience,
     getStrengths,
+    getResumeEmploymentTypes,
   } = useContext(DataContext);
 
   const {
@@ -309,11 +310,11 @@ const MyResume = () => {
           required: true,
           type: "dropdown",
           data: employment,
+          isMulti: true,
           name: "employment_type",
-          callback: (item) => handleDropdownChange(item, "employment_type"),
-          value: employment.find((item) => {
-            return item.value == single_creative.employment_type;
-          }),
+          callback: (item) => handleMultiChange(item, "employment_type"),
+          value: employment.filter((item) => single_creative.employment_type.includes(item.label)),
+          placeholder: "Select employment type",
           column: "6",
         },
         {
@@ -492,7 +493,11 @@ const MyResume = () => {
   }, [strengths]);
 
   useEffect(() => {
-    setEmployment(employment_type.map((item) => ({ label: item, value: item })));
+    let data = employment_type;
+    if (employment_type.length) {
+      data = parseFieldsData(employment_type);
+    }
+    setEmployment(data);
   }, [employment_type]);
 
   useEffect(() => {

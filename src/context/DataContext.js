@@ -246,6 +246,18 @@ const getStrengths = (dispatch) => {
   };
 };
 
+const getResumeEmploymentTypes = (dispatch) => {
+  return async () => {
+    try {
+      const response = await api.get("/get_employment_types");
+      dispatch({
+        type: "set_employment_types",
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
 const getIndustryExperiences = (dispatch) => {
   return async (uuid) => {
     try {
@@ -487,6 +499,7 @@ export const { Context, Provider } = createDataContext(
     loadNextPage,
     getNextPageMentorResources,
     getAgencies,
+    getResumeEmploymentTypes,
   },
   state
 );
