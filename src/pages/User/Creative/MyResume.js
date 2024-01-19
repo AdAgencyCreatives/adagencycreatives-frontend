@@ -148,10 +148,9 @@ const MyResume = () => {
     getCities,
     getMediaExperiences,
     getIndustryExperiences,
-    getEmploymentTypes,
+    getResumeEmploymentTypes,
     getYearsExperience,
     getStrengths,
-    getResumeEmploymentTypes,
   } = useContext(DataContext);
 
   const {
@@ -196,7 +195,7 @@ const MyResume = () => {
       getStates();
       getMediaExperiences();
       getIndustryExperiences();
-      getEmploymentTypes();
+      getResumeEmploymentTypes();
       getYearsExperience();
       getStrengths();
     }

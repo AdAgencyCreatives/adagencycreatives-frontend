@@ -19,6 +19,7 @@ import { Context as AlertContext } from "../../context/AlertContext";
 import useUploadHelper from "../../hooks/useUploadHelper";
 import IconMessage from "../../components/IconMessage";
 import { Context as AgenciesContext } from "../../context/AgenciesContext";
+import { Context as SubscriptionContext } from "../../context/SubscriptionContext";
 
 const JobPostForm = ({ id, setJobStatus }) => {
   const editorRefTinyMCE = useRef(null);
@@ -34,6 +35,12 @@ const JobPostForm = ({ id, setJobStatus }) => {
   const {
     state: { user, token },
   } = useContext(AuthContext);
+
+  const {
+    state: { subscription, },
+    getSubscription,
+  } = useContext(SubscriptionContext);
+
 
   const {
     states: {
@@ -414,6 +421,16 @@ const JobPostForm = ({ id, setJobStatus }) => {
       });
     }
   };
+
+  useEffect(()=>{
+    getSubscription();
+  }, []);
+
+  useEffect(()=>{
+    if(subscription) {
+      setIsJobPostAllowed(subscription.status == 'active' && subscription.quota_left > 0);
+    }
+  }, [subscription]);
 
   const handleUpload = (e) => {
     imageUploadRef.current.click()

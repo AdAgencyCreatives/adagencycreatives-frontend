@@ -249,10 +249,10 @@ const getStrengths = (dispatch) => {
 const getResumeEmploymentTypes = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/get_employment_types");
+      const response = await api.get("/get_resume_employment_types");
       dispatch({
-        type: "set_employment_types",
-        payload: response.data,
+        type: "set_employment_type",
+        payload: response.data.data,
       });
     } catch (error) {}
   };
