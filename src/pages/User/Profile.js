@@ -19,7 +19,6 @@ const Profile = () => {
   const { username, type, role_name } = useParams();
   const page = type;
 
-  const [roleId, setRoleId] = useState(role_name);
   const [isLoading, setLoading] = useState(true);
 
   const {
@@ -47,14 +46,18 @@ const Profile = () => {
     if (token) {
       if (page == "creative") getCreative(username);
     }
-    if (page == "agency") {
-      if (role_name == 'recruiter') {
-        setRoleId(5);
+
+    if (token && user && role_name) {
+      if (page == "agency") {
+        let roleId = 3;
+        if (role_name == 'recruiter') {
+          roleId = 5;
+        }
+        if (role_name == 'advisor') {
+          roleId = 2;
+        }
+        getAgency(username, user ? user.username == username : false, roleId);
       }
-      if (role_name == 'advisor') {
-        setRoleId(2);
-      }
-      getAgency(username, user ? user.username == username : false, roleId);
     }
   }, [page, user, role_name]);
 
