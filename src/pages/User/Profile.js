@@ -49,9 +49,9 @@ const Profile = () => {
       if (page == "creative") getCreative(username);
     }
 
-    if (token && user && role_name) {
+    if (token && user) {
       if (page == "agency") {
-        let roleId = 3;
+        let roleId = false;
         if (role_name == 'recruiter') {
           roleId = 5;
         }

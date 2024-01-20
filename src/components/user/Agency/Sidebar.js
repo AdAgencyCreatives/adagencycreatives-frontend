@@ -231,7 +231,7 @@ const Sidebar = ({ data, user }) => {
           )}
         </div>
       </div>
-      <div className="sidebar-item my-4">
+      {/* <div className="sidebar-item my-4">
         <h4 className="title">Video</h4>
         {video ? (
           <div className="video-section mt-4">
@@ -240,7 +240,7 @@ const Sidebar = ({ data, user }) => {
         ) : (
           <button className="btn btn-dark w-100 py-3 fs-5">Coming Soon</button>
         )}
-      </div>
+      </div> */}
     </>
   );
 };
