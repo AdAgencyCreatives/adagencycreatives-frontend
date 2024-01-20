@@ -148,7 +148,7 @@ const MyResume = () => {
     getCities,
     getMediaExperiences,
     getIndustryExperiences,
-    getEmploymentTypes,
+    getResumeEmploymentTypes,
     getYearsExperience,
     getStrengths,
   } = useContext(DataContext);
@@ -195,7 +195,7 @@ const MyResume = () => {
       getStates();
       getMediaExperiences();
       getIndustryExperiences();
-      getEmploymentTypes();
+      getResumeEmploymentTypes();
       getYearsExperience();
       getStrengths();
     }
@@ -309,11 +309,11 @@ const MyResume = () => {
           required: true,
           type: "dropdown",
           data: employment,
+          isMulti: true,
           name: "employment_type",
-          callback: (item) => handleDropdownChange(item, "employment_type"),
-          value: employment.find((item) => {
-            return item.value == single_creative.employment_type;
-          }),
+          callback: (item) => handleMultiChange(item, "employment_type"),
+          value: employment.filter((item) => single_creative.employment_type.includes(item.label)),
+          placeholder: "Select employment type",
           column: "6",
         },
         {
@@ -323,7 +323,7 @@ const MyResume = () => {
           name: "is_opentorelocation",
           value: single_creative.is_opentorelocation,
           column: "6",
-          hide:true,
+          hide: true,
         },
         {
           label: "Open to Remote",
@@ -332,7 +332,7 @@ const MyResume = () => {
           name: "is_remote",
           value: single_creative.workplace_preference.is_remote,
           column: "6",
-          hide:true,
+          hide: true,
         },
 
         {
@@ -492,7 +492,11 @@ const MyResume = () => {
   }, [strengths]);
 
   useEffect(() => {
-    setEmployment(employment_type.map((item) => ({ label: item, value: item })));
+    let data = employment_type;
+    if (employment_type.length) {
+      data = parseEmployementTypeFieldsData(employment_type);
+    }
+    setEmployment(data);
   }, [employment_type]);
 
   useEffect(() => {
@@ -502,6 +506,13 @@ const MyResume = () => {
   const parseFieldsData = (data) => {
     const parsedValue = data.map((item) => {
       return { label: item.name, value: item.uuid || item.id, key: item.name };
+    });
+    return parsedValue;
+  };
+
+  const parseEmployementTypeFieldsData = (data) => {
+    const parsedValue = data.map((item) => {
+      return { label: item.name, value: item.name, key: item.name };
     });
     return parsedValue;
   };
@@ -557,10 +568,10 @@ const MyResume = () => {
 
   const handleSubmit = async () => {
     console.log(educationList, experienceList);
-    await saveResume(user.uuid, formData, educationList, experienceList);
+    let newFormData = {...formData, 'employment_type': (formData['employment_type'] && formData['employment_type'].length ? formData['employment_type'].join(',') : "")}
+    await saveResume(user.uuid, newFormData, educationList, experienceList);
     showAlert("Resume updated successfully");
   };
-
 
   const removeItemCurrent = (name, ref, uploadRef, field, item) => {
     let updated = [...portfolio];
