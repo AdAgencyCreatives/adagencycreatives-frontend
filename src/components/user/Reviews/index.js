@@ -48,7 +48,7 @@ const Reviews = ({ user, data }) => {
   return (
     <div id="reviews">
       <div className="average-rating d-flex align-items-center gap-2 flex-wrap">
-        {data?.type === "agencies" ? "Agency" : "Creative"} Reviews
+        {data?.type === "agencies" ? ((user?.role == 'advisor' || user?.role == 'recruiter') ? "" : "Agency ") : "Creative "}Reviews
         <div
           className="d-flex align-items-center gap-2"
           onClick={() => setShowReviews((prev) => !prev)}

@@ -20,7 +20,7 @@ import Messages from "./pages/Messages";
 import Notifications from "./pages/Notifications";
 import Activities from "./pages/Activities";
 import About from "./pages/About";
-import Profile from "./pages/User/Profile";
+import ViewProfile from "./pages/User/ViewProfile";
 import JobDescription from "./pages/Jobs/JobDescription";
 import UserDashboard from "./pages/User/UserDashboard";
 import Checkout from "./pages/Cart/Checkout";
@@ -170,11 +170,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/:type/:username/:role_name",
-        element: <Profile />,
+        element: <ViewProfile />,
       },
       {
         path: "/:type/:username",
-        element: <Profile />,
+        element: <ViewProfile />,
       },
       {
         path: "/groups/create",
