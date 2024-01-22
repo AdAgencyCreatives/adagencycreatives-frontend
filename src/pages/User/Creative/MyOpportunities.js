@@ -63,7 +63,7 @@ const MyOpportunities = () => {
                 </tr>
               </thead>
               <tbody>
-                {applied_jobs.length &&
+                {applied_jobs?.length > 0 &&
                   applied_jobs.map((item) => {
                     let job = item.job;
                     return (
