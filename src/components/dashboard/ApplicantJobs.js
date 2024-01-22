@@ -229,7 +229,7 @@ const ApplicantJobs = () => {
                                   <TfiNotepad />
                                 </button>
                               </Tooltip>
-                              {!item?.advisor_id || (user?.role == 'advisor' || user?.role == 'recruiter') && (<>
+                              {(!item?.advisor_id || user?.role == 'advisor') && (<>
                                 {application.status == "pending" ? (
                                   <>
                                     <Tooltip
@@ -305,7 +305,7 @@ const ApplicantJobs = () => {
                                   <TfiDownload className="icon-rounded" />
                                 </Link>
                               </Tooltip>
-                              {!item?.advisor_id || (user?.role == 'advisor' || user?.role == 'recruiter') && (<>
+                              {(!item?.advisor_id || user?.role == 'advisor') && (<>
                                 <Tooltip
                                   title="Remove From Job"
                                   // onClick={() => deleteApplication(application.id)}
