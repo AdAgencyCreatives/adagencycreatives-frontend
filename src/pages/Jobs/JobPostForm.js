@@ -109,7 +109,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
       showAlert("The Job Description cannot be empty");
     } else if (formData.expired_at == '' || formData.expired_at == "Invalid date") {
       showAlert("The Job Post Expires date is invalid");
-    } else if ((user?.role == 'advisor' || user?.role == 'recruiter') && !isJobPostAllowed) {
+    } else if (!isJobPostAllowed) {
       showAlert("Post A Job Package Required");
     } else {
       handleSubmit(e);
