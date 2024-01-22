@@ -58,7 +58,7 @@ const useFormData = (props = {}) => {
 
   const {
     state: { agencies, categories, states, cities, media_experiences, industry_experiences, employment_type, years_experience, strengths },
-    getAgencies,
+    getAssignedAgencies,
     getCategories,
     getStates,
     getCities,
@@ -74,7 +74,7 @@ const useFormData = (props = {}) => {
       if (id) {
         getJobById(id);
       }
-      getAgencies();
+      getAssignedAgencies();
       getCategories();
       getStates();
       getMediaExperiences();

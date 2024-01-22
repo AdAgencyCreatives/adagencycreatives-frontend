@@ -447,7 +447,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           <form onSubmit={handleSubmitCurrent}>
             <div className="row gx-3 gy-5 align-items-end">
               {fields.map((field, index) => {
-                if ((user?.role != 'advisor' || user?.role != 'recruiter') && field.name == 'agency_id') {
+                if ((user?.role != 'advisor' && user?.role != 'recruiter') && field.name == 'agency_id') {
                   return (<></>);
                 }
                 switch (field.type) {

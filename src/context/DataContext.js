@@ -123,7 +123,7 @@ const reducer = (state, action) => {
   }
 };
 
-const getAgencies = (dispatch) => {
+const getAssignedAgencies = (dispatch) => {
   return async () => {
     try {
       const response = await api.get("/get_assigned_agencies");
@@ -498,7 +498,7 @@ export const { Context, Provider } = createDataContext(
     getPublications,
     loadNextPage,
     getNextPageMentorResources,
-    getAgencies,
+    getAssignedAgencies,
     getResumeEmploymentTypes,
   },
   state
