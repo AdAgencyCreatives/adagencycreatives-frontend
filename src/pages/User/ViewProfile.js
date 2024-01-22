@@ -49,17 +49,15 @@ const Profile = () => {
       if (page == "creative") getCreative(username);
     }
 
-    if (token && user) {
-      if (page == "agency") {
-        let roleId = false;
-        if (role_name == 'recruiter') {
-          roleId = 5;
-        }
-        if (role_name == 'advisor') {
-          roleId = 2;
-        }
-        getAgency(username, user ? user.username == username : false, roleId);
+    if (page == "agency") {
+      let roleId = false;
+      if (role_name == 'recruiter') {
+        roleId = 5;
       }
+      if (role_name == 'advisor') {
+        roleId = 2;
+      }
+      getAgency(username, user ? user.username == username : false, roleId);
     }
   }, [page, user, role_name]);
 
