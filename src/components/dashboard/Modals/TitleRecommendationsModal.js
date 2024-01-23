@@ -23,7 +23,7 @@ const TitleRecommendationsModal = ({ open, setOpen, handleClose }) => {
     } = useContext(AuthContext);
 
     useEffect(() => {
-        if (open && user) {
+        if (open) {
             getCategories();
         }
     }, [open, user]);
