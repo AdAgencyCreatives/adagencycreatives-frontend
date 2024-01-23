@@ -193,7 +193,9 @@ const ApplicantJobs = () => {
                                       : application.status == "accepted"
                                         ? "Approved"
                                         : application.status == "shortlisted"
-                                          ? (item?.advisor_id || user?.role == 'advisor' ? "Recommended" : "Shortlisted") : "Rejected"}
+                                          ? "Recommended"
+                                          : "Rejected"
+                                    }
                                   </span>
                                 </div>
                                 <div className="job-metas">
@@ -232,21 +234,22 @@ const ApplicantJobs = () => {
                               {(!item?.advisor_id || user?.role == 'advisor') && (<>
                                 {application.status == "pending" ? (
                                   <>
-                                    <Tooltip
-                                      title={user?.role == 'advisor' ? "Share Recommended Talent" : "Shortlist"}
-                                      onClick={() =>
-                                        setApplicationStatus(
-                                          item.id,
-                                          application.id,
-                                          "shortlisted"
-                                        )
-                                      }
-                                    >
-                                      <button className="btn p-0 border-0 btn-hover-primary">
-                                        <TfiCheckBox className="icon-rounded" />
-                                      </button>
-                                    </Tooltip>
-
+                                    {user?.role == 'advisor' && (
+                                      <Tooltip
+                                        title="Share Recommended Talent"
+                                        onClick={() =>
+                                          setApplicationStatus(
+                                            item.id,
+                                            application.id,
+                                            "shortlisted"
+                                          )
+                                        }
+                                      >
+                                        <button className="btn p-0 border-0 btn-hover-primary">
+                                          <TfiCheckBox className="icon-rounded" />
+                                        </button>
+                                      </Tooltip>
+                                    )}
                                     <Tooltip
                                       title="Interested"
                                       onClick={() =>
@@ -321,8 +324,8 @@ const ApplicantJobs = () => {
                                     <TfiClose className="icon-rounded" />
                                   </button>
                                 </Tooltip>
-                                </>)}
-                              </div>
+                              </>)}
+                            </div>
                           </div>
                         </div>
                       </article>

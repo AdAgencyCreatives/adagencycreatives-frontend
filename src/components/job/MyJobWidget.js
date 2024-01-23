@@ -122,7 +122,7 @@ const MyJobWidget = (props) => {
             </td>
 
             <td className="job-table-actions nowrap">
-                {job?.advisor_id && (user?.role != 'advisor' || user?.role != 'recruiter') ? (<></>) : (
+                {job?.advisor_id && user?.role != 'advisor' ? (<></>) : (
                     <div className="action-button">
                         {job?.status == 'filled' ? (
                             <Tooltip title="Approve">

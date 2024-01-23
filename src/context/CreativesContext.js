@@ -412,7 +412,9 @@ const getAppliedJobs = (dispatch) => {
         type: "set_applied_jobs",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) { 
+      console.log(error);
+    }
     setLoading(dispatch, false);
   };
 };
