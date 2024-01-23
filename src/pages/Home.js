@@ -15,7 +15,7 @@ import PublicationResources from "../components/home/PublicationResources";
 import FeaturedCities from "../components/home/FeaturedCities";
 import SpotlightCreative from "../components/home/SpotlightCreative";
 import CreativeJobs from "../components/home/CreativeJobs";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
 import { Context as AlertContext } from "../context/AlertContext";
 import { Link } from "react-router-dom";
@@ -29,6 +29,8 @@ import TitleRecommendationsModal from "../components/dashboard/Modals/TitleRecom
 register();
 
 const Home = () => {
+
+  const searchInputRef = useRef(null);
 
   const { pageData, getPateDataItem } = usePageDataHelper("home");
   const [openTitleRecommendations, setOpenTitleRecommendations] = useState(false);
@@ -67,6 +69,7 @@ const Home = () => {
   const handleCloseTitleRecommendations = (e, data) => {
     setOpenTitleRecommendations(false)
     setSearch(search + (search?.length > 0 ? ", " : "") + data.name);
+    searchInputRef?.current?.focus();
   };
 
   useEffect(() => {
@@ -102,6 +105,7 @@ const Home = () => {
                     {/* <SearchOutline color={"#00000"} width="25px" className="searchIcon" /> */}
                     <IoSearchOutline size={26} className="searchIcon" />
                     <input
+                      ref={searchInputRef}
                       className="searchInput form-control"
                       type="text"
                       placeholder={getPateDataItem("searchbar_placeholder", pageData)}
