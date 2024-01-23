@@ -62,7 +62,7 @@ const Header = ({ data, role, user }) => {
             </div>
             <div className="col-md-6">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0">
-                {!isAgency && (
+                {!(isAgency || data?.role == 'advisor' || data?.role == 'recruiter') && (
                   <button
                     className={
                       "btn btn-hover-primary" +

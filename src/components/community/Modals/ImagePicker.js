@@ -175,7 +175,7 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
 
           </p>
           <p className="m-0">
-            {isFileUploading ? (fileUploadProgress >= 100 ? "Attaching file to your message" : "Please wait while your file is being uploaded.") : "Share images or a single video in your post."}
+            {isFileUploading ? (fileUploadProgress >= 100 ? "Attaching file to your message" : "Please wait while your file is being uploaded.") : "Share " + (allowType == 'video' ? allowType : allowType + 's') + " in your post."}
           </p>
           {!isFileUploading ? (
             <button className="btn btn-upload-img" onClick={handleClick}>Upload</button>

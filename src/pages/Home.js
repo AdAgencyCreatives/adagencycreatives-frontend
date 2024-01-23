@@ -2,6 +2,7 @@ import "../styles/Home.css";
 import Gather from "../assets/images/Gather.png";
 import Mentoring from "../assets/images/Mentoring.png";
 import Money from "../assets/images/make-money-white.png";
+import InfoIconImage from "../assets/images/info-icon.png";
 import { IoSearchOutline } from "react-icons/io5";
 // core version + navigation, pagination modules:
 import { register } from "swiper/element/bundle";
@@ -23,12 +24,14 @@ import SlidingMessage from "../components/SlidingMessage";
 import MessageModal from "../components/MessageModal";
 
 import usePageDataHelper from "../hooks/usePageDataHelper";
+import TitleRecommendationsModal from "../components/dashboard/Modals/TitleRecommendationsModal";
 
 register();
 
 const Home = () => {
 
   const { pageData, getPateDataItem } = usePageDataHelper("home");
+  const [openTitleRecommendations, setOpenTitleRecommendations] = useState(false);
 
   const [messageModalOptions, setMessageModalOptions] = useState({ "open": false, "type": "message", "title": "Message", "message": "Thanks.", "data": {}, "onClose": null });
   const showMessageModal = (type, title, message, data) => {
@@ -59,6 +62,11 @@ const Home = () => {
       return false;
     }
     return true;
+  };
+
+  const handleCloseTitleRecommendations = (e, data) => {
+    setOpenTitleRecommendations(false)
+    setSearch(search + (search?.length > 0 ? ", " : "") + data.name);
   };
 
   useEffect(() => {
@@ -98,9 +106,12 @@ const Home = () => {
                       type="text"
                       placeholder={getPateDataItem("searchbar_placeholder", pageData)}
                       onChange={(e) => setSearch(e.target.value)}
+                      value={search}
                     />
                   </div>
-                  <div className="col">
+                  <div className="col-md-4 search-buttons">
+                    <img className="title-recommendations" src={InfoIconImage} alt="Title Recommendations" title="Title Recommendations" onClick={(e) => setOpenTitleRecommendations(state => !state)} />
+                    <TitleRecommendationsModal open={openTitleRecommendations} setOpen={setOpenTitleRecommendations} handleClose={handleCloseTitleRecommendations} />
                     <button className="searchBtn">Find Jobs</button>
                   </div>
                 </div>

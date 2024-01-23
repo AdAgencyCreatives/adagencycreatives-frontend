@@ -110,10 +110,12 @@ const Profile = () => {
                 <div className="row">
                   <div className="col-lg-8 col-md-6 col-12">
                     {page == "creative" && <Portfolio id={data.user_id} />}
-                    <div className="content-section">
-                      <h1 className="content-title mt-0">About</h1>
-                      <p className="content"><div dangerouslySetInnerHTML={{ __html: data.about }} /></p>
-                    </div>
+                    {!(data?.role == 'advisor' || data?.role == 'recruiter') && (
+                      <div className="content-section">
+                        <h1 className="content-title mt-0">About</h1>
+                        <p className="content"><div dangerouslySetInnerHTML={{ __html: data.about }} /></p>
+                      </div>
+                    )}
                     <div className="profile-sidebar d-md-none">
                       {page === "creative" ? (
                         <CreativeSidebar data={data} role={role} user={user} />

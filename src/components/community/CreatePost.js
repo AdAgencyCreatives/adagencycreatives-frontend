@@ -403,12 +403,12 @@ const CreatePost = (props) => {
               }}>
                 <FiCamera />
               </div>
-              <div className="item" onClick={() => {
+              {/* <div className="item" onClick={() => {
                 setAllowType("image");
                 setImagePickerOpen(true);
               }}>
                 <FiImage />
-              </div>
+              </div> */}
               <div className="item" onClick={() => {
                 let videos = postAttachments ? postAttachments.filter(item => item.resource_type == "post_attachment_video") : [];
                 if (videos.length > 0) {

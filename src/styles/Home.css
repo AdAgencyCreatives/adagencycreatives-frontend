@@ -45,7 +45,7 @@ p.subHeading {
 
 .searchArea {
     padding: 20px;
-    max-width: 700px;
+    max-width: 750px;
     margin: 0 auto;
     box-sizing: border-box;
     width: 100%;
@@ -998,3 +998,26 @@ img.publication-image {
         padding-top: 95px;
     }
 }
+
+.search-buttons {
+    display: flex;
+    flex-direction: row;
+}
+
+img.title-recommendations {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.title-recommendation-item {
+    cursor: pointer;
+}
+
+.title-recommendation-item:hover p {
+    color: #d3a11f !important;
+}
+
+.title-recommendation-item:hover {
+    border-bottom: 3px solid #000 !important;
+}
+

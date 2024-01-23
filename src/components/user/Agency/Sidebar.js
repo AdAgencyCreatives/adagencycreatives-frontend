@@ -14,6 +14,8 @@ import useHelper from "../../../hooks/useHelper";
 
 const Sidebar = ({ data, user }) => {
 
+  const agencyType = (data?.role == 'advisor' ? 'Advisor' : (data?.role == 'recruiter' ? 'Recruiter' : 'Agency'));
+
   const { formatPhone } = useHelper();
 
   const isCreative = user?.role == "creative";
@@ -101,7 +103,7 @@ const Sidebar = ({ data, user }) => {
   return (
     <>
       <div className="sidebar-item">
-        <h4 className="title">Agency Details</h4>
+        <h4 className="title">{agencyType} Details</h4>
         <div className="content">
           {data.email && (isOwnProfile || isAdmin) && (
             <div className="item">
