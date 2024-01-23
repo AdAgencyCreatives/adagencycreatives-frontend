@@ -8,6 +8,7 @@ import moment from "moment";
 import { CircularProgress } from "@mui/material";
 import TimeAgo from "../../TimeAgo";
 import { convertUTCDateToLocalDate } from "../../UtcToLocalDateTime";
+import DelayedOutput from "../../DelayedOutput";
 
 const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
   const [note, setNote] = useState("");
@@ -95,7 +96,7 @@ const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
               </button>
 
               <div className="notes-list-item">
-                {notes.length ? (
+                {notes?.length > 0 ? (
                   <>
                     <h3 className="text-center mb-4">
                       <span>Recent Notes</span>
@@ -123,7 +124,9 @@ const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
                     </div>
                   </>
                 ) : (
+                  <DelayedOutput delay={2000}>
                   <p>You currently have no notes entered.</p>
+                  </DelayedOutput>
                 )}
               </div>
             </div>
