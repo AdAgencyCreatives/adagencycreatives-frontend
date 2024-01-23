@@ -129,7 +129,7 @@ const CreatePost = (props) => {
 
   const handleKeyDown = (e) => {
     if (editorRefTinyMCE?.current) {
-      if (e && e.keyCode == 50) { /* i.e., pressed '@' */
+      if (e && e.keyCode == 50 && e.shiftKey) { /* i.e., pressed '@' */
         if (taggerRef.current) {
           taggerRef.current.canQuitTagger = false;
         }
