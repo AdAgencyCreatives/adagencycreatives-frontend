@@ -11,7 +11,7 @@ const SearchBar = ({ placeholder, onSearch, role, advance_search_capabilities, s
 
   const handleCloseTitleRecommendations = (e, data) => {
     data?.setOpen(false)
-    setInput(input + (input?.length > 0 ? ", " : "") + data?.value);
+    setInput(input + data?.value + ", ");
     inputRef?.current?.focus();
   };
 
@@ -21,7 +21,7 @@ const SearchBar = ({ placeholder, onSearch, role, advance_search_capabilities, s
 
   const get_permission = () => {
 
-    if (!role || !(role == 'admin' || role == 'advisor' || role == 'recruiter' || role == 'agency')) {
+    if (!role) {
       return { visible: false, message: "", proceed: false };
     }
 
@@ -41,7 +41,11 @@ const SearchBar = ({ placeholder, onSearch, role, advance_search_capabilities, s
       return { visible: true, message: "", proceed: true };
     }
 
-    return { visible: true, message: "Post a Job Package Required", proceed: false };
+    if (role == 'creative') {
+      return { visible: true, message: "", proceed: true };
+    }
+
+    return { visible: true, message: "Post a Job for advance search feature", proceed: false };
   };
 
   return (
