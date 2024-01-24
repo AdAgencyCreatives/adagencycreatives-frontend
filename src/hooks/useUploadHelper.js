@@ -5,7 +5,7 @@ const useUploadHelper = () => {
         "image": {
             type: "image",
             maxSize: 1024 * 1024 * 6,
-            maxSizeLabel: "6 MB",
+            maxSizeLabel: "8 MB",
             aspectRatio: "1:1",
             aspectRatioLabel: "200x200, 400x400, 1024x1024 etc.",
             acceptTypes: "image/*",
@@ -14,7 +14,7 @@ const useUploadHelper = () => {
         "video": {
             type: "video",
             maxSize: 1024 * 1024 * 12,
-            maxSizeLabel: "12 MB",
+            maxSizeLabel: "32 MB",
             aspectRatio: "16:9 (horizontal), 9:16 (full portrait)",
             aspectRatioLabel: "1280x720 pixels for Landscape and Portrait 720x1280, etc.",
             acceptTypes: "video/*",
@@ -34,23 +34,23 @@ const useUploadHelper = () => {
     const getUploadGuide = (key, page) => {
         let result = defaultUploadGuides[key];
 
-        if (page == "lounge") {
-            if (key == 'image') {
-                let unit = 8;
-                result = {
-                    ...result,
-                    maxSize: 1024 * 1024 * unit,
-                    maxSizeLabel: "" + unit + " MB",
-                };
-            } else if (key == 'video') {
-                let unit = 32;
-                result = {
-                    ...result,
-                    maxSize: 1024 * 1024 * unit,
-                    maxSizeLabel: "" + unit + " MB",
-                };
-            }
-        }
+        // if (page == "lounge") {
+        //     if (key == 'image') {
+        //         let unit = 8;
+        //         result = {
+        //             ...result,
+        //             maxSize: 1024 * 1024 * unit,
+        //             maxSizeLabel: "" + unit + " MB",
+        //         };
+        //     } else if (key == 'video') {
+        //         let unit = 32;
+        //         result = {
+        //             ...result,
+        //             maxSize: 1024 * 1024 * unit,
+        //             maxSizeLabel: "" + unit + " MB",
+        //         };
+        //     }
+        // }
 
         return result;
     };
