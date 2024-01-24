@@ -206,6 +206,9 @@ const Creatives = () => {
             <SearchBar
               placeholder={creativeSearchPlaceholder}
               onSearch={searchUser}
+              role={role}
+              advance_search_capabilities={advance_search_capabilities}
+              subscription_status={subscription_status}
             />
           </>
         )}
