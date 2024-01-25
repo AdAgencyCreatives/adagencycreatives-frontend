@@ -463,13 +463,14 @@ const saveComment = (dispatch) => {
 };
 
 const updatePost = (dispatch) => {
-  return async (uuid, data) => {
+  return async (uuid, data, callback) => {
     dispatch({
       type: "set_form_submit",
       payload: true,
     });
     try {
       const response = await api.patch("/posts/" + uuid, data);
+      callback(response);
       dispatch({
         type: "update_post",
         payload: response.data.data,

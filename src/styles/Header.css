@@ -759,7 +759,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
     }
 }
 
-.username {
+.logged-in-menu .username {
     width: 150px;
     text-overflow: ellipsis;
     white-space: nowrap;

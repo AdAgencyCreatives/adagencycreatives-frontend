@@ -13,13 +13,16 @@ import { useContext, useEffect, useCallback } from "react";
 import { Context as AuthContext, containsOffensiveWords } from "../../context/AuthContext";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
+import { Context as CreativesContext } from "../../context/CreativesContext";
 import Placeholder from "../../assets/images/placeholder.png";
 import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';
 import { CircularProgress } from "@mui/material";
 import ContentEditable from 'react-contenteditable'
+import { api } from "../../api/api";
 
 const EditPost = (props) => {
 
+    const taggerRef = useRef(null);
     const editorRefTinyMCE = useRef(null);
 
     const {
@@ -35,17 +38,126 @@ const EditPost = (props) => {
         updatePost, setHaltRefresh,
     } = useContext(CommunityContext);
 
+    const {
+        getLoungeCreativesForTag,
+    } = useContext(CreativesContext);
+
+    const [requireContent, setRequireContent] = useState(false);
+
     const [open, setOpen] = useState(false);
     const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
     const [hasOffensiveWords, setHasOffensiveWords] = useState(false);
     const [useTinyMCE, setUseTinyMCE] = useState(true);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        closeTagger();
+        setOpen(false);
+    };
     const [showPicker, setShowPicker] = useState(false);
     const [content, setContent] = useState("");
     const [imagePickerOpen, setImagePickerOpen] = useState(false);
     const [allowType, setAllowType] = useState("image");
     const [postAttachments, setPostAttachments] = useState([]);
+
+    const [taggerOpened, setTaggerOpened] = useState(false);
+    const [taggerSearchText, setTaggerSearchText] = useState("");
+    const [taggerSearchResults, setTaggerSearchResults] = useState(null);
+    const [taggerPosLeft, setTaggerPosLeft] = useState(0);
+    const [taggerPosTop, setTaggerPosTop] = useState(0);
+    const [taggerUsers, setTaggerUsers] = useState([]);
+
+    useEffect(() => {
+        if (taggerSearchText && taggerSearchText.length) {
+            (async () => {
+                let data = await getLoungeCreativesForTag(taggerSearchText);
+                setTaggerSearchResults(data);
+                //console.log(data);
+            })();
+        } else {
+            setTaggerSearchResults(null);
+        }
+    }, [taggerSearchText]);
+
+    const onTaggerItemSelected = (e, item) => {
+        if (item != null) {
+            setTaggerUsers([
+                ...taggerUsers,
+                item?.uuid
+            ]);
+        }
+        let html = '<a href="/creative/' + item.username + '" target="_blank">@' + item.first_name + ' ' + item.last_name + '</a>'
+        editorRefTinyMCE?.current?.execCommand('mceInsertContent', false, html);
+        //console.log(item);
+        closeTagger();
+    };
+
+    const closeTagger = () => {
+        if (taggerRef.current) {
+            taggerRef.current.canQuitTagger = true;
+        }
+        handleTaggerBlur(null);
+    };
+    const handleTaggerKeyDown = (e) => {
+        if (taggerRef?.current) {
+            if (e && e.keyCode == 27) { /* i.e., pressed '@' */
+                if (taggerRef.current) {
+                    taggerRef.current.canQuitTagger = true;
+                }
+                handleTaggerBlur(e);
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        }
+
+        return true;
+    };
+
+    const handleTaggerBlur = (e) => {
+        if (taggerRef?.current?.canQuitTagger) {
+            setTaggerOpened(false);
+            setTaggerSearchText("");
+            setTaggerSearchResults(null);
+            editorRefTinyMCE?.current?.focus();
+            return;
+        }
+        window.setTimeout(function () {
+            taggerRef?.current?.focus();
+        }, 100);
+    };
+
+    const handleKeyDown = (e) => {
+        if (editorRefTinyMCE?.current) {
+            if (e && e.keyCode == 50 && e.shiftKey) { /* i.e., pressed '@' */
+                if (taggerRef.current) {
+                    taggerRef.current.canQuitTagger = false;
+                }
+                let posLeft = 30 + (editorRefTinyMCE?.current?.selection?.getRng()?.startOffset || 0) * 10;
+                let top = editorRefTinyMCE?.current?.selection?.getRng()?.getClientRects()[0]?.top ?? 40;
+                let height = editorRefTinyMCE?.current?.selection?.getRng()?.getClientRects()[0]?.height ?? 0;
+                top = 140 + top + height;
+                let left = editorRefTinyMCE?.current?.selection?.getRng()?.getClientRects()[0]?.left ?? 10;
+                left = 20 + left;
+
+                setTaggerPosLeft(left);
+                setTaggerPosTop(top);
+
+                let bookmark = editorRefTinyMCE?.current?.selection?.getBookmark();
+                console.log(bookmark);
+
+                setTaggerOpened(true);
+                setTaggerSearchText("");
+                window.setTimeout(function () {
+                    taggerRef?.current?.focus();
+                }, 250);
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        }
+
+        return true;
+    };
 
     const doUpdatePost = () => {
         if (containsOffensiveWords(content)) {
@@ -64,6 +176,19 @@ const EditPost = (props) => {
             "content": content,
             "status": "published",
             "attachment_ids": uploadPostAttachments
+        }, (response) => {
+            if (taggerUsers.length > 0) {
+                const schedule_data = {
+                    "sender_id": response.data.data.user_id,
+                    "recipient_id": taggerUsers,
+                    "post_id": response.data.data.id,
+                    "type": 0,
+                    "notification_text": `${response.data.data.author} commented you in his post`,
+                };
+                const response_schedule = api.post("/schedule-notifications", schedule_data);
+                console.log("schedule data", schedule_data);
+                console.log("schedule response", response_schedule);
+            }
         });
     };
 
@@ -84,8 +209,11 @@ const EditPost = (props) => {
         setPostAttachments(props.post.attachments);
     }, [props.post.attachments]);
 
+    const [editableRef, setEditableRef] = useState(null);
+
     const onEditableRef = (node) => {
         if (node && node.el && node.el.current) {
+            setEditableRef(node.el.current);
             node.el.current.focus();
         }
     }
@@ -119,7 +247,21 @@ const EditPost = (props) => {
         console.log(emojiData.getEmojiUrl);
         setContent((prev) => (prev += emojiData.emoji));
         setShowPicker(false);
+        if (editableRef) {
+            setCursorToEnd(editableRef);
+            editableRef?.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+        }
+
     };
+
+    function setCursorToEnd(ele) {
+        var range = document.createRange();
+        var sel = window.getSelection();
+        range.setStart(ele, 1);
+        range.collapse(true);
+        sel.removeAllRanges();
+        sel.addRange(range);
+    }
 
     const removeAttachment = (e, postAttachment) => {
         setPostAttachments(postAttachments.filter((item) => item.id != postAttachment.id));
@@ -137,6 +279,26 @@ const EditPost = (props) => {
                 aria-describedby="modal-modal-description"
             >
                 <div className="create-post-modal post-modal">
+                    <div id="tagger" className="tagger" style={{ display: taggerOpened ? 'block' : 'none', left: taggerPosLeft + 'px', top: taggerPosTop + 'px' }}>
+                        <IoCloseCircleSharp className="tagger-exit" onClick={(e) => closeTagger()} />
+                        <input type="text"
+                            ref={taggerRef}
+                            onKeyDown={(e) => handleTaggerKeyDown(e)}
+                            onChange={(e) => setTaggerSearchText(e.target.value.substring(1))}
+                            value={"@" + taggerSearchText}
+                            onBlur={(e) => handleTaggerBlur(e)}
+                        />
+                        <div className="tagger-dropdown" style={{ display: taggerSearchResults?.length ? 'block' : 'none' }}>
+                            {taggerSearchResults?.length && taggerSearchResults?.map((item, index) => {
+                                return (
+                                    <div className="tagger-item" onClick={(e) => onTaggerItemSelected(e, item)}>
+                                        <img src={item?.image} alt="" width={30} height={30} />
+                                        <div>{item?.first_name + ' ' + item?.last_name}</div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
                     <div className="postmodal-header">
                         <div className="user-avatar">
                             <img src={user ? user.image : Placeholder} height={50} width={50} alt="" />
@@ -170,9 +332,9 @@ const EditPost = (props) => {
                                         placeholder: 'What do you want to talk about?',
                                     }}
                                     value={content}
-                                    onEditorChange={(e) => {
-                                        setContent(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "");
-                                    }}
+                                    onEditorChange={(e) => setContent(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "")}
+                                    onFocus={(e) => setRequireContent(false)}
+                                    onKeyDown={(e) => handleKeyDown(e)}
                                 />
                             </>
                         ) : (
