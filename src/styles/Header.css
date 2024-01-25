@@ -726,28 +726,42 @@ nav ul.dropdown-list .list-item-text.j-fix {
     line-height: 20px;
 }
 
-@media (max-width: 1024px) and (min-width: 900px){
-    .header_container{
-        flex-direction: column!important;
+@media (max-width: 1024px) and (min-width: 900px) {
+    .header_container {
+        flex-direction: column !important;
     }
-    .header_container .right-menu{
+
+    .header_container .right-menu {
         flex-basis: 100%;
         max-width: 100%;
     }
-    .header_container .left-logo{
+
+    .header_container .left-logo {
         flex-basis: 50%;
         max-width: 50%;
     }
-    .agency-dashboard-container{
+
+    .agency-dashboard-container {
         padding-top: 95px;
     }
 }
-@media (max-width: 440px){
-    .header_container .right-menu,.header_container .left-logo{
+
+@media (max-width: 440px) {
+
+    .header_container .right-menu,
+    .header_container .left-logo {
         width: 50%;
         max-width: 50%;
     }
-    .left-logo a.site-logo{
+
+    .left-logo a.site-logo {
         min-width: 100%;
     }
+}
+
+.username {
+    width: 150px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
