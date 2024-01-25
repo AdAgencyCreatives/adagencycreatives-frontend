@@ -59,7 +59,7 @@ const Agencies = () => {
               return (
                 <div className="col-md-4 col-sm-6 col-12" key={`ag-${index}`}>
                   <div className="sliderContent adagencies-slider">
-                    {role == "creative" && (
+                    {(role == "admin" || role == "creative") && (
                       <Tooltip title={"Shortlist"} type="featured">
                         <button className={"shortlist-btn" + (isShortlisted ? " active" : "")} onClick={() => (isShortlisted ? removeBookmark(isShortlisted.id) : addToShortlist(item.id))}>
                           <IoBookmarkOutline />
