@@ -9,7 +9,7 @@ import { IoCheckmarkCircle, IoClose, IoLocationOutline, IoLockClosed, IoLockOpen
 import moment from "moment";
 
 const MyJobWidget = (props) => {
-
+    console.log(props.job);
     const [job, setJob] = useState(props.job);
     const { showAlert } = useContext(AlertContext);
 
@@ -78,19 +78,23 @@ const MyJobWidget = (props) => {
                         )}
                     </div>
                     <div className="job-metas">
-                        {job.location && (
-                            <div className="job-location location">
-                                <IoLocationOutline />
-                                <Link
-                                    to={`/job-location/${job.location.state}`}
-                                >
-                                    {job.location.state},&nbsp;
-                                </Link>
+                        <div className="job-location location">
+                            {job.location?.state && (
+                                <>
+                                    <IoLocationOutline />
+                                    <Link
+                                        to={`/job-location/${job.location.state}`}
+                                    >
+                                        {job.location.state},&nbsp;
+                                    </Link>
+                                </>
+                            )}
+                            {job.location?.city && (
                                 <Link to={`/job-location/${job.location.city}`}>
                                     {job.location.city}
                                 </Link>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
                 </div>
             </td>
@@ -126,13 +130,13 @@ const MyJobWidget = (props) => {
                     <div className="action-button">
                         {job?.status == 'filled' ? (
                             <Tooltip title="Approve">
-                                <Link className="btn p-0 border-0 btn-hover-primary" onClick={(e) => handleMarkApprove(e, job)}>
+                                <Link to="javascript:void(0);" className="btn p-0 border-0 btn-hover-primary" onClick={(e) => handleMarkApprove(e, job)}>
                                     <IoCheckmarkCircle className="icon-rounded" />
                                 </Link>
                             </Tooltip>
                         ) : (
                             <Tooltip title="Mark Filled">
-                                <Link className="btn p-0 border-0 btn-hover-primary" onClick={(e) => handleMarkFilled(e, job)}>
+                                <Link to="javascript:void(0);" className="btn p-0 border-0 btn-hover-primary" onClick={(e) => handleMarkFilled(e, job)}>
 
                                     <IoLockOpen className="icon-rounded" />
                                 </Link>
