@@ -109,13 +109,20 @@ const CreativeShortlist = () => {
                           <div className="candidate-category text-dark">
                             {resource.title}
                           </div>
-                          {resource.location && (
-                            <div className="candidate-location with-icon">
-                              <TfiLocationPin />
-                              <span className="restrict-location-search">{resource.location.state}</span>,
+                          <div className="candidate-location with-icon">
+                            {resource.location?.state && (
+                              <>
+                                <TfiLocationPin />
+                                <span className="restrict-location-search">{resource.location.state}</span>
+                              </>
+                            )}
+                            {resource.location?.city && (
+                              <>
+                              ,
                               <span className="restrict-location-search"> {resource.location.city}</span>
-                            </div>
-                          )}
+                              </>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
