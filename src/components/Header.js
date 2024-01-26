@@ -255,7 +255,7 @@ function Header(props) {
                     href="/post-a-job"
                     sx={{ backgroundColor: "#000", color: "white" }}
                     className="post-job-link"
-                    onClick={(e) => validateAccess(e, { roles: ["admin", "agency", "advisor", "recruiter"], restrictedMessage: "Please login as a Agency to access" })}
+                    onClick={(e) => validateAccess(e, { roles: ["admin", "agency", "advisor", "recruiter"], restrictedMessage: "Please login as an Agency to access" })}
                   >
                     Post A Job
                   </Button>
