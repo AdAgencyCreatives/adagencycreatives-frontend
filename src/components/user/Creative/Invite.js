@@ -5,7 +5,7 @@ import {
   logActivity,
 } from "../../../context/AuthContext";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
-import { Context as DataContext } from "../../../context/DataContext";
+import { Context as AlertContext } from "../../../context/AlertContext";
 import { useState } from "react";
 
 const Invite = ({ open, handleClose, item }) => {
@@ -17,6 +17,11 @@ const Invite = ({ open, handleClose, item }) => {
   const {
     state: { user },
   } = useContext(AuthContext);
+
+  const {
+    state: {},
+    showAlert,
+  } = useContext(AlertContext);
 
   const {
     state: { open_positions },
@@ -54,8 +59,9 @@ const Invite = ({ open, handleClose, item }) => {
     try {
       for (var i = 0; i < jobId.length; i++) {
         let check = await sendJobInvite(item.user_id, jobId[i]);
-        setMessage(check.data.message);
       }
+      showAlert('Job invitation sent successfully');
+      handleClose();
       setError(false);
       // setMessage(true);
     } catch (error) {

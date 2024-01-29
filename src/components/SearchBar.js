@@ -11,7 +11,9 @@ const SearchBar = ({ placeholder, onSearch, role, advance_search_capabilities, s
 
   const handleCloseTitleRecommendations = (e, data) => {
     data?.setOpen(false)
-    setInput(input + data?.value + ", ");
+    const searchKeywork = input + data?.value + ", ";
+    setInput(searchKeywork);
+    onSearch(searchKeywork);
     inputRef?.current?.focus();
   };
 
