@@ -88,9 +88,9 @@ const NotificationWidget = (props) => {
                                 <TimeAgo datetime={props.notification.created_at} />
                                 {/* <UtcToLocalDateTime datetime={props.notification.created_at} /> */}
                             </div>
-                            <Link to={props.notification.link} className="notif-content text-dark">
-                                {props.notification.message}
-                            </Link>
+                            {/* <Link to={props.notification.link} className="notif-content text-dark"> */}
+                                <div className="message" dangerouslySetInnerHTML={{ __html: props.notification?.message ?? '' }}></div>
+                            {/* </Link> */}
                         </div>
                         <div className="notif-actions">
                             <Tooltip title={`${props.notification.read_at ? "Marked as Read" : "Mark as Read"}`}>
