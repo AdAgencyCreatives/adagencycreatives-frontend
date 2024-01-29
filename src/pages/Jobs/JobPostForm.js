@@ -491,6 +491,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                           // value={field.value}
                           required={field.required}
                           onChange={(e) => handleTextChange(e, field.name)}
+                          autoFocus={field.name === 'title'}
                         />
                       </div>
                     );

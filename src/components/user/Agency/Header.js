@@ -17,6 +17,8 @@ const Header = ({ data, role, user }) => {
     "agencies"
   );
 
+  console.log('user', user);
+
   return (
     <div className="container">
       <div className="row align-items-center justify-content-between">
@@ -62,7 +64,7 @@ const Header = ({ data, role, user }) => {
             </div>
             <div className="col-md-6">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0">
-                {!(isAgency || data?.role == 'advisor' || data?.role == 'recruiter') && (
+                {user && !(isAgency || data?.role == 'advisor' || data?.role == 'recruiter') && (
                   <button
                     className={
                       "btn btn-hover-primary" +
