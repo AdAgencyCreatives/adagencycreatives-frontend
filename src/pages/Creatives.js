@@ -217,10 +217,10 @@ const Creatives = () => {
             creatives.map((item, index) => {
               const isShortlisted =
                 bookmarks.find(
-                  (bookmark) => bookmark.resource.user_id == item.user_id
+                  (bookmark) => bookmark.resource?.user_id == item?.user_id
                 ) || false;
               return (
-                <div className="col-md-4 col-sm-6 col-12" key={`creative-${item.user_id}`}>
+                <div className="col-md-4 col-sm-6 col-12" key={`creative-${item?.user_id}`}>
                   <div className="sliderContent agencies-slider">
                     {(role == "admin" || role == "agency" || role == "advisor" || role == "recruiter") && (
                       <Tooltip title={"Shortlist"} type="featured">

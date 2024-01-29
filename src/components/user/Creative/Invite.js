@@ -20,7 +20,7 @@ const Invite = ({ open, handleClose, item }) => {
 
   const {
     state: {},
-    showAlert,
+    showAlert
   } = useContext(AlertContext);
 
   const {
@@ -42,10 +42,11 @@ const Invite = ({ open, handleClose, item }) => {
   }, [user]);
 
   const handleChange = (checked, id) => {
-    if (checked) setJobId((prev) => [...prev, id]);
-    else {
+    if (checked) {
+      setJobId((prev) => [...prev, id]);
+    } else {
       let items = jobId.filter((item) => item !== id);
-      setJobId([...items]);
+      setJobId([items]);
     }
   };
 
