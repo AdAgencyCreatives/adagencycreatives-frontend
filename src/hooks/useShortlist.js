@@ -11,7 +11,7 @@ const useShortlist = (uid, resource_id, type) => {
 
   const {
     state: {},
-    showAlert,
+    showAlert
   } = useContext(AlertContext);
 
   useEffect(() => {
