@@ -138,7 +138,7 @@ const Sidebar = ({ data, user }) => {
             <div className="item mt-4">
               <img src={bullseye} height={22} width={22} alt="" />
               <div className="details">
-                <div className="text">Industry Specialty:</div>
+                <div className="text">Industry Specialty</div>
                 <div className="value">
                   {renderListData(data.industry_experience, "industry")}
                 </div>
@@ -173,7 +173,7 @@ const Sidebar = ({ data, user }) => {
             <div className="item mt-4">
               <IoLocationOutline />
               <div className="details">
-                <div className="text">Location:</div>
+                <div className="text">Location</div>
                 <div className="value">
                   {data.location && (
                     <div className="job-location location">
