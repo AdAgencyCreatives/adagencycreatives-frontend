@@ -20,6 +20,7 @@ const state = {
   formSubmit: false,
   isLoading: false,
   isLoadingApp: false,
+  single_note: null,
   notes: [],
   job_alerts: [],
   applicationsNextPage: null,
@@ -95,8 +96,20 @@ const reducer = (state, action) => {
         notes: [...state.notes, ...action.payload.data],
         notesNextPage: action.payload.links.next
       };
+      case "set_single_note":
+      return { ...state, single_note: action.payload };
     case "add_note":
       return { ...state, notes: [action.payload.data, ...state.notes] };
+    case "update_note":
+      return {
+        ...state,
+        notes: state.notes.map((note) => note.id != action.payload.id ? note : (action.payload)),
+      };
+    case "delete_note":
+      return {
+        ...state,
+        notes: state.notes.filter((note) => note.id != action.payload),
+      };
     case "set_job_alert":
       return { ...state, job_alerts: action.payload.data };
     case "set_form_submit":
@@ -213,7 +226,7 @@ const getApplications = (dispatch) => {
     setLoadingApp(dispatch, true);
     try {
       const response = await api.get(
-        "/jobs?sort=-created_at&filter[status]=" + status + "&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") +  (application_status ? "&application_status=" + application_status : "")
+        "/jobs?sort=-created_at&filter[status]=" + status + "&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "")
       ); // have to set filter[status]=1 later
       // const jobs = response.data.data;
       // for (const job of jobs) {
@@ -302,9 +315,9 @@ const deleteApplication = (dispatch) => {
 const markFilled = (dispatch) => {
   return async (uuid, status) => {
     try {
-      const response = await api.patch("/jobs/" + uuid, {status: status});
+      const response = await api.patch("/jobs/" + uuid, { status: status });
       return response.data.data;
-    } catch (error) { 
+    } catch (error) {
       return null;
     }
     return null;
@@ -341,8 +354,22 @@ const setJobAlert = (dispatch) => {
   };
 };
 
+const getSingleNote = (dispatch) => {
+  return async (uuid) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get('/notes/' + uuid);
+      dispatch({
+        type: "set_single_note",
+        payload: response.data,
+      });
+    } catch (error) { }
+    setLoading(dispatch, false);
+  };
+};
+
 const addNote = (dispatch) => {
-  return async (data) => {
+  return async (data, cb = false) => {
     setLoading(dispatch, true);
     try {
       const response = await api.post("/notes", data);
@@ -350,6 +377,37 @@ const addNote = (dispatch) => {
         type: "add_note",
         payload: response.data,
       });
+      cb && cb();
+    } catch (error) { }
+    setLoading(dispatch, false);
+  };
+};
+
+const updateNote = (dispatch) => {
+  return async (uuid, data, cb = false) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.patch("/notes/" + uuid, data);
+      dispatch({
+        type: "update_note",
+        payload: response.data.data,
+      });
+      cb && cb();
+    } catch (error) { }
+    setLoading(dispatch, false);
+  };
+};
+
+const deleteNote = (dispatch) => {
+  return async (uuid, cb = false) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.delete("/notes/" + uuid);
+      dispatch({
+        type: "delete_note",
+        payload: response.data,
+      });
+      cb && cb();
     } catch (error) { }
     setLoading(dispatch, false);
   };
@@ -560,7 +618,7 @@ const createJob = (dispatch) => {
       });
     } catch (error) {
       console.log(error);
-     }
+    }
     setFormSubmit(dispatch, false);
   };
 };
@@ -657,7 +715,10 @@ export const { Context, Provider } = createDataContext(
     updateApplication,
     deleteApplication,
     deleteJob,
+    getSingleNote,
     addNote,
+    updateNote,
+    deleteNote,
     getNotes,
     getNextPageNotes,
     getFeaturedJobs,
