@@ -210,13 +210,12 @@ const JobPostForm = ({ id, setJobStatus }) => {
           required: true,
           type: "dropdown",
           data: employment,
+          isMulti: true,
           name: "employment_type",
-          callback: (item) => handleDropdownChange(item, "employment_type"),
-          value:
-            isEdit &&
-            employment.find((item) => {
-              return item.value == single_job.employment_type;
-            }),
+          callback: (item) => handleMultiChange(item, "employment_type"),
+          value: employment?.filter((item) => single_job?.employment_type?.includes(item.label)),
+          placeholder: "Select employment type",
+          column: "6",
         },
         {
           label: "Salary Range",
@@ -572,9 +571,9 @@ const JobPostForm = ({ id, setJobStatus }) => {
                         />
                         {field.name == "agency_id" && selectedAgency && (
                           <>
-                            <span className="badge" style={{ backgroundColor: '#d3a11f', margin: '10px 10px 0px 0px', padding: '10px' }}>Package: {selectedAgency?.agency?.status?.name}</span>
-                            <span className="badge" style={{ backgroundColor: '#d3a11f', margin: '10px 10px 0px 0px', padding: '10px' }}>Status: {selectedAgency?.agency?.status?.status}</span>
-                            <span className="badge" style={{ backgroundColor: '#d3a11f', margin: '10px 10px 0px 0px', padding: '10px' }}>Quota Left: {selectedAgency?.agency?.status?.quota_left}</span>
+                            <span className="badge" style={{ backgroundColor: (isJobPostAllowed ? '#d3a11f' : 'red'), margin: '10px 10px 0px 0px', padding: '10px' }}>Package: {selectedAgency?.agency?.status?.name}</span>
+                            <span className="badge" style={{ backgroundColor: (isJobPostAllowed ? '#d3a11f' : 'red'), margin: '10px 10px 0px 0px', padding: '10px' }}>Status: {selectedAgency?.agency?.status?.status}</span>
+                            <span className="badge" style={{ backgroundColor: (isJobPostAllowed ? '#d3a11f' : 'red'), margin: '10px 10px 0px 0px', padding: '10px' }}>Quota Left: {selectedAgency?.agency?.status?.quota_left}</span>
                           </>
                         )}
                       </div>

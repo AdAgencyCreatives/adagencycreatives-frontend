@@ -150,24 +150,28 @@ const Header = ({ data }) => {
                 {isJobApplied ? (
                   <Link className="btn btn-apply active">Applied</Link>
                 ) : (
-                  <Link
-                    to={data.apply_type.toLowerCase() == "external" ? data.external_link : ""}
-                    target="_blank"
-                    className="btn btn-apply btn-apply-job-external "
-                    onClick={(e) => {
-                      if (!isCreative) {
-                        showAlert("Login as creative to apply to this job");
-                        e.preventDefault();
-                      } else if (data.apply_type.toLowerCase() == "internal") {
-                        e.preventDefault();
-                        setJob(data.id);
-                        setOpen(true);
-                      }
-                    }}
-                  >
-                    Apply Now
-                    <i className="next flaticon-right-arrow"></i>
-                  </Link>
+                  <>
+                    {role == "creative" && (
+                      <Link
+                        to={data.apply_type.toLowerCase() == "external" ? data.external_link : ""}
+                        target="_blank"
+                        className="btn btn-apply btn-apply-job-external "
+                        onClick={(e) => {
+                          if (!isCreative) {
+                            showAlert("Login as creative to apply to this job");
+                            e.preventDefault();
+                          } else if (data.apply_type.toLowerCase() == "internal") {
+                            e.preventDefault();
+                            setJob(data.id);
+                            setOpen(true);
+                          }
+                        }}
+                      >
+                        Apply Now
+                        <i className="next flaticon-right-arrow"></i>
+                      </Link>
+                    )}
+                  </>
                 )}
               </div>
             </div>

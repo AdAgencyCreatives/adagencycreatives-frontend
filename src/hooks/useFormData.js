@@ -64,7 +64,7 @@ const useFormData = (props = {}) => {
     getCities,
     getMediaExperiences,
     getIndustryExperiences,
-    getEmploymentTypes,
+    getResumeEmploymentTypes,
     getYearsExperience,
     getStrengths,
   } = useContext(DataContext);
@@ -79,7 +79,7 @@ const useFormData = (props = {}) => {
       getStates();
       getMediaExperiences();
       getIndustryExperiences();
-      getEmploymentTypes();
+      getResumeEmploymentTypes();
       getYearsExperience();
       getStrengths();
     }
@@ -149,8 +149,20 @@ const useFormData = (props = {}) => {
   }, [strengths]);
 
   useEffect(() => {
-    setEmployment(employment_type.map((item) => ({ label: item, value: item })));
+    let data = employment_type;
+    if (employment_type.length) {
+      data = parseEmployementTypeFieldsData(employment_type);
+    }
+    setEmployment(data);
   }, [employment_type]);
+
+  const parseEmployementTypeFieldsData = (data) => {
+    const parsedValue = data.map((item) => {
+      return { label: item.name, value: item.name, key: item.name };
+    });
+    return parsedValue;
+  };
+
 
   useEffect(() => {
     setExperience(years_experience.map((item) => ({ label: item.name, value: item.name })));
@@ -234,12 +246,13 @@ const useFormData = (props = {}) => {
       editorRef.focus();
       showAlert("The content cannot be empty");
     } else {
+      let newFormData = { ...formData, 'employment_type': (formData['employment_type'] && formData['employment_type'].length ? (Array.isArray(formData['employment_type']) ? formData['employment_type'].join(',') : formData['employment_type']) : "") };
       if (isEdit) {
-        await saveJob(id, formData);
+        await saveJob(id, newFormData);
         setJobStatus("preview");
       } else {
-        formData.user_id = user.uuid;
-        createJob(formData);
+        newFormData.user_id = user.uuid;
+        createJob(newFormData);
         setJobStatus("preview");
       }
     }

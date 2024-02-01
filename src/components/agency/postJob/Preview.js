@@ -35,12 +35,17 @@ const Preview = ({ single_job, setJobStatus }) => {
           </button>
         )}
         <Link
-          // to={"/job/edit/" + single_job.id}
-          // reloadDocument={true}
-          to={"/my-jobs"}
+          to={"/job/edit/" + single_job.id}
+          reloadDocument={true}
           className="btn btn-gray btn-hover-primary text-uppercase ls-3 p-3 px-4"
         >
           Edit Job
+        </Link>
+        <Link
+          to={"/my-jobs"}
+          className="btn btn-gray btn-hover-primary text-uppercase ls-3 p-3 px-4"
+        >
+          My Jobs
         </Link>
       </div>
       <div className="profile-header">

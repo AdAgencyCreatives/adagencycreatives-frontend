@@ -312,7 +312,7 @@ const MyResume = () => {
           isMulti: true,
           name: "employment_type",
           callback: (item) => handleMultiChange(item, "employment_type"),
-          value: employment.filter((item) => single_creative.employment_type.includes(item.label)),
+          value: employment?.filter((item) => single_creative?.employment_type?.includes(item.label)),
           placeholder: "Select employment type",
           column: "6",
         },
@@ -499,6 +499,14 @@ const MyResume = () => {
     setEmployment(data);
   }, [employment_type]);
 
+  const parseEmployementTypeFieldsData = (data) => {
+    const parsedValue = data.map((item) => {
+      return { label: item.name, value: item.name, key: item.name };
+    });
+    return parsedValue;
+  };
+
+
   useEffect(() => {
     setExperience(years_experience.map((item) => ({ label: item.name, value: item.name })));
   }, [years_experience]);
@@ -506,13 +514,6 @@ const MyResume = () => {
   const parseFieldsData = (data) => {
     const parsedValue = data.map((item) => {
       return { label: item.name, value: item.uuid || item.id, key: item.name };
-    });
-    return parsedValue;
-  };
-
-  const parseEmployementTypeFieldsData = (data) => {
-    const parsedValue = data.map((item) => {
-      return { label: item.name, value: item.name, key: item.name };
     });
     return parsedValue;
   };
@@ -568,7 +569,7 @@ const MyResume = () => {
 
   const handleSubmit = async () => {
     console.log(educationList, experienceList);
-    let newFormData = {...formData, 'employment_type': (formData['employment_type'] && formData['employment_type'].length ? formData['employment_type'].join(',') : "")}
+    let newFormData = { ...formData, 'employment_type': (formData['employment_type'] && formData['employment_type'].length ? (Array.isArray(formData['employment_type']) ? formData['employment_type'].join(',') : formData['employment_type']) : "") };
     await saveResume(user.uuid, newFormData, educationList, experienceList);
     showAlert("Resume updated successfully");
   };
