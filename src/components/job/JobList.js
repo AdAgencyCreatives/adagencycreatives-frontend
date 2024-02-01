@@ -1,4 +1,4 @@
-import { IoBriefcaseOutline, IoStar } from "react-icons/io5";
+import { IoBriefcaseOutline, IoLocationOutline, IoStar } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import Tooltip from "../../components/Tooltip";
 import moment from "moment";
@@ -90,6 +90,17 @@ const JobList = ({ data, user, showAgency = true }) => {
                           </div>
                         </div>
                       )}
+                      {item.location.state && (
+                        <div className="job-location location">
+                          <IoLocationOutline />
+                          <Link to={`/creatives/search/state/${item.location.state}`}>
+                            {item.location.state},&nbsp;
+                          </Link>
+                          <Link to={`/creatives/search/city/${item.location.city}`}>
+                            {item.location.city}
+                          </Link>
+                        </div>
+                      )}
                       <div className="job-deadline with-icon">
                         <i className="flaticon-wall-clock"></i>
                         {moment(item.expired_at).format("MMMM D, YYYY")}
@@ -140,7 +151,6 @@ const JobList = ({ data, user, showAgency = true }) => {
                     </div>
                   </div>
                 </div>
-
                 <div className="col-md-4">
                   <div className="d-flex justify-content-md-end mt-3 mt-md-0">
                     {/* <a className="btn-follow btn-action-job btn-add-job-shortlist">

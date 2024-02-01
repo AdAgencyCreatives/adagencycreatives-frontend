@@ -765,3 +765,11 @@ nav ul.dropdown-list .list-item-text.j-fix {
     white-space: nowrap;
     overflow: hidden;
 }
+
+.jobs-list-container .job-location.location {
+    margin-right: 10px;
+}
+
+.jobs-list-container .job-location.location a {
+    font-weight: 400;
+}
