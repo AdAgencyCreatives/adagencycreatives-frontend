@@ -97,7 +97,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
   }, []);
 
   const changeAgency = (item, name) => {
-    let selected_agency = agenciesList.find((agency) => agency.agency_name == item.name);
+    let selected_agency = agenciesList.find((agency) => agency.value == item.value);
     setSelectedAgency(selected_agency);
     setIsJobPostAllowed(selected_agency?.agency?.status?.status == 'active' && selected_agency?.agency?.status?.quota_left > 0);
     handleDropdownChange(item, name);
@@ -571,9 +571,8 @@ const JobPostForm = ({ id, setJobStatus }) => {
                         />
                         {field.name == "agency_id" && selectedAgency && (
                           <>
-                            <span className="badge" style={{ backgroundColor: (isJobPostAllowed ? '#d3a11f' : 'red'), margin: '10px 10px 0px 0px', padding: '10px' }}>Package: {selectedAgency?.agency?.status?.name}</span>
-                            <span className="badge" style={{ backgroundColor: (isJobPostAllowed ? '#d3a11f' : 'red'), margin: '10px 10px 0px 0px', padding: '10px' }}>Status: {selectedAgency?.agency?.status?.status}</span>
-                            <span className="badge" style={{ backgroundColor: (isJobPostAllowed ? '#d3a11f' : 'red'), margin: '10px 10px 0px 0px', padding: '10px' }}>Quota Left: {selectedAgency?.agency?.status?.quota_left}</span>
+                            <span className={"badge job-post-badge" + (isJobPostAllowed ? ' gold' : ' red')}>Package Status: {selectedAgency?.agency?.status?.status}</span>
+                            <span className={"badge job-post-badge" + (isJobPostAllowed ? ' gold' : ' red')}>Quota Left: {selectedAgency?.agency?.status?.quota_left}</span>
                           </>
                         )}
                       </div>

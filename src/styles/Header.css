@@ -773,3 +773,18 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .jobs-list-container .job-location.location a {
     font-weight: 400;
 }
+
+.job-post-badge {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 10px 10px 0px 0px;
+    padding: 10px;
+}
+
+.job-post-badge.gold {
+    background-color: #d3a11f;
+}
+
+.job-post-badge.red {
+    background-color: red;
+}
