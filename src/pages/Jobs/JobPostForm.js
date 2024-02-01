@@ -146,8 +146,8 @@ const JobPostForm = ({ id, setJobStatus }) => {
       if (id) {
         setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(single_job.description).contentBlocks)));
       }
-      console.log("single_job", single_job);
-      console.log("agenciesList", agenciesList);
+      // console.log("single_job", single_job);
+      // console.log("agenciesList", agenciesList);
       setFields([
         {
           label: "Assigned Agencies",
@@ -277,6 +277,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           type: "date",
           name: "expired_at",
           required: true,
+          disablePast: true,
           value: isEdit ? new Date(single_job.expired_at) : new Date(),
         },
         {
@@ -313,7 +314,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
         {
           label: "External Job Application Link",
           required: false,
-          type: "text",
+          type: "url",
           name: "external_link",
           placeholder: "applicants use this link",
           value: isEdit ? single_job.external_link || "" : "",
@@ -372,7 +373,6 @@ const JobPostForm = ({ id, setJobStatus }) => {
   };
 
   const updateFieldValue = (name, value) => {
-    console.log("update Fields", fields);
     let field = getFieldByName(name);
     if (field) {
       field.value = value;
@@ -406,10 +406,9 @@ const JobPostForm = ({ id, setJobStatus }) => {
 
         if (field.name == "company_logo") {
           setIsLogoUploaded(true);
-          console.log("isLogoUploaded: " + isLogoUploaded);
         }
 
-        console.log("responnse", response);
+        // console.log("responnse", response);
 
         setFormData((prev) => ({ ...prev, ["attachment_id"]: response.data.data.id }));
 
@@ -427,7 +426,8 @@ const JobPostForm = ({ id, setJobStatus }) => {
   }, []);
 
   useEffect(()=>{
-    if(subscription) {
+    const isNewJob = single_job?.status !== 'approved' && single_job?.status !== 'expired';
+    if(subscription && isNewJob ) {
       setIsJobPostAllowed(subscription.status == 'active' && subscription.quota_left > 0);
     }
   }, [subscription]);
@@ -476,6 +476,25 @@ const JobPostForm = ({ id, setJobStatus }) => {
                         </div>
                       </div>
                     );
+                  case "url":
+                    return (
+                      <div className={"col-sm-6"} ref={field.ref || null} key={index} style={{ display: field.hidden ? "none" : "" }}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
+                        <input
+                          type="url"
+                          className="form-control"
+                          name={field.name}
+                          defaultValue={field.value}
+                          // value={field.value}
+                          required={field.required}
+                          onChange={(e) => handleTextChange(e, field.name)}
+                          autoFocus={field.name === 'title'}
+                        />
+                      </div>
+                    );
                   case "text":
                     return (
                       <div className={"col-sm-6"} ref={field.ref || null} key={index} style={{ display: field.hidden ? "none" : "" }}>
@@ -503,7 +522,13 @@ const JobPostForm = ({ id, setJobStatus }) => {
                           {field.required && <span className="required">*</span>}
                         </label>
                         <br />
-                        <DatePicker className="form-control" selected={field.value} onChange={(date) => handleDateChange(date, field.name)} dateFormat="MMMM d, yyyy" />
+                        <DatePicker 
+                          className="form-control" 
+                          selected={field.value} 
+                          onChange={(date) => handleDateChange(date, field.name)} 
+                          minDate={field?.disablePast ? moment().toDate() : ''}
+                          dateFormat="MMMM d, yyyy" 
+                        />
                       </div>
                     );
                   case "dropdown":
