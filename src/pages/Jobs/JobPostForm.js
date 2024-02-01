@@ -421,13 +421,13 @@ const JobPostForm = ({ id, setJobStatus }) => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getSubscription();
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     const isNewJob = single_job?.status !== 'approved' && single_job?.status !== 'expired';
-    if(subscription && isNewJob ) {
+    if (subscription && isNewJob) {
       setIsJobPostAllowed(subscription.status == 'active' && subscription.quota_left > 0);
     }
   }, [subscription]);
@@ -522,12 +522,12 @@ const JobPostForm = ({ id, setJobStatus }) => {
                           {field.required && <span className="required">*</span>}
                         </label>
                         <br />
-                        <DatePicker 
-                          className="form-control" 
-                          selected={field.value} 
-                          onChange={(date) => handleDateChange(date, field.name)} 
+                        <DatePicker
+                          className="form-control"
+                          selected={field.value}
+                          onChange={(date) => handleDateChange(date, field.name)}
                           minDate={field?.disablePast ? moment().toDate() : ''}
-                          dateFormat="MMMM d, yyyy" 
+                          dateFormat="MMMM d, yyyy"
                         />
                       </div>
                     );
@@ -570,6 +570,13 @@ const JobPostForm = ({ id, setJobStatus }) => {
                             // }),
                           }}
                         />
+                        {field.name == "agency_id" && selectedAgency && (
+                          <>
+                            <span className="badge" style={{ backgroundColor: '#d3a11f', margin: '10px 10px 0px 0px', padding: '10px' }}>Package: {selectedAgency?.agency?.status?.name}</span>
+                            <span className="badge" style={{ backgroundColor: '#d3a11f', margin: '10px 10px 0px 0px', padding: '10px' }}>Status: {selectedAgency?.agency?.status?.status}</span>
+                            <span className="badge" style={{ backgroundColor: '#d3a11f', margin: '10px 10px 0px 0px', padding: '10px' }}>Quota Left: {selectedAgency?.agency?.status?.quota_left}</span>
+                          </>
+                        )}
                       </div>
                     );
                   case "radio":

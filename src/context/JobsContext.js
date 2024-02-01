@@ -247,6 +247,24 @@ const getApplications = (dispatch) => {
   };
 };
 
+
+const getApplicationsAllStatus = (dispatch) => {
+  return async (uid, applications_count = 0, page = false, application_status = false) => {
+    let applications = [];
+    setLoadingApp(dispatch, true);
+    try {
+      const response = await api.get(
+        "/jobs?sort=-created_at&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "")
+      ); 
+      dispatch({
+        type: "set_applications",
+        payload: response.data,
+      });
+    } catch (error) { }
+    setLoadingApp(dispatch, false);
+  };
+};
+
 const getNextPageApplications = (dispatch) => {
   return async (uid, page) => {
     let applications = [];
@@ -711,6 +729,7 @@ export const { Context, Provider } = createDataContext(
     getJobAlerts,
     setJobAlert,
     getApplications,
+    getApplicationsAllStatus,
     getRecentApplications,
     updateApplication,
     deleteApplication,

@@ -19,6 +19,7 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import Paginate from "../../components/Paginate";
 import moment from "moment";
 import { CircularProgress } from "@mui/material";
+import TimeAgo from "../TimeAgo";
 
 const ApplicantJobs = () => {
   const [open, setOpen] = useState(false);
@@ -31,7 +32,7 @@ const ApplicantJobs = () => {
 
   const {
     state: { applications, isLoadingApp, applicationMeta },
-    getApplications,
+    getApplicationsAllStatus,
     updateApplication,
     deleteApplication,
   } = useContext(JobsContext);
@@ -43,9 +44,9 @@ const ApplicantJobs = () => {
   useEffect(() => {
     if (user.role === 'agency') {
       setStatusApplication('shortlisted');
-      getApplications(user.uuid, 0, 0, 1, 'shortlisted');
+      getApplicationsAllStatus(user.uuid, 0, 0, 'shortlisted');
     } else {
-      getApplications(user.uuid, 0, 0, 1, statusApplication);
+      getApplicationsAllStatus(user.uuid, 0, 0, statusApplication);
     }
   }, []);
 
@@ -82,7 +83,7 @@ const ApplicantJobs = () => {
   };
 
   const paginate = (page) => {
-    getApplications(user.uuid, 0, page, 1, statusApplication);
+    getApplicationsAllStatus(user.uuid, 0, page, statusApplication);
   };
 
   return (
@@ -106,6 +107,7 @@ const ApplicantJobs = () => {
               <div className="heading row d-flex align-items-center">
                 <div className="col-sm-8 col-xs-12">
                   <h3 className="job-title">{item.agency.name} - {item.title} {item.location && (<span className="location-name">{"(" + item.location.city + ", " + item.location.state + ")"}</span>)}</h3>
+                  {item?.expired_at && ((new Date(item?.expired_at) < (Date.parse(new Date().toISOString())))) && (<span className="badge" style={{ backgroundColor: 'red' }}>Expired: <TimeAgo datetime={item?.expired_at} /></span>)}
                 </div>
                 <div className="col-sm-4 col-xs-12">
                   <div className="inner-result d-flex align-items-center">
