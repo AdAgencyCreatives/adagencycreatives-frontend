@@ -27,15 +27,23 @@ const JobApplications = (props) => {
     }, [showAllApplications]);
 
     useEffect(() => {
-        setApplications(props?.job?.applications?.length < limitShowApplications ? props?.job?.applications : props?.job?.applications.slice(0, limitShowApplications));
+        setLimitShowApplications(props?.isJobExpired ? 0 : limitShowApplications)
+        setApplications(props?.isJobExpired ? null : (props?.job?.applications?.length < limitShowApplications ? props?.job?.applications : props?.job?.applications.slice(0, limitShowApplications)));
     }, []);
 
 
     return (
         <div className="applicants-wrapper">
-            <span className="badge job-post-badge job-applications-stats">Showing {applications?.length} of {props?.job?.applications?.length} Applications</span>
+            <span className="badge job-post-badge job-applications-stats">Showing {applications?.length || 0} of {props?.job?.applications?.length} Applications</span>
             {props?.job?.applications?.length > limitShowApplications && (
-                <Link className="btn btn-gold show-more-less" onClick={() => setShowAllApplications(state => !state)}>Show {showAllApplications ? "Less" : "More"}...</Link>
+                <Link 
+                className="btn btn-gold show-more-less" 
+                onClick={(e) => {
+                    e.preventDefault();
+                    setShowAllApplications(state => !state);
+                    return false;
+                }}
+                >{showAllApplications ? (props?.isJobExpired ? "Hide Applications" : "Show Less") : (props?.isJobExpired ? "Show Applications" : "Show More")} ...</Link>
             )}
             <div className="applicants-inner">
                 {applications?.map((application) => (

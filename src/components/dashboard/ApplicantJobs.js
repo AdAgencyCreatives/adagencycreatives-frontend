@@ -160,7 +160,13 @@ const ApplicantJobs = () => {
                 </div>
               </div>
               {item.applications && item.applications.length ?
-                (<JobApplications job={item} setApplicationStatus={setApplicationStatus} setAppId={setAppId} setOpen={setOpen} />) : (<p>No New Applicants To Show</p>)
+                (<JobApplications 
+                  job={item} 
+                  setApplicationStatus={setApplicationStatus} 
+                  setAppId={setAppId} 
+                  setOpen={setOpen}
+                  isJobExpired={item?.expired_at && ((new Date(item?.expired_at) < (Date.parse(new Date().toISOString()))))}
+                   />) : (<p>No New Applicants To Show</p>)
               }
             </div>
           )) : (<p>No New Applicants To Show</p>)}
