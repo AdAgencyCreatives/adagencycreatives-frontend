@@ -777,14 +777,19 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .job-post-badge {
     font-size: 16px;
     font-weight: 500;
+    background-color: #d6d6d6;
+    color: #000;
     margin: 10px 10px 0px 0px;
     padding: 10px;
 }
 
 .job-post-badge.gold {
     background-color: #d3a11f;
+    color: #fff;
 }
 
 .job-post-badge.red {
     background-color: red;
+    color: #fff;
 }
+
