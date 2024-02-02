@@ -22,6 +22,7 @@ import { Context as AgenciesContext } from "../../context/AgenciesContext";
 import { Context as SubscriptionContext } from "../../context/SubscriptionContext";
 
 const JobPostForm = ({ id, setJobStatus }) => {
+
   const editorRefTinyMCE = useRef(null);
   const [useTinyMCE, setUseTinyMCE] = useState(true);
   const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
@@ -30,7 +31,6 @@ const JobPostForm = ({ id, setJobStatus }) => {
   const { isFileValid, getUploadGuide, getUploadGuideMessage } = useUploadHelper();
   const imageUploadGuide = getUploadGuide('image', 'job-post-form');
   const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
-  const [isLogoUploaded, setIsLogoUploaded] = useState(false);
 
   const {
     state: { user, token },
@@ -81,6 +81,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
     setFormData,
     setEditorRef,
     formData,
+    setIsLogoUploaded,
   } = useFormData({ id, setJobStatus, useTinyMCE, uploadGuidePage: 'job-post-form' });
 
   const { showAlert } = useContext(AlertContext);
@@ -163,9 +164,10 @@ const JobPostForm = ({ id, setJobStatus }) => {
           label: "Agency Logo only upload if it's different from your profile logo",
           required: false,
           type: "image",
-          image: isEdit ? single_job.agency.logo : "",
+          image: isEdit ? (single_job.agency.logo || single_job.agency.fallback_image) : "",
           name: "attachment_id",
           accept: ".jpg, .jpeg, .png, .bmp, image/jpeg, image/png",
+          id: single_job?.agency?.logo_id || "",
         },
         {
           label: "Agency Job Title",
@@ -464,10 +466,10 @@ const JobPostForm = ({ id, setJobStatus }) => {
                             <img src={field.image} className="w-100" ref={logoRef} alt="" />
                           </div>
                           <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
-                            <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={(e) => handleUpload(e)} type="button">
+                            <button type="button" className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={(e) => handleUpload(e)} type="button">
                               <FiPaperclip /> Upload
                             </button>
-                            <button className="btn btn-secondary w-100 text-uppercase" onClick={removeLogo}>
+                            <button type="button" className="btn btn-secondary w-100 text-uppercase" onClick={()=> removeLogo(single_job?.id, field?.id, single_job?.agency?.fallback_image)} disabled={field?.id ? "" : "disabled"}>
                               <FiTrash2 /> Remove
                             </button>
                           </div>
@@ -509,7 +511,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                           // value={field.value}
                           required={field.required}
                           onChange={(e) => handleTextChange(e, field.name)}
-                          autoFocus={field.name === 'title'}
+                          autoFocus={user?.role == 'agency' && field.name === 'title'}
                         />
                       </div>
                     );
@@ -538,6 +540,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                           {field.required && <span className="required">*</span>}
                         </label>
                         <Select
+                          autoFocus={user?.role == 'advisor' && field.name === 'agency_id'}
                           className="dropdown-container"
                           options={field.data}
                           isMulti={field.isMulti || false}
@@ -571,8 +574,8 @@ const JobPostForm = ({ id, setJobStatus }) => {
                         />
                         {field.name == "agency_id" && selectedAgency && (
                           <>
-                            <span className={"badge job-post-badge" + (isJobPostAllowed ? ' gold' : ' red')}>Package Status: {selectedAgency?.agency?.status?.status}</span>
-                            <span className={"badge job-post-badge" + (isJobPostAllowed ? ' gold' : ' red')}>Quota Left: {selectedAgency?.agency?.status?.quota_left}</span>
+                            <span className={"badge job-post-badge" + (isJobPostAllowed ? ' gold' : ' red')}>Status: {selectedAgency?.agency?.status?.status}</span>
+                            <span className={"badge job-post-badge" + (isJobPostAllowed ? ' gold' : ' red')}>Posts Remaining: {selectedAgency?.agency?.status?.quota_left}</span>
                           </>
                         )}
                       </div>

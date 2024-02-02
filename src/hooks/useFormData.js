@@ -2,7 +2,9 @@ import { useEffect, useState, useContext, useRef } from "react";
 import { Context as DataContext } from "../context/DataContext";
 import { Context as JobsContext } from "../context/JobsContext";
 import { Context as AuthContext } from "../context/AuthContext";
+import { Context as AgenciesContext } from "../context/AgenciesContext";
 import { Context as AlertContext } from "../context/AlertContext";
+
 import { EditorState, ContentState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import moment from "moment";
@@ -12,6 +14,11 @@ import useUploadHelper from "./useUploadHelper";
 const useFormData = (props = {}) => {
 
   const { isFileValid } = useUploadHelper();
+
+  const {
+    state: { },
+    removeJobAttachment,
+  } = useContext(AgenciesContext);
 
   const id = props.id;
   const [agenciesList, setAgencies] = useState([]);
@@ -36,6 +43,8 @@ const useFormData = (props = {}) => {
   const [isMounted, setIsMounted] = useState(false);
   const isEdit = id !== undefined;
 
+  const [isLogoUploaded, setIsLogoUploaded] = useState(false);
+
   useEffect(() => {
     setIsMounted(true);
     return () => {
@@ -45,6 +54,7 @@ const useFormData = (props = {}) => {
 
   const {
     state: { user, token },
+    reloadUserData,
   } = useContext(AuthContext);
 
   const { showAlert } = useContext(AlertContext);
@@ -258,8 +268,21 @@ const useFormData = (props = {}) => {
     }
   };
 
-  const removeLogo = () => {
-    logoRef.current.src = "";
+  const removeLogo = async (job_id, attachment_id, fallback_image) => {
+    if (!job_id || !attachment_id) {
+      return;
+    }
+    console.log(job_id, 'job_id');
+    console.log(attachment_id, 'attachment_id');
+
+    await removeJobAttachment(job_id, attachment_id, () => {
+      reloadUserData(user.uuid);
+      setIsLogoUploaded(false);
+      console.log("isLogoUploaded: " + isLogoUploaded);
+      showAlert("Logo removed successfully");
+      imageUploadRef.current.value = '';
+      logoRef.current.src = fallback_image;
+    });
   };
 
   const handleFileChange = (event) => {
@@ -325,6 +348,7 @@ const useFormData = (props = {}) => {
     setFormData,
     setEditorRef,
     formData,
+    setIsLogoUploaded,
   };
 };
 

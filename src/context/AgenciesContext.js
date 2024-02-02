@@ -221,6 +221,18 @@ const removeAttachment = (dispatch) => {
   };
 };
 
+const removeJobAttachment = (dispatch) => {
+  return async (job_id, attachment_id, cb=false) => {
+    try {
+      const response = await api.post("/delete_job_logo", {
+        job_id: job_id,
+        attachment_id: attachment_id
+      });
+      cb && cb();
+    } catch (error) { }
+  };
+};
+
 const getVideo = (dispatch) => {
   return async (uid) => {
     try {
@@ -322,6 +334,7 @@ export const { Context, Provider } = createDataContext(
     getOpenPositions,
     uploadAttachment,
     removeAttachment,
+    removeJobAttachment,
     getVideo,
     deleteJob,
     requestPackage,
