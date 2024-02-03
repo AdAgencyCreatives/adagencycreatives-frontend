@@ -8,6 +8,7 @@ import { Context as AuthContext } from "../context/AuthContext";
 import { Context as DataContext } from "../context/DataContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
 import Tooltip from "../components/Tooltip";
+import ImageLoader from "../components/ImageLoader";
 import { Context as AlertContext } from "../context/AlertContext";
 import DelayedOutput from "../components/DelayedOutput";
 
@@ -238,16 +239,7 @@ const Creatives = () => {
                         </button>
                       </Tooltip>
                     )}
-                    <img
-                      src={item.profile_image || Placeholder}
-                      className="candidateLogo"
-                      width={150}
-                      height={150}
-                      alt=""
-                      onError={(e) => {
-                        e.target.src = Placeholder; // Set the backup image source
-                      }}
-                    />
+                    <ImageLoader item={item} Placeholder={Placeholder} />
                     <div className="agencyName">
                       <Link
                         className="text-dark"

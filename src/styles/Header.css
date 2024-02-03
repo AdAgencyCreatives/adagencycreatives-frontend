@@ -793,3 +793,13 @@ nav ul.dropdown-list .list-item-text.j-fix {
     color: #fff;
 }
 
+.image-loader {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-loader .loader-image {
+    position: absolute;
+}
