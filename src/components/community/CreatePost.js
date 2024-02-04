@@ -461,7 +461,10 @@ const CreatePost = (props) => {
             open={imagePickerOpen}
             setOpen={setImagePickerOpen}
             handleImagePickerClose={() => setImagePickerOpen(false)}
-            postAttachments={postAttachments} setPostAttachments={setPostAttachments} allowType={allowType} />
+            postAttachments={postAttachments}
+            setPostAttachments={setPostAttachments}
+            allowType={allowType}
+          />
         </div>
       </Modal>
     </div>

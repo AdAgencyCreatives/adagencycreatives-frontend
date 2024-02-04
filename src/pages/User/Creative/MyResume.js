@@ -36,6 +36,9 @@ const MyResume = () => {
   const videoRef = useRef();
   const [videoItem, setVideoItem] = useState(false);
 
+  const [videoUploading, setVideoUploading] = useState(false);
+  const [videoUploadIndicator, setVideoUploadIndicator] = useState("");
+
   const [useTinyMCE, setUseTinyMCE] = useState(true);
   const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
 
@@ -614,9 +617,13 @@ const MyResume = () => {
     if (!id) {
       return;
     }
+    setVideoUploadIndicator("Removing");
+    setVideoUploading(true);
     await removeAttachment(id);
     setVideoItem(null);
     videoUploadRef.current.value = '';
+    setVideoUploading(false);
+    setVideoUploadIndicator("");
     showAlert("Video removed successfully");
   };
 
@@ -693,13 +700,21 @@ const MyResume = () => {
       console.log(file);
 
       if (file) {
+        if (name == "creative_reel") {
+          setVideoUploadIndicator("Uploading");
+          setVideoUploading(true);
+        }
         const formData = new FormData();
         formData.append("file", file);
         formData.append("user_id", user.uuid);
         formData.append("resource_type", name);
         const result = await saveAttachment(formData);
         if (result.data) {
-          if (name == "creative_reel") setVideoItem({ name: file.name, id: result.data.id });
+          if (name == "creative_reel") {
+            setVideoUploadIndicator("");
+            setVideoUploading(false);
+            setVideoItem({ name: file.name, id: result.data.id });
+          }
           showAlert("File uploaded successfully");
         }
       }
@@ -964,6 +979,12 @@ const MyResume = () => {
             </label>
             <div className="row align-items-center upload-box">
               <div className="col-md-12 col-sm-12 col-12">
+                {videoUploading && (
+                  <div className="video-upload-indicator">
+                    <CircularProgress />
+                    <h6>{videoUploadIndicator} ...</h6>
+                  </div>
+                )}
                 {videoItem && (
                   <>
                     <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2" onClick={(e) => setShowVideoItem(state => !state)}>

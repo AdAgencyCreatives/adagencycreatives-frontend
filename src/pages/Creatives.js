@@ -221,7 +221,7 @@ const Creatives = () => {
                   (bookmark) => bookmark.resource?.user_id == item?.user_id
                 ) || false;
               return (
-                <div className="col-md-4 col-sm-6 col-12" key={`creative-${item?.user_id}`}>
+                <div className="col-md-4 col-sm-6 col-12" key={`creative-${item?.user_id}-${Math.random()}}`}>
                   <div className="sliderContent agencies-slider">
                     {(role == "admin" || role == "agency" || role == "advisor" || role == "recruiter") && (
                       <Tooltip title={"Shortlist"} type="featured">

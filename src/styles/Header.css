@@ -803,3 +803,15 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .image-loader .loader-image {
     position: absolute;
 }
+
+.video-upload-indicator {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    margin: 10px 0px;
+}
+
+.video-upload-indicator h6 {
+    line-height: 1;
+    margin: 0;
+}

@@ -170,7 +170,7 @@ const JobList = ({ data, user, showAgency = true }) => {
                         className="btn btn-apply btn-apply-job-external "
                         onClick={(e) => {
                           if (!isCreative) {
-                            showAlert("Login as creative to apply to this job");
+                            showAlert("Login as a creative to apply to this job");
                             e.preventDefault();
                           } else if (item.apply_type.toLowerCase() == "internal") {
                             e.preventDefault();
