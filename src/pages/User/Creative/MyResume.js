@@ -713,7 +713,7 @@ const MyResume = () => {
           if (name == "creative_reel") {
             setVideoUploadIndicator("");
             setVideoUploading(false);
-            setVideoItem({ name: file.name, id: result.data.id });
+            setVideoItem({ name: file.name, id: result.data.id, url: result.data.url });
           }
           showAlert("File uploaded successfully");
         }
