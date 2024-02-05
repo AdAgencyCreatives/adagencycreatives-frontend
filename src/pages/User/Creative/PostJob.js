@@ -14,7 +14,7 @@ const PostJob = () => {
           <div className="restricted-creatives-only">
             <div className="restricted-message">
               <h4>Post A Job is restricted for agencies only.</h4>
-              <h5>Please login as a agency to post a job.</h5>
+              <h5>Please login as an agency to post a job.</h5>
             </div>
           </div>
         </div>
