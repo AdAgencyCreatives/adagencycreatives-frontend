@@ -793,6 +793,20 @@ nav ul.dropdown-list .list-item-text.j-fix {
     color: #fff;
 }
 
+.agency-page-jobapplicants .job-post-badge {
+    font-size: 12px;
+    padding: 5px;
+    line-height: 1em;
+    font-weight: 500;
+}
+
+.agency-page-jobapplicants .btn.btn-gold.show-more-less {
+    font-size: 12px;
+    padding: 3px 5px;
+    line-height: 1em;
+    font-weight: 500;
+}
+
 .image-loader {
     position: relative;
     display: flex;
