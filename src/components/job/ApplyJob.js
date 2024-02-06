@@ -53,13 +53,13 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
     try {
       console.log("job_id", job_id);
       const response = await applyJob(user.uuid, job_id, jobMessage, resumeId);
-      setMessage(true);
       setError(false);
       setJobMessage('');
       handleJob(job_id);
       setIsSubmit(true);
+      showAlert('Applied to job successfully');
+      handleClose();
     } catch (e) {
-      console.log(e);
       setMessage(false);
       setError(true);
       handleJob(null);
@@ -153,6 +153,7 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
                     type="file"
                     name="cv_file"
                     data-file_types="txt|doc|docx|pdf"
+                    accept=".txt,.pdf,.doc,.docx" 
                     className="d-none"
                     ref={resumeRef}
                     onChange={(e) => handleFileChange(e)}
