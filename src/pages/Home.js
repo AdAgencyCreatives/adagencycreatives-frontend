@@ -102,14 +102,13 @@ const Home = () => {
                     />
                   </div>
                   <div className="col-md-4 search-buttons">
-                    <button className="searchBtn">Find Jobs</button>
+                    <button className="searchBtn">{getPateDataItem("searbar_button_text", pageData)}</button>
                   </div>
                 </div>
               </form>
             </div>
             <div className="popularSearch">
-              <p>
-                Popular Searches: <a href="#">Art Director</a>, <a href="#">Copywriter</a>, <a href="#">Designer...</a>
+              <p dangerouslySetInnerHTML={{ __html: getPateDataItem("searchbar_bottom_suggestion", pageData) }}>
               </p>
             </div>
           </div>
