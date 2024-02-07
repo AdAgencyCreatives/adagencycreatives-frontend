@@ -3,6 +3,18 @@ import { Context } from "../context/AuthContext";
 
 const useHelper = () => {
 
+    const rectify_url = (url) => {
+        if (!url) {
+          return url;
+        }
+    
+        let lowerUrl = ("" + url).toLowerCase();
+        let haveHttps = lowerUrl.indexOf("https://") >= 0;
+        let haveHttp = lowerUrl.indexOf("http://") >= 0;
+    
+        return !(haveHttps || haveHttp) ? ("https://" + url) : url;
+      };
+
     var decodeEntities = (function () {
         var cache = {},
             character,
@@ -131,7 +143,7 @@ const useHelper = () => {
         return result.join('');
     };
 
-    return { decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial, strReplaceAll, isCharNumber, getNumericString, formatPhone };
+    return { rectify_url, decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial, strReplaceAll, isCharNumber, getNumericString, formatPhone };
 }
 
 export default useHelper;

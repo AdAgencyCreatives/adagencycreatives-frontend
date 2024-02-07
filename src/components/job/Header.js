@@ -13,19 +13,38 @@ import Tooltip from "../Tooltip";
 import moment from "moment";
 import { Context } from "../../context/AuthContext";
 import { Context as AlertContext } from "../../context/AlertContext";
+import { Context as CreativesContext } from "../../context/CreativesContext";
+import { Context as JobsContext } from "../../context/JobsContext";
 import { useContext, useEffect, useState } from "react";
 import ApplyJob from "./ApplyJob";
+import { CircularProgress } from "@mui/material";
+import useHelper from "../../hooks/useHelper";
 
 const Header = ({ data }) => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const [job, setJob] = useState(null);
   const [isJobApplied, setIsJobApplied] = useState(false);
+
+  const { rectify_url } = useHelper();
+
   const {
-    state: { role },
+    state: { user, role },
   } = useContext(Context);
 
   const { showAlert } = useContext(AlertContext);
+
+  const {
+    state: { resume, profile_resume },
+    getResume,
+    getProfileResume,
+    saveAttachment,
+  } = useContext(CreativesContext);
+
+  const {
+    state: { isLoading },
+    applyJob,
+  } = useContext(JobsContext);
 
   const isCreative = role == "creative";
 
@@ -36,6 +55,19 @@ const Header = ({ data }) => {
   const handleJob = async (job_id) => {
     console.log(job);
     setIsJobApplied(true);
+  };
+
+  const handleApplyExternalJob = async (job) => {
+    await getResume(user.uuid);
+    await getProfileResume(user.uuid);
+
+    console.log(job);
+    const response = await applyJob(user.uuid, job?.id, "Interested", resume?.length ? resume[0].id : -1);
+
+    // window.open(rectify_url(job?.external_link));
+
+    setIsJobApplied(true);
+
   };
 
   return (
@@ -148,28 +180,42 @@ const Header = ({ data }) => {
             <div className="col-md-4">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0">
                 {isJobApplied ? (
-                  <Link className="btn btn-apply active">Applied</Link>
+                  <Link
+                    to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}
+                    target="_blank"
+                    className="btn btn-apply active"
+                  >
+                    Applied
+                  </Link>
                 ) : (
                   <>
                     {role == "creative" && (
-                      <Link
-                        to={data.apply_type.toLowerCase() == "external" ? data.external_link : ""}
-                        target="_blank"
-                        className="btn btn-apply btn-apply-job-external "
-                        onClick={(e) => {
-                          if (!isCreative) {
-                            showAlert("Login as a creative to apply to this job");
-                            e.preventDefault();
-                          } else if (data.apply_type.toLowerCase() == "internal") {
-                            e.preventDefault();
-                            setJob(data.id);
-                            setOpen(true);
-                          }
-                        }}
-                      >
-                        Apply Now
-                        <i className="next flaticon-right-arrow"></i>
-                      </Link>
+                      <>
+                        {isLoading && (<CircularProgress />)}
+                        <Link
+                          to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}
+                          target="_blank"
+                          className="btn btn-apply btn-apply-job-external "
+                          onClick={(e) => {
+                            if (!isCreative) {
+                              showAlert("Login as a creative to apply to this job");
+                              e.preventDefault();
+                            } else if (data.apply_type.toLowerCase() == "internal") {
+                              e.preventDefault();
+                              setJob(data.id);
+                              setOpen(true);
+                            } else if (data.apply_type.toLowerCase() == "external") {
+                              // e.preventDefault();
+                              handleApplyExternalJob(data);
+                            }
+                          }}
+                          disabled={isLoading ? "disabled" : ""}
+                        >
+                          Apply Now
+                          <i className="next flaticon-right-arrow"></i>
+
+                        </Link>
+                      </>
                     )}
                   </>
                 )}

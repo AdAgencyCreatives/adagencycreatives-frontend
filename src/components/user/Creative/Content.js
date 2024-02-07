@@ -12,19 +12,7 @@ import Placeholder from "../../../assets/images/placeholder.png";
 
 const Content = ({ user, role, data, education, experience }) => {
 
-  const { encodeSpecial, decodeSpecial } = useHelper();
-
-  const rectify_url = (url) => {
-    if (!url) {
-      return url;
-    }
-
-    let lowerUrl = ("" + url).toLowerCase();
-    let haveHttps = lowerUrl.indexOf("https://") >= 0;
-    let haveHttp = lowerUrl.indexOf("http://") >= 0;
-
-    return !(haveHttps || haveHttp) ? ("https://" + url) : url;
-  };
+  const { rectify_url, encodeSpecial, decodeSpecial } = useHelper();
 
   const {
     state: { subscription_status },

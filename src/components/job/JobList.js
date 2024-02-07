@@ -7,12 +7,15 @@ import { useContext, useState, useEffect } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as AlertContext } from "../../context/AlertContext";
 import ApplyJob from "./ApplyJob";
+import useHelper from "../../hooks/useHelper";
 
 const JobList = ({ data, user, showAgency = true }) => {
 
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const [job, setJob] = useState(null);
+
+  const { rectify_url } = useHelper();
 
   const handleJob = async (job_id) => {
     console.log("job_id parent", job_id);
@@ -63,7 +66,7 @@ const JobList = ({ data, user, showAgency = true }) => {
                         {role == 'admin' || item?.agency?.role == "agency" ? (
                           <Link
                             className="link-dark"
-                            to={role == 'admin' ? (item?.agency?.website || ("/agency/" + item.agency.slug)) : ("/agency/" + item.agency.slug)}
+                            to={role == 'admin' ? (rectify_url(item?.agency?.website) || ("/agency/" + item.agency.slug)) : ("/agency/" + item.agency.slug)}
                           >
                             {item.agency.name}
                           </Link>
@@ -97,10 +100,10 @@ const JobList = ({ data, user, showAgency = true }) => {
                       {item.location.state && (
                         <div className="job-location location">
                           <IoLocationOutline />
-                          <Link to={`/creatives/search/state/${item.location.state}`}>
+                          <Link to={`/job-location/${item.location.state}`} reloadDocument>
                             {item.location.state},&nbsp;
                           </Link>
-                          <Link to={`/creatives/search/city/${item.location.city}`}>
+                          <Link to={`/job-location/${item.location.city}`} reloadDocument>
                             {item.location.city}
                           </Link>
                         </div>
