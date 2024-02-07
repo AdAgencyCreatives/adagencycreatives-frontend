@@ -155,7 +155,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           required: false,
           type: "text",
           name: "agency_name",
-          value: single_job?.agency_name,
+          value: single_job?.agency?.name,
           skip: user?.role != "recruiter",
         },
         {
@@ -163,7 +163,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           required: false,
           type: "text",
           name: "agency_website",
-          value: single_job?.agency_website,
+          value: single_job?.agency?.website,
           skip: user?.role != "recruiter",
         },
         {
