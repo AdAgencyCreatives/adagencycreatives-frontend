@@ -60,12 +60,16 @@ const JobList = ({ data, user, showAgency = true }) => {
                   <div className="title-wrapper flex-middle-sm">
                     {showAgency && (
                       <h5 className="employer-name mb-0">
-                        <Link
-                          className="link-dark"
-                          to={"/agency/" + item.agency.slug}
-                        >
+                        {(item?.agency?.website || item?.agency?.role == "agency") ? (
+                          <Link
+                            className="link-dark"
+                            to={item?.agency?.website || ("/agency/" + item.agency.slug)}
+                          >
+                            {item.agency.name}
+                          </Link>
+                        ) : (<>
                           {item.agency.name}
-                        </Link>
+                        </>)}
                       </h5>
                     )}
                     <h2 className="job-title">

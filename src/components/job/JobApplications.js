@@ -27,8 +27,8 @@ const JobApplications = (props) => {
     }, [showAllApplications]);
 
     useEffect(() => {
-        setLimitShowApplications(props?.isJobExpired ? 0 : limitShowApplications)
-        setApplications(props?.isJobExpired ? null : (props?.job?.applications?.length < limitShowApplications ? props?.job?.applications : props?.job?.applications.slice(0, limitShowApplications)));
+        setLimitShowApplications((props?.isJobExpired || props?.isJobDeleted) ? 0 : limitShowApplications)
+        setApplications((props?.isJobExpired || props?.isJobDeleted) ? null : (props?.job?.applications?.length < limitShowApplications ? props?.job?.applications : props?.job?.applications.slice(0, limitShowApplications)));
     }, []);
 
 
@@ -36,14 +36,14 @@ const JobApplications = (props) => {
         <div className="applicants-wrapper">
             <span className="badge job-post-badge job-applications-stats">Showing {applications?.length || 0} of {props?.job?.applications?.length} Applications</span>
             {props?.job?.applications?.length > limitShowApplications && (
-                <Link 
-                className="btn btn-gold show-more-less" 
-                onClick={(e) => {
-                    e.preventDefault();
-                    setShowAllApplications(state => !state);
-                    return false;
-                }}
-                >{showAllApplications ? (props?.isJobExpired ? "Hide Applications" : "Show Less") : (props?.isJobExpired ? "Show Applications" : "Show More")} ...</Link>
+                <Link
+                    className="btn btn-gold show-more-less"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        setShowAllApplications(state => !state);
+                        return false;
+                    }}
+                >{showAllApplications ? ((props?.isJobExpired || props?.isJobDeleted) ? "Hide Applications" : "Show Less") : ((props?.isJobExpired || props?.isJobDeleted) ? "Show Applications" : "Show More")} ...</Link>
             )}
             <div className="applicants-inner">
                 {applications?.map((application) => (
@@ -112,12 +112,17 @@ const JobApplications = (props) => {
                                             onClick={() => {
                                                 props?.setAppId(application.creative_id);
                                                 props?.setOpen(true);
+                                                props?.setStatusJob(
+                                                    (props?.isJobExpired ? "Expired" : (
+                                                        props?.isJobDeleted ? "Deleted" : "Active"
+                                                    ))
+                                                );
                                             }}
                                         >
                                             <TfiNotepad />
                                         </button>
                                     </Tooltip>
-                                    {(!props?.job?.advisor_id || user?.role == 'advisor') && (<>
+                                    {(!props?.isJobDeleted && (!props?.job?.advisor_id || user?.role == 'advisor')) && (<>
                                         {application.status == "pending" ? (
                                             <>
                                                 {user?.role == 'advisor' && (
@@ -194,7 +199,7 @@ const JobApplications = (props) => {
                                             <TfiDownload className="icon-rounded" />
                                         </Link>
                                     </Tooltip>
-                                    {(!props?.job?.advisor_id || user?.role == 'advisor') && (<>
+                                    {(!props?.isJobDeleted && (!props?.job?.advisor_id || user?.role == 'advisor')) && (<>
                                         <Tooltip
                                             title="Remove From Job"
                                             // onClick={() => deleteApplication(application.id)}

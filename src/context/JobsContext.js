@@ -96,7 +96,7 @@ const reducer = (state, action) => {
         notes: [...state.notes, ...action.payload.data],
         notesNextPage: action.payload.links.next
       };
-      case "set_single_note":
+    case "set_single_note":
       return { ...state, single_note: action.payload };
     case "add_note":
       return { ...state, notes: [action.payload.data, ...state.notes] };
@@ -253,9 +253,10 @@ const getApplicationsAllStatus = (dispatch) => {
     let applications = [];
     setLoadingApp(dispatch, true);
     try {
-      const response = await api.get(
-        "/jobs?sort=-created_at&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "")
-      ); 
+      const endpointUrl = "/jobs?sort=-created_at&filter[trashed]=with&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
+      // const endpointUrl = "/jobs?sort=-created_at&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
+      console.log(endpointUrl);
+      const response = await api.get(endpointUrl);
       dispatch({
         type: "set_applications",
         payload: response.data,

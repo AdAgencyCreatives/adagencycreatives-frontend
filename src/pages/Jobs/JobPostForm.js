@@ -151,6 +151,22 @@ const JobPostForm = ({ id, setJobStatus }) => {
       // console.log("agenciesList", agenciesList);
       setFields([
         {
+          label: "Agency Name",
+          required: false,
+          type: "text",
+          name: "agency_name",
+          value: single_job?.agency_name,
+          skip: user?.role != "recruiter",
+        },
+        {
+          label: "Agency Website",
+          required: false,
+          type: "text",
+          name: "agency_website",
+          value: single_job?.agency_website,
+          skip: user?.role != "recruiter",
+        },
+        {
           label: "Assigned Agencies",
           required: true,
           type: "dropdown",
@@ -448,7 +464,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           <form onSubmit={handleSubmitCurrent}>
             <div className="row gx-3 gy-5 align-items-end">
               {fields.map((field, index) => {
-                if (user?.role != 'advisor' && field.name == 'agency_id') {
+                if (user?.role != 'advisor' && field.name == 'agency_id' || (field?.skip)) {
                   return (<></>);
                 }
                 switch (field.type) {

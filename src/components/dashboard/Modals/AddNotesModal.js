@@ -11,7 +11,7 @@ import { convertUTCDateToLocalDate } from "../../UtcToLocalDateTime";
 import DelayedOutput from "../../DelayedOutput";
 import { IoClose, IoCloseCircleSharp, IoCloseSharp, IoPencil } from "react-icons/io5";
 
-const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
+const AddNotesModal = ({ resource_id, type, open, handleClose, statusJob }) => {
   const [note, setNote] = useState("");
   const [message, setMessage] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
@@ -98,42 +98,48 @@ const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
       scroll="body"
     >
       <div className="add-note-modal">
+
         <div className="addnote-header"></div>
         <div className="addnote-body">
           <div className="job-apply-email-form-wrapper">
             <div className="inner">
               <h3 className="text-center">
-                <span>Add Note</span>
+                <span>{statusJob && statusJob != 'Deleted' ? "Add Note" : "View Notes"}</span>
               </h3>
+              {statusJob && statusJob == 'Deleted' && (
+                <h6 style={{ color: 'red' }}>Disclaimer: Job has been {statusJob || ""}</h6>
+              )}
+              {(statusJob && statusJob != 'Deleted') && (
+                <div>
+                  {message && (
+                    <div className={`alert alert-info note-alert`}>
+                      {message}
+                      <IoCloseCircleSharp className="note-alert-close" onClick={() => setMessage(false)} />
+                    </div>
+                  )}
 
-              {message && (
-                <div className={`alert alert-info note-alert`}>
-                  {message}
-                  <IoCloseCircleSharp className="note-alert-close" onClick={() => setMessage(false)} />
+                  <div className="form-group">
+                    <label>Message</label>
+                    <textarea
+                      className="form-control"
+                      name="message"
+                      placeholder="Message"
+                      required="required"
+                      value={note}
+                      onChange={(e) => setNote(e.target.value)}
+                    ></textarea>
+                  </div>
+                  <input type="hidden" name="action" />
+                  <input type="hidden" name="application_id" />
+                  <button
+                    onClick={submitNote}
+                    className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3 fs-5"
+                  >
+                    {selectedNote?.id ? 'Update' : 'Add'} Note {isLoading && <CircularProgress size={20} />}
+                  </button>
+                  {selectedNote?.id && (<Link className="reset-note" onClick={(e) => onCancelEditNote(e)}>Cancel</Link>)}
                 </div>
               )}
-
-              <div className="form-group">
-                <label>Message</label>
-                <textarea
-                  className="form-control"
-                  name="message"
-                  placeholder="Message"
-                  required="required"
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
-                ></textarea>
-              </div>
-              <input type="hidden" name="action" />
-              <input type="hidden" name="application_id" />
-              <button
-                onClick={submitNote}
-                className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3 fs-5"
-              >
-                {selectedNote?.id ? 'Update' : 'Add'} Note {isLoading && <CircularProgress size={20} />}
-              </button>
-              {selectedNote?.id && (<Link className="reset-note" onClick={(e) => onCancelEditNote(e)}>Cancel</Link>)}
-
               <div className="notes-list-item">
                 {notes?.length > 0 ? (
                   <>
@@ -152,25 +158,27 @@ const AddNotesModal = ({ resource_id, type, open, handleClose }) => {
                             )}
                           </small>
                         </p>
-                        <div className="notes-action">
-                          <Tooltip title="Edit">
-                            <Link
-                              className="btn p-0 border-0 btn-hover-primary"
-                              onClick={(e) => onEditNote(note)}
-                            >
-                              <IoPencil className="icon-rounded" />
-                            </Link>
-                          </Tooltip>
+                        {(statusJob && statusJob != 'Deleted') && (
+                          <div className="notes-action">
+                            <Tooltip title="Edit">
+                              <Link
+                                className="btn p-0 border-0 btn-hover-primary"
+                                onClick={(e) => onEditNote(note)}
+                              >
+                                <IoPencil className="icon-rounded" />
+                              </Link>
+                            </Tooltip>
 
-                          <Tooltip title="Remove">
-                            <Link
-                              className="btn p-0 border-0 btn-hover-primary"
-                              onClick={(e) => onDeleteNote(note)}
-                            >
-                              <IoClose className="icon-rounded" />
-                            </Link>
-                          </Tooltip>
-                        </div>
+                            <Tooltip title="Remove">
+                              <Link
+                                className="btn p-0 border-0 btn-hover-primary"
+                                onClick={(e) => onDeleteNote(note)}
+                              >
+                                <IoClose className="icon-rounded" />
+                              </Link>
+                            </Tooltip>
+                          </div>
+                        )}
                       </div>
                     ))}
                     <div className="load-more text-center">
