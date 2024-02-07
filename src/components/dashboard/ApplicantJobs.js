@@ -30,7 +30,6 @@ const ApplicantJobs = () => {
   const [data, setData] = useState([]);
   const [tab, setTab] = useState({});
   const [statusApplication, setStatusApplication] = useState(false);
-  const [statusJob, setStatusJob] = useState("Active");
 
   const {
     state: { applications, isLoadingApp, applicationMeta },
@@ -95,7 +94,6 @@ const ApplicantJobs = () => {
         handleClose={handleClose}
         resource_id={appId}
         type="creatives"
-        statusJob={statusJob}
       />
       <h3 className="page-title">All Applicants</h3>
       {isLoadingApp ? (
@@ -168,7 +166,6 @@ const ApplicantJobs = () => {
                   setApplicationStatus={setApplicationStatus} 
                   setAppId={setAppId} 
                   setOpen={setOpen}
-                  setStatusJob={setStatusJob}
                   isJobExpired={item?.expired_at && ((new Date(item?.expired_at) < (Date.parse(new Date().toISOString()))))}
                   isJobDeleted={item?.deleted_at && ((new Date(item?.deleted_at) < (Date.parse(new Date().toISOString()))))}
                    />) : (<p>No New Applicants To Show</p>)

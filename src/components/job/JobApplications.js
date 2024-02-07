@@ -112,11 +112,6 @@ const JobApplications = (props) => {
                                             onClick={() => {
                                                 props?.setAppId(application.creative_id);
                                                 props?.setOpen(true);
-                                                props?.setStatusJob(
-                                                    (props?.isJobExpired ? "Expired" : (
-                                                        props?.isJobDeleted ? "Deleted" : "Active"
-                                                    ))
-                                                );
                                             }}
                                         >
                                             <TfiNotepad />

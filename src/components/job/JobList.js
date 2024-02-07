@@ -60,10 +60,10 @@ const JobList = ({ data, user, showAgency = true }) => {
                   <div className="title-wrapper flex-middle-sm">
                     {showAgency && (
                       <h5 className="employer-name mb-0">
-                        {(item?.agency?.website || item?.agency?.role == "agency") ? (
+                        {role == 'admin' || item?.agency?.role == "agency" ? (
                           <Link
                             className="link-dark"
-                            to={item?.agency?.website || ("/agency/" + item.agency.slug)}
+                            to={role == 'admin' ? (item?.agency?.website || ("/agency/" + item.agency.slug)) : ("/agency/" + item.agency.slug)}
                           >
                             {item.agency.name}
                           </Link>
