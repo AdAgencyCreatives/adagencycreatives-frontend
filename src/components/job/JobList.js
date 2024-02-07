@@ -89,6 +89,7 @@ const JobList = ({ data, showAgency = true }) => {
                           <Link
                             className="link-dark"
                             to={role == 'admin' ? (rectify_url(item?.agency?.website) || ("/agency/" + item.agency.slug)) : ("/agency/" + item.agency.slug)}
+                            target={role == 'admin' ? "_blank" : ""}
                           >
                             {item.agency.name}
                           </Link>
