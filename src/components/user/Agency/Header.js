@@ -54,7 +54,7 @@ const Header = ({ data, role, user }) => {
                   <Link to={`/agency-location/${data.location.state}`}>
                     {data.location.state}
                   </Link>
-                  ,&nbsp;
+                  <span>,&nbsp;</span>
                   <Link to={`/agency-location/${data.location.city}`}>
                     {data.location.city}
                   </Link>
