@@ -53,7 +53,6 @@ const Header = ({ data }) => {
   }, [data]);
 
   const handleJob = async (job_id) => {
-    console.log(job);
     setIsJobApplied(true);
   };
 
@@ -63,9 +62,6 @@ const Header = ({ data }) => {
 
     console.log(job);
     const response = await applyJob(user.uuid, job?.id, "Interested", resume?.length ? resume[0].id : -1);
-
-    // window.open(rectify_url(job?.external_link));
-
     setIsJobApplied(true);
 
   };
@@ -73,7 +69,6 @@ const Header = ({ data }) => {
   return (
     <div className="container">
       <ApplyJob open={open} setOpen={setOpen} handleClose={handleClose} job_id={job} handleJob={handleJob} />
-
       <div className="row align-items-center justify-content-between">
         <div className="col-12 d-flex align-items-top">
           <div className="avatar employer">
@@ -182,7 +177,7 @@ const Header = ({ data }) => {
                 {isJobApplied ? (
                   <Link
                     to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}
-                    target="_blank"
+                    target={data.apply_type.toLowerCase() == "external" ? "_blank" : ""}
                     className="btn btn-apply active"
                   >
                     Applied
@@ -194,7 +189,7 @@ const Header = ({ data }) => {
                         {isLoading && (<CircularProgress />)}
                         <Link
                           to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}
-                          target="_blank"
+                          target={data.apply_type.toLowerCase() == "external" ? "_blank" : ""}
                           className="btn btn-apply btn-apply-job-external "
                           onClick={(e) => {
                             if (!isCreative) {
@@ -205,7 +200,6 @@ const Header = ({ data }) => {
                               setJob(data.id);
                               setOpen(true);
                             } else if (data.apply_type.toLowerCase() == "external") {
-                              // e.preventDefault();
                               handleApplyExternalJob(data);
                             }
                           }}

@@ -122,53 +122,55 @@ const ApplicantJobs = () => {
                       }
                       onClick={() => switchTab(item.id, "pending")}
                     >
-                      Total(s):
+                      {item?.apply_type.toLowerCase() != "external" ? "Total(s):" : "Interested:"}
                       <span className="number">{item.applications_count}</span>
                     </div>
-                    <div
-                      className={
-                        "approved-applicants show-approved-applicants" +
-                        (tab[item.id] == "accepted" ? " active" : "")
-                      }
-                      onClick={() => switchTab(item.id, "accepted")}
-                    >
-                      Approved:
-                      <span className="number">
-                        {
-                          item.applications && item.applications.filter(
-                            (application) => application.status == "accepted"
-                          ).length
+                    {item?.apply_type.toLowerCase() != "external" && (<>
+                      <div
+                        className={
+                          "approved-applicants show-approved-applicants" +
+                          (tab[item.id] == "accepted" ? " active" : "")
                         }
-                      </span>
-                    </div>
-                    <div
-                      className={
-                        "rejected-applicants show-rejected-applicants" +
-                        (tab[item.id] == "rejected" ? " active" : "")
-                      }
-                      onClick={() => switchTab(item.id, "rejected")}
-                    >
-                      Rejected(s):
-                      <span className="number">
-                        {
-                          item.applications && item.applications.filter(
-                            (application) => application.status == "rejected"
-                          ).length
+                        onClick={() => switchTab(item.id, "accepted")}
+                      >
+                        Approved:
+                        <span className="number">
+                          {
+                            item.applications && item.applications.filter(
+                              (application) => application.status == "accepted"
+                            ).length
+                          }
+                        </span>
+                      </div>
+                      <div
+                        className={
+                          "rejected-applicants show-rejected-applicants" +
+                          (tab[item.id] == "rejected" ? " active" : "")
                         }
-                      </span>
-                    </div>
+                        onClick={() => switchTab(item.id, "rejected")}
+                      >
+                        Rejected(s):
+                        <span className="number">
+                          {
+                            item.applications && item.applications.filter(
+                              (application) => application.status == "rejected"
+                            ).length
+                          }
+                        </span>
+                      </div>
+                    </>)}
                   </div>
                 </div>
               </div>
               {item.applications && item.applications.length ?
-                (<JobApplications 
-                  job={item} 
-                  setApplicationStatus={setApplicationStatus} 
-                  setAppId={setAppId} 
+                (<JobApplications
+                  job={item}
+                  setApplicationStatus={setApplicationStatus}
+                  setAppId={setAppId}
                   setOpen={setOpen}
                   isJobExpired={item?.expired_at && ((new Date(item?.expired_at) < (Date.parse(new Date().toISOString()))))}
                   isJobDeleted={item?.deleted_at && ((new Date(item?.deleted_at) < (Date.parse(new Date().toISOString()))))}
-                   />) : (<p>No New Applicants To Show</p>)
+                />) : (<p>No New Applicants To Show</p>)
               }
             </div>
           )) : (<p>No New Applicants To Show</p>)}

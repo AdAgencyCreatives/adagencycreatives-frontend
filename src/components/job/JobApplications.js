@@ -61,29 +61,33 @@ const JobApplications = (props) => {
                                                     {application.user}
                                                 </Link>
                                             </h2>
-                                            <span
-                                                className={
-                                                    "badge " +
-                                                    application.status +
-                                                    " bg-" +
-                                                    (application.status == "pending"
-                                                        ? "info"
+                                            {props?.job?.apply_type.toLowerCase() != "external" ? (
+                                                <span
+                                                    className={
+                                                        "badge " +
+                                                        application.status +
+                                                        " bg-" +
+                                                        (application.status == "pending"
+                                                            ? "info"
+                                                            : application.status == "accepted"
+                                                                ? "success"
+                                                                : application.status == "shortlisted"
+                                                                    ? "primary"
+                                                                    : "danger")
+                                                    }
+                                                >
+                                                    {application.status == "pending"
+                                                        ? "Pending"
                                                         : application.status == "accepted"
-                                                            ? "success"
+                                                            ? "Approved"
                                                             : application.status == "shortlisted"
-                                                                ? "primary"
-                                                                : "danger")
-                                                }
-                                            >
-                                                {application.status == "pending"
-                                                    ? "Pending"
-                                                    : application.status == "accepted"
-                                                        ? "Approved"
-                                                        : application.status == "shortlisted"
-                                                            ? "Recommended"
-                                                            : "Rejected"
-                                                }
-                                            </span>
+                                                                ? "Recommended"
+                                                                : "Rejected"
+                                                    }
+                                                </span>
+                                            ) : (
+                                                <span className="badge bg-success">Interested</span>
+                                            )}
                                         </div>
                                         <div className="job-metas">
                                             <h4 className="job-title">
@@ -117,7 +121,7 @@ const JobApplications = (props) => {
                                             <TfiNotepad />
                                         </button>
                                     </Tooltip>
-                                    {(!props?.isJobDeleted && (!props?.job?.advisor_id || user?.role == 'advisor')) && (<>
+                                    {(!props?.isJobDeleted && (!props?.job?.advisor_id || user?.role == 'advisor') && props?.job?.apply_type.toLowerCase() != "external") && (<>
                                         {application.status == "pending" ? (
                                             <>
                                                 {user?.role == 'advisor' && (
@@ -194,7 +198,7 @@ const JobApplications = (props) => {
                                             <TfiDownload className="icon-rounded" />
                                         </Link>
                                     </Tooltip>
-                                    {(!props?.isJobDeleted && (!props?.job?.advisor_id || user?.role == 'advisor')) && (<>
+                                    {(!props?.isJobDeleted && (!props?.job?.advisor_id || user?.role == 'advisor') && props?.job?.apply_type.toLowerCase() != "external") && (<>
                                         <Tooltip
                                             title="Remove From Job"
                                             // onClick={() => deleteApplication(application.id)}

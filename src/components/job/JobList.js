@@ -6,16 +6,38 @@ import Placeholder from "../../assets/images/placeholder.png";
 import { useContext, useState, useEffect } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as AlertContext } from "../../context/AlertContext";
+import { Context as CreativesContext } from "../../context/CreativesContext";
+import { Context as JobsContext } from "../../context/JobsContext";
 import ApplyJob from "./ApplyJob";
 import useHelper from "../../hooks/useHelper";
+import { CircularProgress } from "@mui/material";
 
-const JobList = ({ data, user, showAgency = true }) => {
+const JobList = ({ data, showAgency = true }) => {
 
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const [job, setJob] = useState(null);
 
   const { rectify_url } = useHelper();
+
+  const {
+    state: { user, role },
+  } = useContext(AuthContext);
+  const { showAlert } = useContext(AlertContext);
+
+  const isCreative = role == "creative";
+
+  const {
+    state: { resume, profile_resume },
+    getResume,
+    getProfileResume,
+    saveAttachment,
+  } = useContext(CreativesContext);
+
+  const {
+    state: { isLoading },
+    applyJob,
+  } = useContext(JobsContext);
 
   const handleJob = async (job_id) => {
     console.log("job_id parent", job_id);
@@ -29,12 +51,12 @@ const JobList = ({ data, user, showAgency = true }) => {
     console.log("data", data);
   };
 
-  const {
-    state: { role },
-  } = useContext(AuthContext);
-  const { showAlert } = useContext(AlertContext);
-
-  const isCreative = role == "creative";
+  const handleApplyExternalJob = async (job) => {
+    await getResume(user.uuid);
+    await getProfileResume(user.uuid);
+    const response = await applyJob(user.uuid, job?.id, "Interested", resume?.length ? resume[0].id : -1);
+    handleJob(job?.id);
+  };
 
   useEffect(() => {
     console.log({ data });
@@ -165,30 +187,41 @@ const JobList = ({ data, user, showAgency = true }) => {
                     </a> */}
 
                     {item.logged_in_user?.user_has_applied ? (
-                      <Link className="btn btn-apply active">Applied</Link>
-                    ) : (
                       <Link
-                        to={
-                          item.apply_type.toLowerCase() == "external"
-                            ? item.external_link
-                            : ""
-                        }
-                        target="_blank"
-                        className="btn btn-apply btn-apply-job-external "
-                        onClick={(e) => {
-                          if (!isCreative) {
-                            showAlert("Login as a creative to apply to this job");
-                            e.preventDefault();
-                          } else if (item.apply_type.toLowerCase() == "internal") {
-                            e.preventDefault();
-                            setJob(item.id);
-                            setOpen(true);
-                          }
-                        }}
+                        to={item.apply_type.toLowerCase() == "external" ? rectify_url(item.external_link) : ""}
+                        target={item.apply_type.toLowerCase() == "external" ? "_blank" : ""}
+                        className="btn btn-apply active"
                       >
-                        Apply Now
-                        <i className="next flaticon-right-arrow"></i>
+                        Applied
                       </Link>
+                    ) : (
+                      <>
+                        {isLoading && (<CircularProgress />)}
+                        <Link
+                          to={
+                            item.apply_type.toLowerCase() == "external"
+                              ? item.external_link
+                              : ""
+                          }
+                          target={item.apply_type.toLowerCase() == "external" ? "_blank" : ""}
+                          className="btn btn-apply btn-apply-job-external "
+                          onClick={(e) => {
+                            if (!isCreative) {
+                              showAlert("Login as a creative to apply to this job");
+                              e.preventDefault();
+                            } else if (item.apply_type.toLowerCase() == "internal") {
+                              e.preventDefault();
+                              setJob(item.id);
+                              setOpen(true);
+                            } else if (item.apply_type.toLowerCase() == "external") {
+                              handleApplyExternalJob(item);
+                            }
+                          }}
+                        >
+                          Apply Now
+                          <i className="next flaticon-right-arrow"></i>
+                        </Link>
+                      </>
                     )}
                   </div>
                 </div>
