@@ -62,7 +62,7 @@ const Agencies = () => {
                     {(role == "admin" || role == "creative") && (
                       <Tooltip title={"Shortlist"} type="featured">
                         <button className={"shortlist-btn" + (isShortlisted ? " active" : "")} onClick={() => (isShortlisted ? removeBookmark(isShortlisted.id) : addToShortlist(item.id))}>
-                          <IoBookmarkOutline />
+                          <IoBookmarkOutline size={24} />
                         </button>
                       </Tooltip>
                     )}
