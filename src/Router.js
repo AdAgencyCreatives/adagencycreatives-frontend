@@ -236,11 +236,6 @@ export const router = createBrowserRouter([
         element: <Terms />,
       },
       {
-        path: "/logout",
-        element: <Logout />,
-      },
-
-      {
         path: "/:page",
         element: <UserDashboard />,
       },
