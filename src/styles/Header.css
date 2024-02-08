@@ -459,6 +459,18 @@ textarea.form-control:focus {
     align-items: center;
 }
 
+.contact-form {
+    width: 50%;
+    margin: 3em auto;
+}
+
+@media (max-width: 1023px) {
+    .contact-form {
+        margin: 3em 0px;
+        width: 100% !important;
+    }
+}
+
 @media (min-width: 767px) {
     .page-film-festival .film-festival-step.step-1 .favicon {
         position: absolute;

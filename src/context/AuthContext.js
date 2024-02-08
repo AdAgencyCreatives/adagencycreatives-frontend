@@ -45,7 +45,7 @@ const authReducer = (state, action) => {
     case "reset_form_message":
       return { ...state, formMessage: null };
     case "set_fetching_token":
-      return { ...state, fetchingToken: action.payload };
+      return { ...state, fetchingToken: action.payload};
     case "set_is_loading":
       return { ...state, isLoading: action.payload };
     case "set_form_submit":
@@ -339,6 +339,7 @@ const verifyToken = (dispatch) => async (token) => {
         },
       }
     );
+    console.log("Logged in on backend");
     setIsLoading(dispatch, false);
     setToken(dispatch)(response.data.token, response.data.user.role);
     setUserData(dispatch, response.data.user);
