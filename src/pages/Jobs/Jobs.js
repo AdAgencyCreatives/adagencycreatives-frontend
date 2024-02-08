@@ -50,13 +50,17 @@ const Jobs = () => {
 
   const { showAlert } = useContext(AlertContext);
 
+  const getLocationFilter = (field, params) => {
+    return params[field]?.toLowerCase()?.replace(/ /g, "-");
+  };
+
   useEffect(() => {
     if (Object.keys(params).length) {
       for (var field in params) {
         const filter = {
           [field]: {
             label: params[field].replace(/-/g, " "),
-            value: params[field],
+            value: field.indexOf("slug") >= 0 ? getLocationFilter(field, params) : params[field],
           },
         };
         setFilters(filter);

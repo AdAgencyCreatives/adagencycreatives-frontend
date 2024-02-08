@@ -115,7 +115,12 @@ export const router = createBrowserRouter([
       },
 
       {
-        path: "/job-location/:city_slug",
+        path: "/job-location-state/:state_slug",
+        element: <Jobs />,
+      },
+
+      {
+        path: "/job-location-city/:city_slug",
         element: <Jobs />,
       },
 

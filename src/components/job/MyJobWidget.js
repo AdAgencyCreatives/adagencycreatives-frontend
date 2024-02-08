@@ -83,14 +83,14 @@ const MyJobWidget = (props) => {
                                 <>
                                     <IoLocationOutline />
                                     <Link
-                                        to={`/job-location/${job.location.state}`}
+                                        to={`/job-location-state/${job.location.state}`}
                                     >
                                         {job.location.state},&nbsp;
                                     </Link>
                                 </>
                             )}
                             {job.location?.city && (
-                                <Link to={`/job-location/${job.location.city}`}>
+                                <Link to={`/job-location-city/${job.location.city}`}>
                                     {job.location.city}
                                 </Link>
                             )}

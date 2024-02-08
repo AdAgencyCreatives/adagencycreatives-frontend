@@ -29,13 +29,13 @@ const Sidebar = ({ data }) => {
             <div className="value">
               <Link
                 className="text-dark"
-                to={`/job-location/${data.location.state}`}
+                to={`/job-location-state/${data.location.state}`}
               >
                 {data.location.state},&nbsp;
               </Link>
               <Link
                 className="text-dark"
-                to={`/job-location/${data.location.city}`}
+                to={`/job-location-city/${data.location.city}`}
               >
                 {data.location.city}
               </Link>

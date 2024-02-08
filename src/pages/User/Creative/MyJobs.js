@@ -37,11 +37,11 @@ const MyJobs = () => {
                     <div className="job-metas">
                       <div className="job-location">
                         <IoLocationOutline />
-                        <a href="https://adagencycreatives.com/job-location/little-rock/">
+                        <a href="https://adagencycreatives.com/job-location-state/little-rock/">
                           Little Rock
                         </a>
                         ,
-                        <a href="https://adagencycreatives.com/job-location/arkansas/">
+                        <a href="https://adagencycreatives.com/job-location-city/arkansas/">
                           Arkansas
                         </a>
                       </div>

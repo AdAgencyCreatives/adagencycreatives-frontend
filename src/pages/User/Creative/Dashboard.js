@@ -171,8 +171,8 @@ const Dashboard = () => {
                                         {job?.location && (
                                           <div className="job-location location">
                                             <IoLocationOutline />
-                                            <Link to={`/job-location/${job?.location.state}`}>{job?.location.state}</Link>
-                                            <Link to={`/job-location/${job?.location.city}`}>, {job?.location.city}</Link>
+                                            <Link to={`/job-location-state/${job?.location.state}`}>{job?.location.state}</Link>
+                                            <Link to={`/job-location-city/${job?.location.city}`}>, {job?.location.city}</Link>
                                           </div>
                                         )}
                                       </div>

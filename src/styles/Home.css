@@ -583,6 +583,7 @@ a.employer-logo img {
     font-weight: 400;
     margin-bottom: 0px;
     margin-top: 10px;
+    flex-grow: 1;
 }
 
 /* Mentor Section */

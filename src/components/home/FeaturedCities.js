@@ -38,7 +38,7 @@ const FeaturedCities = () => {
             return (
               <div className="col-12 col-md-4">
                 <div className={`job-city-banner`}>
-                  <Link to={`/job-location/${item.slug}`}>
+                  <Link to={`/job-location-city/${item.slug}`}>
                     <div className="city-banner-inner">
                       <div
                         className="bg-banner"
@@ -66,7 +66,7 @@ const FeaturedCities = () => {
                 return (
                   <div className="col-12 col-md-6">
                     <div className={`job-city-banner job-banner-small`}>
-                      <Link to={`/job-location/${item.slug}`}>
+                      <Link to={`/job-location-city/${item.slug}`}>
                         <div className="city-banner-inner">
                           <div
                             className="bg-banner"

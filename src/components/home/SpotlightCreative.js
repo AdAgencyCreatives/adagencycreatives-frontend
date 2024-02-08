@@ -1,4 +1,4 @@
-import Spotlight from "../../assets/images/Creative-Spotlight-No-Background-600x600.png";
+import Spotlight from "../../assets/images/creative-spotlight.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoChevronForwardOutline } from "react-icons/io5";
 import { useContext, useEffect } from "react";

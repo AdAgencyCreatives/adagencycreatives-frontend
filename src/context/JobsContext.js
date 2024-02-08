@@ -567,6 +567,8 @@ const getFilters = (filters) => {
   filter += "&filter[state_id]=" + (filters.state ? filters.state.value : "");
   filter += "&filter[city_id]=" + (filters.city ? filters.city.value : "");
   filter +=
+    "&filter[state_slug]=" + (filters.state_slug ? filters.state_slug.value : "");
+    filter +=
     "&filter[city_slug]=" + (filters.city_slug ? filters.city_slug.value : "");
   filter +=
     "&filter[category_slug]=" +

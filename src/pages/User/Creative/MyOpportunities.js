@@ -110,12 +110,12 @@ const MyOpportunities = () => {
                                     <div className="job-location location">
                                       <IoLocationOutline />
                                       <Link
-                                        to={`/job-location/${job.location.state}`}
+                                        to={`/job-location-state/${job.location.state}`}
                                       >
                                         {job.location.state},
                                       </Link>
                                       <Link
-                                        to={`/job-location/${job.location.city}`}
+                                        to={`/job-location-city/${job.location.city}`}
                                       >
                                         {job.location.city}
                                       </Link>

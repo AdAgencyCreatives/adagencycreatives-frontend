@@ -44,6 +44,14 @@ const AdAgencies = () => {
     swiperElRef.current.initialize();
   });
 
+  const handleMouseEnter = () => {
+    swiperElRef?.current?.swiper?.autoplay?.stop()
+  };
+
+  const handleMouseLeave = () => {
+    swiperElRef?.current?.swiper?.autoplay?.start()
+  };
+
   return (
     <div id="agencies">
       <div className="sectionHeader">
@@ -55,6 +63,7 @@ const AdAgencies = () => {
         </div>
       </div>
       {/* Slides */}
+      {/* <div className="sectionContent" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}> */}
       <div className="sectionContent">
         <swiper-container
           ref={swiperElRef}
@@ -77,22 +86,26 @@ const AdAgencies = () => {
                         onError={(e) => {
                           e.target.src = Placeholder;
                         }}
+                        alt=""
                       />
                     </Link>
                     <h3 className="employer-title">
-                      <Link to={`/agency/${item.slug}`}>{item.name}</Link>
+                      {item?.name?.length ? (
+                        <Link to={`/agency/${item.slug}`}>{item.name}</Link>
+                      ) : (<>&nbsp;</>)}
                     </h3>
                     {item.location.state && item.location.state !== '' ? (
                       <div className="job-location location">
                         <IoLocationOutline />
                         {item.location.state && (
-                          <Link to={`/creatives/search/state/${item.location.state}`}>
+                          <Link to={`/job-location-state/${item.location.state}`}>
                             {item.location.state}
                           </Link>
                         )}
+                        <span>,&nbsp;</span>
                         {item.location.city && (
-                          <Link to={`/creatives/search/city/${item.location.city}`}>
-                            ,&nbsp;{item.location.city}
+                          <Link to={`/job-location-city/${item.location.city}`}>
+                            {item.location.city}
                           </Link>
                         )}
                       </div>
