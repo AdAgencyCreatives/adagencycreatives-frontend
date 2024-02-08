@@ -12,6 +12,8 @@ const state = {
   applications: null,
   formSubmit: false,
   applied_jobs: [],
+  applied_jobsNextPage: null,
+  applied_jobsNextPage: {},
   resume: [],
   profile_resume: null,
   portfolio_items: [],
@@ -56,7 +58,12 @@ const reducer = (state, action) => {
     case "set_portfolio_items":
       return { ...state, portfolio_items: action.payload.data };
     case "set_applied_jobs":
-      return { ...state, applied_jobs: action.payload.data };
+      return {
+        ...state,
+        applied_jobs: action.payload.data,
+        applied_jobsNextPage: action.payload.links.next,
+        applied_jobsMeta: action.payload.meta
+      };
     case "set_applications":
       return { ...state, applications: action.payload.data };
     case "set_notifications":
@@ -404,15 +411,15 @@ const getNotifications = (dispatch) => {
 };
 
 const getAppliedJobs = (dispatch) => {
-  return async () => {
+  return async (page = false) => {
     setLoading(dispatch, true);
     try {
-      const response = await api.get("/applied_jobs");
+      const response = await api.get("/applied_jobs" + (page ? "?page=" + page : ""));
       dispatch({
         type: "set_applied_jobs",
         payload: response.data,
       });
-    } catch (error) { 
+    } catch (error) {
       console.log(error);
     }
     setLoading(dispatch, false);

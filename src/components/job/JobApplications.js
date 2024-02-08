@@ -121,7 +121,7 @@ const JobApplications = (props) => {
                                             <TfiNotepad />
                                         </button>
                                     </Tooltip>
-                                    {(!props?.isJobDeleted && (!props?.job?.advisor_id || user?.role == 'advisor') && props?.job?.apply_type.toLowerCase() != "external") && (<>
+                                    {((!props?.isJobDeleted && !props?.isJobExpired) && (!props?.job?.advisor_id || user?.role == 'advisor') && props?.job?.apply_type.toLowerCase() != "external") && (<>
                                         {application.status == "pending" ? (
                                             <>
                                                 {user?.role == 'advisor' && (
@@ -198,7 +198,7 @@ const JobApplications = (props) => {
                                             <TfiDownload className="icon-rounded" />
                                         </Link>
                                     </Tooltip>
-                                    {(!props?.isJobDeleted && (!props?.job?.advisor_id || user?.role == 'advisor') && props?.job?.apply_type.toLowerCase() != "external") && (<>
+                                    {((!props?.isJobDeleted && !props?.isJobExpired) && (!props?.job?.advisor_id || user?.role == 'advisor') && props?.job?.apply_type.toLowerCase() != "external") && (<>
                                         <Tooltip
                                             title="Remove From Job"
                                             // onClick={() => deleteApplication(application.id)}

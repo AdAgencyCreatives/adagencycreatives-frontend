@@ -19,13 +19,14 @@ import { Context as AuthContext } from "../../../context/AuthContext";
 import Loader from "../../../components/Loader";
 import { TfiNotepad } from "react-icons/tfi";
 import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
+import Paginate from "../../../components/Paginate";
 
 const MyOpportunities = () => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const [appId, setAppId] = useState("");
   const {
-    state: { applied_jobs, loading },
+    state: { applied_jobs, applied_jobsNextPage, applied_jobsMeta, loading },
     getAppliedJobs,
     deleteApplication
   } = useContext(CreativesContext);
@@ -38,6 +39,10 @@ const MyOpportunities = () => {
   useEffect(() => {
     if (token) getAppliedJobs();
   }, [token]);
+
+  const paginate = (page) => {
+    getAppliedJobs(page);
+  };
 
   return (
     <div className="agency-page-myjobs">
@@ -177,6 +182,7 @@ const MyOpportunities = () => {
               </tbody>
             </table>
           </div>
+          {/* {applied_jobsMeta.total > 10 && <Paginate meta={applied_jobsMeta} paginate={paginate} />} */}
         </div>
       )}
     </div>
