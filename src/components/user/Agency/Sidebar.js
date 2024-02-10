@@ -183,13 +183,7 @@ const Sidebar = ({ data, user }) => {
                       >
                         {data.location.state}
                       </Link>
-                      {data.location &&
-                        data.location.state &&
-                        data.location.city ? (
-                        <>,&nbsp;</>
-                      ) : (
-                        <></>
-                      )}
+                      {(data?.location?.state?.length && data?.location?.city?.length) && (<span>,&nbsp;</span>)}
                       <Link
                         to={`/agency-location/${data.location.city}`}
                         className="mt-0 fw-normal"

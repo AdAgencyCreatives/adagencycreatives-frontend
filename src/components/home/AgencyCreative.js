@@ -9,7 +9,7 @@ import useCreatives from "../../hooks/useCreatives";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 
-const AgencyCreatives = () => {
+const AgencyCreatives = ({ validateAccess }) => {
   const swiperElRef = useRef(null);
   const { creatives } = useCreatives("home");
   const { showAlert } = useContext(AlertContext);
@@ -88,15 +88,34 @@ const AgencyCreatives = () => {
                     <div className="position">{item.title}</div>
                     {item.location.state && item.location.state != '' && (
                       <div className="job-location location">
-                        <IoLocationOutline />
-                        {item.location.state && (
-                          <Link to={`/creatives/search/state/${item.location.state}`}>
+                        {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
+                        {item?.location?.state?.length && (
+                          <Link
+                            to={`/creatives/search/state/${item.location.state}`}
+                            onClick={(e) => {
+                              if (!token) {
+                                e.preventDefault();
+                                showAlert("Please login to access");
+                              }
+                              return false;
+                            }}
+                          >
                             {item.location.state}
                           </Link>
                         )}
-                        {item.location.city && (
-                          <Link to={`/creatives/search/city/${item.location.city}`}>
-                            ,&nbsp;{item.location.city}
+                        {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
+                        {item?.location?.city?.length && (
+                          <Link
+                            to={`/creatives/search/city/${item.location.city}`}
+                            onClick={(e) => {
+                              if (!token) {
+                                e.preventDefault();
+                                showAlert("Please login to access");
+                              }
+                              return false;
+                            }}
+                          >
+                            {item.location.city}
                           </Link>
                         )}
                       </div>

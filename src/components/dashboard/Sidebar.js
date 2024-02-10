@@ -56,11 +56,12 @@ const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
               <>
                 <div className="employer-location">
                   <div className="value">&nbsp;
-                    {user.location.state && (
+                    {user?.location?.state?.length && (
                       <>
                         <Link to={`/creatives/search/state/${user.location.state}`}>
-                          {user.location.state},&nbsp;
+                          {user.location.state}
                         </Link>
+                        {(user?.location?.state?.length && user?.location?.city?.length) && (<span>,&nbsp;</span>)}
                         <Link to={`/creatives/search/city/${user.location.city}`}>
                           {user.location.city}
                         </Link>

@@ -84,9 +84,9 @@ const Agencies = () => {
                     </h3>
                     {item.location && (
                       <div className="job-location location">
-                        {item.location && (item.location.state || item.location.city) ? <IoLocationOutline /> : <></>}
+                        {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
                         <Link to={`/agency-location/${item.location.state}`}>{item.location.state}</Link>
-                        {item.location && item.location.state && item.location.city ? <span>,&nbsp;</span> : <></>}
+                        {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
                         <Link to={`/agency-location/${item.location.city}`}>{item.location.city}</Link>
                       </div>
                     )}

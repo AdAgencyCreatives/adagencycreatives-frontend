@@ -122,11 +122,12 @@ const JobList = ({ data, showAgency = true }) => {
                       )}
                       {item.location.state && (
                         <div className="job-location location">
-                          <IoLocationOutline />
-                          <Link to={`/job-location-state/${item.location.state}`} reloadDocument>
-                            {item.location.state},&nbsp;
+                          {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
+                          <Link to={`/job-location-state/${item.location.state}`}>
+                            {item.location.state}
                           </Link>
-                          <Link to={`/job-location-city/${item.location.city}`} reloadDocument>
+                          {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
+                          <Link to={`/job-location-city/${item.location.city}`}>
                             {item.location.city}
                           </Link>
                         </div>

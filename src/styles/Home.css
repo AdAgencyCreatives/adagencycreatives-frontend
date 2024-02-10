@@ -826,11 +826,11 @@ img.publication-image {
 
 .contact-section {
     background: black;
-    background-image: url('../assets/images/feather-contributor-bkgd.png');
+    background-image: url('../assets/images/feather.png');
     color: white;
-    background-position: 100% 55px;
+    background-position: 100% -55px;
     background-repeat: no-repeat;
-    background-size: 40% auto;
+    background-size: 50% auto;
     padding: 100px;
 }
 

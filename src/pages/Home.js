@@ -169,7 +169,7 @@ const Home = () => {
         </div >
 
         <div className="creative-section">
-          <AgencyCreatives />
+          <AgencyCreatives validateAccess={validateAccess} />
 
           {/* Spotlighting Creatives Section */}
           <SpotlightCreative />

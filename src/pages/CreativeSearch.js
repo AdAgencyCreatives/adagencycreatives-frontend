@@ -136,7 +136,7 @@ const CreativeSearch = () => {
         if (user && field && search) {
             searchCreativesFull(field, encodeSpecial(search));
         }
-    }, [user]);
+    }, [user, field, search]);
 
     useEffect(() => {
         if ((!role || !role.length) || !advance_search_capabilities) {
@@ -176,8 +176,15 @@ const CreativeSearch = () => {
         <div className="dark-container">
             <div className="container p-md-0 px-5">
                 <h1 className="community-title text-white text-center mb-4">
-                    Advance Creatives Search
+                    {/* Advance Creatives Search */}
+                    {search} Creatives
                 </h1>
+                {/* {token && (
+                    <SearchBar
+                        placeholder={creativeSearchPlaceholder}
+                        onSearch={searchUser}
+                    />
+                )} */}
                 <div className="row g-4">
                     {creatives &&
                         creatives.map((item, index) => {
@@ -230,10 +237,11 @@ const CreativeSearch = () => {
                                         </div>
                                         {item.location.state && (
                                             <div className="job-location location">
-                                                <IoLocationOutline />
+                                                {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
                                                 <Link to={`/creatives/search/state/${item.location.state}`}>
-                                                    {item.location.state},&nbsp;
+                                                    {item.location.state}
                                                 </Link>
+                                                {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
                                                 <Link to={`/creatives/search/city/${item.location.city}`}>
                                                     {item.location.city}
                                                 </Link>

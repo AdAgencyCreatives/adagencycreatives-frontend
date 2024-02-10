@@ -271,6 +271,7 @@ const Creatives = () => {
                           reloadDocument>
                           {item.location.state}
                         </Link>
+                        {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
                         {item.location.city && item.location.city != '' && (
                           <Link
                             to={token ? `/creatives/search/city/${item.location.city}` : "#"}
@@ -282,7 +283,7 @@ const Creatives = () => {
                               return false;
                             }}
                             reloadDocument>
-                            <span>,&nbsp;</span>{item.location.city}
+                            {item.location.city}
                           </Link>
                         )}
                       </div>

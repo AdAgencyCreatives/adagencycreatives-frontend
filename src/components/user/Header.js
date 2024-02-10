@@ -46,11 +46,7 @@ const Header = ({ username }) => {
                 <></>
               )}
               <span className="restrict-location-search">{creative.location && creative.location.state ? creative.location.state : ""}</span>
-              {creative.location && creative.location.state && creative.location.city ? (
-                <span>,&nbsp;</span>
-              ) : (
-                <></>
-              )}
+              {(creative?.location?.state?.length && creative?.location?.city?.length) && (<span>,&nbsp;</span>)}
               <span className="restrict-location-search">{creative.location && creative.location.city ? creative.location.city : ""}</span>
             </div>
           )}

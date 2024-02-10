@@ -76,12 +76,13 @@ const AgencyShortlist = () => {
                         <div className="user-meta">
                           {resource?.location.state && (
                             <div className="job-location location">
-                              <IoLocationOutline />
+                              {(resource?.location?.state?.length || resource?.location?.city?.length) && (<IoLocationOutline />)}
                               <Link
                                 to={`/agency-location/${resource?.location.state}`}
                               >
-                                {resource?.location.state},&nbsp;
+                                {resource?.location.state}
                               </Link>
+                              {(resource?.location?.state?.length && resource?.location?.city?.length) && (<span>,&nbsp;</span>)}
                               <Link
                                 to={`/agency-location/${resource?.location.city}`}
                               >

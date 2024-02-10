@@ -31,8 +31,9 @@ const Sidebar = ({ data }) => {
                 className="text-dark"
                 to={`/job-location-state/${data.location.state}`}
               >
-                {data.location.state},&nbsp;
+                {data.location.state}
               </Link>
+              {(data?.location?.state?.length && data?.location?.city?.length) && (<span>,&nbsp;</span>)}
               <Link
                 className="text-dark"
                 to={`/job-location-city/${data.location.city}`}

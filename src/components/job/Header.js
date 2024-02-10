@@ -92,13 +92,14 @@ const Header = ({ data }) => {
                 </div>
                 {data.location && (
                   <div className="job-location meta-item">
-                    <IoLocationOutline />
+                    {(data?.location?.state?.length || data?.location?.city?.length) && (<IoLocationOutline />)}
                     <Link
                       className="text-black"
                       to={`/job-location-state/${data.location.state}`}
                     >
-                      {data.location.state},&nbsp;
+                      {data.location.state}
                     </Link>
+                    {(data?.location?.state?.length && data?.location?.city?.length) && (<span>,&nbsp;</span>)}
                     <Link
                       className="text-black"
                       to={`/job-location-city/${data.location.city}`}

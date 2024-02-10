@@ -77,12 +77,13 @@ const RelatedCreatives = ({ data }) => {
                         <div className="d-flex flex-wrap">
                           {item.location.state && (
                             <div className="job-location location">
-                              <IoLocationOutline />
+                              {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
                               <Link
                                 to={`/creatives/search/state/${item.location.state}`}
                               >
-                                {item.location.state},&nbsp;
+                                {item.location.state}
                               </Link>
+                              {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
                               <Link
                                 to={`/creatives/search/city/${item.location.city}`}
                               >

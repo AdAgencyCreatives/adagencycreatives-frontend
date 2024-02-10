@@ -60,19 +60,11 @@ const CommunityMemberWidget = (props) => {
                             <div className="position">{props.creative.title}</div>
                             {props.creative.location && (
                                 <div className="job-location location">
-                                    {props.creative.location && (props.creative.location.state || props.creative.location.city) ? (
-                                        <IoLocationOutline />
-                                    ) : (
-                                        <></>
-                                    )}
+                                    {(props?.creative?.location?.state?.length || props?.creative?.location?.city?.length) && (<IoLocationOutline />)}
                                     <Link to={`/creatives/search/state/${props.creative.location.state}`}>
                                         {props.creative.location.state}
                                     </Link>
-                                    {props.creative.location && props.creative.location.state && props.creative.location.city ? (
-                                        <span>,&nbsp;</span>
-                                    ) : (
-                                        <></>
-                                    )}
+                                    {(props?.creative?.location?.state?.length && props?.creative?.location?.city?.length) && (<span>,&nbsp;</span>)}
                                     <Link to={`/creatives/search/city/${props.creative.location.city}`}>
                                         {props.creative.location.city}
                                     </Link>

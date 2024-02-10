@@ -79,16 +79,13 @@ const MyJobWidget = (props) => {
                     </div>
                     <div className="job-metas">
                         <div className="job-location location">
+                            {(job?.location?.state?.length || job?.location?.city?.length) && (<IoLocationOutline />)}
                             {job.location?.state && (
-                                <>
-                                    <IoLocationOutline />
-                                    <Link
-                                        to={`/job-location-state/${job.location.state}`}
-                                    >
-                                        {job.location.state},&nbsp;
-                                    </Link>
-                                </>
+                                <Link to={`/job-location-state/${job.location.state}`}>
+                                    {job.location.state}
+                                </Link>
                             )}
+                            {(job?.location?.state?.length && job?.location?.city?.length) && (<span>,&nbsp;</span>)}
                             {job.location?.city && (
                                 <Link to={`/job-location-city/${job.location.city}`}>
                                     {job.location.city}
