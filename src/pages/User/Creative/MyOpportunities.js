@@ -141,8 +141,8 @@ const MyOpportunities = () => {
                         </td>
 
                         <td className="job-table-status nowrap">
-                          <div className="job-table-actions-inner pending_payment">
-                            {item.status}
+                          <div className="job-table-actions-inner" style={{ textTransform: 'capitalize' }}>
+                            {job?.apply_type.toLowerCase() != "external" ? item.status : "Interested"}
                           </div>
                         </td>
 

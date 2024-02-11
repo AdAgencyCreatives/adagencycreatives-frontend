@@ -189,13 +189,21 @@ const JobList = ({ data, showAgency = true }) => {
                     </a> */}
 
                     {item.logged_in_user?.user_has_applied ? (
-                      <Link
-                        to={item.apply_type.toLowerCase() == "external" ? rectify_url(item.external_link) : ""}
-                        target={item.apply_type.toLowerCase() == "external" ? "_blank" : ""}
-                        className="btn btn-apply active"
-                      >
-                        Applied
-                      </Link>
+                      <Tooltip title={item.apply_type.toLowerCase() == "external" ? "Click To Open Again" : "Already Applied"}>
+                        {item.apply_type.toLowerCase() == "external" ? (
+                          <Link
+                            to={item.apply_type.toLowerCase() == "external" ? rectify_url(item.external_link) : ""}
+                            target={item.apply_type.toLowerCase() == "external" ? "_blank" : ""}
+                            className={"btn btn-apply active external"}
+                          >
+                            Interested
+                          </Link>
+                        ) : (
+                          <div className={"btn btn-apply active internal"}>
+                            Applied
+                          </div>
+                        )}
+                      </Tooltip>
                     ) : (
                       <>
                         {isLoading && (<CircularProgress />)}

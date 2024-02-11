@@ -842,3 +842,21 @@ nav ul.dropdown-list .list-item-text.j-fix {
     margin: 0;
 }
 
+.btn.btn-apply.active.internal {
+    cursor: default;
+}
+
+.btn.btn-apply.active.internal:focus,
+.btn.btn-apply.active.internal:active {
+    border: 2px solid #d3a11f;
+}
+
+.btn.btn-apply.active.external {
+    cursor: pointer;
+    background-color: lightgreen;
+}
+
+.btn.btn-apply.active.external:hover {
+    background-color: #d3a11f;
+}
+

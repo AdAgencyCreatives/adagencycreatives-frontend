@@ -176,13 +176,21 @@ const Header = ({ data }) => {
             <div className="col-md-4">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0">
                 {isJobApplied ? (
-                  <Link
-                    to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}
-                    target={data.apply_type.toLowerCase() == "external" ? "_blank" : ""}
-                    className="btn btn-apply active"
-                  >
-                    Applied
-                  </Link>
+                  <Tooltip title={data.apply_type.toLowerCase() == "external" ? "Click To Open Again" : "Already Applied"}>
+                    {data.apply_type.toLowerCase() == "external" ? (
+                      <Link
+                        to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}
+                        target={data.apply_type.toLowerCase() == "external" ? "_blank" : ""}
+                        className={"btn btn-apply active external"}
+                      >
+                        Interested
+                      </Link>
+                    ) : (
+                      <div className={"btn btn-apply active internal"}>
+                        Applied
+                      </div>
+                    )}
+                  </Tooltip>
                 ) : (
                   <>
                     {role == "creative" && (

@@ -20,7 +20,7 @@ const JobContent = ({ user, data, item, setAuthModalOpen }) => {
   const [isJobApplied, setIsJobApplied] = useState(false);
 
   useEffect(() => {
-    setIsJobApplied(item?.applications?.find(application=>application?.user_id == user?.uuid) ? true : false);
+    setIsJobApplied(item?.applications?.find(application => application?.user_id == user?.uuid) ? true : false);
   }, [item]);
 
   const { rectify_url } = useHelper();
@@ -62,145 +62,153 @@ const JobContent = ({ user, data, item, setAuthModalOpen }) => {
   return (
     <>
       <ApplyJob open={open} setOpen={setOpen} handleClose={handleClose} job_id={job} handleJob={handleJob} />
-            <div className="job-item" key={item.id}>
-              <div className="d-flex align-items-center flex-md-nowrap flex-wrap gap-md-0 gap-3">
-                <div className="inner-left">
-                  <div className="employer-logo">
-                    <Link to={"/job/" + item.slug}>
-                      <img
-                        width="150"
-                        height="150"
-                        src={item.agency.logo}
-                        className=""
-                        alt=""
-                      />
-                    </Link>
-                  </div>
-                  <div className="meta row w-100 align-items-center">
-                    <div className="job-list-content col-md-8">
-                      <div className="title-wrapper flex-middle-sm">
-                        <h2 className="job-title">
-                          <Link to={"/job/" + item.slug}>{item.title}</Link>
-                        </h2>
-                      </div>
-                      <div className="job-metas">
-                        <div className="d-flex flex-wrap">
-                          {item.category && (
-                            <div className="category-job">
-                              <div className="job-category with-icon">
-                                <IoBriefcaseOutline />
-                                <Link
-                                  to={
-                                    "/job-category/" +
-                                    item.category
-                                      .toLowerCase()
-                                      .replace(" ", "-")
-                                  }
-                                >
-                                  {item.category}
-                                </Link>
-                              </div>
-                            </div>
-                          )}
-                          <div className="job-deadline with-icon">
-                            <i className="flaticon-wall-clock"></i>
-                            {moment(item.expired_at).format("MMMM D, YYYY")}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="job-type with-title">
-                            <Link
-                              className="type-job"
-                              to={"/job-type/" + item.employment_type}
-                            >
-                              {item.employment_type}
-                            </Link>
-                          </div>
-                          {Object.keys(item.priority).map((key) => {
-                            if (item.priority[key]) {
-                              let parts = key.split("_");
-                              let type = parts[1];
-                              return (
-                                <Tooltip title={type} type={type}>
-                                  <button className="btn p-0 border-0 me-2">
-                                    <IoStar
-                                      size={20}
-                                      className={
-                                        "icon-rounded star-badge " + type
-                                      }
-                                    />
-                                  </button>
-                                </Tooltip>
-                              );
-                            }
-                          })}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="col-md-4">
-                      <div className="d-flex justify-content-md-end mt-3 mt-md-0">
-                        <a className="btn-follow btn-action-job btn-add-job-shortlist">
-                          <i className="flaticon-bookmark"></i>
-                        </a>
-                        {user && data ? (
-                          !isOwnProfile && (
-                            <>
-                              {isJobApplied ? (
-                                <Link
-                                  to={item.apply_type.toLowerCase() == "external" ? rectify_url(item.external_link) : "javascript:void(0);"}
-                                  target={item.apply_type.toLowerCase() == "external" ? "_blank" : ""}
-                                  className="btn btn-apply active"
-                                >
-                                  Applied
-                                </Link>
-                              ) : (
-                                <>
-                                  {role == "creative" && (
-                                    <>
-                                      {isLoading && (<CircularProgress />)}
-                                      <Link
-                                        to={item.apply_type.toLowerCase() == "external" ? rectify_url(item.external_link) : ""}
-                                        target={item.apply_type.toLowerCase() == "external" ? "_blank" : ""}
-                                        className="btn btn-apply btn-apply-job-external "
-                                        onClick={(e) => {
-                                          if (!isCreative) {
-                                            showAlert("Login as a creative to apply to this job");
-                                            e.preventDefault();
-                                          } else if (item.apply_type.toLowerCase() == "internal") {
-                                            e.preventDefault();
-                                            setJob(item.id);
-                                            setOpen(true);
-                                          } else if (item.apply_type.toLowerCase() == "external") {
-                                            handleApplyExternalJob(item);
-                                          }
-                                        }}
-                                        disabled={isLoading ? "disabled" : ""}
-                                      >
-                                        Apply Now
-                                        <i className="next flaticon-right-arrow"></i>
-
-                                      </Link>
-                                    </>
-                                  )}
-                                </>
-                              )}
-                            </>
-                          )
-                        ) : (
+      <div className="job-item" key={item.id}>
+        <div className="d-flex align-items-center flex-md-nowrap flex-wrap gap-md-0 gap-3">
+          <div className="inner-left">
+            <div className="employer-logo">
+              <Link to={"/job/" + item.slug}>
+                <img
+                  width="150"
+                  height="150"
+                  src={item.agency.logo}
+                  className=""
+                  alt=""
+                />
+              </Link>
+            </div>
+            <div className="meta row w-100 align-items-center">
+              <div className="job-list-content col-md-8">
+                <div className="title-wrapper flex-middle-sm">
+                  <h2 className="job-title">
+                    <Link to={"/job/" + item.slug}>{item.title}</Link>
+                  </h2>
+                </div>
+                <div className="job-metas">
+                  <div className="d-flex flex-wrap">
+                    {item.category && (
+                      <div className="category-job">
+                        <div className="job-category with-icon">
+                          <IoBriefcaseOutline />
                           <Link
-                            onClick={() => setAuthModalOpen(true)}
-                            className="btn btn-apply btn-apply-job-external">
-                            Apply Now
-                            <i className="next flaticon-right-arrow"></i>
+                            to={
+                              "/job-category/" +
+                              item.category
+                                .toLowerCase()
+                                .replace(" ", "-")
+                            }
+                          >
+                            {item.category}
                           </Link>
-                        )}
+                        </div>
                       </div>
+                    )}
+                    <div className="job-deadline with-icon">
+                      <i className="flaticon-wall-clock"></i>
+                      {moment(item.expired_at).format("MMMM D, YYYY")}
                     </div>
+                  </div>
+                  <div>
+                    <div className="job-type with-title">
+                      <Link
+                        className="type-job"
+                        to={"/job-type/" + item.employment_type}
+                      >
+                        {item.employment_type}
+                      </Link>
+                    </div>
+                    {Object.keys(item.priority).map((key) => {
+                      if (item.priority[key]) {
+                        let parts = key.split("_");
+                        let type = parts[1];
+                        return (
+                          <Tooltip title={type} type={type}>
+                            <button className="btn p-0 border-0 me-2">
+                              <IoStar
+                                size={20}
+                                className={
+                                  "icon-rounded star-badge " + type
+                                }
+                              />
+                            </button>
+                          </Tooltip>
+                        );
+                      }
+                    })}
                   </div>
                 </div>
               </div>
+
+              <div className="col-md-4">
+                <div className="d-flex justify-content-md-end mt-3 mt-md-0">
+                  <a className="btn-follow btn-action-job btn-add-job-shortlist">
+                    <i className="flaticon-bookmark"></i>
+                  </a>
+                  {user && data ? (
+                    !isOwnProfile && (
+                      <>
+                        {isJobApplied ? (
+                          <Tooltip title={item.apply_type.toLowerCase() == "external" ? "Click To Open Again" : "Already Applied"}>
+                            {item.apply_type.toLowerCase() == "external" ? (
+                              <Link
+                                to={item.apply_type.toLowerCase() == "external" ? rectify_url(item.external_link) : ""}
+                                target={item.apply_type.toLowerCase() == "external" ? "_blank" : ""}
+                                className={"btn btn-apply active external"}
+                              >
+                                Interested
+                              </Link>
+                            ) : (
+                              <div className={"btn btn-apply active internal"}>
+                                Applied
+                              </div>
+                            )}
+                          </Tooltip>
+                        ) : (
+                          <>
+                            {role == "creative" && (
+                              <>
+                                {isLoading && (<CircularProgress />)}
+                                <Link
+                                  to={item.apply_type.toLowerCase() == "external" ? rectify_url(item.external_link) : ""}
+                                  target={item.apply_type.toLowerCase() == "external" ? "_blank" : ""}
+                                  className="btn btn-apply btn-apply-job-external "
+                                  onClick={(e) => {
+                                    if (!isCreative) {
+                                      showAlert("Login as a creative to apply to this job");
+                                      e.preventDefault();
+                                    } else if (item.apply_type.toLowerCase() == "internal") {
+                                      e.preventDefault();
+                                      setJob(item.id);
+                                      setOpen(true);
+                                    } else if (item.apply_type.toLowerCase() == "external") {
+                                      handleApplyExternalJob(item);
+                                    }
+                                  }}
+                                  disabled={isLoading ? "disabled" : ""}
+                                >
+                                  Apply Now
+                                  <i className="next flaticon-right-arrow"></i>
+
+                                </Link>
+                              </>
+                            )}
+                          </>
+                        )}
+                      </>
+                    )
+                  ) : (
+                    <Link
+                      onClick={() => setAuthModalOpen(true)}
+                      className="btn btn-apply btn-apply-job-external">
+                      Apply Now
+                      <i className="next flaticon-right-arrow"></i>
+                    </Link>
+                  )}
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
 
     </>
   );
