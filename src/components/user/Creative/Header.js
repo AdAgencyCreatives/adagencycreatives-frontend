@@ -102,7 +102,7 @@ const Header = ({ data, role, user }) => {
                 <div className="job-location location">
                   <IoLocationOutline />
                   {isAdmin || isAdvisor ? (<>
-                    <Link to={"/creatives/search/state/" + encodeSpecial(encodeURI(data.location.state))}>
+                    <Link to={"/creatives/location/state/" + encodeSpecial(encodeURI(data.location.state))}>
                       {data.location.state}
                     </Link>
                   </>) : (<>

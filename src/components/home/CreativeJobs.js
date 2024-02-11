@@ -145,7 +145,7 @@ const CreativeJobs = () => {
                     {item.location && (
                       <div className="job-location location">
                         {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
-                        <Link to={`/creatives/search/state/${item.location.state}`}>
+                        <Link to={`/creatives/location/state/${item.location.state}`}>
                           {item.location.state}
                         </Link>
                         {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}

@@ -51,11 +51,11 @@ const Header = ({ data, role, user }) => {
               {data.location.state && (
                 <div className="job-location location">
                   <IoLocationOutline />
-                  <Link to={`/agency-location/${data.location.state}`}>
+                  <Link to={`/agencies/location/state/${data.location.state}`}>
                     {data.location.state}
                   </Link>
                   {(data?.location?.state?.length && data?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                  <Link to={`/agency-location/${data.location.city}`}>
+                  <Link to={`/agencies/location/city/${data.location.city}`}>
                     {data.location.city}
                   </Link>
                 </div>

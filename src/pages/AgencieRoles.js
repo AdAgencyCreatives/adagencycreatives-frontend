@@ -97,9 +97,9 @@ const AgencieRoles = () => {
                           {item.location && (
                             <div className="job-location location">
                               {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
-                              <Link to={`/agency-location/${item.location.state}`}>{item.location.state}</Link>
+                              <Link to={`/agencies/location/state/${item.location.state}`}>{item.location.state}</Link>
                               {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                              <Link to={`/agency-location/${item.location.city}`}>{item.location.city}</Link>
+                              <Link to={`/agencies/location/city/${item.location.city}`}>{item.location.city}</Link>
                             </div>
                           )}
                           <div className="open-jobs-btn">

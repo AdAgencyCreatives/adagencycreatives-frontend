@@ -78,13 +78,13 @@ const AgencyShortlist = () => {
                             <div className="job-location location">
                               {(resource?.location?.state?.length || resource?.location?.city?.length) && (<IoLocationOutline />)}
                               <Link
-                                to={`/agency-location/${resource?.location.state}`}
+                                to={`/agencies/location/state/${resource?.location.state}`}
                               >
                                 {resource?.location.state}
                               </Link>
                               {(resource?.location?.state?.length && resource?.location?.city?.length) && (<span>,&nbsp;</span>)}
                               <Link
-                                to={`/agency-location/${resource?.location.city}`}
+                                to={`/agencies/location/city/${resource?.location.city}`}
                               >
                                 {resource?.location.city}
                               </Link>

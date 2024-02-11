@@ -260,7 +260,7 @@ const Creatives = () => {
                       <div className="job-location location">
                         <IoLocationOutline />
                         <Link
-                          to={token ? `/creatives/search/state/${item.location.state}` : "#"}
+                          to={token ? `/creatives/location/state/${item.location.state}` : "#"}
                           onClick={(e) => {
                             if (!token) {
                               e.preventDefault();

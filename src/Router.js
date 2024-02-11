@@ -3,6 +3,7 @@ import App from "./App";
 import Home from "./pages/Home";
 import Creatives from "./pages/Creatives";
 import CreativeSearch from "./pages/CreativeSearch";
+import AgencySearch from "./pages/AgencySearch";
 import Agencies from "./pages/Agencies";
 import AgencieRoles from "./pages/AgencieRoles";
 import SpotlightCreatives from "./pages/SpotlightCreatives";
@@ -55,8 +56,14 @@ export const router = createBrowserRouter([
       },
 
       {
-        path: "/creatives/search/:field/:search",
+        path: "/creatives/location/:field/:search",
         element: <CreativeSearch />,
+      },
+
+      {
+        path: "/agencies/location/:field/:search",
+        element: <AgencySearch />,
+
       },
 
       {

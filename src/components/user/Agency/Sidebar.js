@@ -178,14 +178,14 @@ const Sidebar = ({ data, user }) => {
                   {data.location && (
                     <div className="job-location location">
                       <Link
-                        to={`/agency-location/${data.location.state}`}
+                        to={`/agencies/location/state/${data.location.state}`}
                         className="mt-0 fw-normal"
                       >
                         {data.location.state}
                       </Link>
                       {(data?.location?.state?.length && data?.location?.city?.length) && (<span>,&nbsp;</span>)}
                       <Link
-                        to={`/agency-location/${data.location.city}`}
+                        to={`/agencies/location/city/${data.location.city}`}
                         className="mt-0 fw-normal"
                       >
                         {data.location.city}
