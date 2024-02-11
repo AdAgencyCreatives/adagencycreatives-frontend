@@ -257,6 +257,19 @@ const searchAgencies = (dispatch) => {
   };
 };
 
+const agencySearch1 = (dispatch) => {
+  return async (search) => {
+    try {
+      const response = await api.get("/agencies/search1/?search=" + search);
+      dispatch({
+        type: "set_agencies",
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log(error);
+     }
+  };
+};
 
 const agencySearch2 = (dispatch) => {
   return async (field, search) => {
@@ -346,6 +359,7 @@ export const { Context, Provider } = createDataContext(
     getAgencyById,
     saveAgency,
     searchAgencies,
+    agencySearch1,
     agencySearch2,
     getOpenPositions,
     uploadAttachment,

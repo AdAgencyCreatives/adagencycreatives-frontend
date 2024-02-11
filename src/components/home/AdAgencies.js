@@ -98,13 +98,13 @@ const AdAgencies = () => {
                       <div className="job-location location">
                         {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
                         {item?.location?.state?.length && (
-                          <Link to={`/job-location-state/${item.location.state}`}>
+                          <Link to={`/agencies/location/state/${item.location.state}`}>
                             {item.location.state}
                           </Link>
                         )}
                         {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
                         {item?.location?.city?.length && (
-                          <Link to={`/job-location-city/${item.location.city}`}>
+                          <Link to={`/agencies/location/city/${item.location.city}`}>
                             {item.location.city}
                           </Link>
                         )}

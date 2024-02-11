@@ -13,7 +13,7 @@ import AuthModal from "../components/modals/AuthModal";
 import DelayedOutput from "../components/DelayedOutput";
 
 const Agencies = () => {
-  const { agencies, loading, loadMore, loadedAll, searchAgencies } = useAgencies();
+  const { agencies, loading, loadMore, loadedAll, searchAgencies, agencySearch1 } = useAgencies();
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const handleOpen = () => setAuthModalOpen(true);
@@ -50,7 +50,7 @@ const Agencies = () => {
 
   const searchUser = (value) => {
     console.log("searching");
-    searchAgencies(value);
+    agencySearch1(value);
   };
 
   useEffect(() => {

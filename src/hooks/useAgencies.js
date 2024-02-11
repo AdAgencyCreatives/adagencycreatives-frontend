@@ -8,6 +8,7 @@ const useAgencies = (page, role) => {
     getAgencies,
     loadAgencies,
     searchAgencies,
+    agencySearch1,
     agencySearch2,
     getAgencieRoles,
   } = useContext(AgenciesContext);
@@ -31,7 +32,7 @@ const useAgencies = (page, role) => {
     else setLoadedAll(true)
   };
 
-  return { agencies, loading, loadMore, loadedAll, searchAgencies, agencySearch2 };
+  return { agencies, loading, loadMore, loadedAll, searchAgencies, agencySearch1, agencySearch2 };
 };
 
 export default useAgencies;
