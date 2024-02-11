@@ -3,7 +3,7 @@ import { IoBookmarkOutline, IoLocationOutline } from "react-icons/io5";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
 import useAgencies from "../hooks/useAgencies";
-import { Context as AgenciesContext } from "../context/AgenciesContext";
+import { Context as AlertContext } from "../context/AlertContext";
 import { Context as AuthContext } from "../context/AuthContext";
 import { Context as DataContext } from "../context/DataContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
@@ -27,13 +27,25 @@ const Agencies = () => {
   } = useContext(DataContext);
 
   const {
+    showAlert,
+  } = useContext(AlertContext);
+
+  const {
     state: { role, user, token },
   } = useContext(AuthContext);
 
   useScrollLoader(loading, loadMore);
 
   const addToShortlist = (id) => {
-    createBookmark(user.uuid, "agencies", id);
+    createBookmark(user.uuid, "agencies", id, () => {
+      showAlert("Agency added to shortlist");
+    });
+  };
+
+  const removeFromShortlist = (id) => {
+    removeBookmark(id, () => {
+      showAlert("Agency removed from shortlist");
+    });
   };
 
   const searchUser = (value) => {
@@ -60,8 +72,8 @@ const Agencies = () => {
                 <div className="col-md-4 col-sm-6 col-12" key={`ag-${index}`}>
                   <div className="sliderContent adagencies-slider">
                     {(role == "admin" || role == "creative") && (
-                      <Tooltip title={"Shortlist"} type="featured">
-                        <button className={"shortlist-btn" + (isShortlisted ? " active" : "")} onClick={() => (isShortlisted ? removeBookmark(isShortlisted.id) : addToShortlist(item.id))}>
+                      <Tooltip title={isShortlisted ? "Remove from Shortlist" : "Add to Shortlist"} type="featured">
+                        <button className={"shortlist-btn" + (isShortlisted ? " active" : "")} onClick={() => (isShortlisted ? removeFromShortlist(isShortlisted.id) : addToShortlist(item.id))}>
                           <IoBookmarkOutline />
                         </button>
                       </Tooltip>
@@ -123,7 +135,7 @@ const Agencies = () => {
           <p>There is no result.</p>
         </div>
       ) : (
-       <span></span>
+        <span></span>
       )}
     </div>
   );

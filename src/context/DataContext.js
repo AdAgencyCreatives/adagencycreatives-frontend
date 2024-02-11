@@ -4,7 +4,7 @@ import createDataContext from "./createDataContext";
 const state = {
   agencies: [],
   categories: [],
-  categories_creative_count:[],
+  categories_creative_count: [],
   states: [],
   cities: [],
   employment_type: [],
@@ -29,9 +29,9 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "set_agencies":
       return { ...state, agencies: action.payload.data };
-      case "set_categories":
+    case "set_categories":
       return { ...state, categories: action.payload.data };
-      case "set_categories_creative_count":
+    case "set_categories_creative_count":
       return { ...state, categories_creative_count: action.payload.data };
     case "set_states":
       return { ...state, states: action.payload.data };
@@ -81,7 +81,7 @@ const reducer = (state, action) => {
         bookmarks: state.bookmarks.filter((item) => item.id != action.payload),
       };
     case "set_mentors":
-      return { 
+      return {
         ...state,
         mentors: action.payload.data,
         mentorsNextPage: action.payload.links.next
@@ -89,19 +89,19 @@ const reducer = (state, action) => {
     case "load_mentors":
       return {
         ...state,
-        mentors: [ ...state.mentors, ...action.payload.data ],
+        mentors: [...state.mentors, ...action.payload.data],
         mentorsNextPage: action.payload.links.next
       };
     case "set_resources":
-      return { 
-        ...state, 
+      return {
+        ...state,
         resources: action.payload.data,
         resourcesNextPage: action.payload.links.next
       };
     case "load_resources":
-      return { 
-        ...state, 
-        resources: [ ...state.resources, ...action.payload.data ],
+      return {
+        ...state,
+        resources: [...state.resources, ...action.payload.data],
         resourcesNextPage: action.payload.links.next
       };
     case "set_publications":
@@ -113,7 +113,7 @@ const reducer = (state, action) => {
     case "load_publications":
       return {
         ...state,
-        publications: [ ...state.publications, ...action.payload.data ],
+        publications: [...state.publications, ...action.payload.data],
         publicationsNextPage: action.payload.links.next,
       };
     case "set_loading":
@@ -131,7 +131,7 @@ const getAssignedAgencies = (dispatch) => {
         type: "set_agencies",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -143,7 +143,7 @@ const getCategories = (dispatch) => {
         type: "set_categories",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -156,7 +156,7 @@ const getCategoriesCreativeCount = (dispatch) => {
         type: "set_categories_creative_count",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -168,7 +168,7 @@ const getStates = (dispatch) => {
         type: "set_states",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -182,7 +182,7 @@ const getCities = (dispatch) => {
         type: "set_cities",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -194,7 +194,7 @@ const getFeaturedCities = (dispatch) => {
         type: "set_featured_cities",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -206,7 +206,7 @@ const getEmploymentTypes = (dispatch) => {
         type: "set_employment_type",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -218,7 +218,7 @@ const getYearsExperience = (dispatch) => {
         type: "set_years_experience",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -230,7 +230,7 @@ const getMediaExperiences = (dispatch) => {
         type: "set_media_experiences",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -242,7 +242,7 @@ const getStrengths = (dispatch) => {
         type: "set_strengths",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -254,7 +254,7 @@ const getResumeEmploymentTypes = (dispatch) => {
         type: "set_employment_type",
         payload: response.data.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -266,19 +266,19 @@ const getIndustryExperiences = (dispatch) => {
         type: "set_industry_experiences",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
 const getBookmarks = (dispatch) => {
-  return async (uuid,type) => {
+  return async (uuid, type) => {
     try {
       const response = await api.get("/bookmarks?filter[user_id]=" + uuid + "&resource_type=" + type);
       dispatch({
         type: "set_bookmarks",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -296,7 +296,7 @@ const checkShortlist = (dispatch) => {
 };
 
 const createBookmark = (dispatch) => {
-  return async (user_id, resource_type, resource_id) => {
+  return async (user_id, resource_type, resource_id, cb = false) => {
     try {
       const response = await api.post("/bookmarks", {
         user_id,
@@ -307,6 +307,7 @@ const createBookmark = (dispatch) => {
         type: "add_bookmark",
         payload: response.data,
       });
+      cb && cb();
       return response.data;
     } catch (error) {
       return false;
@@ -315,14 +316,15 @@ const createBookmark = (dispatch) => {
 };
 
 const removeBookmark = (dispatch) => {
-  return async (id) => {
+  return async (id, cb=false) => {
     try {
       const response = await api.delete("/bookmarks/" + id);
       dispatch({
         type: "remove_bookmark",
         payload: id,
       });
-    } catch (error) {}
+      cb && cb();
+    } catch (error) { }
   };
 };
 
@@ -341,7 +343,7 @@ const getReviews = (dispatch) => {
         type: "set_reviews_meta",
         payload: response?.data ?? {},
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -353,7 +355,7 @@ const postReview = (dispatch) => {
         type: "add_review",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -393,7 +395,7 @@ const getMentorTopics = (dispatch) => {
         type: "set_mentors",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -405,7 +407,7 @@ const getMentorResources = (dispatch) => {
         type: "set_resources",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -422,20 +424,20 @@ const getNextPageMentorResources = (dispatch) => {
         type: "load_resources",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
 
 const getPublications = (dispatch) => {
-  return async (perPage=100) => {
+  return async (perPage = 100) => {
     try {
       const response = await api.get(`/publication-resources?per_page=${perPage}`);
       dispatch({
         type: "set_publications",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
