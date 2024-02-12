@@ -57,12 +57,12 @@ const ApplicantJobs = () => {
 
   const switchTab = (id, tab) => {
     let jobIndex = applications.findIndex((job) => job.id == id);
-    const updatedJob = { ...applications[jobIndex] };
+    let updatedJob = { ...applications[jobIndex] };
     updatedJob.applications = updatedJob.applications.filter((application) => {
       if (tab == "pending") return true;
       return application.status == tab;
     });
-    const updatedApplications = [...applications];
+    let updatedApplications = [...data];
     updatedApplications[jobIndex] = updatedJob;
     setData(updatedApplications);
     setTab((prev) => ({ ...prev, [id]: tab }));

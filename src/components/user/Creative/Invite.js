@@ -29,6 +29,10 @@ const Invite = ({ open, handleClose, item }) => {
     sendJobInvite,
   } = useContext(AgenciesContext);
 
+  useEffect(() => {
+    console.log(open_positions);
+  }, [open_positions]);
+
 /*   const {
     state: { bookmarks },
     createBookmark,
