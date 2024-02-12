@@ -106,7 +106,7 @@ const AgencyCreatives = ({ validateAccess }) => {
                         {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
                         {item?.location?.city?.length && (
                           <Link
-                            to={`/creatives/search/city/${item.location.city}`}
+                            to={`/creatives/location/city/${item.location.city}`}
                             onClick={(e) => {
                               if (!token) {
                                 e.preventDefault();

@@ -149,7 +149,7 @@ const CreativeJobs = () => {
                           {item.location.state}
                         </Link>
                         {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                        <Link to={`/creatives/search/city/${item.location.city}`}>
+                        <Link to={`/creatives/location/city/${item.location.city}`}>
                           {item.location.city}
                         </Link>
                       </div>

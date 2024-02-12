@@ -274,7 +274,7 @@ const Creatives = () => {
                         {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
                         {item.location.city && item.location.city != '' && (
                           <Link
-                            to={token ? `/creatives/search/city/${item.location.city}` : "#"}
+                            to={token ? `/creatives/location/city/${item.location.city}` : "#"}
                             onClick={(e) => {
                               if (!token) {
                                 e.preventDefault();

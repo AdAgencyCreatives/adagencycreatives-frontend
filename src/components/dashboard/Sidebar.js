@@ -62,7 +62,7 @@ const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
                           {user.location.state}
                         </Link>
                         {(user?.location?.state?.length && user?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                        <Link to={`/creatives/search/city/${user.location.city}`}>
+                        <Link to={`/creatives/location/city/${user.location.city}`}>
                           {user.location.city}
                         </Link>
                       </>

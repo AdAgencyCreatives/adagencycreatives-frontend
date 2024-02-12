@@ -202,7 +202,9 @@ const searchCreativesFull = (dispatch) => {
         type: "set_creatives",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {
+      console.log(error);
+     }
     setLoading(dispatch, false);
   };
 };

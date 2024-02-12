@@ -65,7 +65,7 @@ const CommunityMemberWidget = (props) => {
                                         {props.creative.location.state}
                                     </Link>
                                     {(props?.creative?.location?.state?.length && props?.creative?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                                    <Link to={`/creatives/search/city/${props.creative.location.city}`}>
+                                    <Link to={`/creatives/location/city/${props.creative.location.city}`}>
                                         {props.creative.location.city}
                                     </Link>
                                 </div>

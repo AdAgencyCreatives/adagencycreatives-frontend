@@ -110,7 +110,7 @@ const Header = ({ data, role, user }) => {
                   </>)}
                   {(data?.location?.state?.length && data?.location?.city?.length) && (<span>,&nbsp;</span>)}
                   {isAdmin || isAdvisor ? (<>
-                    <Link to={"/creatives/search/city/" + encodeSpecial(encodeURI(data.location.city))}>
+                    <Link to={"/creatives/location/city/" + encodeSpecial(encodeURI(data.location.city))}>
                       {data.location.city}
                     </Link>
                   </>) : (<>
