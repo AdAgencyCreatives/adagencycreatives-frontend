@@ -143,7 +143,18 @@ const useHelper = () => {
         return result.join('');
     };
 
-    return { rectify_url, decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial, strReplaceAll, isCharNumber, getNumericString, formatPhone };
+    const capitalize = (text) => {
+        if(!text || !text.length) {
+            return text;
+        }
+        if(text.length == 1) {
+            return text.toUpperCase();
+        }
+
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    };
+
+    return { rectify_url, decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial, strReplaceAll, isCharNumber, getNumericString, formatPhone, capitalize };
 }
 
 export default useHelper;
