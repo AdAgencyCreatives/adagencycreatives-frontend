@@ -154,7 +154,22 @@ const useHelper = () => {
         return text.charAt(0).toUpperCase() + text.slice(1);
     };
 
-    return { rectify_url, decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial, strReplaceAll, isCharNumber, getNumericString, formatPhone, capitalize };
+    const getAorAn = (word, capitalized = false) => {
+        if(!word || !word.length) {
+            return capitalized ? capitalize("a") : "a";
+        }
+
+        const vowels = ['a', 'e', 'i', 'o', 'u'];
+        const letter = word.charAt(0).toLowerCase();
+
+        if(vowels.includes(letter)) {
+            return capitalized ? capitalize("an") : "an";
+        }
+
+        return capitalized ? capitalize("a") : "a";
+    };
+
+    return { rectify_url, decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial, strReplaceAll, isCharNumber, getNumericString, formatPhone, capitalize, getAorAn };
 }
 
 export default useHelper;

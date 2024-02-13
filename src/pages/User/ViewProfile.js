@@ -14,12 +14,17 @@ import { Context as CreativesContext } from "../../context/CreativesContext";
 import { Context as AgenciesContext } from "../../context/AgenciesContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import Portfolio from "../../components/user/Creative/Portfolio";
+import NotFound from "../../components/NotFound";
+import { capitalize } from "@mui/material";
 
 const Profile = () => {
   const { username, type, role_name } = useParams();
   const page = type;
 
+  const [roleName, setRoleName] = useState(null);
+
   const [isLoading, setLoading] = useState(true);
+  const [recordError, setRecordError] = useState(null);
 
   const {
     state: { single_creative, creative_education, creative_experience },
@@ -45,21 +50,35 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
+      setRoleName(role_name == "advisor" || role_name == "recruiter" ? role_name : null);    
+  }, [role_name]);
+
+  useEffect(() => {
     if (token) {
-      if (page == "creative") getCreative(username);
+      if (page == "creative") {
+        getCreative(username, (error) => {
+          if (error) {
+            setLoading(false);
+          }
+        });
+      }
     }
 
     if (page == "agency") {
       let roleId = false;
-      if (role_name == 'recruiter') {
+      if (roleName == 'recruiter') {
         roleId = 5;
       }
-      if (role_name == 'advisor') {
+      if (roleName == 'advisor') {
         roleId = 2;
       }
-      getAgency(username, user ? user.username == username : false, roleId);
+      getAgency(username, user ? user.username == username : false, roleId, (error) => {
+        if (error) {
+          setLoading(false);
+        }
+      });
     }
-  }, [page, user, role_name]);
+  }, [page, user, roleName]);
 
   useEffect(() => {
     if (page == "agency" && Object.keys(data).length) {
@@ -86,15 +105,15 @@ const Profile = () => {
   return <>
     {Object.keys(data).length === 0 ? (
       <>
-        {!token && !user ? (
-          <RestrictedUser role={role_name ? role_name : page} />
+        {page == "creative" && !token && !user ? (
+          <RestrictedUser role={roleName ? roleName : page} />
         ) : (
-          <Loader />
+          <NotFound heading={"Not Found"} content={capitalize(roleName ? roleName : page) + " profile with slug [" + username + "] not found."} />
         )}
       </>
     ) : (
       <>
-        {!isOwnProfile && !isAdmin && (role_name == "advisor" || role_name == "recruiter") ? (
+        {!isOwnProfile && !isAdmin && (roleName == "advisor" || roleName == "recruiter") ? (
           <RestrictedUser role={"admin"} />
         ) : (
           <>
