@@ -202,7 +202,7 @@ const Header = ({ data }) => {
                           className="btn btn-apply btn-apply-job-external "
                           onClick={(e) => {
                             if (!isCreative) {
-                              showAlert("Login as a creative to apply to this job");
+                              showAlert("Login as a Creative to apply to this job");
                               e.preventDefault();
                             } else if (data.apply_type.toLowerCase() == "internal") {
                               e.preventDefault();
