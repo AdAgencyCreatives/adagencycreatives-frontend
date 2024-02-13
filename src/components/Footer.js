@@ -25,7 +25,7 @@ const Footer = () => {
             </div>
             <div className="copyrights">
               <div className="d-flex justify-content-center flex-wrap">
-                <p>© 2023 Ad Agency Creatives. All Rights Reserved.</p>
+                <p>© {(new Date()).getFullYear()} Ad Agency Creatives. All Rights Reserved.</p>
                 <Link to="/privacy-policy" reloadDocument>Privacy Policy</Link>
                 <Link to="/terms-and-conditions" reloadDocument>User Agreement</Link>
                 <Link to="/contact">Contact Us</Link>
