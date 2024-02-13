@@ -12,10 +12,12 @@ import ConfirmDeleteModal from "./Modals/ConfirmDeleteModal";
 import EditComment from "./EditComment";
 
 import useHelper from "../../hooks/useHelper";
+import { Link } from "@mui/material";
 
 const Comment = (props) => {
 
     const { injectHyperlinks } = useHelper();
+    const [showMoreClicked, setShowMoreClicked] = useState(false);
 
     const {
         state: { user },
@@ -82,11 +84,21 @@ const Comment = (props) => {
                         {props.comment.user}
                     </a>
                 </p>
-                <div className="content" dangerouslySetInnerHTML={{ __html: processCommentContent(props.comment.content) }} />
+                <div 
+                    className={`content ${!showMoreClicked && props.comment.content?.length > 500 ? " comment-preview" : ""}`} 
+                    dangerouslySetInnerHTML={{ __html: processCommentContent(props.comment.content) }} 
+                />
                 {/* <div className="reply-section">
                     <IoArrowRedoSharp />
                     Reply Comment
                 </div> */}
+                {props.comment.content?.length > 200 && (
+                    <div className="show-more-container">
+                        <Link className="show-more" onClick={(e) => {
+                            setShowMoreClicked(value => !value);
+                        }}>... Show {showMoreClicked ? "Less" : "More"}</Link>
+                    </div>
+                )}
             </div>
         </div>
     );
