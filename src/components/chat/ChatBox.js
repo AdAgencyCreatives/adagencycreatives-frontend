@@ -2,7 +2,7 @@ import ContentEditable from "react-contenteditable";
 import Loader from "../Loader";
 import { IoArrowBack, IoClose, IoCloseCircleSharp, IoCloseOutline, IoPencil } from "react-icons/io5";
 import Avatar from "../../assets/images/placeholder.png";
-import UploadPlaceholder from "../../assets/images/Mischief-1.png";
+import FileIcon from "../../assets/images/FileIcon.png";
 import { useEffect, useState, useRef, useContext } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as ChatContext } from "../../context/ChatContext";
@@ -146,12 +146,16 @@ const ChatBox = ({
 
   const handleFileChange = async (event, resource) => {
     const file = event.target.files[0];
+
+    let isImage = file.type.indexOf("image") >= 0;
+    let isVideo = file.type.indexOf("video") >= 0;
+
     if (file) {
       const src = URL.createObjectURL(file);
       const formData = new FormData();
       formData.append("file", file);
       formData.append("user_id", user.uuid);
-      formData.append("resource_type", "message");
+      formData.append("resource_type", "message_" + (isVideo ? "video" : (isImage ? "image" : "file")));
       await uploadAttachment(formData, src);
     }
   };
@@ -180,11 +184,16 @@ const ChatBox = ({
 
     // Split the message by '<br/>'
     const lines = message.split("<br/>");
+    let imageTypes = ['JPG', 'PNG', 'GIF', 'WEBP', 'TIFF', 'RAW', 'BMP', 'HEIF', 'INDD', 'JPEG', 'SVG', 'AI', 'EPS'];
+    let videoTypes = ['WEBM', 'MPG', 'MP2', 'MPEG', 'MPE', 'MPV', 'OGG', 'MP4', 'M4P', 'M4V', 'AVI', 'WMV', 'MOV', 'QT', 'FLV', 'SWF', 'AVCHD'];
 
     lines.forEach((line) => {
       if (line.includes("s3.amazonaws.com")) {
         // Check if the line contains a link
-        result.attachments.push(line.trim()); // Trim to remove any extra spaces
+        let url = line?.trim();
+        let ext = url?.slice(url?.lastIndexOf(".") + 1)?.toUpperCase();
+        let att = { 'url': url, 'resource_type': "message_" + (imageTypes.includes(ext) ? "image" : (videoTypes.includes(ext) ? "video" : "file")) };
+        result.attachments.push(att); // Trim to remove any extra spaces
       } else {
         // If it's not a link, consider it as text
         result.message +=
@@ -436,11 +445,26 @@ const ChatBox = ({
                         ></div>
                         <div className="message_attachments">
                           {attachments.length > 0 &&
-                            attachments.map((item, index) => (
-                              <a href={item} target="_blank" key={index}>
-                                <img src={item} />
-                              </a>
-                            ))}
+                            attachments.map((attachment, index) => (<>
+                              {attachment.resource_type && attachment.resource_type == "message_video" ? (
+                                <div className="video-container">
+                                  <video className="video" controls muted playsInline>
+                                    <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
+                                    Sorry, your browser doesn't support videos.
+                                  </video>
+                                </div>
+                              ) : (<>
+                                {attachment.resource_type && attachment.resource_type == "message_image" ? (
+                                  <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                                    <img className="post-image" src={attachment.url || ""} alt="" />
+                                  </a>
+                                ) : (
+                                  <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                                    <img className="post-image" src={FileIcon} alt="" />
+                                  </a>
+                                )}
+                              </>)}
+                            </>))}
                         </div>
                       </div>
                     </div>

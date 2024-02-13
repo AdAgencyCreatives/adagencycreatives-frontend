@@ -162,21 +162,6 @@ const Applicants = () => {
                                     <TfiCheck className="icon-rounded" />
                                   </button>
                                 </Tooltip>
-
-                                <Tooltip
-                                  title="Not Aligned"
-                                  onClick={() =>
-                                    setApplicationStatus(
-                                      item.id,
-                                      application.id,
-                                      "rejected"
-                                    )
-                                  }
-                                >
-                                  <button className="btn p-0 border-0 btn-hover-primary">
-                                    <TfiLoop className="icon-rounded" />
-                                  </button>
-                                </Tooltip>
                               </>
                             ) : (
                               <Tooltip
@@ -209,7 +194,7 @@ const Applicants = () => {
 
                             {application?.status == "pending" && (
                               <Tooltip
-                                title="Remove From Job"
+                                title="Not Aligned"
                                 /* onClick={() =>
                                   deleteApplication(application.id)
                                 } */
