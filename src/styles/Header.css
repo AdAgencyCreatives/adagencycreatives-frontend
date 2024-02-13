@@ -861,12 +861,3 @@ nav ul.dropdown-list .list-item-text.j-fix {
     background-color: #d3a11f;
     /* color: #000; */
 }
-
-.job-location.location a {
-    font-weight: 400;
-    color: #d3a11f !important;
-}
-
-.job-location.location a:hover {
-    color: #000 !important;
-}
