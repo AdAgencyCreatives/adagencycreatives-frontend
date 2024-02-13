@@ -1,5 +1,9 @@
+import useHelper from "../hooks/useHelper";
+
 const RestrictedUser = ({ role }) => {
 
+    const { capitalize, getAorAn } = useHelper();
+    
     return (
         <div className="dark-container page-community mb-0 mt-4">
             <h1 className="community-title">Restricted Access</h1>

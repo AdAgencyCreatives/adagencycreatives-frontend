@@ -1,19 +1,18 @@
-const RestrictedLounge = () => {
+import useHelper from "../hooks/useHelper";
 
+const PageNotFound = ({ role }) => {
+
+    const { capitalize } = useHelper();
+    
     return (
         <div className="dark-container page-community mb-0 mt-4">
-            <h1 className="community-title">The Lounge</h1>
-            <h2 className="community-subtitle">
-                Creatives only. Ask for help. Share. Chat.
-                Inspire. Tell jokes.
-            </h2>
+            <h1 className="community-title">Page Not Found</h1>
             <div className="container-fluid mt-4">
                 <div className="row">
                     <div className="col-md-12 mb-4 mb-md-0">
                         <div className="restricted-creatives-only">
                             <div className="restricted-message">
-                                <h4>The Lounge is restricted for creatives only.</h4>
-                                <h5>Please login as a Creative to access The Lounge.</h5>
+                                <h5>It seems that, either the URL is broken or the page has been moved to the new URL.</h5>
                             </div>
                         </div>
                     </div>
@@ -23,4 +22,4 @@ const RestrictedLounge = () => {
     );
 };
 
-export default RestrictedLounge;
+export default PageNotFound;

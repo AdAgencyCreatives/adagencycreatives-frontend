@@ -88,7 +88,7 @@ const getAgencieRoles = (dispatch) => {
 };
 
 const getAgency = (dispatch) => {
-  return async (slug, self = false, role = false) => {
+  return async (slug, self = false, role = false, cb = false) => {
     try {
       const response = await api.get("/agencies?filter[status]=1&filter[slug]=" + slug + (self ? "" : "&filter[is_visible]=1") + (role ? "&filter[role]=" + role : ""));
       const data = response.data.data[0];
@@ -98,7 +98,10 @@ const getAgency = (dispatch) => {
         type: "set_single_agency",
         payload: data,
       });
-    } catch (error) { }
+      cb && cb();
+    } catch (error) {
+      cb && cb(error);
+    }
   };
 };
 
@@ -222,7 +225,7 @@ const removeAttachment = (dispatch) => {
 };
 
 const removeJobAttachment = (dispatch) => {
-  return async (job_id, attachment_id, cb=false) => {
+  return async (job_id, attachment_id, cb = false) => {
     try {
       const response = await api.post("/delete_job_logo", {
         job_id: job_id,
@@ -267,7 +270,7 @@ const agencySearch1 = (dispatch) => {
       });
     } catch (error) {
       console.log(error);
-     }
+    }
   };
 };
 
@@ -281,7 +284,7 @@ const agencySearch2 = (dispatch) => {
       });
     } catch (error) {
       console.log(error);
-     }
+    }
   };
 };
 

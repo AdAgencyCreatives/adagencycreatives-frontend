@@ -120,7 +120,7 @@ const getRelatedCreatives = (dispatch) => {
 };
 
 const getCreative = (dispatch) => {
-  return async (slug) => {
+  return async (slug, cb = false) => {
     try {
       const response = await api.get("/creatives?filter[status]=1&filter[slug]=" + slug);
       const data = response.data.data[0];
@@ -134,8 +134,9 @@ const getCreative = (dispatch) => {
         type: "set_single_creative",
         payload: data,
       });
+      cb && cb();
     } catch (error) {
-      console.log(error);
+      cb && cb(error);
     }
   };
 };
@@ -204,7 +205,7 @@ const searchCreativesFull = (dispatch) => {
       });
     } catch (error) {
       console.log(error);
-     }
+    }
     setLoading(dispatch, false);
   };
 };

@@ -21,7 +21,7 @@ import Messages from "./pages/Messages";
 import Notifications from "./pages/Notifications";
 import Activities from "./pages/Activities";
 import About from "./pages/About";
-import ViewProfile from "./pages/User/ViewProfile";
+import ViewPage from "./pages/User/ViewPage";
 import JobDescription from "./pages/Jobs/JobDescription";
 import UserDashboard from "./pages/User/UserDashboard";
 import Checkout from "./pages/Cart/Checkout";
@@ -182,11 +182,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/:type/:username/:role_name",
-        element: <ViewProfile />,
+        element: <ViewPage />,
       },
       {
         path: "/:type/:username",
-        element: <ViewProfile />,
+        element: <ViewPage />,
       },
       {
         path: "/groups/create",
