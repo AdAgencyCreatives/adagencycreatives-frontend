@@ -6,13 +6,16 @@ import { useRef } from "react";
 import { PaginationStyle } from "../../styles/PaginationStyle";
 import { Link } from "react-router-dom";
 import useCreatives from "../../hooks/useCreatives";
+import useHelper from "../../hooks/useHelper";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import CreativeLocation from "../../components/CreativeLocation";
 
+
 const AgencyCreatives = ({ validateAccess }) => {
   const swiperElRef = useRef(null);
   const { creatives } = useCreatives("home");
+  const { encodeSpecial, decodeSpecial } = useHelper();
   const { showAlert } = useContext(AlertContext);
   const {
     state: { token, role, },
@@ -86,7 +89,15 @@ const AgencyCreatives = ({ validateAccess }) => {
                       }}
                     />
                     <div className="agencyName">{item.name}</div>
-                    <div className="position">{item.title}</div>
+                    <div className="position">
+                      {isAdmin || isAdvisor ? (<>
+                        <Link to={"/creatives/search/industry-title/" + encodeSpecial(encodeURI(item.category))}>
+                          {item.category}
+                        </Link>
+                      </>) : (<>
+                        {item.category}
+                      </>)}
+                    </div>
                     <CreativeLocation location={item?.location} />
                     <div className="profileLink">
                       <Link
