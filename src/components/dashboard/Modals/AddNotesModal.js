@@ -3,6 +3,7 @@ import "../../../styles/Modal/AddNotesModal.scss";
 import { useContext, useEffect, useState } from "react";
 import { Context as JobsContext } from "../../../context/JobsContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
+import { Context as AlertContext } from "../../../context/AlertContext";
 import { usePopupScrollLoader } from "../../../hooks/usePopupScrollLoader";
 import moment from "moment";
 import { CircularProgress, Link, Tooltip } from "@mui/material";
@@ -29,14 +30,20 @@ const AddNotesModal = ({ resource_id, type, open, handleClose, statusJob }) => {
     state: { user },
   } = useContext(AuthContext);
 
+  const {
+    showAlert,
+  } = useContext(AlertContext);
+
   const submitNote = async () => {
     if (selectedNote?.id) {
       await updateNote(selectedNote.id, {
         body: note,
       }, () => {
-        setMessage("Note successfully updated")
+        // setMessage("Note successfully updated")
         setNote('');
         setSelectedNote(null);
+        showAlert('Note successfully updated');
+        handleClose();
       });
     } else {
       await addNote({
@@ -44,9 +51,11 @@ const AddNotesModal = ({ resource_id, type, open, handleClose, statusJob }) => {
         resource_id,
         body: note,
       }, () => {
-        setMessage('Note successfully saved')
+        // setMessage('Note successfully saved')
+        // getNotes(user.uuid, resource_id, type);
         setNote('');
-        getNotes(user.uuid, resource_id, type);
+        showAlert('Note successfully saved');
+        handleClose();
       });
     }
   };
@@ -67,9 +76,11 @@ const AddNotesModal = ({ resource_id, type, open, handleClose, statusJob }) => {
       return;
     }
     await deleteNote(item.id, () => {
-      setMessage('Note successfully deleted')
+      // setMessage('Note successfully deleted');
+      // getNotes(user.uuid, resource_id, type);
       setNote('');
-      getNotes(user.uuid, resource_id, type)
+      showAlert('Note successfully deleted');
+      handleClose();
     });
   };
 

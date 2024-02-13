@@ -13,6 +13,7 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
   const [resumeId, setResumeId] = useState(false);
   const [resumeList, setResumeList] = useState([]);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isUploading, setUploading] = useState(false);
   const resumeRef = useRef();
 
   const {
@@ -77,6 +78,7 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
     const file = event.target.files[0];
     const filename = file.name;
     if (file) {
+      setUploading(true);
       const formData = new FormData();
       formData.append("file", file);
       formData.append("user_id", user.uuid);
@@ -87,6 +89,7 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
         setResumeList(() => [{ id: data.id, name: filename }]);
         showAlert("Resume uploaded successfully");
       }
+      setUploading(false);
     }
   };
 
@@ -158,7 +161,6 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
                     ref={resumeRef}
                     onChange={(e) => handleFileChange(e)}
                   />
-
                   <div
                     className="label-can-drag"
                     onClick={() => resumeRef.current.click()}
@@ -169,7 +171,16 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
                         data-text="Upload CV (txt, doc, docx, pdf)"
                       >
                         <span className="text">
-                          Upload Resume (txt, doc, docs, pdf)
+                          {isUploading ? (
+                            <>
+                              Uploding...
+                              <div className="spinner-border spinner-border-sm ms-2" style={{ fontSize: '12px' }} role="status">
+                                <span className="visually-hidden">Loading...</span>
+                              </div>
+                            </>
+                          ) : (
+                            <>Upload Resume (txt, doc, docs, pdf)</>
+                          )}
                         </span>
                       </div>
                     </div>
