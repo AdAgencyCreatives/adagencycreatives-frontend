@@ -11,6 +11,8 @@ import Tooltip from "../components/Tooltip";
 import ImageLoader from "../components/ImageLoader";
 import { Context as AlertContext } from "../context/AlertContext";
 import DelayedOutput from "../components/DelayedOutput";
+import Location from "../components/CreativeLocation";
+import CreativeLocation from "../components/CreativeLocation";
 
 const Creatives = () => {
 
@@ -251,43 +253,20 @@ const Creatives = () => {
                           }
                           return false;
                         }}
-                        reloadDocument>
+                      >
                         {item.name}
                       </Link>
                     </div>
-                    <div className="position">{item.category || ""}</div>
-                    {item.location.state && item.location.state != '' && (
-                      <div className="job-location location">
-                        <IoLocationOutline />
-                        <Link
-                          to={token ? `/creatives/location/state/${item.location.state}` : "#"}
-                          onClick={(e) => {
-                            if (!token) {
-                              e.preventDefault();
-                              showAlert("Please login to access");
-                            }
-                            return false;
-                          }}
-                          reloadDocument>
-                          {item.location.state}
+                    <div className="position">
+                      {isAdmin || isAdvisor ? (<>
+                        <Link className="" to={`/creatives/search/industry-title/${item.category}`}>
+                          {item.category || ""}
                         </Link>
-                        {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
-                        {item.location.city && item.location.city != '' && (
-                          <Link
-                            to={token ? `/creatives/location/city/${item.location.city}` : "#"}
-                            onClick={(e) => {
-                              if (!token) {
-                                e.preventDefault();
-                                showAlert("Please login to access");
-                              }
-                              return false;
-                            }}
-                            reloadDocument>
-                            {item.location.city}
-                          </Link>
-                        )}
-                      </div>
-                    )}
+                      </>) : (<>
+                        {item.category || ""}
+                      </>)}
+                    </div>
+                    <CreativeLocation location={item?.location} />
                     <div className="profileLink">
                       <Link
                         to={token ? `/creative/${item.slug}` : "#"}

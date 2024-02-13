@@ -16,6 +16,7 @@ import Invite from "./Invite";
 import useShortlist from "../../../hooks/useShortlist";
 import { getMyFriends } from "../../../context/FriendsDataContext";
 import useHelper from "../../../hooks/useHelper";
+import CreativeLocation from "../../../components/CreativeLocation";
 
 const Header = ({ data, role, user }) => {
 
@@ -98,26 +99,7 @@ const Header = ({ data, role, user }) => {
                   {data.category}
                 </>)}
               </div>
-              {data.location.state && (
-                <div className="job-location location">
-                  <IoLocationOutline />
-                  {isAdmin || isAdvisor ? (<>
-                    <Link to={"/creatives/location/state/" + encodeSpecial(encodeURI(data.location.state))}>
-                      {data.location.state}
-                    </Link>
-                  </>) : (<>
-                    {data.location.state}
-                  </>)}
-                  {(data?.location?.state?.length && data?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                  {isAdmin || isAdvisor ? (<>
-                    <Link to={"/creatives/location/city/" + encodeSpecial(encodeURI(data.location.city))}>
-                      {data.location.city}
-                    </Link>
-                  </>) : (<>
-                    {data.location.city}
-                  </>)}
-                </div>
-              )}
+              <CreativeLocation location={data?.location} />
             </div>
             <div className="col-md-6">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">

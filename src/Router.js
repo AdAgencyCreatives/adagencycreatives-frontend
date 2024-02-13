@@ -56,6 +56,11 @@ export const router = createBrowserRouter([
       },
 
       {
+        path: "/creatives/search/:field/:search",
+        element: <CreativeSearch />,
+      },
+
+      {
         path: "/creatives/location/:field/:search",
         element: <CreativeSearch />,
       },

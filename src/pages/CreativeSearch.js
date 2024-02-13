@@ -11,6 +11,7 @@ import Tooltip from "../components/Tooltip";
 import { Context as AlertContext } from "../context/AlertContext";
 import { useParams } from "react-router-dom";
 import useHelper from "../hooks/useHelper";
+import CreativeLocation from "../components/CreativeLocation";
 
 const CreativeSearch = () => {
 
@@ -222,31 +223,20 @@ const CreativeSearch = () => {
                                             }}
                                         />
                                         <div className="agencyName">
-                                            <Link className="text-dark" to={`/creative/${item.slug}`} reloadDocument>
+                                            <Link className="text-dark" to={`/creative/${item.slug}`}>
                                                 {item.name}
                                             </Link>
                                         </div>
                                         <div className="position">
                                             {isAdmin || isAdvisor ? (<>
-                                                <Link className="" to={`/creatives/search/industry-title/${item.category}`} reloadDocument>
+                                                <Link className="" to={`/creatives/search/industry-title/${item.category}`}>
                                                     {item.category || ""}
                                                 </Link>
                                             </>) : (<>
                                                 {item.category || ""}
                                             </>)}
                                         </div>
-                                        {item.location.state && (
-                                            <div className="job-location location">
-                                                {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
-                                                <Link to={`/creatives/location/state/${item.location.state}`}>
-                                                    {item.location.state}
-                                                </Link>
-                                                {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                                                <Link to={`/creatives/location/city/${item.location.city}`}>
-                                                    {item.location.city}
-                                                </Link>
-                                            </div>
-                                        )}
+                                        <CreativeLocation location={item?.location} />
                                         <div className="profileLink">
                                             <Link
                                                 to={token ? `/creative/${item.slug}` : "#"}

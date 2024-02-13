@@ -147,7 +147,7 @@ const JobContent = ({ user, data, item, setAuthModalOpen }) => {
                     !isOwnProfile && (
                       <>
                         {isJobApplied ? (
-                          <Tooltip title={item.apply_type.toLowerCase() == "external" ? "Click To Open Again" : "Already Applied"}>
+                          <Tooltip title={item.apply_type.toLowerCase() == "external" ? "" : "Already Applied"}>
                             {item.apply_type.toLowerCase() == "external" ? (
                               <Link
                                 to={item.apply_type.toLowerCase() == "external" ? rectify_url(item.external_link) : ""}
@@ -173,7 +173,7 @@ const JobContent = ({ user, data, item, setAuthModalOpen }) => {
                                   className="btn btn-apply btn-apply-job-external "
                                   onClick={(e) => {
                                     if (!isCreative) {
-                                      showAlert("Login as a Creative to apply to this job");
+                                      showAlert("Login as a Creative to apply");
                                       e.preventDefault();
                                     } else if (item.apply_type.toLowerCase() == "internal") {
                                       e.preventDefault();

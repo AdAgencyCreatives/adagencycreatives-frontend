@@ -4,6 +4,7 @@ import "../../styles/AgencyDashboard/Sidebar.scss";
 import { useContext, useState } from "react";
 import { Box, Drawer } from "@mui/material";
 import { Context as AuthContext } from "../../context/AuthContext";
+import UserLocation from "../UserLocation";
 
 const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
   const {
@@ -52,22 +53,10 @@ const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
             <h3 className="title">
               <Link to={profileLink + user.slug}>{user.name}</Link>
             </h3>
-            {user.location && (
+            {user?.location && (
               <>
                 <div className="employer-location">
-                  <div className="value">&nbsp;
-                    {user?.location?.state?.length && (
-                      <>
-                        <Link to={`/creatives/location/state/${user.location.state}`}>
-                          {user.location.state}
-                        </Link>
-                        {(user?.location?.state?.length && user?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                        <Link to={`/creatives/location/city/${user.location.city}`}>
-                          {user.location.city}
-                        </Link>
-                      </>
-                    )}
-                  </div>
+                  <UserLocation location={user?.location} hideIcon={true} />
                 </div>
                 <div className="view-profile">
                   <Link

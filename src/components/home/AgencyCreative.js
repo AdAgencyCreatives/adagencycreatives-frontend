@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import useCreatives from "../../hooks/useCreatives";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as AuthContext } from "../../context/AuthContext";
+import CreativeLocation from "../../components/CreativeLocation";
 
 const AgencyCreatives = ({ validateAccess }) => {
   const swiperElRef = useRef(null);
@@ -86,40 +87,7 @@ const AgencyCreatives = ({ validateAccess }) => {
                     />
                     <div className="agencyName">{item.name}</div>
                     <div className="position">{item.title}</div>
-                    {item.location.state && item.location.state != '' && (
-                      <div className="job-location location">
-                        {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
-                        {item?.location?.state?.length && (
-                          <Link
-                            to={`/creatives/location/state/${item.location.state}`}
-                            onClick={(e) => {
-                              if (!token) {
-                                e.preventDefault();
-                                showAlert("Please login to access");
-                              }
-                              return false;
-                            }}
-                          >
-                            {item.location.state}
-                          </Link>
-                        )}
-                        {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                        {item?.location?.city?.length && (
-                          <Link
-                            to={`/creatives/location/city/${item.location.city}`}
-                            onClick={(e) => {
-                              if (!token) {
-                                e.preventDefault();
-                                showAlert("Please login to access");
-                              }
-                              return false;
-                            }}
-                          >
-                            {item.location.city}
-                          </Link>
-                        )}
-                      </div>
-                    )}
+                    <CreativeLocation location={item?.location} />
                     <div className="profileLink">
                       <Link
                         to={token ? `/creative/${item.slug}` : "#"}

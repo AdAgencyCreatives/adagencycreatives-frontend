@@ -75,7 +75,7 @@ const Jobs = () => {
     getStates();
     getEmploymentTypes();
     getMediaExperiences();
-  }, [token]);
+  }, [token, params]);
 
   useEffect(() => {
     if (job_alerts.length) {

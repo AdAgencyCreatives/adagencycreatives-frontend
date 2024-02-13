@@ -5,6 +5,7 @@ import Placeholder from "../../../assets/images/placeholder.png";
 import { IoLocationOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../../context/AuthContext";
+import CreativeLocation from "../../CreativeLocation";
 
 const RelatedCreatives = ({ data }) => {
   const [relatedCreatives, setRelatedCreatives] = useState([]);
@@ -75,22 +76,7 @@ const RelatedCreatives = ({ data }) => {
                       </div>
                       <div className="job-metas">
                         <div className="d-flex flex-wrap">
-                          {item.location.state && (
-                            <div className="job-location location">
-                              {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
-                              <Link
-                                to={`/creatives/location/state/${item.location.state}`}
-                              >
-                                {item.location.state}
-                              </Link>
-                              {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                              <Link
-                                to={`/creatives/location/city/${item.location.city}`}
-                              >
-                                {item.location.city}
-                              </Link>
-                            </div>
-                          )}
+                        <CreativeLocation location={item?.location} />
                         </div>
                       </div>
                     </div>

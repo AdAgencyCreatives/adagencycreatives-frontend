@@ -13,6 +13,7 @@ import { saveNotification } from "../../context/NotificationsDataContext";
 
 import FriendshipWidget from "./FriendshipWidget";
 import GroupRequestWidget from "./GroupRequestWidget";
+import UserLocation from "../UserLocation";
 
 const CommunityMemberWidget = (props) => {
 
@@ -58,18 +59,7 @@ const CommunityMemberWidget = (props) => {
                                     {props.creative.name}
                                 </Link></div>
                             <div className="position">{props.creative.title}</div>
-                            {props.creative.location && (
-                                <div className="job-location location">
-                                    {(props?.creative?.location?.state?.length || props?.creative?.location?.city?.length) && (<IoLocationOutline />)}
-                                    <Link to={`/creatives/location/state/${props.creative.location.state}`}>
-                                        {props.creative.location.state}
-                                    </Link>
-                                    {(props?.creative?.location?.state?.length && props?.creative?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                                    <Link to={`/creatives/location/city/${props.creative.location.city}`}>
-                                        {props.creative.location.city}
-                                    </Link>
-                                </div>
-                            )}
+                            <UserLocation location={props.creative?.location} />
                         </div>
                         <div className="user-actions">
                             {isGroupRequestsPage ? (
