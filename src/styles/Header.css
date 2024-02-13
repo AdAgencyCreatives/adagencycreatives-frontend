@@ -853,10 +853,12 @@ nav ul.dropdown-list .list-item-text.j-fix {
 
 .btn.btn-apply.active.external {
     cursor: pointer;
-    background-color: lightgreen;
+    background-color: #198754;
+    color: #fff;
 }
 
 .btn.btn-apply.active.external:hover {
     background-color: #d3a11f;
+    color: #000;
 }
 
