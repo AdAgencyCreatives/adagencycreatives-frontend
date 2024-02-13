@@ -695,7 +695,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
     color: #d3a11f !important;
     text-decoration: none !important;
     position: absolute;
-    bottom: -5px;
+    bottom: -15px;
     cursor: pointer;
 }
 

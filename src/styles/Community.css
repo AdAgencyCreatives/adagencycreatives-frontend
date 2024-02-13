@@ -704,6 +704,14 @@ h2.epr-emoji-category-label {
 .item-list .item-content p{
     margin-bottom: 0;
 }
+.comment-preview {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden !important;
+    margin-bottom: 10px !important;
+}
 @media (max-width: 1200px){
     .div_row .menu_left{
         width: 20%;

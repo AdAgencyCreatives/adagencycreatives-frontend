@@ -162,7 +162,7 @@ const EditComment = (props) => {
                 onChange={(e) => setContent(e.target.value)}
               />
             )}
-            <div className="post-options d-flex">
+            {/* <div className="post-options d-flex">
               <div className="item" >
                 <FiCamera />
               </div>
@@ -172,7 +172,7 @@ const EditComment = (props) => {
               <div className="item" onClick={() => setImagePickerOpen(true)}>
                 <FiPaperclip />
               </div>
-            </div>
+            </div> */}
             <Divider />
             <div className="postmodal-footer">
               <div className="postmodal-offensive-words">

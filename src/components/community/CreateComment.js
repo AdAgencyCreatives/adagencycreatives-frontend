@@ -29,6 +29,8 @@ const CreateComment = (props) => {
   const [taggerPosLeft, setTaggerPosLeft] = useState(0);
   const [taggerPosTop, setTaggerPosTop] = useState(0);
   const [taggerUsers, setTaggerUsers] = useState([]);
+  const [allowType, setAllowType] = useState("image");
+  const [postAttachments, setPostAttachments] = useState([]);
 
   useEffect(() => {
     if (taggerSearchText && taggerSearchText.length) {
@@ -64,7 +66,7 @@ const CreateComment = (props) => {
 
   const handleTaggerKeyDown = (e) => {
     if (taggerRef?.current) {
-      if (e && e.keyCode == 27) { /* i.e., pressed '@' */
+      if (e && e.keyCode == 50 && e.shiftKey) { /* i.e., pressed '@' */
         if (taggerRef.current) {
           taggerRef.current.canQuitTagger = true;
         }
@@ -175,8 +177,8 @@ const CreateComment = (props) => {
           "notification_text": `${response.data.data.user} commented on your post`,
         };
         const response_schedule = api.post("/schedule-notifications", schedule_data);
-        console.log("schedule data", schedule_data);
-        console.log("schedule response", response_schedule);
+        // console.log("schedule data", schedule_data);
+        // console.log("schedule response", response_schedule);
       }
     });
   };
@@ -312,17 +314,25 @@ const CreateComment = (props) => {
                 onChange={(e) => setContent(e.target.value)}
               />
             )}
-            <div className="post-options d-flex">
-              <div className="item" >
+            {/* <div className="post-options d-flex">
+              <div className="item" onClick={() => {
+                setAllowType("image");
+                setImagePickerOpen(true);
+              }}>
                 <FiCamera />
               </div>
-              <div className="item" onClick={() => setImagePickerOpen(true)}>
-                <FiImage />
-              </div>
-              <div className="item" onClick={() => setImagePickerOpen(true)}>
+              <div className="item" onClick={() => {
+                let videos = postAttachments ? postAttachments.filter(item => item.resource_type == "post_attachment_video") : [];
+                if (videos.length > 0) {
+                  alert("Can't upload more than one video.");
+                  return false;
+                }
+                setAllowType("video");
+                setImagePickerOpen(true);
+              }}>
                 <FiPaperclip />
               </div>
-            </div>
+            </div> */}
           </div>
           <Divider />
           <div className="postmodal-footer">
@@ -337,7 +347,11 @@ const CreateComment = (props) => {
               <button className={"btn btn-post" + (useTinyMCE ? (!isLoadingTinyMCE ? ' d-show' : ' d-none') : "")} onClick={() => doSaveComment()}>Comment</button>
             </div>
           </div>
-          <ImagePicker open={imagePickerOpen} handleImagePickerClose={() => setImagePickerOpen(false)} />
+          <ImagePicker 
+            open={imagePickerOpen} 
+            handleImagePickerClose={() => setImagePickerOpen(false)} 
+            allowType={allowType}
+          />
         </div>
       </Modal >
     </div >
