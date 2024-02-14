@@ -44,8 +44,8 @@ const reducer = (state, action) => {
     case "set_uploaded_attachment_status":
       let updatedAttachments = [...state.attachments];
       let lastIndex = state.attachments.length - 1;
+      updatedAttachments[lastIndex] = action.payload;
       updatedAttachments[lastIndex].uploaded = true;
-      updatedAttachments[lastIndex].url = action.payload;
       return { ...state, attachments: updatedAttachments };
 
     case "set_loading":
@@ -172,7 +172,7 @@ const uploadAttachment = (dispatch) => {
       });
       dispatch({
         type: "set_uploaded_attachment_status",
-        payload: response.data.data.url,
+        payload: response.data.data,
       });
     } catch (error) {}
   };

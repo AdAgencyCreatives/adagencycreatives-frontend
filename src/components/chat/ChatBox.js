@@ -3,6 +3,7 @@ import Loader from "../Loader";
 import { IoArrowBack, IoClose, IoCloseCircleSharp, IoCloseOutline, IoPencil } from "react-icons/io5";
 import Avatar from "../../assets/images/placeholder.png";
 import FileIcon from "../../assets/images/FileIcon.png";
+import VideoIcon from "../../assets/images/VideoIcon.png";
 import { useEffect, useState, useRef, useContext } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as ChatContext } from "../../context/ChatContext";
@@ -510,13 +511,27 @@ const ChatBox = ({
         </div>
         {attachments.length > 0 && (
           <div className="attachments">
-            {attachments.map((item, index) => (
+            {attachments.map((attachment, index) => (
               <div className="item" key={"at_" + index}>
-                {!item.uploaded ? (
+                {!attachment.uploaded ? (
                   <Loader fullHeight={false} />
-                ) : (
-                  <img src={item.src} alt="" />
-                )}
+                ) : (<>
+                  {attachment.resource_type && attachment.resource_type == "message_video" ? (
+                    <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                      <img className="post-image" src={VideoIcon} alt="" />
+                    </a>
+                  ) : (<>
+                    {attachment.resource_type && attachment.resource_type == "message_image" ? (
+                      <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                        <img className="post-image" src={attachment.url || ""} alt="" />
+                      </a>
+                    ) : (
+                      <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                        <img className="post-image" src={FileIcon} alt="" />
+                      </a>
+                    )}
+                  </>)}
+                </>)}
               </div>
             ))}
           </div>
