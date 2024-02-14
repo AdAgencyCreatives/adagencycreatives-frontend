@@ -183,7 +183,11 @@ const Jobs = () => {
   };
 
   const paginate = (page) => {
-    paginateJob(page, filters);
+    paginateJob(page, filters, ()=>{
+      window.setTimeout(()=>{
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 1000);
+    });
   };
 
   const drawerWidth = "75%";
@@ -395,6 +399,38 @@ const Jobs = () => {
                 ""
               )}
               <div className="jobs-list-container">
+                {meta && meta.total > 10 && (
+                  <div className="row mt-3">
+                    <div className="col-12">
+                      <p className="user-count">
+                        Viewing {meta.from} - {meta.to} of {meta.total} Jobs
+                      </p>
+                      <div className="user-pagination">
+                        <nav>
+                          <ul className="pagination">
+                            <li className={"page-item" + (meta.current_page == 1 ? " disabled" : "")} onClick={() => paginate(meta.current_page - 1)}>
+                              <a className="page-link" href="javascript:void(0);" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                              </a>
+                            </li>
+                            {Array.apply(null, { length: meta.last_page }).map((item, index) => (
+                              <li className={"page-item " + (meta.current_page == index + 1 ? "active" : "")} onClick={() => paginate(index + 1)} key={"page" + index}>
+                                <a className="page-link" href="javascript:void(0);">
+                                  {index + 1}
+                                </a>
+                              </li>
+                            ))}
+                            <li className={"page-item" + (meta.current_page == meta.last_page ? " disabled" : "")} onClick={() => paginate(meta.current_page + 1)}>
+                              <a className="page-link" href="javascript:void(0);" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </nav>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 {jobs.length ? <JobList data={jobs} /> : <p>No Jobs found</p>}
                 {meta && meta.total > 10 && (
                   <div className="row mt-3">

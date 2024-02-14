@@ -527,7 +527,7 @@ const getMediaExperiences = (dispatch) => {
 };
 
 const paginateJob = (dispatch) => {
-  return async (page, filters) => {
+  return async (page, filters, cb=false) => {
     try {
       let filter = getFilters(filters);
       const response = await api.get(
@@ -537,6 +537,7 @@ const paginateJob = (dispatch) => {
         type: "set_jobs",
         payload: response.data,
       });
+      cb && cb();
     } catch (error) { }
   };
 };
