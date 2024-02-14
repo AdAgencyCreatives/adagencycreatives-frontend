@@ -59,6 +59,28 @@ const PostList = (props) => {
     return () => clearInterval(interval);
   }, []);
 
+  const onDocumentMouseDown = (e) => {
+    const ignoreKey = document?.currentPostReactionKey || "";
+    const arr = document.getElementsByClassName('post-reaction-dropdown');
+    if (arr?.length) {
+      for (let index = 0; index < arr.length; index++) {
+        const element = arr[index];
+        const key = element['id'] || "";
+        if (key?.length && key == ignoreKey) {
+          continue;
+        }
+        element?.classList?.remove('d-show');
+        element?.classList?.add('d-none');
+      }
+    }
+  };
+
+  if (!document.hasOnDocumentMouseDown) {
+    document.addEventListener('mousedown', onDocumentMouseDown);
+    document.hasOnDocumentMouseDown = true;
+
+  }
+
   if (!loaded) {
     return <></>;
   }
