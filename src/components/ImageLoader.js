@@ -29,8 +29,8 @@ const ImageLoader = ({ item, Placeholder }) => {
                 ref={imageRef}
                 src={ClearImage}
                 className="candidateLogo"
-                width={150}
-                height={150}
+                width={100}
+                height={100}
                 alt=""
                 onError={(e) => {
                     e.target.src = Placeholder; // Set the backup image source

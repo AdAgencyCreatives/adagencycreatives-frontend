@@ -276,10 +276,10 @@ button.searchBtn:hover {
 
 
 img.candidateLogo {
-    width: 90px;
-    height: 90px;
+    width: 100px;
+    height: 100px;
     margin: 0 auto 15px;
-    border-radius: 50%;
+    border-radius: 50px;
     object-fit: cover;
 }
 
