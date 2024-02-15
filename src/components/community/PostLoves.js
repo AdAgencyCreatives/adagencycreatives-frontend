@@ -27,7 +27,7 @@ const PostLoves = ({ post, user, post_loves, love_action, getLove, toggleLove })
             setLoveActive(user_loved && user_loved.length);
         } else {
             setLovesCount(post.loves_count);
-            getLove({ "post_id": post.id });
+            getLove({ "post_id": post.id, "type": "heart" });
         }
     }, [post_loves]);
 
@@ -43,7 +43,7 @@ const PostLoves = ({ post, user, post_loves, love_action, getLove, toggleLove })
                     console.log('Love Succeed for Post ID: ' + love_action.post_id);
                     setLovesCount(lovesCount + (!loveActive ? 1 : -1));
                     setLoveActive(!loveActive);
-                    getLove({ "post_id": post.id });
+                    getLove({ "post_id": post.id, "type": "heart" });
                     break;
                 case "love_failed": console.log('Love Failed for Post ID: ' + love_action.post_id + ", Error: " + love_action.error); break;
                 default:
@@ -54,12 +54,12 @@ const PostLoves = ({ post, user, post_loves, love_action, getLove, toggleLove })
 
     useEffect(() => {
         setLovesCount(post.loves_count);
-        getLove({ "post_id": post.id });
+        getLove({ "post_id": post.id, "type": "heart" });
     }, [post.loves_count]);
 
     const doToggleLove = (post_id) => {
         // console.log('Initiated Post Love for Post ID: ' + post_id);
-        toggleLove({ "post_id": post_id })
+        toggleLove({ "post_id": post_id, "type": "heart" })
     }
 
     const getShowLovedBy = () => {
@@ -80,7 +80,7 @@ const PostLoves = ({ post, user, post_loves, love_action, getLove, toggleLove })
         let newState = !getShowLovedBy();
         setShowLovedBy(newState);
         if (newState) {
-            getLove({ "post_id": post.id });
+            getLove({ "post_id": post.id, "type": "heart" });
         }
     };
 

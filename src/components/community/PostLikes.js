@@ -27,7 +27,7 @@ const PostLikes = ({ post, user, post_likes, like_action, getLikes, toggleLike }
             setLikeActive(user_liked && user_liked.length);
         } else {
             setLikesCount(post.likes_count);
-            getLikes({ "post_id": post.id });
+            getLikes({ "post_id": post.id, "type": "like" });
         }
     }, [post_likes]);
 
@@ -43,7 +43,7 @@ const PostLikes = ({ post, user, post_likes, like_action, getLikes, toggleLike }
                     console.log('Like Succeed for Post ID: ' + like_action.post_id);
                     setLikesCount(likesCount + (!likeActive ? 1 : -1));
                     setLikeActive(!likeActive);
-                    getLikes({ "post_id": post.id });
+                    getLikes({ "post_id": post.id, "type": "like" });
                     break;
                 case "like_failed": console.log('Like Failed for Post ID: ' + like_action.post_id + ", Error: " + like_action.error); break;
                 default:
@@ -54,12 +54,12 @@ const PostLikes = ({ post, user, post_likes, like_action, getLikes, toggleLike }
 
     useEffect(() => {
         setLikesCount(post.likes_count);
-        getLikes({ "post_id": post.id });
+        getLikes({ "post_id": post.id, "type": "like" });
     }, [post.likes_count]);
 
     const doToggleLike = (post_id) => {
         // console.log('Initiated Post Like for Post ID: ' + post_id);
-        toggleLike({ "post_id": post_id })
+        toggleLike({ "post_id": post_id, "type": "like" })
     }
 
     const getShowLikedBy = () => {
@@ -80,7 +80,7 @@ const PostLikes = ({ post, user, post_likes, like_action, getLikes, toggleLike }
         let newState = !getShowLikedBy();
         setShowLikedBy(newState);
         if (newState) {
-            getLikes({ "post_id": post.id });
+            getLikes({ "post_id": post.id, "type": "like" });
         }
     };
 

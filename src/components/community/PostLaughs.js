@@ -27,7 +27,7 @@ const PostLaughs = ({ post, user, post_laughs, laugh_action, getLaugh, toggleLau
             setLaughActive(user_laughed && user_laughed.length);
         } else {
             setLaughsCount(post.laughs_count);
-            getLaugh({ "post_id": post.id });
+            getLaugh({ "post_id": post.id, "type": "laugh" });
         }
     }, [post_laughs]);
 
@@ -43,7 +43,7 @@ const PostLaughs = ({ post, user, post_laughs, laugh_action, getLaugh, toggleLau
                     console.log('Laugh Succeed for Post ID: ' + laugh_action.post_id);
                     setLaughsCount(laughsCount + (!laughActive ? 1 : -1));
                     setLaughActive(!laughActive);
-                    getLaugh({ "post_id": post.id });
+                    getLaugh({ "post_id": post.id, "type": "laugh" });
                     break;
                 case "laugh_failed": console.log('Laugh Failed for Post ID: ' + laugh_action.post_id + ", Error: " + laugh_action.error); break;
                 default:
@@ -54,12 +54,12 @@ const PostLaughs = ({ post, user, post_laughs, laugh_action, getLaugh, toggleLau
 
     useEffect(() => {
         setLaughsCount(post.laughs_count);
-        getLaugh({ "post_id": post.id });
+        getLaugh({ "post_id": post.id, "type": "laugh" });
     }, [post.laughs_count]);
 
     const doToggleLaugh = (post_id) => {
         // console.log('Initiated Post Laugh for Post ID: ' + post_id);
-        toggleLaugh({ "post_id": post_id })
+        toggleLaugh({ "post_id": post_id, "type": "laugh" })
     }
 
     const getShowLaughedBy = () => {
@@ -80,7 +80,7 @@ const PostLaughs = ({ post, user, post_laughs, laugh_action, getLaugh, toggleLau
         let newState = !getShowLaughedBy();
         setShowLaughedBy(newState);
         if (newState) {
-            getLaugh({ "post_id": post.id });
+            getLaugh({ "post_id": post.id, "type": "laugh" });
         }
     };
 
