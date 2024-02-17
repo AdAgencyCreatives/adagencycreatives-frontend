@@ -264,6 +264,12 @@ ul.dropdown-list:before {
     background-color: silver !important;
 }
 
+.btn.btn-gold.hover-black:hover {
+    border: 2px solid var(--color-primary);
+    background-color: var(--color-primary) !important;
+    color: black !important;
+}
+
 .menu-item {
     position: relative;
 }
@@ -853,16 +859,22 @@ nav ul.dropdown-list .list-item-text.j-fix {
 
 .btn.btn-apply.active.external {
     cursor: pointer;
-    background-color: #198754;
-    color: #fff;
+    background-color: #d3a11f;
+    color: #000;
 }
 
 .btn.btn-apply.active.external:hover {
     background-color: #d3a11f;
-    /* color: #000; */
+    color: #fff;
 }
 
 .forgot-password {
     max-width: 50%;
     margin: 0px auto;
+}
+
+@media (max-width: 768px) {
+    .forgot-password {
+        max-width: 100%;
+    }   
 }

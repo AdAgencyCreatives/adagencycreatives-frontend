@@ -3,22 +3,50 @@ import { IoCloseOutline, IoEye, IoEyeOff } from "react-icons/io5";
 import "../styles/Modal/AuthModal.scss";
 import { Context as AuthContext } from "../context/AuthContext";
 import { CircularProgress } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const ForgotPassword = () => {
 
+    const queryParams = new URLSearchParams(window.location.search);
+
     const [show, setShow] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
     const { sendResetLink } = useContext(AuthContext);
     const [message, setMessage] = useState(null);
     const [error, setError] = useState(null);
     const [email, setEmail] = useState("");
     const [showLoading, setShowLoading] = useState(false);
 
+    useEffect(() => {
+        setEmail(queryParams.get('email'));
+        if (queryParams?.get('auto-submit') == 'true') {
+            window.setTimeout(() => {
+                handleAutoSubmit(queryParams?.get('email'));
+            }, 1000);
+        }
+    }, []);
+
     const handleChange = (value) => {
         setEmail(value);
     };
 
     const handleClose = () => {
-        
+
+    };
+
+    const handleAutoSubmit = async (emailParam) => {
+        setError(null)
+        setMessage(null)
+        setShowLoading(true);
+        const result = await sendResetLink(emailParam);
+        setShowLoading(false);
+        if (result) {
+            setMessage("Please check your email for password reset link");
+            setSubmitted(true);
+        }
+        else {
+            setError("There was an error sending the request")
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -29,7 +57,8 @@ const ForgotPassword = () => {
         const result = await sendResetLink(email);
         setShowLoading(false);
         if (result) {
-            setMessage("Please check your email for password reset link")
+            setMessage("Please check your email for password reset link");
+            setSubmitted(true);
         }
         else {
             setError("There was an error sending the request")
@@ -67,12 +96,19 @@ const ForgotPassword = () => {
                                     required="required"
                                     value={email}
                                     onChange={(e) => handleChange(e.target.value)}
+                                    disabled={queryParams?.get('email')?.length ? "disabled" : ""}
                                 />
                             </div>
                             <div style={{ "display": (showLoading ? "flex" : "none"), "justify-content": "center" }}><CircularProgress /></div>
-                            <button disabled={(showLoading ? "disabled" : "")} className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3 fs-5">
-                                Submit
-                            </button>
+                            {submitted ? (
+                                <button disabled={(showLoading ? "disabled" : "")} className="btn btn-gold hover-black text-uppercase ls-3 w-100 mt-3 p-3 fs-5">
+                                    Retry Submit
+                                </button>
+                            ) : (
+                                <button disabled={(showLoading || submitted ? "disabled" : "")} className="btn btn-gold hover-black text-uppercase ls-3 w-100 mt-3 p-3 fs-5">
+                                    Submit
+                                </button>
+                            )}
                         </form>
                     </div>
                 </div>
