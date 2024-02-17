@@ -27,6 +27,7 @@ import UserDashboard from "./pages/User/UserDashboard";
 import Checkout from "./pages/Cart/Checkout";
 import CopyWriting from "./pages/Mentor/CopyWriting";
 import LoginAs from "./pages/LoginAs";
+import ForgotPassword from "./pages/ForgotPassword";
 import { useContext, useEffect } from "react";
 import { Context as AuthContext } from "./context/AuthContext";
 import Logout from "./pages/Logout";
@@ -234,6 +235,10 @@ export const router = createBrowserRouter([
       {
         path: "/reset-password",
         element: <ResetPassword />,
+      },
+      {
+        path: "/forgot-password",
+        element: <ForgotPassword />,
       },
       {
         path: "/logout",

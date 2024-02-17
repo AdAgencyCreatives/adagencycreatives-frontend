@@ -861,3 +861,8 @@ nav ul.dropdown-list .list-item-text.j-fix {
     background-color: #d3a11f;
     /* color: #000; */
 }
+
+.forgot-password {
+    max-width: 50%;
+    margin: 0px auto;
+}
