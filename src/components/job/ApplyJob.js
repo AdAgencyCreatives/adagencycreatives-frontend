@@ -173,7 +173,7 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
                         <span className="text">
                           {isUploading ? (
                             <>
-                              Uploding...
+                              Uploading...
                               <div className="spinner-border spinner-border-sm ms-2" style={{ fontSize: '12px' }} role="status">
                                 <span className="visually-hidden">Loading...</span>
                               </div>
