@@ -54,7 +54,7 @@ const CommunityMembers = () => {
                   </div>
                 ) : (
                   <>
-                    <SearchBar onSearch={searchUser} />
+                    <SearchBar onSearch={searchUser} placeholder="Search by member name" />
 
                     {creatives && creatives.length ? (
                       <div className="row g-4 px-1">

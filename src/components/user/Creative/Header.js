@@ -54,6 +54,7 @@ const Header = ({ data, role, user }) => {
 
   const validateAccess = (e, permissions, message) => {
     if (permissions.length > 0) {
+      console.log(permissions);
       let pass = permissions.every((value) => value === true);
       if (pass) {
         showAlert(message);
