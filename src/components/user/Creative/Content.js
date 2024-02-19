@@ -6,13 +6,19 @@ import RelatedCreatives from "./RelatedCreatives";
 import Portfolio from "./Portfolio";
 import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../../context/AuthContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import useHelper from "../../../hooks/useHelper";
 import Placeholder from "../../../assets/images/placeholder.png";
 
 const Content = ({ user, role, data, education, experience }) => {
 
   const { rectify_url, encodeSpecial, decodeSpecial } = useHelper();
+
+  const maxEducations = 4;
+  const [showAllEducations, setShowAllEducations] = useState(false);
+
+  const maxExperiences = 8;
+  const [showAllExperiences, setShowAllExperiences] = useState(false);
 
   const {
     state: { subscription_status },
@@ -39,11 +45,12 @@ const Content = ({ user, role, data, education, experience }) => {
         </a>
       </div>
       {/* Education */}
-      {education.length > 0 ? (
+      {education?.length > 0 ? (
         <div className="content-section">
           <h1 className="content-title">Education</h1>
+          <h6>Showing 1 - {education.length <= maxEducations || showAllEducations ? education.length : maxEducations} of {education.length}</h6>
           <div className="content-list">
-            {education.map((item) => (
+            {education.slice(0, (education.length <= maxEducations || showAllEducations ? education.length : maxEducations)).map((item) => (
               <div className="content" key={item.id}>
                 <div className="circle">{item.degree?.charAt(0)}</div>
                 <div className="top-info">
@@ -75,17 +82,28 @@ const Content = ({ user, role, data, education, experience }) => {
               </div>
             ))}
           </div>
+          {education?.length > maxEducations && (
+            <Link onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setShowAllEducations(state => !state);
+              return false;
+            }}>
+              Show {showAllEducations ? "Less" : "More"} Educations
+            </Link>
+          )}
         </div>
       ) : (
         ""
       )}
 
       {/* Experience */}
-      {experience.length > 0 ? (
+      {experience?.length > 0 ? (
         <div className="content-section">
           <h1 className="content-title">Work & Experience</h1>
+          <h6>Showing 1 - {experience.length <= maxExperiences || showAllExperiences ? experience.length : maxExperiences} of {experience.length}</h6>
           <div className="content-list">
-            {experience.map((item) => (
+            {experience.slice(0, (experience.length <= maxExperiences || showAllExperiences ? experience.length : maxExperiences)).map((item) => (
               <div className="content" key={item.id}>
                 <div className="circle">{item.company?.charAt(0)}</div>
 
@@ -119,6 +137,16 @@ const Content = ({ user, role, data, education, experience }) => {
               </div>
             ))}
           </div>
+          {experience?.length > maxExperiences && (
+            <Link onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setShowAllExperiences(state => !state);
+              return false;
+            }}>
+              Show {showAllExperiences ? "Less" : "More"} Experiences
+            </Link>
+          )}
         </div>
       ) : (
         ""

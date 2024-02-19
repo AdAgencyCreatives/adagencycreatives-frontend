@@ -212,7 +212,7 @@ const searchCreativesFull = (dispatch) => {
 
 const getCreativeEducation = async (dispatch, uid) => {
   try {
-    const response = await api.get("/educations?filter[user_id]=" + uid);
+    const response = await api.get("/educations?per_page=9999&filter[user_id]=" + uid);
     dispatch({
       type: "set_creative_education",
       payload: response.data,
@@ -222,7 +222,7 @@ const getCreativeEducation = async (dispatch, uid) => {
 
 const getCreativeExperience = async (dispatch, uid) => {
   try {
-    const response = await api.get("/experiences?filter[user_id]=" + uid);
+    const response = await api.get("/experiences?per_page=9999&filter[user_id]=" + uid);
     dispatch({
       type: "set_creative_experience",
       payload: response.data,

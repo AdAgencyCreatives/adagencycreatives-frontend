@@ -36,6 +36,8 @@ const MyResume = () => {
   const videoRef = useRef();
   const [videoItem, setVideoItem] = useState(false);
 
+  const [submissionInProcess, setSubmissionInProcess] = useState(false);
+
   const [videoUploading, setVideoUploading] = useState(false);
   const [videoUploadIndicator, setVideoUploadIndicator] = useState("");
 
@@ -571,11 +573,13 @@ const MyResume = () => {
   }, [formData]);
 
   const handleSubmit = async () => {
+    setSubmissionInProcess(true);
     console.log(educationList, experienceList);
     let newFormData = { ...formData, 'employment_type': (formData['employment_type'] && formData['employment_type'].length ? (Array.isArray(formData['employment_type']) ? formData['employment_type'].join(',') : formData['employment_type']) : "") };
     await saveResume(user.uuid, newFormData, educationList, experienceList);
     await getCreativeById(user.uuid);
     showAlert("Resume updated successfully");
+    setSubmissionInProcess(false);
   };
 
   const removeItemCurrent = (name, ref, uploadRef, field, item) => {
@@ -887,6 +891,7 @@ const MyResume = () => {
           let list = [...experienceList];
           let item = experienceList[index];
           list.splice(index, 1);
+
           setExperienceList(list);
           if (item != undefined) {
             deleteExperience(item.id);
@@ -1218,8 +1223,8 @@ const MyResume = () => {
         </div>
       </div>
       <div className="submit-btn mt-4">
-        <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 text-uppercase" style={{ fontSize: 20 }} onClick={handleSubmit} disabled={formSubmit}>
-          Save Profile {formSubmit && <CircularProgress size={20} />}
+        <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 text-uppercase" style={{ fontSize: 20 }} onClick={handleSubmit} disabled={formSubmit || submissionInProcess}>
+          Save Profile {(formSubmit || submissionInProcess) && <CircularProgress size={20} />}
         </button>
       </div>
     </div>
