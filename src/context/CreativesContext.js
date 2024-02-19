@@ -280,7 +280,9 @@ const saveResume = (dispatch) => {
       await api.patch("/creative_resume/" + uid, data);
       await api.patch("/educations/", { educations });
       await api.patch("/experiences/", { experiences });
-    } catch (error) { }
+    } catch (error) { 
+      console.log(error);
+    }
     dispatch({
       type: "set_form_submit",
       payload: false,

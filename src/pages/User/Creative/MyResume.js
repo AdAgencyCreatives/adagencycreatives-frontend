@@ -574,6 +574,7 @@ const MyResume = () => {
     console.log(educationList, experienceList);
     let newFormData = { ...formData, 'employment_type': (formData['employment_type'] && formData['employment_type'].length ? (Array.isArray(formData['employment_type']) ? formData['employment_type'].join(',') : formData['employment_type']) : "") };
     await saveResume(user.uuid, newFormData, educationList, experienceList);
+    await getCreativeById(user.uuid);
     showAlert("Resume updated successfully");
   };
 
@@ -778,7 +779,7 @@ const MyResume = () => {
     if (updatedEducationList.length > 0) {
       updatedEducationList[index][key_name] = key_value;
     } else {
-      updatedEducationList[0] = { id: '', degree: '', college: '', completed_at: '' }
+      updatedEducationList[0] = { id: '', degree: '', college: '', completed_at: new Date() }
     }
 
     setEducationList(updatedEducationList);
@@ -894,12 +895,6 @@ const MyResume = () => {
       }
     });
     setFields(newQualifications);
-  };
-
-  const removeEducation = async (id) => {
-    await removeAttachment(id);
-    setVideoItem(null);
-    showAlert("Video removed successfully");
   };
 
   const handleDateChange = (name, item_index, data_index, key_name, date) => {
