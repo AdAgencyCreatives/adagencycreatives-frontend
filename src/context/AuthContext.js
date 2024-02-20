@@ -137,7 +137,7 @@ const signin = (dispatch) => {
       setToken(dispatch)(response.data.token, response.data.user.role);
       setUserData(dispatch, response.data.user);
 
-      setCookie("user", JSON.stringify(response.data), 1000 * 60); // set for one minute
+      setCookie("cookie_token", response.data.token, 1000 * 60 * 60 * 24); // set for 24 hours
 
       let creative = await getCreativeById(response.data.user.uuid);
       setAuthCreative(dispatch, creative);
@@ -477,9 +477,6 @@ export const { Context, Provider } = createDataContext(
     deleteProfile,
     confirmPassword,
     handleClose,
-    setCookie,
-    getCookie,
-    checkCookie,
   },
   state
 );

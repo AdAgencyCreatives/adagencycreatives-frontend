@@ -18,13 +18,13 @@ import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { AiOutlineUser, AiOutlineBell, AiOutlineClose } from "react-icons/ai";
 import { FaLinkedinIn, FaInstagramSquare } from "react-icons/fa";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import ScrollToHash from "./ScrollToHash";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { navItems } from "../nav/NavItems";
 import AuthModal from "./modals/AuthModal";
-import { Context as AuthContext } from "../context/AuthContext";
+import { Context as AuthContext, checkCookie } from "../context/AuthContext";
 import { Context as AlertContext } from "../context/AlertContext";
 import { Context as SubscriptionContext } from "../context/SubscriptionContext";
 import Placeholder from "../assets/images/placeholder.png";
@@ -36,6 +36,9 @@ import ScrollButton from "./ScrollButton";
 const drawerWidth = "85%";
 
 function Header(props) {
+
+  const navigate = useNavigate();
+
   const { window } = props;
   const { state } = React.useContext(AuthContext);
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -68,6 +71,26 @@ function Header(props) {
     if (state.token !== null) {
       setLoggedInNav(state.role === "creative" ? creativeNav : agencyNav);
     }
+  }, [state.token]);
+
+  const cc = () => {
+    let cookie_token = checkCookie("cookie_token");
+    console.log("cookie_token: " + cookie_token);
+    console.log("react_token: ");
+    console.log(state?.token);
+
+    console.log("check:" + (state?.token && state.token != cookie_token));
+    if (state?.token && state.token != cookie_token) {
+      navigate("/logout");
+    }
+  };
+
+  useEffect(() => {
+    const timer = setInterval(cc, 5000);
+
+    return () => {
+      clearInterval(timer);
+    };
   }, [state.token]);
 
   const handleDrawerToggle = () => {
