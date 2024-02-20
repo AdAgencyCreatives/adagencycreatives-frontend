@@ -75,11 +75,10 @@ function Header(props) {
 
   const cc = () => {
     let cookie_token = checkCookie("cookie_token");
-    console.log("cookie_token: " + cookie_token);
-    console.log("react_token: ");
-    console.log(state?.token);
-
-    console.log("check:" + (state?.token && state.token != cookie_token));
+    // console.log("cookie_token: " + cookie_token);
+    // console.log("react_token: ");
+    // console.log(state?.token);
+    // console.log("check:" + (state?.token && state.token != cookie_token));
     if (state?.token && state.token != cookie_token) {
       navigate("/logout");
     }
