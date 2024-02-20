@@ -2,7 +2,7 @@ import "../styles/Home.css";
 import Gather from "../assets/images/Gather.png";
 import Mentoring from "../assets/images/Mentoring.png";
 import Money from "../assets/images/make-money-white.png";
-import { IoSearchOutline } from "react-icons/io5";
+import { IoSearchOutline, IoArrowForward } from "react-icons/io5";
 // core version + navigation, pagination modules:
 import { register } from "swiper/element/bundle";
 import "swiper/css/pagination";
@@ -35,7 +35,7 @@ const Home = () => {
     setMessageModalOptions({ "open": true, "type": type, "title": title, "message": message, "data": data });
   };
   const {
-    state: { token, role, },
+    state: { token, role },
   } = useContext(AuthContext);
 
   const [search, setSearch] = useState("")
@@ -62,7 +62,8 @@ const Home = () => {
   };
 
   useEffect(() => {
-    console.log(pageData);
+    // console.log(pageData);
+    // console.log('token', token);
   }, [])
 
   return (
@@ -76,6 +77,110 @@ const Home = () => {
             style={{ fontWeight: "500", fontSize: "18px", marginLeft: "5px", minWidth: "120px" }}>
             Film Festival
           </Link>
+          <div className="container">
+            <div className="hero-boxes">
+              <div className="row content gy-3">
+                <div className="col-lg-4 col-md-4 col-12">
+                  <Link
+                    // className={`box link-light ${item.img ? "flip" : ""}`}
+                    className="box link-light flip"
+                    to="/creative-jobs"
+                  >
+                    <div className="flip-card-front">
+                      <div className="main-title">Search <br />Creative Jobs</div>
+                      <div className="title-small">Creative access to right opportunities</div>
+                      {/* <div className="box-link">
+                        <div className="link">
+                          <IoArrowForward color="black" />
+                        </div>
+                      </div> */}
+                    </div>
+                    <div className="flip-card-back justify-content-center d-flex flex-column">
+                      <h2>FOR CREATIVES<br />SEARCH JOBS</h2>
+                      <p>SEARCH JOBS</p>
+                      <p>SET NOTIFICATIONS</p>
+                      <p>APPLY FOR JOBS</p>
+                      <p>NETWORK IN ONE PLACE</p>
+                      <p>MANAGE JOBS</p>
+                      <p>ON OUR DASHBOARD</p>
+                      <div className="box-link">
+                        <div className="link">
+                          <IoArrowForward color="black" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+                <div className="col-lg-4 col-md-4 col-12">
+                  <Link
+                    // className={`box link-light ${item.img ? "flip" : ""}`}
+                    className="box link-light flip"
+                    to={token ? 'post-a-job' : '#'}
+                  >
+                    <div className="flip-card-front">
+                      <div className="main-title">Post <br />creative jobs</div>
+                      <div className="title-small">Agency access to the right talent for the job</div>
+                      {/* <div className="box-link">
+                        <div className="link">
+                          <IoArrowForward color="black" />
+                        </div>
+                      </div> */}
+                    </div>
+                    <div className="flip-card-back justify-content-center d-flex flex-column">
+                      <h2>FOR AGENCIES<br />POST A JOB</h2>
+                      <p>MANAGE AND ACCESS</p>
+                      <p>ART DIRECTORS, COPYWRITERS,</p>
+                      <p>DESIGNERS, CONTENT CREATORS,</p>
+                      <p>CREATIVE TEAMS, ILLUSTRATORS,</p>
+                      <p>MOTION OR DIGITAL EXPERIENCE</p>
+                      <p>DESIGNERS, PRODUCTION ARTISTS,</p>
+                      <p>STORY-TELLERS AND ENTERTAINERS,</p>
+                      <p>FULLTIME OR FREELANCE, CREATIVE</p>
+                      <p>DIRECTORS OR INTERNS, ALL</p>
+                      <p>LEVELS, IN THE UNITED STATE</p>
+                      <div className="box-link">
+                        <div className="link">
+                          <IoArrowForward color="black" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+                <div className="col-lg-4 col-md-4 col-12">
+                  <Link
+                    // className={`box link-light ${item.img ? "flip" : ""}`}
+                    className="box link-light flip"
+                    to={token ? role == 'creative' ? 'community' : 'dashboard' : '#' }
+                  >
+                    <div className="flip-card-front">
+                      <div className="main-title">Join our <br />community</div>
+                      <div className="title-small">Serving creatives and agencies in advertising</div>
+                      {/* <div className="box-link">
+                        <div className="link">
+                          <IoArrowForward color="black" />
+                        </div>
+                      </div> */}
+                    </div>
+                    <div className="flip-card-back justify-content-center d-flex flex-column">
+                      <h2>REGISTER<br />AS A CREATIVE OR AGENCIES</h2>
+                      <p>GAIN VISIBILITY</p>
+                      <p>CREATE | VIEW PROFILES</p>
+                      <p>SHOWCASE YOUR WORK</p>
+                      <p>POST | MANAGE JOBS</p>
+                      <p>APPLY TO JOBS</p>
+                      <p>EXPLORE RESOURCES</p>
+                      <p>CONNECT WITH CREATIVES</p>
+                      <div className="box-link">
+                        <div className="link">
+                          <IoArrowForward color="black" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="searchArea">
             <p className="searchHeader" dangerouslySetInnerHTML={{ __html: getPateDataItem("searchbar_heading", pageData) }}></p>
             <div className="searchBox">
@@ -160,11 +265,13 @@ const Home = () => {
           </div> */}
 
           <div className="wrapper">
-            <div className="marquee">
-              <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
-              <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
-              <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
-            </div>
+            <Link to="/about" className="black">
+              <div className="marquee">
+                <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
+                <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
+                <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
+              </div>
+            </Link>
           </div>
         </div >
 

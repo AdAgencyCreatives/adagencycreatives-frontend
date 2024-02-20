@@ -7,7 +7,6 @@ const SingleMentorList = ({ items }) => {
   const [activeIndex, setActiveIndex] = useState(null);
 
   const handleItemClick = (e, img, index) => {
-    console.log(!img)
     if (index != activeIndex && img) {
       e.preventDefault();
     }
