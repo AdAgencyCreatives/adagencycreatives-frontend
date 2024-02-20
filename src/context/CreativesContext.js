@@ -304,10 +304,13 @@ const saveAttachment = (dispatch) => {
 };
 
 const removeAttachment = (dispatch) => {
-  return async (id) => {
+  return async (id, cb=false) => {
     try {
       const response = await api.delete("/attachments/" + id);
-    } catch (error) { }
+      cb && cb();
+    } catch (error) { 
+      cb && cb(error);
+    }
   };
 };
 

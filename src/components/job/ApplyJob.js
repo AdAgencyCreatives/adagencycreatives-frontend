@@ -5,6 +5,7 @@ import { Context as CreativesContext } from "../../context/CreativesContext";
 import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { FiFile } from "react-icons/fi";
+import { IoCloseCircleSharp } from "react-icons/io5";
 
 const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
   const [message, setMessage] = useState(false);
@@ -21,6 +22,7 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
     getResume,
     getProfileResume,
     saveAttachment,
+    removeAttachment,
   } = useContext(CreativesContext);
 
   const {
@@ -93,6 +95,20 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
     }
   };
 
+  const handleRemoveAttachment = (e, item) => {
+    (async ()=>{
+      await removeAttachment(item.id, (err)=>{
+        if(err) {
+          showAlert("Sorry! we are unable to remove the resume now")
+        } else {
+          setResumeList(() => []);
+          resumeRef.current.value='';
+          showAlert("Resume removed successfully");
+        }
+      });
+    })();
+  };
+
   return (
     <Dialog
       open={open}
@@ -125,29 +141,34 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
                 )}
                 <p className="fs-5 text-center mt-3">Select your Resume</p>
                 <div className="d-flex flex-wrap gap-3 mb-2 justify-content-center">
-                  <button type="button"
-                    className={`btn-resume ${!resumeId ? "active" : ""}`}
-                    onClick={() => setResumeId(false)}
-                  >
-                    <span className="icon_type">
-                      <FiFile />
-                    </span>
-                    <div className="filename">Profile Resume</div>
-                  </button>
+                  <div className="btn-resume-container">
+                    <button type="button"
+                      className={`btn-resume ${!resumeId ? "active" : ""}`}
+                      onClick={() => setResumeId(false)}
+                    >
+                      <span className="icon_type">
+                        <FiFile />
+                      </span>
+                      <div className="filename">Profile Resume</div>
+                    </button>
+                  </div>
                   {resumeList.length > 0 &&
                     resumeList.map((item) => (
-                      <button type="button"
-                        className={
-                          "btn-resume" + (resumeId == item.id ? " active" : "")
-                        }
-                        key={item.name}
-                        onClick={() => setResumeId(item.id)}
-                      >
-                        <span className="icon_type">
-                          <FiFile />
-                        </span>
-                        <div className="filename">{item.name}</div>
-                      </button>
+                      <div className="btn-resume-container">
+                        <button type="button"
+                          className={
+                            "btn-resume" + (resumeId == item.id ? " active" : "")
+                          }
+                          key={item.name}
+                          onClick={() => setResumeId(item.id)}
+                        >
+                          <span className="icon_type">
+                            <FiFile />
+                          </span>
+                          <div className="filename">{item.name}</div>
+                        </button>
+                        <IoCloseCircleSharp className="remove-resume" onClick={(e) => handleRemoveAttachment(e, item)} />
+                      </div>
                     ))}
                 </div>
                 <p className="fs-5 text-center mt-3">or upload your CV</p>
@@ -156,7 +177,7 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
                     type="file"
                     name="cv_file"
                     data-file_types="txt|doc|docx|pdf"
-                    accept=".txt,.pdf,.doc,.docx" 
+                    accept=".txt,.pdf,.doc,.docx"
                     className="d-none"
                     ref={resumeRef}
                     onChange={(e) => handleFileChange(e)}

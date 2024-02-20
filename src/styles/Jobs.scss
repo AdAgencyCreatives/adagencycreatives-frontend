@@ -363,7 +363,7 @@ input.form-check-input {
 
 .job-apply-modal {
     .btn-resume {
-        width: 48%;
+        width: 100%;
         border: 0;
         font-weight: 500;
         font-size: 16px;
@@ -428,4 +428,18 @@ input.form-check-input {
     .btn-apply {
         font-size: 16px;
     }
+}
+
+.btn-resume-container {
+    position: relative;
+    width: 48%;
+}
+
+.btn-resume-container .remove-resume {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    z-index: 2;
+    font-size: 24px;
+    cursor: pointer;
 }
