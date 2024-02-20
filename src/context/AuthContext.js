@@ -45,7 +45,7 @@ const authReducer = (state, action) => {
     case "reset_form_message":
       return { ...state, formMessage: null };
     case "set_fetching_token":
-      return { ...state, fetchingToken: action.payload};
+      return { ...state, fetchingToken: action.payload };
     case "set_is_loading":
       return { ...state, isLoading: action.payload };
     case "set_form_submit":
@@ -137,7 +137,7 @@ const signin = (dispatch) => {
       setToken(dispatch)(response.data.token, response.data.user.role);
       setUserData(dispatch, response.data.user);
 
-      setCookie("cookie_token", response.data.token, 1000 * 60 * 60 * 24); // set for 24 hours
+      setCookie("cookie_token", response.data.token, 1000 * 60); // set for 24 hours
 
       let creative = await getCreativeById(response.data.user.uuid);
       setAuthCreative(dispatch, creative);
@@ -345,7 +345,15 @@ const verifyToken = (dispatch) => async (token) => {
     setIsLoading(dispatch, false);
     setToken(dispatch)(response.data.token, response.data.user.role);
     setUserData(dispatch, response.data.user);
+
+    setCookie("cookie_token", response.data.token, 1000 * 60 * 60 * 24); // set for 24 hours
+
+    let creative = await getCreativeById(response.data.user.uuid);
+    setAuthCreative(dispatch, creative);
+
+    setAdvanceSearchCapabilities(dispatch, response.data.advance_search_capabilities ? response.data.advance_search_capabilities : false);
     setSubscriptionStatus(dispatch, response.data.subscription_status);
+
     dispatch({
       type: "set_form_message",
       payload: { type: "success", message: getLoginSuccessMessage() },
@@ -537,13 +545,13 @@ export function getCookie(cname) {
   let decodedCookie = decodeURIComponent(document.cookie);
   let ca = decodedCookie.split(';');
   for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-          c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-          return c.substring(name.length, c.length);
-      }
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
   }
   return "";
 }
@@ -552,7 +560,7 @@ export function getCookie(cname) {
 export function checkCookie(cookiename) {
   let cookieExist = getCookie(cookiename);
   if (cookieExist != "") {
-      return cookieExist;
+    return cookieExist;
   }
   return false;
 }
