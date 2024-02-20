@@ -37,10 +37,11 @@ h1.bannerHeading {
 }
 
 p.subHeading {
-    font-size: 20px;
+    font-size: 28px;
     margin: 0px;
     color: white;
     min-height: 73.2px;
+    line-height: 32px;
 }
 
 .searchArea {
