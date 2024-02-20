@@ -137,7 +137,7 @@ const signin = (dispatch) => {
       setToken(dispatch)(response.data.token, response.data.user.role);
       setUserData(dispatch, response.data.user);
 
-      setCookie("cookie_token", response.data.token, 1000 * 60); // set for 24 hours
+      setCookie("cookie_token", response.data.token, 1000 * 60 * 60 * 24); // set for 24 hours
 
       let creative = await getCreativeById(response.data.user.uuid);
       setAuthCreative(dispatch, creative);
