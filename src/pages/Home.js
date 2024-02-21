@@ -115,7 +115,7 @@ const Home = () => {
                   <Link
                     // className={`box link-light ${item.img ? "flip" : ""}`}
                     className="box link-light flip"
-                    to={token ? 'post-a-job' : '#'}
+                    to={token ? 'post-a-job' : '#register_agency'}
                   >
                     <div className="flip-card-front">
                       <div className="main-title">Post <br />creative jobs</div>
@@ -150,7 +150,7 @@ const Home = () => {
                   <Link
                     // className={`box link-light ${item.img ? "flip" : ""}`}
                     className="box link-light flip"
-                    to={token ? role == 'creative' ? 'community' : 'dashboard' : '#' }
+                    to={token ? (role == 'creative' ? 'community' : 'dashboard') : '#register_creative' }
                   >
                     <div className="flip-card-front">
                       <div className="main-title">Join our <br />community</div>

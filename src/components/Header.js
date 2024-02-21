@@ -39,13 +39,15 @@ function Header(props) {
 
   const navigate = useNavigate();
 
-  const { window } = props;
+  const { window:windowFn } = props;
   const { state } = React.useContext(AuthContext);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [childLink, setChildLink] = useState("hashLink");
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const handleOpen = () => setAuthModalOpen(true);
   const handleClose = () => setAuthModalOpen(false);
+
+  const anchor = window.location.hash.slice(1);
 
   const [loggedInNav, setLoggedInNav] = useState(agencyNav);
   const instagram = "https://www.instagram.com/adagencycreativescommunity";
@@ -91,6 +93,12 @@ function Header(props) {
       clearInterval(timer);
     };
   }, [state.token]);
+
+  useEffect(() => {
+    if(anchor && anchor.length && anchor.indexOf("register_") == 0) {
+        setAuthModalOpen(true);
+    }
+  }, [anchor]);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -185,7 +193,7 @@ function Header(props) {
     </Box>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container = windowFn !== undefined ? () => windowFn().document.body : undefined;
 
   const StyledButton = styled(Button)`
     padding: 6px 12px;

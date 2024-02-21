@@ -15,6 +15,8 @@ import strength from "../../../assets/images/icons/strength.png";
 import React, { useContext, useEffect, useState } from "react";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
+import { Context as AuthContext } from "../../../context/AuthContext";
+import { Context as AlertContext } from "../../../context/AlertContext";
 import { getMyFriends } from "../../../context/FriendsDataContext";
 import { Link } from "react-router-dom";
 import useHelper from "../../../hooks/useHelper";
@@ -22,6 +24,11 @@ import useHelper from "../../../hooks/useHelper";
 const Sidebar = ({ data, user }) => {
 
   const { encodeSpecial, decodeSpecial, formatPhone } = useHelper();
+  const { showAlert } = useContext(AlertContext);
+
+  const {
+    state: { subscription_status },
+  } = useContext(AuthContext);
 
   const {
     state: { resume, video },
@@ -41,6 +48,13 @@ const Sidebar = ({ data, user }) => {
   const isRecruiter = user?.role == "recruiter";
   const isOwnProfile = user?.uuid == data.user_id;
 
+  const [hasSubscription, setSubscription] = useState(false);
+
+  useEffect(() => {
+    setSubscription(subscription_status == "active");
+    console.log(subscription_status);
+  }, [subscription_status]);
+
   const checkPermissions = () => {
     if (Cookies.get("token")) {
       if (isOwnProfile || isFriend) {
@@ -52,6 +66,19 @@ const Sidebar = ({ data, user }) => {
       return false;
     }
     return false;
+  };
+
+  const validateAccess = (e, permissions, message) => {
+    if (permissions.length > 0) {
+      console.log(permissions);
+      let pass = permissions.every((value) => value === true);
+      if (pass) {
+        showAlert(message);
+        e.preventDefault();
+        return false;
+      }
+    }
+    return true;
   };
 
   const [isFriend, setIsFriend] = useState(false)
@@ -243,7 +270,17 @@ const Sidebar = ({ data, user }) => {
           <h4 className="title">Resume</h4>
           <div className="content">
             {resume.map((item) => (
-              <a href={item.url} target="_blank">
+              <a
+                href={item.url}
+                target="__blank"
+                onClick={(e) => isAdmin || (isAdvisor && hasSubscription) ||
+                  validateAccess(
+                    e,
+                    [!hasSubscription, !isCreative],
+                    "Add a job post to download resumes"
+                  )
+                }
+              >
                 <button className="btn btn-dark w-100 py-3 fs-5 mb-3">
                   Download Resume
                 </button>
