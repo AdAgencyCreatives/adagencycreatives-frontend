@@ -140,13 +140,22 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
     ],
   });
 
+  const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  const upperCase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+  const lowerCase = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+  const nonSpecial = [...digits, upperCase, lowerCase];
+
+  const isPasswordValid = (value) => {
+
+  };
+
   const handleInputChange = (type, index, value) => {
     const updatedFields = { ...fields };
 
     updatedFields[type][index].value = value;
-    if (updatedFields[type][index].type === 'url' && !isValidHttpUrl(value)) {
-      updatedFields[type][index].error = 'Please enter a valid url.';
-    } else if (updatedFields[type][index].type === 'url' && isValidHttpUrl(value)) {
+    if (updatedFields[type][index].type === 'url') {
+      updatedFields[type][index].error = !isValidHttpUrl(value) ? 'Please enter a valid url.' : '';
+    } else if (updatedFields[type][index].type === 'password') {
       updatedFields[type][index].error = '';
     }
 
