@@ -155,7 +155,7 @@ const JobApplications = (props) => {
                                                     </button>
                                                 </Tooltip>
 
-                                                <Tooltip
+                                                {/* <Tooltip
                                                     title="Not Aligned"
                                                     onClick={() =>
                                                         props?.setApplicationStatus(
@@ -168,7 +168,7 @@ const JobApplications = (props) => {
                                                     <button className="btn p-0 border-0 btn-hover-primary">
                                                         <TfiLoop className="icon-rounded" />
                                                     </button>
-                                                </Tooltip>
+                                                </Tooltip> */}
                                             </>
                                         ) : (
                                             <Tooltip
@@ -198,9 +198,9 @@ const JobApplications = (props) => {
                                             <TfiDownload className="icon-rounded" />
                                         </Link>
                                     </Tooltip>
-                                    {((!props?.isJobDeleted && !props?.isJobExpired) && (!props?.job?.advisor_id || user?.role == 'advisor') && props?.job?.apply_type.toLowerCase() != "external") && (<>
+                                    {application.status == 'pending' && ((!props?.isJobDeleted && !props?.isJobExpired) && (!props?.job?.advisor_id || user?.role == 'advisor') && props?.job?.apply_type.toLowerCase() != "external") && (<>
                                         <Tooltip
-                                            title="Remove From Job"
+                                            title="Not Aligned"
                                             // onClick={() => deleteApplication(application.id)}
                                             onClick={() =>
                                                 props?.setApplicationStatus(
