@@ -78,110 +78,114 @@ const Home = () => {
             Film Festival
           </Link>
           <div className="container">
-            <div className="hero-boxes">
-              <div className="row content gy-3">
-                <div className="col-lg-4 col-md-4 col-12">
-                  <Link
-                    // className={`box link-light ${item.img ? "flip" : ""}`}
-                    className="box link-light flip"
-                    to="/creative-jobs"
-                  >
-                    <div className="flip-card-front">
-                      <div className="main-title">Search <br />Creative Jobs</div>
-                      <div className="title-small">Creative access to right opportunities</div>
-                      {/* <div className="box-link">
-                        <div className="link">
-                          <IoArrowForward color="black" />
-                        </div>
-                      </div> */}
-                    </div>
-                    <div className="flip-card-back justify-content-center d-flex flex-column">
-                      <h2>FOR CREATIVES<br />SEARCH JOBS</h2>
-                      <p>SEARCH JOBS</p>
-                      <p>SET NOTIFICATIONS</p>
-                      <p>APPLY FOR JOBS</p>
-                      <p>NETWORK IN ONE PLACE</p>
-                      <p>MANAGE JOBS</p>
-                      <p>ON OUR DASHBOARD</p>
-                      <div className="box-link">
-                        <div className="link">
-                          <IoArrowForward color="black" />
-                        </div>
+            <div className="row content gy-3 hero-boxes">
+              <div className="col-lg-4 col-md-4 col-12 hero-box">
+                <Link
+                  // className={`box link-light ${item.img ? "flip" : ""}`}
+                  className="box link-light flip"
+                  to="/creative-jobs"
+                >
+                  <div className="flip-card-front">
+                    <div className="main-title">Search <br />Creative Jobs</div>
+                    <div className="title-small">Creative access to right opportunities</div>
+                    {/* <div className="box-link">
+                      <div className="link">
+                        <IoArrowForward color="black" />
+                      </div>
+                    </div> */}
+                  </div>
+                  <div className="flip-card-back justify-content-center d-flex flex-column">
+                    <h2>FOR CREATIVES<br />SEARCH JOBS</h2>
+                    <p>SEARCH JOBS</p>
+                    <p>SET NOTIFICATIONS</p>
+                    <p>APPLY FOR JOBS</p>
+                    <p>NETWORK IN ONE PLACE</p>
+                    <p>MANAGE JOBS</p>
+                    <p>ON OUR DASHBOARD</p>
+                    <div className="box-link">
+                      <div className="link">
+                        <IoArrowForward color="black" />
                       </div>
                     </div>
-                  </Link>
-                </div>
-                <div className="col-lg-4 col-md-4 col-12">
-                  <Link
-                    // className={`box link-light ${item.img ? "flip" : ""}`}
-                    className="box link-light flip"
-                    to={token ? 'post-a-job' : '#register_agency'}
-                  >
-                    <div className="flip-card-front">
-                      <div className="main-title">Post <br />creative jobs</div>
-                      <div className="title-small">Agency access to the right talent for the job</div>
-                      {/* <div className="box-link">
-                        <div className="link">
-                          <IoArrowForward color="black" />
-                        </div>
-                      </div> */}
-                    </div>
-                    <div className="flip-card-back justify-content-center d-flex flex-column">
-                      <h2>FOR AGENCIES<br />POST A JOB</h2>
-                      <p>MANAGE AND ACCESS</p>
-                      <p>ART DIRECTORS, COPYWRITERS,</p>
-                      <p>DESIGNERS, CONTENT CREATORS,</p>
-                      <p>CREATIVE TEAMS, ILLUSTRATORS,</p>
-                      <p>MOTION OR DIGITAL EXPERIENCE</p>
-                      <p>DESIGNERS, PRODUCTION ARTISTS,</p>
-                      <p>STORY-TELLERS AND ENTERTAINERS,</p>
-                      <p>FULLTIME OR FREELANCE, CREATIVE</p>
-                      <p>DIRECTORS OR INTERNS, ALL</p>
-                      <p>LEVELS, IN THE UNITED STATE</p>
-                      <div className="box-link">
-                        <div className="link">
-                          <IoArrowForward color="black" />
-                        </div>
+                  </div>
+                </Link>
+              </div>
+              <div className="col-lg-4 col-md-4 col-12 hero-box">
+                <Link
+                  // className={`box link-light ${item.img ? "flip" : ""}`}
+                  className="box link-light flip"
+                  to={token ? 'post-a-job' : '#register_agency'}
+                >
+                  <div className="flip-card-front">
+                    <div className="main-title">Post <br />creative jobs</div>
+                    <div className="title-small">Agency access to the right talent for the job</div>
+                    {/* <div className="box-link">
+                      <div className="link">
+                        <IoArrowForward color="black" />
+                      </div>
+                    </div> */}
+                  </div>
+                  <div className="flip-card-back justify-content-center d-flex flex-column">
+                    <h2>FOR AGENCIES<br />POST A JOB</h2>
+                    <p>MANAGE AND ACCESS</p>
+                    <p>ART DIRECTORS, COPYWRITERS,</p>
+                    <p>DESIGNERS, CONTENT CREATORS,</p>
+                    <p>CREATIVE TEAMS, ILLUSTRATORS,</p>
+                    <p>MOTION OR DIGITAL EXPERIENCE</p>
+                    <p>DESIGNERS, PRODUCTION ARTISTS,</p>
+                    <p>STORY-TELLERS AND ENTERTAINERS,</p>
+                    <p>FULLTIME OR FREELANCE, CREATIVE</p>
+                    <p>DIRECTORS OR INTERNS, ALL</p>
+                    <p>LEVELS, IN THE UNITED STATE</p>
+                    <div className="box-link">
+                      <div className="link">
+                        <IoArrowForward color="black" />
                       </div>
                     </div>
-                  </Link>
-                </div>
-                <div className="col-lg-4 col-md-4 col-12">
-                  <Link
-                    // className={`box link-light ${item.img ? "flip" : ""}`}
-                    className="box link-light flip"
-                    to={token ? (role == 'creative' ? 'community' : 'dashboard') : '#register_creative' }
-                  >
-                    <div className="flip-card-front">
-                      <div className="main-title">Join our <br />community</div>
-                      <div className="title-small">Serving creatives and agencies in advertising</div>
-                      {/* <div className="box-link">
-                        <div className="link">
-                          <IoArrowForward color="black" />
-                        </div>
-                      </div> */}
-                    </div>
-                    <div className="flip-card-back justify-content-center d-flex flex-column">
-                      <h2>REGISTER<br />AS A CREATIVE OR AGENCIES</h2>
-                      <p>GAIN VISIBILITY</p>
-                      <p>CREATE | VIEW PROFILES</p>
-                      <p>SHOWCASE YOUR WORK</p>
-                      <p>POST | MANAGE JOBS</p>
-                      <p>APPLY TO JOBS</p>
-                      <p>EXPLORE RESOURCES</p>
-                      <p>CONNECT WITH CREATIVES</p>
-                      <div className="box-link">
-                        <div className="link">
-                          <IoArrowForward color="black" />
-                        </div>
+                  </div>
+                </Link>
+              </div>
+              <div className="col-lg-4 col-md-4 col-12 hero-box">
+                <Link
+                  // className={`box link-light ${item.img ? "flip" : ""}`}
+                  className="box link-light flip"
+                  to={token ? (role == 'creative' ? 'community' : 'dashboard') : '#register_creative' }
+                >
+                  <div className="flip-card-front">
+                    <div className="main-title">Join our <br />community</div>
+                    <div className="title-small">Serving creatives and agencies in advertising</div>
+                    {/* <div className="box-link">
+                      <div className="link">
+                        <IoArrowForward color="black" />
+                      </div>
+                    </div> */}
+                  </div>
+                  <div className="flip-card-back justify-content-center d-flex flex-column">
+                    <h2>REGISTER<br />AS A CREATIVE OR AGENCIES</h2>
+                    <p>GAIN VISIBILITY</p>
+                    <p>CREATE | VIEW PROFILES</p>
+                    <p>SHOWCASE YOUR WORK</p>
+                    <p>POST | MANAGE JOBS</p>
+                    <p>APPLY TO JOBS</p>
+                    <p>EXPLORE RESOURCES</p>
+                    <p>CONNECT WITH CREATIVES</p>
+                    <div className="box-link">
+                      <div className="link">
+                        <IoArrowForward color="black" />
                       </div>
                     </div>
-                  </Link>
-                </div>
+                  </div>
+                </Link>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-12">
+                <p className="subHeading" style={{ marginTop: '100px' }}>Gather. Inspire. Do Cool $#*t!</p>
               </div>
             </div>
           </div>
-          <div className="searchArea">
+
+          {/* <div className="searchArea">
             <p className="searchHeader" dangerouslySetInnerHTML={{ __html: getPateDataItem("searchbar_heading", pageData) }}></p>
             <div className="searchBox">
               <form action={"/creative-jobs" + (search ? "/search/" + search : "")} onSubmit={(e) => {
@@ -196,7 +200,6 @@ const Home = () => {
               }}>
                 <div className="row">
                   <div className="col-md-8 col-12 position-relative">
-                    {/* <SearchOutline color={"#00000"} width="25px" className="searchIcon" /> */}
                     <IoSearchOutline size={26} className="searchIcon" />
                     <input
                       className="searchInput form-control"
@@ -216,8 +219,8 @@ const Home = () => {
               <p dangerouslySetInnerHTML={{ __html: getPateDataItem("searchbar_bottom_suggestion", pageData) }}>
               </p>
             </div>
-          </div>
-          <div className="featuresContainer container mt-3">
+          </div> */}
+          {/* <div className="featuresContainer container mt-3">
             <div className="row">
               <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
                 <img src={Gather} className="featureImg" />
@@ -249,7 +252,7 @@ const Home = () => {
                 <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_do_cool_shit", pageData) }}></span>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* <div className="ticker" id="about">
             <div className="ticker-text">
