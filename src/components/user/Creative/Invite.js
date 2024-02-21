@@ -26,7 +26,7 @@ const Invite = ({ open, handleClose, item }) => {
 
   const {
     state: { open_positions },
-    getOpenPositions,
+    getOpenPositionsAll,
     sendJobInvite,
   } = useContext(AgenciesContext);
 
@@ -35,7 +35,7 @@ const Invite = ({ open, handleClose, item }) => {
     let validOpenPositions = [];
     for (let index = 0; index < open_positions.length; index++) {
       const element = open_positions[index];
-      if(element.status == "pending") {
+      if(element.status == "approved") {
         validOpenPositions.push(element);
       }
     }
@@ -51,7 +51,7 @@ const Invite = ({ open, handleClose, item }) => {
 
 
   useEffect(() => {
-    if (user) getOpenPositions(user.uuid);
+    if (user) getOpenPositionsAll(user.uuid, 1);
   }, [user]);
 
   const handleChange = (checked, id) => {

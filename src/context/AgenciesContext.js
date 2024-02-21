@@ -153,6 +153,21 @@ const getOpenPositions = (dispatch) => {
   };
 };
 
+const getOpenPositionsAll = (dispatch) => {
+  return async (uid, status = null, applications_count = 0) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get("/jobs?sort=-created_at&filter[user_id]=" + uid + (status != null && status != '' ? "&filter[status]=" + status : "") + ("&applications_count=" + applications_count) + "&per_page=999999");
+      const data = response.data;
+      dispatch({
+        type: "set_open_positions",
+        payload: data,
+      });
+    } catch (error) { }
+    setLoading(dispatch, false);
+  };
+};
+
 const sendJobInvite = (dispatch) => {
   return async (receiver_id, job_id) => {
     setLoading(dispatch, true);
@@ -365,6 +380,7 @@ export const { Context, Provider } = createDataContext(
     agencySearch1,
     agencySearch2,
     getOpenPositions,
+    getOpenPositionsAll,
     uploadAttachment,
     removeAttachment,
     removeJobAttachment,
