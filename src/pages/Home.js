@@ -79,9 +79,8 @@ const Home = () => {
           </Link>
           {window?.location?.href?.indexOf("https://adagencycreatives.com/") != 0 && (
             <div className="container">
-              <div className="hero-boxes">
-                <div className="row content gy-3">
-                  <div className="col-lg-4 col-md-4 col-12">
+                <div className="row content gy-3 hero-boxes">
+                  <div className="col-lg-4 col-md-4 col-12 hero-box">
                     <Link
                       // className={`box link-light ${item.img ? "flip" : ""}`}
                       className="box link-light flip"
@@ -106,7 +105,7 @@ const Home = () => {
                       </div>
                     </Link>
                   </div>
-                  <div className="col-lg-4 col-md-4 col-12">
+                  <div className="col-lg-4 col-md-4 col-12 hero-box">
                     <Link
                       // className={`box link-light ${item.img ? "flip" : ""}`}
                       className="box link-light flip"
@@ -131,7 +130,7 @@ const Home = () => {
                       </div>
                     </Link>
                   </div>
-                  <div className="col-lg-4 col-md-4 col-12">
+                  <div className="col-lg-4 col-md-4 col-12 hero-box">
                     <Link
                       // className={`box link-light ${item.img ? "flip" : ""}`}
                       className="box link-light flip"
@@ -157,7 +156,6 @@ const Home = () => {
                     </Link>
                   </div>
                 </div>
-              </div>
             </div>
           )}
 
