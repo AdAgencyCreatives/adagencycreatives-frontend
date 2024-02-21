@@ -82,7 +82,7 @@ const JobApplications = (props) => {
                                                             ? "Approved"
                                                             : application.status == "shortlisted"
                                                                 ? "Recommended"
-                                                                : "Rejected"
+                                                                : "Not Aligned"
                                                     }
                                                 </span>
                                             ) : (

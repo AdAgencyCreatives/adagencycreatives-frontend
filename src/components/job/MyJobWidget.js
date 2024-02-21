@@ -117,7 +117,7 @@ const MyJobWidget = (props) => {
             </td>
 
             <td className="job-table-status nowrap">
-                <div className="job-table-actions-inner pending_payment">
+                <div className="job-table-actions-inner status">
                     {job.status}
                 </div>
             </td>

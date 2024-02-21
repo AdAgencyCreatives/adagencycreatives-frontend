@@ -110,7 +110,7 @@ const Applicants = () => {
                                     ? "Pending"
                                     : application.status == "accepted"
                                       ? "Approved"
-                                      : "Rejected"}
+                                      : "Not Aligned"}
                                 </span>
                               </div>
                               <div className="job-metas">
