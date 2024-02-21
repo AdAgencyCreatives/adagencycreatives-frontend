@@ -77,7 +77,7 @@ const Home = () => {
             style={{ fontWeight: "500", fontSize: "18px", marginLeft: "5px", minWidth: "120px" }}>
             Film Festival
           </Link>
-          {false && (
+          {window?.location?.href?.indexOf("https://adagencycreatives.com/") != 0 && (
             <div className="container">
               <div className="hero-boxes">
                 <div className="row content gy-3">
