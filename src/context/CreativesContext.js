@@ -130,6 +130,7 @@ const getCreative = (dispatch) => {
         getCreativeEducation(dispatch, uid);
         getCreativeExperience(dispatch, uid);
       }
+      // console.log('data', data);
       dispatch({
         type: "set_single_creative",
         payload: data,

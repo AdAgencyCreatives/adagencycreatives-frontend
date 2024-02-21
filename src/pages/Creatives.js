@@ -15,8 +15,8 @@ import Location from "../components/CreativeLocation";
 import CreativeLocation from "../components/CreativeLocation";
 
 const Creatives = () => {
-
-  const { creatives, loading, loadMore, searchCreativesAdvanced } = useCreatives();
+  const [isCreativeLoading, setIsCreativeLoading] = useState(true);
+  const { creatives, loading, loadMore, searchCreativesAdvanced } = useCreatives('creative');
   const {
     state: { bookmarks, categories_creative_count },
     createBookmark,
@@ -64,24 +64,23 @@ const Creatives = () => {
     }
     return null;
   };
-  const searchUser = (value) => {
-
+  const searchUser = async (value) => {
+    setIsCreativeLoading(true);
     let searchString = "" + (value ? value : "");
     let searchTerms = searchString.indexOf(",") >= 0 ? searchString.split(',') : [searchString];
 
     let permission = proceed_search(searchString, searchTerms);
 
     showAlert(permission.message);
+
     if (!permission.proceed) {
       return;
     }
 
     let query_search_string = build_search_string(searchTerms, permission.terms_allowed);
-    //alert(query_search_string);
 
-    console.log("Searching: " + query_search_string);
-    searchCreativesAdvanced(which_search(), query_search_string);
-
+    await searchCreativesAdvanced(which_search(), query_search_string);
+    setIsCreativeLoading(false);
   };
 
   const build_search_string = (searchTerms, terms_allowed) => {
@@ -196,6 +195,11 @@ const Creatives = () => {
     getCategoriesCreativeCount();
   }, []);
 
+  useEffect(() => {
+    if (creatives?.length === 9)
+      setIsCreativeLoading(false);
+  }, [creatives]);
+
   return (
     <div className="dark-container mb-0">
       <div className="container p-md-0 px-5">
@@ -216,76 +220,86 @@ const Creatives = () => {
           </>
         )}
         <div className="row g-4">
-          {creatives &&
-            creatives.map((item, index) => {
-              const isShortlisted =
-                bookmarks.find(
-                  (bookmark) => bookmark.resource?.user_id == item?.user_id
-                ) || false;
-              return (
-                <div className="col-md-4 col-sm-6 col-12" key={`creative-${item?.user_id}`}>
-                  <div className="sliderContent agencies-slider">
-                    {(role == "admin" || role == "agency" || role == "advisor" || role == "recruiter") && (
-                      <Tooltip title={"Shortlist"} type="featured">
-                        <button
-                          className={
-                            "shortlist-btn" + (isShortlisted ? " active" : "")
-                          }
-                          onClick={() =>
-                            isShortlisted
-                              ? removeBookmark(isShortlisted.id)
-                              : addToShortlist(item.id)
-                          }
-                        >
-                          <IoBookmarkOutline />
-                        </button>
-                      </Tooltip>
-                    )}
-                    <ImageLoader item={item} Placeholder={Placeholder} />
-                    <div className="agencyName">
-                      <Link
-                        className="text-dark"
-                        to={token ? `/creative/${item.slug}` : "#"}
-                        onClick={(e) => {
-                          if (!token) {
-                            e.preventDefault();
-                            showAlert("Please login to access");
-                          }
-                          return false;
-                        }}
-                      >
-                        {item.name}
-                      </Link>
+          {!isCreativeLoading ? (
+            <>
+              {creatives &&
+                creatives.map((item, index) => {
+                  const isShortlisted =
+                    bookmarks.find(
+                      (bookmark) => bookmark.resource?.user_id == item?.user_id
+                    ) || false;
+                  return (
+                    <div className="col-md-4 col-sm-6 col-12" key={`creative-${item?.user_id}`}>
+                      <div className="sliderContent agencies-slider">
+                        {(role == "admin" || role == "agency" || role == "advisor" || role == "recruiter") && (
+                          <Tooltip title={"Shortlist"} type="featured">
+                            <button
+                              className={
+                                "shortlist-btn" + (isShortlisted ? " active" : "")
+                              }
+                              onClick={() =>
+                                isShortlisted
+                                  ? removeBookmark(isShortlisted.id)
+                                  : addToShortlist(item.id)
+                              }
+                            >
+                              <IoBookmarkOutline />
+                            </button>
+                          </Tooltip>
+                        )}
+                        <ImageLoader item={item} Placeholder={Placeholder} />
+                        <div className="agencyName">
+                          <Link
+                            className="text-dark"
+                            to={token ? `/creative/${item.slug}` : "#"}
+                            onClick={(e) => {
+                              if (!token) {
+                                e.preventDefault();
+                                showAlert("Please login to access");
+                              }
+                              return false;
+                            }}
+                          >
+                            {item.name}
+                          </Link>
+                        </div>
+                        <div className="position">
+                          {isAdmin || isAdvisor ? (<>
+                            <Link className="" to={`/creatives/search/industry-title/${item.category}`}>
+                              {item.category || ""}
+                            </Link>
+                          </>) : (<>
+                            {item.category || ""}
+                          </>)}
+                        </div>
+                        <CreativeLocation location={item?.location} />
+                        <div className="profileLink">
+                          <Link
+                            to={token ? `/creative/${item.slug}` : "#"}
+                            onClick={(e) => {
+                              if (!token) {
+                                e.preventDefault();
+                                showAlert("Please login to access");
+                              }
+                              return false;
+                            }}>
+                            View Profile
+                          </Link>
+                        </div>
+                      </div>
                     </div>
-                    <div className="position">
-                      {isAdmin || isAdvisor ? (<>
-                        <Link className="" to={`/creatives/search/industry-title/${item.category}`}>
-                          {item.category || ""}
-                        </Link>
-                      </>) : (<>
-                        {item.category || ""}
-                      </>)}
-                    </div>
-                    <CreativeLocation location={item?.location} />
-                    <div className="profileLink">
-                      <Link
-                        to={token ? `/creative/${item.slug}` : "#"}
-                        onClick={(e) => {
-                          if (!token) {
-                            e.preventDefault();
-                            showAlert("Please login to access");
-                          }
-                          return false;
-                        }}>
-                        View Profile
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                  );
+                })}
+            </>
+          ) : (
+            <div className="load-more text-center">
+              <div className="spinner-border text-light" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          )}
           <div className="load-more text-center">
-            {loading && (
+            {loading && !isCreativeLoading && (
               <div className="spinner-border text-light" role="status">
                 <span className="visually-hidden">Loading...</span>
               </div>

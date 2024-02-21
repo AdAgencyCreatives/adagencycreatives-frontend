@@ -203,7 +203,6 @@ const logout = (dispatch) => {
       type: "set_token",
       payload: { token: null, role: null },
     });
-    console.log("loggin out");
     cb();
   };
 };
@@ -341,7 +340,7 @@ const verifyToken = (dispatch) => async (token) => {
         },
       }
     );
-    console.log("Logged in on backend");
+    
     setIsLoading(dispatch, false);
     setToken(dispatch)(response.data.token, response.data.user.role);
     setUserData(dispatch, response.data.user);

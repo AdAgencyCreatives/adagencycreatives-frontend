@@ -40,7 +40,7 @@ p.subHeading {
     font-size: 28px;
     margin: 0px;
     color: white;
-    min-height: 73.2px;
+    margin-bottom: 50px;
     line-height: 32px;
 }
 
@@ -231,8 +231,13 @@ button.searchBtn:hover {
         transform-style: preserve-3d;
         transition: all 1.3s ease;
         box-shadow: 3px 3px 3px #afafaf;
+    }
 
-        &.flip:hover {
+    .hero-box:hover {
+        transition: all 1.3s ease;
+        transform-style: preserve-3d;
+        
+        .flip {
             transform: rotateY(180deg);
         }
     }
