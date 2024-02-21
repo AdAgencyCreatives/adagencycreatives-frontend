@@ -104,7 +104,7 @@ const Header = ({ data, role, user }) => {
             </div>
             <div className="col-md-6">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
-                {data?.resume?.length > 0 && (isOwnProfile || !isCreative || isFriend) && (
+                {(isOwnProfile || !isCreative || isFriend) && (
                   <a
                     href={data.resume}
                     target="__blank"
@@ -112,7 +112,7 @@ const Header = ({ data, role, user }) => {
                       validateAccess(
                         e,
                         [!hasSubscription, !isCreative],
-                        "Post a Job to download resumes"
+                        "Add a job post to download resumes"
                       )
                     }
                   >
