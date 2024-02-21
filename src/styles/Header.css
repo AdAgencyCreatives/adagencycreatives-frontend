@@ -872,13 +872,19 @@ nav ul.dropdown-list .list-item-text.j-fix {
     color: #fff;
 }
 
-.forgot-password {
+.password-reset {
+    flex-direction: column;
+}
+
+.forgot-password,
+.password-reset {
     max-width: 50%;
     margin: 0px auto;
 }
 
 @media (max-width: 768px) {
-    .forgot-password {
+    .forgot-password,
+    .password-reset {
         max-width: 100%;
     }   
 }

@@ -169,7 +169,66 @@ const useHelper = () => {
         return capitalized ? capitalize("a") : "a";
     };
 
-    return { rectify_url, decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial, strReplaceAll, isCharNumber, getNumericString, formatPhone, capitalize, getAorAn };
+    const hasPasswordError = (value) => {
+
+        if (!value?.length) {
+          return "";
+        }
+    
+        if (value.length < 8) {
+          return "Minimum 8 characters required.";
+        }
+    
+        const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        const upperCase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+        const lowerCase = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    
+        let hasDigit = false;
+        let hasUpper = false;
+        let hasLower = false;
+        let hasSpecial = false;
+    
+        for (let index = 0; index < value.length; index++) {
+          const element = value[index];
+          if (digits.includes(element)) {
+            hasDigit = true;
+            continue;
+          }
+          if (upperCase.includes(element)) {
+            hasUpper = true;
+            continue;
+          }
+          if (lowerCase.includes(element)) {
+            hasLower = true;
+            continue;
+          }
+          hasSpecial = true;
+        }
+    
+        if (!hasDigit) {
+          return "At-least one digit required.";
+        }
+    
+        // if (!hasUpper) {
+        //   return "At-least one upper case letter required.";
+        // }
+    
+        // if (!hasLower) {
+        //   return "At-least one lower case letter required.";
+        // }
+
+        if(!(hasUpper || hasLower)) {
+            return "At-least one alphabet letter is required.";
+        }
+    
+        if (!hasSpecial) {
+          return "At-least one special character required.";
+        }
+    
+        return "";
+      };
+
+    return { rectify_url, decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial, strReplaceAll, isCharNumber, getNumericString, formatPhone, capitalize, getAorAn, hasPasswordError };
 }
 
 export default useHelper;

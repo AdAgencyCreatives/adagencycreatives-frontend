@@ -6,6 +6,7 @@ import "../../styles/Modal/AuthModal.scss";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { isValidHttpUrl } from "../common";
+import useHelper from "../../hooks/useHelper";
 
 const RegisterModal = ({ open, handleClose, setModal, form }) => {
   const { state, signup } = useContext(AuthContext);
@@ -16,6 +17,8 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
   const [message, setMessage] = useState(null);
   const dialogRef = useRef(null);
   const [formSubmit, setFormSubmit] = useState(false);
+
+  const { hasPasswordError } = useHelper();
 
   useEffect(() => {
     if (formMessage) {
@@ -140,61 +143,6 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
     ],
   });
 
-  const hasPasswordError = (value) => {
-
-    if (!value?.length) {
-      return "";
-    }
-
-    if (value.length < 8) {
-      return "Minimum 8 characters required."
-    }
-
-    const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    const upperCase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-    const lowerCase = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-
-    let hasDigit = false;
-    let hasUpper = false;
-    let hasLower = false;
-    let hasSpecial = false;
-
-    for (let index = 0; index < value.length; index++) {
-      const element = value[index];
-      if (digits.includes(element)) {
-        hasDigit = true;
-        continue;
-      }
-      if (upperCase.includes(element)) {
-        hasUpper = true;
-        continue;
-      }
-      if (lowerCase.includes(element)) {
-        hasLower = true;
-        continue;
-      }
-      hasSpecial = true;
-    }
-
-    if (!hasDigit) {
-      return "At-least one digit required.";
-    }
-
-    if (!hasUpper) {
-      return "At-least one upper case letter required.";
-    }
-
-    if (!hasLower) {
-      return "At-least one lower case letter required.";
-    }
-
-    if (!hasSpecial) {
-      return "At-least one special character required.";
-    }
-
-    return "";
-  };
-
   const handleInputChange = (type, index, value) => {
     const updatedFields = { ...fields };
 
@@ -215,10 +163,39 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setFormSubmit(true);
+
+    for (let index = 0; index < fields[tab].length; index++) {
+      if(fields[tab][index].required && !fields[tab][index].value?.length) {
+        fields[tab][index].error = 'Required';
+      }
+    }
+
     const errors = fields[tab].filter((field, index) => (
       field?.error && field?.error != ''
     ));
+
+    if (errors?.length) {
+      let errMsg = 'Following field' + (errors.length > 1 ? 's' : '') + ' requires your attention:<br>\n';
+      for (let index = 0; index < errors.length; index++) {
+        const element = errors[index];
+        errMsg += "" + (index+1) + ". " + element.label.replace("*", "") + "<br>\n";
+      }
+
+      setMessage({
+        class: "warning",
+        content: errMsg,
+      });
+
+      dialogRef.current.getElementsByClassName("MuiDialog-container")[0].scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
+      return false;
+    }
+
+    setFormSubmit(true);
+
     /* signup(fields[tab], tab, () => {
       dialogRef.current
         .getElementsByClassName("MuiDialog-container")[0]
@@ -290,7 +267,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
                   <a data-toggle="tab">Agency</a>
                 </li>
               </ul>
-              {message && <div className={`alert alert-${message.class}`}>{message.content}</div>}
+              {message && <div className={`alert alert-${message.class}`} dangerouslySetInnerHTML={{ __html: message.content }}></div>}
               <form id="register-form" onSubmit={(e) => handleFormSubmit(e)}>
                 {fields[tab].map((field, index) => (
                   <div className={`form-group position-relative ${field.type !== 'hidden' ? 'mb-4' : ''}`} key={field.name}>
@@ -301,7 +278,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
                       name={field.name}
                       placeholder={field.placeholder}
                       type={field.type == "password" ? (show[field.name] ? "text" : "password") : field.type}
-                      required="required"
+                      required={field?.required ? "required" : ""}
                       value={field.value || ""}
                       onChange={(e) => handleInputChange(tab, index, e.target.value)}
                     />
