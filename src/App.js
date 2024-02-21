@@ -67,9 +67,7 @@ function App() {
                       <CommunityProvider>
                         <GroupsProvider>
                           <NotificationsProvider>
-                            {isLoading ? (
-                              <Loader />
-                            ) : (
+                            {/* {!isLoading ? ( */}
                               <div className="App">
                                 <ChatListener />
                                 <ScrollRestoration />
@@ -81,7 +79,9 @@ function App() {
                                   <Footer />
                                 </>) : (<></>)}
                               </div>
-                            )}
+                            {/* ) : (
+                              <Loader />
+                            )} */}
                           </NotificationsProvider>
                         </GroupsProvider>
                       </CommunityProvider>
