@@ -109,8 +109,8 @@ const ApplicantJobs = () => {
               <div className="heading row d-flex align-items-center">
                 <div className="col-sm-8 col-xs-12">
                   <h3 className="job-title">{item.agency.name} - {item.title} {item.location && (<span className="location-name">{"(" + item.location.city + ", " + item.location.state + ")"}</span>)}</h3>
-                  {item?.expired_at && ((new Date(item?.expired_at) < (Date.parse(new Date().toISOString())))) && (<span className="badge" style={{ backgroundColor: 'red' }}>Expired: <TimeAgo datetime={item?.expired_at} /></span>)}
-                  {item?.deleted_at && ((new Date(item?.deleted_at) < (Date.parse(new Date().toISOString())))) && (<span className="badge" style={{ backgroundColor: 'red' }}>Deleted: <TimeAgo datetime={item?.deleted_at} /></span>)}
+                  {item?.expired_at && ((new Date(item?.expired_at) < (Date.parse(new Date().toISOString())))) && (<span className="badge" style={{ backgroundColor: 'red', marginRight: '5px' }}>Expired: <TimeAgo datetime={item?.expired_at} /></span>)}
+                  {item?.deleted_at && ((new Date(item?.deleted_at) < (Date.parse(new Date().toISOString())))) && (<span className="badge" style={{ backgroundColor: 'red', marginRight: '5px' }}>Deleted: <TimeAgo datetime={item?.deleted_at} /></span>)}
                 </div>
                 <div className="col-sm-4 col-xs-12">
                   <div className="inner-result d-flex align-items-center">
@@ -150,7 +150,7 @@ const ApplicantJobs = () => {
                         }
                         onClick={() => switchTab(item.id, "rejected")}
                       >
-                        Rejected(s):
+                        Not Aligned:
                         <span className="number">
                           {
                             item.applications && item.applications.filter(
