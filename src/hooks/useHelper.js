@@ -5,15 +5,15 @@ const useHelper = () => {
 
     const rectify_url = (url) => {
         if (!url) {
-          return url;
+            return url;
         }
-    
+
         let lowerUrl = ("" + url).toLowerCase();
         let haveHttps = lowerUrl.indexOf("https://") >= 0;
         let haveHttp = lowerUrl.indexOf("http://") >= 0;
-    
+
         return !(haveHttps || haveHttp) ? ("https://" + url) : url;
-      };
+    };
 
     var decodeEntities = (function () {
         var cache = {},
@@ -144,10 +144,10 @@ const useHelper = () => {
     };
 
     const capitalize = (text) => {
-        if(!text || !text.length) {
+        if (!text || !text.length) {
             return text;
         }
-        if(text.length == 1) {
+        if (text.length == 1) {
             return text.toUpperCase();
         }
 
@@ -155,14 +155,14 @@ const useHelper = () => {
     };
 
     const getAorAn = (word, capitalized = false) => {
-        if(!word || !word.length) {
+        if (!word || !word.length) {
             return capitalized ? capitalize("a") : "a";
         }
 
         const vowels = ['a', 'e', 'i', 'o', 'u'];
         const letter = word.charAt(0).toLowerCase();
 
-        if(vowels.includes(letter)) {
+        if (vowels.includes(letter)) {
             return capitalized ? capitalize("an") : "an";
         }
 
@@ -171,62 +171,56 @@ const useHelper = () => {
 
     const hasPasswordError = (value) => {
 
+        let errMsg = "Passwords must be a minimum of eight characters, contain at least one number and special character";
+
         if (!value?.length) {
-          return "";
+            return "";
         }
-    
+
         if (value.length < 8) {
-          return "Minimum 8 characters required.";
+            return errMsg;
         }
-    
+
         const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         const upperCase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
         const lowerCase = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-    
+
         let hasDigit = false;
         let hasUpper = false;
         let hasLower = false;
         let hasSpecial = false;
-    
-        for (let index = 0; index < value.length; index++) {
-          const element = value[index];
-          if (digits.includes(element)) {
-            hasDigit = true;
-            continue;
-          }
-          if (upperCase.includes(element)) {
-            hasUpper = true;
-            continue;
-          }
-          if (lowerCase.includes(element)) {
-            hasLower = true;
-            continue;
-          }
-          hasSpecial = true;
-        }
-    
-        if (!hasDigit) {
-          return "At-least one digit required.";
-        }
-    
-        // if (!hasUpper) {
-        //   return "At-least one upper case letter required.";
-        // }
-    
-        // if (!hasLower) {
-        //   return "At-least one lower case letter required.";
-        // }
 
-        if(!(hasUpper || hasLower)) {
-            return "At-least one alphabet letter is required.";
+        for (let index = 0; index < value.length; index++) {
+            const element = value[index];
+            if (digits.includes(element)) {
+                hasDigit = true;
+                continue;
+            }
+            if (upperCase.includes(element)) {
+                hasUpper = true;
+                continue;
+            }
+            if (lowerCase.includes(element)) {
+                hasLower = true;
+                continue;
+            }
+            hasSpecial = true;
         }
-    
+
+        if (!hasDigit) {
+            return errMsg;
+        }
+
+        if (!(hasUpper || hasLower)) {
+            return errMsg;
+        }
+
         if (!hasSpecial) {
-          return "At-least one special character required.";
+            return errMsg;
         }
-    
+
         return "";
-      };
+    };
 
     return { rectify_url, decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial, strReplaceAll, isCharNumber, getNumericString, formatPhone, capitalize, getAorAn, hasPasswordError };
 }

@@ -61,19 +61,19 @@ const ResetPassword = () => {
     errData.password_confirmation = formData.password_confirmation?.length > 0 ? hasPasswordError(formData.password_confirmation) : 'Input required.';
 
     if (errData.password?.length > 0) {
-      setError("Password Field: " + errData.password);
+      setError(errData.password);
       passwordRef?.current?.focus();
       return false;
     }
 
     if (errData.password_confirmation?.length > 0) {
-      setError("Password Confirmation Field: " + errData.password_confirmation);
+      setError(errData.password_confirmation);
       passwordConfirmationRef?.current?.focus();
       return false;
     }
 
     if (formData.password != formData.password_confirmation) {
-      setError("Confirm Password field must match Password field.");
+      setError("Passwords do not match");
       passwordConfirmationRef?.current?.focus();
       return false;
     }
