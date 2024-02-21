@@ -92,7 +92,7 @@ const Header = ({ data, role, user }) => {
                 {/* <span class="featured-text">Featured</span> */}
               </div>
               <div className="position">
-                {isAdmin || isAdvisor ? (<>
+                {isAdmin || (isAdvisor && hasSubscription) ? (<>
                   <Link to={"/creatives/search/industry-title/" + encodeSpecial(encodeURI(data.category))}>
                     {data.category}
                   </Link>
@@ -104,11 +104,11 @@ const Header = ({ data, role, user }) => {
             </div>
             <div className="col-md-6">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
-                {(isOwnProfile || !isCreative || isFriend) && (
+                {data?.resume?.length > 0 && (isOwnProfile || !isCreative || isFriend) && (
                   <a
                     href={data.resume}
                     target="__blank"
-                    onClick={(e) => isAdmin || isAdvisor ||
+                    onClick={(e) => isAdmin || (isAdvisor && hasSubscription) || 
                       validateAccess(
                         e,
                         [!hasSubscription, !isCreative],
