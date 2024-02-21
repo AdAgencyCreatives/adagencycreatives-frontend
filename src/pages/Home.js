@@ -79,83 +79,83 @@ const Home = () => {
           </Link>
           {window?.location?.href?.indexOf("https://adagencycreatives.com/") != 0 && (
             <div className="container">
-                <div className="row content gy-3 hero-boxes">
-                  <div className="col-lg-4 col-md-4 col-12 hero-box">
-                    <Link
-                      // className={`box link-light ${item.img ? "flip" : ""}`}
-                      className="box link-light flip"
-                      to="/creative-jobs"
-                    >
-                      <div className="flip-card-front">
-                        <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_title', pageData) }}></div>
-                        <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_subtitle', pageData) }}></div>
-                        {/* <div className="box-link">
+              <div className="row content gy-3 hero-boxes">
+                <div className="col-lg-4 col-md-4 col-12 hero-box">
+                  <Link
+                    // className={`box link-light ${item.img ? "flip" : ""}`}
+                    className="box link-light flip"
+                    to="/creative-jobs"
+                  >
+                    <div className="flip-card-front">
+                      <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_title', pageData) }}></div>
+                      <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_subtitle', pageData) }}></div>
+                      {/* <div className="box-link">
                         <div className="link">
                           <IoArrowForward color="black" />
                         </div>
                       </div> */}
-                      </div>
-                      <div className="flip-card-back justify-content-center d-flex flex-column">
-                        <div dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_content', pageData) }}></div>
-                        <div className="box-link">
-                          <div className="link">
-                            <IoArrowForward color="black" />
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
-                  <div className="col-lg-4 col-md-4 col-12 hero-box">
-                    <Link
-                      // className={`box link-light ${item.img ? "flip" : ""}`}
-                      className="box link-light flip"
-                      to={token ? 'post-a-job' : '#register_agency'}
-                    >
-                      <div className="flip-card-front">
-                        <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_title', pageData) }}></div>
-                        <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_subtitle', pageData) }}></div>
-                        {/* <div className="box-link">
+                    </div>
+                    <div className="flip-card-back justify-content-center d-flex flex-column">
+                      <div dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_content', pageData) }}></div>
+                      <div className="box-link">
                         <div className="link">
                           <IoArrowForward color="black" />
                         </div>
-                      </div> */}
                       </div>
-                      <div className="flip-card-back justify-content-center d-flex flex-column">
-                        <div dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_content', pageData) }}></div>
-                        <div className="box-link">
-                          <div className="link">
-                            <IoArrowForward color="black" />
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
-                  <div className="col-lg-4 col-md-4 col-12 hero-box">
-                    <Link
-                      // className={`box link-light ${item.img ? "flip" : ""}`}
-                      className="box link-light flip"
-                      to={token ? (role == 'creative' ? 'community' : 'dashboard') : '#register_creative'}
-                    >
-                      <div className="flip-card-front">
-                        <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_title', pageData) }}></div>
-                        <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_subtitle', pageData) }}></div>
-                        {/* <div className="box-link">
-                        <div className="link">
-                          <IoArrowForward color="black" />
-                        </div>
-                      </div> */}
-                      </div>
-                      <div className="flip-card-back justify-content-center d-flex flex-column">
-                        <div dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_content', pageData) }}></div>
-                        <div className="box-link">
-                          <div className="link">
-                            <IoArrowForward color="black" />
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
+                    </div>
+                  </Link>
                 </div>
+                <div className="col-lg-4 col-md-4 col-12 hero-box">
+                  <Link
+                    // className={`box link-light ${item.img ? "flip" : ""}`}
+                    className="box link-light flip"
+                    to={token ? 'post-a-job' : '#register_agency'}
+                  >
+                    <div className="flip-card-front">
+                      <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_title', pageData) }}></div>
+                      <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_subtitle', pageData) }}></div>
+                      {/* <div className="box-link">
+                        <div className="link">
+                          <IoArrowForward color="black" />
+                        </div>
+                      </div> */}
+                    </div>
+                    <div className="flip-card-back justify-content-center d-flex flex-column">
+                      <div dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_content', pageData) }}></div>
+                      <div className="box-link">
+                        <div className="link">
+                          <IoArrowForward color="black" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+                <div className="col-lg-4 col-md-4 col-12 hero-box">
+                  <Link
+                    // className={`box link-light ${item.img ? "flip" : ""}`}
+                    className="box link-light flip"
+                    to={token ? (role == 'creative' ? 'community' : 'dashboard') : '#register_creative'}
+                  >
+                    <div className="flip-card-front">
+                      <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_title', pageData) }}></div>
+                      <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_subtitle', pageData) }}></div>
+                      {/* <div className="box-link">
+                        <div className="link">
+                          <IoArrowForward color="black" />
+                        </div>
+                      </div> */}
+                    </div>
+                    <div className="flip-card-back justify-content-center d-flex flex-column">
+                      <div dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_content', pageData) }}></div>
+                      <div className="box-link">
+                        <div className="link">
+                          <IoArrowForward color="black" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              </div>
             </div>
           )}
 

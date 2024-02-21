@@ -140,13 +140,59 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
     ],
   });
 
-  const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-  const upperCase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-  const lowerCase = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-  const nonSpecial = [...digits, upperCase, lowerCase];
+  const hasPasswordError = (value) => {
 
-  const isPasswordValid = (value) => {
+    if (!value?.length) {
+      return "";
+    }
 
+    if (value.length < 8) {
+      return "Minimum 8 characters required."
+    }
+
+    const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const upperCase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    const lowerCase = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
+    let hasDigit = false;
+    let hasUpper = false;
+    let hasLower = false;
+    let hasSpecial = false;
+
+    for (let index = 0; index < value.length; index++) {
+      const element = value[index];
+      if (digits.includes(element)) {
+        hasDigit = true;
+        continue;
+      }
+      if (upperCase.includes(element)) {
+        hasUpper = true;
+        continue;
+      }
+      if (lowerCase.includes(element)) {
+        hasLower = true;
+        continue;
+      }
+      hasSpecial = true;
+    }
+
+    if (!hasDigit) {
+      return "At-least one digit required.";
+    }
+
+    if (!hasUpper) {
+      return "At-least one upper case letter required.";
+    }
+
+    if (!hasLower) {
+      return "At-least one lower case letter required.";
+    }
+
+    if (!hasSpecial) {
+      return "At-least one special character required.";
+    }
+
+    return "";
   };
 
   const handleInputChange = (type, index, value) => {
@@ -156,7 +202,12 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
     if (updatedFields[type][index].type === 'url') {
       updatedFields[type][index].error = !isValidHttpUrl(value) ? 'Please enter a valid url.' : '';
     } else if (updatedFields[type][index].type === 'password') {
-      updatedFields[type][index].error = '';
+      let err = hasPasswordError(value);
+      if (err?.length) {
+        updatedFields[type][index].error = err;
+      } else {
+        updatedFields[type][index].error = '';
+      }
     }
 
     setFields(updatedFields);
