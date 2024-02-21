@@ -79,109 +79,83 @@ const Home = () => {
           </Link>
           {window?.location?.href?.indexOf("https://adagencycreatives.com/") != 0 && (
             <div className="container">
-              <div className="row content gy-3 hero-boxes">
-                <div className="col-lg-4 col-md-4 col-12 hero-box">
-                  <Link
-                    // className={`box link-light ${item.img ? "flip" : ""}`}
-                    className="box link-light flip"
-                    to="/creative-jobs"
-                  >
-                    <div className="flip-card-front">
-                      <div className="main-title">Search <br />Creative Jobs</div>
-                      <div className="title-small">Creative access to right opportunities</div>
-                      {/* <div className="box-link">
+              <div className="hero-boxes">
+                <div className="row content gy-3">
+                  <div className="col-lg-4 col-md-4 col-12">
+                    <Link
+                      // className={`box link-light ${item.img ? "flip" : ""}`}
+                      className="box link-light flip"
+                      to="/creative-jobs"
+                    >
+                      <div className="flip-card-front">
+                        <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_title', pageData) }}></div>
+                        <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_subtitle', pageData) }}></div>
+                        {/* <div className="box-link">
                         <div className="link">
                           <IoArrowForward color="black" />
                         </div>
                       </div> */}
-                    </div>
-                    <div className="flip-card-back justify-content-center d-flex flex-column">
-                      <h2>FOR CREATIVES<br />SEARCH JOBS</h2>
-                      <p>SEARCH JOBS</p>
-                      <p>SET NOTIFICATIONS</p>
-                      <p>APPLY FOR JOBS</p>
-                      <p>NETWORK IN ONE PLACE</p>
-                      <p>MANAGE JOBS</p>
-                      <p>ON OUR DASHBOARD</p>
-                      <div className="box-link">
-                        <div className="link">
-                          <IoArrowForward color="black" />
+                      </div>
+                      <div className="flip-card-back justify-content-center d-flex flex-column">
+                        <div dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_content', pageData) }}></div>
+                        <div className="box-link">
+                          <div className="link">
+                            <IoArrowForward color="black" />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Link>
-                </div>
-                <div className="col-lg-4 col-md-4 col-12 hero-box">
-                  <Link
-                    // className={`box link-light ${item.img ? "flip" : ""}`}
-                    className="box link-light flip"
-                    to={token ? 'post-a-job' : '#register_agency'}
-                  >
-                    <div className="flip-card-front">
-                      <div className="main-title">Post <br />creative jobs</div>
-                      <div className="title-small">Agency access to the right talent for the job</div>
-                      {/* <div className="box-link">
+                    </Link>
+                  </div>
+                  <div className="col-lg-4 col-md-4 col-12">
+                    <Link
+                      // className={`box link-light ${item.img ? "flip" : ""}`}
+                      className="box link-light flip"
+                      to={token ? 'post-a-job' : '#register_agency'}
+                    >
+                      <div className="flip-card-front">
+                        <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_title', pageData) }}></div>
+                        <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_subtitle', pageData) }}></div>
+                        {/* <div className="box-link">
                         <div className="link">
                           <IoArrowForward color="black" />
                         </div>
                       </div> */}
-                    </div>
-                    <div className="flip-card-back justify-content-center d-flex flex-column">
-                      <h2>FOR AGENCIES<br />POST A JOB</h2>
-                      <p>MANAGE AND ACCESS</p>
-                      <p>ART DIRECTORS, COPYWRITERS,</p>
-                      <p>DESIGNERS, CONTENT CREATORS,</p>
-                      <p>CREATIVE TEAMS, ILLUSTRATORS,</p>
-                      <p>MOTION OR DIGITAL EXPERIENCE</p>
-                      <p>DESIGNERS, PRODUCTION ARTISTS,</p>
-                      <p>STORY-TELLERS AND ENTERTAINERS,</p>
-                      <p>FULLTIME OR FREELANCE, CREATIVE</p>
-                      <p>DIRECTORS OR INTERNS, ALL</p>
-                      <p>LEVELS, IN THE UNITED STATE</p>
-                      <div className="box-link">
-                        <div className="link">
-                          <IoArrowForward color="black" />
+                      </div>
+                      <div className="flip-card-back justify-content-center d-flex flex-column">
+                        <div dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_content', pageData) }}></div>
+                        <div className="box-link">
+                          <div className="link">
+                            <IoArrowForward color="black" />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Link>
-                </div>
-                <div className="col-lg-4 col-md-4 col-12 hero-box">
-                  <Link
-                    // className={`box link-light ${item.img ? "flip" : ""}`}
-                    className="box link-light flip"
-                    to={token ? (role == 'creative' ? 'community' : 'dashboard') : '#register_creative' }
-                  >
-                    <div className="flip-card-front">
-                      <div className="main-title">Join our <br />community</div>
-                      <div className="title-small">Serving creatives and agencies in advertising</div>
-                      {/* <div className="box-link">
+                    </Link>
+                  </div>
+                  <div className="col-lg-4 col-md-4 col-12">
+                    <Link
+                      // className={`box link-light ${item.img ? "flip" : ""}`}
+                      className="box link-light flip"
+                      to={token ? (role == 'creative' ? 'community' : 'dashboard') : '#register_creative'}
+                    >
+                      <div className="flip-card-front">
+                        <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_title', pageData) }}></div>
+                        <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_subtitle', pageData) }}></div>
+                        {/* <div className="box-link">
                         <div className="link">
                           <IoArrowForward color="black" />
                         </div>
                       </div> */}
-                    </div>
-                    <div className="flip-card-back justify-content-center d-flex flex-column">
-                      <h2>REGISTER<br />AS A CREATIVE OR AGENCIES</h2>
-                      <p>GAIN VISIBILITY</p>
-                      <p>CREATE | VIEW PROFILES</p>
-                      <p>SHOWCASE YOUR WORK</p>
-                      <p>POST | MANAGE JOBS</p>
-                      <p>APPLY TO JOBS</p>
-                      <p>EXPLORE RESOURCES</p>
-                      <p>CONNECT WITH CREATIVES</p>
-                      <div className="box-link">
-                        <div className="link">
-                          <IoArrowForward color="black" />
+                      </div>
+                      <div className="flip-card-back justify-content-center d-flex flex-column">
+                        <div dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_content', pageData) }}></div>
+                        <div className="box-link">
+                          <div className="link">
+                            <IoArrowForward color="black" />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Link>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-12">
-                  <p className="subHeading" style={{ marginTop: '100px' }}>Gather. Inspire. Do Cool $#*t!</p>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
