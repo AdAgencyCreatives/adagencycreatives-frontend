@@ -92,7 +92,7 @@ const Header = ({ data, role, user }) => {
                 {/* <span class="featured-text">Featured</span> */}
               </div>
               <div className="position">
-                {isAdmin || isAdvisor ? (<>
+                {isAdmin || (isAdvisor && hasSubscription) ? (<>
                   <Link to={"/creatives/search/industry-title/" + encodeSpecial(encodeURI(data.category))}>
                     {data.category}
                   </Link>
@@ -108,11 +108,11 @@ const Header = ({ data, role, user }) => {
                   <a
                     href={data.resume}
                     target="__blank"
-                    onClick={(e) => isAdmin || isAdvisor ||
+                    onClick={(e) => isAdmin || (isAdvisor && hasSubscription) ||
                       validateAccess(
                         e,
                         [!hasSubscription, !isCreative],
-                        "Post a Job to download resumes"
+                        "Add a job post to download resumes"
                       )
                     }
                   >
