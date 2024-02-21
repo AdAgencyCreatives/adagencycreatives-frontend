@@ -13,6 +13,7 @@ const Invite = ({ open, handleClose, item }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(false);
   const [error, setError] = useState(false);
+  const [openPositions, setOpenPositions] = useState([]);
 
   const {
     state: { user },
@@ -25,12 +26,20 @@ const Invite = ({ open, handleClose, item }) => {
 
   const {
     state: { open_positions },
-    getOpenPositions,
+    getOpenPositionsAll,
     sendJobInvite,
   } = useContext(AgenciesContext);
 
   useEffect(() => {
     console.log(open_positions);
+    let validOpenPositions = [];
+    for (let index = 0; index < open_positions.length; index++) {
+      const element = open_positions[index];
+      if(element.status == "approved") {
+        validOpenPositions.push(element);
+      }
+    }
+    setOpenPositions(validOpenPositions);
   }, [open_positions]);
 
 /*   const {
@@ -42,7 +51,7 @@ const Invite = ({ open, handleClose, item }) => {
 
 
   useEffect(() => {
-    if (user) getOpenPositions(user.uuid);
+    if (user) getOpenPositionsAll(user.uuid, 1);
   }, [user]);
 
   const handleChange = (checked, id) => {
@@ -100,8 +109,8 @@ const Invite = ({ open, handleClose, item }) => {
                   <div className={`alert alert-info`}>{message}</div>
                 )}
                 {error && <div className={`alert alert-danger`}>{error}</div>}
-                {open_positions.length > 0 &&
-                  open_positions.map((item) => (
+                {openPositions.length > 0 &&
+                  openPositions.map((item) => (
                     <div className="form-group fs-5" key={item.id}>
                       <label>
                         <input

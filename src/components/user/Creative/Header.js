@@ -108,7 +108,7 @@ const Header = ({ data, role, user }) => {
                   <a
                     href={data.resume}
                     target="__blank"
-                    onClick={(e) => isAdmin || (isAdvisor && hasSubscription) ||
+                    onClick={(e) => isAdmin || (isAdvisor && hasSubscription) || 
                       validateAccess(
                         e,
                         [!hasSubscription, !isCreative],
