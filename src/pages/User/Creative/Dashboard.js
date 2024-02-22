@@ -38,6 +38,10 @@ const Dashboard = () => {
     getApplications(user.uuid);
   }, []);
 
+  useEffect(() => {
+    console.log(applications);
+  }, [applications]);
+
   return (
     <div className="dashboard-wrapper agency-page-dashboard">
       <h3 className="page-title">Dashboard Statistics</h3>
