@@ -22,6 +22,12 @@
                 font-size: 1.5rem;
             }
         }
+
+        @media (max-width:576px) {
+            span {
+                font-size: 3rem;
+            }
+        }
     }
 
     .mentor img:hover {
