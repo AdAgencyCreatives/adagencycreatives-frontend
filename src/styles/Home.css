@@ -207,7 +207,7 @@ button.searchBtn:hover {
 .hero-boxes {
     .title {
         text-align: center;
-        font-size: 60px;
+        font-size: 36pt;
         font-weight: 400;
         text-transform: uppercase;
     }
@@ -220,10 +220,9 @@ button.searchBtn:hover {
     }
 
     .box {
-        border: 1px solid white;
         text-align: center;
         position: relative;
-        height: 340px;
+        height: 330px;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -257,7 +256,7 @@ button.searchBtn:hover {
         right: 10px;
         bottom: 17px;
         padding: 5px;
-        background-color: #d3a11f;
+        background-color: #fff;
     }
 
     .box-link .link {
@@ -273,14 +272,15 @@ button.searchBtn:hover {
     .title-small {
         margin-top: 10px;
         position: absolute;
-        width: 100%;
+        width: calc(100% - 60px);
         left: 10px;
-        bottom: 17px;
+        bottom: 12px;
         overflow: hidden;
        display: -webkit-box;
        -webkit-line-clamp: 2; /* number of lines to show */
-               line-clamp: 2; 
+        line-clamp: 2; 
        -webkit-box-orient: vertical;
+       text-transform: uppercase;
     }
 
     .flip-card-front,
@@ -290,18 +290,27 @@ button.searchBtn:hover {
         height: 100%;
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
+        line-height: 24px;
         h2 {
             font-size: 14pt;
-        }
-        p {
+            padding: 10px 15px;
             margin-bottom: 0;
-            font-size: 14pt;
         }
+    }
+
+    .flip-card-front {
+        border: 1px solid white;
     }
 
     .flip-card-back {
         background-color: #d3a11f;
         color: black;
+
+        .content {
+            div {
+                font-size: 12pt;
+            }
+        }
     }
 
     .page-single-mentor .box:hover {
@@ -324,10 +333,21 @@ button.searchBtn:hover {
         align-content: center;
     }
 
-    @media (max-width:1300px) {
-        .main-title {
-            font-size: 2rem;
+    @media (max-width: 991px) and (min-width: 767px) {
+        .flip-card-back {    
+            .content {
+                div {
+                    font-size: 8pt;
+                    line-height: 16px;
+                }
+            }
         }
+    }
+
+    @media (max-width:1300px) {
+        /* .main-title {
+            font-size: 2rem;
+        } */
     }
 
     @media (max-width:900px) {

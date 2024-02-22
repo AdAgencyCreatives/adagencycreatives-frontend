@@ -89,14 +89,14 @@ const Home = () => {
                     <div className="flip-card-front">
                       <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_title', pageData) }}></div>
                       <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_subtitle', pageData) }}></div>
-                      {/* <div className="box-link">
+                      <div className="box-link">
                         <div className="link">
                           <IoArrowForward color="black" />
                         </div>
-                      </div> */}
+                      </div>
                     </div>
-                    <div className="flip-card-back justify-content-center d-flex flex-column">
-                      <div dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_content', pageData) }}></div>
+                    <div className="flip-card-back">
+                      <div className="content" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_content', pageData) }}></div>
                       <div className="box-link">
                         <div className="link">
                           <IoArrowForward color="black" />
@@ -114,14 +114,14 @@ const Home = () => {
                     <div className="flip-card-front">
                       <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_title', pageData) }}></div>
                       <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_subtitle', pageData) }}></div>
-                      {/* <div className="box-link">
+                      <div className="box-link">
                         <div className="link">
                           <IoArrowForward color="black" />
                         </div>
-                      </div> */}
+                      </div>
                     </div>
-                    <div className="flip-card-back justify-content-center d-flex flex-column">
-                      <div dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_content', pageData) }}></div>
+                    <div className="flip-card-back">
+                      <div className="content" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_content', pageData) }}></div>
                       <div className="box-link">
                         <div className="link">
                           <IoArrowForward color="black" />
@@ -139,14 +139,14 @@ const Home = () => {
                     <div className="flip-card-front">
                       <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_title', pageData) }}></div>
                       <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_subtitle', pageData) }}></div>
-                      {/* <div className="box-link">
+                      <div className="box-link">
                         <div className="link">
                           <IoArrowForward color="black" />
                         </div>
-                      </div> */}
+                      </div>
                     </div>
-                    <div className="flip-card-back justify-content-center d-flex flex-column">
-                      <div dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_content', pageData) }}></div>
+                    <div className="flip-card-back">
+                      <div className="content" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_content', pageData) }}></div>
                       <div className="box-link">
                         <div className="link">
                           <IoArrowForward color="black" />
