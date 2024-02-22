@@ -99,7 +99,7 @@ const Home = () => {
                       <div className="content" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_content', pageData) }}></div>
                       <div className="box-link">
                         <div className="link">
-                          <IoArrowForward color="black" />
+                          <IoArrowForward color="white" />
                         </div>
                       </div>
                     </div>
@@ -124,7 +124,7 @@ const Home = () => {
                       <div className="content" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_content', pageData) }}></div>
                       <div className="box-link">
                         <div className="link">
-                          <IoArrowForward color="black" />
+                          <IoArrowForward color="white" />
                         </div>
                       </div>
                     </div>
@@ -149,7 +149,7 @@ const Home = () => {
                       <div className="content" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_content', pageData) }}></div>
                       <div className="box-link">
                         <div className="link">
-                          <IoArrowForward color="black" />
+                          <IoArrowForward color="white" />
                         </div>
                       </div>
                     </div>
