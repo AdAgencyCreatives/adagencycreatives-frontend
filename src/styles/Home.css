@@ -256,7 +256,6 @@ button.searchBtn:hover {
         right: 10px;
         bottom: 17px;
         padding: 5px;
-        background-color: #fff;
     }
 
     .box-link .link {
@@ -300,15 +299,24 @@ button.searchBtn:hover {
 
     .flip-card-front {
         border: 1px solid white;
+        .box-link {
+            background-color: #fff;
+        }
     }
 
     .flip-card-back {
-        background-color: #d3a11f;
+        background-color: #fff;
         color: black;
 
+        .box-link {
+            background-color: #000;
+        }
+
         .content {
-            div {
+            ul, p, div {
+                text-align: left;
                 font-size: 12pt;
+                /* padding-right: 15px; */
             }
         }
     }
@@ -334,31 +342,17 @@ button.searchBtn:hover {
     }
 
     @media (max-width: 991px) and (min-width: 767px) {
+        .main-title {
+            font-size: 1.8rem;
+            line-height: 36px;
+        }
         .flip-card-back {    
             .content {
-                div {
+                ul, p, div {
                     font-size: 8pt;
                     line-height: 16px;
                 }
             }
-        }
-    }
-
-    @media (max-width:1300px) {
-        /* .main-title {
-            font-size: 2rem;
-        } */
-    }
-
-    @media (max-width:900px) {
-        .main-title {
-            font-size: 1.5rem;
-        }
-    }
-
-    @media (max-width:400px) {
-        .title {
-            font-size: 38px;
         }
     }
 }
@@ -1103,7 +1097,7 @@ img.publication-image {
     white-space: nowrap;
     overflow: hidden;
     display: inline-block;
-    animation: marquee 20s linear infinite;
+    animation: marquee 60s linear infinite;
     height: 100%;
     line-height: 1;
     margin-top: 10px;
