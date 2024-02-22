@@ -285,7 +285,7 @@ const ChatBox = ({
       const response = await api.delete("/messages/" + isId);
     } catch (error) { }
     setIsDialogOpen(false);
-    window.location.reload();
+    // window.location.reload();
 
   };
   const handleEdit = async () => {

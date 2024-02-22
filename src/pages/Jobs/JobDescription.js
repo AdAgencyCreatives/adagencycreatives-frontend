@@ -7,8 +7,12 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import Loader from "../../components/Loader";
 import RelatedJobs from "../../components/job/RelatedJobs";
 import "../../styles/JobDescription.scss";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
+
 const JobDescription = () => {
   const { job } = useParams();
+  const { height, width } = useWindowDimensions();
+  
   const {
     state: { single_job, related_jobs },
     getJob,
@@ -162,7 +166,9 @@ const JobDescription = () => {
                     <li>No Time Tracking!</li>
                   </ul>
                 </p> */}
-                <RelatedJobs data={related_jobs} />
+                {width > 767 && (
+                  <RelatedJobs data={related_jobs} />
+                )}
               </div>
             </div>
             <div className="col-md-4">
@@ -170,6 +176,9 @@ const JobDescription = () => {
                 <Sidebar data={single_job} />
               </div>
             </div>
+            {width <= 767 && (
+              <RelatedJobs data={related_jobs} />
+            )}
           </div>
         </div>
       </div>
