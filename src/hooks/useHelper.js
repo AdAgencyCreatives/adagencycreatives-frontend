@@ -171,7 +171,7 @@ const useHelper = () => {
 
     const hasPasswordError = (value) => {
 
-        let errMsg = "Passwords must be a minimum of eight characters, contain at least one number and special character";
+        let errMsg = "Passwords must be a minimum of eight characters, contain at least one number, and special character";
 
         if (!value?.length) {
             return "";
