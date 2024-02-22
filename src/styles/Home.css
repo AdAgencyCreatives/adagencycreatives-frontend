@@ -300,7 +300,8 @@ button.searchBtn:hover {
     .flip-card-front {
         border: 1px solid white;
         .box-link {
-            background-color: #fff;
+            border: 1px solid #fff;
+            border-radius: 50%;
         }
     }
 
@@ -309,7 +310,8 @@ button.searchBtn:hover {
         color: black;
 
         .box-link {
-            background-color: #000;
+            border: 1px solid #000;
+            border-radius: 50%;
         }
 
         .content {
