@@ -133,7 +133,7 @@ const Content = ({ user, role, data, education, experience }) => {
                     </>)}
                   </span>
                 </div>
-                <p className="mb0">{item.description}</p>
+                <div className="mb0" dangerouslySetInnerHTML={{ __html: item.description }}></div>
               </div>
             ))}
           </div>
