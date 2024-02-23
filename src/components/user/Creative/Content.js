@@ -1,5 +1,5 @@
 import moment from "moment";
-import portfolio from "../../../assets/images/portfolio.png";
+import noPreview from "../../../assets/images/no-preview.png";
 import "../../../styles/User/ProfileContent.scss";
 import Reviews from "../Reviews";
 import RelatedCreatives from "./RelatedCreatives";
@@ -59,8 +59,10 @@ const Content = ({ user, role, data, education, experience }) => {
             let status = result.data.status;
             if (status == 'success' || status == 'failed') {
               setCountDown(0);
+              setRefreshStatus(status);
+              console.log();
             }
-            setRefreshStatus(status);
+
             if (status == 'success' && refreshStatusVisible) {
               setWebsitePreview(result.data.capture);
               console.log(result.data.capture);
@@ -80,17 +82,19 @@ const Content = ({ user, role, data, education, experience }) => {
     e.preventDefault();
     e.stopPropagation();
 
-    (async ()=>{
-      let result  = await removePortfolioCaptureLog(data.user_id);
-      if(result) {
+    (async () => {
+      let result = await removePortfolioCaptureLog(data.user_id);
+      if (result) {
         setWebsitePreview("");
       }
     })();
 
     setCountDown(refreshWait);
     countDownRef.current = refreshWait;
+    setRefreshStatus("pending");
     setRefreshStatusVisible(true);
     setIsLoading(true);
+    console.log();
     getProgress();
     return false;
   };
@@ -141,9 +145,9 @@ const Content = ({ user, role, data, education, experience }) => {
         )}
         <a href={portfolio_link} target="_blank">
           <img
-            src={websitePreview || Placeholder}
+            src={websitePreview || noPreview}
             onError={(e) => {
-              e.target.src = Placeholder; // Set the backup image source
+              e.target.src = noPreview; // Set the backup image source
             }} />
         </a>
       </div>
