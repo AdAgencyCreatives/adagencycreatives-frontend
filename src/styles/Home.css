@@ -504,6 +504,14 @@ swiper-slide {
     text-decoration: none;
 }
 
+.employer-location .location {
+    display: inline-block;
+}
+
+.employer-location .location>* {
+    display: inline-block;
+}
+
 .job-location>*{
     color: inherit !important;
 }
