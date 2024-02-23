@@ -315,6 +315,19 @@ const removeAttachment = (dispatch) => {
   };
 };
 
+const capturePortfolioSnapshot = (dispatch) => {
+  return async (uuid, cb=false) => {
+    try {
+      const response = await api.get("/creatives/capture-portfolio-snapshot/" + uuid);
+      cb && cb();
+      return response.data;
+    } catch (error) { 
+      cb && cb(error);
+    }
+    return null;
+  };
+};
+
 const getResume = (dispatch) => {
   return async (uid) => {
     try {
@@ -324,6 +337,18 @@ const getResume = (dispatch) => {
         payload: response.data,
       });
     } catch (error) { }
+  };
+};
+
+const removePortfolioCaptureLog = (dispatch) => {
+  return async (uuid) => {
+    try {
+      const response = await api.get("/creatives/remove-portfolio-capture-log/"+uuid);
+      return response.data;
+    } catch (error) { 
+      console.log(error);
+    }
+    return null;
   };
 };
 
@@ -473,7 +498,9 @@ export const { Context, Provider } = createDataContext(
     resetVideo,
     removeAttachment,
     getLoungeCreativesForTag,
-    getNotifications
+    getNotifications,
+    capturePortfolioSnapshot,
+    removePortfolioCaptureLog,
   },
   state
 );

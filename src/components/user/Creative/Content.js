@@ -6,13 +6,24 @@ import RelatedCreatives from "./RelatedCreatives";
 import Portfolio from "./Portfolio";
 import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../../context/AuthContext";
-import { useContext, useState } from "react";
+import { Context as CreativesContext } from "../../../context/CreativesContext";
+import { useContext, useEffect, useRef, useState } from "react";
 import useHelper from "../../../hooks/useHelper";
 import Placeholder from "../../../assets/images/placeholder.png";
+import CircularProgressWithLabel from "../../CircularProgressWithLabel";
 
 const Content = ({ user, role, data, education, experience }) => {
 
   const { rectify_url, encodeSpecial, decodeSpecial } = useHelper();
+  const [isLoading, setIsLoading] = useState(false);
+  const refreshWait = 60; // seconds
+  const refreshApi = 15; // seconds
+  const countDownRef = useRef(refreshWait);
+  const [countDown, setCountDown] = useState(refreshWait);
+  const [refreshProgress, setRefreshProgress] = useState(0);
+  const [refreshStatus, setRefreshStatus] = useState('pending');
+  const [refreshStatusVisible, setRefreshStatusVisible] = useState(false);
+  const [websitePreview, setWebsitePreview] = useState(data.portfolio_website);
 
   const maxEducations = 4;
   const [showAllEducations, setShowAllEducations] = useState(false);
@@ -24,6 +35,10 @@ const Content = ({ user, role, data, education, experience }) => {
     state: { subscription_status },
   } = useContext(AuthContext);
 
+  const {
+    capturePortfolioSnapshot, removePortfolioCaptureLog,
+  } = useContext(CreativesContext);
+
   const isAdmin = role == "admin";
   const isAdvisor = role == "advisor";
   const isAgency = role == "agency";
@@ -32,13 +47,101 @@ const Content = ({ user, role, data, education, experience }) => {
   const isOwnProfile = isCreative && user?.uuid == data.user_id;
   const portfolio_link = rectify_url(data.links?.find((item) => item.type = "portfolio")?.url) ?? "#";
 
+  useEffect(() => {
+    if (countDownRef?.current) {
+      countDownRef.current = countDown;
+      setRefreshProgress(100 - (100 * countDownRef.current / refreshWait));
+
+      if (countDownRef.current % refreshApi == 0) {
+        (async () => {
+          let result = await capturePortfolioSnapshot(data.user_id);
+          if (result) {
+            let status = result.data.status;
+            if (status == 'success' || status == 'failed') {
+              setCountDown(0);
+            }
+            setRefreshStatus(status);
+            if (status == 'success' && refreshStatusVisible) {
+              setWebsitePreview(result.data.capture);
+              console.log(result.data.capture);
+              // window.setTimeout(() => {
+              //   window.location.reload();
+              // }, 3000);
+            }
+          }
+        })();
+      }
+      // console.log("Count Down: " + countDownRef.current);
+      // console.log("Progress: " + (100 - (100 * countDownRef.current / refreshWait)));
+    }
+  }, [countDown]);
+
+  const handleRefreshProgress = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    (async ()=>{
+      let result  = await removePortfolioCaptureLog(data.user_id);
+      if(result) {
+        setWebsitePreview("");
+      }
+    })();
+
+    setCountDown(refreshWait);
+    countDownRef.current = refreshWait;
+    setRefreshStatusVisible(true);
+    setIsLoading(true);
+    getProgress();
+    return false;
+  };
+
+  const getProgress = () => {
+    window.setTimeout(() => {
+      if (countDownRef.current > 0) {
+        setCountDown(countDownRef.current - 1);
+        getProgress();
+      } else {
+        setIsLoading(false);
+        // window.setTimeout(() => {
+        //   setRefreshStatusVisible(false);
+        // }, 10000);
+      }
+    }, 1000);
+  };
   return (
     <>
       <div className="content-section">
         <h1 className="content-title">Portfolio Site</h1>
+        {isAdmin && (
+          <div className="refresh-preview-container">
+            <Link
+              className={"btn btn-gold refresh-preview" + (isLoading ? " disabled" : "")}
+              onClick={(e) => handleRefreshProgress(e)}
+            >
+              {isLoading ? "Please wait ..." : "Refresh Preview"}
+            </Link>
+            {isLoading && <CircularProgressWithLabel value={refreshProgress} />}
+            {refreshStatusVisible && (
+              <span
+                className={
+                  "badge " +
+                  refreshStatus +
+                  " bg-" +
+                  (refreshStatus == "pending"
+                    ? "info"
+                    : refreshStatus == "success"
+                      ? "success"
+                      : refreshStatus == "failed"
+                        ? "danger"
+                        : "primary")
+                }
+              >{refreshStatus}</span>
+            )}
+          </div>
+        )}
         <a href={portfolio_link} target="_blank">
           <img
-            src={data.portfolio_website || Placeholder}
+            src={websitePreview || Placeholder}
             onError={(e) => {
               e.target.src = Placeholder; // Set the backup image source
             }} />

@@ -892,3 +892,14 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .job-table-actions-inner.status {
     text-transform: capitalize;
 }
+
+.refresh-preview-container {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    margin-bottom: 10px;
+}
+
+.refresh-preview-container .btn.btn-gold.refresh-preview.disabled {
+    background-color: #d6d6d6;
+}
