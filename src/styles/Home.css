@@ -294,7 +294,7 @@ button.searchBtn:hover {
         line-height: 24px;
         h2 {
             font-size: 18pt;
-            padding: 10px 15px;
+            padding: 10px 0;
             margin-bottom: 15px;
             border-top: 1px solid;
             border-bottom: 1px solid;
@@ -330,6 +330,9 @@ button.searchBtn:hover {
         }
 
         .content {
+            max-width: 200px;
+            margin: 0 auto;
+
             ul {
                 text-align: left;
                 font-size: 12pt;
