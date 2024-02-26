@@ -165,74 +165,78 @@ const Home = () => {
             </div>
           )}
 
-          {/* <div className="searchArea">
-            <p className="searchHeader" dangerouslySetInnerHTML={{ __html: getPateDataItem("searchbar_heading", pageData) }}></p>
-            <div className="searchBox">
-              <form action={"/creative-jobs" + (search ? "/search/" + search : "")} onSubmit={(e) => {
-                // if (!search || search.length == 0) {
-                //   e.preventDefault();
-                //   e.stopPropagation();
-                //   showMessageModal("error", "Oops!", "Please enter some text to search.");
-                //   return false;
-                // } else {
-                //   return true;
-                // }
-              }}>
+          {window?.location?.href?.indexOf("https://staging.adagencycreatives.com/") != 0 && (
+            <>
+              <div className="searchArea">
+                <p className="searchHeader" dangerouslySetInnerHTML={{ __html: getPateDataItem("searchbar_heading", pageData) }}></p>
+                <div className="searchBox">
+                  <form action={"/creative-jobs" + (search ? "/search/" + search : "")} onSubmit={(e) => {
+                    // if (!search || search.length == 0) {
+                    //   e.preventDefault();
+                    //   e.stopPropagation();
+                    //   showMessageModal("error", "Oops!", "Please enter some text to search.");
+                    //   return false;
+                    // } else {
+                    //   return true;
+                    // }
+                  }}>
+                    <div className="row">
+                      <div className="col-md-8 col-12 position-relative">
+                        <IoSearchOutline size={26} className="searchIcon" />
+                        <input
+                          className="searchInput form-control"
+                          type="text"
+                          placeholder={getPateDataItem("searchbar_placeholder", pageData)}
+                          onChange={(e) => setSearch(e.target.value)}
+                          value={search}
+                        />
+                      </div>
+                      <div className="col-md-4 search-buttons">
+                        <button className="searchBtn">{getPateDataItem("searbar_button_text", pageData)}</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div className="popularSearch">
+                  <p dangerouslySetInnerHTML={{ __html: getPateDataItem("searchbar_bottom_suggestion", pageData) }}>
+                  </p>
+                </div>
+              </div>
+              <div className="featuresContainer container mt-3">
                 <div className="row">
-                  <div className="col-md-8 col-12 position-relative">
-                    <IoSearchOutline size={26} className="searchIcon" />
-                    <input
-                      className="searchInput form-control"
-                      type="text"
-                      placeholder={getPateDataItem("searchbar_placeholder", pageData)}
-                      onChange={(e) => setSearch(e.target.value)}
-                      value={search}
-                    />
+                  <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
+                    <img src={Gather} className="featureImg" />
+                    <Link
+                      to={"/community"}
+                      className="featureTitle"
+                      onClick={(e) =>
+                        validateAccess(e, {
+                          roles: ["admin", "creative"],
+                          restrictedMessage: "Please login as a Creative to access",
+                        })
+                      }
+                      dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_gather", pageData) }}></Link>
+                    <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_gather", pageData) }}></span>
                   </div>
-                  <div className="col-md-4 search-buttons">
-                    <button className="searchBtn">{getPateDataItem("searbar_button_text", pageData)}</button>
+                  <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
+                    <img src={Mentoring} className="featureImg" />
+                    <Link
+                      to={"/mentoring-resources"}
+                      className="featureTitle"
+                      dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_inspire", pageData) }}></Link>
+                    <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_inspire", pageData) }}></span>
+                  </div>
+                  <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
+                    <img src={Money} className="featureImg" />
+                    <Link to={"/creative-jobs"}
+                      className="featureTitle"
+                      dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_do_cool_shit", pageData) }}></Link>
+                    <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_do_cool_shit", pageData) }}></span>
                   </div>
                 </div>
-              </form>
-            </div>
-            <div className="popularSearch">
-              <p dangerouslySetInnerHTML={{ __html: getPateDataItem("searchbar_bottom_suggestion", pageData) }}>
-              </p>
-            </div>
-          </div>
-          <div className="featuresContainer container mt-3">
-            <div className="row">
-              <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
-                <img src={Gather} className="featureImg" />
-                <Link
-                  to={"/community"}
-                  className="featureTitle"
-                  onClick={(e) =>
-                    validateAccess(e, {
-                      roles: ["admin", "creative"],
-                      restrictedMessage: "Please login as a Creative to access",
-                    })
-                  }
-                  dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_gather", pageData) }}></Link>
-                <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_gather", pageData) }}></span>
               </div>
-              <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
-                <img src={Mentoring} className="featureImg" />
-                <Link
-                  to={"/mentoring-resources"}
-                  className="featureTitle"
-                  dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_inspire", pageData) }}></Link>
-                <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_inspire", pageData) }}></span>
-              </div>
-              <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
-                <img src={Money} className="featureImg" />
-                <Link to={"/creative-jobs"}
-                  className="featureTitle"
-                  dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_do_cool_shit", pageData) }}></Link>
-                <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_do_cool_shit", pageData) }}></span>
-              </div>
-            </div>
-          </div> */}
+            </>
+          )}
 
           {/* <div className="ticker" id="about">
             <div className="ticker-text">
