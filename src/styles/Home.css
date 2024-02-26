@@ -330,7 +330,7 @@ button.searchBtn:hover {
         }
 
         .content {
-            ul, p, div {
+            ul {
                 text-align: left;
                 font-size: 12pt;
                 padding-left: 15px;
@@ -365,7 +365,7 @@ button.searchBtn:hover {
         }
         .flip-card-back {    
             .content {
-                ul, p, div {
+                ul {
                     font-size: 10pt;
                     line-height: 16px;
                 }
