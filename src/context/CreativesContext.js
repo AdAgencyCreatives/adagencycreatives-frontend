@@ -281,7 +281,7 @@ const saveResume = (dispatch) => {
       await api.patch("/creative_resume/" + uid, data);
       await api.patch("/educations/", { educations });
       await api.patch("/experiences/", { experiences });
-    } catch (error) { 
+    } catch (error) {
       console.log(error);
     }
     dispatch({
@@ -305,23 +305,23 @@ const saveAttachment = (dispatch) => {
 };
 
 const removeAttachment = (dispatch) => {
-  return async (id, cb=false) => {
+  return async (id, cb = false) => {
     try {
       const response = await api.delete("/attachments/" + id);
       cb && cb();
-    } catch (error) { 
+    } catch (error) {
       cb && cb(error);
     }
   };
 };
 
 const capturePortfolioSnapshot = (dispatch) => {
-  return async (uuid, cb=false) => {
+  return async (uuid, wait_secs, cb = false) => {
     try {
-      const response = await api.get("/creatives/capture-portfolio-snapshot/" + uuid);
+      const response = await api.get("/creatives/capture-portfolio-snapshot/" + uuid + "?wait_seconds=" + wait_secs);
       cb && cb();
       return response.data;
-    } catch (error) { 
+    } catch (error) {
       cb && cb(error);
     }
     return null;
@@ -343,9 +343,9 @@ const getResume = (dispatch) => {
 const removePortfolioCaptureLog = (dispatch) => {
   return async (uuid) => {
     try {
-      const response = await api.get("/creatives/remove-portfolio-capture-log/"+uuid);
+      const response = await api.get("/creatives/remove-portfolio-capture-log/" + uuid);
       return response.data;
-    } catch (error) { 
+    } catch (error) {
       console.log(error);
     }
     return null;
