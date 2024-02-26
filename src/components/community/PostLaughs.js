@@ -38,16 +38,18 @@ const PostLaughs = ({ post, user, post_laughs, laugh_action, getLaugh, toggleLau
                 return;
             }
             switch (laugh_action.action) {
-                case "laugh_begin": console.log('Laugh Begin for Post ID: ' + laugh_action.post_id); break;
+                case "laugh_begin": 
+                    // console.log('Laugh Begin for Post ID: ' + laugh_action.post_id); break;
                 case "laugh_success":
-                    console.log('Laugh Succeed for Post ID: ' + laugh_action.post_id);
+                    // console.log('Laugh Succeed for Post ID: ' + laugh_action.post_id);
                     setLaughsCount(laughsCount + (!laughActive ? 1 : -1));
                     setLaughActive(!laughActive);
                     getLaugh({ "post_id": post.id, "type": "laugh" });
                     break;
-                case "laugh_failed": console.log('Laugh Failed for Post ID: ' + laugh_action.post_id + ", Error: " + laugh_action.error); break;
+                case "laugh_failed": 
+                    // console.log('Laugh Failed for Post ID: ' + laugh_action.post_id + ", Error: " + laugh_action.error); break;
                 default:
-                    console.log('Invalid Laugh Action for Post ID: ' + laugh_action.post_id);
+                    // console.log('Invalid Laugh Action for Post ID: ' + laugh_action.post_id);
             }
         }
     }, [laugh_action]);
