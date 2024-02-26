@@ -524,6 +524,10 @@ swiper-slide {
     text-decoration: none;
 }
 
+.sidebar-item .location span {
+    margin: 0;
+}
+
 .employer-location .location {
     display: inline-block;
 }
