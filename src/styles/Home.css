@@ -314,6 +314,8 @@ button.searchBtn:hover {
         background-color: #fff;
         color: black;
         padding: 15px;
+        display: flex;
+        align-items: center;
 
         .box-link {
             font-size: 12px;
