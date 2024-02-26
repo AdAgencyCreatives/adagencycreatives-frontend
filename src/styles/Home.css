@@ -265,6 +265,8 @@ button.searchBtn:hover {
         height: 20px;
         width: 20px;
         display: flex;
+        align-items: center;
+        justify-content: center;
         padding: 0px;
     }
 
@@ -291,9 +293,12 @@ button.searchBtn:hover {
         backface-visibility: hidden;
         line-height: 24px;
         h2 {
-            font-size: 14pt;
-            padding: 10px 15px;
-            margin-bottom: 0;
+            font-size: 18pt;
+            padding: 10px 0;
+            margin-bottom: 15px;
+            border-top: 1px solid;
+            border-bottom: 1px solid;
+            font-weight: bold;
         }
     }
 
@@ -308,17 +313,30 @@ button.searchBtn:hover {
     .flip-card-back {
         background-color: #fff;
         color: black;
+        padding: 15px;
 
         .box-link {
-            border: 1px solid #000;
-            border-radius: 50%;
+            font-size: 12px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            p {
+                margin-bottom: 0;
+            }
+            .link {
+                border: 1px solid #000;
+                border-radius: 50%;
+            }
         }
 
         .content {
-            ul, p, div {
+            max-width: 200px;
+            margin: 0 auto;
+
+            ul {
                 text-align: left;
                 font-size: 12pt;
-                /* padding-right: 15px; */
+                padding-left: 15px;
             }
         }
     }
@@ -350,8 +368,8 @@ button.searchBtn:hover {
         }
         .flip-card-back {    
             .content {
-                ul, p, div {
-                    font-size: 8pt;
+                ul {
+                    font-size: 10pt;
                     line-height: 16px;
                 }
             }

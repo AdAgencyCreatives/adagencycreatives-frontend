@@ -98,6 +98,7 @@ const Home = () => {
                     <div className="flip-card-back">
                       <div className="content" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_content', pageData) }}></div>
                       <div className="box-link">
+                        <p>click to go</p>
                         <div className="link">
                           <IoArrowForward color="black" />
                         </div>
@@ -123,6 +124,7 @@ const Home = () => {
                     <div className="flip-card-back">
                       <div className="content" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_content', pageData) }}></div>
                       <div className="box-link">
+                        <p>click to go</p>
                         <div className="link">
                           <IoArrowForward color="black" />
                         </div>
@@ -148,6 +150,7 @@ const Home = () => {
                     <div className="flip-card-back">
                       <div className="content" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_content', pageData) }}></div>
                       <div className="box-link">
+                        <p>click to go</p>
                         <div className="link">
                           <IoArrowForward color="black" />
                         </div>
@@ -156,10 +159,13 @@ const Home = () => {
                   </Link>
                 </div>
               </div>
+              <div>
+                <p class="subHeading" style={{ marginTop: '70px', marginBottom: '30px' }}>Gather. Inspire. Do Cool $#*t!</p>
+              </div>
             </div>
           )}
 
-          <div className="searchArea">
+          {/* <div className="searchArea">
             <p className="searchHeader" dangerouslySetInnerHTML={{ __html: getPateDataItem("searchbar_heading", pageData) }}></p>
             <div className="searchBox">
               <form action={"/creative-jobs" + (search ? "/search/" + search : "")} onSubmit={(e) => {
@@ -226,7 +232,7 @@ const Home = () => {
                 <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_do_cool_shit", pageData) }}></span>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* <div className="ticker" id="about">
             <div className="ticker-text">
