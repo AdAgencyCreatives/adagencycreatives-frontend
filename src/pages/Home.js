@@ -265,19 +265,20 @@ const Home = () => {
         <div className="creative-section">
           <AgencyCreatives validateAccess={validateAccess} />
 
-          {/* Spotlighting Creatives Section */}
-          <SpotlightCreative />
+          <MentorResources />
 
           {/* Creative Jobs Section */}
           <CreativeJobs />
 
-          <FeaturedCities />
+          {/* Spotlighting Creatives Section */}
+          <SpotlightCreative />
 
           <AdAgencies />
 
-          <MentorResources />
-
           <PublicationResources />
+
+          <FeaturedCities />          
+
           <div id="feedback">
             <div className="sectionHeader">
               <h1 className="sectionTitle">Say, Hello</h1>
