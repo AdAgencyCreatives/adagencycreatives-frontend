@@ -54,11 +54,11 @@ const Community = () => {
             </>
           ) : (
             <div className="row div_row">
-              <div className="col-md-2 mb-4 mb-md-0 menu_left">
+              <div className="col-md-2 mb-4 mb-lg-0 menu_left">
                 <LeftSidebar />
               </div>
-              <div className="col-md-7 order-md-2 order-2 div_content_center">
-                <div className="right-sidebar mobile-displayed">
+              <div className="col-md-7 order-lg-2 order-3 div_content_center">
+                {/* <div className="right-sidebar mobile-displayed">
                   <div className="widgets">
                     <div className="widget">
                       <div className="widget-content mt-0">
@@ -66,11 +66,11 @@ const Community = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <CreatePost feed_group={feed_group} />
                 <PostList feed_group={feed_group} />
               </div>
-              <div className="col-md-3 order-md-3 order-3 sidebar_right">
+              <div className="col-md-3 order-lg-3 order-2 sidebar_right">
                 <RightSidebarWidgets />
               </div>
             </div>

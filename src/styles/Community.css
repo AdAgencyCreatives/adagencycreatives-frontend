@@ -539,7 +539,7 @@ img.post-avatar {
     margin: 0;
     width: 30px;
     height: 30px;
-    border-radius: 30px;    
+    border-radius: 30px;
 }
 
 
@@ -571,6 +571,7 @@ img.post-avatar {
 .comments .comment {
     position: relative;
 }
+
 .comments .comment .post-action.comments {
     position: absolute;
     top: -10px;
@@ -594,6 +595,7 @@ img.post-avatar {
     margin-right: 10px;
     flex: 1;
 }
+
 .postmodal-footer .postmodal-offensive-words .message {
     padding: 10px;
     border-radius: 5px;
@@ -666,7 +668,7 @@ img.post-avatar {
 }
 
 .friends-header .post-form,
-.groups-header .post-form  {
+.groups-header .post-form {
     display: flex;
     column-gap: 10px;
     row-gap: 10px;
@@ -694,16 +696,22 @@ img.post-avatar {
 h2.epr-emoji-category-label {
     backdrop-filter: unset !important;
 }
-.page-groups .groups-header .btn{
+
+.page-groups .groups-header .btn {
     display: flex;
     align-items: center;
 }
-.community-subtitle span,.community-subtitle strong,.community-subtitle{
-    color: #fff!important;
+
+.community-subtitle span,
+.community-subtitle strong,
+.community-subtitle {
+    color: #fff !important;
 }
-.item-list .item-content p{
+
+.item-list .item-content p {
     margin-bottom: 0;
 }
+
 .comment-preview {
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -712,54 +720,71 @@ h2.epr-emoji-category-label {
     overflow: hidden !important;
     margin-bottom: 10px !important;
 }
-@media (max-width: 1200px){
-    .div_row .menu_left{
+
+@media (max-width: 1200px) {
+    .div_row .menu_left {
         width: 20%;
     }
-    .div_row .div_content_center{
+
+    .div_row .div_content_center {
         width: 50%;
     }
-    .div_row .sidebar_right{
+
+    .div_row .sidebar_right {
         width: 30%;
     }
-    .div_row .div_content-right{
+
+    .div_row .div_content-right {
         width: 80%;
     }
-    .sidebar-menu li.menu-item a{
+
+    .sidebar-menu li.menu-item a {
         font-size: 14px;
     }
 }
+
 @media (max-width:992px) {
-    .page-groups .groups-header .btn span,.page-groups .groups-header .btn{
+
+    .page-groups .groups-header .btn span,
+    .page-groups .groups-header .btn {
         display: block;
     }
-    .page-groups .search-bar{
+
+    .page-groups .search-bar {
         width: 75%;
     }
-    .page-groups .search-btn{
+
+    .page-groups .search-btn {
         width: 25%;
     }
-   .div_row .menu_left{
+
+    .div_row .menu_left {
         width: 100%;
     }
-    .div_row .div_content_center{
+
+    .div_row .div_content_center {
         width: 100%;
         margin-top: 20px;
         margin-bottom: 20px;
     }
-    .div_row .sidebar_right{
+
+    .div_row .sidebar_right {
         width: 100%;
     }
-    .div_row .div_content-right{
+
+    .div_row .div_content-right {
         width: 100%;
     }
-    .item.new-member-widget .item-industry-experience{
+
+    .item.new-member-widget .item-industry-experience {
         padding-left: 10px;
     }
-    .sidebar-menu li.menu-item a{
+
+    .sidebar-menu li.menu-item a {
         padding: 5px;
     }
 }
+
 @media (max-width:767px) {
     .mobile-displayed {
         display: block;
@@ -768,24 +793,31 @@ h2.epr-emoji-category-label {
     .mobile-hidden {
         display: none;
     }
-    .groups-header .post-form{
+
+    .groups-header .post-form {
         overflow: auto;
     }
-    .page-groups .groups-header .btn{
+
+    .page-groups .groups-header .btn {
         min-width: 110px;
     }
-    .page-groups .search-bar{
+
+    .page-groups .search-bar {
         width: 65%;
     }
-    .page-groups .search-btn{
+
+    .page-groups .search-btn {
         width: 35%;
     }
-    .community-title,.community-subtitle{
+
+    .community-title,
+    .community-subtitle {
         padding: 0px 15px;
-        text-align: center!important;
+        text-align: center !important;
     }
-    .community-subtitle span{
-        text-align: center!important;
+
+    .community-subtitle span {
+        text-align: center !important;
     }
 }
 

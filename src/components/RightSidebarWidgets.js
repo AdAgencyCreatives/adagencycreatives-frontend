@@ -33,7 +33,7 @@ const RightSidebarWidgets = () => {
   return (
     <div className="right-sidebar">
       <div className="widgets">
-        <div className="widget mobile-hidden">
+        <div className="widget">
           <div className="widget-content mt-0">
             <Calendar />
           </div>
