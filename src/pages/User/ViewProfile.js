@@ -99,6 +99,7 @@ const Profile = () => {
   const isOwnProfile = user?.uuid == data.user_id;
 
   if (isLoading) {
+    console.log('loading...');
     return <Loader />;
   }
 
