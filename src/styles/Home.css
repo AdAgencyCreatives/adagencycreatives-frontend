@@ -222,7 +222,7 @@ button.searchBtn:hover {
     .box {
         text-align: center;
         position: relative;
-        height: 330px;
+        height: 280px;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -1206,7 +1206,7 @@ img.publication-image {
     flex-direction: row;
     column-gap: 10px;
     flex-wrap: wrap;
-    margin: 70px auto 30px auto;
+    margin: 20px auto;
     justify-content: center;
     align-items: center;
 }
@@ -1217,4 +1217,8 @@ img.publication-image {
 
 .subHeading.motive a:hover {
     color: #d3a11f;
+}
+
+.home-page .banner .subHeading {
+    margin-bottom: 20px;
 }

@@ -69,7 +69,7 @@ const Home = () => {
   return (
     <>
       <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
-      <div className="main">
+      <div className="main home-page">
         <div className="banner">
           <h1 className="bannerHeading" dangerouslySetInnerHTML={{ __html: getPateDataItem('title', pageData) }}></h1>
           <p className="subHeading" dangerouslySetInnerHTML={{ __html: getPateDataItem('sub_title', pageData) }}></p>
