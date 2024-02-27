@@ -5,20 +5,20 @@ export const navItems = [
     children: [
       { name: "About", hashLink: "/about", link: "/about" },
       { name: "Creatives", hashLink: "#creatives", link: "/creatives" },
+      { name: "Resources", hashLink: "#mentors", link: "/mentoring-resources" },
+      { name: "Jobs", hashLink: "#jobs", link: "/creative-jobs" },
       {
         name: "Spotlight",
         hashLink: "#spotlight",
         link: "/spotlighting-creatives",
       },
-      { name: "Jobs", hashLink: "#jobs", link: "/creative-jobs" },
-      { name: "Cities", hashLink: "#cities", link: "/creative-jobs" },
       { name: "Agencies", hashLink: "#agencies", link: "/agencies" },
-      { name: "Mentors", hashLink: "#mentors", link: "/mentoring-resources" },
       {
         name: "Publications",
         hashLink: "#publications",
         link: "/publication-resources",
       },
+      { name: "Cities", hashLink: "#cities", link: "/creative-jobs" },
       { name: "Feedback", hashLink: "#feedback", link: "/contact" },
     ],
   },

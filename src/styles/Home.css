@@ -783,6 +783,10 @@ a.employer-logo img {
     gap: 10px;
 }
 
+.home-resources .mentors-section {
+   display: block;     
+}
+
 .mentor-container {
     display: flex;
     justify-content: center;
@@ -809,6 +813,11 @@ a.employer-logo img {
     width: 195px;
     position: relative;
     background-color: #000;
+}
+
+.home-resources .mentor {
+    margin: 0 auto;
+    width: auto;
 }
 
 .mentor span {
@@ -860,6 +869,9 @@ a.employer-logo img {
         width: 45%;
     }
 
+    .home-resources .mentor {
+        width: auto;
+    }
 }
 
 @media (max-width:400px) {
