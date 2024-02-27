@@ -16,7 +16,7 @@ h1.bannerHeading {
 .banner {
     text-align: center;
     background: black;
-    padding: 50px 0 0;
+    padding: 40px 0 0;
     /* min-height: 95vh; */
     display: flex;
     flex-direction: column;
