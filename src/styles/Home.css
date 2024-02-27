@@ -807,7 +807,7 @@ a.employer-logo img {
     transition: all 0.2s ease;
     align-items: center;
     justify-content: center;
-    border: 10px solid #fff;
+    border: 2px solid #fff;
     text-align: center;
     padding: 10px;
     height: 195px;
@@ -835,7 +835,7 @@ a.employer-logo img {
 }
 
 .mentor:hover {
-    transform: scale(1.175);
+    transform: scale(1.1);
     z-index: 1;
 }
 
@@ -1137,7 +1137,7 @@ img.publication-image {
     overflow: hidden;
     height: 60px;
     background-color: white;
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 .marquee {

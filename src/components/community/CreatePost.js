@@ -265,7 +265,7 @@ const CreatePost = (props) => {
   };
 
   return (
-    <div className="post-form">
+    <div className={props?.className}>
       <div className="status-box">
         <div className="user-avatar">
           <img src={user ? user.image : Placeholder} alt="" />
