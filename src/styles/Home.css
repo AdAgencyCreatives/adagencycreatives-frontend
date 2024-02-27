@@ -1200,3 +1200,21 @@ img.publication-image {
         padding-top: 95px;
     }
 }
+
+.subHeading.motive {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    flex-wrap: wrap;
+    margin: 70px auto 30px auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.subHeading.motive a {
+    color: #fff;
+}
+
+.subHeading.motive a:hover {
+    color: #d3a11f;
+}

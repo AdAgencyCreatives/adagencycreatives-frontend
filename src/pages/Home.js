@@ -160,7 +160,17 @@ const Home = () => {
                 </div>
               </div>
               <div>
-                <p class="subHeading" style={{ marginTop: '70px', marginBottom: '30px' }}>Gather. Inspire. Do Cool $#*t!</p>
+                <p class="subHeading motive">
+                  <Link className="" to={"/community"} dangerouslySetInnerHTML={{ __html: getPateDataItem('motive_title_gather', pageData) }}
+                   onClick={(e) =>
+                    validateAccess(e, {
+                      roles: ["admin", "creative"],
+                      restrictedMessage: "Please login as a Creative to access",
+                    })
+                  }></Link>
+                  <Link className="" to={"/mentoring-resources"} dangerouslySetInnerHTML={{ __html: getPateDataItem('motive_title_inspire', pageData) }}></Link>
+                  <Link className="" to={"/creative-jobs"} dangerouslySetInnerHTML={{ __html: getPateDataItem('motive_title_do_cool_shit', pageData) }}></Link>
+                  </p>
               </div>
             </div>
           )}
