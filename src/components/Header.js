@@ -318,7 +318,7 @@ function Header(props) {
                       </div>
                     </div>
                   ) : (
-                    <Button href="#" color="link" className="login-btn" onClick={() => setAuthModalOpen(true)}>
+                    <Button color="link" className="login-btn" onClick={() => setAuthModalOpen(true)}>
                       Login/Register
                     </Button>
                   )}
