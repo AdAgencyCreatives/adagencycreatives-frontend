@@ -99,15 +99,15 @@
         align-content: center;
     }
 
-    @media (min-width:992px) {
-        .main-title {
-            font-size: 3rem;
-        }
-    }
-
     @media (min-width:768px) {
         .main-title {
             font-size: 2rem;
         }
     } 
+
+    @media (min-width:1249px) {
+        .main-title {
+            font-size: 3rem;
+        }
+    }
 }
