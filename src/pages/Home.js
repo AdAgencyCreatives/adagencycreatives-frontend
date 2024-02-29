@@ -61,10 +61,15 @@ const Home = () => {
     return true;
   };
 
-  useEffect(() => {
-    // console.log(pageData);
-    // console.log('token', token);
-  }, [])
+  const getLandingBoxLink = (num) => {
+    if (num === 1) {
+      return '/creative-jobs';
+    } else if (num === 2) {
+      return token ? 'post-a-job' : '#register_agency';
+    }
+
+    return token ? (role == 'creative' ? 'community' : 'dashboard') : '#register_creative';
+  }
 
   return (
     <>
@@ -84,7 +89,7 @@ const Home = () => {
                 <Link
                   // className={`box link-light ${item.img ? "flip" : ""}`}
                   className="box link-light flip"
-                  to="/creative-jobs"
+                  to={getLandingBoxLink(num)}
                 >
                   <div className="flip-card-front">
                     <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block' + num + '_title', pageData) }}></div>
