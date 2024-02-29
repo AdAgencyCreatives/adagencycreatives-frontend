@@ -61,16 +61,6 @@ const Home = () => {
     return true;
   };
 
-  const getLandingBoxLink = (num) => {
-    if (num === 1) {
-      return '/creative-jobs';
-    } else if (num === 2) {
-      return token ? 'post-a-job' : '#register_agency';
-    }
-
-    return token ? (role == 'creative' ? 'community' : 'dashboard') : '#register_creative';
-  }
-
   return (
     <>
       <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
@@ -84,17 +74,21 @@ const Home = () => {
           </Link>
           <div className="container">
             <div className="row content gy-3 hero-boxes">
-              {[1,2,3].map(num => (
+              {[
+                {"num": 1, "url": "/creative-jobs"},
+                {"num": 2, "url": token ? 'post-a-job' : '#register_agency'},
+                {"num": 3, "url": token ? (role == 'creative' ? 'community' : 'dashboard') : '#register_creative'},
+              ].map(item => (
                 <div className="col-lg-4 col-md-4 col-12 hero-box">
                 <Link
                   // className={`box link-light ${item.img ? "flip" : ""}`}
                   className="box link-light flip"
-                  to={getLandingBoxLink(num)}
+                  to={item?.url}
                 >
                   <div className="flip-card-front">
-                    <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block' + num + '_title', pageData) }}></div>
+                    <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block' + item?.num + '_title', pageData) }}></div>
                     <div className="footer">
-                      <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block' + num + '_subtitle', pageData) }}></div>
+                      <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block' + item?.num + '_subtitle', pageData) }}></div>
                       <div className="box-link-front">
                         <div className="link">
                           <IoArrowForward color="white" />
@@ -103,7 +97,7 @@ const Home = () => {
                     </div>
                   </div>
                   <div className="flip-card-back">
-                    <div className="content" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block' + num + '_content', pageData) }}></div>
+                    <div className="content" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block' + item?.num + '_content', pageData) }}></div>
                     <div className="box-link-back">
                       <p>click to go</p>
                       <div className="link">
