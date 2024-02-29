@@ -3,6 +3,8 @@ import RegisterModal from "./RegisterModal";
 import LoginModal from "./LoginModal";
 import ForgotPassword from "./ForgotPassword";
 import { Context as AuthContext } from "../../context/AuthContext";
+import { useNavigate } from 'react-router-dom';
+
 
 const AuthModal = ({ open, handleClose, form = "login", registerTab = "creative" }) => {
 
@@ -10,7 +12,12 @@ const AuthModal = ({ open, handleClose, form = "login", registerTab = "creative"
 
   const [modal, setModal] = useState(form);
   const [openTab, setOpenTab] = useState(registerTab);
-  const { resetFormMessage } = useContext(AuthContext);
+  const { 
+    state: { token },
+    resetFormMessage 
+  } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     resetFormMessage();
@@ -23,18 +30,29 @@ const AuthModal = ({ open, handleClose, form = "login", registerTab = "creative"
   }, [open]);
 
   useEffect(() => {
-    if(anchor && anchor.length && anchor.indexOf("register_") == 0) {
+    if(anchor && anchor.length && anchor.indexOf("register_") == 0 && !token) {
       setModal((anchor == "register_creative" || anchor == "register_agency") ? "register" : "login");
       setOpenTab((anchor == "register_creative" || anchor == "register_agency") ? anchor.replace("register_", "") : "creative");
     }
   }, [anchor]);
 
+  if (token) {
+    return <></>;
+  }
+
+  const closePopup = () => {
+    let URL = String( window?.location?.pathname ).replace( "#register_creative", "" );
+    URL = String( window?.location?.pathname ).replace( "#register_agency", "" );
+    navigate(URL); 
+    handleClose();
+  }
+
   return modal == "register" ? (
-    <RegisterModal open={open} handleClose={handleClose} setModal={setModal} form={openTab} />
+    <RegisterModal open={open} handleClose={closePopup} setModal={setModal} form={openTab} />
   ) : modal == "login" ? (
-    <LoginModal open={open} handleClose={handleClose} setModal={setModal} />
+    <LoginModal open={open} handleClose={closePopup} setModal={setModal} />
   ) : modal == "reset" ? (
-    <ForgotPassword open={open} handleClose={handleClose} setModal={setModal} />
+    <ForgotPassword open={open} handleClose={closePopup} setModal={setModal} />
   ) : (
     ""
   );
