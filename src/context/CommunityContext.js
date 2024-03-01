@@ -194,7 +194,7 @@ const reducer = (state, action) => {
         ...state,
         love_action: action.payload,
       };
-      case "set_post_reactions":
+    case "set_post_reactions":
       return {
         ...state,
         post_reactions: action.payload,
@@ -432,7 +432,7 @@ const toggleLaugh = (dispatch) => {
 const getReactions = (dispatch) => {
   return async (data) => {
     try {
-      const response = await api.get("/post-reactions?filter[post_id]=" + data.post_id);
+      const response = await api.get("/post-reactions?filter[post_id]=" + data.post_id + (data?.single ? "&single=" + data.single : ""));
       dispatch({
         type: "set_post_reactions",
         payload: { post_id: data.post_id, data: response.data },
