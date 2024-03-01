@@ -59,7 +59,7 @@ const PostList = (props) => {
     return () => clearInterval(interval);
   }, []);
 
-  const onDocumentMouseDown = (e) => {
+  const resetPostReactionDropdowns = (e) => {
     const ignoreKey = document?.currentPostReactionKey || "";
     const arr = document.getElementsByClassName('post-reaction-dropdown');
     if (arr?.length) {
@@ -73,6 +73,31 @@ const PostList = (props) => {
         element?.classList?.add('d-none');
       }
     }
+  };
+
+  const resetPostReactionActionDropdowns = (e) => {
+    const ignoreKey = document?.currentPostReactionActionKey || "";
+    const arr = document.getElementsByClassName('post-reaction-action-dropdown');
+    if (arr?.length) {
+      for (let index = 0; index < arr.length; index++) {
+        const element = arr[index];
+        const key = element['id'] || "";
+        if (key?.length && key == ignoreKey) {
+          continue;
+        }
+        element?.classList?.remove('d-show');
+        element?.classList?.add('d-none');
+      }
+    }
+  };
+
+  const resetDropdowns = (e) => {
+    resetPostReactionDropdowns(e);
+    resetPostReactionActionDropdowns(e);
+  };
+
+  const onDocumentMouseDown = (e) => {
+    resetDropdowns(e);
   };
 
   if (!document.hasOnDocumentMouseDown) {

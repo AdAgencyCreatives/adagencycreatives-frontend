@@ -65,11 +65,17 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
         getReactions({ "post_id": post.id });
     }, [post.reactions_count]);
 
-    const doToggleReaction = (post_id) => {
+    const doToggleReaction = (post_id, type) => {
         let user_reaction_type = getUserReactionType();
-        let type = user_reaction_type?.length > 0 ? user_reaction_type : "like";
+
         // console.log('Initiated Post Reaction for Post ID: ' + post_id);
-        toggleReaction({ "post_id": post_id, "type": type });
+        if (user_reaction_type?.length > 0) {
+            toggleReaction({ "post_id": post_id, "type": user_reaction_type });
+        }
+
+        if (type?.length) {
+            toggleReaction({ "post_id": post_id, "type": type });
+        }
     }
 
     const getShowReactionBy = () => {
@@ -77,8 +83,21 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
         return element?.classList?.contains('d-show') ? true : false;
     };
 
+    const getShowReactionAction = () => {
+        const element = document.getElementById(reactionActionKey);
+        return element?.classList?.contains('d-show') ? true : false;
+    };
+
     const setShowReactionBy = (state) => {
         const element = document.getElementById(reactionKey);
+        if (element) {
+            element?.classList?.remove(state ? 'd-none' : 'd-show');
+            element?.classList?.add(state ? 'd-show' : 'd-none');
+        }
+    };
+
+    const setShowReactionAction = (state) => {
+        const element = document.getElementById(reactionActionKey);
         if (element) {
             element?.classList?.remove(state ? 'd-none' : 'd-show');
             element?.classList?.add(state ? 'd-show' : 'd-none');
@@ -94,15 +113,24 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
         }
     };
 
-    const getReactionIcon = () => {
-        let reactionIcon = LoungePostIconLikeBlack;
+    const onShowReactionAction = (e) => {
+        document.currentPostReactionActionKey = reactionActionKey;
+        let newState = !getShowReactionAction();
+        setShowReactionAction(newState);
+        if (newState) {
+            // do something
+        }
+    };
+
+    const getReactionIcon = (icon = LoungePostIconLikeBlack) => {
+        let reactionIcon = icon;
         let userReactionType = userReaction?.length > 0 ? userReaction[0]?.reaction_type : "";
 
         switch (userReactionType) {
             case "like": reactionIcon = LoungePostIconLikeGold; break;
             case "laugh": reactionIcon = LoungePostIconLaughGold; break;
             case "heart": reactionIcon = LoungePostIconLoveGold; break;
-            default: reactionIcon = LoungePostIconLikeBlack;
+            default: reactionIcon = icon;
         }
 
         return reactionIcon;
@@ -112,14 +140,16 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
         return userReaction?.length > 0 ? userReaction[0]?.reaction_type : "";
     };
 
-    const onLongPress = () => {
+    const onLongPress = (e) => {
         console.log('longpress is triggered');
-        alert();
+        onShowReactionAction(e);
+        window.setTimeout(() => {
+            document.currentPostReactionActionKey = null;
+        }, 200);
     };
 
-    const onClick = () => {
-        console.log('click is triggered');
-        doToggleReaction(post.id);
+    const onClick = (e) => {
+        doToggleReaction(post.id, getUserReactionType()?.length > 0 ? '' : 'like');
     }
 
     const defaultOptions = {
@@ -131,13 +161,29 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
     return (
         <>
             <div className={"post-action post-reactions" + (reactionActive ? ' active' : '')}>
-                <img src={getReactionIcon()} style={{ width: "20px" }} alt="" {...longPressEvent} />
+                <img src={getReactionIcon()} style={{ width: "20px" }} alt="" {...longPressEvent} onMouseOver={(e) => {
+                    onShowReactionAction(e);
+                    window.setTimeout(() => {
+                        document.currentPostReactionActionKey = null;
+                    }, 200);
+                }} />
                 <NumUnit number={reactionsCount} onMouseDown={(e) => onShowReactionBy(e)} onClick={(e) => {
                     document.currentPostReactionKey = null;
                     e.preventDefault();
                     e.stopPropagation();
                     return false;
                 }} />
+                <div id={reactionActionKey} className={"post-reaction-action-dropdown d-none"}>
+                    <div className="image-container">
+                        <img src={getUserReactionType() == 'like' ? LoungePostIconLikeGold : LoungePostIconLikeBlack} style={{ width: "20px" }} alt="" onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'like' ? '' : 'like')} />
+                    </div>
+                    <div className="image-container">
+                        <img src={getUserReactionType() == 'laugh' ? LoungePostIconLaughGold : LoungePostIconLaughBlack} style={{ width: "20px" }} alt="" onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'laugh' ? '' : 'laugh')} />
+                    </div>
+                    <div className="image-container">
+                        <img src={getUserReactionType() == 'heart' ? LoungePostIconLoveGold : LoungePostIconLoveBlack} style={{ width: "20px" }} alt="" onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'heart' ? '' : 'heart')} />
+                    </div>
+                </div>
                 <div id={reactionKey} className={"post-reaction-dropdown d-none"}>
                     {reactionByData && reactionByData.slice(0, Math.min(showMaxReactionBy, reactionByData.length)).map((reaction, index) => (
                         <div key={"reaction-by-post-" + post.id + "-" + reaction.id} className="reaction-by">
