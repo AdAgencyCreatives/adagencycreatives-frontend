@@ -185,7 +185,7 @@ img.post-avatar {
 }
 
 .post-action {
-    cursor: pointer;
+    /* cursor: pointer; */
     display: flex;
     align-items: center;
     gap: 10px;
@@ -197,6 +197,10 @@ img.post-avatar {
     position: relative;
     user-select: none;
     -moz-user-select: none;
+}
+
+.post-action img {
+    cursor: pointer;
 }
 
 .post-action.post-comments:hover {
@@ -507,6 +511,7 @@ img.post-avatar {
     color: #fff;
     border: 1px solid gray;
     border-radius: 100%;
+    cursor: pointer;
 }
 
 .num-unit:hover {

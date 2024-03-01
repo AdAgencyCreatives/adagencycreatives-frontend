@@ -10,11 +10,13 @@ const state = {
   loading: false,
   single_post: {},
   formSubmit: false,
+  post_reactions: { post_id: "", data: {} },
   post_likes: { post_id: "", data: {} },
   post_laughs: { post_id: "", data: {} },
   post_loves: { post_id: "", data: {} },
   post_comments: { post_id: "", data: {} },
   post_comment_replies: { post_id: "", comment_id: "", data: {} },
+  reaction_action: { post_id: "", action: "", error: null },
   like_action: { post_id: "", action: "", error: null },
   laugh_action: { post_id: "", action: "", error: null },
   love_action: { post_id: "", action: "", error: null },
@@ -191,6 +193,16 @@ const reducer = (state, action) => {
       return {
         ...state,
         love_action: action.payload,
+      };
+      case "set_post_reactions":
+      return {
+        ...state,
+        post_reactions: action.payload,
+      };
+    case "set_reaction_action":
+      return {
+        ...state,
+        reaction_action: action.payload,
       };
 
     default:
@@ -417,6 +429,59 @@ const toggleLaugh = (dispatch) => {
   };
 };
 
+const getReactions = (dispatch) => {
+  return async (data) => {
+    try {
+      const response = await api.get("/post-reactions?filter[post_id]=" + data.post_id);
+      dispatch({
+        type: "set_post_reactions",
+        payload: { post_id: data.post_id, data: response.data },
+      });
+    } catch (error) { }
+  };
+};
+
+const getReaction = (dispatch) => {
+  return async (data) => {
+    try {
+      const response = await api.get("/post-reactions?filter[post_id]=" + data.post_id + "&filter[type]=" + data.type);
+      dispatch({
+        type: "set_post_reactions",
+        payload: { post_id: data.post_id, data: response.data },
+      });
+    } catch (error) { }
+  };
+};
+
+const toggleReaction = (dispatch) => {
+  return async (data) => {
+    dispatch({
+      type: "set_reaction_action",
+      payload: { post_id: data.post_id, action: "reaction_begin", error: null },
+    });
+    try {
+      const response = await api.post("/post-reactions", data);
+      dispatch({
+        type: "set_reaction_action",
+        payload: {
+          post_id: data.post_id,
+          action: "reaction_success",
+          error: null,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: "set_reaction_action",
+        payload: {
+          post_id: data.post_id,
+          action: "reaction_failed",
+          error: error,
+        },
+      });
+    }
+  };
+};
+
 const savePost = (dispatch) => {
   return async (data, callback) => {
     dispatch({
@@ -566,6 +631,9 @@ export const { Context, Provider } = createDataContext(
     getTrendingPosts,
     getNewMembers,
     loadPosts,
+    getReactions,
+    getReaction,
+    toggleReaction,
     getLikes,
     toggleLike,
     getLaugh,

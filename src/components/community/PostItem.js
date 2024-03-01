@@ -2,8 +2,6 @@ import {
     IoEllipsisVertical,
     IoTimeOutline,
 } from "react-icons/io5";
-import LoungePostIconLoveBlack from "../../assets/images/lounge-post-icon-love-black.png";
-import LoungePostIconLoveGold from "../../assets/images/lounge-post-icon-love-gold.png";
 import LoungePostIconCommentBlack from "../../assets/images/lounge-post-icon-comment-black.png";
 import LoungePostIconCommentGold from "../../assets/images/lounge-post-icon-comment-gold.png";
 
@@ -23,6 +21,7 @@ import useHelper from "../../hooks/useHelper";
 
 import { CookiesProvider, useCookies } from "react-cookie";
 import { Link } from "@mui/material";
+import PostReaction from "./PostReaction";
 import PostLikes from "./PostLikes";
 import PostLaughs from "./PostLaughs";
 import PostLoves from "./PostLoves";
@@ -76,8 +75,8 @@ const PostItem = (props) => {
     } = useContext(AuthContext);
 
     const {
-        state: { posts, post_likes, like_action, post_laughs, laugh_action, post_loves, love_action, post_updated, post_comments, comment_added, comment_updated, comment_deleted },
-        getPosts, getLikes, toggleLike, getLaugh, toggleLaugh, getLove, toggleLove, deletePost, getComments
+        state: { posts, post_reactions, reaction_action, post_likes, like_action, post_laughs, laugh_action, post_loves, love_action, post_updated, post_comments, comment_added, comment_updated, comment_deleted },
+        getPosts, getReactions, getReaction, toggleReaction, getLikes, toggleLike, getLaugh, toggleLaugh, getLove, toggleLove, deletePost, getComments
     } = useContext(CommunityContext);
 
     const [defaultAvatar, setDefaultAvatar] = useState("https://adagencycreatives.noorsofttechdev.com/static/media/placeholder.12b7e9aaed5e5566bc6a.png");
@@ -291,6 +290,16 @@ const PostItem = (props) => {
                 })}
             </div>
             <div className="post-actions">
+
+            <PostReaction
+                    post={props?.post}
+                    user={user}
+                    post_reactions={post_reactions}
+                    reaction_action={reaction_action}
+                    getReactions={getReactions}
+                    getReaction={getReaction}
+                    toggleReaction={toggleReaction}
+                />
 
                 <PostLikes
                     post={props?.post}
