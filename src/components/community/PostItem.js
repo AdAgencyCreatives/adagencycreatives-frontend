@@ -291,7 +291,7 @@ const PostItem = (props) => {
             </div>
             <div className="post-actions">
 
-            <PostReaction
+                <PostReaction
                     post={props?.post}
                     user={user}
                     post_reactions={post_reactions}
@@ -301,7 +301,7 @@ const PostItem = (props) => {
                     toggleReaction={toggleReaction}
                 />
 
-                <PostLikes
+                {/* <PostLikes
                     post={props?.post}
                     user={user}
                     post_likes={post_likes}
@@ -327,7 +327,7 @@ const PostItem = (props) => {
                     love_action={love_action}
                     getLove={getLove}
                     toggleLove={toggleLove}
-                />
+                /> */}
 
                 <div className="post-action post-comments" onClick={() => toggleShowComments()}>
                     {showComments ? (
