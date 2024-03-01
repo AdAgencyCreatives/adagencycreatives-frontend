@@ -21,21 +21,42 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
     const [reactionActive, setReactionActive] = useState(false);
     const [reactionByData, setReactionByData] = useState([]);
 
+    const setSingleRections = (data) => {
+        if (!data?.length) {
+            setReactionByData(null);
+            return;
+        }
+
+        let uniqueUserReactionData = [];
+        let uniqueUsers = [];
+
+        for (let index = 0; index < data.length; index++) {
+            const element = data[index];
+            if (!uniqueUsers.includes(element.user_id)) {
+                uniqueUsers.push(element.user_id);
+                uniqueUserReactionData.push(element);
+            }
+        }
+
+        setReactionByData(uniqueUserReactionData)
+        if (uniqueUserReactionData?.length != reactionsCount) {
+            setReactionsCount(uniqueUserReactionData.length);
+        }
+    };
+
     useEffect(() => {
         if (post_reactions && post_reactions.data && post_reactions.data.data) {
             if (post_reactions?.post_id != post.id) {
                 return;
             }
-            if (post_reactions.data.data.length != reactionsCount) {
-                setReactionsCount(post_reactions.data.data.length);
-            }
-            setReactionByData(post_reactions.data.data)
+
+            setSingleRections(post_reactions.data.data)
             let user_reaction = post_reactions.data.data.filter(item => item.user_id == user.uuid);
             setReactionActive(user_reaction && user_reaction.length);
             setUserReaction(user_reaction);
         } else {
             setReactionsCount(post.reactions_count);
-            getReactions({ "post_id": post.id });
+            getReactions({ "post_id": post.id, "single": "yes" });
         }
     }, [post_reactions]);
 
@@ -51,7 +72,7 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                     console.log('Reaction Succeed for Post ID: ' + reaction_action.post_id);
                     setReactionsCount(reactionsCount + (!reactionActive ? 1 : -1));
                     setReactionActive(!reactionActive);
-                    getReactions({ "post_id": post.id });
+                    getReactions({ "post_id": post.id, "single": "yes" });
                     break;
                 case "reaction_failed": console.log('Reaction Failed for Post ID: ' + reaction_action.post_id + ", Error: " + reaction_action.error); break;
                 default:
@@ -62,7 +83,7 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
 
     useEffect(() => {
         setReactionsCount(post.reactions_count);
-        getReactions({ "post_id": post.id });
+        getReactions({ "post_id": post.id, "single": "yes" });
     }, [post.reactions_count]);
 
     const doToggleReaction = (post_id, type) => {
@@ -109,7 +130,7 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
         let newState = !getShowReactionBy();
         setShowReactionBy(newState);
         if (newState) {
-            getReactions({ "post_id": post.id });
+            getReactions({ "post_id": post.id, "single": "yes" });
         }
     };
 
