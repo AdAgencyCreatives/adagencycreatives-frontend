@@ -195,14 +195,14 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                     return false;
                 }} />
                 <div id={reactionActionKey} className={"post-reaction-action-dropdown d-none"}>
-                    <div className="image-container">
-                        <img src={getUserReactionType() == 'like' ? LoungePostIconLikeGold : LoungePostIconLikeBlack} style={{ width: "20px" }} alt="" onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'like' ? '' : 'like')} />
+                    <div className="image-container" onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'like' ? '' : 'like')}>
+                        <img src={getUserReactionType() == 'like' ? LoungePostIconLikeGold : LoungePostIconLikeBlack} style={{ width: "20px" }} alt="" />
                     </div>
-                    <div className="image-container">
-                        <img src={getUserReactionType() == 'laugh' ? LoungePostIconLaughGold : LoungePostIconLaughBlack} style={{ width: "20px" }} alt="" onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'laugh' ? '' : 'laugh')} />
+                    <div className="image-container" onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'laugh' ? '' : 'laugh')}>
+                        <img src={getUserReactionType() == 'laugh' ? LoungePostIconLaughGold : LoungePostIconLaughBlack} style={{ width: "20px" }} alt="" />
                     </div>
-                    <div className="image-container">
-                        <img src={getUserReactionType() == 'heart' ? LoungePostIconLoveGold : LoungePostIconLoveBlack} style={{ width: "20px" }} alt="" onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'heart' ? '' : 'heart')} />
+                    <div className="image-container" onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'heart' ? '' : 'heart')}>
+                        <img src={getUserReactionType() == 'heart' ? LoungePostIconLoveGold : LoungePostIconLoveBlack} style={{ width: "20px" }} alt="" />
                     </div>
                 </div>
                 <div id={reactionKey} className={"post-reaction-dropdown d-none"}>
