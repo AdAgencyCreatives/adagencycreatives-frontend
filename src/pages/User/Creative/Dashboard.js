@@ -20,6 +20,8 @@ import Loader from "../../../components/Loader";
 import JobList from "../../../components/job/JobList";
 import Placeholder from "../../../assets/images/placeholder.png";
 import { Link } from "react-router-dom";
+import TimeAgo from "../../../components/TimeAgo";
+import JobDetail from "./JobDetail";
 
 const Dashboard = () => {
 
@@ -124,81 +126,13 @@ const Dashboard = () => {
                     <thead>
                       <tr>
                         <th className="title">Job Title</th>
-                        <th className="date">User</th>
+                        <th className="date">Applied</th>
                         <th className="status">Status</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {applications &&
-                        applications.map((item) => {
-                          let job = item.relationships.job;
-                          return (
-                            <tr key={item.id}>
-                              <td className="job-table-info">
-                                <div className="job-table-info-content">
-                                  <div className="d-flex">
-                                    <div className="avatar employer">
-                                      <img
-                                        src={job?.agency?.logo || Placeholder}
-                                        height={100}
-                                        width={100}
-                                      />
-                                    </div>
-                                    <div className="ms-3">
-                                      <div className="title-wrapper">
-                                        <h3 className="job-table-info-content-title">
-                                          <Link to={"/job/" + job?.slug}>
-                                            {job?.title}
-                                          </Link>
-                                        </h3>
-                                        {job?.priority.is_featured ? (
-                                          <IoCheckmarkCircle
-                                            color="#34A853"
-                                            size={30}
-                                          />
-                                        ) : (
-                                          ""
-                                        )}
-                                      </div>
-                                      <div className="job-metas">
-                                        {job?.category && (
-                                          <div className="position">
-                                            <IoBriefcaseOutline className="me-2" />
-                                            <Link
-                                              to={"/job-category/" + job?.category}
-                                              className="link-gray"
-                                            >
-                                              {job?.category}
-                                            </Link>
-                                          </div>
-                                        )}
-                                        {job?.location && (
-                                          <div className="job-location location">
-                                            <IoLocationOutline />
-                                            <Link to={`/job-location-state/${job?.location.state}`}>{job?.location.state}</Link>
-                                            <Link to={`/job-location-city/${job?.location.city}`}>, {job?.location.city}</Link>
-                                          </div>
-                                        )}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </td>
-                              <td>
-                                <div className="job-table-info-content-date-expiry">
-                                  <div className="created">
-                                    {item.user}
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="job-table-status nowrap">
-                                <div className="job-table-actions-inner pending_payment">
-                                  {item.status}
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
+                      {applications?.length > 0 &&
+                        applications.map((item) => (<JobDetail item={item} />))}
                     </tbody>
                   </table>
                 </div>)}
