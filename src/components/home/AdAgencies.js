@@ -77,7 +77,7 @@ const AdAgencies = () => {
             agencies.sort(() => Math.random() - 0.5).map((item, index) => {
               return (
                 <swiper-slide key={`slide${index}`}>
-                  <div className="sliderContent adagencies-slider">
+                  <div className="sliderContent adagencies-slider" style={{ height: '350px' }}>
                     <Link to={`/agency/${item.slug}`} className="employer-logo">
                       <img
                         src={item.logo || Placeholder}

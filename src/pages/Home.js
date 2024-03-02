@@ -154,7 +154,7 @@ const Home = () => {
 
           <div id="feedback">
             <div className="sectionHeader">
-              <h1 className="sectionTitle">Say, Hello</h1>
+              <h1 className="sectionTitle">Say Hello</h1>
             </div>
             <div className="contact-section">
               <div className="row">
