@@ -252,8 +252,8 @@ const ChatBox = ({
 
   const deleteMessage = (item) => {
     if ((item.sender_id == user.uuid)) {
-      setIsDialogOpen(true);
       setIsId(item.id);
+      setIsDialogOpen(true);
     }
   };
 
@@ -283,7 +283,11 @@ const ChatBox = ({
     setFormDelete(true);
     try {
       const response = await api.delete("/messages/" + isId);
-    } catch (error) { }
+
+      let newMessageData = messageData.filter((item)=>item.id != isId);
+      setMessageData(newMessageData);
+    } catch (error) {}
+    setFormDelete(false);
     setIsDialogOpen(false);
     // window.location.reload();
 

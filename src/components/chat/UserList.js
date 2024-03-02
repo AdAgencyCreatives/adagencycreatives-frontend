@@ -93,7 +93,9 @@ const UserList = ({ messageType, page, data, handleItemClick }) => {
     try {
       const response = await api.post(`/delete-conversation?message_type=${messageType}&user1=${selectedItem.sender_id}&user2=${selectedItem.receiver_id}`);
       deletedCount = response.data;
-    } catch (error) { }
+    } catch (error) { 
+      console.log(error);
+    }
     setIsDialogOpen(false);
     setFormDelete(false);
     if (deletedCount) {
