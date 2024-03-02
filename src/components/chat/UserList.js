@@ -1,6 +1,6 @@
 import moment from "moment";
 import Avatar from "../../assets/images/placeholder.png";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Context } from "../../context/ChatContext";
 import { Tooltip, Dialog, CircularProgress } from "@mui/material";
 import { Context as AuthContext } from "../../context/AuthContext";
@@ -24,7 +24,11 @@ const UserList = ({ messageType, page, data, handleItemClick }) => {
   const [isId, setIsId] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [messageTmp, setMessageTmp] = useState();
+  const [conversationData, setConversationData] = useState([]);
 
+  useEffect(()=>{
+    setConversationData(data);
+  }, [data]);
   const {
     state: { user },
   } = useContext(AuthContext);
@@ -100,6 +104,8 @@ const UserList = ({ messageType, page, data, handleItemClick }) => {
     setFormDelete(false);
     if (deletedCount) {
       window.location.reload();
+      // let newConversationData = conversationData.filter((item) => item.id != selectedItem.id);
+      // setConversationData(newConversationData);
     }
 
   };
@@ -166,7 +172,7 @@ const UserList = ({ messageType, page, data, handleItemClick }) => {
           </div>
         </div>
       </Dialog>
-      {data.map((item) => (
+      {conversationData?.map((item) => (
         <li data-id={item.contact.uuid}
           className={(item.contact.uuid == activeContact) ? "active" : ""}
           onClick={() => handleItemClick(item.contact, messageType)}
