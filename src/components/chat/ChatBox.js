@@ -35,6 +35,7 @@ const ChatBox = ({
   messageData,
   setMessageData,
   messageType,
+  refreshContacts,
 }) => {
   const {
     state: { messages, loading, contacts, attachments },
@@ -108,8 +109,9 @@ const ChatBox = ({
       });
     }
 
+    const type = messageData?.slice(-1)?.pop()?.type ?? (messageType?.split(',')[0] ?? 'job');
     // const type = messageData.slice(-1).pop()?.type ?? 'job';
-    const type = messageType ?? (messageData.slice(-1).pop()?.type ?? 'job');
+    // const type = messageType ?? (messageData.slice(-1).pop()?.type ?? 'job');
     await sendMessage(user.uuid, contact.uuid, messageBody, type);
     showAlert("Message sent");
     setContent("");
@@ -121,6 +123,8 @@ const ChatBox = ({
       getMessages(id, type);
       await getContacts(type);
     }
+
+    await refreshContacts();
   };
 
   const parseDate = (dateString) => {
@@ -210,8 +214,9 @@ const ChatBox = ({
     const loadMoreMessages = async () => {
       if (containerRef.current && containerRef.current.scrollTop === 0) {
         const id = contact.uuid;
+        const type = messageData?.slice(-1)?.pop()?.type ?? (messageType?.split(',')[0] ?? 'job');
         // const type = messageData.slice(-1).pop()?.type ?? 'job';
-        const type = messageType ?? (messageData.slice(-1).pop()?.type ?? 'job');
+        // const type = messageType ?? (messageData.slice(-1).pop()?.type ?? 'job');
 
         const response = await api.get("/messages/" + id + "?type=" + type + "&page=" + paged);
         const newMessages = response.data.data ?? [];
@@ -284,23 +289,38 @@ const ChatBox = ({
     try {
       const response = await api.delete("/messages/" + isId);
 
-      let newMessageData = messageData.filter((item)=>item.id != isId);
+      let newMessageData = messageData.filter((item) => item.id != isId);
       setMessageData(newMessageData);
-    } catch (error) {}
+      showAlert("Message deleted");
+    } catch (error) { }
     setFormDelete(false);
     setIsDialogOpen(false);
     // window.location.reload();
 
+    await refreshContacts();
   };
+
   const handleEdit = async () => {
     setFormEdit(true);
+
     const data = { id: isId, message: messageTmp };
     console.log(data, 'data');
     try {
       const response = await api.patch("/messages/" + isId, data);
+      let newMessageData = [];
+      messageData.map((item) => {
+        if (item.id == isId) {
+          item = response.data.data;
+        }
+        newMessageData.push(item);
+      });
+      setMessageData(newMessageData);
+      showAlert("Message updated")
     } catch (error) { }
+    setFormEdit(false);
     setIsDialogOpenEdit(false);
-    window.location.reload();
+    // window.location.reload();
+    await refreshContacts();
   };
 
   return (
@@ -420,7 +440,7 @@ const ChatBox = ({
                               </p>
                               <div className="d-flex align-items-center justify-content-end">
                                 <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={formEdit} onClick={handleEdit}>
-                                  Save {formEdit && <CircularProgress size={20} />}
+                                  Update {formEdit && <CircularProgress size={20} />}
                                 </button>
                               </div>
                             </div>

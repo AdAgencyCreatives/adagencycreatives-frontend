@@ -7,7 +7,7 @@ import UserList from "../../chat/UserList";
 import ChatBox from "../../chat/ChatBox";
 import { Context } from "../../../context/ChatContext";
 
-const JobChat = ({ getMessages, getContacts }) => {
+const JobChat = ({ messageType, getMessages, getContacts }) => {
   const {
     state: { contacts }
   } = useContext(Context);
@@ -17,7 +17,7 @@ const JobChat = ({ getMessages, getContacts }) => {
   const [userListMobile, setUserListMobile] = useState("");
   const [chatBoxMobile, setChatBoxMobile] = useState("mobile-hide");
   const [contact, setContact] = useState({});
-  const [type, setType] = useState("job,private");
+  const [type, setType] = useState(messageType);
   const [contactsList, setContactsList] = useState([]);
   const [checkClick, setCheckClick] = useState(false);
   const [paged, setPaged] = useState(2);
@@ -44,6 +44,9 @@ const JobChat = ({ getMessages, getContacts }) => {
     }
   };
 
+  const refreshContacts = async ()=> {
+    await getContacts(messageType);
+  };
   const handleBackButton = () => {
     setUserListMobile("");
     setChatBoxMobile("mobile-hide");
@@ -86,7 +89,8 @@ const JobChat = ({ getMessages, getContacts }) => {
     setHasMoreData,
     hasMoreData,
     messageData,
-    setMessageData
+    setMessageData,
+    refreshContacts,
   };
 
   return (
@@ -130,7 +134,7 @@ const JobChat = ({ getMessages, getContacts }) => {
               </div>
             </div>
             <div className="box-content">
-              <UserList messageType={type} page="job" data={contactsList} handleItemClick={handleItemClick} />
+              <UserList messageType={type} page="job" data={contactsList} handleItemClick={handleItemClick} refreshContacts={refreshContacts} setMessageData={setMessageData} />
             </div>
           </div>
         </div>

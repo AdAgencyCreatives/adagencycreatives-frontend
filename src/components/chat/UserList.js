@@ -4,6 +4,7 @@ import { useContext, useEffect } from "react";
 import { Context } from "../../context/ChatContext";
 import { Tooltip, Dialog, CircularProgress } from "@mui/material";
 import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as AlertContext } from "../../context/AlertContext";
 import React, { useState } from 'react';
 import {
   IoClose,
@@ -12,12 +13,13 @@ import {
   IoCheckmarkCircle,
   IoPencil,
   IoLockOpen,
-  IoCloseOutline
+  IoCloseOutline,
+  IoRefresh
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { api } from "../../api/api";
 
-const UserList = ({ messageType, page, data, handleItemClick }) => {
+const UserList = ({ messageType, page, data, handleItemClick, refreshContacts, setMessageData }) => {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpenEdit, setIsDialogOpenEdit] = useState(false);
@@ -32,6 +34,10 @@ const UserList = ({ messageType, page, data, handleItemClick }) => {
   const {
     state: { user },
   } = useContext(AuthContext);
+
+  const {
+    showAlert
+  } = useContext(AlertContext);
 
   const parseDateShort = (dateString) => {
     const parsedDate = moment(dateString);
@@ -103,11 +109,11 @@ const UserList = ({ messageType, page, data, handleItemClick }) => {
     setIsDialogOpen(false);
     setFormDelete(false);
     if (deletedCount) {
-      window.location.reload();
-      // let newConversationData = conversationData.filter((item) => item.id != selectedItem.id);
-      // setConversationData(newConversationData);
+      // window.location.reload();
+      setMessageData([]);
+      showAlert("Conversation deleted");
+      await refreshContacts();
     }
-
   };
   
   const handleEdit = async () => {
@@ -160,7 +166,7 @@ const UserList = ({ messageType, page, data, handleItemClick }) => {
                   </button>
                 </div>
                 <p className="text-center">
-                  Are you sure you want to delete this message ?
+                  Are you sure you want to delete this conversation ?
                 </p>
                 <div className="d-flex align-items-center justify-content-end">
                   <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={formDelete} onClick={handleDelete}>
