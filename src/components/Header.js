@@ -39,8 +39,8 @@ function Header(props) {
 
   const navigate = useNavigate();
 
-  const { window:windowFn } = props;
-  const { state } = React.useContext(AuthContext);
+  const { window: windowFn } = props;
+  const { state, resetConversationUpdated } = React.useContext(AuthContext);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [childLink, setChildLink] = useState("hashLink");
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -70,6 +70,18 @@ function Header(props) {
   }, [state.user, state.role]);
 
   useEffect(() => {
+    if (state?.conversation_updated_notifications?.length > 0) {
+      let notificationText = '';
+      for (let index = 0; index < state.conversation_updated_notifications.length; index++) {
+        const element = state.conversation_updated_notifications[index];
+        notificationText += element + '<br />\n';
+      }
+      showAlert(notificationText);
+      resetConversationUpdated();
+    }
+  }, [state.conversation_updated_notifications]);
+
+  useEffect(() => {
     if (state.token !== null) {
       setLoggedInNav(state.role === "creative" ? creativeNav : agencyNav);
     }
@@ -95,8 +107,8 @@ function Header(props) {
   }, [state.token]);
 
   useEffect(() => {
-    if(anchor && anchor.length && anchor.indexOf("register_") == 0) {
-        setAuthModalOpen(true);
+    if (anchor && anchor.length && anchor.indexOf("register_") == 0) {
+      setAuthModalOpen(true);
     }
   }, [anchor]);
 

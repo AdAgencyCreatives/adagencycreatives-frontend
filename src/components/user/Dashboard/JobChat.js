@@ -5,12 +5,20 @@ import { useEffect, useState, useContext } from "react";
 import moment from "moment";
 import UserList from "../../chat/UserList";
 import ChatBox from "../../chat/ChatBox";
-import { Context } from "../../../context/ChatContext";
+import { Context as AuthContext } from "../../../context/AuthContext";
+import { Context as ChatContext } from "../../../context/ChatContext";
 
-const JobChat = ({ messageType, getMessages, getContacts }) => {
+const JobChat = ({ messageType }) => {
+
   const {
-    state: { contacts }
-  } = useContext(Context);
+    state: { conversation_updated_notifications },
+  } = useContext(AuthContext);
+
+  const {
+    state: { contacts },
+    getMessages, getContacts,
+  } = useContext(ChatContext);
+
   const [search, setSearch] = useState();
   const [tab, setTab] = useState("all");
   const [chatBox, setChatBox] = useState("list");
@@ -28,6 +36,19 @@ const JobChat = ({ messageType, getMessages, getContacts }) => {
     setContactsList(contacts);
   }, [contacts]);
 
+  useEffect(() => {
+    if (conversation_updated_notifications?.length > 0) {
+      (async () => {
+        let typeTmp = type;
+        let contactTmp = contact;
+        refreshContacts();
+        getMessages(contactTmp.uuid, typeTmp);
+      })();
+
+    }
+
+  }, [conversation_updated_notifications]);
+
   const handleItemClick = (item, type) => {
     setChatBox("list");
     setUserListMobile("mobile-hide");
@@ -44,7 +65,7 @@ const JobChat = ({ messageType, getMessages, getContacts }) => {
     }
   };
 
-  const refreshContacts = async ()=> {
+  const refreshContacts = async () => {
     await getContacts(messageType);
   };
   const handleBackButton = () => {

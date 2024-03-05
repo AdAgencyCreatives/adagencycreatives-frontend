@@ -288,9 +288,6 @@ const ChatBox = ({
     setFormDelete(true);
     try {
       const response = await api.delete("/messages/" + isId);
-
-      let newMessageData = messageData.filter((item) => item.id != isId);
-      setMessageData(newMessageData);
       showAlert("Message deleted");
     } catch (error) { }
     setFormDelete(false);
@@ -298,29 +295,23 @@ const ChatBox = ({
     // window.location.reload();
 
     await refreshContacts();
+    await getMessages(contact.uuid, type);
   };
 
   const handleEdit = async () => {
     setFormEdit(true);
 
-    const data = { id: isId, message: messageTmp };
+    const data = { id: isId, message: messageTmp, edited: true };
     console.log(data, 'data');
     try {
       const response = await api.patch("/messages/" + isId, data);
-      let newMessageData = [];
-      messageData.map((item) => {
-        if (item.id == isId) {
-          item = response.data.data;
-        }
-        newMessageData.push(item);
-      });
-      setMessageData(newMessageData);
       showAlert("Message updated")
     } catch (error) { }
     setFormEdit(false);
     setIsDialogOpenEdit(false);
     // window.location.reload();
     await refreshContacts();
+    await getMessages(contact.uuid, type);
   };
 
   return (
@@ -458,8 +449,8 @@ const ChatBox = ({
                       <div className="sender">
                         {sender.first_name + " " + sender.last_name}
                         <span className="time">{time}</span>
-                        {item.created_at != item.updated_at && (
-                          <Tooltip title={parseDate(item.updated_at)}>
+                        {item?.edited_at && (
+                          <Tooltip title={parseDate(item?.edited_at)}>
                             <span className="edited">Edited</span>
                           </Tooltip>
                         )}

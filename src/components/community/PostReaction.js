@@ -20,6 +20,7 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
     const [userReaction, setUserReaction] = useState([]);
     const [reactionActive, setReactionActive] = useState(false);
     const [reactionByData, setReactionByData] = useState([]);
+    const [postReactionStats, setPostReactionStats] = useState([]);
 
     const setSingleRections = (data) => {
         if (!data?.length) {
@@ -86,6 +87,12 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
         getReactions({ "post_id": post.id, "single": "yes" });
     }, [post.reactions_count]);
 
+    useEffect(() => {
+        if (reactionByData?.length > 0) {
+            setPostReactionStats(getPostReactionStats());
+        }
+    }, [reactionByData]);
+
     const doToggleReaction = (post_id, type) => {
         let user_reaction_type = getUserReactionType();
 
@@ -98,6 +105,53 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
             toggleReaction({ "post_id": post_id, "type": type });
         }
     }
+
+    const getPostReactionStats = () => {
+        let postReactionStats = [];
+        let reactionTypes = [];
+
+        for (let index = 0; index < reactionByData?.length; index++) {
+            const element = reactionByData[index];
+            if (!reactionTypes.includes(element.reaction_type)) {
+                reactionTypes.push(element.reaction_type);
+            }
+        }
+
+        for (let index = 0; index < reactionTypes?.length; index++) {
+            const element = reactionTypes[index];
+            postReactionStats.push();
+            if (element == 'like') {
+                postReactionStats[element] = {
+                    'type': element,
+                    'icon': LoungePostIconLikeGold,
+                    'count': 0,
+                    'reactions': []
+                };
+            } else if (element == 'laugh') {
+                postReactionStats[element] = {
+                    'type': element,
+                    'icon': LoungePostIconLaughGold,
+                    'count': 0,
+                    'reactions': []
+                };
+            } else if (element == 'heart') {
+                postReactionStats[element] = {
+                    'type': element,
+                    'icon': LoungePostIconLoveGold,
+                    'count': 0,
+                    'reactions': []
+                };
+            }
+        }
+
+        for (let index = 0; index < reactionByData?.length; index++) {
+            const element = reactionByData[index];
+            postReactionStats[element.reaction_type]['count'] += 1;
+            postReactionStats[element.reaction_type]['reactions'].push(element);
+        }
+
+        return postReactionStats;
+    };
 
     const getShowReactionBy = () => {
         const element = document.getElementById(reactionKey);
@@ -206,14 +260,24 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                     </div>
                 </div>
                 <div id={reactionKey} className={"post-reaction-dropdown d-none"}>
-                    {reactionByData && reactionByData.slice(0, Math.min(showMaxReactionBy, reactionByData.length)).map((reaction, index) => (
-                        <div key={"reaction-by-post-" + post.id + "-" + reaction.id} className="reaction-by">
-                            <img src={reaction.profile_picture || Placeholder} alt="" />
-                        </div>
-                    ))}
+                    {/* {reactionByData && reactionByData.slice(0, Math.min(showMaxReactionBy, reactionByData.length)).map((reaction, index) => {
+
+                        return (
+                            <div key={"reaction-by-post-" + post.id + "-" + reaction.id} className="reaction-by">
+                                <img src={reaction.profile_picture || Placeholder} alt="" />
+                            </div>
+                        );
+
+                    })}
                     <div className="reactions-total">
                         {reactionsCount > showMaxReactionBy ? '+' : ''}{reactionsCount > 0 ? (reactionsCount > showMaxReactionBy ? reactionsCount - showMaxReactionBy : reactionsCount) : 0} reaction{reactionsCount > 1 ? 's' : ''}
-                    </div>
+                    </div> */}
+                    {postReactionStats.map((item) => (
+                        <div key={'post-reactions-stats-' + reactionKey}>
+                            <img src={item['icon']} alt="" />
+                            {item['type']}
+                        </div>
+                    ))}
                 </div>
             </div>
         </>

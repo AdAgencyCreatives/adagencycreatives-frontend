@@ -35,6 +35,7 @@ const reducer = (state, action) => {
         };
         //return { ...state, contacts: { ...state.contacts, newObject } };
       }
+      break;
     case "add_attachment":
       let attachment = { src: action.payload, uploaded: false };
       return { ...state, attachments: [...state.attachments, attachment] };
@@ -65,7 +66,7 @@ const getMessages = (dispatch) => {
         type: "set_messages",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
@@ -76,20 +77,20 @@ const appendMessages = (dispatch) => {
     setLoading(dispatch, true);
     try {
       const response = await api.get("/messages/" + id + "?type=" + type + "&page=" + page);
-      if(response.data.data){
+      if (response.data.data) {
         for (var i = response.data.data.length - 1; i >= 0; i--) {
-          if(response.data.data[i] && response.data.data[i] != undefined ){
+          if (response.data.data[i] && response.data.data[i] != undefined) {
             dispatch({
-            type: "add_message",
-            payload: response.data.data[i],
-          });
+              type: "add_message",
+              payload: response.data.data[i],
+            });
           }
-          
+
         }
       }
-      
-      
-    } catch (error) {}
+
+
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
@@ -102,12 +103,12 @@ const getContacts = (dispatch) => {
         type: "set_contacts",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
 const sendMessage = (dispatch) => {
-  return async (sender_id, receiver_id, message, type, cb = () => {}) => {
+  return async (sender_id, receiver_id, message, type, cb = () => { }) => {
     dispatch({
       type: "reset_attachment",
     });
@@ -119,7 +120,7 @@ const sendMessage = (dispatch) => {
         type,
       });
       addMessage(dispatch)(response.data);
-    } catch (error) {}
+    } catch (error) { }
     cb();
   };
 };
@@ -174,7 +175,7 @@ const uploadAttachment = (dispatch) => {
         type: "set_uploaded_attachment_status",
         payload: response.data.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 

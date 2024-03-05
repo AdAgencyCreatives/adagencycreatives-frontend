@@ -14,11 +14,10 @@ import { Context } from "../../context/ChatContext";
 import UserList from "../chat/UserList";
 import { getMyFriends } from "../../context/FriendsDataContext";
 
-const Chat = () => {
+const Chat = ({ messageType }) => {
   const {
     state: { contacts },
-    getMessages,
-    getContacts,
+    getMessages, getContacts,
   } = useContext(Context);
 
   const [search, setSearch] = useState("");
@@ -28,7 +27,7 @@ const Chat = () => {
   const [chatBoxMobile, setChatBoxMobile] = useState("mobile-hide");
   const [contactsList, setContactsList] = useState([]);
   const [contact, setContact] = useState({});
-  const [type, setType] = useState("private");
+  const [type, setType] = useState(messageType);
   const [friends, setFriends] = useState([]);
 
   const [userSelected, setUserSelected] = useState(null);

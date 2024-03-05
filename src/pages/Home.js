@@ -79,7 +79,7 @@ const Home = () => {
                 {"num": 2, "url": token ? 'post-a-job' : '#register_agency'},
                 {"num": 3, "url": token ? (role == 'creative' ? 'community' : 'dashboard') : '#register_creative'},
               ].map(item => (
-                <div className="col-lg-4 col-md-4 col-12 hero-box">
+                <div key={"flip-card-key-" + item?.num} className="col-lg-4 col-md-4 col-12 hero-box">
                 <Link
                   // className={`box link-light ${item.img ? "flip" : ""}`}
                   className="box link-light flip"

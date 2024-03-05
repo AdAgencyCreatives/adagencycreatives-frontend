@@ -9,8 +9,8 @@ const Message = ({ open, handleClose, item, type }) => {
   const [data, setData] = useState({ subject: "", message: "" });
 
   const {
-    state: { loading },
-    sendMessage,
+    state: { loading, },
+    sendMessage, getMessages,
   } = useContext(ChatContext);
 
   const {
@@ -31,6 +31,10 @@ const Message = ({ open, handleClose, item, type }) => {
       handleClose();
       showAlert('Message sent successfully');
       setData({ subject: "", message: "" });
+      (async () => {
+        await getMessages(user.uuid, type);
+      })();
+
     });
     logActivity(user.uuid, "message_sent", "You sent message to Creative: " + item.name, "{user_id:'" + user.uuid + "', creative_id:'" + item.user_id + "'}");
   };
@@ -60,7 +64,7 @@ const Message = ({ open, handleClose, item, type }) => {
                     Sent message successful.
                   </div>
                 )} */}
-                <div className="form-group" style={{display: "none" }}>
+                <div className="form-group" style={{ display: "none" }}>
                   <input
                     className="form-control mb-4"
                     name="subject"

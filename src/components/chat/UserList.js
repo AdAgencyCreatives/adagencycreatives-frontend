@@ -111,8 +111,8 @@ const UserList = ({ messageType, page, data, handleItemClick, refreshContacts, s
     if (deletedCount) {
       // window.location.reload();
       setMessageData([]);
-      showAlert("Conversation deleted");
       await refreshContacts();
+      showAlert("Conversation deleted");
     }
   };
   

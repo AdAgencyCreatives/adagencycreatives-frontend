@@ -7,7 +7,7 @@ const JobMessages = () => {
 
   const [messageType, setMessageType] = useState("job,private");
 
-  const { getContacts, getMessages } = useContext(ChatContext);
+  const { getContacts, } = useContext(ChatContext);
 
   useEffect(() => {
     getContacts(messageType);
@@ -16,7 +16,7 @@ const JobMessages = () => {
   return (
     <div className="agency-page-myjobs">
       <h3 className="page-title">Messages</h3>
-      <JobChat messageType={messageType} getMessages={getMessages} getContacts={getContacts} />
+      <JobChat messageType={messageType} />
     </div>
   );
 };

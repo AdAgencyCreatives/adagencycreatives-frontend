@@ -8,6 +8,7 @@ window.Pusher = Pusher;
 const ChatListener = () => {
   const {
     state: { token, user },
+    notifyConversationUpdated,
   } = useContext(AuthContext);
 
   const { addMessage } = useContext(ChatContext);
@@ -27,7 +28,14 @@ const ChatListener = () => {
 
       var channel = pusher.subscribe(channelName);
       channel.bind("private_msg", function (data) {
-        addMessage(data);
+        const messageType = data?.data?.message_type;
+        if(messageType == 'received') {
+          // addMessage(data);
+          notifyConversationUpdated(data.data.message);
+        } else if(messageType == 'conversation_updated') {
+          notifyConversationUpdated(data.data.message);
+        }
+        
       });
 
       return () => pusher.unsubscribe(channelName);

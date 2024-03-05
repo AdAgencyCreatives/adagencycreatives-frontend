@@ -22,6 +22,7 @@ const state = {
   messageAlert: { type: "", message: "", display: "" },
   subscription_status: "",
   advance_search_capabilities: false,
+  conversation_updated_notifications: []
 };
 
 const authReducer = (state, action) => {
@@ -60,6 +61,10 @@ const authReducer = (state, action) => {
       return { ...state, activities_count: action.payload };
     case "show_message_alert":
       return { ...state, messageAlert: action.payload };
+    case "conversation_updated":
+      return { ...state, conversation_updated_notifications: [...state.conversation_updated_notifications, action.payload] };
+    case "reset_conversation_updated":
+      return { ...state, conversation_updated_notifications: [] };
     default:
       return state;
   }
@@ -340,7 +345,7 @@ const verifyToken = (dispatch) => async (token) => {
         },
       }
     );
-    
+
     setIsLoading(dispatch, false);
     setToken(dispatch)(response.data.token, response.data.user.role);
     setUserData(dispatch, response.data.user);
@@ -463,6 +468,23 @@ const handleClose = (dispatch) => {
   };
 };
 
+const notifyConversationUpdated = (dispatch) => {
+  return (message) => {
+    dispatch({
+      type: "conversation_updated",
+      payload: message,
+    });
+  };
+};
+
+const resetConversationUpdated = (dispatch) => {
+  return (message) => {
+    dispatch({
+      type: "reset_conversation_updated",
+    });
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   authReducer,
   {
@@ -484,6 +506,8 @@ export const { Context, Provider } = createDataContext(
     deleteProfile,
     confirmPassword,
     handleClose,
+    notifyConversationUpdated,
+    resetConversationUpdated,
   },
   state
 );
