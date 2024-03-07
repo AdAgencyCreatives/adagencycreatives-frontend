@@ -903,3 +903,11 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .refresh-preview-container .btn.btn-gold.refresh-preview.disabled {
     background-color: #d6d6d6;
 }
+
+.agency-dashboard-container .job-table-info-content {
+    min-width: 350px;
+}
+
+.agency-dashboard-container .job-location.location {
+    flex-wrap: wrap;
+}
