@@ -1266,3 +1266,7 @@ img.publication-image {
     margin: 0;
     padding: 0;
 }
+
+.home-page .sectionContent swiper-container {
+    height: 350px;
+}
