@@ -74,7 +74,7 @@ function Header(props) {
       let notificationText = '';
       for (let index = 0; index < state.conversation_updated_notifications.length; index++) {
         const element = state.conversation_updated_notifications[index];
-        notificationText += element + '<br />\n';
+        notificationText += element.message + '<br />\n';
       }
       showAlert(notificationText);
       resetConversationUpdated();

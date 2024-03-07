@@ -31,9 +31,9 @@ const ChatListener = () => {
         const messageType = data?.data?.message_type;
         if(messageType == 'received') {
           // addMessage(data);
-          notifyConversationUpdated(data.data.message);
+          notifyConversationUpdated(data.data);
         } else if(messageType == 'conversation_updated') {
-          notifyConversationUpdated(data.data.message);
+          notifyConversationUpdated(data.data);
         }
         
       });

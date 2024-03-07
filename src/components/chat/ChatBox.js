@@ -113,18 +113,18 @@ const ChatBox = ({
     // const type = messageData.slice(-1).pop()?.type ?? 'job';
     // const type = messageType ?? (messageData.slice(-1).pop()?.type ?? 'job');
     await sendMessage(user.uuid, contact.uuid, messageBody, type);
-    showAlert("Message sent");
+    //showAlert("Message sent");
     setContent("");
     const id = contact.uuid;
 
-    let existingObject = contacts.find((obj) => obj.contact.uuid === id);
-    if (!existingObject) {
-      setChatBox("list");
-      getMessages(id, type);
-      await getContacts(type);
-    }
+    // let existingObject = contacts.find((obj) => obj.contact.uuid === id);
+    // if (!existingObject) {
+    //   setChatBox("list");
+    //   getMessages(id, type);
+    //   await getContacts(type);
+    // }
 
-    await refreshContacts();
+    // await refreshContacts();
   };
 
   const parseDate = (dateString) => {
@@ -294,8 +294,8 @@ const ChatBox = ({
     setIsDialogOpen(false);
     // window.location.reload();
 
-    await refreshContacts();
-    await getMessages(contact.uuid, type);
+    // await refreshContacts();
+    // await getMessages(contact.uuid, type);
   };
 
   const handleEdit = async () => {
@@ -310,8 +310,8 @@ const ChatBox = ({
     setFormEdit(false);
     setIsDialogOpenEdit(false);
     // window.location.reload();
-    await refreshContacts();
-    await getMessages(contact.uuid, type);
+    // await refreshContacts();
+    // await getMessages(contact.uuid, type);
   };
 
   return (
