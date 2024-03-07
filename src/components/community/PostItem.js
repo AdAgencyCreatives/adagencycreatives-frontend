@@ -211,7 +211,7 @@ const PostItem = (props) => {
     };
 
     return (
-        <div className="post-item">
+        <div key={'div-post-item-' + props.post.id} className="post-item">
             <div className="post-header">
                 <img className="post-avatar" src={props.post.author_avatar || defaultAvatar} alt="" />
                 <div className="post-meta">
@@ -237,8 +237,8 @@ const PostItem = (props) => {
                         </div>
                         <div className={`action-dropdown d-${actions}`}>
                             <ul>
-                                <EditPost post={props.post} onUpdatePost={onUpdatePost} />
-                                <ConfirmDeleteModal title="Confirm Delete Post?" message="Are you sure to delete this post?" onConfirm={onDeletePost} />
+                                <EditPost key={'edit-' + props.post.id} post={props.post} onUpdatePost={onUpdatePost} />
+                                <ConfirmDeleteModal key={'delete-' + props.post.id} title="Confirm Delete Post?" message="Are you sure to delete this post?" onConfirm={onDeletePost} />
                             </ul>
                         </div>
                     </div>

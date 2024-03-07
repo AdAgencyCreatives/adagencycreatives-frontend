@@ -523,7 +523,8 @@ img.post-avatar {
 .post-actions .post-reaction-dropdown,
 .post-actions .post-reaction-action-dropdown {
     position: absolute;
-    top: -50px;
+    left: 0px;
+    bottom: 40px;
     background-color: white;
     border-radius: 10px;
     display: flex;
@@ -556,7 +557,6 @@ img.post-avatar {
     height: 30px;
     border-radius: 30px;
 }
-
 
 .post-actions .post-reaction-dropdown .reaction-by img {
     border: 2px solid lightgray;
@@ -854,4 +854,45 @@ h2.epr-emoji-category-label {
     .community-subtitle span {
         text-align: center !important;
     }
+}
+
+.post-reactions-stats-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.post-reactions-stats-container img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.post-reactions-stats-container span {
+    font-family: 'Jost';
+    font-size: 12pt;
+}
+
+.post-reactions-stats-container .post-reactions-stats-item {
+    position: relative
+}
+
+.post-reactions-stats-container .post-reactions-stats-item .reaction-by-list {
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    width: 200px;
+    overflow: auto;
+    position: absolute;
+    bottom: 30px;
+    left: 0px;
+    background-color: #dddddd;
+    color: #000;
+    border: 1px solid #6c6c6c;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.post-reactions-stats-container .post-reactions-stats-item .reaction-by-list span {
+    font-size: 10pt;
 }

@@ -57,7 +57,7 @@ const Comment = (props) => {
     return (
         <div className="comment">
             {props.comment.user_id == user.uuid ? (
-                <div div className="post-action comments">
+                <div className="post-action comments">
                     <div className="action-button">
                         <IoEllipsisVertical
                             onClick={() =>
