@@ -1267,6 +1267,6 @@ img.publication-image {
     padding: 0;
 }
 
-.home-page .sectionContent swiper-container {
+.home-page .sectionContent swiper-container.adagencies {
     height: 350px;
 }
