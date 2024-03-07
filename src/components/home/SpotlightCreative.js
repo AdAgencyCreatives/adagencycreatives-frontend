@@ -61,7 +61,7 @@ const SpotlightCreative = () => {
 
       {/* Slides */}
 
-      <div className="sectionContent full-width" style={{ height: "300px" }}>
+      <div className="sectionContent full-width">
         <swiper-container
           ref={swiperElRef}
           init="false"
@@ -81,6 +81,7 @@ const SpotlightCreative = () => {
                         className="spotlight-image"
                         width={150}
                         height={150}
+                        alt=""
                       />
                       <div className="date">{item.created_at}</div>
                       <div className="spotlight-meta" dangerouslySetInnerHTML={{ __html: decodeEntities(item.title) }}></div>
