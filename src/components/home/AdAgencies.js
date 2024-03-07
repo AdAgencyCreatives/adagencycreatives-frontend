@@ -66,6 +66,7 @@ const AdAgencies = () => {
       {/* <div className="sectionContent" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}> */}
       <div className="sectionContent">
         <swiper-container
+          class="adagencies"
           ref={swiperElRef}
           init="false"
           navigation="true"
