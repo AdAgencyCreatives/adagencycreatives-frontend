@@ -309,7 +309,11 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                                     </div>
                                 </div>
                             ))}
-                            <span>{reactionActive ? 'You and others' : 'Others'}</span>
+                            <span>
+                                {reactionActive && postReactionStats?.length > 1 ? 'You and others' : ''}
+                                {reactionActive && postReactionStats?.length == 1 ? 'You' : ''}
+                                {!reactionActive && postReactionStats?.length > 0 ? 'Others' : ''}
+                            </span>
                         </div>
 
                     </div>
