@@ -91,9 +91,21 @@ const PostList = (props) => {
     }
   };
 
+  const resetPostReactionStatsReactionsBy = (e) => {
+    let elems = document.getElementsByClassName('reaction-by-list');
+    if (elems?.length > 0) {
+      for (let index = 0; index < elems.length; index++) {
+        const el = elems[index];
+        el.classList.remove('d-flex');
+        el.classList.add('d-none');
+      }
+    }
+  };
+
   const resetDropdowns = (e) => {
     resetPostReactionDropdowns(e);
     resetPostReactionActionDropdowns(e);
+    resetPostReactionStatsReactionsBy(e);
   };
 
   const onDocumentMouseDown = (e) => {
@@ -114,7 +126,7 @@ const PostList = (props) => {
     <div className="postlist">
       {posts &&
         posts.map((post, index) => (
-          <PostItem key={post.id} post={post} refreshPosts={refreshPosts} />
+          <PostItem post={post} refreshPosts={refreshPosts} />
         ))}
     </div>
   );

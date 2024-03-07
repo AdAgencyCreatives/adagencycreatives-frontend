@@ -269,7 +269,7 @@ const EditPost = (props) => {
 
     return (
         <>
-            <li onClick={handleOpen}>
+            <li key={'div-edit-post-' + props.post.id} onClick={handleOpen}>
                 <IoPencilOutline /> Edit
             </li>
             <Modal
@@ -427,7 +427,6 @@ const EditPost = (props) => {
                             )}
                         </div>
                         <div className="postmodal-action">
-
                             <button className={"btn btn-post" + (useTinyMCE ? (!isLoadingTinyMCE ? ' d-show' : ' d-none') : "")} onClick={() => doUpdatePost()}>Update Post</button>
                         </div>
                     </div>

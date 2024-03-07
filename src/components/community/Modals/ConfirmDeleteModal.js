@@ -39,7 +39,7 @@ export default function ConfirmDeleteModal(props) {
 
     return (
         <React.Fragment>
-            <li onClick={handleClickOpen}>
+            <li key={props.key} onClick={handleClickOpen}>
                 <IoTrashOutline /> Delete
             </li>
             <Dialog
