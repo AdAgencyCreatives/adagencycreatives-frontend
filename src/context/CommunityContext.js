@@ -432,7 +432,7 @@ const toggleLaugh = (dispatch) => {
 const getReactions = (dispatch) => {
   return async (data) => {
     try {
-      const response = await api.get("/post-reactions?filter[post_id]=" + data.post_id + (data?.single ? "&single=" + data.single : ""));
+      const response = await api.get("/post-reactions?filter[post_id]=" + data.post_id);
       dispatch({
         type: "set_post_reactions",
         payload: { post_id: data.post_id, data: response.data },

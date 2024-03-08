@@ -7,7 +7,7 @@ import LoungePostIconLoveBlack from "../../assets/images/lounge-post-icon-love-b
 import LoungePostIconLoveGold from "../../assets/images/lounge-post-icon-love-gold.png";
 
 import NumUnit from "../NumUnit";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import useLongPress from "../../hooks/useLongPress";
 
 const PostReaction = ({ post, user, post_reactions, reaction_action, getReactions, toggleReaction }) => {
@@ -57,7 +57,7 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
             setUserReaction(user_reaction);
         } else {
             setReactionsCount(post.reactions_count);
-            getReactions({ "post_id": post.id, "single": "yes" });
+            getReactions({ "post_id": post.id });
         }
     }, [post_reactions]);
 
@@ -73,7 +73,7 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                     console.log('Reaction Succeed for Post ID: ' + reaction_action.post_id);
                     setReactionsCount(reactionsCount + (!reactionActive ? 1 : -1));
                     setReactionActive(!reactionActive);
-                    getReactions({ "post_id": post.id, "single": "yes" });
+                    getReactions({ "post_id": post.id });
                     break;
                 case "reaction_failed": console.log('Reaction Failed for Post ID: ' + reaction_action.post_id + ", Error: " + reaction_action.error); break;
                 default:
@@ -84,7 +84,7 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
 
     useEffect(() => {
         setReactionsCount(post.reactions_count);
-        getReactions({ "post_id": post.id, "single": "yes" });
+        getReactions({ "post_id": post.id });
     }, [post.reactions_count]);
 
     useEffect(() => {
@@ -185,7 +185,7 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
         let newState = !getShowReactionBy();
         setShowReactionBy(newState);
         if (newState) {
-            getReactions({ "post_id": post.id, "single": "yes" });
+            getReactions({ "post_id": post.id });
         }
     };
 
@@ -288,27 +288,33 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                     <div className="reactions-total">
                         {reactionsCount > showMaxReactionBy ? '+' : ''}{reactionsCount > 0 ? (reactionsCount > showMaxReactionBy ? reactionsCount - showMaxReactionBy : reactionsCount) : 0} reaction{reactionsCount > 1 ? 's' : ''}
                     </div> */}
-                        <div className="post-reactions-stats-container">
-                            {postReactionStats.map((item, index) => (
-                                <div key={'post-reactions-stats-item' + reactionKey} className="post-reactions-stats-item">
-                                    <img src={item['icon']} alt=""
-                                        onMouseDown={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            return false;
-                                        }}
-                                        onMouseOver={(e) => showReactionsBy(e, item, index)}
-                                        onClick={(e) => showReactionsBy(e, item, index)}
-                                    />
-                                    <div id={'reaction-by-list-post-reactions-stats-item-' + index + '-' + reactionKey} className="reaction-by-list d-none">
-                                        {item['reactions']?.length > 0 && item['reactions'].map((reaction) => {
-                                            return (
-                                                <span>{reaction.user}</span>
-                                            )
-                                        })}
+                        <div className="post-reactions-stats-container"
+                            onMouseDown={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                return false;
+                            }}>
+                            {postReactionStats.map((item, index) => {
+                                return (
+                                    <div key={'reaction-by-list-post-reactions-stats-item-' + index + '-' + reactionKey} className="post-reactions-stats-item">
+                                        <img src={item['icon']} alt=""
+                                            onMouseOver={(e) => showReactionsBy(e, item, index)}
+                                            onClick={(e) => showReactionsBy(e, item, index)}
+                                        />
+                                        <span className="num-unit reactions-stats-count">{item['reactions']?.length || 0}</span>
+                                        <div id={'reaction-by-list-post-reactions-stats-item-' + index + '-' + reactionKey} className="reaction-by-list d-none">
+                                            {item['reactions']?.length > 0 && item['reactions'].map((reaction) => {
+                                                return (
+                                                    <a className="avatar-link" href={"/creative/" + reaction?.username} target="__blank">
+                                                        <img src={reaction.profile_picture} alt="" />
+                                                        <span>{reaction.user}</span>
+                                                    </a>
+                                                )
+                                            })}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                )
+                            })}
                             <span>
                                 {reactionActive && postReactionStats?.length > 1 ? 'You and others' : ''}
                                 {reactionActive && postReactionStats?.length == 1 ? 'You' : ''}
