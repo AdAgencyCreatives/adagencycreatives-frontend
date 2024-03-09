@@ -427,3 +427,18 @@
         }
     }
 }
+
+.single-message-deleted {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    color: #9b9999;
+    font-style: italic;
+    padding: 5px 10px;
+    border: 1px solid #9b9999;
+    border-radius: 10px;
+    user-select: none;
+    -moz-user-select: none;
+    cursor: not-allowed;
+}

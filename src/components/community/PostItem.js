@@ -2,6 +2,7 @@ import {
     IoEllipsisVertical,
     IoTimeOutline,
 } from "react-icons/io5";
+import Placeholder from "../../assets/images/placeholder.png";
 import LoungePostIconCommentBlack from "../../assets/images/lounge-post-icon-comment-black.png";
 import LoungePostIconCommentGold from "../../assets/images/lounge-post-icon-comment-gold.png";
 
@@ -78,8 +79,6 @@ const PostItem = (props) => {
         state: { posts, post_reactions, reaction_action, post_likes, like_action, post_laughs, laugh_action, post_loves, love_action, post_updated, post_comments, comment_added, comment_updated, comment_deleted },
         getPosts, getReactions, getReaction, toggleReaction, getLikes, toggleLike, getLaugh, toggleLaugh, getLove, toggleLove, deletePost, getComments
     } = useContext(CommunityContext);
-
-    const [defaultAvatar, setDefaultAvatar] = useState("https://adagencycreatives.noorsofttechdev.com/static/media/placeholder.12b7e9aaed5e5566bc6a.png");
 
     const [postContent, setPostContent] = useState("");
     const [actions, setActions] = useState("none");
@@ -213,7 +212,7 @@ const PostItem = (props) => {
     return (
         <div key={'div-post-item-' + props.post.id} className="post-item">
             <div className="post-header">
-                <img className="post-avatar" src={props.post.author_avatar || defaultAvatar} alt="" />
+                <img className="post-avatar" src={props.post.author_avatar || Placeholder} alt="" />
                 <div className="post-meta">
                     <div className="post-username">
                         <a className="user-slug" href={"/creative/" + props.post.author_slug}>

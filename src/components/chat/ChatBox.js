@@ -10,7 +10,7 @@ import { Context as ChatContext } from "../../context/ChatContext";
 import { Context as AlertContext } from "../../context/AlertContext";
 import moment from "moment";
 import NewChat from "./NewChat";
-import { FaRegSmile, FaPaperclip } from "react-icons/fa";
+import { FaRegSmile, FaPaperclip, FaBan } from "react-icons/fa";
 import EmojiPicker, { Emoji } from "emoji-picker-react";
 import { api } from "../../api/api";
 import { CircularProgress, Dialog, Tooltip } from "@mui/material";
@@ -287,8 +287,8 @@ const ChatBox = ({
   const handleDelete = async () => {
     setFormDelete(true);
     try {
-      const response = await api.delete("/messages/" + isId);
-      showAlert("Message deleted");
+      const response = await api.post("/delete-single-message/" + isId);
+      console.log(response.data);
     } catch (error) { }
     setFormDelete(false);
     setIsDialogOpen(false);
@@ -333,6 +333,10 @@ const ChatBox = ({
             ) : (
 
               messageData && messageData.map((item, index) => {
+                const is_sender = user?.uuid == item?.sender_id;
+                const is_receiver = user?.uuid == item?.receiver_id;
+                const is_message_deleted = (is_sender && item?.sender_deleted_at) || (is_receiver && item?.receiver_deleted_at);
+
                 const elements = document.querySelectorAll('.users-list .active');
                 let dataIdValue = 0;
                 elements.forEach((element) => {
@@ -456,9 +460,14 @@ const ChatBox = ({
                         )}
                       </div>
                       <div className="text">
-                        <div
-                          dangerouslySetInnerHTML={{ __html: message }}
-                        ></div>
+                        {is_message_deleted ? (
+                          <span className="single-message-deleted">
+                            <FaBan />
+                            This message was deleted.
+                          </span>
+                        ) : (
+                          <div dangerouslySetInnerHTML={{ __html: message }}></div>
+                        )}
                         <div className="message_attachments">
                           {attachments.length > 0 &&
                             attachments.map((attachment, index) => (<>
@@ -484,7 +493,7 @@ const ChatBox = ({
                         </div>
                       </div>
                     </div>
-                    {sender == user && (
+                    {!is_message_deleted && sender == user && (
                       <div className="job-action">
                         <Tooltip title="Edit">
                           <Link

@@ -507,9 +507,9 @@ img.post-avatar {
     padding-top: 1px;
     width: 20px;
     height: 20px;
-    background-color: gray;
+    background-color: #000;
     color: #fff;
-    border: 1px solid gray;
+    border: 1px solid #000;
     border-radius: 100%;
     cursor: pointer;
 }
