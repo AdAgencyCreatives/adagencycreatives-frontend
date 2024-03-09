@@ -126,7 +126,7 @@ const PostList = (props) => {
     <div className="postlist">
       {posts &&
         posts.map((post, index) => (
-          <PostItem post={post} refreshPosts={refreshPosts} />
+          <PostItem key={post.id} post={post} refreshPosts={refreshPosts} />
         ))}
     </div>
   );
