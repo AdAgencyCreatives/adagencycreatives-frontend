@@ -335,7 +335,7 @@ const ChatBox = ({
               messageData && messageData.map((item, index) => {
                 const is_sender = user?.uuid == item?.sender_id;
                 const is_receiver = user?.uuid == item?.receiver_id;
-                const is_message_deleted = (is_sender && item?.sender_deleted_at) || (is_receiver && item?.receiver_deleted_at);
+                const is_message_deleted = item?.sender_deleted_at || item?.receiver_deleted_at;
 
                 const elements = document.querySelectorAll('.users-list .active');
                 let dataIdValue = 0;
@@ -463,7 +463,7 @@ const ChatBox = ({
                         {is_message_deleted ? (
                           <span className="single-message-deleted">
                             <FaBan />
-                            This message was deleted.
+                            This message was deleted
                           </span>
                         ) : (
                           <div dangerouslySetInnerHTML={{ __html: message }}></div>
