@@ -222,7 +222,11 @@ const useHelper = () => {
         return "";
     };
 
-    return { rectify_url, decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial, strReplaceAll, isCharNumber, getNumericString, formatPhone, capitalize, getAorAn, hasPasswordError };
+    const isObject = (value) => {
+        return value?.constructor?.toString()?.indexOf("Object") > -1;
+    };
+
+    return { rectify_url, decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial, strReplaceAll, isCharNumber, getNumericString, formatPhone, capitalize, getAorAn, hasPasswordError, isObject };
 }
 
 export default useHelper;

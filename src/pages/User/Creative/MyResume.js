@@ -22,8 +22,21 @@ import { api } from "../../../api/api";
 
 import useUploadHelper from "../../../hooks/useUploadHelper";
 import IconMessage from "../../../components/IconMessage";
+import useHelper from "../../../hooks/useHelper";
 
 const MyResume = () => {
+
+  const { getNumericString } = useHelper();
+
+  const titleFieldRef = useRef();
+  const industryJobTitleRef = useRef();
+  const yearsOfExperienceRef = useRef();
+  const industryExperienceRef = useRef();
+  const mediaExperienceRef = useRef();
+  const locationStateRef = useRef();
+  const characterStrengthsRef = useRef();
+  const employmentTypeRef = useRef();
+
   const editorRefTinyMCE = useRef(null);
   const cityRef = useRef();
   const resumeUploadRef = useRef();
@@ -231,6 +244,7 @@ const MyResume = () => {
           name: "title",
           column: "12",
           value: single_creative.title || "",
+          ref: titleFieldRef
         },
         {
           label: "Industry Job Title",
@@ -242,6 +256,7 @@ const MyResume = () => {
           callback: (item) => handleDropdownChange(item, "category_id"),
           placeholder: "Select Job Title",
           value: categoriesList.find((category) => category.label == single_creative.category),
+          ref: industryJobTitleRef
         },
         {
           label: "Years of Experience",
@@ -252,6 +267,7 @@ const MyResume = () => {
           callback: (item) => handleDropdownChange(item, "years_of_experience"),
           value: experience.find((item) => item.value == single_creative.years_of_experience),
           column: "6",
+          ref: yearsOfExperienceRef
         },
         {
           label: "Industry Experience",
@@ -263,6 +279,7 @@ const MyResume = () => {
           callback: (item) => handleMultiChange(item, "industry_experience"),
           value: industry.filter((item) => single_creative.industry_experience.includes(item.label)),
           column: "6",
+          ref: industryExperienceRef
         },
         {
           label: "Media Experience",
@@ -274,6 +291,7 @@ const MyResume = () => {
           callback: (item) => handleMultiChange(item, "media_experience"),
           value: media.filter((item) => single_creative.media_experience.includes(item.label)),
           column: "6",
+          ref: mediaExperienceRef
         },
         {
           label: "Location (State)",
@@ -285,6 +303,7 @@ const MyResume = () => {
           placeholder: "Select State",
           value: single_creative.location && statesList.find((state) => state.value == single_creative.location.state_id),
           column: "6",
+          ref: locationStateRef
         },
         {
           label: "Nearest Major City",
@@ -296,6 +315,7 @@ const MyResume = () => {
           callback: (item) => handleDropdownChange(item, "city_id"),
           value: single_creative.location && citiesList.find((city) => city.value == single_creative.location.city_id),
           column: "6",
+          ref: cityRef
         },
         {
           label: "Character Strengths",
@@ -308,6 +328,7 @@ const MyResume = () => {
           value: strengthsList.filter((item) => single_creative.character_strengths.includes(item.label)),
           placeholder: "Select strengths",
           column: "6",
+          ref: characterStrengthsRef
         },
         {
           label: "Employment Type",
@@ -320,10 +341,11 @@ const MyResume = () => {
           value: employment?.filter((item) => single_creative?.employment_type?.includes(item.label)),
           placeholder: "Select employment type",
           column: "6",
+          ref: employmentTypeRef
         },
         {
           label: "Open to Relocation",
-          required: true,
+          required: false,
           type: "radio",
           name: "is_opentorelocation",
           value: single_creative.is_opentorelocation,
@@ -332,7 +354,7 @@ const MyResume = () => {
         },
         {
           label: "Open to Remote",
-          required: true,
+          required: false,
           type: "radio",
           name: "is_remote",
           value: single_creative.workplace_preference.is_remote,
@@ -347,6 +369,7 @@ const MyResume = () => {
           name: "about",
           value: single_creative.about,
           column: "12",
+          ref: editorRefTinyMCE
         },
 
         {
@@ -572,7 +595,61 @@ const MyResume = () => {
     // console.log(formData);
   }, [formData]);
 
+  useEffect(() => {
+    if (fieldsGenerated && fields?.length > 0) {
+      for (let index = 0; index < fields.length; index++) {
+        const field = fields[index];
+        if (field?.type == 'dropdown') {
+          if (field?.isMulti) {
+            setFormData((prev) => ({ ...prev, [field.name]: field?.value?.map ? field?.value?.map(item => item.value) : [] }));
+          } else {
+            setFormData((prev) => ({ ...prev, [field.name]: field?.value?.value || "" }));
+          }
+        } else {
+          setFormData((prev) => ({ ...prev, [field.name]: field?.value || "" }));
+        }
+      }
+    }
+  }, [fieldsGenerated]);
+
+  const showAlertFocus = (message, field) => {
+    showAlert(message);
+    if (field?.ref?.current) {
+      field.ref.current.scrollIntoView && field.ref.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+      field.ref.current.focus();
+    }
+  };
+
+  const validated = () => {
+
+    for (let index = 0; index < fields.length; index++) {
+      const field = fields[index];
+      let isValid = true;
+
+      if (field?.required) {
+        isValid = formData[field.name]?.length > 0;
+      }
+
+      if (!isValid) {
+        showAlertFocus(field.label + " is required", field);
+        return false;
+      }
+
+      if (field.name == "phone_number" && getNumericString(field.value).length != 10) {
+        showAlertFocus("Please enter your 10-digit number", field);
+        return false;
+      }
+
+    }
+
+    return true;
+  };
+
   const handleSubmit = async () => {
+    if (!validated()) {
+      return;
+    }
+
     setSubmissionInProcess(true);
     console.log(educationList, experienceList);
     let newFormData = { ...formData, 'employment_type': (formData['employment_type'] && formData['employment_type'].length ? (Array.isArray(formData['employment_type']) ? formData['employment_type'].join(',') : formData['employment_type']) : "") };
@@ -1063,7 +1140,7 @@ const MyResume = () => {
               {field.label}
               {field.required && <span className="required">*</span>}
             </label>
-            <input type="text" className="form-control" value={field.value} onChange={(e) => handleTextChange(e, field.name)} />
+            <input ref={field?.ref} type="text" className="form-control" value={field.value} onChange={(e) => handleTextChange(e, field.name)} />
           </>
         );
       case "radio":
@@ -1101,7 +1178,7 @@ const MyResume = () => {
               onChange={field.callback}
               placeholder={field.placeholder}
               defaultValue={field.value}
-              ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}
+              ref={field?.ref}
               styles={{
                 control: (baseStyles) => ({
                   ...baseStyles,

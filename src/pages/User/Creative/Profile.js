@@ -29,7 +29,7 @@ const Profile = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [baseUrl, setBaseUrl] = useState([]);
 
-  const { getNumericString } = useHelper();
+  const { getNumericString, isObject } = useHelper();
   const { isFileValid, getUploadGuide, getUploadGuideMessage } = useUploadHelper();
   const imageUploadGuide = getUploadGuide('image', 'creative-profile');
   const videoUploadGuide = getUploadGuide('video', 'creative-profile');
@@ -399,10 +399,6 @@ const Profile = () => {
     let field = getFieldByName(name);
     field.value = value;
     setFields(fields.map((item) => item.name == field.name ? field : item));
-  };
-
-  const isObject = (value) => {
-    return value?.constructor?.toString()?.indexOf("Object") > -1;
   };
 
   const validated = () => {
