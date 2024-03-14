@@ -11,7 +11,7 @@ const SearchBar = ({ placeholder, onSearch, role, advance_search_capabilities, s
 
   const handleCloseTitleRecommendations = (e, data) => {
     data?.setOpen(false)
-    const searchKeyword = input + data?.value + ", ";
+    const searchKeyword = input + data?.value + (permission?.append_comma ? ", " : "");
     setInput(searchKeyword);
     onSearch(searchKeyword);
     inputRef?.current?.focus();
@@ -24,30 +24,30 @@ const SearchBar = ({ placeholder, onSearch, role, advance_search_capabilities, s
   const get_permission = () => {
 
     if (!role) {
-      return { visible: false, message: "", proceed: false };
+      return { visible: false, message: "", proceed: false, append_comma: false };
     }
 
     if (role == "admin") {
-      return { visible: true, message: "", proceed: true };
+      return { visible: true, message: "", proceed: true, append_comma: true };
     }
 
     if (role == "advisor" && subscription_status == 'active') {
-      return { visible: true, message: "", proceed: true };
+      return { visible: true, message: "", proceed: true, append_comma: true };
     }
 
     if (role == 'recruiter' && subscription_status == 'active') {
-      return { visible: true, message: "", proceed: true };
+      return { visible: true, message: "", proceed: true, append_comma: true };
     }
 
     if (role == 'agency' && subscription_status == 'active') {
-      return { visible: true, message: "", proceed: true };
+      return { visible: true, message: "", proceed: true, append_comma: true };
     }
 
     if (role == 'creative') {
-      return { visible: true, message: "", proceed: true };
+      return { visible: true, message: "", proceed: true, append_comma: false };
     }
 
-    return { visible: true, message: "Post a Job for advance search feature", proceed: false };
+    return { visible: true, message: "Post a Job for advance search feature", proceed: false, append_comma: false };
   };
 
   return (
