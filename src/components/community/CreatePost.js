@@ -189,7 +189,7 @@ const CreatePost = (props) => {
           "recipient_id": taggerUsers,
           "post_id": response.data.data.id,
           "type": 0,
-          "notification_text": `${response.data.data.author} commented you in his post`,
+          "notification_text": `${response.data.data.author} commented on you in his post`,
         };
         const response_schedule = api.post("/schedule-notifications", schedule_data);
         console.log("schedule data", schedule_data);
