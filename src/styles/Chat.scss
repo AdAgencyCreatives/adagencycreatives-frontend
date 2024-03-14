@@ -442,3 +442,13 @@
     -moz-user-select: none;
     cursor: not-allowed;
 }
+
+.chat-item .details .sender {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.chat-item .details .sender .time {
+    margin-left: 0px;
+}

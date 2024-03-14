@@ -1,6 +1,6 @@
 import ContentEditable from "react-contenteditable";
 import Loader from "../Loader";
-import { IoArrowBack, IoClose, IoCloseCircleSharp, IoCloseOutline, IoPencil } from "react-icons/io5";
+import { IoArrowBack, IoClose, IoCloseCircleSharp, IoCloseOutline, IoInformation, IoInformationCircle, IoInformationCircleOutline, IoPencil } from "react-icons/io5";
 import Avatar from "../../assets/images/placeholder.png";
 import FileIcon from "../../assets/images/FileIcon.png";
 import VideoIcon from "../../assets/images/VideoIcon.png";
@@ -336,6 +336,7 @@ const ChatBox = ({
                 const is_sender = user?.uuid == item?.sender_id;
                 const is_receiver = user?.uuid == item?.receiver_id;
                 const is_message_deleted = item?.sender_deleted_at || item?.receiver_deleted_at;
+                const is_system_message = item?.message.indexOf("<a") == 0 && item?.message.indexOf("applied on the job") > 0 ? true : false;
 
                 const elements = document.querySelectorAll('.users-list .active');
                 let dataIdValue = 0;
@@ -458,6 +459,39 @@ const ChatBox = ({
                             <span className="edited">Edited</span>
                           </Tooltip>
                         )}
+                        {!is_message_deleted && sender == user && (
+                          <div className="job-action">
+                            {!is_system_message ? (
+                              <>
+                                <Tooltip title="Edit">
+                                  <Link
+                                    className="btn p-0 border-0 btn-hover-primary"
+                                    onClick={() => editMessage(item)}
+                                  >
+                                    <IoPencil className="icon-rounded" />
+                                  </Link>
+                                </Tooltip>
+
+                                <Tooltip title="Remove">
+                                  <Link
+                                    className="btn p-0 border-0 btn-hover-primary"
+                                    onClick={() => deleteMessage(item)}
+                                  >
+                                    <IoClose className="icon-rounded" />
+                                  </Link>
+                                </Tooltip>
+                              </>
+                            ) : (
+                              <Tooltip title="Job Application Message">
+                                <Link
+                                  className="btn p-0 border-0 btn-hover-primary"
+                                >
+                                  <IoInformationCircleOutline className="icon-rounded" />
+                                </Link>
+                              </Tooltip>
+                            )}
+                          </div>
+                        )}
                       </div>
                       <div className="text">
                         {is_message_deleted ? (
@@ -493,27 +527,6 @@ const ChatBox = ({
                         </div>
                       </div>
                     </div>
-                    {!is_message_deleted && sender == user && (
-                      <div className="job-action">
-                        <Tooltip title="Edit">
-                          <Link
-                            className="btn p-0 border-0 btn-hover-primary"
-                            onClick={() => editMessage(item)}
-                          >
-                            <IoPencil className="icon-rounded" />
-                          </Link>
-                        </Tooltip>
-
-                        <Tooltip title="Remove">
-                          <Link
-                            className="btn p-0 border-0 btn-hover-primary"
-                            onClick={() => deleteMessage(item)}
-                          >
-                            <IoClose className="icon-rounded" />
-                          </Link>
-                        </Tooltip>
-                      </div>
-                    )}
                   </div>
                 );
               })
