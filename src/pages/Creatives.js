@@ -180,25 +180,14 @@ const Creatives = () => {
       setCreativeSearchPlaceholder("Select one: by name or location");
     }
 
-    if (role == "creative" || ((role == 'agency' || role == 'recruiter') && subscription_status == "active")) {
-      setCreativeSearchPlaceholder("Select one: by name, location, or select a title");
-    }
-
-    if (role == 'agency') {
-      if(subscription_status == "active") {
+    if (role == 'agency' || role == 'recruiter') {
+      if (subscription_status == "active") {
         setCreativeSearchPlaceholder("Select up to two fields by name, location, and/or select a title");
       } else {
         setCreativeSearchPlaceholder("Select one: by name or location. Post a Job for advance search capabilities");
       }
     }
 
-    if (role == 'recruiter') {
-      if(subscription_status == "active") {
-        setCreativeSearchPlaceholder("Select one: by name, location, or select a title");
-      } else {
-        setCreativeSearchPlaceholder("Select one: by name or location. Post a Job for advance search capabilities");
-      }
-    }
   }, [role, subscription_status]);
 
   useEffect(() => {
