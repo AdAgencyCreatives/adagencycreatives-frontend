@@ -154,18 +154,18 @@ const FriendshipWidget = (props) => {
     const sendFriendshipRequestedNotificationAsync = async (creative) => {
         let result = await saveNotification({
             "user_id": creative.user_id,
-            "type": "lounge_friendship_requested",
+            "type": "lounge_friends_activity",
             "message": user.first_name + " " + user.last_name + " has sent friendship request.",
-            "body": "{}"
+            "body": "{activity_key:'lounge_friendship_requested'}"
         });
     };
 
     const sendFriendshipRespondedNotificationAsync = async (creative, status) => {
         let result = await saveNotification({
             "user_id": creative.user_id ? creative.user_id : creative.user.uuid,
-            "type": "lounge_friendship_responded",
+            "type": "lounge_friends_activity",
             "message": user.first_name + " " + user.last_name + " has " + status + (status == "cancelled" ? "" : " your") + " friendship request.",
-            "body": "{}"
+            "body": "{activity_key:'lounge_friendship_responded'}"
         });
     };
 
