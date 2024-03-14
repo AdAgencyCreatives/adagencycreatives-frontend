@@ -15,6 +15,7 @@ import Location from "../components/CreativeLocation";
 import CreativeLocation from "../components/CreativeLocation";
 
 const Creatives = () => {
+
   const [isCreativeLoading, setIsCreativeLoading] = useState(true);
   const { creatives, loading, loadMore, searchCreativesAdvanced } = useCreatives('creative');
   const {
@@ -42,7 +43,7 @@ const Creatives = () => {
   const { showAlert } = useContext(AlertContext);
 
   const [creativeSearchPlaceholder, setCreativeSearchPlaceholder] = useState(
-    "Search by name or location"
+    "Select one: by name or location"
   );
   //"Search by name, title, location, company, industry experience, media, full-time etc."
 
@@ -64,6 +65,7 @@ const Creatives = () => {
     }
     return null;
   };
+
   const searchUser = async (value) => {
     setIsCreativeLoading(true);
     let searchString = "" + (value ? value : "");
@@ -174,8 +176,28 @@ const Creatives = () => {
       return;
     }
 
+    if (role == "creative") {
+      setCreativeSearchPlaceholder("Select one: by name or location");
+    }
+
     if (role == "creative" || ((role == 'agency' || role == 'recruiter') && subscription_status == "active")) {
-      setCreativeSearchPlaceholder("Search by name, location, or title");
+      setCreativeSearchPlaceholder("Select one: by name, location, or select a title");
+    }
+
+    if (role == 'agency') {
+      if(subscription_status == "active") {
+        setCreativeSearchPlaceholder("Select up to two fields by name, location, and/or select a title");
+      } else {
+        setCreativeSearchPlaceholder("Select one: by name or location. Post a Job for advance search capabilities");
+      }
+    }
+
+    if (role == 'recruiter') {
+      if(subscription_status == "active") {
+        setCreativeSearchPlaceholder("Select one: by name, location, or select a title");
+      } else {
+        setCreativeSearchPlaceholder("Select one: by name or location. Post a Job for advance search capabilities");
+      }
     }
   }, [role, subscription_status]);
 
