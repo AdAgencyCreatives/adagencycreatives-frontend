@@ -883,10 +883,11 @@ nav ul.dropdown-list .list-item-text.j-fix {
 }
 
 @media (max-width: 768px) {
+
     .forgot-password,
     .password-reset {
         max-width: 100%;
-    }   
+    }
 }
 
 .job-table-actions-inner.status {
@@ -910,4 +911,9 @@ nav ul.dropdown-list .list-item-text.j-fix {
 
 .agency-dashboard-container .job-location.location {
     flex-wrap: wrap;
+}
+
+.creatives-directory .job-location.location>* {
+    font-size: 18px !important;
+    font-weight: 400 !important;
 }
