@@ -70,7 +70,7 @@ const Agencies = () => {
         <DelayedOutput>
           <h1 className="community-title text-white text-center mb-4">Agencies</h1>
         </DelayedOutput>
-        <SearchBar placeholder="Search by name, or location" onSearch={searchUser} />
+        <SearchBar placeholder="Select one: by name or location" onSearch={searchUser} />
         <div className="row g-4">
           {!isAgencyLoading ? (
             <>
