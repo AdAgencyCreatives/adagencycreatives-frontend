@@ -482,7 +482,7 @@ const ChatBox = ({
                                 </Tooltip>
                               </>
                             ) : (
-                              <Tooltip title="Job Application Message">
+                              <Tooltip title="Automatic Job Apply Confirmation">
                                 <Link
                                   className="btn p-0 border-0 btn-hover-primary"
                                 >
