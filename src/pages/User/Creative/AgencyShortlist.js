@@ -106,11 +106,8 @@ const AgencyShortlist = () => {
                                       }
                                       className="link-gray"
                                     >
-                                      {item}
+                                      {item}{index < resource?.industry_experience.length - 1 && ","}
                                     </Link>
-                                    {index <
-                                      resource?.industry_experience.length - 1 &&
-                                      ","}
                                   </React.Fragment>
                                 )
                               )}

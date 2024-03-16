@@ -17,6 +17,8 @@
     .position {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
+        gap: 3px;
 
         svg {
             margin-right: 5px;
