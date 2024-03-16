@@ -177,7 +177,7 @@ const Creatives = () => {
     }
 
     if (role == "creative") {
-      setCreativeSearchPlaceholder("Select one: by name, location or select a title");
+      setCreativeSearchPlaceholder("Select one: by name, location, or select a title");
     }
 
     if (role == 'agency' || role == 'recruiter') {
