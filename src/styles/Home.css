@@ -1230,6 +1230,7 @@ img.publication-image {
 
 .subHeading.motive a {
     color: #fff;
+    margin: 0px;
 }
 
 .subHeading.motive a:hover {

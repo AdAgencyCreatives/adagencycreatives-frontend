@@ -28,7 +28,7 @@ register();
 
 const Home = () => {
 
-  const { pageData, getPateDataItem } = usePageDataHelper("home");
+  const { pageData, getPageDataItem } = usePageDataHelper("home");
 
   const [messageModalOptions, setMessageModalOptions] = useState({ "open": false, "type": "message", "title": "Message", "message": "Thanks.", "data": {}, "onClose": null });
   const showMessageModal = (type, title, message, data) => {
@@ -71,8 +71,8 @@ const Home = () => {
       <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
       <div className="main home-page">
         <div className="banner">
-          <h1 className="bannerHeading" dangerouslySetInnerHTML={{ __html: getPateDataItem('title', pageData) }}></h1>
-          <p className="subHeading" dangerouslySetInnerHTML={{ __html: getPateDataItem('sub_title', pageData) }}></p>
+          <h1 className="bannerHeading" dangerouslySetInnerHTML={{ __html: getPageDataItem('title', pageData) }}></h1>
+          <p className="subHeading" dangerouslySetInnerHTML={{ __html: getPageDataItem('sub_title', pageData) }}></p>
           <Link className="btn btn-gold film-festival-1 d-none" to="/filmfestival1"
             style={{ fontWeight: "500", fontSize: "18px", marginLeft: "5px", minWidth: "120px" }}>
             Film Festival
@@ -87,8 +87,8 @@ const Home = () => {
                     to="/creative-jobs"
                   >
                     <div className="flip-card-front">
-                      <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_title', pageData) }}></div>
-                      <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_subtitle', pageData) }}></div>
+                      <div className="main-title" dangerouslySetInnerHTML={{ __html: getPageDataItem('landing_block1_title', pageData) }}></div>
+                      <div className="title-small" dangerouslySetInnerHTML={{ __html: getPageDataItem('landing_block1_subtitle', pageData) }}></div>
                       <div className="box-link">
                         <div className="link">
                           <IoArrowForward color="white" />
@@ -96,7 +96,7 @@ const Home = () => {
                       </div>
                     </div>
                     <div className="flip-card-back">
-                      <div className="content" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block1_content', pageData) }}></div>
+                      <div className="content" dangerouslySetInnerHTML={{ __html: getPageDataItem('landing_block1_content', pageData) }}></div>
                       <div className="box-link">
                         <p>click to go</p>
                         <div className="link">
@@ -113,8 +113,8 @@ const Home = () => {
                     to={token ? 'post-a-job' : '#register_agency'}
                   >
                     <div className="flip-card-front">
-                      <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_title', pageData) }}></div>
-                      <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_subtitle', pageData) }}></div>
+                      <div className="main-title" dangerouslySetInnerHTML={{ __html: getPageDataItem('landing_block2_title', pageData) }}></div>
+                      <div className="title-small" dangerouslySetInnerHTML={{ __html: getPageDataItem('landing_block2_subtitle', pageData) }}></div>
                       <div className="box-link">
                         <div className="link">
                           <IoArrowForward color="white" />
@@ -122,7 +122,7 @@ const Home = () => {
                       </div>
                     </div>
                     <div className="flip-card-back">
-                      <div className="content" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block2_content', pageData) }}></div>
+                      <div className="content" dangerouslySetInnerHTML={{ __html: getPageDataItem('landing_block2_content', pageData) }}></div>
                       <div className="box-link">
                         <p>click to go</p>
                         <div className="link">
@@ -139,8 +139,8 @@ const Home = () => {
                     to={token ? (role == 'creative' ? 'community' : 'dashboard') : '#register_creative'}
                   >
                     <div className="flip-card-front">
-                      <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_title', pageData) }}></div>
-                      <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_subtitle', pageData) }}></div>
+                      <div className="main-title" dangerouslySetInnerHTML={{ __html: getPageDataItem('landing_block3_title', pageData) }}></div>
+                      <div className="title-small" dangerouslySetInnerHTML={{ __html: getPageDataItem('landing_block3_subtitle', pageData) }}></div>
                       <div className="box-link">
                         <div className="link">
                           <IoArrowForward color="white" />
@@ -148,7 +148,7 @@ const Home = () => {
                       </div>
                     </div>
                     <div className="flip-card-back">
-                      <div className="content" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block3_content', pageData) }}></div>
+                      <div className="content" dangerouslySetInnerHTML={{ __html: getPageDataItem('landing_block3_content', pageData) }}></div>
                       <div className="box-link">
                         <p>click to go</p>
                         <div className="link">
@@ -161,16 +161,16 @@ const Home = () => {
               </div>
               <div>
                 <p class="subHeading motive">
-                  <Link className="" to={"/community"} dangerouslySetInnerHTML={{ __html: getPateDataItem('motive_title_gather', pageData) }}
-                   onClick={(e) =>
-                    validateAccess(e, {
-                      roles: ["admin", "creative"],
-                      restrictedMessage: "Please login as a Creative to access",
-                    })
-                  }></Link>
-                  <Link className="" to={"/mentoring-resources"} dangerouslySetInnerHTML={{ __html: getPateDataItem('motive_title_inspire', pageData) }}></Link>
-                  <Link className="" to={"/creative-jobs"} dangerouslySetInnerHTML={{ __html: getPateDataItem('motive_title_do_cool_shit', pageData) }}></Link>
-                  </p>
+                  <Link className="" to={"/community"} dangerouslySetInnerHTML={{ __html: getPageDataItem('motive_title_gather', pageData) }}
+                    onClick={(e) =>
+                      validateAccess(e, {
+                        roles: ["admin", "creative"],
+                        restrictedMessage: "Please login as a Creative to access",
+                      })
+                    }></Link>
+                  <Link className="" to={"/mentoring-resources"} dangerouslySetInnerHTML={{ __html: getPageDataItem('motive_title_inspire', pageData) }}></Link>
+                  <Link className="" to={"/creative-jobs"} dangerouslySetInnerHTML={{ __html: getPageDataItem('motive_title_do_cool_shit', pageData) }}></Link>
+                </p>
               </div>
             </div>
           )}
@@ -178,7 +178,7 @@ const Home = () => {
           {window?.location?.href?.indexOf("https://staging.adagencycreatives.com/") != 0 && (
             <>
               <div className="searchArea">
-                <p className="searchHeader" dangerouslySetInnerHTML={{ __html: getPateDataItem("searchbar_heading", pageData) }}></p>
+                <p className="searchHeader" dangerouslySetInnerHTML={{ __html: getPageDataItem("searchbar_heading", pageData) }}></p>
                 <div className="searchBox">
                   <form action={"/creative-jobs" + (search ? "/search/" + search : "")} onSubmit={(e) => {
                     // if (!search || search.length == 0) {
@@ -196,19 +196,19 @@ const Home = () => {
                         <input
                           className="searchInput form-control"
                           type="text"
-                          placeholder={getPateDataItem("searchbar_placeholder", pageData)}
+                          placeholder={getPageDataItem("searchbar_placeholder", pageData)}
                           onChange={(e) => setSearch(e.target.value)}
                           value={search}
                         />
                       </div>
                       <div className="col-md-4 search-buttons">
-                        <button className="searchBtn">{getPateDataItem("searbar_button_text", pageData)}</button>
+                        <button className="searchBtn">{getPageDataItem("searbar_button_text", pageData)}</button>
                       </div>
                     </div>
                   </form>
                 </div>
                 <div className="popularSearch">
-                  <p dangerouslySetInnerHTML={{ __html: getPateDataItem("searchbar_bottom_suggestion", pageData) }}>
+                  <p dangerouslySetInnerHTML={{ __html: getPageDataItem("searchbar_bottom_suggestion", pageData) }}>
                   </p>
                 </div>
               </div>
@@ -225,23 +225,23 @@ const Home = () => {
                           restrictedMessage: "Please login as a Creative to access",
                         })
                       }
-                      dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_gather", pageData) }}></Link>
-                    <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_gather", pageData) }}></span>
+                      dangerouslySetInnerHTML={{ __html: getPageDataItem("motive_title_gather", pageData) }}></Link>
+                    <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPageDataItem("motive_description_gather", pageData) }}></span>
                   </div>
                   <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
                     <img src={Mentoring} className="featureImg" />
                     <Link
                       to={"/mentoring-resources"}
                       className="featureTitle"
-                      dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_inspire", pageData) }}></Link>
-                    <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_inspire", pageData) }}></span>
+                      dangerouslySetInnerHTML={{ __html: getPageDataItem("motive_title_inspire", pageData) }}></Link>
+                    <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPageDataItem("motive_description_inspire", pageData) }}></span>
                   </div>
                   <div className="featureBox col-md-4 col-12 mb-5 mb-md-0">
                     <img src={Money} className="featureImg" />
                     <Link to={"/creative-jobs"}
                       className="featureTitle"
-                      dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_title_do_cool_shit", pageData) }}></Link>
-                    <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPateDataItem("motive_description_do_cool_shit", pageData) }}></span>
+                      dangerouslySetInnerHTML={{ __html: getPageDataItem("motive_title_do_cool_shit", pageData) }}></Link>
+                    <span className="featureDesc" dangerouslySetInnerHTML={{ __html: getPageDataItem("motive_description_do_cool_shit", pageData) }}></span>
                   </div>
                 </div>
               </div>
@@ -264,9 +264,9 @@ const Home = () => {
           <div className="wrapper">
             <Link to="/about" className="black">
               <div className="marquee">
-                <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
-                <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
-                <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
+                <p dangerouslySetInnerHTML={{ __html: getPageDataItem("ticker", pageData) }}></p>
+                <p dangerouslySetInnerHTML={{ __html: getPageDataItem("ticker", pageData) }}></p>
+                <p dangerouslySetInnerHTML={{ __html: getPageDataItem("ticker", pageData) }}></p>
               </div>
             </Link>
           </div>
@@ -287,7 +287,7 @@ const Home = () => {
 
           <PublicationResources />
 
-          <FeaturedCities />          
+          <FeaturedCities />
 
           <div id="feedback">
             <div className="sectionHeader">

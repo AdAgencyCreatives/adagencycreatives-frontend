@@ -3,9 +3,9 @@ import { getPageData } from "../context/PagesDataContext";
 import { useCallback } from "react";
 
 const usePageDataHelper = (currentPage) => {
-    const localPageData =  JSON.parse(localStorage.getItem(currentPage)) ?? [];
+    const localPageData = JSON.parse(localStorage.getItem(currentPage)) ?? [];
 
-    const getPateDataItem = (key, data) => {
+    const getPageDataItem = (key, data) => {
         if (data.length > 0) {
             for (let index = 0; index < data.length; index++) {
                 const element = data[index];
@@ -35,7 +35,7 @@ const usePageDataHelper = (currentPage) => {
         })();
     }, []);
 
-    return { page, pageData, getPateDataItem };
+    return { page, pageData, getPageDataItem };
 }
 
 export default usePageDataHelper;

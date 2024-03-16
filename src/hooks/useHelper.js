@@ -1,7 +1,33 @@
 import { useContext } from "react";
-import { Context } from "../context/AuthContext";
+import { Context as AuthContext } from "../context/AuthContext";
+import { Context as AlertContext } from "../context/AlertContext";
 
 const useHelper = () => {
+
+    const { showAlert } = useContext(AlertContext);
+
+    const {
+        state: { token, role },
+    } = useContext(AuthContext);
+
+    const validateAccess = (e, item) => {
+        if (item && item.roles && item.roles.length > 0) {
+            for (let index = 0; index < item.roles.length; index++) {
+                const roleToCompare = item.roles[index];
+                if (role && role == roleToCompare) {
+                    return true;
+                }
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            showAlert(item.restrictedMessage);
+
+            return false;
+        }
+        return true;
+    };
 
     const rectify_url = (url) => {
         if (!url) {
@@ -226,7 +252,7 @@ const useHelper = () => {
         return value?.constructor?.toString()?.indexOf("Object") > -1;
     };
 
-    return { rectify_url, decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial, strReplaceAll, isCharNumber, getNumericString, formatPhone, capitalize, getAorAn, hasPasswordError, isObject };
+    return { validateAccess, rectify_url, decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial, strReplaceAll, isCharNumber, getNumericString, formatPhone, capitalize, getAorAn, hasPasswordError, isObject };
 }
 
 export default useHelper;

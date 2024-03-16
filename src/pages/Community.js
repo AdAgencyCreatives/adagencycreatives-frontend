@@ -13,7 +13,7 @@ import DelayedOutput from "../components/DelayedOutput";
 import Calendar from "react-calendar";
 
 const Community = () => {
-  const { pageData, getPateDataItem } = usePageDataHelper("community");
+  const { pageData, getPageDataItem } = usePageDataHelper("community");
   const [loaded, setLoaded] = useState(false);
 
   const feed_group = "715bfe90-833e-3459-9700-036ac28d3fd4";
@@ -29,8 +29,8 @@ const Community = () => {
     <>
       <div className="dark-container page-community mb-0 mt-0">
         <DelayedOutput>
-          <h1 className="community-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('title', pageData) }}></h1>
-          <h2 className="community-subtitle" dangerouslySetInnerHTML={{ __html: getPateDataItem('sub_title', pageData) }}></h2>
+          <h1 className="community-title" dangerouslySetInnerHTML={{ __html: getPageDataItem('title', pageData) }}></h1>
+          <h2 className="community-subtitle" dangerouslySetInnerHTML={{ __html: getPageDataItem('sub_title', pageData) }}></h2>
         </DelayedOutput>
         <div className="container-fluid mt-4 px-2 px-md-5">
           {!token || !role || (role != "admin" && role != "creative") ? (

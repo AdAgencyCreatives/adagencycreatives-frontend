@@ -23,51 +23,34 @@ import SlidingMessage from "../components/SlidingMessage";
 import MessageModal from "../components/MessageModal";
 
 import usePageDataHelper from "../hooks/usePageDataHelper";
+import useHelper from "../hooks/useHelper";
 
 register();
 
 const Home = () => {
 
-  const { pageData, getPateDataItem } = usePageDataHelper("home");
+  const { validateAccess } = useHelper();
+
+  const { pageData, getPageDataItem } = usePageDataHelper("home");
 
   const [messageModalOptions, setMessageModalOptions] = useState({ "open": false, "type": "message", "title": "Message", "message": "Thanks.", "data": {}, "onClose": null });
   const showMessageModal = (type, title, message, data) => {
     setMessageModalOptions({ "open": true, "type": type, "title": title, "message": message, "data": data });
   };
+
   const {
     state: { token, role },
   } = useContext(AuthContext);
 
-  const [search, setSearch] = useState("")
-
-  const { showAlert } = useContext(AlertContext);
-
-  const validateAccess = (e, item) => {
-    if (item && item.roles && item.roles.length > 0) {
-      for (let index = 0; index < item.roles.length; index++) {
-        const roleToCompare = item.roles[index];
-        if (role && role == roleToCompare) {
-          return true;
-        }
-      }
-
-      e.preventDefault();
-      e.stopPropagation();
-
-      showAlert(item.restrictedMessage);
-
-      return false;
-    }
-    return true;
-  };
+  const [search, setSearch] = useState("");
 
   return (
     <>
       <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
       <div className="main home-page">
         <div className="banner">
-          <h1 className="bannerHeading" dangerouslySetInnerHTML={{ __html: getPateDataItem('title', pageData) }}></h1>
-          <p className="subHeading" dangerouslySetInnerHTML={{ __html: getPateDataItem('sub_title', pageData) }}></p>
+          <h1 className="bannerHeading" dangerouslySetInnerHTML={{ __html: getPageDataItem('title', pageData) }}></h1>
+          <p className="subHeading" dangerouslySetInnerHTML={{ __html: getPageDataItem('sub_title', pageData) }}></p>
           <Link className="btn btn-gold film-festival-1 d-none" to="/filmfestival1"
             style={{ fontWeight: "500", fontSize: "18px", marginLeft: "5px", minWidth: "120px" }}>
             Film Festival
@@ -75,51 +58,51 @@ const Home = () => {
           <div className="container">
             <div className="row content gy-3 hero-boxes">
               {[
-                {"num": 1, "url": "/creative-jobs"},
-                {"num": 2, "url": token ? 'post-a-job' : '#register_agency'},
-                {"num": 3, "url": token ? (role == 'creative' ? 'community' : 'dashboard') : '#register_creative'},
+                { "num": 1, "url": "/creative-jobs" },
+                { "num": 2, "url": token ? 'post-a-job' : '#register_agency' },
+                { "num": 3, "url": token ? (role == 'creative' ? 'community' : 'dashboard') : '#register_creative' },
               ].map(item => (
                 <div key={"flip-card-key-" + item?.num} className="col-lg-4 col-md-4 col-12 hero-box">
-                <Link
-                  // className={`box link-light ${item.img ? "flip" : ""}`}
-                  className="box link-light flip"
-                  to={item?.url}
-                >
-                  <div className="flip-card-front">
-                    <div className="main-title" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block' + item?.num + '_title', pageData) }}></div>
-                    <div className="footer">
-                      <div className="title-small" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block' + item?.num + '_subtitle', pageData) }}></div>
-                      <div className="box-link-front">
-                        <div className="link">
-                          <IoArrowForward color="white" />
+                  <Link
+                    // className={`box link-light ${item.img ? "flip" : ""}`}
+                    className="box link-light flip"
+                    to={item?.url}
+                  >
+                    <div className="flip-card-front">
+                      <div className="main-title" dangerouslySetInnerHTML={{ __html: getPageDataItem('landing_block' + item?.num + '_title', pageData) }}></div>
+                      <div className="footer">
+                        <div className="title-small" dangerouslySetInnerHTML={{ __html: getPageDataItem('landing_block' + item?.num + '_subtitle', pageData) }}></div>
+                        <div className="box-link-front">
+                          <div className="link">
+                            <IoArrowForward color="white" />
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flip-card-back">
-                    <div className="content" dangerouslySetInnerHTML={{ __html: getPateDataItem('landing_block' + item?.num + '_content', pageData) }}></div>
-                    <div className="box-link-back">
-                      <p>click to go</p>
-                      <div className="link">
-                        <IoArrowForward color="black" />
+                    <div className="flip-card-back">
+                      <div className="content" dangerouslySetInnerHTML={{ __html: getPageDataItem('landing_block' + item?.num + '_content', pageData) }}></div>
+                      <div className="box-link-back">
+                        <p>click to go</p>
+                        <div className="link">
+                          <IoArrowForward color="black" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              </div>
+                  </Link>
+                </div>
               ))}
             </div>
             <div>
               <p class="subHeading motive">
-                <Link className="" to={"/community"} dangerouslySetInnerHTML={{ __html: getPateDataItem('motive_title_gather', pageData) }}
+                <Link className="" to={"/community"} dangerouslySetInnerHTML={{ __html: getPageDataItem('motive_title_gather', pageData) }}
                   onClick={(e) =>
                     validateAccess(e, {
                       roles: ["admin", "creative"],
                       restrictedMessage: "Please login as a Creative to access",
                     })
                   }></Link>
-                <Link className="" to={"/mentoring-resources"} dangerouslySetInnerHTML={{ __html: getPateDataItem('motive_title_inspire', pageData) }}></Link>
-                <Link className="" to={"/creative-jobs"} dangerouslySetInnerHTML={{ __html: getPateDataItem('motive_title_do_cool_shit', pageData) }}></Link>
+                <Link className="" to={"/mentoring-resources"} dangerouslySetInnerHTML={{ __html: getPageDataItem('motive_title_inspire', pageData) }}></Link>
+                <Link className="" to={"/creative-jobs"} dangerouslySetInnerHTML={{ __html: getPageDataItem('motive_title_do_cool_shit', pageData) }}></Link>
               </p>
             </div>
           </div>
@@ -127,9 +110,9 @@ const Home = () => {
           <div className="wrapper">
             <Link to="/about" className="black">
               <div className="marquee">
-                <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
-                <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
-                <p dangerouslySetInnerHTML={{ __html: getPateDataItem("ticker", pageData) }}></p>
+                <p dangerouslySetInnerHTML={{ __html: getPageDataItem("ticker", pageData) }}></p>
+                <p dangerouslySetInnerHTML={{ __html: getPageDataItem("ticker", pageData) }}></p>
+                <p dangerouslySetInnerHTML={{ __html: getPageDataItem("ticker", pageData) }}></p>
               </div>
             </Link>
           </div>
