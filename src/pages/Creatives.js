@@ -182,7 +182,7 @@ const Creatives = () => {
 
     if (role == 'agency' || role == 'recruiter') {
       if (subscription_status == "active") {
-        setCreativeSearchPlaceholder("Select up to two fields by name, location, and/or select a title");
+        setCreativeSearchPlaceholder("Select up to two: name, location, and/or select a title");
       } else {
         setCreativeSearchPlaceholder("Select one: by name or location. Post a Job for advance search capabilities");
       }

@@ -20,7 +20,7 @@ const Invite = ({ open, handleClose, item }) => {
   } = useContext(AuthContext);
 
   const {
-    state: {},
+    state: { },
     showAlert
   } = useContext(AlertContext);
 
@@ -35,19 +35,19 @@ const Invite = ({ open, handleClose, item }) => {
     let validOpenPositions = [];
     for (let index = 0; index < open_positions.length; index++) {
       const element = open_positions[index];
-      if(element.status == "approved") {
+      if (element.status == "approved") {
         validOpenPositions.push(element);
       }
     }
     setOpenPositions(validOpenPositions);
   }, [open_positions]);
 
-/*   const {
-    state: { bookmarks },
-    createBookmark,
-    getBookmark,
-    removeBookmark,
-  } = useContext(DataContext); */
+  /*   const {
+      state: { bookmarks },
+      createBookmark,
+      getBookmark,
+      removeBookmark,
+    } = useContext(DataContext); */
 
 
   useEffect(() => {

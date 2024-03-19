@@ -96,13 +96,13 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
   };
 
   const handleRemoveAttachment = (e, item) => {
-    (async ()=>{
-      await removeAttachment(item.id, (err)=>{
-        if(err) {
+    (async () => {
+      await removeAttachment(item.id, (err) => {
+        if (err) {
           showAlert("Sorry! we are unable to remove the resume now")
         } else {
           setResumeList(() => []);
-          resumeRef.current.value='';
+          resumeRef.current.value = '';
           showAlert("Resume removed successfully");
         }
       });
@@ -171,7 +171,7 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
                       </div>
                     ))}
                 </div>
-                <p className="fs-5 text-center mt-3">or upload your CV</p>
+                <p className="fs-5 text-center mt-3">or</p>
                 <div className="form-group upload-file-btn-wrapper">
                   <input
                     type="file"
