@@ -25,6 +25,7 @@ const TrendingPostWidgetRightSidebar = (props) => {
     const limit = 5;
     const words = text.split(" ");
     const trimmed = words.slice(0, limit).join(" ");
+    console.log();
     return words.length > limit ? `${trimmed}...` : trimmed;
   }
 
