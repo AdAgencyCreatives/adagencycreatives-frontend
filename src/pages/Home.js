@@ -118,6 +118,12 @@ const Home = () => {
                 <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
                 <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
                 <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
+                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
+                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
+                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
+                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
+                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
+                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
               </div>
             </Link>
           </div>
