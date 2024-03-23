@@ -17,6 +17,9 @@ import useShortlist from "../../../hooks/useShortlist";
 import { getMyFriends } from "../../../context/FriendsDataContext";
 import useHelper from "../../../hooks/useHelper";
 import CreativeLocation from "../../../components/CreativeLocation";
+import moment from "moment";
+import { saveAs } from 'file-saver';
+import { api } from "../../../api/api";
 
 const Header = ({ data, role, user }) => {
 
@@ -59,6 +62,7 @@ const Header = ({ data, role, user }) => {
       if (pass) {
         showAlert(message);
         e.preventDefault();
+        e.stopPropagation();
         return false;
       }
     }
@@ -70,6 +74,28 @@ const Header = ({ data, role, user }) => {
       setIsFriend(result.some((item) => item.user.uuid == data.user_id))
     });
   }, [])
+
+  const downloadResume = async (url) => {
+    const fileName = getDownloadFilename(url);
+    try {
+      if (url.indexOf("/download/resume?name=") > 0) {
+        window.open(url);
+      } else {
+        // const response = await api.get(url);
+        // saveAs(response.data, );
+        fetch(url)
+          .then(res => res.blob())
+          .then(blob => saveAs(blob, fileName))
+      }
+    } catch (error) {
+      showAlert(error?.message || "Sorry, an error occurred");
+    }
+  };
+
+  const getDownloadFilename = (url) => {
+    const extension = url.lastIndexOf(".") > 0 ? url.substring(url.lastIndexOf(".")) : '';
+    return (data.name).replace(" ", "_") + "_AdAgencyCreatives_" + moment(new Date()) + extension;
+  }
 
   return (
     <div className="container">
@@ -106,17 +132,18 @@ const Header = ({ data, role, user }) => {
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
                 {(isOwnProfile || !isCreative || isFriend) && (
                   <a
-                    href={data.resume}
-                    target="__blank"
-                    onClick={(e) => isAdmin || (isAdvisor && hasSubscription) || 
-                      validateAccess(
-                        e,
-                        [!hasSubscription, !isCreative],
-                        "Add a job post to download resumes"
-                      )
-                    }
-                  >
-                    <button className="btn btn-dark fs-5">
+                    href={"javascript:void(0)"}
+                    onClick={(e) => downloadResume(data.resume)}>
+                    <button
+                      className="btn btn-dark fs-5"
+                      onClick={(e) => isAdmin || (isAdvisor && hasSubscription) ||
+                        validateAccess(
+                          e,
+                          [!hasSubscription, !isCreative],
+                          "Add a job post to download resumes"
+                        )
+                      }
+                    >
                       Download Resume
                     </button>
                   </a>
