@@ -18,7 +18,10 @@ const TrendingPostWidgetRightSidebar = (props) => {
     getCreativeById(props.trending_post.user_id);
   }, []);
 
-  function trimContent(text) {
+  function trimContent(content) {
+    var el = document.createElement('div');
+    el.innerHTML = content;
+    var text = el.innerText;
     const limit = 5;
     const words = text.split(" ");
     const trimmed = words.slice(0, limit).join(" ");

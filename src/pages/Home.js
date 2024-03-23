@@ -93,7 +93,7 @@ const Home = () => {
               ))}
             </div>
             <div>
-              <p class="subHeading motive">
+              <p className="subHeading motive">
                 <Link className="" to={"/community"} dangerouslySetInnerHTML={{ __html: getPageDataItem('motive_title_gather', pageData) }}
                   onClick={(e) =>
                     validateAccess(e, {

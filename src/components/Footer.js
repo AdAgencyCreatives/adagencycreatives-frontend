@@ -21,7 +21,7 @@ const Footer = () => {
           <div className="col">
             {/* <h3 className="footer-title" dangerouslySetInnerHTML={{ __html: getPageDataItem("title", pageData) }}></h3> */}
             <div>
-              <p class="subHeading motive">
+              <p className="subHeading motive">
                 <Link className="" to={"/community"} dangerouslySetInnerHTML={{ __html: getHomePageDataItem('motive_title_gather', homePageData) }}
                   onClick={(e) =>
                     validateAccess(e, {
