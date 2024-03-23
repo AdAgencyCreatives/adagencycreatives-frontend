@@ -1218,7 +1218,7 @@ img.publication-image {
     }
 }
 
-.subHeading.motive {
+.home-page .subHeading.motive {
     display: flex;
     flex-direction: row;
     column-gap: 10px;
@@ -1228,12 +1228,12 @@ img.publication-image {
     align-items: center;
 }
 
-.subHeading.motive a {
+.home-page .subHeading a {
     color: #fff;
     margin: 0px;
 }
 
-.subHeading.motive a:hover {
+.home-page .subHeading a:hover {
     color: #d3a11f;
 }
 
