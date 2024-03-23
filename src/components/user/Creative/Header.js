@@ -19,7 +19,7 @@ import useHelper from "../../../hooks/useHelper";
 import CreativeLocation from "../../../components/CreativeLocation";
 import moment from "moment";
 import { saveAs } from 'file-saver';
-import { api } from "../../../api/api";
+import { CircularProgress } from "@mui/material";
 
 const Header = ({ data, role, user }) => {
 
@@ -29,6 +29,8 @@ const Header = ({ data, role, user }) => {
   const [open, setOpen] = useState(false);
   const [openInvite, setOpenInvite] = useState(false);
   const [item, setItem] = useState({});
+  const [isDownloading, setDownloading] = useState(false);
+
   const handleClose = () => setOpen(false);
   const handleCloseInvite = () => setOpenInvite(false);
   const { showAlert } = useContext(AlertContext);
@@ -76,25 +78,35 @@ const Header = ({ data, role, user }) => {
   }, [])
 
   const downloadResume = async (url) => {
-    const fileName = getDownloadFilename(url);
+    setDownloading(true);
     try {
       if (url.indexOf("/download/resume?name=") > 0) {
+        setDownloading(false);
         window.open(url);
       } else {
-        // const response = await api.get(url);
-        // saveAs(response.data, );
+        const fileName = getDownloadFilename(url);
         fetch(url)
           .then(res => res.blob())
-          .then(blob => saveAs(blob, fileName))
+          .then(blob => {
+            setDownloading(false);
+            saveAs(blob, fileName);
+          })
+          .catch((error) => {
+            setDownloading(false);
+            console.log(error);
+            showAlert(error?.message || "Sorry, an error occurred");
+          });
       }
     } catch (error) {
+      setDownloading(false);
+      console.log(error);
       showAlert(error?.message || "Sorry, an error occurred");
     }
   };
 
   const getDownloadFilename = (url) => {
     const extension = url.lastIndexOf(".") > 0 ? url.substring(url.lastIndexOf(".")) : '';
-    return (data.name).replace(" ", "_") + "_AdAgencyCreatives_" + moment(new Date()) + extension;
+    return (data.name).replace(" ", "_") + "_AdAgencyCreatives_" + (moment(new Date()).format("YYYY-MM-DD-hh-mm-ss-A")) + extension;
   }
 
   return (
@@ -130,12 +142,13 @@ const Header = ({ data, role, user }) => {
             </div>
             <div className="col-md-6">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
+                {isDownloading && (<CircularProgress style={{ minWidth: "40px", minHeight: "40px" }} />)}
                 {(isOwnProfile || !isCreative || isFriend) && (
                   <a
                     href={"javascript:void(0)"}
-                    onClick={(e) => downloadResume(data.resume)}>
+                    onClick={(e) => isDownloading ? showAlert("Please wait. Download in progress, or refresh page") : downloadResume(data.resume)}>
                     <button
-                      className="btn btn-dark fs-5"
+                      className={"btn btn-dark fs-5" + (isDownloading ? " disabled" : "")}
                       onClick={(e) => isAdmin || (isAdvisor && hasSubscription) ||
                         validateAccess(
                           e,
