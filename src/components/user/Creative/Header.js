@@ -75,16 +75,27 @@ const Header = ({ data, role, user }) => {
     getMyFriends().then(result => {
       setIsFriend(result.some((item) => item.user.uuid == data.user_id))
     });
-  }, [])
+  }, []);
+
+  const getClientDateTime = () => {
+    return moment(new Date()).format("YYYY-MM-DD-hh-mm-ss-A");
+  };
+
+  const getDownloadFilename = () => {
+    return (data.name).replace(" ", "_") + "_AdAgencyCreatives_" + getClientDateTime();
+  }
 
   const downloadResume = async (url) => {
     setDownloading(true);
     try {
       if (url.indexOf("/download/resume?name=") > 0) {
+        const resume_name = (new URLSearchParams(url.substring(url.indexOf("?")))).get('name');
+        let newUrl = url.replace(resume_name, getDownloadFilename());
         setDownloading(false);
-        window.open(url);
+        window.open(newUrl);
       } else {
-        const fileName = getDownloadFilename(url);
+        const extension = url.lastIndexOf(".") > 0 ? url.substring(url.lastIndexOf(".")) : '';
+        const fileName = getDownloadFilename() + extension;
         fetch(url)
           .then(res => res.blob())
           .then(blob => {
@@ -103,11 +114,6 @@ const Header = ({ data, role, user }) => {
       showAlert(error?.message || "Sorry, an error occurred");
     }
   };
-
-  const getDownloadFilename = (url) => {
-    const extension = url.lastIndexOf(".") > 0 ? url.substring(url.lastIndexOf(".")) : '';
-    return (data.name).replace(" ", "_") + "_AdAgencyCreatives_" + (moment(new Date()).format("YYYY-MM-DD-hh-mm-ss-A")) + extension;
-  }
 
   return (
     <div className="container">
