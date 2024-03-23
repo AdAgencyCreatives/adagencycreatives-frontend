@@ -1161,7 +1161,7 @@ img.publication-image {
     white-space: nowrap;
     overflow: hidden;
     display: inline-block;
-    animation: marquee 60s linear infinite;
+    animation: marquee 120s linear infinite;
     height: 100%;
     line-height: 1;
     margin-top: 10px;

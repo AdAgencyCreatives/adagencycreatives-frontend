@@ -33,6 +33,8 @@ const Home = () => {
 
   const { pageData, getPageDataItem } = usePageDataHelper("home");
 
+  const tickerData = getPageDataItem("ticker", pageData);
+
   const [messageModalOptions, setMessageModalOptions] = useState({ "open": false, "type": "message", "title": "Message", "message": "Thanks.", "data": {}, "onClose": null });
   const showMessageModal = (type, title, message, data) => {
     setMessageModalOptions({ "open": true, "type": type, "title": title, "message": message, "data": data });
@@ -110,9 +112,12 @@ const Home = () => {
           <div className="wrapper">
             <Link to="/about" className="black">
               <div className="marquee">
-                <p dangerouslySetInnerHTML={{ __html: getPageDataItem("ticker", pageData) }}></p>
-                <p dangerouslySetInnerHTML={{ __html: getPageDataItem("ticker", pageData) }}></p>
-                <p dangerouslySetInnerHTML={{ __html: getPageDataItem("ticker", pageData) }}></p>
+                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
+                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
+                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
+                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
+                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
+                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
               </div>
             </Link>
           </div>
