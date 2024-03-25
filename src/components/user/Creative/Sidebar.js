@@ -53,6 +53,7 @@ const Sidebar = ({ data, user }) => {
   const isOwnProfile = user?.uuid == data.user_id;
 
   const [hasSubscription, setSubscription] = useState(false);
+  const [isDownloading, setDownloading] = useState(false);
 
   useEffect(() => {
     setSubscription(subscription_status == "active");
