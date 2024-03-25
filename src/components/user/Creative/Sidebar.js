@@ -21,6 +21,10 @@ import { getMyFriends } from "../../../context/FriendsDataContext";
 import { Link } from "react-router-dom";
 import useHelper from "../../../hooks/useHelper";
 
+import moment from "moment";
+import { saveAs } from 'file-saver';
+import { CircularProgress } from "@mui/material";
+
 const Sidebar = ({ data, user }) => {
 
   const { encodeSpecial, decodeSpecial, formatPhone } = useHelper();
@@ -153,6 +157,45 @@ const Sidebar = ({ data, user }) => {
     );
   };
 
+
+  const getClientDateTime = () => {
+    return moment(new Date()).format("YYYY-MM-DD");
+  };
+
+  const getDownloadFilename = () => {
+    return (data.name).replace(" ", "_") + "_AdAgencyCreatives_" + getClientDateTime();
+  }
+
+  const downloadResume = async (url) => {
+    setDownloading(true);
+    try {
+      if (url.indexOf("/download/resume?name=") > 0) {
+        const resume_name = (new URLSearchParams(url.substring(url.indexOf("?")))).get('name');
+        let newUrl = url.replace(resume_name, getDownloadFilename());
+        setDownloading(false);
+        window.open(newUrl);
+      } else {
+        const extension = url.lastIndexOf(".") > 0 ? url.substring(url.lastIndexOf(".")) : '';
+        const fileName = getDownloadFilename() + extension;
+        fetch(url)
+          .then(res => res.blob())
+          .then(blob => {
+            setDownloading(false);
+            saveAs(blob, fileName);
+          })
+          .catch((error) => {
+            setDownloading(false);
+            console.log(error);
+            showAlert(error?.message || "Sorry, an error occurred");
+          });
+      }
+    } catch (error) {
+      setDownloading(false);
+      console.log(error);
+      showAlert(error?.message || "Sorry, an error occurred");
+    }
+  };
+
   return (
     <>
       <div className="sidebar-item">
@@ -270,23 +313,27 @@ const Sidebar = ({ data, user }) => {
           <h4 className="title">Resume</h4>
           <div className="content">
             {resume.map((item) => (
-              <a
-                href={item.url}
-                target="__blank"
-                onClick={(e) => isAdmin || (isAdvisor && hasSubscription) ||
-                  validateAccess(
-                    e,
-                    [!hasSubscription, !isCreative],
-                    "Add a job post to download resumes"
-                  )
-                }
-              >
-                <button className="btn btn-dark w-100 py-3 fs-5 mb-3">
-                  Download Resume
-                </button>
-              </a>
+              <>
+                {isDownloading && (<CircularProgress style={{ minWidth: "40px", minHeight: "40px" }} />)}
+                <a
+                  href={"javascript:void(0)"}
+                  onClick={(e) => isDownloading ? showAlert("Please wait. Download in progress, or refresh page") : downloadResume(item.url)}>
+                  <button
+                    className={"btn btn-dark w-100 py-3 fs-5 mb-3" + (isDownloading ? " disabled" : "")}
+                    onClick={(e) => isAdmin || (isAdvisor && hasSubscription) ||
+                      validateAccess(
+                        e,
+                        [!hasSubscription, !isCreative],
+                        "Add a job post to download resumes"
+                      )
+                    }
+                  >
+                    Download Resume
+                  </button>
+                </a>
+              </>
             ))}
-          </div>
+          </div >
         </div>
       ) : (
         ""

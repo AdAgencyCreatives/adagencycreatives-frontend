@@ -78,7 +78,7 @@ const Header = ({ data, role, user }) => {
   }, []);
 
   const getClientDateTime = () => {
-    return moment(new Date()).format("YYYY-MM-DD-hh-mm-ss-A");
+    return moment(new Date()).format("YYYY-MM-DD");
   };
 
   const getDownloadFilename = () => {
