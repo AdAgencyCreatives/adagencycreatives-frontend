@@ -21,6 +21,8 @@ import ConfirmDeleteModal from "../community/Modals/ConfirmDeleteModal";
 import { Context as CreativesContext } from "../../context/CreativesContext";
 import { api } from "../../api/api";
 
+import { saveAttachment } from "../../context/AttachmentsDataContext";
+
 const CreatePost = (props) => {
 
   const taggerRef = useRef(null);
@@ -66,6 +68,8 @@ const CreatePost = (props) => {
   const [taggerPosLeft, setTaggerPosLeft] = useState(0);
   const [taggerPosTop, setTaggerPosTop] = useState(0);
   const [taggerUsers, setTaggerUsers] = useState([]);
+
+  const [fileUploadProgress, setFileUploadProgress] = useState(0);
 
   useEffect(() => {
     if (taggerSearchText && taggerSearchText.length) {
@@ -192,8 +196,8 @@ const CreatePost = (props) => {
           "notification_text": `${response.data.data.author} commented on you in his post`,
         };
         const response_schedule = api.post("/schedule-notifications", schedule_data);
-        console.log("schedule data", schedule_data);
-        console.log("schedule response", response_schedule);
+        // console.log("schedule data", schedule_data);
+        // console.log("schedule response", response_schedule);
       }
     });
   };
@@ -241,7 +245,7 @@ const CreatePost = (props) => {
   };
 
   const selectEmoji = (emojiData) => {
-    console.log(emojiData.getEmojiUrl);
+    // console.log(emojiData.getEmojiUrl);
     setContent((prev) => (prev += emojiData.emoji));
     setShowPicker(false);
     if (editableRef) {
@@ -262,6 +266,36 @@ const CreatePost = (props) => {
 
   const removeAttachment = (e, postAttachment) => {
     setPostAttachments(postAttachments.filter((item) => item.id != postAttachment.id));
+  };
+
+  const saveAttachmentAsync = async (blobInfo, success, failure, progress) => {
+    let content = editorRefTinyMCE.current.getContent();
+    // const count = (content.match(/<img/g) || [])?.length ?? 0;
+    // console.log(count);
+    // if (count > 5) {
+    //   alert('Cannot add more then 5 images!');
+    //   return;
+    // }
+
+    let formData = new FormData();
+
+    formData.append("user_id", user.uuid);
+    formData.append("resource_type", "post_attachment_" + allowType);
+    formData.append("file", blobInfo.blob(), blobInfo.filename());
+
+    let result = await saveAttachment(formData, progressHandler);
+
+    if (result && result.resource_type) {
+      content = content.replace(/(<img *src="data:)(.*?)"/, '<img src="' + result.url + '"');
+      editorRefTinyMCE.current.setContent(content);
+      success(result.url);
+    }
+  };
+
+  const progressHandler = (progressEvent) => {
+    let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+    //console.log(percentCompleted);
+    setFileUploadProgress(percentCompleted)
   };
 
   return (
@@ -332,7 +366,7 @@ const CreatePost = (props) => {
               <IoCloseCircleSharp />
             </div>
           </div>
-          <div className="postmodal-body">
+          <div className="postmodal-bod">
             {useTinyMCE ? (
               <>
                 <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
@@ -352,6 +386,7 @@ const CreatePost = (props) => {
                     font_family_formats: 'JOST=JOST',
                     content_style: 'body { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; font-size: 14pt } a { color: #d3a11f; cursor: pointer; } a:hover { color: #000; }',
                     placeholder: 'What do you want to talk about?',
+                    images_upload_handler: saveAttachmentAsync
                   }}
                   initialValue=""
                   onEditorChange={(e) => setContent(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "")}
