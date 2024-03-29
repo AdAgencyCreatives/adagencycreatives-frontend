@@ -212,7 +212,7 @@ const Content = ({ user, role, data, education, experience }) => {
           <div className="content-list">
             {experience.slice(0, (experience.length <= maxExperiences || showAllExperiences ? experience.length : maxExperiences)).map((item) => (
               <div className="content" key={item.id}>
-                <div className="circle">{item.company?.charAt(0)}</div>
+                <div className="circle">{item.title?.charAt(0)}</div>
 
                 <div className="top-info work_experience">
                   <span className="edu_stats">{item?.title}</span>
