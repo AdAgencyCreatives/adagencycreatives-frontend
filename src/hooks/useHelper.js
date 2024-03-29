@@ -84,6 +84,7 @@ const useHelper = () => {
     };
 
     const injectHyperlinks = (text) => {
+        // console.log(text);
         // const expressionWithHttp =
         //     /((https?:\/\/(www\.)?)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))/gi;
 
@@ -93,7 +94,8 @@ const useHelper = () => {
         const regex = new RegExp(expressionWithHttp);
 
         // return text.replace(regex, "<a href='$1' target='_blank'>$1</a>");
-        return text.replace(regex, replacer);
+        // return text.replace(regex, replacer);
+        return text;
     };
 
     const specialCharsToEncode = {
