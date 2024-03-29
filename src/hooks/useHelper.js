@@ -66,6 +66,10 @@ const useHelper = () => {
             return matched;
         }
 
+        if (matched.lastIndexOf(".") == matched.length - 1) {
+            matched = matched.substring(0, matched.length - 1);
+        }
+
         let withProtocol = matched;
 
         if (!withProtocol.startsWith("http")) {
@@ -84,6 +88,7 @@ const useHelper = () => {
     };
 
     const injectHyperlinks = (text) => {
+        text = text.replace("&nbsp;", ">>&nbsp;<<");
         // console.log(text);
         // const expressionWithHttp =
         //     /((https?:\/\/(www\.)?)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))/gi;
@@ -94,7 +99,10 @@ const useHelper = () => {
         const regex = new RegExp(expressionWithHttp);
 
         // return text.replace(regex, "<a href='$1' target='_blank'>$1</a>");
-        // return text.replace(regex, replacer);
+        text = text.replace(regex, replacer);
+
+        text = text.replace(">>&nbsp;<<", "&nbsp;");
+
         return text;
     };
 

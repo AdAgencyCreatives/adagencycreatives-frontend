@@ -330,6 +330,7 @@ const EditPost = (props) => {
                                         font_family_formats: 'JOST=JOST',
                                         content_style: 'body { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; font-size: 14pt } a { color: #d3a11f; cursor: pointer; } a:hover { color: #000; }',
                                         placeholder: 'What do you want to talk about?',
+                                        paste_block_drop: true
                                     }}
                                     value={content}
                                     onEditorChange={(e) => setContent(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "")}

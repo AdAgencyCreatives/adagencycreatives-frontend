@@ -268,7 +268,11 @@ const CreatePost = (props) => {
     setPostAttachments(postAttachments.filter((item) => item.id != postAttachment.id));
   };
 
-  const saveAttachmentAsync = async (blobInfo, success, failure, progress) => {
+  const handleDragDropAsync = async (blobInfo, success, failure, progress) => {
+    if (blobInfo) {
+      alert("Disabled. Use attachment icons please.");
+      return;
+    }
     let content = editorRefTinyMCE.current.getContent();
     // const count = (content.match(/<img/g) || [])?.length ?? 0;
     // console.log(count);
@@ -366,7 +370,7 @@ const CreatePost = (props) => {
               <IoCloseCircleSharp />
             </div>
           </div>
-          <div className="postmodal-bod">
+          <div className="postmodal-body">
             {useTinyMCE ? (
               <>
                 <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
@@ -386,7 +390,7 @@ const CreatePost = (props) => {
                     font_family_formats: 'JOST=JOST',
                     content_style: 'body { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; font-size: 14pt } a { color: #d3a11f; cursor: pointer; } a:hover { color: #000; }',
                     placeholder: 'What do you want to talk about?',
-                    images_upload_handler: saveAttachmentAsync
+                    paste_block_drop: true
                   }}
                   initialValue=""
                   onEditorChange={(e) => setContent(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "")}
