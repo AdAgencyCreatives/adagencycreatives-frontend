@@ -18,11 +18,7 @@ const usePageDataHelper = (currentPage) => {
     }
 
     const removeTinyMceParagraph = (pageData) => {
-        pageData = pageData.replace(/^<p?[^>]+>/g, "");
-        pageData = pageData.replace(/<\/p?[^>]+>$/g, "");
-        pageData = pageData.trim();
-
-        return pageData;
+        return pageData.indexOf("<p>") == 0 ? pageData.substring("<p>".length, pageData.indexOf("</p>")).trim() : pageData;
     }
 
     const [page,] = useState(currentPage);
