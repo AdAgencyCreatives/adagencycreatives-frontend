@@ -1,4 +1,4 @@
-import {api} from "../api/api";
+import { api } from "../api/api";
 import createDataContext from "./createDataContext";
 
 const state = { screatives: null, nextPage: null, loading: false };
@@ -28,12 +28,12 @@ const reducer = (state, action) => {
 const getSCreatives = (dispatch) => {
   return async (keyword = '') => {
     try {
-      const response = await api.get(`/creative-spotlights?per_page=30&filter[title]=${keyword}`);
+      const response = await api.get(`/creative-spotlights?sort=-updated_at&per_page=30&filter[title]=${keyword}`);
       dispatch({
         type: "set_screatives",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -53,7 +53,7 @@ const loadSCreatives = (dispatch) => {
         type: "set_loading",
         payload: false,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
