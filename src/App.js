@@ -42,7 +42,7 @@ function App() {
   const [skipHeaderFooter, setSkipHeaderFooter] = useState(false);
 
   const {
-    state: { token, user, isLoading },
+    state: { token, user, isLoading, pageClass },
     getToken,
   } = useContext(AuthContext);
 
@@ -68,17 +68,17 @@ function App() {
                         <GroupsProvider>
                           <NotificationsProvider>
                             {/* {!isLoading ? ( */}
-                              <div className="App">
-                                <ChatListener />
-                                <ScrollRestoration />
-                                {!skipHeaderFooter ? (<>
-                                  <Header />
-                                </>) : (<></>)}
-                                <Outlet context={[setSkipHeaderFooter]} />
-                                {!skipHeaderFooter ? (<>
-                                  <Footer />
-                                </>) : (<></>)}
-                              </div>
+                            <div className="App">
+                              <ChatListener />
+                              <ScrollRestoration />
+                              {!skipHeaderFooter ? (<>
+                                <Header />
+                              </>) : (<></>)}
+                              <Outlet context={[setSkipHeaderFooter]} />
+                              {!skipHeaderFooter ? (<>
+                                <Footer />
+                              </>) : (<></>)}
+                            </div>
                             {/* ) : (
                               <Loader />
                             )} */}

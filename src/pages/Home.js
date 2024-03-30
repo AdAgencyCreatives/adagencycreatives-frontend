@@ -42,6 +42,7 @@ const Home = () => {
 
   const {
     state: { token, role },
+    setPageClass,
   } = useContext(AuthContext);
 
   const [search, setSearch] = useState("");

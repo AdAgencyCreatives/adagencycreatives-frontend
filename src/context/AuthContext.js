@@ -22,7 +22,8 @@ const state = {
   messageAlert: { type: "", message: "", display: "" },
   subscription_status: "",
   advance_search_capabilities: false,
-  conversation_updated_notifications: []
+  conversation_updated_notifications: [],
+  pageClass: ''
 };
 
 const authReducer = (state, action) => {
@@ -32,6 +33,11 @@ const authReducer = (state, action) => {
         ...state,
         token: action.payload.token,
         role: action.payload.role,
+      };
+    case "set_page_class":
+      return {
+        ...state,
+        pageClass: action.payload
       };
     case "set_form_message":
       return { ...state, formMessage: action.payload };
@@ -108,6 +114,18 @@ const setErrorMessage = (dispatch, message) => {
   });
 };
 
+const setPageClass = (dispatch) => {
+  return async (pageClass) => {
+    try {
+      dispatch({
+        type: "set_page_class",
+        payload: pageClass,
+      });
+    } catch (error) {
+    }
+  };
+};
+
 const signup = (dispatch) => {
   return async (data, role) => {
     resetFormMessage(dispatch)();
@@ -117,7 +135,6 @@ const signup = (dispatch) => {
       if (formData.password !== formData.cpassword) {
         setErrorMessage(dispatch, "The passwords do not match");
         throw "passwords do not match";
-        return;
       }
 
       const response = await api.post("/users", formData);
@@ -508,6 +525,7 @@ export const { Context, Provider } = createDataContext(
     handleClose,
     notifyConversationUpdated,
     resetConversationUpdated,
+    setPageClass,
   },
   state
 );
