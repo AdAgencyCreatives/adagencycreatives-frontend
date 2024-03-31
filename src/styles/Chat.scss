@@ -11,13 +11,16 @@
         overflow: auto;
         border-right: 1px solid #dbdbdb;
     }
-    .user-details{
+
+    .user-details {
         position: relative;
-        .job-action{
+
+        .job-action {
             position: absolute;
             right: 0px;
             top: 20px;
-            a{
+
+            a {
                 width: 20px;
                 height: 20px;
                 line-height: 20px;
@@ -451,4 +454,14 @@
 
 .chat-item .details .sender .time {
     margin-left: 0px;
+}
+
+.no-contact-selected {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    height: 100%;
+    min-height: 100%;
 }

@@ -28,7 +28,7 @@ const UserList = ({ messageType, page, data, handleItemClick, refreshContacts, s
   const [messageTmp, setMessageTmp] = useState();
   const [conversationData, setConversationData] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setConversationData(data);
   }, [data]);
   const {
@@ -57,7 +57,7 @@ const UserList = ({ messageType, page, data, handleItemClick, refreshContacts, s
   };
 
   const { state: { activeContact } } = useContext(Context)
-  
+
   function sanitizeText(text) {
     // Remove links with <br/>
     const sanitizedText = text.replace(/<br\/>.*?s3\.amazonaws\.com.*?(\s|$)/g, ' ');
@@ -103,7 +103,7 @@ const UserList = ({ messageType, page, data, handleItemClick, refreshContacts, s
     try {
       const response = await api.post(`/delete-conversation?message_type=${messageType}&user1=${selectedItem.sender_id}&user2=${selectedItem.receiver_id}`);
       deletedCount = response.data;
-    } catch (error) { 
+    } catch (error) {
       console.log(error);
     }
     setIsDialogOpen(false);
@@ -115,7 +115,7 @@ const UserList = ({ messageType, page, data, handleItemClick, refreshContacts, s
       // showAlert("Conversation deleted");
     }
   };
-  
+
   const handleEdit = async () => {
     setFormEdit(true);
     const data = { id: isId, message: messageTmp };
@@ -181,7 +181,10 @@ const UserList = ({ messageType, page, data, handleItemClick, refreshContacts, s
       {conversationData?.map((item) => (
         <li data-id={item.contact.uuid}
           className={(item.contact.uuid == activeContact) ? "active" : ""}
-          onClick={() => handleItemClick(item.contact, messageType)}
+          onClick={() => {
+            handleItemClick(item.contact, messageType, conversationData);
+            document.getElementById("message-status-" + item.contact.uuid)?.classList?.remove('unread');
+          }}
           key={item.id}
         >
           <img src={item.contact.image || Avatar} height={40} width={40} alt="" />
@@ -190,7 +193,7 @@ const UserList = ({ messageType, page, data, handleItemClick, refreshContacts, s
               <div className="username">
                 {item.contact.first_name} {item.contact.last_name}
               </div>
-              <div className={"message-time" + ((item.read_at || item.message_type == "sent") ? "" : " unread")}>
+              <div id={"message-status-" + item.contact.uuid} className={"message-time" + ((item.read_at || item.message_type == "sent") ? "" : " unread")}>
                 {parseDateShort(item.created_at)}
 
               </div>

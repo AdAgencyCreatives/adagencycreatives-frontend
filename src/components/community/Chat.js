@@ -99,7 +99,7 @@ const Chat = ({ messageType }) => {
     handleBackButton,
     setContact,
     getMessages,
-    userSelected, 
+    userSelected,
     setUserSelected,
     setPaged,
     paged,
@@ -134,7 +134,7 @@ const Chat = ({ messageType }) => {
                   placeholder="Search messages..."
                   onChange={(e) => filterContacts(e.target.value)}
                 />
-                {search && <IoClose className="clear-message" onClick={() => filterContacts("")} /> }
+                {search && <IoClose className="clear-message" onClick={() => filterContacts("")} />}
               </div>
               <div className="message-tabs">
                 <div

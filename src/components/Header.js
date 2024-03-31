@@ -107,7 +107,7 @@ function Header(props) {
   }, [state.token]);
 
   useEffect(() => {
-    if (anchor && anchor.length && anchor.indexOf("register_") == 0) {
+    if (anchor && anchor.length && (anchor.indexOf("register_") == 0 || anchor.indexOf("login") == 0)) {
       setAuthModalOpen(true);
     }
   }, [anchor]);

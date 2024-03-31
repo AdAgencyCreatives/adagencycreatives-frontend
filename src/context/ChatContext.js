@@ -119,7 +119,7 @@ const sendMessage = (dispatch) => {
         message,
         type,
       });
-      addMessage(dispatch)(response.data);
+      //addMessage(dispatch)(response.data);
     } catch (error) { }
     cb();
   };

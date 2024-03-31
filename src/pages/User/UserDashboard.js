@@ -11,7 +11,7 @@ const UserDashboard = () => {
   React.useEffect(() => {
     if (!state.token && !state.fetchingToken) {
       // If the user is not logged in, redirect to the Home page
-      navigate("/");
+      navigate("/login/" + encodeURIComponent(window.location.href) + "#login");
     }
   }, [state.token, navigate, state.fetchingToken]);
 

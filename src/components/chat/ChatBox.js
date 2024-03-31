@@ -38,7 +38,7 @@ const ChatBox = ({
   refreshContacts,
 }) => {
   const {
-    state: { messages, loading, contacts, attachments },
+    state: { messages, loading, contacts, attachments, activeContact },
     sendMessage,
     getContacts,
     uploadAttachment,
@@ -62,9 +62,13 @@ const ChatBox = ({
 
   useEffect(() => {
     if (!Object.keys(contact).length && contacts.length) {
-      let item = contacts[0].contact;
-      setContact(item)
-      getMessages(item.uuid, type);
+      // let item = contacts[0].contact;
+      // setContact(item)
+      // getMessages(item.uuid, type);
+      if (activeContact) {
+        setContact(activeContact);
+        getMessages(activeContact.uuid, type);
+      }
     }
   }, [contacts, contact]);
 
@@ -314,308 +318,340 @@ const ChatBox = ({
     // await getMessages(contact.uuid, type);
   };
 
+  useEffect(() => {
+    if (!loading) {
+      scrollToLastMessage();
+    }
+  }, [loading]);
+
+  const scrollToLastMessage = () => {
+    window.setTimeout(() => {
+      // if (messageData?.length > 0) {
+      //   if (document.getElementById('message' + messageData.length - 1)?.scrollIntoView) {
+      //     document.getElementById('message' + messageData.length - 1)?.scrollIntoView({ behavior: "smooth" });
+      //   }
+      // }
+      scrollToBottom();
+    }, 1000);
+  };
+
   return (
-    <div className={`chat-box ${chatBoxMobile}`}>
-      <div className="chat-mobile-top d-md-none d-flex">
-        <IoArrowBack size={20} onClick={handleBackButton} />
+    <>
+      {activeContact ? (
+        <div className={`chat-box ${chatBoxMobile}`}>
+          <div className="chat-mobile-top d-md-none d-flex">
+            <IoArrowBack size={20} onClick={handleBackButton} />
 
-        <div className="name">
-          {chatBox != "new" ? (contact.first_name + " " + contact.last_name) : "Back"}
-        </div>
-      </div>
-      <div className="chat-top">
-        {chatBox == "new" ? (
-          <NewChat setContact={setContact} contacts={contacts} userSelected={userSelected} setUserSelected={setUserSelected} />
-        ) : (
-          <div ref={containerRef} className="chat-area">
-            {loading ? (
-              <Loader fullHeight={false} />
+            <div className="name">
+              {chatBox != "new" ? (contact.first_name + " " + contact.last_name) : "Back"}
+            </div>
+          </div>
+          <div className="chat-top">
+            {chatBox == "new" ? (
+              <NewChat setContact={setContact} contacts={contacts} userSelected={userSelected} setUserSelected={setUserSelected} />
             ) : (
+              <div ref={containerRef} className="chat-area">
+                {loading ? (
+                  <Loader fullHeight={false} />
+                ) : (
+                  <>
+                    {messageData && messageData.map((item, index) => {
+                      const is_sender = user?.uuid == item?.sender_id;
+                      const is_receiver = user?.uuid == item?.receiver_id;
+                      const is_message_deleted = item?.sender_deleted_at || item?.receiver_deleted_at;
+                      const is_system_message = item?.message.indexOf("<a") == 0 && item?.message.indexOf("applied on the job") > 0 ? true : false;
 
-              messageData && messageData.map((item, index) => {
-                const is_sender = user?.uuid == item?.sender_id;
-                const is_receiver = user?.uuid == item?.receiver_id;
-                const is_message_deleted = item?.sender_deleted_at || item?.receiver_deleted_at;
-                const is_system_message = item?.message.indexOf("<a") == 0 && item?.message.indexOf("applied on the job") > 0 ? true : false;
+                      const elements = document.querySelectorAll('.users-list .active');
+                      let dataIdValue = 0;
+                      elements.forEach((element) => {
+                        dataIdValue = element.getAttribute('data-id');
+                      });
+                      const sender = item.message_type == "sent" ? user : contact;
+                      const time = parseDate(item.created_at);
+                      const created_at = parseDateShort(item.created_at);
+                      const { message, attachments } = parseMessage(item.message);
+                      if (item.message_type == 'received') {
+                        if (item.sender_id != dataIdValue && item.human_readable_date.includes('second')) {
+                          const myDiv = document.querySelector('[data-id="' + item.sender_id + '"]');
+                          if (myDiv) {
+                            const childElement = myDiv.querySelector('.message-time');
 
-                const elements = document.querySelectorAll('.users-list .active');
-                let dataIdValue = 0;
-                elements.forEach((element) => {
-                  dataIdValue = element.getAttribute('data-id');
-                });
-                const sender = item.message_type == "sent" ? user : contact;
-                const time = parseDate(item.created_at);
-                const created_at = parseDateShort(item.created_at);
-                const { message, attachments } = parseMessage(item.message);
-                if (item.message_type == 'received') {
-                  if (item.sender_id != dataIdValue && item.human_readable_date.includes('second')) {
-                    const myDiv = document.querySelector('[data-id="' + item.sender_id + '"]');
-                    if (myDiv) {
-                      const childElement = myDiv.querySelector('.message-time');
+                            if (childElement) {
+                              childElement.classList.add('unread');
+                              childElement.innerHTML = created_at;
+                            }
+                            const childMess = myDiv.querySelector('.user-message');
 
-                      if (childElement) {
-                        childElement.classList.add('unread');
-                        childElement.innerHTML = created_at;
+                            if (childMess) {
+                              childMess.innerHTML = item.message;
+                            }
+                          }
+                          return null;
+                        }
                       }
-                      const childMess = myDiv.querySelector('.user-message');
 
-                      if (childMess) {
-                        childMess.innerHTML = item.message;
-                      }
-                    }
-                    return null;
-                  }
-                }
-
-                return (
-                  <div className="chat-item" key={"message" + index}>
-                    <Dialog
-                      open={isDialogOpen} onClose={closeDeleteMessage}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
-                      scroll="body"
-                    >
-                      <div className="auth-modal">
-                        <div className="auth-header"></div>
-                        <div className="auth-body">
-                          <div className="job-apply-email-form-wrapper">
-                            <div className="inner">
-                              <div className="d-flex align-items-center justify-content-between mb-4">
-                                <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
-                                  Delete message?
-                                </h3>
-                                <button
-                                  className="border-0 bg-transparent text-primary"
-                                  onClick={() => closeDeleteMessage()}>
-                                  <IoCloseOutline size={30} />
-                                </button>
-                              </div>
-                              <p className="text-center">
-                                Are you sure you want to delete this message ?
-                              </p>
-                              <div className="d-flex align-items-center justify-content-end">
-                                <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={formDelete} onClick={handleDelete}>
-                                  Delete {formDelete && <CircularProgress size={20} />}
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </Dialog>
-                    <Dialog
-                      open={isDialogOpenEdit} onClose={closeEditMessage}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
-                      scroll="body"
-                    >
-                      <div className="auth-modal">
-                        <div className="auth-header"></div>
-                        <div className="auth-body">
-                          <div className="job-apply-email-form-wrapper">
-                            <div className="inner">
-                              <div className="d-flex align-items-center justify-content-between mb-4">
-                                <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
-                                  Edit message
-                                </h3>
-                                <button
-                                  className="border-0 bg-transparent text-primary"
-                                  onClick={() => closeEditMessage()}>
-                                  <IoCloseOutline size={30} />
-                                </button>
-                              </div>
-                              <p className="text-center">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  placeholder="Message"
-                                  name="message"
-                                  value={messageTmp}
-                                  onChange={(e) => handleChange("message", e.target.value)}
-                                />
-                              </p>
-                              <div className="d-flex align-items-center justify-content-end">
-                                <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={formEdit} onClick={handleEdit}>
-                                  Update {formEdit && <CircularProgress size={20} />}
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </Dialog>
-                    <img
-                      src={sender.image || Avatar}
-                      height={35}
-                      width={35}
-                      className="chat-avatar" alt=""
-                    />
-                    <div className="details">
-                      <div className="sender">
-                        {sender.first_name + " " + sender.last_name}
-                        <span className="time">{time}</span>
-                        {item?.edited_at && (
-                          <Tooltip title={parseDate(item?.edited_at)}>
-                            <span className="edited">Edited</span>
-                          </Tooltip>
-                        )}
-                        {!is_message_deleted && sender == user && (
-                          <div className="job-action">
-                            {!is_system_message ? (
-                              <>
-                                <Tooltip title="Edit">
-                                  <Link
-                                    className="btn p-0 border-0 btn-hover-primary"
-                                    onClick={() => editMessage(item)}
-                                  >
-                                    <IoPencil className="icon-rounded" />
-                                  </Link>
-                                </Tooltip>
-
-                                <Tooltip title="Remove">
-                                  <Link
-                                    className="btn p-0 border-0 btn-hover-primary"
-                                    onClick={() => deleteMessage(item)}
-                                  >
-                                    <IoClose className="icon-rounded" />
-                                  </Link>
-                                </Tooltip>
-                              </>
-                            ) : (
-                              <Tooltip title="Automatic Job Apply Confirmation">
-                                <Link
-                                  className="btn p-0 border-0 btn-hover-primary"
-                                >
-                                  <IoInformationCircleOutline className="icon-rounded" />
-                                </Link>
-                              </Tooltip>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                      <div className="text">
-                        {is_message_deleted ? (
-                          <span className="single-message-deleted">
-                            <FaBan />
-                            This message was deleted
-                          </span>
-                        ) : (
-                          <div dangerouslySetInnerHTML={{ __html: message }}></div>
-                        )}
-                        <div className="message_attachments">
-                          {attachments.length > 0 &&
-                            attachments.map((attachment, index) => (<>
-                              {attachment.resource_type && attachment.resource_type == "message_video" ? (
-                                <div className="video-container">
-                                  <video className="video" controls muted playsInline>
-                                    <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
-                                    Sorry, your browser doesn't support videos.
-                                  </video>
+                      return (
+                        <div className="chat-item" key={"message" + index}>
+                          <Dialog
+                            open={isDialogOpen} onClose={closeDeleteMessage}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                            scroll="body"
+                          >
+                            <div className="auth-modal">
+                              <div className="auth-header"></div>
+                              <div className="auth-body">
+                                <div className="job-apply-email-form-wrapper">
+                                  <div className="inner">
+                                    <div className="d-flex align-items-center justify-content-between mb-4">
+                                      <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
+                                        Delete message?
+                                      </h3>
+                                      <button
+                                        className="border-0 bg-transparent text-primary"
+                                        onClick={() => closeDeleteMessage()}>
+                                        <IoCloseOutline size={30} />
+                                      </button>
+                                    </div>
+                                    <p className="text-center">
+                                      Are you sure you want to delete this message ?
+                                    </p>
+                                    <div className="d-flex align-items-center justify-content-end">
+                                      <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={formDelete} onClick={handleDelete}>
+                                        Delete {formDelete && <CircularProgress size={20} />}
+                                      </button>
+                                    </div>
+                                  </div>
                                 </div>
-                              ) : (<>
-                                {attachment.resource_type && attachment.resource_type == "message_image" ? (
-                                  <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
-                                    <img className="post-image" src={attachment.url || ""} alt="" />
-                                  </a>
-                                ) : (
-                                  <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
-                                    <img className="post-image" src={FileIcon} alt="" />
-                                  </a>
-                                )}
-                              </>)}
-                            </>))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
+                              </div>
+                            </div>
+                          </Dialog>
+                          <Dialog
+                            open={isDialogOpenEdit} onClose={closeEditMessage}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                            scroll="body"
+                          >
+                            <div className="auth-modal">
+                              <div className="auth-header"></div>
+                              <div className="auth-body">
+                                <div className="job-apply-email-form-wrapper">
+                                  <div className="inner">
+                                    <div className="d-flex align-items-center justify-content-between mb-4">
+                                      <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
+                                        Edit message
+                                      </h3>
+                                      <button
+                                        className="border-0 bg-transparent text-primary"
+                                        onClick={() => closeEditMessage()}>
+                                        <IoCloseOutline size={30} />
+                                      </button>
+                                    </div>
+                                    <p className="text-center">
+                                      <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Message"
+                                        name="message"
+                                        value={messageTmp}
+                                        onChange={(e) => handleChange("message", e.target.value)}
+                                      />
+                                    </p>
+                                    <div className="d-flex align-items-center justify-content-end">
+                                      <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={formEdit} onClick={handleEdit}>
+                                        Update {formEdit && <CircularProgress size={20} />}
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </Dialog>
+                          <img
+                            src={sender.image || Avatar}
+                            height={35}
+                            width={35}
+                            className="chat-avatar" alt=""
+                          />
+                          <div className="details">
+                            <div className="sender">
+                              {sender.first_name + " " + sender.last_name}
+                              <span className="time">{time}</span>
+                              {item?.edited_at && (
+                                <Tooltip title={parseDate(item?.edited_at)}>
+                                  <span className="edited">Edited</span>
+                                </Tooltip>
+                              )}
+                              {!is_message_deleted && sender == user && (
+                                <div className="job-action">
+                                  {!is_system_message ? (
+                                    <>
+                                      <Tooltip title="Edit">
+                                        <Link
+                                          className="btn p-0 border-0 btn-hover-primary"
+                                          onClick={() => editMessage(item)}
+                                        >
+                                          <IoPencil className="icon-rounded" />
+                                        </Link>
+                                      </Tooltip>
 
+                                      <Tooltip title="Remove">
+                                        <Link
+                                          className="btn p-0 border-0 btn-hover-primary"
+                                          onClick={() => deleteMessage(item)}
+                                        >
+                                          <IoClose className="icon-rounded" />
+                                        </Link>
+                                      </Tooltip>
+                                    </>
+                                  ) : (
+                                    <Tooltip title="Automatic Job Apply Confirmation">
+                                      <Link
+                                        className="btn p-0 border-0 btn-hover-primary"
+                                      >
+                                        <IoInformationCircleOutline className="icon-rounded" />
+                                      </Link>
+                                    </Tooltip>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                            <div className="text">
+                              {is_message_deleted ? (
+                                <span className="single-message-deleted">
+                                  <FaBan />
+                                  This message was deleted
+                                </span>
+                              ) : (
+                                <div dangerouslySetInnerHTML={{ __html: message }}></div>
+                              )}
+                              <div className="message_attachments">
+                                {attachments.length > 0 &&
+                                  attachments.map((attachment, index) => (<>
+                                    {attachment.resource_type && attachment.resource_type == "message_video" ? (
+                                      <div className="video-container">
+                                        <video className="video" controls muted playsInline>
+                                          <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
+                                          Sorry, your browser doesn't support videos.
+                                        </video>
+                                      </div>
+                                    ) : (<>
+                                      {attachment.resource_type && attachment.resource_type == "message_image" ? (
+                                        <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                                          <img className="post-image" src={attachment.url || ""} alt="" />
+                                        </a>
+                                      ) : (
+                                        <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                                          <img className="post-image" src={FileIcon} alt="" />
+                                        </a>
+                                      )}
+                                    </>)}
+                                  </>))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
+              </div>
             )}
           </div>
-        )}
-      </div>
-      <div className="chat-footer">
-        <div className="message-box">
-          <div className="message-input">
-            <ContentEditable
-              className="message"
-              placeholder="Enter your message..."
-              html={content}
-              onChange={handleMessageChange}
-            />
-          </div>
-        </div>
-        {attachments.length > 0 && (
-          <div className="attachments">
-            {attachments.map((attachment, index) => (
-              <div className="item" key={"at_" + index}>
-                {!attachment.uploaded ? (
-                  <Loader fullHeight={false} />
-                ) : (<>
-                  {attachment.resource_type && attachment.resource_type == "message_video" ? (
-                    <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
-                      <img className="post-image" src={VideoIcon} alt="" />
-                    </a>
-                  ) : (<>
-                    {attachment.resource_type && attachment.resource_type == "message_image" ? (
-                      <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
-                        <img className="post-image" src={attachment.url || ""} alt="" />
-                      </a>
-                    ) : (
-                      <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
-                        <img className="post-image" src={FileIcon} alt="" />
-                      </a>
-                    )}
-                  </>)}
-                </>)}
+          <div className="chat-footer">
+            <div className="message-box">
+              <div className="message-input">
+                <ContentEditable
+                  className="message"
+                  placeholder="Enter your message..."
+                  html={content}
+                  onChange={handleMessageChange}
+                  onKeyUp={(e) => {
+                    if (e.ctrlKey && e.key === "Enter") {
+                      window.setTimeout(() => {
+                        document.getElementById('btn-send')?.click();
+                      }, 200);
+                    }
+                  }}
+                />
               </div>
-            ))}
-          </div>
-        )}
-        <div className="message-actions">
-          {page == "lounge" && (
-            <>
-              <FaRegSmile onClick={() => setShowPicker((val) => !val)} />
-              {showPicker && (
-                <div className="emoji-picker-container">
-                  <EmojiPicker
-                    previewConfig={{ showPreview: false }}
-                    skinTonesDisabled={true}
-                    height={250}
-                    suggestedEmojisMode=""
-                    categories={[
-                      "smileys_people",
-                      "animals_nature",
-                      "food_drink",
-                      "travel_places",
-                      "activities",
-                      "objects",
-                      "symbols",
-                      "flags",
-                    ]}
-                    onEmojiClick={selectEmoji}
+            </div>
+            {attachments.length > 0 && (
+              <div className="attachments">
+                {attachments.map((attachment, index) => (
+                  <div className="item" key={"at_" + index}>
+                    {!attachment.uploaded ? (
+                      <Loader fullHeight={false} />
+                    ) : (<>
+                      {attachment.resource_type && attachment.resource_type == "message_video" ? (
+                        <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                          <img className="post-image" src={VideoIcon} alt="" />
+                        </a>
+                      ) : (<>
+                        {attachment.resource_type && attachment.resource_type == "message_image" ? (
+                          <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                            <img className="post-image" src={attachment.url || ""} alt="" />
+                          </a>
+                        ) : (
+                          <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                            <img className="post-image" src={FileIcon} alt="" />
+                          </a>
+                        )}
+                      </>)}
+                    </>)}
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="message-actions">
+              {page == "lounge" && (
+                <>
+                  <FaRegSmile onClick={() => setShowPicker((val) => !val)} />
+                  {showPicker && (
+                    <div className="emoji-picker-container">
+                      <EmojiPicker
+                        previewConfig={{ showPreview: false }}
+                        skinTonesDisabled={true}
+                        height={250}
+                        suggestedEmojisMode=""
+                        categories={[
+                          "smileys_people",
+                          "animals_nature",
+                          "food_drink",
+                          "travel_places",
+                          "activities",
+                          "objects",
+                          "symbols",
+                          "flags",
+                        ]}
+                        onEmojiClick={selectEmoji}
+                      />
+                      <IoCloseCircleSharp className="emoji-exit" onClick={(e) => setShowPicker(false)} />
+                    </div>
+                  )}
+                  <FaPaperclip onClick={() => uploadRef.current.click()} />
+                  <input
+                    type="file"
+                    ref={uploadRef}
+                    className="d-none"
+                    onChange={(e) => handleFileChange(e)}
                   />
-                  <IoCloseCircleSharp className="emoji-exit" onClick={(e) => setShowPicker(false)} />
-                </div>
+                </>
               )}
-              <FaPaperclip onClick={() => uploadRef.current.click()} />
-              <input
-                type="file"
-                ref={uploadRef}
-                className="d-none"
-                onChange={(e) => handleFileChange(e)}
-              />
-            </>
-          )}
-          <div className="send-message">
-            <button className="btn btn-send" onClick={handleSubmit}>
-              Send
-            </button>
+              <div className="send-message">
+                <button id="btn-send" className="btn btn-send" onClick={handleSubmit}>
+                  Send
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      ) : (
+        <div className="no-contact-selected">
+          <span className="alert alert-secondary">Select a contact to view messages</span>
+        </div>
+      )}
+    </>
   );
 };
 

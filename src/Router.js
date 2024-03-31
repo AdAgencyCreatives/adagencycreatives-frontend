@@ -27,6 +27,7 @@ import UserDashboard from "./pages/User/UserDashboard";
 import Checkout from "./pages/Cart/Checkout";
 import CopyWriting from "./pages/Mentor/CopyWriting";
 import LoginAs from "./pages/LoginAs";
+import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import { useContext, useEffect } from "react";
 import { Context as AuthContext } from "./context/AuthContext";
@@ -252,6 +253,19 @@ export const router = createBrowserRouter([
         path: "/terms-and-conditions",
         element: <Terms />,
       },
+      ,
+      {
+        path: "/loginas/:token",
+        element: <LoginAs />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/login/:redirect",
+        element: <Login />,
+      },
       {
         path: "/:page",
         element: <UserDashboard />,
@@ -259,10 +273,6 @@ export const router = createBrowserRouter([
       {
         path: "/job/edit/:id",
         element: <UserDashboard />,
-      },
-      {
-        path: "/loginas/:token",
-        element: <LoginAs />,
       }
     ],
   },
