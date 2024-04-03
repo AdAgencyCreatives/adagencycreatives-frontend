@@ -16,6 +16,7 @@ import AddNotesModal from "./Modals/AddNotesModal";
 import { useContext, useEffect, useState } from "react";
 import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as AlertContext } from "../../context/AlertContext";
 import Paginate from "../../components/Paginate";
 import moment from "moment";
 import { CircularProgress } from "@mui/material";
@@ -41,6 +42,8 @@ const ApplicantJobs = () => {
   const {
     state: { user },
   } = useContext(AuthContext);
+
+  const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
     if (user.role === 'agency') {
@@ -68,7 +71,7 @@ const ApplicantJobs = () => {
     setTab((prev) => ({ ...prev, [id]: tab }));
   };
 
-  const setApplicationStatus = (job_id, app_id, status) => {
+  const setApplicationStatus = (job_id, app_id, status, cb = () => { }) => {
     updateApplication(app_id, { status }, () => {
       let jobIndex = applications.findIndex((job) => job.id == job_id);
       const updatedJob = { ...applications[jobIndex] };
@@ -80,6 +83,9 @@ const ApplicantJobs = () => {
       const updatedData = [...applications];
       updatedData[jobIndex] = { ...updatedJob };
       setData(updatedData);
+      console.log();
+      showAlert('Creative status change successful');
+      cb();
     });
   };
 

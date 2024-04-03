@@ -28,7 +28,7 @@ const Comment = (props) => {
         getPosts, deletePost, getComments, deleteComment,
     } = useContext(CommunityContext);
 
-    const [defaultAvatar, setDefaultAvatar] = useState("https://adagencycreatives.noorsofttechdev.com/static/media/placeholder.12b7e9aaed5e5566bc6a.png");
+    const [defaultAvatar, setDefaultAvatar] = useState("https://api.adagencycreatives.com/assets/img/placeholder.png");
 
     const [actions, setActions] = useState("none");
 
@@ -53,7 +53,7 @@ const Comment = (props) => {
     const processCommentContent = (text) => {
         return injectHyperlinks(text);
     };
-    
+
     return (
         <div className="comment">
             {props.comment.user_id == user.uuid ? (
@@ -84,9 +84,9 @@ const Comment = (props) => {
                         {props.comment.user}
                     </a>
                 </p>
-                <div 
-                    className={`content ${!showMoreClicked && props.comment.content?.length > 500 ? " comment-preview" : ""}`} 
-                    dangerouslySetInnerHTML={{ __html: processCommentContent(props.comment.content) }} 
+                <div
+                    className={`content ${!showMoreClicked && props.comment.content?.length > 500 ? " comment-preview" : ""}`}
+                    dangerouslySetInnerHTML={{ __html: processCommentContent(props.comment.content) }}
                 />
                 {/* <div className="reply-section">
                     <IoArrowRedoSharp />

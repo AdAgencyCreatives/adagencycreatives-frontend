@@ -6,7 +6,7 @@ import UtcToLocalDateTime from "./UtcToLocalDateTime";
 
 const TrendingPostWidgetRightSidebar = (props) => {
   const [defaultAvatar, setDefaultAvatar] = useState(
-    "https://adagencycreatives.noorsofttechdev.com/static/media/placeholder.12b7e9aaed5e5566bc6a.png"
+    "https://api.adagencycreatives.com/assets/img/placeholder.png"
   );
 
   const {

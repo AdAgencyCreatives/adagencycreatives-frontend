@@ -4,7 +4,7 @@ import { Context as CreativesContext } from "../context/CreativesContext";
 const NewMemberWidgetRightSidebar = (props) => {
 
     const showMaxIndustryExperiences = 1;
-    const [defaultAvatar, setDefaultAvatar] = useState("https://adagencycreatives.noorsofttechdev.com/static/media/placeholder.12b7e9aaed5e5566bc6a.png");
+    const [defaultAvatar, setDefaultAvatar] = useState("https://api.adagencycreatives.com/assets/img/placeholder.png");
 
     return (
         <li className="vcard">
