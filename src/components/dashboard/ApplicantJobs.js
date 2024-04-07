@@ -80,10 +80,11 @@ const ApplicantJobs = () => {
       let updatedApp = { ...updatedApplications[appIndex] };
       updatedApp.status = status;
       updatedApplications[appIndex] = updatedApp;
+      updatedJob.applications = updatedApplications;
       const updatedData = [...applications];
       updatedData[jobIndex] = { ...updatedJob };
       setData(updatedData);
-      console.log();
+      // getApplicationsAllStatus(user.uuid, 0, 0, statusApplication);
       showAlert('Creative status change successful');
       cb();
     });

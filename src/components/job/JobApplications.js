@@ -45,6 +45,7 @@ const JobApplications = (props) => {
             <div className="applicants-inner">
                 {applications?.map((application) => (
                     <SingleJobApplication
+                        key={"job-application-" + application.id}
                         application={application}
                         job={props?.job}
                         setApplicationStatus={props?.setApplicationStatus}
