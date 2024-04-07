@@ -73,50 +73,49 @@ const AgencyCreatives = ({ validateAccess }) => {
           loop="true"
           autop
         >
-          {creatives &&
-            creatives.sort(() => Math.random() - 0.5).map((item, index) => {
-              return (
-                <swiper-slide key={`slide${index}`}>
-                  <div className="sliderContent agencies-slider">
-                    <img
-                      src={item.profile_image || Placeholder}
-                      className="candidateLogo"
-                      width={150}
-                      height={150}
-                      alt=""
-                      onError={(e) => {
-                        e.target.src = Placeholder; // Set the backup image source
-                      }}
-                    />
-                    <div className="agencyName">{item.name}</div>
-                    <div className="position">
-                      {isAdmin || isAdvisor ? (<>
-                        <Link to={"/creatives/search/industry-title/" + encodeSpecial(encodeURI(item.category))}>
-                          {item.category}
-                        </Link>
-                      </>) : (<>
+          {creatives && creatives.map((item, index) => {
+            return (
+              <swiper-slide key={`slide${index}`}>
+                <div className="sliderContent agencies-slider">
+                  <img
+                    src={item.profile_image || Placeholder}
+                    className="candidateLogo"
+                    width={150}
+                    height={150}
+                    alt=""
+                    onError={(e) => {
+                      e.target.src = Placeholder; // Set the backup image source
+                    }}
+                  />
+                  <div className="agencyName">{item.name}</div>
+                  <div className="position">
+                    {isAdmin || isAdvisor ? (<>
+                      <Link to={"/creatives/search/industry-title/" + encodeSpecial(encodeURI(item.category))}>
                         {item.category}
-                      </>)}
-                    </div>
-                    <CreativeLocation location={item?.location} />
-                    <div className="profileLink">
-                      <Link
-                        to={token ? `/creative/${item.slug}` : "#"}
-                        onClick={(e) => {
-                          if (!token) {
-                            e.preventDefault();
-                            showAlert("Please login to access");
-                          }
-                          return false;
-                        }}
-                      >
-                        View Profile
                       </Link>
-                    </div>
+                    </>) : (<>
+                      {item.category}
+                    </>)}
                   </div>
-                </swiper-slide>
-              );
-            })}
+                  <CreativeLocation location={item?.location} />
+                  <div className="profileLink">
+                    <Link
+                      to={token ? `/creative/${item.slug}` : "#"}
+                      onClick={(e) => {
+                        if (!token) {
+                          e.preventDefault();
+                          showAlert("Please login to access");
+                        }
+                        return false;
+                      }}
+                    >
+                      View Profile
+                    </Link>
+                  </div>
+                </div>
+              </swiper-slide>
+            );
+          })}
         </swiper-container>
       </div>
     </div>

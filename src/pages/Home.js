@@ -45,7 +45,21 @@ const Home = () => {
     setPageClass,
   } = useContext(AuthContext);
 
-  const [search, setSearch] = useState("");
+  const Ticker = ({ times }) => {
+
+    let tickerArray = [];
+    let limit = times ? times : 1;
+
+    for (let index = 0; index < limit; index++) {
+      tickerArray[index] = tickerData;
+    }
+
+    return (
+      <>
+        {tickerArray?.length > 0 && tickerArray.map((item) => <p dangerouslySetInnerHTML={{ __html: item }}></p>)}
+      </>
+    );
+  };
 
   return (
     <>
@@ -113,18 +127,7 @@ const Home = () => {
           <div className="wrapper">
             <Link to="/about" className="black">
               <div className="marquee">
-                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
-                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
-                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
-                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
-                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
-                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
-                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
-                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
-                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
-                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
-                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
-                <p dangerouslySetInnerHTML={{ __html: tickerData }}></p>
+                <Ticker times={12} />
               </div>
             </Link>
           </div>

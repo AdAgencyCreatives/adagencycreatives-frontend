@@ -88,7 +88,7 @@ const getCreatives = (dispatch) => {
 const getHomeCreatives = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/home/creatives?filter[is_featured]=1&filter[status]=1&filter[is_visible]=1&per_page=30");
+      const response = await api.get("/home/creatives?sort=-featured_at&filter[is_featured]=1&filter[status]=1&filter[is_visible]=1&per_page=30");
       dispatch({
         type: "set_creatives",
         payload: response.data,
