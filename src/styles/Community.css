@@ -926,3 +926,9 @@ h2.epr-emoji-category-label {
 .post-reactions-stats-container .post-reactions-stats-item a:hover {
     color: #d3a11f;
 }
+
+img.post-image.full-width {
+    width: 100% !important;
+    min-width: 100% !important;
+    height: auto !important;
+}

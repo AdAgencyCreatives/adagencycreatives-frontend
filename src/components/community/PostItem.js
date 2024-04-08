@@ -207,7 +207,7 @@ const PostItem = (props) => {
                             </div>
                         ) : (
                             <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
-                                <img className={"post-image" + (imageAttachmentIndex == 0 ? " full-width" : "")} src={attachment.url || ""} alt="" />
+                                <img className={"post-image" + (imageAttachmentIndex == 1 ? " full-width" : "")} src={attachment.url || ""} alt="" />
                             </a>
                         )}
 
