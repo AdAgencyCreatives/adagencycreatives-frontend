@@ -40,7 +40,7 @@ const useRefDimensions = (ref) => {
 
 const PostItem = (props) => {
 
-    const imageAttachmentIndex = 0;
+    let imageAttachmentIndex = 0;
     const postContentRef = useRef(null);
     const dimensions = useRefDimensions(postContentRef);
     const [displayShowMore, setDisplayShowMore] = useState(false);
@@ -207,8 +207,7 @@ const PostItem = (props) => {
                             </div>
                         ) : (
                             <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
-                                {imageAttachmentIndex}<br />
-                                <img className="post-image" src={attachment.url || ""} alt="" />
+                                <img className={"post-image" + (imageAttachmentIndex == 0 ? " full-width" : "")} src={attachment.url || ""} alt="" />
                             </a>
                         )}
 

@@ -193,33 +193,29 @@ const Header = ({ data }) => {
                   </Tooltip>
                 ) : (
                   <>
-                    {role == "creative" && (
-                      <>
-                        {isLoading && (<CircularProgress />)}
-                        <Link
-                          to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}
-                          target={data.apply_type.toLowerCase() == "external" ? "_blank" : ""}
-                          className="btn btn-apply btn-apply-job-external "
-                          onClick={(e) => {
-                            if (!isCreative) {
-                              showAlert("Login as a Creative to apply");
-                              e.preventDefault();
-                            } else if (data.apply_type.toLowerCase() == "internal") {
-                              e.preventDefault();
-                              setJob(data.id);
-                              setOpen(true);
-                            } else if (data.apply_type.toLowerCase() == "external") {
-                              handleApplyExternalJob(data);
-                            }
-                          }}
-                          disabled={isLoading ? "disabled" : ""}
-                        >
-                          Apply Now
-                          <i className="next flaticon-right-arrow"></i>
+                    {isLoading && (<CircularProgress />)}
+                    <Link
+                      to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}
+                      target={data.apply_type.toLowerCase() == "external" ? "_blank" : ""}
+                      className="btn btn-apply btn-apply-job-external "
+                      onClick={(e) => {
+                        if (!isCreative) {
+                          showAlert("Login as a Creative to apply");
+                          e.preventDefault();
+                        } else if (data.apply_type.toLowerCase() == "internal") {
+                          e.preventDefault();
+                          setJob(data.id);
+                          setOpen(true);
+                        } else if (data.apply_type.toLowerCase() == "external") {
+                          handleApplyExternalJob(data);
+                        }
+                      }}
+                      disabled={isLoading ? "disabled" : ""}
+                    >
+                      Apply Now
+                      <i className="next flaticon-right-arrow"></i>
 
-                        </Link>
-                      </>
-                    )}
+                    </Link>
                   </>
                 )}
               </div>
