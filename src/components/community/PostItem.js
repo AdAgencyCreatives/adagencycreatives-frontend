@@ -20,12 +20,8 @@ import CreateComment from "./CreateComment";
 import Comment from "./Comment";
 import useHelper from "../../hooks/useHelper";
 
-import { CookiesProvider, useCookies } from "react-cookie";
 import { Link } from "@mui/material";
 import PostReaction from "./PostReaction";
-import PostLikes from "./PostLikes";
-import PostLaughs from "./PostLaughs";
-import PostLoves from "./PostLoves";
 
 const useRefDimensions = (ref) => {
     const [dimensions, setDimensions] = useState({ width: 1, height: 2 })
@@ -44,6 +40,7 @@ const useRefDimensions = (ref) => {
 
 const PostItem = (props) => {
 
+    const imageAttachmentIndex = 0;
     const postContentRef = useRef(null);
     const dimensions = useRefDimensions(postContentRef);
     const [displayShowMore, setDisplayShowMore] = useState(false);
@@ -57,38 +54,20 @@ const PostItem = (props) => {
 
     const { injectHyperlinks } = useHelper();
 
-    const showLaughedByCookieKey = "post-showLaughedBy-" + props.post.id;
-
-    const showMaxLovedBy = 5;
-    const showLovedByCookieKey = "post-showLovedBy-" + props.post.id;
-    const [cookies, setCookie] = useCookies([showLovedByCookieKey]);
-
-    const setShowLovedBy = (value) => {
-        setCookie(showLovedByCookieKey, value, { path: "/" });
-    };
-
-    const getShowLovedBy = () => {
-        return cookies ? cookies[showLovedByCookieKey] : false;
-    };
-
     const {
         state: { user },
     } = useContext(AuthContext);
 
     const {
-        state: { posts, post_reactions, reaction_action, post_likes, like_action, post_laughs, laugh_action, post_loves, love_action, post_updated, post_comments, comment_added, comment_updated, comment_deleted },
-        getPosts, getReactions, getReaction, toggleReaction, getLikes, toggleLike, getLaugh, toggleLaugh, getLove, toggleLove, deletePost, getComments
+        state: { post_reactions, reaction_action, post_updated, post_comments, comment_added, comment_updated, comment_deleted },
+        getReactions, getReaction, toggleReaction, deletePost, getComments
     } = useContext(CommunityContext);
 
     const [postContent, setPostContent] = useState("");
     const [actions, setActions] = useState("none");
-    const [loveActive, setLoveActive] = useState(false);
-    const [lovesCount, setLovesCount] = useState(0);
-    const [loveByData, setLoveByData] = useState([]);
     const [commentsData, setCommentsData] = useState([]);
     const [showComments, setShowComments] = useState(false);
     const [commentsCount, setCommentsCount] = useState(0);
-    const [commentContent, setCommentContent] = useState("");
     const [viewAllCommentsClicked, setViewAllCommentsClicked] = useState(false);
 
     const toggleShowComments = () => {
@@ -100,53 +79,6 @@ const PostItem = (props) => {
         getComments(props.post.id)
         setViewAllCommentsClicked(true);
     };
-
-    const doToggleLove = (post_id) => {
-        // console.log('Initiated Post Like for Post ID: ' + post_id);
-        toggleLove({ "post_id": post_id, type: "heart" })
-    }
-
-    useEffect(() => {
-        if (post_loves && post_loves.data && post_loves.data.data) {
-            if (post_loves.post_id && post_loves.post_id != props.post.id) {
-                return;
-            }
-            if (post_loves.data.data.length != lovesCount) {
-                setLovesCount(post_loves.data.data.length);
-            }
-            setLoveByData(post_loves.data.data)
-            let user_liked = post_loves.data.data.filter(item => item.user_id == user.uuid);
-            setLoveActive(user_liked && user_liked.length);
-        } else {
-            setLovesCount(props.post.reactions.heart);
-            getLove({ "post_id": props.post.id });
-        }
-    }, [post_loves]);
-
-    useEffect(() => {
-        if (love_action && love_action.action) {
-            if (props.post.id != love_action.post_id) {
-                return;
-            }
-            switch (love_action.action) {
-                case "love_begin": console.log('Love Begin for Post ID: ' + love_action.post_id); break;
-                case "love_success":
-                    console.log('Love Succeed for Post ID: ' + love_action.post_id);
-                    setLovesCount(lovesCount + (!loveActive ? 1 : -1));
-                    setLoveActive(!loveActive);
-                    getLove({ "post_id": props.post.id });
-                    break;
-                case "love_failed": console.log('Love Failed for Post ID: ' + love_action.post_id + ", Error: " + love_action.error); break;
-                default:
-                    console.log('Invalid Love Action for Post ID: ' + love_action.post_id);
-            }
-        }
-    }, [love_action]);
-
-    useEffect(() => {
-        setLovesCount(props.post.reactions.heart);
-        getLove({ "post_id": props.post.id });
-    }, [props.post.reactions.heart]);
 
     useEffect(() => {
         if (post_comments && post_comments.data && post_comments.data.data) {
@@ -187,18 +119,9 @@ const PostItem = (props) => {
     }, [post_updated]);
 
     useEffect(() => {
+        imageAttachmentIndex = 0;
         setPostContent(processPostContent(props.post.content));
     }, []);
-
-    const onShowLovedBy = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        let newState = !getShowLovedBy();
-        setShowLovedBy(newState);
-        if (newState) {
-            getLove({ "post_id": props.post.id });
-        }
-    };
 
     const onUpdatePost = () => {
         setActions("none");
@@ -271,6 +194,9 @@ const PostItem = (props) => {
             </div> */}
             <div className="post-images">
                 {props.post.attachments && props.post.attachments.map((attachment, index) => {
+                    if (!(attachment.resource_type && attachment.resource_type == "post_attachment_video")) {
+                        imageAttachmentIndex++;
+                    }
                     return (<>
                         {attachment.resource_type && attachment.resource_type == "post_attachment_video" ? (
                             <div className="video-container">
@@ -281,6 +207,7 @@ const PostItem = (props) => {
                             </div>
                         ) : (
                             <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                                {imageAttachmentIndex}<br />
                                 <img className="post-image" src={attachment.url || ""} alt="" />
                             </a>
                         )}
@@ -299,34 +226,6 @@ const PostItem = (props) => {
                     getReaction={getReaction}
                     toggleReaction={toggleReaction}
                 />
-
-                {/* <PostLikes
-                    post={props?.post}
-                    user={user}
-                    post_likes={post_likes}
-                    like_action={like_action}
-                    getLikes={getLikes}
-                    toggleLike={toggleLike}
-                />
-
-                <PostLaughs
-                    post={props?.post}
-                    user={user}
-                    post_laughs={post_laughs}
-                    laugh_action={laugh_action}
-                    getLaugh={getLaugh}
-                    toggleLaugh={toggleLaugh}
-                />
-
-
-                <PostLoves
-                    post={props?.post}
-                    user={user}
-                    post_loves={post_loves}
-                    love_action={love_action}
-                    getLove={getLove}
-                    toggleLove={toggleLove}
-                /> */}
 
                 <div className="post-action post-comments" onClick={() => toggleShowComments()}>
                     {showComments ? (
