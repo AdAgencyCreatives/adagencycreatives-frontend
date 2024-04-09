@@ -11,6 +11,8 @@ import { Context as AlertContext } from "../../context/AlertContext";
 import JobList from "../../components/job/JobList";
 import { Drawer } from "@mui/material";
 
+import DelayedOutput from "../../components/DelayedOutput";
+
 const emailFreq = [
   { value: 1, label: "Daily" },
   { value: 2, label: "Weekly" },
@@ -183,8 +185,8 @@ const Jobs = () => {
   };
 
   const paginate = (page) => {
-    paginateJob(page, filters, ()=>{
-      window.setTimeout(()=>{
+    paginateJob(page, filters, () => {
+      window.setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 1000);
     });
@@ -431,7 +433,11 @@ const Jobs = () => {
                     </div>
                   </div>
                 )}
-                {jobs.length ? <JobList data={jobs} /> : <p>No Jobs found</p>}
+                {jobs.length ? <JobList data={jobs} /> : <>
+                  <DelayedOutput delay={5000}>
+                    <p>No Jobs found</p>
+                  </DelayedOutput>
+                </>}
                 {meta && meta.total > 10 && (
                   <div className="row mt-3">
                     <div className="col-12">
