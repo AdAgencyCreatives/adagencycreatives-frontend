@@ -1164,7 +1164,7 @@ img.publication-image {
     animation: marquee 480s linear infinite;
     height: 100%;
     line-height: 1;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .marquee p {
