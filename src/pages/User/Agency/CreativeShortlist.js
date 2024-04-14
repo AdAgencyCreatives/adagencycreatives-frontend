@@ -47,6 +47,7 @@ const CreativeShortlist = () => {
   }, [user]);
 
   useEffect(() => {
+    console.log('bookmarks', bookmarks);
     bookmarks && bookmarks.length > 0 && setIsLoading(false);
   }, [bookmarks]);
 
@@ -118,8 +119,8 @@ const CreativeShortlist = () => {
                             )}
                             {resource.location?.city && (
                               <>
-                              ,
-                              <span className="restrict-location-search"> {resource.location.city}</span>
+                                ,
+                                <span className="restrict-location-search"> {resource.location.city}</span>
                               </>
                             )}
                           </div>
