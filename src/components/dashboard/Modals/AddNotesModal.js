@@ -156,7 +156,7 @@ const AddNotesModal = ({ resource_id, type, open, handleClose, statusJob }) => {
                         <p className="mb-0">{note.body}</p>
                         <p className="mb-0">
                           <small>
-                            <TimeAgo datetime={note.updated_at} />,&nbsp;
+                            {/* <TimeAgo datetime={note.updated_at} />,&nbsp; */}
                             {/* {convertUTCDateToLocalDate(note.created_at).toString()} */}
                             {moment(convertUTCDateToLocalDate(note.created_at)).format(
                               "D MMMM, YYYY hh:mm A"
