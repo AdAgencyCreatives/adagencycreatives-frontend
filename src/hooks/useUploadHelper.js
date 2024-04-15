@@ -5,7 +5,7 @@ const useUploadHelper = () => {
         "image": {
             type: "image",
             maxSize: 1024 * 1024 * 6,
-            maxSizeLabel: "8 MB",
+            maxSizeLabel: "6 MB",
             aspectRatio: "1:1",
             aspectRatioLabel: "200x200, 400x400, 1024x1024 etc.",
             acceptTypes: "image/*",

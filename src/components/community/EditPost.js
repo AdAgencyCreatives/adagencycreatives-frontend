@@ -377,6 +377,11 @@ const EditPost = (props) => {
                         )}
                         <div className="post-options d-flex">
                             <div className="item" onClick={() => {
+                                let images = postAttachments ? postAttachments.filter(item => item.resource_type == "post_attachment_image") : [];
+                                if (images.length > 0) {
+                                    alert("Can't upload more than 5 images.");
+                                    return false;
+                                }
                                 setAllowType("image");
                                 setImagePickerOpen(true);
                             }}>

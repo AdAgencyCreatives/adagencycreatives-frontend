@@ -37,6 +37,15 @@
 }
 
 .image-to-upload {
-    max-height: 240px;
+    max-height: 150px;
     object-fit: cover;
+}
+
+.uploaded-image {
+    min-width: 50px;
+    min-height: 50px;
+    max-height: 75px;
+    object-fit: cover;
+    border: 1px solid darkgreen;
+    position: relative;
 }

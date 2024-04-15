@@ -576,6 +576,22 @@ nav ul.dropdown-list .list-item-text.j-fix {
     font-size: larger;
 }
 
+.progress-text {
+    color: darkgreen;
+    font-weight: 900;
+    font-size: larger;
+}
+
+.image-previews {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 .icon-message {
     display: flex;
     justify-content: flex-start;
