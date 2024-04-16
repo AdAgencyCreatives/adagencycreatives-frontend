@@ -61,7 +61,7 @@ const Header = ({ data }) => {
     await getProfileResume(user.uuid);
 
     console.log(job);
-    const response = await applyJob(user.uuid, job?.id, "Interested", resume?.length ? resume[0].id : -1);
+    const response = await applyJob(user.uuid, job?.id, "", resume?.length ? resume[0].id : -1);
     setIsJobApplied(true);
 
   };
