@@ -339,7 +339,6 @@ const markFilled = (dispatch) => {
     } catch (error) {
       return null;
     }
-    return null;
   };
 };
 
@@ -527,7 +526,7 @@ const getMediaExperiences = (dispatch) => {
 };
 
 const paginateJob = (dispatch) => {
-  return async (page, filters, cb=false) => {
+  return async (page, filters, cb = false) => {
     try {
       let filter = getFilters(filters);
       const response = await api.get(
@@ -569,7 +568,7 @@ const getFilters = (filters) => {
   filter += "&filter[city_id]=" + (filters.city ? filters.city.value : "");
   filter +=
     "&filter[state_slug]=" + (filters.state_slug ? filters.state_slug.value : "");
-    filter +=
+  filter +=
     "&filter[city_slug]=" + (filters.city_slug ? filters.city_slug.value : "");
   filter +=
     "&filter[category_slug]=" +
@@ -658,7 +657,7 @@ const deleteJob = (dispatch) => {
 };
 
 const applyJob = (dispatch) => {
-  return async (user_id, job_id, message, resume_id) => {
+  return async (user_id, job_id, message, resume_id, apply_type = "Internal") => {
     setLoading(dispatch, true);
     try {
       const response = await api.post("/applications", {
@@ -666,6 +665,7 @@ const applyJob = (dispatch) => {
         job_id,
         message,
         resume_id,
+        apply_type
       });
       setLoading(dispatch, false);
       return response;
