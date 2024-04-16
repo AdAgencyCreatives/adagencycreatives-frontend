@@ -130,7 +130,7 @@ const getFeaturedJobs = (dispatch) => {
     try {
       const response = await api.get(
         // "/jobs?filter[is_featured]=1&filter[is_urgent]=1&filter[status]="+status
-        "/jobs?filter[is_featured]=1&filter[status]=1&per_page=30"
+        "/jobs?filter[is_featured]=1&filter[status]=1&per_page=30&sort=-featured_at"
       );
       console.log({ response });
       dispatch({
