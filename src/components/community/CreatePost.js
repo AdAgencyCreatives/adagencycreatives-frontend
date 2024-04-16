@@ -438,8 +438,8 @@ const CreatePost = (props) => {
             <div className="post-options d-flex">
               <div className="item" onClick={() => {
                 let images = postAttachments ? postAttachments.filter(item => item.resource_type == "post_attachment_image") : [];
-                if (images.length > 0) {
-                  alert("Can't upload more than 5 images.");
+                if (images.length >= 5) {
+                  alert("Can't upload more than five images.");
                   return false;
                 }
                 setAllowType("image");
@@ -455,7 +455,7 @@ const CreatePost = (props) => {
               </div> */}
               <div className="item" onClick={() => {
                 let videos = postAttachments ? postAttachments.filter(item => item.resource_type == "post_attachment_video") : [];
-                if (videos.length > 0) {
+                if (videos.length >= 1) {
                   alert("Can't upload more than one video.");
                   return false;
                 }
