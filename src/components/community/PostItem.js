@@ -206,14 +206,16 @@ const PostItem = (props) => {
                                 </video>
                             </div>
                         ) : (
-                            <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
-                                <img className={"post-image" + (imageAttachmentIndex == 1 ? " full-width" : "")} src={attachment.url || ""} alt="" />
-                            </a>
+                            <>
+                                <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                                    <img className={"post-image" + (imageAttachmentIndex == 1 ? " full-width" : "")} src={attachment.url || ""} alt="" />
+                                </a>
+                                {imageAttachmentIndex == 1 && <div class="break"></div>}
+                            </>
                         )}
-
                     </>);
                 })}
-            </div>
+            </div >
             <div className="post-actions">
 
                 <PostReaction
