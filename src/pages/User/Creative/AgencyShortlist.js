@@ -35,7 +35,7 @@ const AgencyShortlist = () => {
   }, [user]);
 
   useEffect(() => {
-    bookmarks && bookmarks.length > 0 && setIsLoading(false);
+    bookmarks && setIsLoading(false);
   }, [bookmarks]);
 
   const openNotesDialog = (item) => {
