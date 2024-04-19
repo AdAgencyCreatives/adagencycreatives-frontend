@@ -79,7 +79,7 @@ const ImagePicker = ({ open, setOpen, handleImagePickerClose, allowType, postAtt
   const handleChange = event => {
 
     if (allowType == "image" && event.target.files?.length + getImageAttachmentsCount() > 5) {
-      setErrorText("Sorry, you can upload up to 5 images per post.");
+      setErrorText("Only 5 images are permitted per post.");
       return;
     }
 
