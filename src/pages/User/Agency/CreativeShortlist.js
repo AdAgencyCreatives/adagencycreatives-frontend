@@ -47,12 +47,10 @@ const CreativeShortlist = () => {
   }, [user]);
 
   useEffect(() => {
-    console.log('bookmarks', bookmarks);
-    bookmarks && bookmarks.length > 0 && setIsLoading(false);
+    bookmarks && setIsLoading(false);
   }, [bookmarks]);
 
   const openMessageDialog = (item) => {
-    console.log(item);
     setItem(item);
     setOpen(true);
   };
