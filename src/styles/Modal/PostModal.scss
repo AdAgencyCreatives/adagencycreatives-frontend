@@ -157,20 +157,22 @@
 .post-item {
     .post-images {
         display: flex;
-        flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
 
+        div {
+            flex-basis: 25%;
+            padding: 5px;
+        }
+
+        div:first-child {
+            flex-basis: 100%;
+        }
+
         img {
-            // width: 100%;
-            // height: auto;
-            // max-width: 150px;
-            // max-height: 150px;
-            width: 150px;
-            height: 150px;
             object-fit: cover;
-            // border: 2px solid var(--color-primary);
-            margin: 5px
+            width: 100%;
+            height: 100%;
         }
 
         .video-container {

@@ -197,23 +197,24 @@ const PostItem = (props) => {
                     if (!(attachment.resource_type && attachment.resource_type == "post_attachment_video")) {
                         imageAttachmentIndex++;
                     }
-                    return (<>
-                        {attachment.resource_type && attachment.resource_type == "post_attachment_video" ? (
-                            <div className="video-container">
-                                <video className="video" controls muted playsInline>
-                                    <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
-                                    Sorry, your browser doesn't support videos.
-                                </video>
-                            </div>
-                        ) : (
-                            <>
-                                <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
-                                    <img className={"post-image" + (imageAttachmentIndex == 1 ? " full-width" : "")} src={attachment.url || ""} alt="" />
-                                </a>
-                                {imageAttachmentIndex == 1 && <div class="break"></div>}
-                            </>
-                        )}
-                    </>);
+                    return (
+                        <>
+                            {attachment.resource_type && attachment.resource_type == "post_attachment_video" ? (
+                                <div className="video-container">
+                                    <video className="video" controls muted playsInline>
+                                        <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
+                                        Sorry, your browser doesn't support videos.
+                                    </video>
+                                </div>
+                            ) : (
+                                <div>
+                                    <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                                        <img className={"post-image" + (imageAttachmentIndex == 1 ? " full-width" : "")} src={attachment.url || ""} alt="" />
+                                    </a>
+                                </div>
+                            )}
+                        </>
+                    );
                 })}
             </div >
             <div className="post-actions">
