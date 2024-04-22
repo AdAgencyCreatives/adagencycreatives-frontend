@@ -98,7 +98,7 @@ const CreativeShortlist = () => {
                   <div className="candidate-info">
                     <div className="d-flex align-items-center gap-4">
                       <div className="candidate-logo">
-                        <Link>
+                        <Link to={"/creative/" + resource.slug}>
                           <img
                             width="150"
                             height="150"
@@ -111,7 +111,7 @@ const CreativeShortlist = () => {
                       <div className="candidate-info-content">
                         <div className="title-wrapper">
                           <h2 className="candidate-title">
-                            <Link className="link-dark">{resource.name}</Link>
+                            <Link to={"/creative/" + resource.slug} className="link-dark">{resource.name}</Link>
                           </h2>
                           {resource.priority.is_featured == 1 && (
                             <span

@@ -80,11 +80,13 @@ const AgencyShortlist = () => {
                 <div className="row align-items-center justify-content-between">
                   <div className="col-12 d-md-flex align-items-top d-sm-block">
                     <div className="avatar employer me-3">
-                      <img
-                        src={resource?.logo || Placeholder}
-                        height={50}
-                        width={50}
-                      />
+                      <Link to={`/agency/${resource?.slug}`}>
+                        <img
+                          src={resource?.logo || Placeholder}
+                          height={50}
+                          width={50}
+                        />
+                      </Link>
                     </div>
                     <div className="meta row w-100 align-items-center">
                       <div className="col-sm-6">
