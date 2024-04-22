@@ -218,7 +218,7 @@ const Applicants = () => {
                   ))}
                 </div>
               ))}
-              {applicationMeta.total > 10 && <Paginate meta={applicationMeta} paginate={paginate} />}
+              {applicationMeta.total > 10 && <Paginate meta={applicationMeta} paginate={paginate} title={"recent applicants"} />}
             </>
           )}
         </div>

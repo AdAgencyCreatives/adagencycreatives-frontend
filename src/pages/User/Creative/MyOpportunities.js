@@ -57,7 +57,7 @@ const MyOpportunities = () => {
         <Loader />
       ) : (
         <div className="card">
-          {applied_jobsMeta?.total > 10 && <Paginate meta={applied_jobsMeta} paginate={paginate} />}
+          {applied_jobsMeta?.total > 10 && <Paginate meta={applied_jobsMeta} paginate={paginate} title={"applied jobs"} />}
           <div className="table-responsive">
             <table className="job-table">
               <thead>
@@ -103,7 +103,7 @@ const MyOpportunities = () => {
                                 <div className="job-metas">
                                   {job.category && (
                                     <div className="position">
-                                      <IoBriefcaseOutline className="me-2"/>
+                                      <IoBriefcaseOutline className="me-2" />
                                       <Link
                                         to={"/job-category/" + job.category}
                                         className="link-gray"
@@ -183,7 +183,7 @@ const MyOpportunities = () => {
               </tbody>
             </table>
           </div>
-          {applied_jobsMeta?.total > 10 && <Paginate meta={applied_jobsMeta} paginate={paginate} />}
+          {applied_jobsMeta?.total > 10 && <Paginate meta={applied_jobsMeta} paginate={paginate} title={"applied jobs"} />}
         </div>
       )}
     </div>

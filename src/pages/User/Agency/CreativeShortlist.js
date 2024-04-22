@@ -85,7 +85,7 @@ const CreativeShortlist = () => {
     <div className="agency-page-creative-shortlist">
       <h3 className="page-title">Creatives Shortlist</h3>
       <div className="card">
-        {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} />}
+        {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"shortlisted creatives"} />}
         {bookmarks && bookmarks.length ? (
           bookmarks.map((item, index) => {
             const resource = item.resource;
@@ -190,7 +190,7 @@ const CreativeShortlist = () => {
         ) : (
           <p className="fs-5">There are no Creatives in your shortlist.</p>
         )}
-        {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} />}
+        {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"shortlisted creatives"} />}
       </div>
       <Message
         open={open}

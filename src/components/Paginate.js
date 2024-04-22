@@ -1,9 +1,9 @@
-const Paginate = ({ meta, paginate }) => {
+const Paginate = ({ meta, paginate, title }) => {
     return (
         <div className="row mt-3">
             <div className="col-12">
                 <p className="user-count">
-                    Viewing {meta.from} - {meta.to} of {meta.total} Jobs
+                    Viewing {meta.from} - {meta.to} of {meta.total} {title?.length > 0 ? title : "records"}
                 </p>
                 <div className="user-pagination">
                     <nav>

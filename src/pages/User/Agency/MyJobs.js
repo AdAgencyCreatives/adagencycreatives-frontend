@@ -37,6 +37,7 @@ const MyJobs = () => {
         <Loader />
       ) : (
         <div className="card">
+          {open_positions && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"jobs"} />}
           <div className="table-responsive">
             <table className="job-table">
               <thead>
@@ -59,7 +60,7 @@ const MyJobs = () => {
               </tbody>
             </table>
           </div>
-          {open_positions && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} />}
+          {open_positions && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"jobs"} />}
         </div>
       )}
     </div>
