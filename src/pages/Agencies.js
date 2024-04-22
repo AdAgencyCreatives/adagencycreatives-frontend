@@ -23,7 +23,7 @@ const Agencies = () => {
   const {
     state: { bookmarks },
     createBookmark,
-    getBookmarks,
+    getAllBookmarks,
     removeBookmark,
   } = useContext(DataContext);
 
@@ -45,18 +45,19 @@ const Agencies = () => {
 
   const removeFromShortlist = (id) => {
     removeBookmark(id, () => {
-      showAlert("Agency removed from shortlist");
+      showAlert("Agency deleted from shortlist");
     });
   };
 
   const searchUser = async (value) => {
     setIsAgencyLoading(true);
     await agencySearch1(value);
+    if (user) await getAllBookmarks(user.uuid, "agencies");
     setIsAgencyLoading(false);
   };
 
   useEffect(() => {
-    if (user) getBookmarks(user.uuid, "agencies");
+    if (user) getAllBookmarks(user.uuid, "agencies");
   }, [user]);
 
   useEffect(() => {

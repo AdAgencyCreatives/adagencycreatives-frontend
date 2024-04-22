@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 
-export const useScrollLoader = (loading, cb = false) => {
+export const useScrollLoader = (loading, cb = false, containerSelector = '.dark-container') => {
   const callbackFired = useRef(false);
 
   useEffect(() => {
-    const darkContainer = document.querySelector(".dark-container");
+    const darkContainer = document.querySelector(containerSelector);
     const handleScroll = () => {
       if (callbackFired.current) return;
 

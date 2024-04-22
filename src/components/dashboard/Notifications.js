@@ -51,7 +51,7 @@ const Notifications = () => {
                                     </div>
                                 )
                             })}
-                            {meta.total > 10 && <Paginate meta={meta} paginate={paginate} />}
+                            {meta?.total > 9 && <Paginate meta={meta} paginate={paginate} />}
                         </div>
                     ) : (
                         <div className="center-page nothing">Sorry, nothing here.</div>

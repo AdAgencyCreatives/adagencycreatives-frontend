@@ -22,7 +22,8 @@ const state = {
   publications: [],
   publicationsNextPage: null,
   resourcesNextPage: null,
-  loading: false
+  meta: null,
+  nextPage: null
 };
 
 const reducer = (state, action) => {
@@ -50,7 +51,9 @@ const reducer = (state, action) => {
     case "set_years_experience":
       return { ...state, years_experience: action.payload.data };
     case "set_bookmarks":
-      return { ...state, bookmarks: action.payload.data };
+      return { ...state, bookmarks: action.payload.data, meta: action.payload.meta };
+    case "load_bookmarks":
+      return { ...state, bookmarks: action.payload.data, meta: action.payload.meta };
     case "add_bookmark":
       return { ...state, bookmarks: [...state.bookmarks, action.payload.data] };
     case "set_reviews":
@@ -282,6 +285,33 @@ const getBookmarks = (dispatch) => {
   };
 };
 
+const getAllBookmarks = (dispatch) => {
+  return async (uuid, type) => {
+    try {
+      const response = await api.get("/bookmarks?per_page=999999&filter[user_id]=" + uuid + "&resource_type=" + type);
+      dispatch({
+        type: "set_bookmarks",
+        payload: response.data,
+      });
+    } catch (error) { }
+  };
+};
+
+const loadBookmarks = (dispatch) => {
+  return async (uuid, type, page, cb = false) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get("/bookmarks?filter[user_id]=" + uuid + "&resource_type=" + type + (page ? "&per_page=9&page=" + page : ""));
+      dispatch({
+        type: "load_bookmarks",
+        payload: response.data,
+      });
+      cb && cb();
+    } catch (error) { }
+    setLoading(dispatch, false);
+  };
+};
+
 const checkShortlist = (dispatch) => {
   return async (uid, resource_id, type) => {
     try {
@@ -316,7 +346,7 @@ const createBookmark = (dispatch) => {
 };
 
 const removeBookmark = (dispatch) => {
-  return async (id, cb=false) => {
+  return async (id, cb = false) => {
     try {
       const response = await api.delete("/bookmarks/" + id);
       dispatch({
@@ -488,6 +518,8 @@ export const { Context, Provider } = createDataContext(
     getYearsExperience,
     getStrengths,
     getBookmarks,
+    getAllBookmarks,
+    loadBookmarks,
     checkShortlist,
     createBookmark,
     removeBookmark,

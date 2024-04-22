@@ -10,7 +10,7 @@ const useShortlist = (uid, resource_id, type) => {
   const [data, setData] = useState([]);
 
   const {
-    state: {},
+    state: { },
     showAlert
   } = useContext(AlertContext);
 
@@ -21,15 +21,15 @@ const useShortlist = (uid, resource_id, type) => {
     });
   }, []);
 
-  const shortlistHandler = async () => {
+  const shortlistHandler = async (role = 'Creative') => {
     if (isShortlisted) {
       await removeBookmark(data.id);
-      showAlert('Agency deleted from shortlist.');
+      showAlert(role + ' deleted from shortlist');
     } else {
       const result = await createBookmark(uid, type, resource_id);
-      if(result){
+      if (result) {
         setData(result.data);
-        showAlert('Agency added to shortlist.');
+        showAlert(role + ' added to shortlist');
       }
     }
     setIsShortlisted((prev) => !prev);

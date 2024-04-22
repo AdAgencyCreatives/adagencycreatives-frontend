@@ -4,6 +4,7 @@ import SearchBar from "../components/SearchBar";
 import { Link, useParams } from "react-router-dom";
 import useAgencies from "../hooks/useAgencies";
 import { Context as AuthContext } from "../context/AuthContext";
+import { Context as AlertContext } from "../context/AlertContext";
 import { Context as DataContext } from "../context/DataContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
 import { useContext, useEffect, useState } from "react";
@@ -32,10 +33,20 @@ const AgencieRoles = () => {
     state: { user, token },
   } = useContext(AuthContext);
 
+  const { showAlert } = useContext(AlertContext);
+
   useScrollLoader(loading, loadMore);
 
   const addToShortlist = (id) => {
-    createBookmark(user.uuid, "agencies", id);
+    createBookmark(user.uuid, "agencies", id, () => {
+      showAlert('Agency added to shortlist');
+    });
+  };
+
+  const removeFromShortlist = (id) => {
+    removeBookmark(id, () => {
+      showAlert('Agency deleted from shortlist');
+    });
   };
 
   const searchUser = (value) => {
@@ -73,7 +84,7 @@ const AgencieRoles = () => {
                         <div className="sliderContent adagencies-slider">
                           {role == "creative" && (
                             <Tooltip title={"Shortlist"} type="featured">
-                              <button className={"shortlist-btn" + (isShortlisted ? " active" : "")} onClick={() => (isShortlisted ? removeBookmark(isShortlisted.id) : addToShortlist(item.id))}>
+                              <button className={"shortlist-btn" + (isShortlisted ? " active" : "")} onClick={() => (isShortlisted ? removeFromShortlist(isShortlisted.id) : addToShortlist(item.id))}>
                                 <IoBookmarkOutline />
                               </button>
                             </Tooltip>

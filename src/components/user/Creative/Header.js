@@ -215,7 +215,7 @@ const Header = ({ data, role, user }) => {
                         "btn btn-hover-primary" +
                         (isShortlisted ? " btn-theme" : " btn-dark")
                       }
-                      onClick={shortlistHandler}
+                      onClick={(e) => shortlistHandler('Creative')}
                     >
                       <IoBookmarkOutline size={25} />
                     </button>

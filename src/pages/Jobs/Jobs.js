@@ -401,7 +401,7 @@ const Jobs = () => {
                 ""
               )}
               <div className="jobs-list-container">
-                {meta && meta.total > 10 && (
+                {meta && meta?.total > 9 && (
                   <div className="row mt-3">
                     <div className="col-12">
                       <p className="user-count">
@@ -438,7 +438,7 @@ const Jobs = () => {
                     <p>No Jobs found</p>
                   </DelayedOutput>
                 </>}
-                {meta && meta.total > 10 && (
+                {meta && meta?.total > 9 && (
                   <div className="row mt-3">
                     <div className="col-12">
                       <p className="user-count">

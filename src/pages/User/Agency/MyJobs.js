@@ -59,7 +59,7 @@ const MyJobs = () => {
               </tbody>
             </table>
           </div>
-          {open_positions && meta.total > 10 && <Paginate meta={meta} paginate={paginate} />}
+          {open_positions && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} />}
         </div>
       )}
     </div>

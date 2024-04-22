@@ -22,7 +22,7 @@ const CreativeSearch = () => {
     const {
         state: { bookmarks },
         createBookmark,
-        getBookmarks,
+        getAllBookmarks,
         removeBookmark,
     } = useContext(DataContext);
 
@@ -48,12 +48,20 @@ const CreativeSearch = () => {
     //"Search by name, title, location, company, industry experience, media, full-time etc."
 
     const addToShortlist = (id) => {
-        createBookmark(user.uuid, "creatives", id);
+        createBookmark(user.uuid, "creatives", id, () => {
+            showAlert('Creative added to shortlist');
+        });
+    };
+
+    const removeFromShortlist = (id) => {
+        removeBookmark(id, () => {
+            showAlert('Creative deleted from shortlist');
+        });
     };
 
     useScrollLoader(loading, loadMore);
 
-    const searchUser = (value) => {
+    const searchUser = async (value) => {
 
         let searchString = "" + (value ? value : "");
         let searchTerms = searchString.indexOf(",") >= 0 ? searchString.split(',') : [searchString];
@@ -69,8 +77,8 @@ const CreativeSearch = () => {
         //alert(query_search_string);
 
         console.log("Searching: " + query_search_string);
-        searchCreativesAdvanced(which_search(), query_search_string);
-
+        await searchCreativesAdvanced(which_search(), query_search_string);
+        if (user) await getAllBookmarks(user.uuid, "creatives");
     };
 
     const build_search_string = (searchTerms, terms_allowed) => {
@@ -133,7 +141,7 @@ const CreativeSearch = () => {
     };
 
     useEffect(() => {
-        if (user) getBookmarks(user.uuid, "creatives");
+        if (user) getAllBookmarks(user.uuid, "creatives");
         if (user && field && search) {
             searchCreativesFull(field, encodeSpecial(search));
         }
@@ -204,7 +212,7 @@ const CreativeSearch = () => {
                                                     }
                                                     onClick={() =>
                                                         isShortlisted
-                                                            ? removeBookmark(isShortlisted.id)
+                                                            ? removeFromShortlist(isShortlisted.id)
                                                             : addToShortlist(item.id)
                                                     }
                                                 >
@@ -262,7 +270,7 @@ const CreativeSearch = () => {
                                 <span className="visually-hidden">Loading...</span>
                             </div>
                         )}
-                        
+
                     </div>
                 </div>
             </div>

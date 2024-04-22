@@ -9,6 +9,7 @@ import {
   TfiLocationPin,
   TfiNotepad,
 } from "react-icons/tfi";
+
 import { Tooltip } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import Message from "../../../components/dashboard/Modals/Message";
@@ -17,6 +18,7 @@ import { Context as DataContext } from "../../../context/DataContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
+import Paginate from "../../../components/Paginate";
 
 const CreativeShortlist = () => {
   const [open, setOpen] = useState(false);
@@ -27,11 +29,11 @@ const CreativeShortlist = () => {
   const handleCloseNotes = () => setOpenNotes(false);
   const [appId, setAppId] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const {
-    state: { bookmarks },
-    getBookmarks,
-    removeBookmark,
+    state: { bookmarks, meta },
+    getBookmarks, loadBookmarks, removeBookmark,
   } = useContext(DataContext);
 
   const {
@@ -50,6 +52,15 @@ const CreativeShortlist = () => {
     bookmarks && setIsLoading(false);
   }, [bookmarks]);
 
+  const paginate = (page) => {
+    loadBookmarks(user.uuid, "creatives", page, () => {
+      setCurrentPage(page);
+      window.setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 1000);
+    });
+  };
+
   const openMessageDialog = (item) => {
     setItem(item);
     setOpen(true);
@@ -60,12 +71,21 @@ const CreativeShortlist = () => {
     setOpenNotes(true);
   };
 
+  const removeFromShortlist = (id) => {
+    let newPage = Math.ceil((meta?.total - 1) / 9);
+    removeBookmark(id, () => {
+      showAlert('Creative deleted from shortlist');
+      paginate(currentPage <= newPage ? currentPage : newPage);
+    });
+  };
+
   return isLoading ? (
     <Loader />
   ) : (
     <div className="agency-page-creative-shortlist">
       <h3 className="page-title">Creatives Shortlist</h3>
       <div className="card">
+        {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} />}
         {bookmarks && bookmarks.length ? (
           bookmarks.map((item, index) => {
             const resource = item.resource;
@@ -157,7 +177,7 @@ const CreativeShortlist = () => {
                         </Link>
                       </Tooltip>
                       <Tooltip title="Delete Candidate">
-                        <Link onClick={() => removeBookmark(item.id)}>
+                        <Link onClick={() => removeFromShortlist(item.id)}>
                           <TfiClose />
                         </Link>
                       </Tooltip>
@@ -170,6 +190,7 @@ const CreativeShortlist = () => {
         ) : (
           <p className="fs-5">There are no Creatives in your shortlist.</p>
         )}
+        {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} />}
       </div>
       <Message
         open={open}

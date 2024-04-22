@@ -9,7 +9,6 @@ import { IoCheckmarkCircle, IoClose, IoLocationOutline, IoLockClosed, IoLockOpen
 import moment from "moment";
 
 const MyJobWidget = (props) => {
-    console.log(props.job);
     const [job, setJob] = useState(props.job);
     const { showAlert } = useContext(AlertContext);
 

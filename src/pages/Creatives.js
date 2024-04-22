@@ -21,7 +21,7 @@ const Creatives = () => {
   const {
     state: { bookmarks, categories_creative_count },
     createBookmark,
-    getBookmarks,
+    getAllBookmarks,
     removeBookmark,
     getCategoriesCreativeCount,
   } = useContext(DataContext);
@@ -48,7 +48,15 @@ const Creatives = () => {
   //"Search by name, title, location, company, industry experience, media, full-time etc."
 
   const addToShortlist = (id) => {
-    createBookmark(user.uuid, "creatives", id);
+    createBookmark(user.uuid, "creatives", id, () => {
+      showAlert('Creative added to shortlist');
+    });
+  };
+
+  const removeFromShortlist = (id) => {
+    removeBookmark(id, () => {
+      showAlert('Creative deleted from shortlist');
+    });
   };
 
   useScrollLoader(loading, loadMore);
@@ -82,6 +90,7 @@ const Creatives = () => {
     let query_search_string = build_search_string(searchTerms, permission.terms_allowed);
 
     await searchCreativesAdvanced(which_search(), query_search_string);
+    if (user) await getAllBookmarks(user.uuid, "creatives");
     setIsCreativeLoading(false);
   };
 
@@ -156,7 +165,7 @@ const Creatives = () => {
   };
 
   useEffect(() => {
-    if (user) getBookmarks(user.uuid, "creatives");
+    if (user) getAllBookmarks(user.uuid, "creatives");
   }, [user]);
 
   useEffect(() => {
@@ -237,7 +246,7 @@ const Creatives = () => {
                 creatives.map((item, index) => {
                   const isShortlisted =
                     bookmarks.find(
-                      (bookmark) => bookmark.resource?.user_id == item?.user_id
+                      (bookmark) => bookmark.resource.user_id == item.user_id
                     ) || false;
                   return (
                     <div className="col-md-4 col-sm-6 col-12" key={`creative-${item?.user_id}`}>
@@ -250,7 +259,7 @@ const Creatives = () => {
                               }
                               onClick={() =>
                                 isShortlisted
-                                  ? removeBookmark(isShortlisted.id)
+                                  ? removeFromShortlist(isShortlisted.id)
                                   : addToShortlist(item.id)
                               }
                             >
