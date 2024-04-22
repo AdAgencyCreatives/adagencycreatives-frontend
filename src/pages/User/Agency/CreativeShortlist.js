@@ -19,6 +19,7 @@ import { Context as AuthContext } from "../../../context/AuthContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
 import Paginate from "../../../components/Paginate";
+import DelayedOutput from "../../../components/DelayedOutput";
 
 const CreativeShortlist = () => {
   const [open, setOpen] = useState(false);
@@ -188,7 +189,10 @@ const CreativeShortlist = () => {
             );
           })
         ) : (
-          <p className="fs-5">There are no Creatives in your shortlist.</p>
+          <>
+            {!meta && <p className="fs-5">Loading...</p>}
+            {meta?.total == 0 && <p className="fs-5">There are no Creatives in your shortlist.</p>}
+          </>
         )}
         {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"shortlisted creatives"} />}
       </div>

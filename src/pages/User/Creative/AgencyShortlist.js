@@ -13,6 +13,7 @@ import { Context as AlertContext } from "../../../context/AlertContext";
 import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 import Loader from "../../../components/Loader";
 import Paginate from "../../../components/Paginate";
+import DelayedOutput from "../../../components/DelayedOutput";
 
 const AgencyShortlist = () => {
   const [openNotes, setOpenNotes] = useState(false);
@@ -72,7 +73,7 @@ const AgencyShortlist = () => {
       <h3 className="page-title">Agencies Shortlist</h3>
       <div className="card">
         {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"shortlisted agencies"} />}
-        {bookmarks.length ? (
+        {bookmarks?.length > 0 ? (
           bookmarks.map((item, index) => {
             const resource = item.resource;
             return (
@@ -169,7 +170,10 @@ const AgencyShortlist = () => {
             );
           })
         ) : (
-          <p className="fs-5">There are no Agencies in your shortlist.</p>
+          <>
+            {!meta && <p className="fs-5">Loading...</p>}
+            {meta?.total == 0 && <p className="fs-5">There are no Agencies in your shortlist.</p>}
+          </>
         )}
         {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"shortlisted agencies"} />}
       </div>
