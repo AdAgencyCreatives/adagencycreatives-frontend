@@ -182,7 +182,7 @@ const getJobEndpoint = () => {
 };
 
 const getJob = (dispatch) => {
-  return async (slug) => {
+  return async (slug, cb = false) => {
     try {
       const response = await api.get(
         getJobEndpoint() + "?filter[slug]=" + slug
@@ -192,7 +192,10 @@ const getJob = (dispatch) => {
         type: "set_single_job",
         payload: response.data.data[0],
       });
-    } catch (error) { }
+      cb && cb('job-found');
+    } catch (error) {
+      cb && cb('job-not-found');
+    }
   };
 };
 

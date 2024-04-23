@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import Header from "../../components/job/Header";
 import Sidebar from "../../components/job/Sidebar";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import Loader from "../../components/Loader";
@@ -10,9 +10,11 @@ import "../../styles/JobDescription.scss";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 
 const JobDescription = () => {
+
+  const [pageStatus, setPageStatus] = useState("page-loading");
   const { job } = useParams();
   const { height, width } = useWindowDimensions();
-  
+
   const {
     state: { single_job, related_jobs },
     getJob,
@@ -23,26 +25,29 @@ const JobDescription = () => {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    getJob(job);
+    getJob(job, (status) => { setPageStatus(status); });
   }, [job, token]);
 
-  return Object.keys(single_job).length === 0 ? (
+  return pageStatus == 'page-loading' ? (
     <Loader />
   ) : (
     <>
-      <div className="profile-header">
-        <Header data={single_job} />
-      </div>
-      <div className="profile-content mt-5 mb-5">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-8">
-              <div className="content-section">
-                <h1 className="content-title mt-0">Job Description</h1>
-                {single_job.description.split("\n\n").map((line) => (
-                  <p dangerouslySetInnerHTML={{ __html: line }}></p>
-                ))}
-                {/* <h5 className="subtitle">About the job:</h5>
+      {pageStatus == 'job-not-found' ? (<>
+        <div class="loader" style={{ height: '100vh' }}><b>Job not found, either the slug is changed or the job has been closed.</b></div>
+      </>) : (<>
+        <div className="profile-header">
+          <Header data={single_job} />
+        </div>
+        <div className="profile-content mt-5 mb-5">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-8">
+                <div className="content-section">
+                  <h1 className="content-title mt-0">Job Description</h1>
+                  {single_job.description.split("\n\n").map((line) => (
+                    <p dangerouslySetInnerHTML={{ __html: line }}></p>
+                  ))}
+                  {/* <h5 className="subtitle">About the job:</h5>
                 <p className="content">
                   Bakery Austin is currently seeking a proven, energetic, and
                   inspired Senior Art Director with the drive to create
@@ -166,22 +171,23 @@ const JobDescription = () => {
                     <li>No Time Tracking!</li>
                   </ul>
                 </p> */}
-                {width > 767 && (
-                  <RelatedJobs data={related_jobs} />
-                )}
+                  {width > 767 && (
+                    <RelatedJobs data={related_jobs} />
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="col-md-4">
-              <div className="profile-sidebar">
-                <Sidebar data={single_job} />
+              <div className="col-md-4">
+                <div className="profile-sidebar">
+                  <Sidebar data={single_job} />
+                </div>
               </div>
+              {width <= 767 && (
+                <RelatedJobs data={related_jobs} />
+              )}
             </div>
-            {width <= 767 && (
-              <RelatedJobs data={related_jobs} />
-            )}
           </div>
         </div>
-      </div>
+      </>)}
     </>
   );
 };
