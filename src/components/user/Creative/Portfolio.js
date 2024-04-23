@@ -22,13 +22,13 @@ const Portfolio = ({ id }) => {
       <h1 className="content-title mt-0">Portfolio</h1>
       <div className="content">
         <PhotoAlbum
-          layout="columns"
+          layout="rows"
           photos={portfolio_items.map((item) => ({
             src: item.url,
             height: 170,
             width: 170,
           }))}
-          spacing={30}
+          spacing={20}
           onClick={({ index: current }) => setIndex(current)}
           renderPhoto={({ photo, wrapperStyle, renderDefaultPhoto }) => {
             let current = portfolio_items.findIndex(
