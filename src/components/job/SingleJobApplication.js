@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { Context as AlertContext } from "../../context/AlertContext";
+import { Context as CreativesContext } from "../../context/CreativesContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -173,7 +173,7 @@ const SingleJobApplication = (props) => {
                         <Tooltip title="Download CV">
                             <Link
                                 className="btn p-0 border-0 btn-hover-primary"
-                                to={thisApplication.resume_url || "#"}
+                                to={thisApplication?.resume_url?.length > 0 ? (thisApplication.resume_url) : "javascript:void(0)"}
                             >
                                 <TfiDownload className="icon-rounded" />
                             </Link>
