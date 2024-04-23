@@ -91,6 +91,10 @@ const UserList = ({ messageType, page, data, handleItemClick, refreshContacts, s
     let lines = newMessage.indexOf("\n") >= 0 ? newMessage.split('\n') : [newMessage];
     let shortMessage = (lines.length > 3 ? lines.slice(0, 3) : lines).join("<br />");
 
+    let clipLimit = 120;
+    if (shortMessage.length >= clipLimit) {
+      return shortMessage.substring(0, Math.min(shortMessage.length, clipLimit)) + "...";
+    }
     return shortMessage;
   };
 
