@@ -21,7 +21,7 @@ const CreativeJobs = () => {
   const isAdmin = role == "admin";
   const isAdvisor = role == "advisor";
   const isAgency = role == "agency";
-  
+
   const {
     state: { jobs },
     getFeaturedJobs,
@@ -74,7 +74,7 @@ const CreativeJobs = () => {
           navigation="true"
           slides-per-view="1"
           space-between="30"
-          centeredSlides="true"
+          loop="true"
         >
           {jobs &&
             jobs.map((item, index) => {
@@ -87,7 +87,7 @@ const CreativeJobs = () => {
                           let parts = key.split("_");
                           let type = parts[1];
                           return (
-                            <Tooltip title={type} type={type} key={"tool_"+key}>
+                            <Tooltip title={type} type={type} key={"tool_" + key}>
                               <button className="btn p-0 border-0 me-2">
                                 <IoStar
                                   size={20}
@@ -103,7 +103,7 @@ const CreativeJobs = () => {
                           let parts = key.split("_");
                           let type = parts[1];
                           return (
-                            <Tooltip title={type} type={type} key={"tool_"+key}>
+                            <Tooltip title={type} type={type} key={"tool_" + key}>
                               <button className="btn p-0 border-0 me-2">
                                 <IoStar
                                   size={20}

@@ -6,6 +6,7 @@ const useAgencies = (page, role) => {
   const {
     state: { agencies, nextPage, loading },
     getAgencies,
+    getFeaturedAgencies,
     loadAgencies,
     searchAgencies,
     agencySearch1,
@@ -16,14 +17,16 @@ const useAgencies = (page, role) => {
   const [loadedAll, setLoadedAll] = useState(false)
 
   useEffect(() => {
-    if(page == 'agency-search') {
+    if (page == 'agency-search') {
       return;
     }
 
     if (role) {
       getAgencieRoles(page, role);
+    } else if (page == "home") {
+      getFeaturedAgencies();
     } else {
-      getAgencies(page);
+      getAgencies();
     }
   }, [role]);
 

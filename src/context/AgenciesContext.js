@@ -66,7 +66,19 @@ const reducer = (state, action) => {
 const getAgencies = (dispatch) => {
   return async (page) => {
     try {
-      const response = await api.get("/agencies?filter[status]=1&filter[is_visible]=1" + (page == "home" ? "&per_page=30&sort=-featured_at" : ""));
+      const response = await api.get("/agencies?filter[status]=1&filter[is_visible]=1&sort=-featured_at");
+      dispatch({
+        type: "set_agencies",
+        payload: response.data,
+      });
+    } catch (error) { }
+  };
+};
+
+const getFeaturedAgencies = (dispatch) => {
+  return async (page) => {
+    try {
+      const response = await api.get("/agencies?filter[status]=1&filter[is_featured]=1&filter[is_visible]=1&per_page=30&sort=-featured_at");
       dispatch({
         type: "set_agencies",
         payload: response.data,
@@ -371,6 +383,7 @@ export const { Context, Provider } = createDataContext(
   reducer,
   {
     getAgencies,
+    getFeaturedAgencies,
     loadAgencies,
     getAgency,
     getStats,

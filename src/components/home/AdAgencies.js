@@ -73,6 +73,7 @@ const AdAgencies = () => {
           slides-per-view="1"
           space-between="30"
           loop="true"
+          autop
         >
           {agencies && agencies.length &&
             agencies.map((item, index) => {
