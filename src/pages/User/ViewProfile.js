@@ -6,7 +6,7 @@ import AgencyContent from "../../components/user/Agency/Content";
 import AgencyHeader from "../../components/user/Agency/Header";
 import AgencySidebar from "../../components/user/Agency/Sidebar";
 import { useLocation, useParams } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import Loader from "../../components/Loader";
 import RestrictedUser from "../../components/RestrictedUser";
 
@@ -16,8 +16,12 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import Portfolio from "../../components/user/Creative/Portfolio";
 import NotFound from "../../components/NotFound";
 import { capitalize } from "@mui/material";
+import useSeoHelper from "../../hooks/useSeoHelper";
 
 const Profile = () => {
+
+  const { changeSeo } = useSeoHelper();
+
   const { username, type, role_name } = useParams();
   const page = type;
 
@@ -50,7 +54,7 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-      setRoleName(role_name == "advisor" || role_name == "recruiter" ? role_name : null);    
+    setRoleName(role_name == "advisor" || role_name == "recruiter" ? role_name : null);
   }, [role_name]);
 
   useEffect(() => {
@@ -87,8 +91,23 @@ const Profile = () => {
   }, [page, data]);
 
   useEffect(() => {
-    if (page == "creative") setData(single_creative);
-    else if (page == "agency") setData(single_agency);
+    if (page == "creative") {
+      setData(single_creative);
+      if (single_creative && Object.keys(single_creative)?.length > 0) {
+        if (single_creative?.seo?.tags?.length > 0) changeSeo('keywords', single_creative.seo.tags);
+        if (single_creative?.seo?.description?.length > 0) changeSeo('description', single_creative.seo.description);
+        if (single_creative?.seo?.title?.length > 0) changeSeo('title', single_creative.seo.title);
+      }
+    } else if (page == "agency") {
+      setData(single_agency);
+      if (single_agency && Object.keys(single_agency)?.length > 0) {
+        if (single_agency?.seo?.tags?.length > 0) changeSeo('keywords', single_agency.seo.tags);
+        if (single_agency?.seo?.description?.length > 0) changeSeo('description', single_agency.seo.description);
+        if (single_agency?.seo?.title?.length > 0) changeSeo('title', single_agency.seo.title);
+      }
+    }
+
+
   }, [single_creative, single_agency]);
 
   const isCreative = user?.role == "creative";

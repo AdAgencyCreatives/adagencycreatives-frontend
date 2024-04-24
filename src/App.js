@@ -4,7 +4,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Footer from "./components/Footer";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import { Context as AuthContext } from "./context/AuthContext";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
 // import { useCookies } from "react-cookie";
 import { Provider as DataProvider } from "./context/DataContext";
 import { Provider as CreativesProvider } from "./context/CreativesContext";
@@ -19,6 +19,8 @@ import { Provider as AlertProvider } from "./context/AlertContext";
 import ChatListener from "./components/chat/ChatListener";
 import { Provider as NotificationsProvider } from "./context/NotificationsContext";
 import Loader from "./components/Loader";
+import { useLocation } from 'react-router-dom';
+import useSeoHelper from "./hooks/useSeoHelper";
 
 const theme = createTheme({
   typography: {
@@ -38,6 +40,8 @@ const theme = createTheme({
 
 
 function App() {
+
+  const { setDefaultSeo } = useSeoHelper();
 
   const [skipHeaderFooter, setSkipHeaderFooter] = useState(false);
 
