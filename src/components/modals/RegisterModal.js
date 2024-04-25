@@ -39,6 +39,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
         type: "text",
         name: "first_name",
         placeholder: "First Name *",
+        pattern: "^[a-zA-Z \\-']{1,255}$",
       },
       {
         label: "Last Name*",
@@ -46,6 +47,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
         type: "text",
         name: "last_name",
         placeholder: "Last Name *",
+        pattern: "^[a-zA-Z \\-']{1,255}$",
       },
       {
         label: "Email*",
@@ -97,6 +99,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
         type: "text",
         name: "first_name",
         placeholder: "Contact First Name *",
+        pattern: "^[a-zA-Z \\-']{1,255}$",
       },
       {
         label: "Contact Last Name*",
@@ -104,6 +107,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
         type: "text",
         name: "last_name",
         placeholder: "Contact Last Name *",
+        pattern: "^[a-zA-Z \\-']{1,255}$",
       },
       {
         label: "Email*",
@@ -165,7 +169,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
     e.preventDefault();
 
     for (let index = 0; index < fields[tab].length; index++) {
-      if(fields[tab][index].required && !fields[tab][index].value?.length) {
+      if (fields[tab][index].required && !fields[tab][index].value?.length) {
         fields[tab][index].error = 'Required';
       }
     }
@@ -178,7 +182,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
       let errMsg = 'Following field' + (errors.length > 1 ? 's' : '') + ' requires your attention:<br>\n';
       for (let index = 0; index < errors.length; index++) {
         const element = errors[index];
-        errMsg += "" + (index+1) + ". " + element.label.replace("*", "") + "<br>\n";
+        errMsg += "" + (index + 1) + ". " + element.label.replace("*", "") + "<br>\n";
       }
 
       setMessage({
@@ -280,6 +284,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
                       type={field.type == "password" ? (show[field.name] ? "text" : "password") : field.type}
                       required={field?.required ? "required" : ""}
                       value={field.value || ""}
+                      pattern={field?.pattern || "*"}
                       onChange={(e) => handleInputChange(tab, index, e.target.value)}
                     />
                     {field.type == "password" && (
