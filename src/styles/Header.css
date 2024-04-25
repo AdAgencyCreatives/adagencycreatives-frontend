@@ -939,3 +939,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
     justify-content: center;
     align-items: center;
 }
+
+.content-section * {
+    font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important;
+}
