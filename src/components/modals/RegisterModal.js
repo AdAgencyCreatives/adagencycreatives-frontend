@@ -75,7 +75,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
         required: true,
         type: "url",
         name: "portfolio_site",
-        placeholder: "Portfolio Site *",
+        placeholder: "Portfolio Site * (Start with http:// or https://)",
       },
       {
         label: "",
