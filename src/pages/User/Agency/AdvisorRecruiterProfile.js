@@ -665,7 +665,7 @@ const AdvisorRecruiterProfile = () => {
                           <div className="col-md-12 col-sm-12 col-12">
                             {videoItem && (
                               <>
-                                <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2" onClick={(e) => setShowVideoItem(state => !state)}>
+                                <button type="button" className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2" onClick={(e) => setShowVideoItem(state => !state)}>
                                   <span className="icon_type">
                                     <FiFile />
                                   </span>
@@ -681,10 +681,10 @@ const AdvisorRecruiterProfile = () => {
                             )}
                           </div>
                           <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
-                            <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => videoUploadRef.current.click()}>
+                            <button type="button" className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => videoUploadRef.current.click()}>
                               <FiPaperclip /> Upload
                             </button>
-                            <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeVideo(videoItem?.id)}>
+                            <button type="button" className="btn btn-secondary w-100 text-uppercase" onClick={() => removeVideo(videoItem?.id)}>
                               <FiTrash2 /> Remove
                             </button>
                           </div>
