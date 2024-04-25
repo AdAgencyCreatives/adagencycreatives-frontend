@@ -51,6 +51,10 @@
 
     li {
         margin-bottom: 10px;
+        list-style: disc;
+        font-size: 10pt;
+        line-height: 16px;
+        font-weight: 400;
     }
 
     button {
@@ -73,8 +77,12 @@
     }
 
     @media (max-width: 786px) {
-        .title, .subtitle {
+
+        .title,
+        .subtitle {
             font-size: 18pt;
+            font-weight: 700;
+            line-height: 28px;
         }
     }
 }

@@ -14,14 +14,14 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
       image: Single,
       subtitle: "Single Creative Job Package",
       description:
-      "<ul>" +
-      " <li>• One Job Post For 30 Days</li>"  + 
-      " <li>• Targets Advertising Talent</li>"  + 
-      " <li>• Internal ATS Option</li>"  + 
-      " <li>• Private Messaging Access</li>"  + 
-      " <li>• Additional Search Features</li>"  + 
-      " <li>• Pipeline Capabilities</li>" +
-      "</ul>",
+        "<ul>" +
+        " <li>One Job Post For 30 Days</li>" +
+        " <li>Targets Advertising Talent</li>" +
+        " <li>Internal ATS Option</li>" +
+        " <li>Private Messaging Access</li>" +
+        " <li>Additional Search Features</li>" +
+        " <li>Pipeline Capabilities</li>" +
+        "</ul>",
       link:
         process.env.REACT_APP_POST_A_CREATIVE_JOB +
         user.email,
@@ -33,15 +33,15 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
       image: Multiple,
       subtitle: "Multiple Creative Jobs Package",
       description:
-      "<ul>" +
-      " <li>• Three Job Posts For 45 Days</li>"  + 
-      " <li>• Urgent Job Post Option</li>"  + 
-      " <li>• Targets Advertising Talent</li>"  + 
-      " <li>• Internal ATS Option</li>"  + 
-      " <li>• Private Messaging Access</li>"  + 
-      " <li>• Additional Search Features</li>"  + 
-      " <li>• Pipeline Capabilities</li>" +
-      "</ul>",
+        "<ul>" +
+        " <li>Three Job Posts For 45 Days</li>" +
+        " <li>Urgent Job Post Option</li>" +
+        " <li>Targets Advertising Talent</li>" +
+        " <li>Internal ATS Option</li>" +
+        " <li>Private Messaging Access</li>" +
+        " <li>Additional Search Features</li>" +
+        " <li>Pipeline Capabilities</li>" +
+        "</ul>",
       link:
         process.env.REACT_APP_MULTIPLE_CREATIVE_JOBS +
         user.email,
@@ -53,16 +53,16 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
       image: Premium,
       subtitle: "Premium Creative Jobs Package",
       description:
-      "<ul>" +
-      " <li>• Five Job Posts For 60 Days</li>" +
-      " <li>• Featured Post Priority</li>" +
-      " <li>• Urgent Job Post Option</li>" +
-      " <li>• Targets Advertising Talent</li>" +
-      " <li>• Internal ATS Option</li>" +
-      " <li>• Private Messaging Access</li>" +
-      " <li>• Additional Search Features</li>" +
-      " <li>• Pipeline Capabilities</li>" +
-      "</ul>",
+        "<ul>" +
+        " <li>Five Job Posts For 60 Days</li>" +
+        " <li>Featured Post Priority</li>" +
+        " <li>Urgent Job Post Option</li>" +
+        " <li>Targets Advertising Talent</li>" +
+        " <li>Internal ATS Option</li>" +
+        " <li>Private Messaging Access</li>" +
+        " <li>Additional Search Features</li>" +
+        " <li>Pipeline Capabilities</li>" +
+        "</ul>",
       link:
         process.env.REACT_APP_PREMIUM_CREATIVE_JOBS +
         user.email,
@@ -73,13 +73,13 @@ const Packages = ({ setPackage, setJobStatus, user }) => {
       price: "Custom",
       image: Hire,
       subtitle: "Hire An Advisor",
-      description:  "<ul>" +
-      "<li>• Creative Recruiting Help</li>"+
-      "<li>• Provide Details To Get Started</li>"+
-      "<li>• Our Team Will Contact You</li>"+
-      "<li>• We’ll Create A Custom Plan </li>"+
-      "<li>• You Hire Talent Directly </li>"+
-      "</ul>",
+      description: "<ul>" +
+        "<li>Creative Recruiting Help</li>" +
+        "<li>Provide Details To Get Started</li>" +
+        "<li>Our Team Will Contact You</li>" +
+        "<li>We’ll Create A Custom Plan </li>" +
+        "<li>You Hire Talent Directly </li>" +
+        "</ul>",
       link: "/hire-an-advisor",
     },
   ];
