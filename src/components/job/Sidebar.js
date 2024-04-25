@@ -5,6 +5,7 @@ import {
 } from "react-icons/io5";
 import "../../styles/User/ProfileSidebar.scss";
 import bullseye from "../../assets/images/icons/bulleyes.png";
+import adicon from "../../assets/images/icons/adicon.png";
 import { FaUserTie } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -72,6 +73,17 @@ const Sidebar = ({ data }) => {
         ) : (
           ""
         )}
+        {data.media_experience?.length && (
+            <div className="item">
+              <img src={adicon} height={22} width={22} />
+              <div className="details">
+                <div className="text">Media Experience</div>
+                <div className="value">
+                  {data.media_experience?.join(", ") ?? ''}
+                </div>
+              </div>
+            </div>
+          )}
       </div>
     </div>
   );
