@@ -172,6 +172,7 @@ const AdvisorRecruiterProfile = () => {
           type: "text",
           name: "first_name",
           value: user.first_name,
+          pattern: "^[a-zA-Z \\-']{1,255}$",
         },
         {
           label: "Contact Last Name",
@@ -179,6 +180,7 @@ const AdvisorRecruiterProfile = () => {
           type: "text",
           name: "last_name",
           value: user.last_name,
+          pattern: "^[a-zA-Z \\-']{1,255}$",
         },
         // {
         //   label: "Company Website",
@@ -698,6 +700,7 @@ const AdvisorRecruiterProfile = () => {
                         type="text"
                         className="form-control"
                         value={field.value || ""}
+                        pattern={field?.pattern || "*"}
                         onChange={(e) => handleTextChange(e, field.name)}
                         placeholder={field.placeholder || ""}
                       />
