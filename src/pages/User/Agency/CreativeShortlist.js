@@ -127,7 +127,7 @@ const CreativeShortlist = () => {
                         </div>
                         <div className="job-metas">
                           <div className="candidate-category text-dark">
-                            {resource.title}
+                            {resource.category}
                           </div>
                           <div className="candidate-location with-icon">
                             {resource.location?.state && (
