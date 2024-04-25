@@ -72,4 +72,9 @@
         }
     }
 
+    @media (max-width: 786px) {
+        .title, .subtitle {
+            font-size: 18pt;
+        }
+    }
 }
