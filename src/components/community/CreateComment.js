@@ -295,7 +295,7 @@ const CreateComment = (props) => {
                     toolbar: 'bold italic underline strikethrough | blocks fontsize | numlist bullist link | emoticons charmap | align lineheight | indent outdent | removeformat',
                     content_css: ['https://fonts.googleapis.com/css?family=Jost:400,500,600,700,800&#038;subset=latin%2Clatin-ext'],
                     font_family_formats: 'JOST=JOST',
-                    content_style: 'body { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; font-size: 14pt } a { color: #d3a11f; cursor: pointer; } a:hover { color: #000; }',
+                    content_style: 'body, * { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important; font-size: 14pt } a { color: #d3a11f; cursor: pointer; } a:hover { color: #000; }',
                     placeholder: 'What do you want to talk about?',
                   }}
                   initialValue=""
@@ -347,9 +347,9 @@ const CreateComment = (props) => {
               <button className={"btn btn-post" + (useTinyMCE ? (!isLoadingTinyMCE ? ' d-show' : ' d-none') : "")} onClick={() => doSaveComment()}>Comment</button>
             </div>
           </div>
-          <ImagePicker 
-            open={imagePickerOpen} 
-            handleImagePickerClose={() => setImagePickerOpen(false)} 
+          <ImagePicker
+            open={imagePickerOpen}
+            handleImagePickerClose={() => setImagePickerOpen(false)}
             allowType={allowType}
           />
         </div>
