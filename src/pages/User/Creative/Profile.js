@@ -131,7 +131,7 @@ const Profile = () => {
           type: "text",
           name: "first_name",
           value: user.first_name,
-          pattern: "^[a-zA-Z \\-']{1,255}$",
+          pattern: "^[a-zA-Z \\-'\\._]{1,255}$",
         },
         {
           label: "Last Name",
@@ -139,7 +139,7 @@ const Profile = () => {
           type: "text",
           name: "last_name",
           value: user.last_name,
-          pattern: "^[a-zA-Z \\-']{1,255}$",
+          pattern: "^[a-zA-Z \\-'\\._]{1,255}$",
         },
         {
           label: "Portfolio Site",
@@ -435,9 +435,10 @@ const Profile = () => {
     return true;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (!validated()) {
-      return;
+      return false;
     }
 
     (async () => {
@@ -448,7 +449,7 @@ const Profile = () => {
         showAlert(message);
       });
     })();
-
+    return false;
   };
 
   const removeLogo = () => {
@@ -491,192 +492,196 @@ const Profile = () => {
       <div className="card">
         <h4 className="text-uppercase mb-4">Edit Profile</h4>
         <div className="profile-edit-form">
-          <div className="row gx-3 gy-5 align-items-end">
-            {fields?.map((field, index) => {
-              // eslint-disable-next-line default-case
-              switch (field.type) {
-                case "image":
-                  return (
-                    <div className="col-12" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                        <IconMessage message={imageUploadGuideMessage} />
-                      </label>
-                      <input
-                        type="hidden"
-                        className="input-text"
-                        name="field.name"
-                        value=""
-                      />
-                      <div className="row align-items-center upload-box">
-                        <div className="col-md-2 col-sm-4 col-12">
-                          <div className="img">
-                            <img
-                              src={field.image}
-                              className="w-100"
-                              ref={logoRef}
-                              alt=""
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
-                          <button
-                            className="btn btn-secondary w-100 mb-2 text-uppercase"
-                            onClick={() => imageUploadRef.current.click()}
-                          >
-                            <FiPaperclip /> Upload
-                          </button>
-                          <button
-                            className="btn btn-secondary w-100 text-uppercase"
-                            onClick={removeLogo}
-                          >
-                            <FiTrash2 /> Remove
-                          </button>
-                        </div>
+          <form onSubmit={(e) => { return handleSubmit(e) }}>
+            <div className="row gx-3 gy-5 align-items-end">
+              {fields?.map((field, index) => {
+                // eslint-disable-next-line default-case
+                switch (field.type) {
+                  case "image":
+                    return (
+                      <div className="col-12" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                          <IconMessage message={imageUploadGuideMessage} />
+                        </label>
                         <input
-                          type="file"
-                          ref={imageUploadRef}
-                          className="d-none"
-                          accept={field.accept}
-                          onChange={handleFileChange}
+                          type="hidden"
+                          className="input-text"
+                          name="field.name"
+                          value=""
                         />
+                        <div className="row align-items-center upload-box">
+                          <div className="col-md-2 col-sm-4 col-12">
+                            <div className="img">
+                              <img
+                                src={field.image}
+                                className="w-100"
+                                ref={logoRef}
+                                alt=""
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
+                            <button
+                              type="button"
+                              className="btn btn-secondary w-100 mb-2 text-uppercase"
+                              onClick={() => imageUploadRef.current.click()}
+                            >
+                              <FiPaperclip /> Upload
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-secondary w-100 text-uppercase"
+                              onClick={removeLogo}
+                            >
+                              <FiTrash2 /> Remove
+                            </button>
+                          </div>
+                          <input
+                            type="file"
+                            ref={imageUploadRef}
+                            className="d-none"
+                            accept={field.accept}
+                            onChange={handleFileChange}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  );
-                case "text":
-                  return (
-                    <div className="col-sm-6" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={field.value}
-                        pattern={field?.pattern || "*"}
-                        onChange={(e) => handleTextChange(e, field.name)}
-                        placeholder={field.placeholder || ""}
-                      />
-                    </div>
-                  );
-                case "slug":
-                  return (
-                    <div className="col-sm-6" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      <div className="input-group">
-                        <span className="input-group-text" id="basic-addon3">{field.baseUrl}/creative/</span>
+                    );
+                  case "text":
+                    return (
+                      <div className="col-sm-6" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
                         <input
                           type="text"
+                          className="form-control"
+                          value={field.value}
+                          pattern={field?.pattern || "*"}
+                          onChange={(e) => handleTextChange(e, field.name)}
+                          placeholder={field.placeholder || ""}
+                        />
+                      </div>
+                    );
+                  case "slug":
+                    return (
+                      <div className="col-sm-6" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
+                        <div className="input-group">
+                          <span className="input-group-text" id="basic-addon3">{field.baseUrl}/creative/</span>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={field.value}
+                            onChange={(e) => handleTextChange(e, field.name)}
+                          />
+                        </div>
+
+                      </div>
+                    );
+                  case "email":
+                    return (
+                      <div className="col-sm-6" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
+                        <input
+                          type="email"
                           className="form-control"
                           value={field.value}
                           onChange={(e) => handleTextChange(e, field.name)}
                         />
                       </div>
-
-                    </div>
-                  );
-                case "email":
-                  return (
-                    <div className="col-sm-6" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        value={field.value}
-                        onChange={(e) => handleTextChange(e, field.name)}
-                      />
-                    </div>
-                  );
-                case "dropdown":
-                  return (
-                    <div className="col-sm-6" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      <Select
-                        className="dropdown-container"
-                        options={field.data}
-                        isMulti={field.isMulti || false}
-                        onChange={field.callback}
-                        placeholder={field.placeholder}
-                        defaultValue={field.value}
-                        styles={{
-                          control: (baseStyles) => ({
-                            ...baseStyles,
-                            padding: "11px",
-                            backgroundColor: "#F6F6F6",
-                            border: "none",
-                          }),
-                          valueContainer: (baseStyles) => ({
-                            ...baseStyles,
-                            padding: "0px",
-                            fontSize: 20,
-                          }),
-                          singleValue: (baseStyles) => ({
-                            ...baseStyles,
-                            color: "#696969",
-                          }),
-                          // control:(baseStyles) => ({
-                          //   ...baseStyles,
-                          //   backgroundColor:"#F6F6F6",
-                          //   borderColor:"white"
-                          // }),
-                        }}
-                      />
-                    </div>
-                  );
-
-                case "editor":
-                  return (
-                    <div className="col-12" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      {isMounted && (
-                        <Editor
-                          editorState={editorState}
-                          toolbarClassName="editorToolbar"
-                          wrapperClassName="editorWrapper"
-                          editorClassName="editorBody"
-                          toolbar={{
-                            options: [
-                              "inline",
-                              "blockType",
-                              "fontSize",
-                              "list",
-                              "textAlign",
-                              "link",
-                            ],
-                          }}
-                          onEditorStateChange={(newState) => {
-                            handleEditorChange(newState, field.name);
+                    );
+                  case "dropdown":
+                    return (
+                      <div className="col-sm-6" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
+                        <Select
+                          className="dropdown-container"
+                          options={field.data}
+                          isMulti={field.isMulti || false}
+                          onChange={field.callback}
+                          placeholder={field.placeholder}
+                          defaultValue={field.value}
+                          styles={{
+                            control: (baseStyles) => ({
+                              ...baseStyles,
+                              padding: "11px",
+                              backgroundColor: "#F6F6F6",
+                              border: "none",
+                            }),
+                            valueContainer: (baseStyles) => ({
+                              ...baseStyles,
+                              padding: "0px",
+                              fontSize: 20,
+                            }),
+                            singleValue: (baseStyles) => ({
+                              ...baseStyles,
+                              color: "#696969",
+                            }),
+                            // control:(baseStyles) => ({
+                            //   ...baseStyles,
+                            //   backgroundColor:"#F6F6F6",
+                            //   borderColor:"white"
+                            // }),
                           }}
                         />
-                      )}
-                    </div>
-                  );
-              }
-            })}
-          </div>
-          <div className="submit-btn mt-4">
-            <button
-              className="btn btn-dark btn-hover-primary border-0 px-3 py-2"
-              onClick={handleSubmit}
-              disabled={formSubmit}
-            >
-              Save Profile {formSubmit && <CircularProgress size={20} />}
-            </button>
-          </div>
+                      </div>
+                    );
+
+                  case "editor":
+                    return (
+                      <div className="col-12" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
+                        {isMounted && (
+                          <Editor
+                            editorState={editorState}
+                            toolbarClassName="editorToolbar"
+                            wrapperClassName="editorWrapper"
+                            editorClassName="editorBody"
+                            toolbar={{
+                              options: [
+                                "inline",
+                                "blockType",
+                                "fontSize",
+                                "list",
+                                "textAlign",
+                                "link",
+                              ],
+                            }}
+                            onEditorStateChange={(newState) => {
+                              handleEditorChange(newState, field.name);
+                            }}
+                          />
+                        )}
+                      </div>
+                    );
+                }
+              })}
+            </div>
+            <div className="submit-btn mt-4">
+              <button
+                type="submit"
+                className="btn btn-dark btn-hover-primary border-0 px-3 py-2"
+                disabled={formSubmit}
+              >
+                Save Profile {formSubmit && <CircularProgress size={20} />}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

@@ -39,7 +39,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
         type: "text",
         name: "first_name",
         placeholder: "First Name *",
-        pattern: "^[a-zA-Z \\-']{1,255}$",
+        pattern: "^[a-zA-Z \\-'\\._]{1,255}$",
       },
       {
         label: "Last Name*",
@@ -47,7 +47,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
         type: "text",
         name: "last_name",
         placeholder: "Last Name *",
-        pattern: "^[a-zA-Z \\-']{1,255}$",
+        pattern: "^[a-zA-Z \\-'\\._]{1,255}$",
       },
       {
         label: "Email*",
@@ -99,7 +99,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
         type: "text",
         name: "first_name",
         placeholder: "Contact First Name *",
-        pattern: "^[a-zA-Z \\-']{1,255}$",
+        pattern: "^[a-zA-Z \\-'\\._]{1,255}$",
       },
       {
         label: "Contact Last Name*",
@@ -107,7 +107,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
         type: "text",
         name: "last_name",
         placeholder: "Contact Last Name *",
-        pattern: "^[a-zA-Z \\-']{1,255}$",
+        pattern: "^[a-zA-Z \\-'\\._]{1,255}$",
       },
       {
         label: "Email*",

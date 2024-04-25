@@ -172,7 +172,7 @@ const AdvisorRecruiterProfile = () => {
           type: "text",
           name: "first_name",
           value: user.first_name,
-          pattern: "^[a-zA-Z \\-']{1,255}$",
+          pattern: "^[a-zA-Z \\-'\\._]{1,255}$",
         },
         {
           label: "Contact Last Name",
@@ -180,7 +180,7 @@ const AdvisorRecruiterProfile = () => {
           type: "text",
           name: "last_name",
           value: user.last_name,
-          pattern: "^[a-zA-Z \\-']{1,255}$",
+          pattern: "^[a-zA-Z \\-'\\._]{1,255}$",
         },
         // {
         //   label: "Company Website",
@@ -526,9 +526,10 @@ const AdvisorRecruiterProfile = () => {
     return true;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (!validated()) {
-      return;
+      return false;
     }
 
     let current_role = user?.role == 'recruiter' ? 'Recruiter' : 'Advisor';
@@ -540,6 +541,8 @@ const AdvisorRecruiterProfile = () => {
         showAlert(message);
       });
     })();
+
+    return false;
   };
 
   const handleFileChange = async (event, resource, ref, field) => {
@@ -619,218 +622,220 @@ const AdvisorRecruiterProfile = () => {
       <div className="card">
         <h4 className="text-uppercase mb-4">Edit Profile</h4>
         <div className="profile-edit-form">
-          <div className="row gx-3 gy-5 align-items-end">
-            {fields.map((field, index) => {
-              switch (field.type) {
-                case "image":
-                  return (
-                    <div className="col-12" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                        <IconMessage message={imageUploadGuideMessage} />
-                      </label>
-                      <input type="hidden" className="input-text" name={field.name} value="" />
-                      <div className="row align-items-center upload-box">
-                        <div className="col-md-2 col-sm-4 col-12">
-                          <div className="img">
-                            <img src={field.image} className="w-100" ref={logoRef} />
+          <form onSubmit={(e) => { return handleSubmit(e) }}>
+            <div className="row gx-3 gy-5 align-items-end">
+              {fields.map((field, index) => {
+                switch (field.type) {
+                  case "image":
+                    return (
+                      <div className="col-12" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                          <IconMessage message={imageUploadGuideMessage} />
+                        </label>
+                        <input type="hidden" className="input-text" name={field.name} value="" />
+                        <div className="row align-items-center upload-box">
+                          <div className="col-md-2 col-sm-4 col-12">
+                            <div className="img">
+                              <img src={field.image} className="w-100" ref={logoRef} />
+                            </div>
                           </div>
+                          <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
+                            <button type="button" className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => imageUploadRef.current.click()}>
+                              <FiPaperclip /> Upload
+                            </button>
+                            <button type="button" className="btn btn-secondary w-100 text-uppercase" onClick={() => removeLogo(field?.id)}>
+                              <FiTrash2 /> Remove
+                            </button>
+                          </div>
+                          <input type="file" ref={imageUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_logo", logoRef, field)} accept={field.accept} />
                         </div>
-                        <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
-                          <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => imageUploadRef.current.click()}>
-                            <FiPaperclip /> Upload
-                          </button>
-                          <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeLogo(field?.id)}>
-                            <FiTrash2 /> Remove
-                          </button>
-                        </div>
-                        <input type="file" ref={imageUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_logo", logoRef, field)} accept={field.accept} />
                       </div>
-                    </div>
-                  );
-                case "video":
-                  return (
-                    <div className="col-12" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                        <IconMessage message={videoUploadGuideMessage} />
-                      </label>
-                      <div className="row align-items-center upload-box">
-                        <div className="col-md-12 col-sm-12 col-12">
-                          {videoItem && (
-                            <>
-                              <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2" onClick={(e) => setShowVideoItem(state => !state)}>
-                                <span className="icon_type">
-                                  <FiFile />
-                                </span>
-                                <div className="filename">{videoItem.name}</div>
-                              </button>
-                              {showVideoItem && videoItem?.url?.length && (
-                                <video controls muted playsInline>
-                                  <source src={videoItem?.url} type={"video/" + videoItem?.url?.substring(videoItem?.url?.lastIndexOf('.') + 1)} />
-                                  Sorry, your browser doesn't support videos.
-                                </video>
-                              )}
-                            </>
-                          )}
+                    );
+                  case "video":
+                    return (
+                      <div className="col-12" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                          <IconMessage message={videoUploadGuideMessage} />
+                        </label>
+                        <div className="row align-items-center upload-box">
+                          <div className="col-md-12 col-sm-12 col-12">
+                            {videoItem && (
+                              <>
+                                <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2 ls-3 me-3 mb-2" onClick={(e) => setShowVideoItem(state => !state)}>
+                                  <span className="icon_type">
+                                    <FiFile />
+                                  </span>
+                                  <div className="filename">{videoItem.name}</div>
+                                </button>
+                                {showVideoItem && videoItem?.url?.length && (
+                                  <video controls muted playsInline>
+                                    <source src={videoItem?.url} type={"video/" + videoItem?.url?.substring(videoItem?.url?.lastIndexOf('.') + 1)} />
+                                    Sorry, your browser doesn't support videos.
+                                  </video>
+                                )}
+                              </>
+                            )}
+                          </div>
+                          <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
+                            <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => videoUploadRef.current.click()}>
+                              <FiPaperclip /> Upload
+                            </button>
+                            <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeVideo(videoItem?.id)}>
+                              <FiTrash2 /> Remove
+                            </button>
+                          </div>
+                          <input type="file" ref={videoUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_reel", videoRef, field)} accept=".mp4, .avi, .mov, video/*" />
                         </div>
-                        <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
-                          <button className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => videoUploadRef.current.click()}>
-                            <FiPaperclip /> Upload
-                          </button>
-                          <button className="btn btn-secondary w-100 text-uppercase" onClick={() => removeVideo(videoItem?.id)}>
-                            <FiTrash2 /> Remove
-                          </button>
-                        </div>
-                        <input type="file" ref={videoUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_reel", videoRef, field)} accept=".mp4, .avi, .mov, video/*" />
                       </div>
-                    </div>
-                  );
+                    );
 
-                case "text":
-                  return (
-                    <div className="col-sm-6" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={field.value || ""}
-                        pattern={field?.pattern || "*"}
-                        onChange={(e) => handleTextChange(e, field.name)}
-                        placeholder={field.placeholder || ""}
-                      />
-                    </div>
-                  );
-                case "slug":
-                  return (
-                    <div className="col-sm-6" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      <div className="input-group">
-                        <span className="input-group-text" id="basic-addon3">{field.baseUrl}/agency/</span>
+                  case "text":
+                    return (
+                      <div className="col-sm-6" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
                         <input
                           type="text"
                           className="form-control"
-                          value={field.value}
+                          value={field.value || ""}
+                          pattern={field?.pattern || "*"}
                           onChange={(e) => handleTextChange(e, field.name)}
+                          placeholder={field.placeholder || ""}
                         />
                       </div>
-                    </div>
-                  );
-                case "dropdown":
-                  return (
-                    <div className="col-sm-6" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      <Select
-                        className="dropdown-container"
-                        options={field.data.map((option) => ({
-                          ...option,
-                          // isDisabled: formData.length ? formData[field.name].length > 7 : false,
-                        }))}
-                        isMulti={field.isMulti || false}
-                        ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}
-                        onChange={field.callback}
-                        placeholder={field.placeholder}
-                        defaultValue={field.value}
-                        // value={field.value}
-                        // isOptionDisabled={(option) => { return field.value.length > 7 }}
-                        styles={{
-                          control: (baseStyles) => ({
-                            ...baseStyles,
-                            padding: "11px",
-                            backgroundColor: "#F6F6F6",
-                            border: "none",
-                          }),
-                          valueContainer: (baseStyles) => ({
-                            ...baseStyles,
-                            padding: "0px",
-                            fontSize: 20,
-                          }),
-                          singleValue: (baseStyles) => ({
-                            ...baseStyles,
-                            color: "#696969",
-                          }),
-                          // control:(baseStyles) => ({
-                          //   ...baseStyles,
-                          //   backgroundColor:"#F6F6F6",
-                          //   borderColor:"white"
-                          // }),
-                        }}
-                      />
-                    </div>
-                  );
-
-                case "editor":
-                  return (
-                    <div className="col-12" key={index}>
-                      <label htmlFor={field.name} className="form-label">
-                        {field.label}
-                        {field.required && <span className="required">*</span>}
-                      </label>
-                      {isMounted && (<>
-                        {useTinyMCE ? (
-                          <>
-                            <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
-                              <CircularProgress />
-                            </div>
-                            <EditorTinyMCE
-                              onInit={(evt, editor) => performInitTinyMCE(evt, editor)}
-                              apiKey='0de1wvfzr5x0z7za5hi7txxvlhepurk5812ub5p0fu5tnywh'
-                              init={{
-                                height: 400,
-                                menubar: false,
-                                // plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                                // toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                                plugins: 'anchor autolink charmap codesample emoticons link lists searchreplace visualblocks wordcount',
-                                toolbar: 'bold italic underline strikethrough | blocks fontfamily fontsize | numlist bullist link | emoticons charmap | align lineheight | indent outdent | removeformat',
-                                content_style: 'body, * { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important; font-size: 14pt }',
-                                placeholder: '',
-                              }}
-                              value={formData[field.name]}
-                              onEditorChange={(e) => {
-                                let data = (editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "");
-                                setFormData((prev) => ({ ...prev, [field.name]: data }));
-                                updateFieldValue(field.name, data);
-                              }
-                              }
-                            />
-                          </>
-                        ) : (
-                          <Editor
-                            editorState={editorState}
-                            toolbarClassName="editorToolbar"
-                            wrapperClassName="editorWrapper"
-                            editorClassName="editorBody"
-                            toolbar={{
-                              options: ["inline", "blockType", "fontSize", "list", "textAlign", "link"],
-                            }}
-                            onEditorStateChange={(newState) => {
-                              handleEditorChange(newState, field.name);
-                            }}
+                    );
+                  case "slug":
+                    return (
+                      <div className="col-sm-6" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
+                        <div className="input-group">
+                          <span className="input-group-text" id="basic-addon3">{field.baseUrl}/agency/</span>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={field.value}
+                            onChange={(e) => handleTextChange(e, field.name)}
                           />
-                        )}
-                      </>)}
-                    </div>
-                  );
-                default:
-              }
-            })}
-          </div>
-          <div className="submit-btn mt-4">
-            <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2" onClick={handleSubmit} disabled={formSubmit}>
-              Save Profile {formSubmit && <CircularProgress size={20} />}
-            </button>
-          </div>
+                        </div>
+                      </div>
+                    );
+                  case "dropdown":
+                    return (
+                      <div className="col-sm-6" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
+                        <Select
+                          className="dropdown-container"
+                          options={field.data.map((option) => ({
+                            ...option,
+                            // isDisabled: formData.length ? formData[field.name].length > 7 : false,
+                          }))}
+                          isMulti={field.isMulti || false}
+                          ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}
+                          onChange={field.callback}
+                          placeholder={field.placeholder}
+                          defaultValue={field.value}
+                          // value={field.value}
+                          // isOptionDisabled={(option) => { return field.value.length > 7 }}
+                          styles={{
+                            control: (baseStyles) => ({
+                              ...baseStyles,
+                              padding: "11px",
+                              backgroundColor: "#F6F6F6",
+                              border: "none",
+                            }),
+                            valueContainer: (baseStyles) => ({
+                              ...baseStyles,
+                              padding: "0px",
+                              fontSize: 20,
+                            }),
+                            singleValue: (baseStyles) => ({
+                              ...baseStyles,
+                              color: "#696969",
+                            }),
+                            // control:(baseStyles) => ({
+                            //   ...baseStyles,
+                            //   backgroundColor:"#F6F6F6",
+                            //   borderColor:"white"
+                            // }),
+                          }}
+                        />
+                      </div>
+                    );
+
+                  case "editor":
+                    return (
+                      <div className="col-12" key={index}>
+                        <label htmlFor={field.name} className="form-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
+                        {isMounted && (<>
+                          {useTinyMCE ? (
+                            <>
+                              <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
+                                <CircularProgress />
+                              </div>
+                              <EditorTinyMCE
+                                onInit={(evt, editor) => performInitTinyMCE(evt, editor)}
+                                apiKey='0de1wvfzr5x0z7za5hi7txxvlhepurk5812ub5p0fu5tnywh'
+                                init={{
+                                  height: 400,
+                                  menubar: false,
+                                  // plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                                  // toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                                  plugins: 'anchor autolink charmap codesample emoticons link lists searchreplace visualblocks wordcount',
+                                  toolbar: 'bold italic underline strikethrough | blocks fontfamily fontsize | numlist bullist link | emoticons charmap | align lineheight | indent outdent | removeformat',
+                                  content_style: 'body, * { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important; font-size: 14pt }',
+                                  placeholder: '',
+                                }}
+                                value={formData[field.name]}
+                                onEditorChange={(e) => {
+                                  let data = (editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "");
+                                  setFormData((prev) => ({ ...prev, [field.name]: data }));
+                                  updateFieldValue(field.name, data);
+                                }
+                                }
+                              />
+                            </>
+                          ) : (
+                            <Editor
+                              editorState={editorState}
+                              toolbarClassName="editorToolbar"
+                              wrapperClassName="editorWrapper"
+                              editorClassName="editorBody"
+                              toolbar={{
+                                options: ["inline", "blockType", "fontSize", "list", "textAlign", "link"],
+                              }}
+                              onEditorStateChange={(newState) => {
+                                handleEditorChange(newState, field.name);
+                              }}
+                            />
+                          )}
+                        </>)}
+                      </div>
+                    );
+                  default:
+                }
+              })}
+            </div>
+            <div className="submit-btn mt-4">
+              <button type="submit" className="btn btn-dark btn-hover-primary border-0 px-3 py-2" disabled={formSubmit}>
+                Save Profile {formSubmit && <CircularProgress size={20} />}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
