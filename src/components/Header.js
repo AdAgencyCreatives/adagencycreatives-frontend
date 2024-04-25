@@ -272,26 +272,30 @@ function Header(props) {
                   }}
                 >
                   {navItems.map((item) => (
-                    <div key={item.name} className={`nav-item${validateChildren(item) ? " has-children" : ""}`}>
-                      <NavLink to={item.link}>
-                        <StyledButton color="link" className={`menu-link-btn ${validateChildren(item) ? " dropdown-toggle" : ""}`} onClick={(e) => validateAccess(e, item)}>
-                          {item.name}
-                        </StyledButton>
-                      </NavLink>
-                      {validateChildren(item) && (
-                        <div className="dropdown-menu show">
-                          <ul className="dropdown-list">
-                            {item.children.map((child) => (
-                              <li key={child.name}>
-                                <NavLink to={child[childLink]} className={() => ""}>
-                                  <span className={"list-item-text" + (child.name.toLowerCase()[0] == 'j' ? ' j-fix' : '')}>{child.name}</span>
-                                </NavLink>
-                              </li>
-                            ))}
-                          </ul>
+                    <>
+                      {(!item?.mobile) && (
+                        <div key={item.name} className={`nav-item${validateChildren(item) ? " has-children" : ""}`}>
+                          <NavLink to={item.link}>
+                            <StyledButton color="link" className={`menu-link-btn ${validateChildren(item) ? " dropdown-toggle" : ""}`} onClick={(e) => validateAccess(e, item)}>
+                              {item.name}
+                            </StyledButton>
+                          </NavLink>
+                          {validateChildren(item) && (
+                            <div className="dropdown-menu show">
+                              <ul className="dropdown-list">
+                                {item.children.map((child) => (
+                                  <li key={child.name}>
+                                    <NavLink to={child[childLink]} className={() => ""}>
+                                      <span className={"list-item-text" + (child.name.toLowerCase()[0] == 'j' ? ' j-fix' : '')}>{child.name}</span>
+                                    </NavLink>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
                         </div>
                       )}
-                    </div>
+                    </>
                   ))}
                   <Button
                     href="/post-a-job"

@@ -34,4 +34,5 @@ export const navItems = [
     ],
   },
   { name: "Contact", link: "/contact" },
+  { name: "Logout", link: "/logout", mobile: true },
 ];
