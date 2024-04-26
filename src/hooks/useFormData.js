@@ -21,6 +21,7 @@ const useFormData = (props = {}) => {
   } = useContext(AgenciesContext);
 
   const id = props.id;
+  const isRepost = props?.isRepost ?? false;
   const [agenciesList, setAgencies] = useState([]);
   const setJobStatus = props.setJobStatus;
   const cityRef = useRef();
@@ -257,7 +258,8 @@ const useFormData = (props = {}) => {
       showAlert("The content cannot be empty");
     } else {
       let newFormData = { ...formData, 'employment_type': (formData['employment_type'] && formData['employment_type'].length ? (Array.isArray(formData['employment_type']) ? formData['employment_type'].join(',') : formData['employment_type']) : "") };
-      if (isEdit) {
+      console.log(isRepost);
+      if (isEdit && !isRepost) {
         await saveJob(id, newFormData);
         setJobStatus("preview");
       } else {
