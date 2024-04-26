@@ -8,8 +8,11 @@ import Loader from "../../components/Loader";
 import RelatedJobs from "../../components/job/RelatedJobs";
 import "../../styles/JobDescription.scss";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
+import useSeoHelper from "../../hooks/useSeoHelper";
 
 const JobDescription = () => {
+
+  const { changeSeo } = useSeoHelper();
 
   const [pageStatus, setPageStatus] = useState("page-loading");
   const { job } = useParams();
@@ -27,6 +30,14 @@ const JobDescription = () => {
   useEffect(() => {
     getJob(job, (status) => { setPageStatus(status); });
   }, [job, token]);
+
+  useEffect(() => {
+    if (single_job && Object.keys(single_job)?.length > 0) {
+      if (single_job?.seo?.tags?.length > 0) changeSeo('keywords', single_job.seo.tags);
+      if (single_job?.seo?.description?.length > 0) changeSeo('description', single_job.seo.description);
+      if (single_job?.seo?.title?.length > 0) changeSeo('title', single_job.seo.title);
+    }
+  }, [single_job]);
 
   return pageStatus == 'page-loading' ? (
     <Loader />
