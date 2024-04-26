@@ -295,6 +295,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           name: "expired_at",
           required: true,
           disablePast: true,
+          maxDate: subscription?.ends_at ? new Date(subscription?.ends_at) : null,
           value: isEdit ? new Date(single_job.expired_at) : new Date(),
         },
         {
@@ -482,7 +483,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                             <img src={field.image} className="w-100" ref={logoRef} alt="" />
                           </div>
                           <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
-                            <button type="button" className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={(e) => handleUpload(e)} type="button">
+                            <button type="button" className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={(e) => handleUpload(e)}>
                               <FiPaperclip /> Upload
                             </button>
                             <button type="button" className="btn btn-secondary w-100 text-uppercase" onClick={() => removeLogo(single_job?.id, field?.id, single_job?.agency?.fallback_image)} disabled={field?.id ? "" : "disabled"}>
@@ -544,6 +545,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                           selected={field.value}
                           onChange={(date) => handleDateChange(date, field.name)}
                           minDate={field?.disablePast ? moment().toDate() : ''}
+                          maxDate={field?.maxDate ?? null}
                           dateFormat="MMMM d, yyyy"
                         />
                       </div>
