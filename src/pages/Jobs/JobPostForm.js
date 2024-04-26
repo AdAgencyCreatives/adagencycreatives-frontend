@@ -542,7 +542,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
                         <br />
                         <DatePicker
                           className="form-control"
-                          selected={field.value}
+                          selected={field?.name == "expired_at" && field?.maxDate ? field.maxDate : field.value}
                           onChange={(date) => handleDateChange(date, field.name)}
                           minDate={field?.disablePast ? moment().toDate() : ''}
                           maxDate={field?.maxDate ?? null}
