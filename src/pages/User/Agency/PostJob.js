@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import Checkout from "../../Cart/Checkout";
 import Loader from "../../../components/Loader";
 
-const PostJob = ({ id }) => {
+const PostJob = ({ id, isRepost = false }) => {
   const [selectedPackage, setPackage] = useState(null);
   const [jobStatus, setJobStatus] = useState("");
   const {
@@ -35,7 +35,7 @@ const PostJob = ({ id }) => {
   }, [token]);
 
   useEffect(() => {
-    if (id) {
+    if (id && !isRepost) {
       setJobStatus("create");
     }
     else if (!status && subscription) {
@@ -58,7 +58,7 @@ const PostJob = ({ id }) => {
           />
         );
       case "create":
-        return <JobPostForm setJobStatus={setJobStatus} id={id} />;
+        return <JobPostForm setJobStatus={setJobStatus} id={id} isRepost={isRepost} />;
       case "preview":
         return <Preview single_job={single_job} setJobStatus={setJobStatus} />;
       default:

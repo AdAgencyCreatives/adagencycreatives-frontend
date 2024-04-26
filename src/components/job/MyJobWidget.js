@@ -5,7 +5,7 @@ import { Context as AgenciesContext } from "../../context/AgenciesContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
-import { IoCheckmarkCircle, IoClose, IoLocationOutline, IoLockClosed, IoLockOpen, IoPencil } from "react-icons/io5";
+import { IoCheckmarkCircle, IoClose, IoLocationOutline, IoSyncOutline , IoLockOpen, IoPencil } from "react-icons/io5";
 import moment from "moment";
 
 const MyJobWidget = (props) => {
@@ -154,6 +154,15 @@ const MyJobWidget = (props) => {
                                 onClick={() => deleteJob(job.id)}
                             >
                                 <IoClose className="icon-rounded" />
+                            </Link>
+                        </Tooltip>
+
+                        <Tooltip title="Repost Job">
+                            <Link
+                                className="btn p-0 border-0 btn-hover-primary"
+                                to={`/post-a-job/${job.id}`}
+                            >
+                                <IoSyncOutline className="icon-rounded" />
                             </Link>
                         </Tooltip>
                     </div>

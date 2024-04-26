@@ -273,6 +273,10 @@ export const router = createBrowserRouter([
       {
         path: "/job/edit/:id",
         element: <UserDashboard />,
+      },
+      {
+        path: "/post-a-job/:id",
+        element: <UserDashboard />,
       }
     ],
   },

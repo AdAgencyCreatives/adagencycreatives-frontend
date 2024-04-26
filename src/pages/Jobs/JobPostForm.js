@@ -21,8 +21,7 @@ import IconMessage from "../../components/IconMessage";
 import { Context as AgenciesContext } from "../../context/AgenciesContext";
 import { Context as SubscriptionContext } from "../../context/SubscriptionContext";
 
-const JobPostForm = ({ id, setJobStatus }) => {
-
+const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
   const editorRefTinyMCE = useRef(null);
   const [useTinyMCE, setUseTinyMCE] = useState(true);
   const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
@@ -82,7 +81,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
     setEditorRef,
     formData,
     setIsLogoUploaded,
-  } = useFormData({ id, setJobStatus, useTinyMCE, uploadGuidePage: 'job-post-form' });
+  } = useFormData({ id, setJobStatus, useTinyMCE, uploadGuidePage: 'job-post-form', isRepost });
 
   const { showAlert } = useContext(AlertContext);
 
@@ -190,7 +189,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
           required: true,
           type: "text",
           name: "title",
-          value: isEdit ? single_job.title : "",
+          value: isEdit ? single_job.title + (isRepost ? ' Repost' : '') : "",
         },
         {
           label: "Industry Job Title",
@@ -348,7 +347,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
     if (!isLoading) {
       setFormData({
         category_id: (isEdit && single_job.category_id) || "",
-        title: (isEdit && single_job.title) || "",
+        title: (isEdit && single_job.title + (isRepost ? ' Repost' : '')) || "",
         city_id: (isEdit && single_job.location.city_id) || "",
         state_id: (isEdit && single_job.location.state_id) || "",
         description: (isEdit && single_job.description) || "",
@@ -697,7 +696,7 @@ const JobPostForm = ({ id, setJobStatus }) => {
             </div>
             <div className="submit-btn mt-4">
               <button className="btn btn-dark btn-hover-primary border-0 px-3 py-2" disabled={formSubmit}>
-                {isEdit ? "Update" : "Save & Preview"}
+                {isEdit && !isRepost ? "Update" : "Save & Preview"}
                 {formSubmit && <CircularProgress size={20} />}
               </button>
             </div>
