@@ -16,7 +16,8 @@ const JobApplications = (props) => {
     } = useContext(AuthContext);
 
     useEffect(() => {
-        const applications = sortApplications(props?.job?.applications);
+        // const applications = sortApplications(props?.job?.applications);
+        const applications = props?.job?.applications;
 
         if (showAllApplications) {
             setApplications(applications);
