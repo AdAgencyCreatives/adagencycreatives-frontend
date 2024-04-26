@@ -18,7 +18,7 @@ const JobApplications = (props) => {
     useEffect(() => {
         const applications = sortApplications(props?.job?.applications);
 
-        if (showAllApplications) {            
+        if (showAllApplications) {
             setApplications(applications);
         } else {
             setApplications(applications?.length < limitShowApplications ? applications : applications.slice(0, limitShowApplications));
@@ -26,7 +26,8 @@ const JobApplications = (props) => {
     }, [showAllApplications]);
 
     useEffect(() => {
-        const applications = sortApplications(props?.job?.applications);
+        // const applications = sortApplications(props?.job?.applications);
+        const applications = props?.job?.applications;
 
         setLimitShowApplications((props?.isJobExpired || props?.isJobDeleted) ? 0 : limitShowApplications)
         setApplications((props?.isJobExpired || props?.isJobDeleted) ? null : (applications?.length < limitShowApplications ? applications : applications.slice(0, limitShowApplications)));
