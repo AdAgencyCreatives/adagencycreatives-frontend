@@ -16,17 +16,34 @@ const JobApplications = (props) => {
     } = useContext(AuthContext);
 
     useEffect(() => {
-        if (showAllApplications) {
-            setApplications(props?.job?.applications);
+        const applications = sortApplications(props?.job?.applications);
+
+        if (showAllApplications) {            
+            setApplications(applications);
         } else {
-            setApplications(props?.job?.applications?.length < limitShowApplications ? props?.job?.applications : props?.job?.applications.slice(0, limitShowApplications));
+            setApplications(applications?.length < limitShowApplications ? applications : applications.slice(0, limitShowApplications));
         }
     }, [showAllApplications]);
 
     useEffect(() => {
+        const applications = sortApplications(props?.job?.applications);
+
         setLimitShowApplications((props?.isJobExpired || props?.isJobDeleted) ? 0 : limitShowApplications)
-        setApplications((props?.isJobExpired || props?.isJobDeleted) ? null : (props?.job?.applications?.length < limitShowApplications ? props?.job?.applications : props?.job?.applications.slice(0, limitShowApplications)));
+        setApplications((props?.isJobExpired || props?.isJobDeleted) ? null : (applications?.length < limitShowApplications ? applications : applications.slice(0, limitShowApplications)));
     }, []);
+
+    const sortApplications = (applications) => {
+        const rejected = applications.filter((app) => {
+            return app.status === 'rejected';
+        });
+        let others = applications.filter((app) => {
+            return app.status !== 'rejected';
+        });
+
+        applications = others.concat(rejected);
+
+        return applications;
+    }
 
 
     return (
