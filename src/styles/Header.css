@@ -948,7 +948,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
 
 .image-dialog .image-container {
     align-items: start;
-    background-color: #000;
+    background-color: #ccc;
     display: flex;
     flex-direction: column;
     height: 100vh;
