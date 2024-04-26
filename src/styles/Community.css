@@ -927,6 +927,10 @@ h2.epr-emoji-category-label {
     color: #d3a11f;
 }
 
+img.post-image {
+    cursor: pointer;
+}
+
 img.post-image.full-width {
     width: 100% !important;
     min-width: 100% !important;

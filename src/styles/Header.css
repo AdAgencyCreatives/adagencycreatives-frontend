@@ -943,3 +943,34 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .content-section * {
     font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important;
 }
+
+.image-dialog {}
+
+.image-dialog .image-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: scroll;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+}
+
+.image-dialog .image-container .quit {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    background-color: #d3a11f;
+    color: #000;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.image-dialog .image-container .quit:hover {
+    color: #fff;
+}
