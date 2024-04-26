@@ -22,6 +22,7 @@ import useHelper from "../../hooks/useHelper";
 
 import { Link } from "@mui/material";
 import PostReaction from "./PostReaction";
+import ImageDialog from "../ImageDialog";
 
 const useRefDimensions = (ref) => {
     const [dimensions, setDimensions] = useState({ width: 1, height: 2 })
@@ -45,6 +46,8 @@ const PostItem = (props) => {
     const dimensions = useRefDimensions(postContentRef);
     const [displayShowMore, setDisplayShowMore] = useState(false);
     const [showMoreClicked, setShowMoreClicked] = useState(false);
+    const [imageDialogOpen, setImageDialogOpen] = useState(false);
+    const [imageDialogImage, setImageDialogImage] = useState("");
 
     useEffect(() => {
         if (dimensions && postContent?.length > 500 && !showMoreClicked) {
@@ -169,6 +172,7 @@ const PostItem = (props) => {
             <div className={"post-content" + (!showMoreClicked && postContent?.length > 500 ? " post-preview" : "")} ref={postContentRef}>
                 <div className="post-body" dangerouslySetInnerHTML={{ __html: postContent }}></div>
             </div>
+            <ImageDialog image={imageDialogImage} setImage={setImageDialogImage} open={imageDialogOpen} setOpen={setImageDialogOpen} />
             {postContent?.length > 500 && (
                 <div className="show-more-container">
                     <Link className="show-more" onClick={(e) => {
@@ -208,9 +212,12 @@ const PostItem = (props) => {
                                 </div>
                             ) : (
                                 <div>
-                                    <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                                    <Link to={"javascript:void(0)"} onClick={(e) => {
+                                        setImageDialogImage(attachment.url);
+                                        setImageDialogOpen(true);
+                                    }}>
                                         <img className={"post-image" + (imageAttachmentIndex == 1 ? " full-width" : "")} src={attachment.url || ""} alt="" />
-                                    </a>
+                                    </Link>
                                 </div>
                             )}
                         </>
