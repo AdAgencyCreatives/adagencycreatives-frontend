@@ -947,15 +947,15 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .image-dialog {}
 
 .image-dialog .image-container {
+    align-items: start;
+    background-color: #000;
     display: flex;
     flex-direction: column;
+    height: 100vh;
     justify-content: center;
-    align-items: center;
-    overflow: scroll;
+    overflow: auto;
     position: relative;
-    width: 100%;
-    height: 100%;
-    background-color: #000;
+    width: 100vw;
 }
 
 .image-dialog .image-container .quit {
