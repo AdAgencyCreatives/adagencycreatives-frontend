@@ -457,7 +457,7 @@ const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
     <Loader />
   ) : (
     <div className="agency-page-job-edit">
-      <h3 className="page-title">Post a Job Form</h3>
+      <h3 className="page-title">{isRepost ? "Job Repost Form" : "Post a Job Form"}</h3>
       <div className="card">
         <h4 className="text-uppercase mb-4">Opportunity Details</h4>
         <div className="profile-edit-form">
