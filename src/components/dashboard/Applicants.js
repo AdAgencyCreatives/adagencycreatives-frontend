@@ -3,7 +3,7 @@ import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Tooltip } from "@mui/material";
 import AddNotesModal from "./Modals/AddNotesModal";
-import { IoTimeOutline } from "react-icons/io5";
+import { IoCloseCircleSharp, IoTimeOutline } from "react-icons/io5";
 import { CircularProgress } from "@mui/material";
 import {
   TfiDownload,
@@ -28,6 +28,7 @@ const Applicants = () => {
     getApplications,
     updateApplication,
     deleteApplication,
+    application_remove_from_recent,
   } = useContext(JobsContext);
 
   const {
@@ -43,7 +44,24 @@ const Applicants = () => {
   }, []);
 
   useEffect(() => {
-    setData(applications);
+    if (applications?.length > 0) {
+      let updatedJobs = [];
+
+      for (let index = 0; index < applications.length; index++) {
+        const job = applications[index];
+        const updatedApplications = [];
+        for (let appIndex = 0; appIndex < job.applications.length; appIndex++) {
+          const appl = job.applications[appIndex];
+          if (!appl?.removed_from_recent) {
+            updatedApplications.push(appl);
+          }
+        }
+
+        const updatedJob = { ...job, applications: updatedApplications };
+        updatedJobs.push(updatedJob);
+      }
+      setData(updatedJobs);
+    }
   }, [applications]);
 
   const setApplicationStatus = (job_id, app_id, status) => {
@@ -59,6 +77,29 @@ const Applicants = () => {
       updatedData[jobIndex] = { ...updatedJob };
       setData(updatedData);
     });
+  };
+
+  const onRemoveFromRecent = async (e, application) => {
+    e.preventDefault();
+    application_remove_from_recent(application.id, () => {
+      let updatedJobs = [];
+
+      for (let index = 0; index < data.length; index++) {
+        const job = data[index];
+        const updatedApplications = [];
+        for (let appIndex = 0; appIndex < job.applications.length; appIndex++) {
+          const appl = job.applications[appIndex];
+          if (appl.id != application.id) {
+            updatedApplications.push(appl);
+          }
+        }
+
+        const updatedJob = { ...job, applications: updatedApplications };
+        updatedJobs.push(updatedJob);
+      }
+      setData(updatedJobs);
+    });
+    return false;
   };
 
   return (
@@ -81,8 +122,15 @@ const Applicants = () => {
             <>
               {data.map((item, index) => (
                 <div className="applicants-inner" key={index}>
-                  {item?.applications?.length && item?.applications.map((application) => (
-                    <div key={application.id}>
+                  {item?.applications?.length > 0 && item?.applications.map((application) => (
+                    <div className="applicant-item" key={application.id}>
+                      <div className="remove-recent">
+                        <Tooltip title="Remove from Recent">
+                          <Link to={"javascript:void(0)"} onClick={(e) => onRemoveFromRecent(e, application)}>
+                            <IoCloseCircleSharp className="icon" />
+                          </Link>
+                        </Tooltip>
+                      </div>
                       <div className="candidate-list candidate-archive-layout d-flex align-items-center">
                         <div className="candidate-info col-sm-8">
                           <p className="mb-0">{item.location && (item.location.city + ", " + item.location.state)}</p>

@@ -14,6 +14,7 @@ const state = {
   media_experiences: [],
   filters: null,
   single_job: {},
+  single_application: {},
   related_jobs: [],
   applications: [],
   recent_applications: [],
@@ -98,6 +99,8 @@ const reducer = (state, action) => {
       };
     case "set_single_note":
       return { ...state, single_note: action.payload };
+    case "remove_from_recent":
+      return { ...state, single_application: action.payload };
     case "add_note":
       return { ...state, notes: [action.payload.data, ...state.notes] };
     case "update_note":
@@ -466,6 +469,23 @@ const getNextPageNotes = (dispatch) => {
   };
 };
 
+const application_remove_from_recent = (dispatch) => {
+  return async (id, cb = false) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.post("applications/remove_from_recent/" + id);
+      dispatch({
+        type: "remove_from_recent",
+        payload: response.data,
+      });
+      cb && cb();
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(dispatch, false);
+  };
+};
+
 const getCategories = (dispatch) => {
   return async () => {
     try {
@@ -764,6 +784,7 @@ export const { Context, Provider } = createDataContext(
     createJob,
     applyJob,
     markFilled,
+    application_remove_from_recent,
   },
   state
 );
