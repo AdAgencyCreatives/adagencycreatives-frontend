@@ -61,7 +61,7 @@ const ImageSlider = ({ open, setOpen, handleImagePickerClose, postAttachments, s
                     </div>
                 </div>
                 <div className="image-picker-body">
-                    <div className="slide-container">
+                    <div className="slide-container mobile-off">
                         <Slide autoplay={false} defaultIndex={selectedIndex}>
                             {images?.length > 0 && images.map((item) => (
                                 <div className="each-slide-effect">
@@ -70,6 +70,11 @@ const ImageSlider = ({ open, setOpen, handleImagePickerClose, postAttachments, s
                                 </div>
                             ))}
                         </Slide>
+                    </div>
+                    <div className="mobile-on">
+                        {images?.length > 0 && images.map((item) => (
+                            <img className="mobile-image" src={item} />
+                        ))}
                     </div>
                 </div>
             </div>

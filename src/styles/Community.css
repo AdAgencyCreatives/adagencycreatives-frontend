@@ -974,6 +974,7 @@ img.post-image.full-width {
 
 .image-picker.image-slider .image-picker-body {
     background-color: #000;
+    justify-content: start;
 }
 
 .image-picker.image-slider .image-picker-body button.nav.default-nav {
@@ -992,4 +993,28 @@ img.post-image.full-width {
 
 .image-picker.image-slider .image-picker-body button.nav.default-nav[data-type="next"] {
     padding-left: 7px;
+}
+
+.image-picker.image-slider .image-picker-body .mobile-image {
+    width: calc(100vw - 20px);
+    margin: 0px 0px 10px 0px;
+    padding: 0px;
+}
+
+.mobile-on {
+    display: none;
+}
+
+.mobile-off {
+    display: block;
+}
+
+@media (orientation: portrait) and (max-width:767px) {
+    .mobile-on {
+        display: block;
+    }
+
+    .mobile-off {
+        display: none;
+    }
 }
