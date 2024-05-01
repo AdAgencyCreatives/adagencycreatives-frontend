@@ -11,7 +11,6 @@ import { Button } from "../../../styles/Styles";
 
 const ImageSlider = ({ open, setOpen, handleImagePickerClose, postAttachments, selectedIndex = 0 }) => {
 
-    const imageSliderTopRef = useRef();
     const [images, setImages] = useState(null);
 
     const {
@@ -49,7 +48,7 @@ const ImageSlider = ({ open, setOpen, handleImagePickerClose, postAttachments, s
     };
 
     const scrollToTop = () => {
-        document.getElementById('image-slider-top').scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+        document.getElementById('image-slider-top').scrollIntoView({ behavior: "smooth", block: "start" });
     };
 
     return (
