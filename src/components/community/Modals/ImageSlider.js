@@ -1,11 +1,13 @@
 import { Modal } from "@mui/material";
 import { useContext, useEffect, useRef, useState } from "react";
-import { IoClose } from "react-icons/io5";
+import { IoArrowUpCircleSharp, IoClose } from "react-icons/io5";
 import ImageModalStyles from '../../../styles/Modal/ImageModal.scss';
 import { CircularProgress } from "@mui/material";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
+import ScrollButton from "../../ScrollButton";
+import { Button } from "../../../styles/Styles";
 
 const ImageSlider = ({ open, setOpen, handleImagePickerClose, postAttachments, selectedIndex = 0 }) => {
 
@@ -45,6 +47,15 @@ const ImageSlider = ({ open, setOpen, handleImagePickerClose, postAttachments, s
         }
     };
 
+    const scrollToTop = () => {
+        document.getElementById('image-slider-top').scrollTo({
+            top: 0,
+            behavior: 'smooth'
+            /* you can also use 'auto' behaviour 
+                in place of 'smooth' */
+        });
+    };
+
     return (
         <Modal
             className="image-picker image-slider"
@@ -53,6 +64,7 @@ const ImageSlider = ({ open, setOpen, handleImagePickerClose, postAttachments, s
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
+
             <div className="image-upload-modal post-modal">
                 <div className="image-picker-header">
                     <h4 className="m-0">Post Images</h4>
@@ -72,9 +84,14 @@ const ImageSlider = ({ open, setOpen, handleImagePickerClose, postAttachments, s
                         </Slide>
                     </div>
                     <div className="mobile-on">
+                        <a id="image-slider-top"></a>
                         {images?.length > 0 && images.map((item) => (
                             <img className="mobile-image" src={item} />
                         ))}
+                        <Button className="scroll-button">
+                            <span className="scroll-button-span"></span>
+                            <IoArrowUpCircleSharp onClick={scrollToTop} />
+                        </Button>
                     </div>
                 </div>
             </div>
