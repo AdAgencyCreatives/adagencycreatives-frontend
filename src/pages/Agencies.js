@@ -11,6 +11,7 @@ import { useContext, useEffect, useState } from "react";
 import Tooltip from "../components/Tooltip";
 import AuthModal from "../components/modals/AuthModal";
 import DelayedOutput from "../components/DelayedOutput";
+import ImageLoader from "../components/ImageLoader";
 
 const Agencies = () => {
   const [isAgencyLoading, setIsAgencyLoading] = useState(true);
@@ -88,7 +89,8 @@ const Agencies = () => {
                         </Tooltip>
                       )}
                       <Link to={`/agency/${item.slug}`} className="employer-logo" reloadDocument>
-                        <img
+                        <ImageLoader item={item} Placeholder={Placeholder} />
+                        {/* <img
                           src={item.logo || Placeholder}
                           width={150}
                           height={150}
@@ -96,7 +98,7 @@ const Agencies = () => {
                           onError={(e) => {
                             e.target.src = Placeholder;
                           }}
-                        />
+                        /> */}
                       </Link>
                       <h3 className="employer-title">
                         <Link to={`/agency/${item.slug}`} className="text-dark" reloadDocument>
@@ -123,9 +125,11 @@ const Agencies = () => {
             </>
           ) : (
             <div className="load-more text-center">
-              <div className="spinner-border text-light" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
+              {loading && !isAgencyLoading && (
+                <div className="spinner-border text-light" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              )}
             </div>
           )}
           <div className="load-more text-center">
