@@ -2,7 +2,7 @@ import { CircularProgress } from "@mui/material";
 import { useEffect, useState, useRef } from "react";
 import ClearImage from "../assets/images/clear.png";
 
-const ImageLoader = ({ item, Placeholder }) => {
+const ImageLoader = ({ item, Placeholder, source }) => {
 
     const imageRef = useRef();
     const [imageLoaded, setImageLoaded] = useState(false);
@@ -19,7 +19,7 @@ const ImageLoader = ({ item, Placeholder }) => {
             imageRef.current.onload = () => {
                 setImageLoaded(true);
             };
-            imageRef.current.src = item.profile_image || Placeholder;
+            imageRef.current.src = source || Placeholder;
         }
     }, [imageRef]);
 
