@@ -48,7 +48,6 @@ const ImageSlider = ({ open, setOpen, handleImagePickerClose, postAttachments, s
     };
 
     const scrollToTop = () => {
-        // document.getElementById('image-slider-top').scrollIntoView({ behavior: "smooth", block: "start" });
         document.getElementById('post-images-section').scrollTo({ top: 0, behavior: 'smooth' });
     };
 
