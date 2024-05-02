@@ -48,7 +48,8 @@ const ImageSlider = ({ open, setOpen, handleImagePickerClose, postAttachments, s
     };
 
     const scrollToTop = () => {
-        document.getElementById('image-slider-top').scrollIntoView({ behavior: "smooth", block: "start" });
+        // document.getElementById('image-slider-top').scrollIntoView({ behavior: "smooth", block: "start" });
+        document.getElementById('post-images-section').scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     return (
@@ -67,7 +68,7 @@ const ImageSlider = ({ open, setOpen, handleImagePickerClose, postAttachments, s
                         <IoClose onClick={(e) => handleModalClose(e)} />
                     </div>
                 </div>
-                <div className="image-picker-body">
+                <div className="image-picker-body" id="post-images-section">
                     <div className="slide-container mobile-off">
                         <Slide autoplay={false} defaultIndex={selectedIndex}>
                             {images?.length > 0 && images.map((item) => (
