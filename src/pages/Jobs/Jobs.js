@@ -29,6 +29,7 @@ const Jobs = () => {
   const [media, setMedia] = useState([]);
   const [filters, setFilters] = useState({});
   const [notifCategory, setNotifCategory] = useState([]);
+  const [agencyName, setAgencyName] = useState("");
   const params = useParams();
 
   const {
@@ -66,18 +67,18 @@ const Jobs = () => {
           },
         };
         setFilters(filter);
-        if (field == "search") searchJobs(params[field]);
-        else filterJobs(filter);
+        if (field == "search") searchJobs(params[field], user);
+        else filterJobs(filter, user);
       }
     } else {
-      getJobs();
+      getJobs(user);
     }
     getCategories();
     user?.uuid && getJobAlerts(user?.uuid);
     getStates();
     getEmploymentTypes();
     getMediaExperiences();
-  }, [token, params]);
+  }, [user, params]);
 
   useEffect(() => {
     if (job_alerts.length) {
@@ -169,6 +170,10 @@ const Jobs = () => {
   };
 
   const removeFilter = (item, key = false) => {
+
+    if (item == 'agency') {
+      setAgencyName("");
+    }
 
     selectRef.current[item]?.clearValue();
     let updatedFilters = { ...filters };
@@ -262,18 +267,35 @@ const Jobs = () => {
         <div className="filter-label">Remote Opportunity</div>
         <div className="filter-box">
           <div className="form-check">
-            <input className="form-check-input" type="radio" name="remote" value={1} onChange={() => addFilter({ label: "Yes", value: 1 }, { action: "select-option" }, "remote")} />
+            <input className="form-check-input" type="radio" name="remote" value={1} onChange={() => addFilter({ label: "Remote: Yes", value: 1 }, { action: "select-option" }, "remote")} />
             <label className="form-check-label">Yes</label>
           </div>
           <div className="form-check">
-            <input className="form-check-input" type="radio" name="remote" value={0} onChange={() => addFilter({ label: "No", value: 0 }, { action: "select-option" }, "remote")} />
+            <input className="form-check-input" type="radio" name="remote" value={0} onChange={() => addFilter({ label: "Remote: No", value: 0 }, { action: "select-option" }, "remote")} />
             <label className="form-check-label">No</label>
           </div>
         </div>
       </div>
 
+      <div className="filter-item">
+        <div className="filter-label">Agency Name</div>
+        <div className="filter-box">
+          <input
+            className="form-control"
+            key={"agency"}
+            type="text"
+            name="agency"
+            placeholder="Agency Name"
+            value={agencyName}
+            onChange={(e) => { setAgencyName(e.target.value) }}
+          />
+        </div>
+      </div>
+
       <div className="filter-btn">
-        <button className="btn btn-filter">Find Jobs</button>
+        <button className="btn btn-filter" onClick={(e) => {
+          addFilter({ label: "Agency: " + agencyName, value: agencyName }, { action: "select-option" }, "agency")
+        }}>Find Jobs</button>
       </div>
 
       {user && user.role !== 'agency' &&

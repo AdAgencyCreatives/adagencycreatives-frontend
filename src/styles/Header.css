@@ -974,3 +974,29 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .image-dialog .image-container .quit:hover {
     color: #fff;
 }
+
+.agency-dashboard-container .candidate-list {
+    padding-top: 30px !important;
+}
+
+.agency-dashboard-container .applicant-item {
+    position: relative;
+}
+
+.agency-dashboard-container .applicant-item .remove-recent {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+.agency-dashboard-container .applicant-item .remove-recent .icon {
+    color: #000;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+.agency-dashboard-container .applicant-item .remove-recent .icon:hover {
+    color: #d3a11f
+}

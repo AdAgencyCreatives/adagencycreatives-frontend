@@ -24,6 +24,8 @@ import { Link } from "@mui/material";
 import PostReaction from "./PostReaction";
 import ImageDialog from "../ImageDialog";
 
+import ImageSlider from "./Modals/ImageSlider";
+
 const useRefDimensions = (ref) => {
     const [dimensions, setDimensions] = useState({ width: 1, height: 2 })
     useEffect(() => {
@@ -48,6 +50,9 @@ const PostItem = (props) => {
     const [showMoreClicked, setShowMoreClicked] = useState(false);
     const [imageDialogOpen, setImageDialogOpen] = useState(false);
     const [imageDialogImage, setImageDialogImage] = useState("");
+
+    const [imageSliderOpen, setImageSliderOpen] = useState(false);
+    const [imageSliderIndex, setImageSliderIndex] = useState(0);
 
     useEffect(() => {
         if (dimensions && postContent?.length > 500 && !showMoreClicked) {
@@ -135,6 +140,34 @@ const PostItem = (props) => {
         deletePost(props.post.id);
     };
 
+    const getImageAttachments = () => {
+        let attachments = [];
+        let attachmentIndex = 0;
+        if (props?.post?.attachments?.length > 0) {
+            for (let index = 0; index < props.post.attachments.length; index++) {
+                const element = props.post.attachments[index];
+                if (element.resource_type == "post_attachment_image") {
+                    attachments[attachmentIndex++] = element;
+                }
+            }
+        }
+        return attachments;
+    };
+
+    const getVideoAttachments = () => {
+        let attachments = [];
+        let attachmentIndex = 0;
+        if (props?.post?.attachments?.length > 0) {
+            for (let index = 0; index < props.post.attachments.length; index++) {
+                const element = props.post.attachments[index];
+                if (element.resource_type == "post_attachment_video") {
+                    attachments[attachmentIndex++] = element;
+                }
+            }
+        }
+        return attachments;
+    };
+
     return (
         <div key={'div-post-item-' + props.post.id} className="post-item">
             <div className="post-header">
@@ -197,30 +230,29 @@ const PostItem = (props) => {
                 </ShowMoreText>
             </div> */}
             <div className="post-images">
-                {props.post.attachments && props.post.attachments.map((attachment, index) => {
-                    if (!(attachment.resource_type && attachment.resource_type == "post_attachment_video")) {
-                        imageAttachmentIndex++;
-                    }
+                <ImageSlider open={imageSliderOpen} setOpen={setImageSliderOpen} postAttachments={props.post.attachments} selectedIndex={imageSliderIndex} />
+                {getVideoAttachments()?.map((attachment, index) => {
                     return (
-                        <>
-                            {attachment.resource_type && attachment.resource_type == "post_attachment_video" ? (
-                                <div className="video-container">
-                                    <video className="video" controls muted playsInline>
-                                        <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
-                                        Sorry, your browser doesn't support videos.
-                                    </video>
-                                </div>
-                            ) : (
-                                <div>
-                                    <Link to={"javascript:void(0)"} onClick={(e) => {
-                                        setImageDialogImage(attachment.url);
-                                        setImageDialogOpen(true);
-                                    }}>
-                                        <img className={"post-image" + (imageAttachmentIndex == 1 ? " full-width" : "")} src={attachment.url || ""} alt="" />
-                                    </Link>
-                                </div>
-                            )}
-                        </>
+                        <div className="video-container">
+                            <video className="video" controls muted playsInline>
+                                <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
+                                Sorry, your browser doesn't support videos.
+                            </video>
+                        </div>
+                    );
+                })}
+                {getImageAttachments()?.map((attachment, index) => {
+                    return (
+                        <div>
+                            <Link to={"javascript:void(0)"} onClick={(e) => {
+                                // setImageDialogImage(attachment.url);
+                                // setImageDialogOpen(true);
+                                setImageSliderIndex(index);
+                                setImageSliderOpen(true);
+                            }}>
+                                <img image-index={imageAttachmentIndex - 1} className={"post-image" + (imageAttachmentIndex == 1 ? " full-width" : "")} src={attachment.url || ""} alt="" />
+                            </Link>
+                        </div>
                     );
                 })}
             </div >

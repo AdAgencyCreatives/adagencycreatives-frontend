@@ -14,6 +14,7 @@ const state = {
   media_experiences: [],
   filters: null,
   single_job: {},
+  single_application: {},
   related_jobs: [],
   applications: [],
   recent_applications: [],
@@ -98,6 +99,8 @@ const reducer = (state, action) => {
       };
     case "set_single_note":
       return { ...state, single_note: action.payload };
+    case "remove_from_recent":
+      return { ...state, single_application: action.payload };
     case "add_note":
       return { ...state, notes: [action.payload.data, ...state.notes] };
     case "update_note":
@@ -142,10 +145,10 @@ const getFeaturedJobs = (dispatch) => {
 };
 
 const getJobs = (dispatch) => {
-  return async () => {
+  return async (user) => {
     try {
       const response = await api.get(
-        getJobEndpoint() + "?filter[status]=" + status + "&sort=-featured_at"
+        getJobEndpoint(user) + "?filter[status]=" + status + "&sort=-featured_at"
       );
       dispatch({
         type: "set_jobs",
@@ -156,12 +159,12 @@ const getJobs = (dispatch) => {
 };
 
 const searchJobs = (dispatch) => {
-  return async (q) => {
+  return async (q, user = null) => {
     try {
-      const token = getAuthToken();
+      // const token = getAuthToken();
       const response = await api.get(
         "/home/jobs/search" +
-        (token ? "/logged_in" : "") +
+        (user?.role == "creative" ? "/logged_in" : "") +
         "?search=" +
         q +
         "&filter[status]=" +
@@ -175,9 +178,9 @@ const searchJobs = (dispatch) => {
   };
 };
 
-const getJobEndpoint = () => {
-  const token = getAuthToken();
-  if (token) return "/jobs/logged_in";
+const getJobEndpoint = (user = null) => {
+  // const token = getAuthToken();
+  if (user?.role == "creative") return "/jobs/logged_in";
   return "/jobs";
 };
 
@@ -466,6 +469,23 @@ const getNextPageNotes = (dispatch) => {
   };
 };
 
+const application_remove_from_recent = (dispatch) => {
+  return async (id, cb = false) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.post("applications/remove_from_recent/" + id);
+      dispatch({
+        type: "remove_from_recent",
+        payload: response.data,
+      });
+      cb && cb();
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(dispatch, false);
+  };
+};
+
 const getCategories = (dispatch) => {
   return async () => {
     try {
@@ -545,7 +565,7 @@ const paginateJob = (dispatch) => {
 };
 
 const filterJobs = (dispatch) => {
-  return async (filters) => {
+  return async (filters, user = null) => {
     console.log({ filters });
     dispatch({
       type: "set_filters",
@@ -554,13 +574,15 @@ const filterJobs = (dispatch) => {
     let filter = getFilters(filters);
     try {
       const response = await api.get(
-        "/jobs?filter[status]=" + status + "&" + filter
+        getJobEndpoint(user) + "?filter[status]=" + status + "&" + filter
       );
       dispatch({
         type: "set_jobs",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
@@ -581,6 +603,8 @@ const getFilters = (filters) => {
     (filters.employment_type ? filters.employment_type.value : "");
   filter +=
     "&filter[is_remote]=" + (filters.remote ? filters.remote.value : "");
+  filter +=
+    "&filter[agency]=" + (filters.agency ? filters.agency.value : "");
   if (filters.media_experience) {
     filter += "&filter[media_experience]=";
     filters.media_experience.forEach((element) => {
@@ -760,6 +784,7 @@ export const { Context, Provider } = createDataContext(
     createJob,
     applyJob,
     markFilled,
+    application_remove_from_recent,
   },
   state
 );

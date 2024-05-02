@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { IoArrowUpCircleSharp } from "react-icons/io5";
 import { Button } from '../styles/Styles';
 
-const ScrollButton = () => {
+const ScrollButton = (scrolledLimit = 300) => {
 
     const [visible, setVisible] = useState(false)
 
     const toggleVisible = () => {
         const scrolled = document.documentElement.scrollTop;
-        if (scrolled > 300) {
+        if (scrolled > scrolledLimit) {
             setVisible(true)
         }
-        else if (scrolled <= 300) {
+        else if (scrolled <= scrolledLimit) {
             setVisible(false)
         }
     };

@@ -941,3 +941,80 @@ img.post-image.full-width {
     flex-basis: 100%;
     height: 0;
 }
+
+.each-slide-effect>div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: calc(100vh - 110px);
+}
+
+.each-slide-effect span {
+    padding: 20px;
+    font-size: 20px;
+    background: #efefef;
+    text-align: center;
+}
+
+.slide-container {
+    position: relative;
+    width: 100%;
+    direction: ltr;
+}
+
+.image-picker.image-slider .post-modal {
+    width: 100vw;
+    min-width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+}
+
+.image-picker.image-slider .image-picker-body {
+    background-color: #000;
+    justify-content: start;
+}
+
+.image-picker.image-slider .image-picker-body button.nav.default-nav {
+    background-color: #d3a11f;
+    width: 50px;
+    height: 50px;
+}
+
+.image-picker.image-slider .image-picker-body button.nav.default-nav svg:hover {
+    fill: #fff;
+}
+
+.image-picker.image-slider .image-picker-body button.nav.default-nav[data-type="prev"] {
+    padding-right: 3px;
+}
+
+.image-picker.image-slider .image-picker-body button.nav.default-nav[data-type="next"] {
+    padding-left: 7px;
+}
+
+.image-picker.image-slider .image-picker-body .mobile-image {
+    width: calc(100vw - 20px);
+    margin: 0px 0px 10px 0px;
+    padding: 0px;
+}
+
+.mobile-on {
+    display: none;
+}
+
+.mobile-off {
+    display: block;
+}
+
+@media (orientation: portrait) and (max-width:767px) {
+    .mobile-on {
+        display: block;
+    }
+
+    .mobile-off {
+        display: none;
+    }
+}
