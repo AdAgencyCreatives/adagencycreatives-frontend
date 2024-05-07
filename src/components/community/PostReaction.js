@@ -257,12 +257,15 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                         document.currentPostReactionActionKey = null;
                     }, 200);
                 }} />
-                <NumUnit number={reactionsCount} onMouseDown={(e) => onShowReactionBy(e)} onClick={(e) => {
-                    document.currentPostReactionKey = null;
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }} />
+
+                {reactionsCount > 0 && (
+                    <NumUnit default={""} number={reactionsCount} onMouseDown={(e) => onShowReactionBy(e)} onClick={(e) => {
+                        document.currentPostReactionKey = null;
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return false;
+                    }} />
+                )}
                 <div id={reactionActionKey} className={"post-reaction-action-dropdown d-none"}>
                     <div className="image-container" onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'like' ? '' : 'like')}>
                         <img src={getUserReactionType() == 'like' ? LoungePostIconLikeGold : LoungePostIconLikeBlack} style={{ width: "20px" }} alt="" />

@@ -1,20 +1,20 @@
 const NumUnit = (props) => {
 
     const getNumUnit = (number) => {
-        if(number <= 0) {
-            return '0'; 
+        if (typeof number !== 'number') {
+            return number;
         }
-        
-        const k = 1000
-        const units = ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y']
 
-        const i = Math.floor(Math.log(number) / Math.log(k))
+        const k = 1000;
+        const units = ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
 
-        return `${parseFloat((number / Math.pow(k, i)).toFixed(0))} ${units[i]}`
+        const i = Math.floor(Math.log(number) / Math.log(k));
+
+        return `${parseFloat((number / Math.pow(k, i)).toFixed(0))} ${units[i]}`;
     }
-    
+
     return (
-        <span className="num-unit" {...props}>{getNumUnit(props?.number || 0)}</span>
+        <span className="num-unit" {...props}>{getNumUnit(props?.number || (Object.hasOwn(props, 'default') ? props.default : '0'))}</span>
     );
 };
 

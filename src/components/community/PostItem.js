@@ -274,7 +274,9 @@ const PostItem = (props) => {
                     ) : (
                         <img src={LoungePostIconCommentBlack} style={{ width: "20px" }} alt="" />
                     )}
-                    <NumUnit number={commentsCount} />
+                    {commentsCount > 0 && (
+                        <NumUnit number={commentsCount} />
+                    )}
                 </div>
 
             </div>
