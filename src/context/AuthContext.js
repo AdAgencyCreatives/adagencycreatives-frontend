@@ -171,7 +171,7 @@ const signin = (dispatch) => {
         payload: { type: "success", message: getLoginSuccessMessage() },
       });
       logActivity(response.data.user.uuid, "signin", "You signed in as " + response.data.user.role + ", via email: " + response.data.user.email, "{user_id:" + response.data.user.uuid + "}");
-      cb();
+      cb(response.data);
     } catch (error) {
       setErrorMessage(dispatch, error.response.data.message);
     }

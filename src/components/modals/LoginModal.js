@@ -4,6 +4,8 @@ import { IoCloseOutline, IoEye, IoEyeOff } from "react-icons/io5";
 import "../../styles/Modal/AuthModal.scss";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { CircularProgress } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
+
 
 const LoginModal = ({ open, handleClose, setModal }) => {
   const [show, setShow] = useState(false);
@@ -12,6 +14,8 @@ const LoginModal = ({ open, handleClose, setModal }) => {
   const [message, setMessage] = useState(null);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showLoading, setShowLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setShowLoading(false);
@@ -32,9 +36,18 @@ const LoginModal = ({ open, handleClose, setModal }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setShowLoading(true);
-    signin(formData, () => {
+    signin(formData, (data) => {
       setShowLoading(false);
       handleClose();
+      if (window?.location?.href?.indexOf("https://staging.adagencycreatives.com/") === 0) {
+        if (data?.user?.role?.length > 0) {
+          if (data.user.role == 'creative') {
+            navigate('/community');
+          } else if (data.user.role == 'agency' || data.user.role == 'advisor' || data.user.role == 'recruiter') {
+            navigate('/dashboard');
+          }
+        }
+      }
     });
   };
 
