@@ -29,7 +29,7 @@ export const getMyFriends = async () => {
 
 export const getMyFriendShips = async (id, status) => {
     try {
-        const response = await api.get("/friendships?filter[sender_id]="+id+"&filter[status]="+status);
+        const response = await api.get("/friendships?filter[sender_id]=" + id + "&filter[status]=" + status);
         return response.data.data;
     } catch (error) {
     }
@@ -38,7 +38,7 @@ export const getMyFriendShips = async (id, status) => {
 
 export const getFriendRequests = async (id) => {
     try {
-        const response = await api.get("/friendships?filter[receiver_id]="+id+"&filter[status]=pending");
+        const response = await api.get("/friendships?filter[receiver_id]=" + id + "&filter[status]=pending");
         return response.data.data;
     } catch (error) {
     }
@@ -52,7 +52,6 @@ export const requestFriendship = async (data) => {
     } catch (error) {
         return { "status": "error", "data": error };
     }
-    return { "status": "error", "data": null };
 };
 
 export const respondFriendship = async (data) => {
@@ -62,7 +61,6 @@ export const respondFriendship = async (data) => {
     } catch (error) {
         return { "status": "error", "data": error };
     }
-    return { "status": "error", "data": null };
 };
 
 export const unfriend = async (data) => {
@@ -72,15 +70,14 @@ export const unfriend = async (data) => {
     } catch (error) {
         return { "status": "error", "data": error };
     }
-    return { "status": "error", "data": null };
 };
 
 export const getCreativeById = async (id) => {
-      try {
+    try {
         const response = await api.get("/creatives?filter[user_id]=" + id);
         return response.data.data[0];
     } catch (error) {
     }
     return null;
-  };
+};
 

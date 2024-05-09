@@ -5,6 +5,8 @@ import "../../styles/Modal/AuthModal.scss";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { CircularProgress } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
+import { requestFriendship } from "../../context/FriendsDataContext";
+import { saveNotification } from "../../context/NotificationsDataContext";
 
 
 const LoginModal = ({ open, handleClose, setModal }) => {
@@ -36,12 +38,30 @@ const LoginModal = ({ open, handleClose, setModal }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setShowLoading(true);
-    signin(formData, (data) => {
+    signin(formData, async (data) => {
       setShowLoading(false);
       handleClose();
-      if (window?.location?.href?.indexOf("https://staging.adagencycreatives.com/") === 0) {
+      if (window?.location?.href?.indexOf("http://localhost:3000") === 0 || window?.location?.href?.indexOf("https://staging.adagencycreatives.com") === 0) {
         if (data?.user?.role?.length > 0) {
           if (data.user.role == 'creative') {
+            try {
+              let admin_id = 202;
+              let admin_uuid = "f1c048c1-d961-4910-ab83-fc8ac5f304cd";
+              let result1 = await requestFriendship({
+                "sender_id": admin_uuid, "receiver_id": data.user.uuid
+              });
+
+              if (result1?.status == "success") {
+                let result2 = await saveNotification({
+                  "user_id": data.user.uuid, "type": "lounge_friends_activity", "message": "Ad Agency Creatives has sent friendship request.", "body": "{activity_key:'lounge_friendship_requested'}"
+                });
+              }
+
+              console.log(result1);
+            } catch (error) {
+              console.log("Post Login Error:");
+              console.log(error);
+            }
             navigate('/community');
           } else if (data.user.role == 'agency' || data.user.role == 'advisor' || data.user.role == 'recruiter') {
             navigate('/dashboard');
