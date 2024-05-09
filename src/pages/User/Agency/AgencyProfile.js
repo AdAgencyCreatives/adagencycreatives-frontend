@@ -52,6 +52,8 @@ const AgencyProfile = () => {
   const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
   const videoUploadGuideMessage = getUploadGuideMessage(videoUploadGuide);
 
+  const [imageUploading, setImageUploading] = useState(false);
+
   useEffect(() => {
     const baseUrl = window.location.origin;
     setBaseUrl(baseUrl);
@@ -558,6 +560,7 @@ const AgencyProfile = () => {
       localFormData.append("file", file);
       localFormData.append("user_id", user.uuid);
       localFormData.append("resource_type", resource);
+      setImageUploading(true);
       await uploadAttachment(localFormData);
       reloadUserData(user.uuid);
 
@@ -571,7 +574,9 @@ const AgencyProfile = () => {
 
       updateFieldValue(field.name, file.name);
 
-      showAlert((resource == "agency_logo" ? "Logo" : "Video") + " uploaded successfully");
+      // showAlert((resource == "agency_logo" ? "Logo" : "Video") + " uploaded successfully");
+      showAlert("Agency profile updated successfully");
+      setImageUploading(false);
     }
   };
 
@@ -628,6 +633,11 @@ const AgencyProfile = () => {
                             <div className="img">
                               <img src={field.image} className="w-100" ref={logoRef} />
                             </div>
+                            {imageUploading && (
+                              <div style={{ margin: '10px 0px 0px 0px' }}>
+                                <Loader fullHeight={false} />
+                              </div>
+                            )}
                           </div>
                           <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                             <button type="button" className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => imageUploadRef.current.click()}>

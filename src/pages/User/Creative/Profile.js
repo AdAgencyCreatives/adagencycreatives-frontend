@@ -35,6 +35,7 @@ const Profile = () => {
   const videoUploadGuide = getUploadGuide('video', 'creative-profile');
   const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
   const videoUploadGuideMessage = getUploadGuideMessage(videoUploadGuide);
+  const [imageUploading, setImageUploading] = useState(false);
 
 
   useEffect(() => {
@@ -475,11 +476,13 @@ const Profile = () => {
       formData.append("file", file);
       formData.append("user_id", user.uuid);
       formData.append("resource_type", "profile_picture");
+      setImageUploading(true);
       (async () => {
         await saveCreativeImage(formData);
         reloadUserData(user.uuid);
         updateFieldValue("profile_image", file.name);
-        showAlert("Creative logo updated successfully");
+        showAlert("Creative profile updated successfully");
+        setImageUploading(false);
       })();
     }
   };
@@ -521,6 +524,11 @@ const Profile = () => {
                                 alt=""
                               />
                             </div>
+                            {imageUploading && (
+                              <div style={{ margin: '10px 0px 0px 0px' }}>
+                                <Loader fullHeight={false} />
+                              </div>
+                            )}
                           </div>
                           <div className="col-md-3 col-sm-4 col-12 mt-md-0 mt-3">
                             <button
@@ -683,8 +691,8 @@ const Profile = () => {
             </div>
           </form>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 

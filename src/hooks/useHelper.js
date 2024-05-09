@@ -262,7 +262,22 @@ const useHelper = () => {
         return value?.constructor?.toString()?.indexOf("Object") > -1;
     };
 
-    return { validateAccess, rectify_url, decodeEntities, injectHyperlinks, encodeSpecial, decodeSpecial, strReplaceAll, isCharNumber, getNumericString, formatPhone, capitalize, getAorAn, hasPasswordError, isObject };
+    return {
+        validateAccess,
+        rectify_url,
+        decodeEntities,
+        injectHyperlinks,
+        encodeSpecial,
+        decodeSpecial,
+        strReplaceAll,
+        isCharNumber,
+        getNumericString,
+        formatPhone,
+        capitalize,
+        getAorAn,
+        hasPasswordError,
+        isObject
+    };
 }
 
 export default useHelper;

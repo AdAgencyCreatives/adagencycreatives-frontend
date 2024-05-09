@@ -222,7 +222,7 @@ const saveAdvisorRecruiter = (dispatch) => {
     setFormSubmit(dispatch, true);
     try {
       await api.patch("/advisor_profile/" + uid, data);
-      callback(role + " Profile updated successfully");
+      callback(role + " profile updated successfully");
     } catch (error) {
       callbackError(error.response.data.message);
     }
