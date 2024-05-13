@@ -35,7 +35,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
     setFormData({ ...formData, [key]: value });
   };
 
-  const sendAdminFriendRequest = async () => {
+  const sendAdminFriendRequest = async (data) => {
     try {
       let admin_id = 202;
       let admin_uuid = "f1c048c1-d961-4910-ab83-fc8ac5f304cd";
@@ -65,7 +65,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
       if (data?.user?.role?.length > 0) {
         if (data.user.role == 'creative') {
           if (window?.location?.href?.indexOf("http://localhost:3000") === 0 || window?.location?.href?.indexOf("https://staging.adagencycreatives.com") === 0) {
-            sendAdminFriendRequest();
+            sendAdminFriendRequest(data);
           }
           navigate('/community');
         } else if (data.user.role == 'agency' || data.user.role == 'advisor' || data.user.role == 'recruiter') {
