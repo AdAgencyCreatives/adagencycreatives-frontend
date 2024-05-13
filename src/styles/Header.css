@@ -1000,3 +1000,8 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .agency-dashboard-container .applicant-item .remove-recent .icon:hover {
     color: #d3a11f
 }
+
+.slug input[type="text"] {
+    font-size: 16px;
+    line-height: 24px;
+}
