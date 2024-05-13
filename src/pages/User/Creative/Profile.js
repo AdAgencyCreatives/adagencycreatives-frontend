@@ -575,7 +575,7 @@ const Profile = () => {
                     );
                   case "slug":
                     return (
-                      <div className="col-sm-6" key={index}>
+                      <div className="col-sm-6 slug" key={index}>
                         <label htmlFor={field.name} className="form-label">
                           {field.label}
                           {field.required && <span className="required">*</span>}
