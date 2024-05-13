@@ -13,7 +13,7 @@ const useUploadHelper = () => {
         },
         "video": {
             type: "video",
-            maxSize: 1024 * 1024 * 12,
+            maxSize: 1024 * 1024 * 32,
             maxSizeLabel: "32 MB",
             aspectRatio: "16:9 (horizontal), 9:16 (full portrait)",
             aspectRatioLabel: "1280x720 pixels for Landscape and Portrait 720x1280, etc.",
