@@ -410,7 +410,7 @@ const saveCreativeImage = (dispatch) => {
 const generateThumbnailAttachment = (dispatch) => {
   return async (user_id) => {
     try {
-      const response = await api.get("/generate-thumbnail-attachment?user_id" + user_id);
+      const response = await api.get("/generate-thumbnail-attachment?user_id=" + user_id);
       return response.data.data;
     } catch (error) { }
   };
