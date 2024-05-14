@@ -76,7 +76,7 @@ const Comment = (props) => {
                 <></>
             )}
             <div className="comment-avatar">
-                <img src={props.comment.profile_picture || defaultAvatar} />
+                <img src={props.comment?.user_thumbnail || props.comment.profile_picture || defaultAvatar} />
             </div>
             <div className="comment-meta">
                 <p className="username">
