@@ -407,6 +407,15 @@ const saveCreativeImage = (dispatch) => {
   };
 };
 
+const generateThumbnailAttachment = (dispatch) => {
+  return async (user_id) => {
+    try {
+      const response = await api.get("/generate-thumbnail-attachment?user_id" + user_id);
+      return response.data.data;
+    } catch (error) { }
+  };
+};
+
 const getStats = (dispatch) => {
   return async () => {
     try {
@@ -501,6 +510,7 @@ export const { Context, Provider } = createDataContext(
     getNotifications,
     capturePortfolioSnapshot,
     removePortfolioCaptureLog,
+    generateThumbnailAttachment,
   },
   state
 );

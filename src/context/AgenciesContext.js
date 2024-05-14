@@ -379,6 +379,15 @@ const setLoading = (dispatch, state) => {
   });
 };
 
+const generateThumbnailAttachment = (dispatch) => {
+  return async (user_id) => {
+    try {
+      const response = await api.get("/generate-thumbnail-attachment?user_id" + user_id);
+      return response.data.data;
+    } catch (error) { }
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
@@ -404,6 +413,7 @@ export const { Context, Provider } = createDataContext(
     sendJobInvite,
     getAgencieRoles,
     saveAdvisorRecruiter,
+    generateThumbnailAttachment,
   },
   state
 );

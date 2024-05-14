@@ -106,6 +106,7 @@ const AdvisorRecruiterProfile = () => {
     uploadAttachment,
     getVideo,
     removeAttachment,
+    generateThumbnailAttachment,
   } = useContext(AgenciesContext);
 
   const {
@@ -575,6 +576,8 @@ const AdvisorRecruiterProfile = () => {
       setImageUploading(true);
 
       await uploadAttachment(localFormData);
+      await generateThumbnailAttachment(user.uuid);
+
       reloadUserData(user.uuid);
 
       if (field.name == "company_logo") {

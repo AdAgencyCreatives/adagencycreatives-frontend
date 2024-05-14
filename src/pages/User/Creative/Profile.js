@@ -82,6 +82,7 @@ const Profile = () => {
     getCreativeById,
     saveCreative,
     saveCreativeImage,
+    generateThumbnailAttachment,
   } = useContext(CreativesContext);
 
   const {
@@ -479,6 +480,7 @@ const Profile = () => {
       setImageUploading(true);
       (async () => {
         await saveCreativeImage(formData);
+        await generateThumbnailAttachment(user.uuid);
         reloadUserData(user.uuid);
         updateFieldValue("profile_image", file.name);
         showAlert("Creative profile updated successfully");

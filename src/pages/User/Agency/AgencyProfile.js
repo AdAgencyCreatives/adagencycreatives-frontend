@@ -106,6 +106,7 @@ const AgencyProfile = () => {
     uploadAttachment,
     getVideo,
     removeAttachment,
+    generateThumbnailAttachment,
   } = useContext(AgenciesContext);
 
   const {
@@ -562,6 +563,7 @@ const AgencyProfile = () => {
       localFormData.append("resource_type", resource);
       setImageUploading(true);
       await uploadAttachment(localFormData);
+      await generateThumbnailAttachment(user.uuid);
       reloadUserData(user.uuid);
 
       if (field.name == "company_logo") {
