@@ -42,7 +42,7 @@ const NewChat = ({ setContact, contacts, userSelected, setUserSelected }) => {
           <div className="d-flex align-items-center gap-2">
             <div className="user-avatar">
               <img
-                src={userSelected.profile_image || Avatar}
+                src={userSelected?.user_thumbnail || userSelected.profile_image || Avatar}
                 height={40}
                 width={40}
               />
@@ -85,7 +85,7 @@ const NewChat = ({ setContact, contacts, userSelected, setUserSelected }) => {
                     >
                       <div className="user-avatar">
                         <img
-                          src={item.profile_image || Avatar}
+                          src={item?.user_thumbnail || item.profile_image || Avatar}
                           height={40}
                           width={40}
                         />

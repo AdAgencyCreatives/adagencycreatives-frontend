@@ -93,7 +93,7 @@ const AgencySearch = () => {
                     )}
                     <Link to={`/agency/${item.slug}`} className="employer-logo" reloadDocument>
                       <img
-                        src={item.logo || Placeholder}
+                        src={item?.user_thumbnail || item.logo || Placeholder}
                         width={150}
                         height={150}
                         alt=""

@@ -191,7 +191,7 @@ const UserList = ({ messageType, page, data, handleItemClick, refreshContacts, s
           }}
           key={item.id}
         >
-          <img src={item.contact.image || Avatar} height={40} width={40} alt="" />
+          <img src={item.contact?.user_thumbnail || item.contact.image || Avatar} height={40} width={40} alt="" />
           <div className="user-details">
             <div className="d-flex justify-content-between align-items-center">
               <div className="username">

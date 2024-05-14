@@ -72,7 +72,7 @@ const Header = ({ data }) => {
       <div className="row align-items-center justify-content-between">
         <div className="col-12 d-flex align-items-top">
           <div className="avatar employer">
-            <img src={data.agency.logo} height={100} width={100} />
+            <img src={data.agency?.user_thumbnail || data.agency.logo} height={100} width={100} />
           </div>
           <div className="meta row w-100 align-items-center">
             <div className="col-md-8">

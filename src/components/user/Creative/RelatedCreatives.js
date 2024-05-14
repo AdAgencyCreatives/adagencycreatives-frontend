@@ -51,7 +51,7 @@ const RelatedCreatives = ({ data }) => {
                       <img
                         width="150"
                         height="150"
-                        src={item.profile_image || Placeholder}
+                        src={item?.user_thumbnail || item.profile_image || Placeholder}
                         className="candidateLogo"
                         alt=""
                       />
@@ -76,7 +76,7 @@ const RelatedCreatives = ({ data }) => {
                       </div>
                       <div className="job-metas">
                         <div className="d-flex flex-wrap">
-                        <CreativeLocation location={item?.location} />
+                          <CreativeLocation location={item?.location} />
                         </div>
                       </div>
                     </div>

@@ -37,11 +37,7 @@ const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
                 <img
                   width="150"
                   height="150"
-                  src={
-                    (user.type == "creatives"
-                      ? user.profile_image
-                      : user.logo) || Placeholder
-                  }
+                  src={user?.user_thumbnail || (user.type == "creatives" ? user.profile_image : user.logo) || Placeholder}
                   onError={(e) => {
                     e.target.src = Placeholder; // Set the backup image source
                   }}

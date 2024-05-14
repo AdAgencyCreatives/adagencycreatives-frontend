@@ -468,7 +468,7 @@ const ChatBox = ({
                             </div>
                           </Dialog>
                           <img
-                            src={sender.image || Avatar}
+                            src={sender?.user_thumbnail || sender.image || Avatar}
                             height={35}
                             width={35}
                             className="chat-avatar" alt=""

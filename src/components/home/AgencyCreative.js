@@ -78,7 +78,7 @@ const AgencyCreatives = ({ validateAccess }) => {
               <swiper-slide key={`slide${index}`}>
                 <div className="sliderContent agencies-slider">
                   <img
-                    src={item.profile_image || Placeholder}
+                    src={item?.user_thumbnail || item.profile_image || Placeholder}
                     className="candidateLogo"
                     width={150}
                     height={150}

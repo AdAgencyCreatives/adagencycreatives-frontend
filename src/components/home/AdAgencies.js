@@ -82,7 +82,7 @@ const AdAgencies = () => {
                   <div className="sliderContent adagencies-slider" style={{ height: '350px' }}>
                     <Link to={`/agency/${item.slug}`} className="employer-logo">
                       <img
-                        src={item.logo || Placeholder}
+                        src={item?.user_thumbnail || item.logo || Placeholder}
                         width={150}
                         height={150}
                         onError={(e) => {

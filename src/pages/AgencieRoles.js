@@ -91,7 +91,7 @@ const AgencieRoles = () => {
                           )}
                           <Link to={`/agency/${item.slug}/${role}`} className="employer-logo" reloadDocument>
                             <img
-                              src={item.logo || Placeholder}
+                              src={item?.user_thumbnail || item.logo || Placeholder}
                               width={150}
                               height={150}
                               alt=""

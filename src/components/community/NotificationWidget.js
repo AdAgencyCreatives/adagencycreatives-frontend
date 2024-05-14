@@ -65,7 +65,7 @@ const NotificationWidget = (props) => {
     const handleOnClick = (e, action, read) => {
         if (action == "mark-as-read") {
             if (read) return;
-            
+
             onMarkAsReadAsync();
         } else if (action == "delete") {
             onDeleteAsync();
@@ -79,7 +79,7 @@ const NotificationWidget = (props) => {
                     <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} size="xs" />
                     <div className="notif-item">
                         <div className="user-avatar">
-                            <img src={props.notification.user.image || Placeholder} alt="" height={50} width={50} />
+                            <img src={props.notification.user?.user_thumbnail || props.notification.user.image || Placeholder} alt="" height={50} width={50} />
                         </div>
                         <div className="notif-details">
                             <div className="username">{props.creative ? props.creative.name : ""}</div>
@@ -89,7 +89,7 @@ const NotificationWidget = (props) => {
                                 {/* <UtcToLocalDateTime datetime={props.notification.created_at} /> */}
                             </div>
                             {/* <Link to={props.notification.link} className="notif-content text-dark"> */}
-                                <div className="message" dangerouslySetInnerHTML={{ __html: props.notification?.message ?? '' }}></div>
+                            <div className="message" dangerouslySetInnerHTML={{ __html: props.notification?.message ?? '' }}></div>
                             {/* </Link> */}
                         </div>
                         <div className="notif-actions">

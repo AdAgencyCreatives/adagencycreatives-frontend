@@ -121,7 +121,7 @@ const Header = ({ data, role, user }) => {
         <div className="col-12 d-flex align-items-top">
           <div className="avatar rounded">
             <img
-              src={data.profile_image || Placeholder}
+              src={data?.user_thumbnail || data.profile_image || Placeholder}
               height={100}
               width={100}
               onError={(e) => {

@@ -306,7 +306,7 @@ const CreatePost = (props) => {
     <div className={props?.className}>
       <div className="status-box">
         <div className="user-avatar">
-          <img src={user ? user.image : Placeholder} alt="" />
+          <img src={user?.user_thumbnail || user.image || Placeholder} alt="" />
         </div>
         <div className="textarea">
           <textarea
@@ -352,7 +352,7 @@ const CreatePost = (props) => {
               {taggerSearchResults?.length && taggerSearchResults?.map((item, index) => {
                 return (
                   <div className="tagger-item" onClick={(e) => onTaggerItemSelected(e, item)}>
-                    <img src={item?.image} alt="" width={30} height={30} />
+                    <img src={item?.user_thumbnail || item?.image} alt="" width={30} height={30} />
                     <div>{item?.first_name + ' ' + item?.last_name}</div>
                   </div>
                 )
@@ -361,7 +361,7 @@ const CreatePost = (props) => {
           </div>
           <div className="postmodal-header">
             <div className="user-avatar">
-              <img src={user ? user.image : Placeholder} height={50} width={50} alt="" />
+              <img src={user?.user_thumbnail || user.image || Placeholder} height={50} width={50} alt="" />
             </div>
             <div className="user-meta">
               <p className="username mb-0">{user ? user.first_name + ' ' + user.last_name : 'User'} :: New Post</p>

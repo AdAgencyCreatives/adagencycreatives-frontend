@@ -74,7 +74,7 @@ const JobList = ({ data, showAgency = true }) => {
                   <img
                     width="150"
                     height="150"
-                    src={item.agency.logo || Placeholder}
+                    src={item.agency?.user_thumbnail || item.agency.logo || Placeholder}
                     className=""
                     alt=""
                   />

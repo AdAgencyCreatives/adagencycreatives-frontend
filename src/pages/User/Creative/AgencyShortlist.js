@@ -83,7 +83,7 @@ const AgencyShortlist = () => {
                     <div className="avatar employer me-3">
                       <Link to={`/agency/${resource?.slug}`}>
                         <img
-                          src={resource?.logo || Placeholder}
+                          src={resource?.user_thumbnail || resource?.logo || Placeholder}
                           height={50}
                           width={50}
                         />

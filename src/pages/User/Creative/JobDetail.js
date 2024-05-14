@@ -16,7 +16,7 @@ import TimeAgo from "../../../components/TimeAgo";
 import { getJobById } from "../../../context/JobsDataContext";
 import { useEffect, useState } from "react";
 
-const JobDetail = ({item}) => {
+const JobDetail = ({ item }) => {
 
     const [job, setJob] = useState(null);
     useEffect(() => {
@@ -37,7 +37,7 @@ const JobDetail = ({item}) => {
                         <div className="d-flex">
                             <div className="avatar employer">
                                 <img
-                                    src={job?.agency?.logo || Placeholder}
+                                    src={job?.agency?.user_thumbnail || job?.agency?.logo || Placeholder}
                                     height={100}
                                     width={100}
                                 />

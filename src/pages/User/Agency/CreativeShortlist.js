@@ -103,7 +103,7 @@ const CreativeShortlist = () => {
                           <img
                             width="150"
                             height="150"
-                            src={resource.profile_image || Avatar}
+                            src={resource?.user_thumbnail || resource.profile_image || Avatar}
                             alt=""
                           />
                         </Link>

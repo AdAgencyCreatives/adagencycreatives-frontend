@@ -70,7 +70,7 @@ const JobContent = ({ user, data, item, setAuthModalOpen }) => {
                 <img
                   width="150"
                   height="150"
-                  src={item.agency.logo}
+                  src={item.agency?.user_thumbnail || item.agency.logo}
                   className=""
                   alt=""
                 />

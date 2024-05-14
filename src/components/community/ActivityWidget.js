@@ -72,7 +72,7 @@ const ActivityWidget = (props) => {
             <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
             <div className="notif-item">
                 <div className="user-avatar">
-                    <img src={props.activity.user.image || Placeholder} alt="" height={50} width={50} />
+                    <img src={props.activity.user?.user_thumbnail || props.activity.user.image || Placeholder} alt="" height={50} width={50} />
                 </div>
                 <div className="notif-details">
                     <div className="username">{props.creative ? props.creative.name : ""}</div>

@@ -124,7 +124,7 @@ const CreativeJobs = () => {
                     </div>
                     <Link to={`/job/${item.slug}`} className="employer-logo">
                       <img
-                        src={item.agency.logo}
+                        src={item.agency?.user_thumbnail || item.agency.logo}
                         width={150}
                         height={150}
                         onError={(e) => {

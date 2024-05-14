@@ -267,7 +267,7 @@ const Creatives = () => {
                             </button>
                           </Tooltip>
                         )}
-                        <ImageLoader item={item} source={item.profile_image} Placeholder={Placeholder} />
+                        <ImageLoader item={item} source={item?.user_thumbnail || item.profile_image} Placeholder={Placeholder} />
                         <div className="agencyName">
                           <Link
                             className="text-dark"

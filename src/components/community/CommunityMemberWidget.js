@@ -44,7 +44,7 @@ const CommunityMemberWidget = (props) => {
                 <div className="col-lg-4 col-md-6 col-12" style={{ "marginBottom": "10px" }}>
                     <div className="sliderContent members-list">
                         <img
-                            src={props.creative.profile_image || Placeholder}
+                            src={props.creative?.user_thumbnail || props.creative.profile_image || Placeholder}
                             className="candidateLogo"
                             width={150}
                             height={150}

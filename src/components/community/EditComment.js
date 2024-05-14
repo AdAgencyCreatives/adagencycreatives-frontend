@@ -116,7 +116,7 @@ const EditComment = (props) => {
         <div className="create-post-modal post-modal">
           <div className="postmodal-header">
             <div className="user-avatar">
-              <img src={user ? user.image : Placeholder} height={50} width={50} alt="" />
+              <img src={user?.user_thumbnail || user.image || Placeholder} height={50} width={50} alt="" />
             </div>
             <div className="user-meta">
               <p className="username mb-0">{user ? user.first_name + ' ' + user.last_name : 'User'} :: Edit Comment</p>

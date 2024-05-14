@@ -89,9 +89,9 @@ const Agencies = () => {
                         </Tooltip>
                       )}
                       <Link to={`/agency/${item.slug}`} className="employer-logo" reloadDocument>
-                        <ImageLoader item={item} source={item.logo} Placeholder={Placeholder} />
+                        <ImageLoader item={item} source={item?.user_thumbnail || item.logo} Placeholder={Placeholder} />
                         {/* <img
-                          src={item.logo || Placeholder}
+                          src={item?.user_thumbnail || item.logo || Placeholder}
                           width={150}
                           height={150}
                           alt=""
