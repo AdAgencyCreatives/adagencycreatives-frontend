@@ -171,7 +171,7 @@ const PostItem = (props) => {
     return (
         <div key={'div-post-item-' + props.post.id} className="post-item">
             <div className="post-header">
-                <img className="post-avatar" src={props.post.author_avatar || Placeholder} alt="" />
+                <img className="post-avatar" src={props.post?.user_thumbnail || props.post.author_avatar || Placeholder} alt="" />
                 <div className="post-meta">
                     <div className="post-username">
                         <a className="user-slug" href={"/creative/" + props.post.author_slug}>
