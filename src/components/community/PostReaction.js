@@ -309,7 +309,7 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                                             {item['reactions']?.length > 0 && item['reactions'].map((reaction) => {
                                                 return (
                                                     <a className="avatar-link" href={"/creative/" + reaction?.username} target="__blank">
-                                                        <img src={reaction.profile_picture} alt="" />
+                                                        <img src={reaction?.user_thumbnail || reaction.profile_picture} alt="" />
                                                         <span>{reaction.user}</span>
                                                     </a>
                                                 )
