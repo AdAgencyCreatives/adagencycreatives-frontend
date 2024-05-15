@@ -75,7 +75,7 @@ const AgencyCreatives = ({ validateAccess }) => {
       </div>
       {/* Slides */}
       {isLoading ? <Loader fullHeight={false} /> : ""}
-      <div className={"sectionContent" + (isLoading ? " d-none" : "")}>
+      <div className={"sectionContent"}>
         <swiper-container
           ref={swiperElRef}
           init="false"
