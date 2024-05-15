@@ -1,7 +1,7 @@
 import {
   IoClose, IoCloseCircle, IoCloseCircleOutline, IoCloseCircleSharp,
 } from "react-icons/io5";
-import { FiCamera, FiImage, FiPaperclip } from "react-icons/fi";
+import { FiCamera, FiImage, FiPaperclip, FiVideo } from "react-icons/fi";
 import { Modal } from "@mui/material";
 import { useRef, useState } from "react";
 import Divider from "../Divider";
@@ -462,7 +462,7 @@ const CreatePost = (props) => {
                 setAllowType("video");
                 setImagePickerOpen(true);
               }}>
-                <FiPaperclip />
+                <FiVideo />
               </div>
               <div className="post-attachments">
                 {postAttachments && postAttachments.map((postAttachment, index) => {
