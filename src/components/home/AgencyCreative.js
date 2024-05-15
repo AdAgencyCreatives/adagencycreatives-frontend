@@ -1,7 +1,7 @@
 import Placeholder from "../../assets/images/placeholder.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRef } from "react";
 import { PaginationStyle } from "../../styles/PaginationStyle";
 import { Link } from "react-router-dom";
@@ -10,9 +10,12 @@ import useHelper from "../../hooks/useHelper";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import CreativeLocation from "../../components/CreativeLocation";
-
+import Loader from "../Loader";
 
 const AgencyCreatives = ({ validateAccess }) => {
+
+  const [isLoading, setIsLoading] = useState(true);
+
   const swiperElRef = useRef(null);
   const { creatives } = useCreatives("home");
   const { encodeSpecial, decodeSpecial } = useHelper();
@@ -26,6 +29,7 @@ const AgencyCreatives = ({ validateAccess }) => {
   const isAgency = role == "agency";
 
   useEffect(() => {
+
     const params = {
       injectStyles: [PaginationStyle],
       autoplay: {
@@ -48,11 +52,18 @@ const AgencyCreatives = ({ validateAccess }) => {
           spaceBetween: 30,
         },
       },
+      on: {
+        afterInit: function () {
+          window.setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
+        },
+      },
     };
     Object.assign(swiperElRef.current, params);
 
     swiperElRef.current.initialize();
-  });
+  }, []);
 
   return (
     <div id="creatives">
@@ -63,7 +74,8 @@ const AgencyCreatives = ({ validateAccess }) => {
         </Link>
       </div>
       {/* Slides */}
-      <div className="sectionContent">
+      {isLoading ? <Loader fullHeight={false} /> : ""}
+      <div className={"sectionContent" + (isLoading ? " d-none" : "")}>
         <swiper-container
           ref={swiperElRef}
           init="false"
