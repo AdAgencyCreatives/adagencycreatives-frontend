@@ -1,14 +1,17 @@
 import Spotlight from "../../assets/images/creative-spotlight.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoChevronForwardOutline } from "react-icons/io5";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRef } from "react";
 import { BulletStyle, PaginationStyle } from "../../styles/PaginationStyle";
 import { Link } from "react-router-dom";
 import { Context as CreativesContext } from "../../context/SpotlightContext";
 import useHelper from "../../hooks/useHelper";
+import SliderLoader from "../SliderLoader";
 
 const SpotlightCreative = () => {
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const { decodeEntities } = useHelper();
   const {
@@ -43,6 +46,11 @@ const SpotlightCreative = () => {
           spaceBetween: 30,
         },
       },
+      on: {
+        afterInit: function () {
+          window.setTimeout(() => { setIsLoading(false); }, 500);
+        },
+      },
     };
     Object.assign(swiperElRef.current, params);
 
@@ -62,6 +70,8 @@ const SpotlightCreative = () => {
       {/* Slides */}
 
       <div className="sectionContent full-width">
+        {isLoading && <SliderLoader columnGap={30} slides={4} />}
+
         <swiper-container
           ref={swiperElRef}
           init="false"

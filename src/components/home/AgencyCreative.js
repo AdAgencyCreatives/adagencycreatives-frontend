@@ -11,6 +11,7 @@ import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import CreativeLocation from "../../components/CreativeLocation";
 import Loader from "../Loader";
+import SliderLoader from "../SliderLoader";
 
 const AgencyCreatives = ({ validateAccess }) => {
 
@@ -54,9 +55,7 @@ const AgencyCreatives = ({ validateAccess }) => {
       },
       on: {
         afterInit: function () {
-          window.setTimeout(() => {
-            setIsLoading(false);
-          }, 500);
+          window.setTimeout(() => { setIsLoading(false); }, 500);
         },
       },
     };
@@ -74,8 +73,8 @@ const AgencyCreatives = ({ validateAccess }) => {
         </Link>
       </div>
       {/* Slides */}
-      {isLoading ? <Loader fullHeight={false} /> : ""}
-      <div className={"sectionContent"}>
+      <div className="sectionContent">
+        {isLoading && <SliderLoader columnGap={30} slides={3} />}
         <swiper-container
           ref={swiperElRef}
           init="false"

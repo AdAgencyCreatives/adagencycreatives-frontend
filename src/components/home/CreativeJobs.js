@@ -1,14 +1,17 @@
 import Placeholder from "../../assets/images/placeholder.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoLocationOutline, IoStar } from "react-icons/io5";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { PaginationStyle } from "../../styles/PaginationStyle";
 import Tooltip from "../Tooltip";
 import { Context as JobsContext } from "../../context/JobsContext";
 import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../context/AuthContext";
+import SliderLoader from "../SliderLoader";
 
 const CreativeJobs = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
   const swiperElRef = useRef(null);
   const jobSlides = 3;
 
@@ -48,6 +51,11 @@ const CreativeJobs = () => {
           spaceBetween: 30,
         },
       },
+      on: {
+        afterInit: function () {
+          window.setTimeout(() => { setIsLoading(false); }, 500);
+        },
+      },
     };
     Object.assign(swiperElRef.current, params);
 
@@ -68,6 +76,7 @@ const CreativeJobs = () => {
       {/* Slides */}
 
       <div className="sectionContent">
+        {isLoading && <SliderLoader columnGap={30} slides={3} />}
         <swiper-container
           ref={swiperElRef}
           init="false"

@@ -1,13 +1,17 @@
 import Placeholder from "../../assets/images/placeholder.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { PaginationStyle } from "../../styles/PaginationStyle";
 import { Link } from "react-router-dom";
 import useAgencies from "../../hooks/useAgencies";
 import { Context as AuthContext } from "../../context/AuthContext";
+import SliderLoader from "../SliderLoader";
 
 const AdAgencies = () => {
+
+  const [isLoading, setIsLoading] = useState(true);
+
   const swiperElRef = useRef(null);
   const { agencies } = useAgencies("home");
 
@@ -38,6 +42,11 @@ const AdAgencies = () => {
           spaceBetween: 30,
         },
       },
+      on: {
+        afterInit: function () {
+          window.setTimeout(() => { setIsLoading(false); }, 500);
+        },
+      },
     };
     Object.assign(swiperElRef.current, params);
 
@@ -65,6 +74,7 @@ const AdAgencies = () => {
       {/* Slides */}
       {/* <div className="sectionContent" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}> */}
       <div className="sectionContent">
+        {isLoading && <SliderLoader columnGap={30} slides={3} />}
         <swiper-container
           class="adagencies"
           ref={swiperElRef}
