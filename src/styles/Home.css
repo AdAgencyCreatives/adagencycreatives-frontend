@@ -1316,7 +1316,7 @@ img.publication-image {
 }
 
 .home-page #creatives .sectionContent {
-    height: 400px !important;
+    min-height: 400px !important;
 }
 
 .home-page #creatives .sectionContent .slider-loader {
@@ -1328,11 +1328,11 @@ img.publication-image {
 
 
 .home-page #mentors .sectionContent {
-    height: 215px !important;
+    min-height: 215px !important;
 }
 
 .home-page #jobs .sectionContent {
-    height: 340px !important;
+    min-height: 340px !important;
 }
 
 .home-page #jobs .sectionContent .slider-loader {
@@ -1343,7 +1343,7 @@ img.publication-image {
 }
 
 .home-page #spotlight .sectionContent {
-    height: 260px !important;
+    min-height: 260px !important;
 }
 
 .home-page #spotlight .sectionContent .slider-loader {
@@ -1354,7 +1354,7 @@ img.publication-image {
 }
 
 .home-page #agencies .sectionContent {
-    height: 370px !important;
+    min-height: 370px !important;
 }
 
 .home-page #agencies .sectionContent .slider-loader {
@@ -1365,5 +1365,5 @@ img.publication-image {
 }
 
 .home-page #publications .sectionContent {
-    height: 540px !important;
+    min-height: 540px !important;
 }
