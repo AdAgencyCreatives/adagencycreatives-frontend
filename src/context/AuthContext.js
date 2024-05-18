@@ -392,7 +392,7 @@ const verifyToken = (dispatch) => async (token) => {
       type: "set_fetching_token",
       payload: false,
     });
-    throw error;
+    //throw error;
   }
 };
 
