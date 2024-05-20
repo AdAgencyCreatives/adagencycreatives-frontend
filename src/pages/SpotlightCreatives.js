@@ -1,4 +1,4 @@
-import Spotlight from "../assets/images/Creative-Spotlight-No-Background-600x600.png";
+import Spotlight from "../assets/images/creative-spotlight.png";
 import { IoChevronForwardOutline } from "react-icons/io5";
 import "../styles/SpotlightCreative.css";
 import SearchBar from "../components/SearchBar";
@@ -30,7 +30,7 @@ const SpotlightCreatives = () => {
         <h1 className="community-title text-white text-center mb-4">
           Creative Spotlights
         </h1>
-        <SearchBar placeholder="Search by name, title or location" onSearch={searchSCreative} />
+        <SearchBar placeholder="Search by name or title" onSearch={searchSCreative} />
         <div className="row g-4">
           {screatives &&
             screatives.map((item, index) => {
