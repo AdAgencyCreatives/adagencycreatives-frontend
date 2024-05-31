@@ -21,7 +21,7 @@ const MyJobWidget = (props) => {
     } = useContext(JobsContext);
 
     const {
-        deleteJob,
+        deleteJob, getOpenPositions,
     } = useContext(AgenciesContext);
 
     const handleMarkFilled = (e, job) => {
@@ -160,7 +160,11 @@ const MyJobWidget = (props) => {
                         <Tooltip title="Remove">
                             <Link
                                 className="btn p-0 border-0 btn-hover-primary"
-                                onClick={() => deleteJob(job.id)}
+                                onClick={() => {
+                                    deleteJob(job.id, () => {
+                                        if (user) getOpenPositions(user.uuid);
+                                    });
+                                }}
                             >
                                 <IoClose className="icon-rounded" />
                             </Link>

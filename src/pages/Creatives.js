@@ -15,9 +15,9 @@ import Location from "../components/CreativeLocation";
 import CreativeLocation from "../components/CreativeLocation";
 
 const Creatives = () => {
-
   const [isCreativeLoading, setIsCreativeLoading] = useState(true);
-  const { creatives, loading, loadMore, searchCreativesAdvanced } = useCreatives('creative');
+  const { creatives, loading, loadMore, searchCreativesAdvanced } =
+    useCreatives("creative");
   const {
     state: { bookmarks, categories_creative_count },
     createBookmark,
@@ -49,13 +49,13 @@ const Creatives = () => {
 
   const addToShortlist = (id) => {
     createBookmark(user.uuid, "creatives", id, () => {
-      showAlert('Creative added to shortlist');
+      showAlert("Creative added to shortlist");
     });
   };
 
   const removeFromShortlist = (id) => {
     removeBookmark(id, () => {
-      showAlert('Creative deleted from shortlist');
+      showAlert("Creative deleted from shortlist");
     });
   };
 
@@ -64,7 +64,11 @@ const Creatives = () => {
   const getCategorySearch = (searchTerms) => {
     for (let index = 0; index < searchTerms.length; index++) {
       const element = searchTerms[index];
-      for (let cccIndex = 0; cccIndex < categories_creative_count.length; cccIndex++) {
+      for (
+        let cccIndex = 0;
+        cccIndex < categories_creative_count.length;
+        cccIndex++
+      ) {
         const cccElement = categories_creative_count[cccIndex];
         if (cccElement.name.toLowerCase() == element.toLowerCase()) {
           return cccElement;
@@ -77,7 +81,8 @@ const Creatives = () => {
   const searchUser = async (value) => {
     setIsCreativeLoading(true);
     let searchString = "" + (value ? value : "");
-    let searchTerms = searchString.indexOf(",") >= 0 ? searchString.split(',') : [searchString];
+    let searchTerms =
+      searchString.indexOf(",") >= 0 ? searchString.split(",") : [searchString];
 
     let permission = proceed_search(searchString, searchTerms);
 
@@ -87,7 +92,10 @@ const Creatives = () => {
       return;
     }
 
-    let query_search_string = build_search_string(searchTerms, permission.terms_allowed);
+    let query_search_string = build_search_string(
+      searchTerms,
+      permission.terms_allowed
+    );
 
     await searchCreativesAdvanced(which_search(), query_search_string);
     if (user) await getAllBookmarks(user.uuid, "creatives");
@@ -95,7 +103,7 @@ const Creatives = () => {
   };
 
   const build_search_string = (searchTerms, terms_allowed) => {
-    return searchTerms.slice(0, terms_allowed).join(',');
+    return searchTerms.slice(0, terms_allowed).join(",");
   };
 
   const which_search = () => {
@@ -103,15 +111,22 @@ const Creatives = () => {
       return "search1";
     }
 
-    if (role == 'admin' || role == 'advisor') {
+    if (role == "admin" || role == "advisor") {
       return "search3";
     }
 
-    if (role == "creative" || ((role == 'agency' || role == 'recruiter') && subscription_status == "active")) {
+    if (
+      role == "creative" ||
+      ((role == "agency" || role == "recruiter") &&
+        subscription_status == "active")
+    ) {
       return "search2";
     }
 
-    if ((role == 'agency' || role == 'recruiter') && subscription_status != "active") {
+    if (
+      (role == "agency" || role == "recruiter") &&
+      subscription_status != "active"
+    ) {
       return "search1";
     }
 
@@ -119,46 +134,88 @@ const Creatives = () => {
   };
 
   const proceed_search = (searchString, searchTerms) => {
-
     // if (!searchString || !searchString.length) {
     //   return { message: "Please enter some text to search", proceed: false, terms_allowed: 0 };
     // }
 
     if (!role) {
-      return { message: "It seems you are not logged in", proceed: false, terms_allowed: 0 };
+      return {
+        message: "It seems you are not logged in",
+        proceed: false,
+        terms_allowed: 0,
+      };
     }
 
     if (role == "admin" || role == "advisor") {
       return { message: "", proceed: true, terms_allowed: searchTerms.length };
     }
 
-    if ((role == 'agency' || role == 'recruiter') && advance_search_capabilities) {
+    if (
+      (role == "agency" || role == "recruiter") &&
+      advance_search_capabilities
+    ) {
       return { message: "", proceed: true, terms_allowed: searchTerms.length };
     }
 
-    if ((role == 'agency' || role == 'recruiter') && subscription_status && subscription_status == "active" && searchTerms.length <= 2) {
-      return { message: "", proceed: true, terms_allowed: Math.min(searchTerms.length, 2) };
+    if (
+      (role == "agency" || role == "recruiter") &&
+      subscription_status &&
+      subscription_status == "active" &&
+      searchTerms.length <= 2
+    ) {
+      return {
+        message: "",
+        proceed: true,
+        terms_allowed: Math.min(searchTerms.length, 2),
+      };
     }
 
     //Special case: If agency does have a subscription status: active but trying to search for more than two terms. e.g.: a,b,c
-    if ((role == 'agency' || role == 'recruiter') && subscription_status && subscription_status == "active" && searchTerms.length > 2) {
-      return { message: "", proceed: true, terms_allowed: Math.min(searchTerms.length, 2) };
+    if (
+      (role == "agency" || role == "recruiter") &&
+      subscription_status &&
+      subscription_status == "active" &&
+      searchTerms.length > 2
+    ) {
+      return {
+        message: "",
+        proceed: true,
+        terms_allowed: Math.min(searchTerms.length, 2),
+      };
     }
 
     let categoryCreativeCount = getCategorySearch(searchTerms);
     let isCategorySearch = categoryCreativeCount != null;
 
     //Special case: If agency doesn't have a subscription status: active and trying to search for more than one terms. e.g.: a,b
-    if ((role == 'agency' || role == 'recruiter') && (!subscription_status || subscription_status != "active") && searchTerms.length > 1) {
+    if (
+      (role == "agency" || role == "recruiter") &&
+      (!subscription_status || subscription_status != "active") &&
+      searchTerms.length > 1
+    ) {
       // let appendText = isCategorySearch ? "\n<br />Found: (" + categoryCreativeCount.creative_count + ") " + categoryCreativeCount.name : "";
-      let appendText = isCategorySearch ? "\n<br />Found: " + categoryCreativeCount.name : "";
-      return { message: "Post a Job for advance search capabilities" + appendText, proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
+      let appendText = isCategorySearch
+        ? "\n<br />Found: " + categoryCreativeCount.name
+        : "";
+      return {
+        message: "Post a Job for advance search capabilities" + appendText,
+        proceed: true,
+        terms_allowed: Math.min(searchTerms.length, 1),
+      };
     }
 
     //Special case: If agency doesn't have a subscription status: active and trying to search for cateogry
-    if ((role == 'agency' || role == 'recruiter') && (!subscription_status || subscription_status != "active") && isCategorySearch) {
+    if (
+      (role == "agency" || role == "recruiter") &&
+      (!subscription_status || subscription_status != "active") &&
+      isCategorySearch
+    ) {
       // return { message: "Post a Job to view (" + categoryCreativeCount.creative_count + ") " + categoryCreativeCount.name, proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
-      return { message: "Post a Job to view " + categoryCreativeCount.name, proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
+      return {
+        message: "Post a Job to view " + categoryCreativeCount.name,
+        proceed: true,
+        terms_allowed: Math.min(searchTerms.length, 1),
+      };
     }
 
     return { message: "", proceed: true, terms_allowed: 1 };
@@ -169,11 +226,14 @@ const Creatives = () => {
   }, [user]);
 
   useEffect(() => {
-    if ((!role || !role.length) || !advance_search_capabilities) {
+    if (!role || !role.length || !advance_search_capabilities) {
       return;
     }
 
-    if ((role == 'agency' || role == 'recruiter') && advance_search_capabilities) {
+    if (
+      (role == "agency" || role == "recruiter") &&
+      advance_search_capabilities
+    ) {
       setCreativeSearchPlaceholder(
         "Search by name, title, location, company, industry experience, media, full-time etc."
       );
@@ -181,22 +241,30 @@ const Creatives = () => {
   }, [role, advance_search_capabilities]);
 
   useEffect(() => {
-    if ((!role || !role.length) || (!subscription_status || !subscription_status.length)) {
+    if (
+      !role ||
+      !role.length ||
+      !subscription_status ||
+      !subscription_status.length
+    ) {
       return;
     }
 
     if (role == "creative") {
-      setCreativeSearchPlaceholder("Select one: by name, location, or select a title");
+      setCreativeSearchPlaceholder(
+        "Select one: by name, location, or select a title"
+      );
     }
 
-    if (role == 'agency' || role == 'recruiter') {
+    if (role == "agency" || role == "recruiter") {
       if (subscription_status == "active") {
-        setCreativeSearchPlaceholder("Select up to two: name, location, and/or select a title");
+        setCreativeSearchPlaceholder(
+          "Select up to two: name, location, and/or select a title"
+        );
       } else {
-        setCreativeSearchPlaceholder("Select one: by name or location. Post a Job for advance search capabilities");
+        setCreativeSearchPlaceholder("Select one: by name or location");
       }
     }
-
   }, [role, subscription_status]);
 
   useEffect(() => {
@@ -216,8 +284,7 @@ const Creatives = () => {
   }, []);
 
   useEffect(() => {
-    if (creatives?.length === 9)
-      setIsCreativeLoading(false);
+    if (creatives?.length === 9) setIsCreativeLoading(false);
   }, [creatives]);
 
   return (
@@ -249,13 +316,20 @@ const Creatives = () => {
                       (bookmark) => bookmark.resource.user_id == item.user_id
                     ) || false;
                   return (
-                    <div className="col-md-4 col-sm-6 col-12" key={`creative-${item?.user_id}`}>
+                    <div
+                      className="col-md-4 col-sm-6 col-12"
+                      key={`creative-${item?.user_id}`}
+                    >
                       <div className="sliderContent agencies-slider">
-                        {(role == "admin" || role == "agency" || role == "advisor" || role == "recruiter") && (
+                        {(role == "admin" ||
+                          role == "agency" ||
+                          role == "advisor" ||
+                          role == "recruiter") && (
                           <Tooltip title={"Shortlist"} type="featured">
                             <button
                               className={
-                                "shortlist-btn" + (isShortlisted ? " active" : "")
+                                "shortlist-btn" +
+                                (isShortlisted ? " active" : "")
                               }
                               onClick={() =>
                                 isShortlisted
@@ -267,7 +341,11 @@ const Creatives = () => {
                             </button>
                           </Tooltip>
                         )}
-                        <ImageLoader item={item} source={item?.user_thumbnail || item.profile_image} Placeholder={Placeholder} />
+                        <ImageLoader
+                          item={item}
+                          source={item?.user_thumbnail || item.profile_image}
+                          Placeholder={Placeholder}
+                        />
                         <div className="agencyName">
                           <Link
                             className="text-dark"
@@ -284,13 +362,18 @@ const Creatives = () => {
                           </Link>
                         </div>
                         <div className="position">
-                          {isAdmin || isAdvisor ? (<>
-                            <Link className="" to={`/creatives/search/industry-title/${item.category}`}>
-                              {item.category || ""}
-                            </Link>
-                          </>) : (<>
-                            {item.category || ""}
-                          </>)}
+                          {isAdmin || isAdvisor ? (
+                            <>
+                              <Link
+                                className=""
+                                to={`/creatives/search/industry-title/${item.category}`}
+                              >
+                                {item.category || ""}
+                              </Link>
+                            </>
+                          ) : (
+                            <>{item.category || ""}</>
+                          )}
                         </div>
                         <CreativeLocation location={item?.location} />
                         <div className="profileLink">
@@ -302,7 +385,8 @@ const Creatives = () => {
                                 showAlert("Please login to access");
                               }
                               return false;
-                            }}>
+                            }}
+                          >
                             View Profile
                           </Link>
                         </div>

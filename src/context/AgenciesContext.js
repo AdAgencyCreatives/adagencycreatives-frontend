@@ -361,13 +361,14 @@ const setRequestPackage = (dispatch, state) => {
 };
 
 const deleteJob = (dispatch) => {
-  return async (id) => {
+  return async (id, cb = () => { }) => {
     try {
       const response = await api.delete("/jobs/" + id);
       dispatch({
         type: "delete_job",
         payload: id,
       });
+      cb();
     } catch (error) { }
   };
 };
