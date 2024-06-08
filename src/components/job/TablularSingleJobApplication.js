@@ -62,8 +62,12 @@ const TabularSingleJobApplication = (props) => {
           </Link>
         </td>
         <td>
-          {thisApplication?.creative_title}
-          <br />({thisApplication?.creative_category})
+          {thisApplication?.creative_category}
+          {thisApplication?.creative_title && (
+            <>
+              <br />({thisApplication?.creative_title})
+            </>
+          )}
         </td>
         <td>
           <div className="job-table-info-content-date-expiry">
