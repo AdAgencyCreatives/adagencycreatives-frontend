@@ -9,7 +9,7 @@ import {
   TfiLoop,
   TfiPlus,
   TfiBackRight,
-  TfiCheckBox
+  TfiCheckBox,
 } from "react-icons/tfi";
 import { Link } from "react-router-dom";
 import AddNotesModal from "./Modals/AddNotesModal";
@@ -46,9 +46,9 @@ const ApplicantJobs = () => {
   const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
-    if (user.role === 'agency') {
-      setStatusApplication('shortlisted');
-      getApplicationsAllStatus(user.uuid, 0, 0, 'shortlisted');
+    if (user.role === "agency") {
+      setStatusApplication("shortlisted");
+      getApplicationsAllStatus(user.uuid, 0, 0, "shortlisted");
     } else {
       getApplicationsAllStatus(user.uuid, 0, 0, statusApplication);
     }
@@ -71,7 +71,7 @@ const ApplicantJobs = () => {
     setTab((prev) => ({ ...prev, [id]: tab }));
   };
 
-  const setApplicationStatus = (job_id, app_id, status, cb = () => { }) => {
+  const setApplicationStatus = (job_id, app_id, status, cb = () => {}) => {
     updateApplication(app_id, { status }, () => {
       let jobIndex = applications.findIndex((job) => job.id == job_id);
       const updatedJob = { ...applications[jobIndex] };
@@ -85,7 +85,7 @@ const ApplicantJobs = () => {
       updatedData[jobIndex] = { ...updatedJob };
       setData(updatedData);
       // getApplicationsAllStatus(user.uuid, 0, 0, statusApplication);
-      showAlert('Creative status change successful');
+      showAlert("Creative status change successful");
       cb();
     });
   };
@@ -110,79 +110,140 @@ const ApplicantJobs = () => {
         </div>
       ) : (
         <div className="card">
-          {applicationMeta?.total > 10 && <Paginate meta={applicationMeta} paginate={paginate} title={"job applicants"} />}
-          {data && data.length > 0 ? data.map((item, index) => (
-            <div className="job-applicants" key={index}>
-              <div className="heading row d-flex align-items-center">
-                <div className="col-sm-8 col-xs-12">
-                  <h3 className="job-title">{item.agency.name} - {item.title} {item.location && (<span className="location-name">{"(" + item.location.city + ", " + item.location.state + ")"}</span>)}</h3>
-                  {item?.expired_at && ((new Date(item?.expired_at) < (Date.parse(new Date().toISOString())))) && (<span className="badge" style={{ backgroundColor: 'red', marginRight: '5px' }}>Expired: <TimeAgo datetime={item?.expired_at} /></span>)}
-                  {item?.deleted_at && ((new Date(item?.deleted_at) < (Date.parse(new Date().toISOString())))) && (<span className="badge" style={{ backgroundColor: 'red', marginRight: '5px' }}>Deleted: <TimeAgo datetime={item?.deleted_at} /></span>)}
-                </div>
-                <div className="col-sm-4 col-xs-12">
-                  <div className="inner-result d-flex align-items-center">
-                    <div
-                      className={
-                        "total-applicants show-total-applicants" +
-                        (tab[item.id] == "pending" || !tab[item.id]
-                          ? " active"
-                          : "")
-                      }
-                      onClick={() => switchTab(item.id, "pending")}
-                    >
-                      {item?.apply_type.toLowerCase() != "external" ? "Total(s):" : "Interested:"}
-                      <span className="number">{item.applications_count}</span>
+          {applicationMeta?.total > 10 && (
+            <Paginate
+              meta={applicationMeta}
+              paginate={paginate}
+              title={"jobs"}
+            />
+          )}
+          {data && data.length > 0 ? (
+            data.map((item, index) => (
+              <div className="job-applicants" key={index}>
+                <div className="heading row d-flex align-items-center">
+                  <div className="col-sm-8 col-xs-12">
+                    <h3 className="job-title">
+                      {item.agency.name} - {item.title}{" "}
+                      {item.location && (
+                        <span className="location-name">
+                          {"(" +
+                            item.location.city +
+                            ", " +
+                            item.location.state +
+                            ")"}
+                        </span>
+                      )}
+                    </h3>
+                    {item?.expired_at &&
+                      new Date(item?.expired_at) <
+                        Date.parse(new Date().toISOString()) && (
+                        <span
+                          className="badge"
+                          style={{ backgroundColor: "red", marginRight: "5px" }}
+                        >
+                          Expired: <TimeAgo datetime={item?.expired_at} />
+                        </span>
+                      )}
+                    {item?.deleted_at &&
+                      new Date(item?.deleted_at) <
+                        Date.parse(new Date().toISOString()) && (
+                        <span
+                          className="badge"
+                          style={{ backgroundColor: "red", marginRight: "5px" }}
+                        >
+                          Deleted: <TimeAgo datetime={item?.deleted_at} />
+                        </span>
+                      )}
+                  </div>
+                  <div className="col-sm-4 col-xs-12">
+                    <div className="inner-result d-flex align-items-center">
+                      <div
+                        className={
+                          "total-applicants show-total-applicants" +
+                          (tab[item.id] == "pending" || !tab[item.id]
+                            ? " active"
+                            : "")
+                        }
+                        onClick={() => switchTab(item.id, "pending")}
+                      >
+                        {item?.apply_type.toLowerCase() != "external"
+                          ? "Total(s):"
+                          : "Interested:"}
+                        <span className="number">
+                          {item.applications_count}
+                        </span>
+                      </div>
+                      {item?.apply_type.toLowerCase() != "external" && (
+                        <>
+                          <div
+                            className={
+                              "approved-applicants show-approved-applicants" +
+                              (tab[item.id] == "accepted" ? " active" : "")
+                            }
+                            onClick={() => switchTab(item.id, "accepted")}
+                          >
+                            Approved:
+                            <span className="number">
+                              {item.applications &&
+                                item.applications.filter(
+                                  (application) =>
+                                    application.status == "accepted"
+                                ).length}
+                            </span>
+                          </div>
+                          <div
+                            className={
+                              "rejected-applicants show-rejected-applicants" +
+                              (tab[item.id] == "rejected" ? " active" : "")
+                            }
+                            onClick={() => switchTab(item.id, "rejected")}
+                          >
+                            Not Aligned:
+                            <span className="number">
+                              {item.applications &&
+                                item.applications.filter(
+                                  (application) =>
+                                    application.status == "rejected"
+                                ).length}
+                            </span>
+                          </div>
+                        </>
+                      )}
                     </div>
-                    {item?.apply_type.toLowerCase() != "external" && (<>
-                      <div
-                        className={
-                          "approved-applicants show-approved-applicants" +
-                          (tab[item.id] == "accepted" ? " active" : "")
-                        }
-                        onClick={() => switchTab(item.id, "accepted")}
-                      >
-                        Approved:
-                        <span className="number">
-                          {
-                            item.applications && item.applications.filter(
-                              (application) => application.status == "accepted"
-                            ).length
-                          }
-                        </span>
-                      </div>
-                      <div
-                        className={
-                          "rejected-applicants show-rejected-applicants" +
-                          (tab[item.id] == "rejected" ? " active" : "")
-                        }
-                        onClick={() => switchTab(item.id, "rejected")}
-                      >
-                        Not Aligned:
-                        <span className="number">
-                          {
-                            item.applications && item.applications.filter(
-                              (application) => application.status == "rejected"
-                            ).length
-                          }
-                        </span>
-                      </div>
-                    </>)}
                   </div>
                 </div>
+                {item.applications && item.applications.length ? (
+                  <JobApplications
+                    job={item}
+                    setApplicationStatus={setApplicationStatus}
+                    setAppId={setAppId}
+                    setOpen={setOpen}
+                    isJobExpired={
+                      item?.expired_at &&
+                      new Date(item?.expired_at) <
+                        Date.parse(new Date().toISOString())
+                    }
+                    isJobDeleted={
+                      item?.deleted_at &&
+                      new Date(item?.deleted_at) <
+                        Date.parse(new Date().toISOString())
+                    }
+                  />
+                ) : (
+                  <p>No New Applicants To Show</p>
+                )}
               </div>
-              {item.applications && item.applications.length ?
-                (<JobApplications
-                  job={item}
-                  setApplicationStatus={setApplicationStatus}
-                  setAppId={setAppId}
-                  setOpen={setOpen}
-                  isJobExpired={item?.expired_at && ((new Date(item?.expired_at) < (Date.parse(new Date().toISOString()))))}
-                  isJobDeleted={item?.deleted_at && ((new Date(item?.deleted_at) < (Date.parse(new Date().toISOString()))))}
-                />) : (<p>No New Applicants To Show</p>)
-              }
-            </div>
-          )) : (<p>No New Applicants To Show</p>)}
-          {applicationMeta?.total > 10 && <Paginate meta={applicationMeta} paginate={paginate} title={"job applicants"} />}
+            ))
+          ) : (
+            <p>No New Applicants To Show</p>
+          )}
+          {applicationMeta?.total > 10 && (
+            <Paginate
+              meta={applicationMeta}
+              paginate={paginate}
+              title={"jobs"}
+            />
+          )}
         </div>
       )}
     </div>

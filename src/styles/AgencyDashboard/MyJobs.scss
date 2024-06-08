@@ -44,7 +44,8 @@
             white-space: nowrap;
         }
 
-        .action-button a {
+        .action-button a,
+        .action-button button {
             color: var(--color-primary);
             height: 30px;
             line-height: 30px;
@@ -81,4 +82,8 @@
     .location>* {
         margin-top: 0px
     }
+}
+
+.job-table-status .badge {
+    min-width: 100% !important;
 }

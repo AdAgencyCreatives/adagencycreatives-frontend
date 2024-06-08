@@ -5,7 +5,7 @@ import MyJobs from "./MyJobs";
 import Sidebar from "../../../components/dashboard/Sidebar";
 import "../../../styles/AgencyDashboard/index.scss";
 import { useMatch, useParams } from "react-router-dom";
-import ApplicantJobs from "../../../components/dashboard/ApplicantJobs";
+import TabularApplicantJobs from "../../../components/dashboard/TabularApplicantJobs";
 import ChangePassword from "./ChangePassword";
 import DeleteProfile from "./DeleteProfile";
 import CreativeShortlist from "./CreativeShortlist";
@@ -45,7 +45,7 @@ const Agency = () => {
     profile: <Profile />,
     "post-a-job": <PostJob />,
     "my-jobs": <MyJobs />,
-    "applicant-jobs": <ApplicantJobs />,
+    "applicant-jobs": <TabularApplicantJobs />,
     "change-password": <ChangePassword />,
     "delete-profile": <DeleteProfile />,
     "shortlist-creatives": <CreativeShortlist />,

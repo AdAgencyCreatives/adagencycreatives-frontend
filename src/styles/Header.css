@@ -819,6 +819,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
     color: #000;
     margin: 10px 10px 0px 0px;
     padding: 10px;
+    min-height: 40px;
 }
 
 .job-post-badge.gold {
