@@ -70,7 +70,7 @@ const TabularJobApplications = (props) => {
             <tr>
               <th className="title">Name</th>
               <th className="title">Industry Title</th>
-              <th className="title">Your Title</th>
+              <th className="title">Applicant Title</th>
               <th className="date">Applied Date</th>
               <th className="status">Status</th>
               <th className="actions">Actions</th>
