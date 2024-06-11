@@ -275,7 +275,7 @@ ul.dropdown-list:before {
 }
 
 .link.link-gold {
-    color: black !important;
+    color: var(--color-primary) !important;
 }
 
 .link.link-gold:hover {
@@ -283,6 +283,18 @@ ul.dropdown-list:before {
 }
 
 .link.link-gold.hover-black:hover {
+    color: black !important;
+}
+
+.link.link-black {
+    color: black !important;
+}
+
+.link.link-black:hover {
+    color: silver !important;
+}
+
+.link.link-black.hover-gold:hover {
     color: var(--color-primary) !important;
 }
 

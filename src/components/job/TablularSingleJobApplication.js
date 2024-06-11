@@ -58,7 +58,7 @@ const TabularSingleJobApplication = (props) => {
       <tr>
         <td>
           <Link
-            className="link link-gold hover-black"
+            className="link link-black hover-gold"
             to={"/creative/" + thisApplication.slug}
           >
             {thisApplication.user}
