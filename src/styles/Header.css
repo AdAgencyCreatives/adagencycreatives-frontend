@@ -298,6 +298,18 @@ ul.dropdown-list:before {
     color: var(--color-primary) !important;
 }
 
+.link.link-silver {
+    color: silver !important;
+}
+
+.link.link-silver:hover {
+    color: black !important;
+}
+
+.link.link-silver.hover-gold:hover {
+    color: var(--color-primary) !important;
+}
+
 .menu-item {
     position: relative;
 }
