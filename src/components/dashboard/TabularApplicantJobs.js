@@ -15,7 +15,7 @@ const TabularApplicantJobs = () => {
   const [appId, setAppId] = useState("");
   const [data, setData] = useState([]);
   const [tab, setTab] = useState({});
-  const [statusApplication, setStatusApplication] = useState("shortlisted");
+  const [statusApplication, setStatusApplication] = useState(false);
 
   const {
     state: { applications, isLoadingApp, applicationMeta },
@@ -31,12 +31,13 @@ const TabularApplicantJobs = () => {
   const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
-    if (user.role === "agency") {
-      setStatusApplication("shortlisted");
-      getApplicationsAllStatus(user.uuid, 0, 0, "shortlisted");
-    } else {
-      getApplicationsAllStatus(user.uuid, 0, 0, statusApplication);
-    }
+    // if (user.role === "agency") {
+    //   setStatusApplication("shortlisted");
+    //   getApplicationsAllStatus(user.uuid, 0, 0, "shortlisted");
+    // } else {
+    //   getApplicationsAllStatus(user.uuid, 0, 0, statusApplication);
+    // }
+    getApplicationsAllStatus(user.uuid, 0, 0, statusApplication);
   }, []);
 
   useEffect(() => {
