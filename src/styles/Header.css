@@ -1072,3 +1072,11 @@ nav ul.dropdown-list .list-item-text.j-fix {
     align-items: center;
     font-weight: 500;
 }
+
+.job-table-info-content-date-expiry {
+    min-width: 100px;
+}
+
+.agency-page-myjobs.tabular .job-location.location a {
+    font-size: 16px !important;
+}

@@ -111,14 +111,16 @@ const TabularApplicantJobs = () => {
                     <th className="title">Agency</th>
                   )}
                   <th className="title">Title</th>
+                  <th className="title">Location</th>
                   <th className="applicants">Applicants</th>
-                  <th className="date">Created &amp; Expired</th>
+                  <th className="date">Created</th>
+                  <th className="date">Expiry</th>
                   <th className="status">Status</th>
                 </tr>
               </thead>
               <tbody>
-                {data &&
-                  data.map((item) => (
+                {applications &&
+                  applications.map((item) => (
                     <MyJobApplicantsWidget
                       job={item}
                       setApplicationStatus={setApplicationStatus}

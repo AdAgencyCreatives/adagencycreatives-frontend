@@ -83,7 +83,7 @@ const MyJobApplicantsWidget = ({
 
         <td className="job-table-info">
           <div className="job-table-info-content">
-            <div className="title-wrapper">
+            <div className="title-wrapper" style={{ marginBottom: "0px" }}>
               <h3 className="job-table-info-content-title">
                 <Link
                   className="link link-black hover-gold link-bold"
@@ -98,6 +98,10 @@ const MyJobApplicantsWidget = ({
                 ""
               )}
             </div>
+          </div>
+        </td>
+        <td className="job-table-info">
+          <div className="job-table-info-content" style={{ minWidth: "200px" }}>
             <div className="job-metas">
               <div className="job-location location">
                 {(thisJob?.location?.state?.length ||
@@ -128,16 +132,22 @@ const MyJobApplicantsWidget = ({
         <td className="job-table-applicants text-center text-theme nowrap">
           {job?.applications?.length > 0 ? (
             <>
-              <span className="number">{thisJob?.applications?.length}</span>{" "}
+              {/* <span className="number">{thisJob?.applications?.length}</span>{" "}
               Applicant
-              {thisJob?.applications?.length > 1 ? "s" : ""}
-              <br />
+              {thisJob?.applications?.length > 1 ? "s" : ""} */}
+              {/* <br /> */}
               <Button
                 className="btn btn-dark btn-sm"
-                style={{ padding: "0px 6px", margin: "5px 0px 0px 0px" }}
+                style={{
+                  padding: "0px 6px",
+                  margin: "0px",
+                  minWidth: "130px",
+                }}
                 onClick={(e) => setShowApplications((state) => !state)}
               >
-                {showApplications ? "Hide" : "Show"}
+                {showApplications ? "Hide" : "Show"}&nbsp;
+                <span className="number">{thisJob?.applications?.length}</span>
+                &nbsp;Applicant{thisJob?.applications?.length > 1 ? "s" : ""}
               </Button>
             </>
           ) : (
@@ -148,13 +158,16 @@ const MyJobApplicantsWidget = ({
         <td>
           <div className="job-table-info-content-date-expiry">
             <div className="created">
-              <strong>Created: </strong>
-              {moment(thisJob.created_at).format("MMMM D, YYYY")}
+              {moment(thisJob.created_at).format("MMM D, YYYY")}
             </div>
+          </div>
+        </td>
+
+        <td>
+          <div className="job-table-info-content-date-expiry">
             <div className="expiry-date">
-              <strong>Expiration date: </strong>
               <span className="text-danger">
-                {moment(thisJob.expired_at).format("MMMM D, YYYY")}
+                {moment(thisJob.expired_at).format("MMM D, YYYY")}
               </span>
             </div>
           </div>
@@ -169,43 +182,24 @@ const MyJobApplicantsWidget = ({
           ) && (
             <>
               {thisJob.status == "approved" && (
-                <span
-                  className="badge"
-                  style={{ backgroundColor: "#d3a11f", marginRight: "5px" }}
-                >
-                  Active
-                </span>
+                <span className="badge bg-primary">Active</span>
               )}
               {thisJob.status == "filled" && (
-                <span
-                  className="badge"
-                  style={{
-                    backgroundColor: "green",
-                    marginRight: "5px",
-                  }}
-                >
-                  Filled
-                </span>
+                <span className="badge bg-success">Filled</span>
               )}
             </>
           )}
           {thisJob?.expired_at &&
             new Date(thisJob?.expired_at) <
               Date.parse(new Date().toISOString()) && (
-              <span
-                className="badge"
-                style={{ backgroundColor: "red", marginRight: "5px" }}
-              >
+              <span className="badge bg-danger">
                 Expired: <TimeAgo datetime={thisJob?.expired_at} />
               </span>
             )}
           {job?.deleted_at &&
             new Date(thisJob?.deleted_at) <
               Date.parse(new Date().toISOString()) && (
-              <span
-                className="badge"
-                style={{ backgroundColor: "red", marginRight: "5px" }}
-              >
+              <span className="badge bg-danger">
                 Deleted: <TimeAgo datetime={thisJob?.deleted_at} />
               </span>
             )}
@@ -213,7 +207,7 @@ const MyJobApplicantsWidget = ({
       </tr>
       {showApplications && (
         <tr>
-          <td colSpan={4}>
+          <td colSpan={6}>
             {thisJob?.applications?.length > 0 ? (
               <TabularJobApplications
                 job={thisJob}
