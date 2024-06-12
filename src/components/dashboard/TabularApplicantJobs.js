@@ -96,7 +96,7 @@ const TabularApplicantJobs = () => {
   };
 
   return (
-    <div className="agency-page-myjobs">
+    <div className="agency-page-myjobs tabular">
       <AddNotesModal
         open={open}
         handleClose={handleClose}

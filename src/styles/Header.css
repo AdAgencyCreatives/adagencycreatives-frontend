@@ -310,6 +310,10 @@ ul.dropdown-list:before {
     color: var(--color-primary) !important;
 }
 
+.link-bold {
+    font-weight: 500;
+}
+
 .menu-item {
     position: relative;
 }
@@ -1042,4 +1046,21 @@ nav ul.dropdown-list .list-item-text.j-fix {
     font-size: 16px !important;
     line-height: 24px;
     font-weight: normal;
+}
+
+.agency-page-myjobs.tabular .action-button a,
+.agency-page-myjobs.tabular .action-button button {
+    color: black !important;
+}
+
+.agency-page-myjobs.tabular .action-button a:hover,
+.agency-page-myjobs.tabular .action-button button:hover {
+    color: var(--color-primary) !important;
+}
+
+.agency-page-myjobs.tabular .action-button a:hover svg,
+.agency-page-myjobs.tabular .action-button button:hover svg {
+    color: black !important;
+    fill: black !important;
+
 }

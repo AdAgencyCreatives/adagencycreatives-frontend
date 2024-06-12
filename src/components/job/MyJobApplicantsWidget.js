@@ -80,7 +80,12 @@ const MyJobApplicantsWidget = ({
           <div className="job-table-info-content">
             <div className="title-wrapper">
               <h3 className="job-table-info-content-title">
-                <Link to={"/job/" + thisJob.slug}>{thisJob.title}</Link>
+                <Link
+                  className="link link-black hover-gold link-bold"
+                  to={"/job/" + thisJob.slug}
+                >
+                  {thisJob.title}
+                </Link>
               </h3>
               {job.priority.is_featured ? (
                 <IoCheckmarkCircle color="#34A853" size={30} />
@@ -93,14 +98,20 @@ const MyJobApplicantsWidget = ({
                 {(thisJob?.location?.state?.length ||
                   thisJob?.location?.city?.length) && <IoLocationOutline />}
                 {thisJob.location?.state && (
-                  <Link to={`/job-location-state/${thisJob.location.state}`}>
+                  <Link
+                    className="link link-black hover-gold"
+                    to={`/job-location-state/${thisJob.location.state}`}
+                  >
                     {thisJob.location.state}
                   </Link>
                 )}
                 {thisJob?.location?.state?.length &&
                   thisJob?.location?.city?.length && <span>,&nbsp;</span>}
                 {thisJob.location?.city && (
-                  <Link to={`/job-location-city/${thisJob.location.city}`}>
+                  <Link
+                    className="link link-black hover-gold"
+                    to={`/job-location-city/${thisJob.location.city}`}
+                  >
                     {thisJob.location.city}
                   </Link>
                 )}
@@ -117,8 +128,8 @@ const MyJobApplicantsWidget = ({
               {thisJob?.applications_count > 1 ? "s" : ""}
               <br />
               <Button
-                className="btn btn-gold btn-sm"
-                style={{ padding: "3px 6px", margin: "5px 0px 0px 0px" }}
+                className="btn btn-dark btn-sm"
+                style={{ padding: "0px 6px", margin: "5px 0px 0px 0px" }}
                 onClick={(e) => setShowApplications((state) => !state)}
               >
                 {showApplications ? "Hide" : "Show"}

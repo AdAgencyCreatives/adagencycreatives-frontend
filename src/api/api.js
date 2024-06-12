@@ -1,7 +1,9 @@
 import axios from "axios";
 //console.log(process.env)
-export const baseUrl = process.env.REACT_APP_APP_URL ? process.env.REACT_APP_APP_URL : "https://staging-api.adagencycreatives.com";
-// export const baseUrl = process.env.REACT_APP_APP_URL ? process.env.REACT_APP_APP_URL : "http://localhost:8000";
+// export const baseUrl = process.env.REACT_APP_APP_URL ? process.env.REACT_APP_APP_URL : "https://staging-api.adagencycreatives.com";
+export const baseUrl = process.env.REACT_APP_APP_URL
+  ? process.env.REACT_APP_APP_URL
+  : "http://localhost:8000";
 let auth = null;
 
 const api = axios.create({
