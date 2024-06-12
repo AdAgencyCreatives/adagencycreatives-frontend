@@ -67,6 +67,13 @@ const MyJobApplicantsWidget = ({
     })();
   };
 
+  useEffect(() => {
+    console.log("Job: ");
+    console.log(job);
+    console.log("thisJob: ");
+    console.log(thisJob);
+  }, []);
+
   return (
     <>
       <tr key={thisJob.id}>
@@ -119,7 +126,7 @@ const MyJobApplicantsWidget = ({
         </td>
 
         <td className="job-table-applicants text-center text-theme nowrap">
-          {thisJob?.applications?.length > 0 ? (
+          {job?.applications?.length > 0 ? (
             <>
               <span className="number">{thisJob?.applications?.length}</span>{" "}
               Applicant
