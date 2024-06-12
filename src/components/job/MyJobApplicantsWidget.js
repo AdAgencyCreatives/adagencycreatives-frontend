@@ -73,7 +73,7 @@ const MyJobApplicantsWidget = ({
     <>
       <tr key={thisJob.id}>
         {(user?.role == "advisor" || user?.role == "recruiter") && (
-          <td className="job-table-status">{job.agency.name}</td>
+          <td className="job-table-status">{thisJob.agency.name}</td>
         )}
 
         <td className="job-table-info">
@@ -87,7 +87,7 @@ const MyJobApplicantsWidget = ({
                   {thisJob.title}
                 </Link>
               </h3>
-              {job.priority.is_featured ? (
+              {thisJob.priority.is_featured ? (
                 <IoCheckmarkCircle color="#34A853" size={30} />
               ) : (
                 ""
