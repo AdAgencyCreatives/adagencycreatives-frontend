@@ -78,7 +78,7 @@ const MyJobApplicantsWidget = ({
     <>
       <tr key={thisJob.id}>
         {(user?.role == "advisor" || user?.role == "recruiter") && (
-          <td style={{ minWidth: "150px;" }} className="job-table-status">
+          <td style={{ minWidth: "150px" }} className="job-table-status">
             {thisJob.agency.name}
           </td>
         )}
