@@ -78,7 +78,9 @@ const MyJobApplicantsWidget = ({
     <>
       <tr key={thisJob.id}>
         {(user?.role == "advisor" || user?.role == "recruiter") && (
-          <td className="job-table-status">{thisJob.agency.name}</td>
+          <td style={{ minWidth: "150px;" }} className="job-table-status">
+            {thisJob.agency.name}
+          </td>
         )}
 
         <td className="job-table-info">
@@ -189,20 +191,23 @@ const MyJobApplicantsWidget = ({
               )}
             </>
           )}
-          {thisJob?.expired_at &&
-            new Date(thisJob?.expired_at) <
-              Date.parse(new Date().toISOString()) && (
-              <span className="badge bg-danger">
-                Expired: <TimeAgo datetime={thisJob?.expired_at} />
-              </span>
-            )}
           {job?.deleted_at &&
-            new Date(thisJob?.deleted_at) <
-              Date.parse(new Date().toISOString()) && (
-              <span className="badge bg-danger">
-                Deleted: <TimeAgo datetime={thisJob?.deleted_at} />
-              </span>
-            )}
+          new Date(thisJob?.deleted_at) <
+            Date.parse(new Date().toISOString()) ? (
+            <span className="badge bg-danger">
+              Deleted: <TimeAgo datetime={thisJob?.deleted_at} />
+            </span>
+          ) : (
+            <>
+              {thisJob?.expired_at &&
+                new Date(thisJob?.expired_at) <
+                  Date.parse(new Date().toISOString()) && (
+                  <span className="badge bg-danger">
+                    Expired: <TimeAgo datetime={thisJob?.expired_at} />
+                  </span>
+                )}
+            </>
+          )}
         </td>
       </tr>
       {showApplications && (

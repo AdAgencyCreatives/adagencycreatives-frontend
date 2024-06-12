@@ -108,7 +108,9 @@ const TabularApplicantJobs = () => {
               <thead>
                 <tr>
                   {(user?.role == "advisor" || user?.role == "recruiter") && (
-                    <th className="title">Agency</th>
+                    <th style={{ minWidth: "150px;" }} className="title">
+                      Agency
+                    </th>
                   )}
                   <th className="title">Title</th>
                   <th className="title">Location</th>
