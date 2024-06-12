@@ -35,8 +35,6 @@ const MyJobApplicantsWidget = ({
 
   const { markFilled } = useContext(JobsContext);
 
-  const { deleteJob, getOpenPositions } = useContext(AgenciesContext);
-
   const handleMarkFilled = (e, job) => {
     if (job?.status == "filled") {
       showAlert("Job Vacancy Already Filled");
@@ -121,11 +119,11 @@ const MyJobApplicantsWidget = ({
         </td>
 
         <td className="job-table-applicants text-center text-theme nowrap">
-          {thisJob?.applications_count > 0 ? (
+          {thisJob?.applications?.length > 0 ? (
             <>
-              <span className="number">{thisJob.applications_count}</span>{" "}
+              <span className="number">{thisJob?.applications?.length}</span>{" "}
               Applicant
-              {thisJob?.applications_count > 1 ? "s" : ""}
+              {thisJob?.applications?.length > 1 ? "s" : ""}
               <br />
               <Button
                 className="btn btn-dark btn-sm"
