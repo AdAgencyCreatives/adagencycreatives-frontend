@@ -1,27 +1,11 @@
 import "../../styles/AgencyDashboard/JobApplicants.scss";
-import { Tooltip } from "@mui/material";
-import { IoTimeOutline } from "react-icons/io5";
-import {
-  TfiDownload,
-  TfiNotepad,
-  TfiClose,
-  TfiCheck,
-  TfiLoop,
-  TfiPlus,
-  TfiBackRight,
-  TfiCheckBox,
-} from "react-icons/tfi";
-import { Link } from "react-router-dom";
 import AddNotesModal from "./Modals/AddNotesModal";
 import { useContext, useEffect, useState } from "react";
 import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as AlertContext } from "../../context/AlertContext";
 import Paginate from "../../components/Paginate";
-import moment from "moment";
 import { CircularProgress } from "@mui/material";
-import TimeAgo from "../TimeAgo";
-import TabularJobApplications from "../job/TabularJobApplications";
 import MyJobApplicantsWidget from "../job/MyJobApplicantsWidget";
 
 const TabularApplicantJobs = () => {
