@@ -31,12 +31,13 @@ const TabularApplicantJobs = () => {
   const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
-    if (user.role === "agency") {
-      setStatusApplication("shortlisted");
-      getApplicationsAllStatus(user.uuid, 0, 0, "shortlisted");
-    } else {
-      getApplicationsAllStatus(user.uuid, 0, 0, statusApplication);
-    }
+    // if (user.role === "agency") {
+    //   setStatusApplication("shortlisted");
+    //   getApplicationsAllStatus(user.uuid, 0, 0, "shortlisted");
+    // } else {
+    //   getApplicationsAllStatus(user.uuid, 0, 0, statusApplication);
+    // }
+    getApplicationsAllStatus(user.uuid, 0, 0, statusApplication);
   }, []);
 
   useEffect(() => {
