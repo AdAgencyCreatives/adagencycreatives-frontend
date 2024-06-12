@@ -1064,3 +1064,11 @@ nav ul.dropdown-list .list-item-text.j-fix {
     fill: black !important;
 
 }
+
+.agency-page-myjobs.tabular .badge {
+    min-height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+}
