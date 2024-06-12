@@ -141,7 +141,7 @@ const MyJobApplicantsWidget = ({
                 style={{
                   padding: "0px 6px",
                   margin: "0px",
-                  minWidth: "130px",
+                  width: "150px",
                 }}
                 onClick={(e) => setShowApplications((state) => !state)}
               >
@@ -207,7 +207,7 @@ const MyJobApplicantsWidget = ({
       </tr>
       {showApplications && (
         <tr>
-          <td colSpan={6}>
+          <td colSpan={4}>
             {thisJob?.applications?.length > 0 ? (
               <TabularJobApplications
                 job={thisJob}

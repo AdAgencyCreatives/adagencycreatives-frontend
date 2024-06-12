@@ -68,12 +68,21 @@ const TabularJobApplications = (props) => {
         <table className="job-table">
           <thead>
             <tr>
-              <th className="title">Name</th>
-              <th className="title">Industry Title</th>
-              <th className="title">Creative Title</th>
-              <th className="date">Applied Date</th>
-              <th className="status">Status</th>
-              <th className="actions">Actions</th>
+              <th className="title" style={{ width: "35%" }}>
+                Name
+              </th>
+              <th className="title" style={{ width: "25%" }}>
+                Title
+              </th>
+              <th className="date" style={{ width: "12%" }}>
+                Applied Date
+              </th>
+              <th className="status" style={{ width: "13%" }}>
+                Status
+              </th>
+              <th className="actions" style={{ width: "20%" }}>
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>

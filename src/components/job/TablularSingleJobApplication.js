@@ -56,7 +56,7 @@ const TabularSingleJobApplication = (props) => {
   return (
     <>
       <tr>
-        <td>
+        <td style={{ width: "35%" }}>
           <Link
             className="link link-black hover-gold link-bold"
             to={"/creative/" + thisApplication.slug}
@@ -64,16 +64,17 @@ const TabularSingleJobApplication = (props) => {
             {thisApplication.user}
           </Link>
         </td>
-        <td>{thisApplication?.creative_category || "--"}</td>
-        <td>{thisApplication?.creative_title || "--"}</td>
-        <td>
+        <td style={{ width: "25%" }}>
+          {thisApplication?.creative_category || "--"}
+        </td>
+        <td style={{ width: "12%" }}>
           <div className="job-table-info-content-date-expiry">
             <div className="created">
               {moment(thisApplication.created_at).format("MMMM D, YYYY")}
             </div>
           </div>
         </td>
-        <td>
+        <td style={{ width: "13%" }}>
           {props?.job?.apply_type.toLowerCase() != "external" ? (
             <span
               className={
@@ -101,7 +102,7 @@ const TabularSingleJobApplication = (props) => {
             <span className="badge bg-success">Interested</span>
           )}
         </td>
-        <td className="job-table-actions nowrap">
+        <td style={{ width: "20%" }} className="job-table-actions nowrap">
           <div className="action-button">
             {changingApplicationStatus && (
               <CircularProgress style={{ width: "30px", height: "30px" }} />
