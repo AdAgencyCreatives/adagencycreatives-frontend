@@ -116,8 +116,8 @@ const TabularApplicantJobs = () => {
                 </tr>
               </thead>
               <tbody>
-                {applications &&
-                  applications.map((item) => (
+                {data &&
+                  data.map((item) => (
                     <MyJobApplicantsWidget
                       job={item}
                       setApplicationStatus={setApplicationStatus}
