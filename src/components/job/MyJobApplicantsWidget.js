@@ -26,7 +26,7 @@ const MyJobApplicantsWidget = ({
   isJobDeleted,
 }) => {
   const [thisJob, setThisJob] = useState(job);
-  const [showApplications, setShowApplications] = useState(false);
+  const [showApplications, setShowApplications] = useState(true);
   const { showAlert } = useContext(AlertContext);
 
   const {
@@ -209,7 +209,7 @@ const MyJobApplicantsWidget = ({
       {showApplications && (
         <tr>
           <td colSpan={4}>
-            {thisJob.applications && thisJob.applications.length ? (
+            {thisJob.applications && thisJob.applications.length > 0 ? (
               <TabularJobApplications
                 job={thisJob}
                 setApplicationStatus={setApplicationStatus}
