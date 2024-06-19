@@ -135,7 +135,7 @@ const ApplicantJobs = () => {
                       )}
                     </h3>
                     {item?.expired_at &&
-                      new Date(item?.expired_at) <
+                      new Date(item?.expired_at) <=
                         Date.parse(new Date().toISOString()) && (
                         <span
                           className="badge"
@@ -220,7 +220,7 @@ const ApplicantJobs = () => {
                     setOpen={setOpen}
                     isJobExpired={
                       item?.expired_at &&
-                      new Date(item?.expired_at) <
+                      new Date(item?.expired_at) <=
                         Date.parse(new Date().toISOString())
                     }
                     isJobDeleted={

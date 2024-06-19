@@ -130,7 +130,7 @@ const TabularApplicantJobs = () => {
                       setOpen={setOpen}
                       isJobExpired={
                         item?.expired_at &&
-                        new Date(item?.expired_at) <
+                        new Date(item?.expired_at) <=
                           Date.parse(new Date().toISOString())
                       }
                       isJobDeleted={

@@ -178,7 +178,7 @@ const MyJobApplicantsWidget = ({
         <td className="job-table-status nowrap">
           {!(
             (thisJob?.expired_at &&
-              new Date(thisJob?.expired_at) <
+              new Date(thisJob?.expired_at) <=
                 Date.parse(new Date().toISOString())) ||
             thisJob?.deleted_at
           ) && (
@@ -200,7 +200,7 @@ const MyJobApplicantsWidget = ({
           ) : (
             <>
               {thisJob?.expired_at &&
-                new Date(thisJob?.expired_at) <
+                new Date(thisJob?.expired_at) <=
                   Date.parse(new Date().toISOString()) && (
                   <span className="badge bg-danger">
                     Expired: <TimeAgo datetime={thisJob?.expired_at} />
@@ -221,7 +221,7 @@ const MyJobApplicantsWidget = ({
                 setOpen={setOpen}
                 isJobExpired={
                   thisJob?.expired_at &&
-                  new Date(thisJob?.expired_at) <
+                  new Date(thisJob?.expired_at) <=
                     Date.parse(new Date().toISOString())
                 }
                 isJobDeleted={
