@@ -103,7 +103,7 @@ const SingleJobApplication = (props) => {
                             <button
                                 className="btn p-0 border-0 btn-hover-primary"
                                 onClick={() => {
-                                    props?.setAppId(thisApplication.creative_id);
+                                    props?.setAppId(thisApplication.id);
                                     props?.setOpen(true);
                                 }}
                             >

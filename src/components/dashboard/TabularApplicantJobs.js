@@ -57,7 +57,7 @@ const TabularApplicantJobs = () => {
     setTab((prev) => ({ ...prev, [id]: tab }));
   };
 
-  const setApplicationStatus = (job_id, app_id, status, cb = () => {}) => {
+  const setApplicationStatus = (job_id, app_id, status, cb = () => { }) => {
     updateApplication(app_id, { status }, () => {
       let jobIndex = applications.findIndex((job) => job.id == job_id);
       const updatedJob = { ...applications[jobIndex] };
@@ -86,7 +86,7 @@ const TabularApplicantJobs = () => {
         open={open}
         handleClose={handleClose}
         resource_id={appId}
-        type="creatives"
+        type="applications"
       />
       <h3 className="page-title">All Applicants</h3>
       {isLoadingApp ? (
@@ -131,12 +131,12 @@ const TabularApplicantJobs = () => {
                       isJobExpired={
                         item?.expired_at &&
                         new Date(item?.expired_at) <=
-                          Date.parse(new Date().toISOString())
+                        Date.parse(new Date().toISOString())
                       }
                       isJobDeleted={
                         item?.deleted_at &&
                         new Date(item?.deleted_at) <
-                          Date.parse(new Date().toISOString())
+                        Date.parse(new Date().toISOString())
                       }
                     />
                   ))}

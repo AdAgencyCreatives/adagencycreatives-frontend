@@ -67,13 +67,6 @@ const MyJobApplicantsWidget = ({
     })();
   };
 
-  useEffect(() => {
-    console.log("Job: ");
-    console.log(job);
-    console.log("thisJob: ");
-    console.log(thisJob);
-  }, []);
-
   return (
     <>
       <tr key={thisJob.id}>
@@ -179,20 +172,20 @@ const MyJobApplicantsWidget = ({
           {!(
             (thisJob?.expired_at &&
               new Date(thisJob?.expired_at) <=
-                Date.parse(new Date().toISOString())) ||
+              Date.parse(new Date().toISOString())) ||
             thisJob?.deleted_at
           ) && (
-            <>
-              {thisJob.status == "approved" && (
-                <span className="badge bg-primary">Active</span>
-              )}
-              {thisJob.status == "filled" && (
-                <span className="badge bg-success">Filled</span>
-              )}
-            </>
-          )}
+              <>
+                {thisJob.status == "approved" && (
+                  <span className="badge bg-primary">Active</span>
+                )}
+                {thisJob.status == "filled" && (
+                  <span className="badge bg-success">Filled</span>
+                )}
+              </>
+            )}
           {job?.deleted_at &&
-          new Date(thisJob?.deleted_at) <
+            new Date(thisJob?.deleted_at) <
             Date.parse(new Date().toISOString()) ? (
             <span className="badge bg-danger">
               Deleted: <TimeAgo datetime={thisJob?.deleted_at} />
@@ -201,7 +194,7 @@ const MyJobApplicantsWidget = ({
             <>
               {thisJob?.expired_at &&
                 new Date(thisJob?.expired_at) <=
-                  Date.parse(new Date().toISOString()) && (
+                Date.parse(new Date().toISOString()) && (
                   <span className="badge bg-danger">
                     Expired: <TimeAgo datetime={thisJob?.expired_at} />
                   </span>
@@ -222,12 +215,12 @@ const MyJobApplicantsWidget = ({
                 isJobExpired={
                   thisJob?.expired_at &&
                   new Date(thisJob?.expired_at) <=
-                    Date.parse(new Date().toISOString())
+                  Date.parse(new Date().toISOString())
                 }
                 isJobDeleted={
                   thisJob?.deleted_at &&
                   new Date(thisJob?.deleted_at) <
-                    Date.parse(new Date().toISOString())
+                  Date.parse(new Date().toISOString())
                 }
               />
             ) : (

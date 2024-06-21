@@ -38,7 +38,7 @@ const TabularSingleJobApplication = (props) => {
     job_id,
     application_id,
     application_status,
-    cb = () => {}
+    cb = () => { }
   ) => {
     props?.setApplicationStatus(
       job_id,
@@ -84,19 +84,19 @@ const TabularSingleJobApplication = (props) => {
                 (thisApplication.status == "pending"
                   ? "info"
                   : thisApplication.status == "accepted"
-                  ? "success"
-                  : thisApplication.status == "shortlisted"
-                  ? "primary"
-                  : "danger")
+                    ? "success"
+                    : thisApplication.status == "shortlisted"
+                      ? "primary"
+                      : "danger")
               }
             >
               {thisApplication.status == "pending"
                 ? "Pending"
                 : thisApplication.status == "accepted"
-                ? "Approved"
-                : thisApplication.status == "shortlisted"
-                ? "Recommended"
-                : "Not Aligned"}
+                  ? "Approved"
+                  : thisApplication.status == "shortlisted"
+                    ? "Recommended"
+                    : "Not Aligned"}
             </span>
           ) : (
             <span className="badge bg-success">Interested</span>
@@ -111,7 +111,7 @@ const TabularSingleJobApplication = (props) => {
               <button
                 className="btn p-0 border-0 btn-hover-primary"
                 onClick={() => {
-                  props?.setAppId(thisApplication.creative_id);
+                  props?.setAppId(thisApplication.id);
                   props?.setOpen(true);
                 }}
               >
