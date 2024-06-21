@@ -72,7 +72,7 @@ const MyJobApplicantsWidget = ({
       <tr key={thisJob.id}>
         {(user?.role == "advisor" || user?.role == "recruiter") && (
           <td style={{ minWidth: "150px" }} className="job-table-status">
-            {thisJob.agency.name}
+            <b>{thisJob.agency.name}</b>
           </td>
         )}
 
@@ -124,7 +124,7 @@ const MyJobApplicantsWidget = ({
           </div>
         </td>
 
-        <td className="job-table-applicants text-center text-theme nowrap">
+        <td className="job-table-applicants text-theme nowrap">
           {job?.applications?.length > 0 ? (
             <>
               {/* <span className="number">{thisJob?.applications?.length}</span>{" "}
@@ -136,13 +136,13 @@ const MyJobApplicantsWidget = ({
                 style={{
                   padding: "0px 6px",
                   margin: "0px",
-                  width: "150px",
+                  width: "100px",
                 }}
                 onClick={(e) => setShowApplications((state) => !state)}
               >
                 {showApplications ? "Hide" : "Show"}&nbsp;
                 <span className="number">{thisJob?.applications?.length}</span>
-                &nbsp;Applicant{thisJob?.applications?.length > 1 ? "s" : ""}
+                {/* &nbsp;Applicant{thisJob?.applications?.length > 1 ? "s" : ""} */}
               </Button>
             </>
           ) : (

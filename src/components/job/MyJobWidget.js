@@ -60,7 +60,7 @@ const MyJobWidget = (props) => {
         <tr key={job.id}>
             {(user?.role == 'advisor' || user?.role == 'recruiter') && (
                 <td className="job-table-status">
-                    {job.agency.name}
+                    <b>{job.agency.name}</b>
                 </td>
             )}
 
@@ -68,7 +68,7 @@ const MyJobWidget = (props) => {
                 <div className="job-table-info-content">
                     <div className="title-wrapper">
                         <h3 className="job-table-info-content-title">
-                            <Link to={"/job/" + job.slug}>{job.title}</Link>
+                            <Link className="link link-black hover-gold" to={"/job/" + job.slug}>{job.title}</Link>
                         </h3>
                         {job.priority.is_featured ? (
                             <IoCheckmarkCircle color="#34A853" size={30} />

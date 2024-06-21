@@ -116,7 +116,7 @@ const TabularApplicantJobs = () => {
                   <th className="title">Location</th>
                   <th className="applicants">Applicants</th>
                   <th className="date">Created</th>
-                  <th className="date">Expiry</th>
+                  <th className="date">Expiration</th>
                   <th className="status">Status</th>
                 </tr>
               </thead>
