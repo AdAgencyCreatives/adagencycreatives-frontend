@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import { useState, useContext } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
+import TimeAgo from "../TimeAgo";
 
 const RecentApplicant = ({ job, application, setApplicationStatus, onRemoveFromRecent, setAppId, setOpen, isJobDeleted, isJobExpired }) => {
 
@@ -67,34 +68,75 @@ const RecentApplicant = ({ job, application, setApplicationStatus, onRemoveFromR
                                             {application.user}
                                         </Link>
                                     </h2>
-                                    <span
-                                        className={
-                                            "badge " +
-                                            application.status +
-                                            " bg-" +
-                                            (application.status == "pending"
-                                                ? "info"
-                                                : application.status == "accepted"
-                                                    ? "success"
-                                                    : "danger")
-                                        }
-                                    >
-                                        {application.status == "pending"
-                                            ? "Pending"
-                                            : application.status == "accepted"
-                                                ? "Approved"
-                                                : "Not Aligned"}
-                                    </span>
+                                    {job?.apply_type.toLowerCase() != "external" ? (
+                                        <span
+                                            className={
+                                                "badge " +
+                                                thisApplication.status +
+                                                " bg-" +
+                                                (thisApplication.status == "pending"
+                                                    ? "info"
+                                                    : thisApplication.status == "accepted"
+                                                        ? "success"
+                                                        : thisApplication.status == "shortlisted"
+                                                            ? "primary"
+                                                            : "danger")
+                                            }
+                                        >
+                                            {thisApplication.status == "pending"
+                                                ? "Pending"
+                                                : thisApplication.status == "accepted"
+                                                    ? "Approved"
+                                                    : thisApplication.status == "shortlisted"
+                                                        ? "Recommended"
+                                                        : "Not Aligned"}
+                                        </span>
+                                    ) : (
+                                        <span className="badge bg-success">Interested</span>
+                                    )}
                                 </div>
                                 <div className="job-metas">
-                                    <h4 className="job-title">
-                                        <Link
-                                            to={"/job/" + job.slug}
-                                            className="text-theme"
-                                        >
-                                            {job.title}
-                                        </Link>
-                                    </h4>
+                                    <Link
+                                        to={"/job/" + job.slug}
+                                        className="link link-black hover-gold"
+                                    >
+                                        {job.title}
+                                    </Link>
+                                    <div className="title-wrapper d-flex align-items-center job-status">
+                                        Job Status:&nbsp;
+                                        {!(
+                                            (job?.expired_at &&
+                                                new Date(job?.expired_at) <=
+                                                Date.parse(new Date().toISOString())) ||
+                                            job?.deleted_at
+                                        ) && (
+                                                <>
+                                                    {job.status == "approved" && (
+                                                        <span className="badge bg-primary">Active</span>
+                                                    )}
+                                                    {job.status == "filled" && (
+                                                        <span className="badge bg-success">Filled</span>
+                                                    )}
+                                                </>
+                                            )}
+                                        {job?.deleted_at &&
+                                            new Date(job?.deleted_at) <
+                                            Date.parse(new Date().toISOString()) ? (
+                                            <span className="badge bg-danger">
+                                                Deleted:&nbsp;<TimeAgo datetime={job?.deleted_at} />
+                                            </span>
+                                        ) : (
+                                            <>
+                                                {job?.expired_at &&
+                                                    new Date(job?.expired_at) <=
+                                                    Date.parse(new Date().toISOString()) && (
+                                                        <span className="badge bg-danger">
+                                                            Expired:&nbsp;<TimeAgo datetime={job?.expired_at} />
+                                                        </span>
+                                                    )}
+                                            </>
+                                        )}
+                                    </div>
                                     <div className="date">
                                         <IoTimeOutline />
                                         Applied date:{" "}

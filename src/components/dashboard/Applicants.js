@@ -1,21 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AuthContext } from "../../context/AuthContext";
-import { Tooltip } from "@mui/material";
+import { Context as AlertContext } from "../../context/AlertContext";
 import AddNotesModal from "./Modals/AddNotesModal";
-import { IoCloseCircleSharp, IoTimeOutline } from "react-icons/io5";
 import { CircularProgress } from "@mui/material";
-import {
-  TfiDownload,
-  TfiNotepad,
-  TfiClose,
-  TfiCheck,
-  TfiLoop,
-  TfiPlus,
-  TfiBackRight,
-} from "react-icons/tfi";
-import { Link } from "react-router-dom";
-import moment from "moment";
 import Paginate from "../../components/Paginate";
 import RecentApplicant from "../../components/dashboard/RecentApplicant";
 
@@ -35,6 +23,8 @@ const Applicants = () => {
   const {
     state: { user },
   } = useContext(AuthContext);
+
+  const { showAlert } = useContext(AlertContext);
 
   const paginate = (page) => {
     getApplications(user.uuid, 1, page);
@@ -61,11 +51,26 @@ const Applicants = () => {
         const updatedJob = { ...job, applications: updatedApplications };
         updatedJobs.push(updatedJob);
       }
-      setData(updatedJobs);
+
+      filterJobApplicants(updatedJobs);
     }
   }, [applications]);
 
-  const setApplicationStatus = (job_id, app_id, status) => {
+  const filterJobApplicants = (foundJobs) => {
+    const filteredJobs = foundJobs.map((job) => {
+      if (job?.advisor_id != user?.id) {
+        var shortlistedApplicants = job.applications.filter((application) => application.status == "shortlisted");
+        var updatedJob = { ...job };
+        updatedJob.applications = shortlistedApplicants;
+        return updatedJob;
+
+      }
+      return job;
+    });
+    setData(filteredJobs);
+  };
+
+  const setApplicationStatus = (job_id, app_id, status, cb = () => { }) => {
     updateApplication(app_id, { status }, () => {
       let jobIndex = applications.findIndex((job) => job.id == job_id);
       const updatedJob = { ...applications[jobIndex] };
@@ -77,6 +82,8 @@ const Applicants = () => {
       const updatedData = [...applications];
       updatedData[jobIndex] = { ...updatedJob };
       setData(updatedData);
+      showAlert("Creative status change successful");
+      cb();
     });
   };
 

@@ -184,11 +184,11 @@ const MyJobApplicantsWidget = ({
                 )}
               </>
             )}
-          {job?.deleted_at &&
+          {thisJob?.deleted_at &&
             new Date(thisJob?.deleted_at) <
             Date.parse(new Date().toISOString()) ? (
             <span className="badge bg-danger">
-              Deleted: <TimeAgo datetime={thisJob?.deleted_at} />
+              Deleted:&nbsp;<TimeAgo datetime={thisJob?.deleted_at} />
             </span>
           ) : (
             <>
@@ -196,7 +196,7 @@ const MyJobApplicantsWidget = ({
                 new Date(thisJob?.expired_at) <=
                 Date.parse(new Date().toISOString()) && (
                   <span className="badge bg-danger">
-                    Expired: <TimeAgo datetime={thisJob?.expired_at} />
+                    Expired:&nbsp;<TimeAgo datetime={thisJob?.expired_at} />
                   </span>
                 )}
             </>

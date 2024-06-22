@@ -4,6 +4,7 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import SingleJobApplication from "./SingleJobApplication";
 
+// Not in use now
 const JobApplications = (props) => {
     const [applications, setApplications] = useState(null);
     const [showAllApplications, setShowAllApplications] = useState(false);

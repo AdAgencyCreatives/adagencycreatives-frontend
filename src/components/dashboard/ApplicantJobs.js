@@ -23,6 +23,7 @@ import { CircularProgress } from "@mui/material";
 import TimeAgo from "../TimeAgo";
 import JobApplications from "../job/JobApplications";
 
+// Not in use now
 const ApplicantJobs = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);

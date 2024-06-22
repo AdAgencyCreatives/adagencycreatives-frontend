@@ -31,53 +31,60 @@ const TabularApplicantJobs = () => {
   const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
-    // if (user.role === "agency") {
-    //   setStatusApplication("shortlisted");
-    //   getApplicationsAllStatus(user.uuid, 0, 0, "shortlisted");
-    // } else {
-    //   getApplicationsAllStatus(user.uuid, 0, 0, statusApplication);
-    // }
-    getApplicationsAllStatus(user.uuid, 0, 0, statusApplication);
+    getApplicationsAllStatus(user.uuid, 0, 0, statusApplication, (foundJobs) => {
+      filterJobApplicants(foundJobs);
+    });
   }, []);
 
-  useEffect(() => {
-    setData(applications);
-  }, [applications]);
+  const filterJobApplicants = (foundJobs) => {
+    const filteredJobs = foundJobs.map((job) => {
+      if (job?.advisor_id != user?.id) {
+        var shortlistedApplicants = job.applications.filter((application) => application.status == "shortlisted");
+        var updatedJob = { ...job };
+        updatedJob.applications = shortlistedApplicants;
+        return updatedJob;
 
-  const switchTab = (id, tab) => {
-    let jobIndex = applications.findIndex((job) => job.id == id);
-    let updatedJob = { ...applications[jobIndex] };
-    updatedJob.applications = updatedJob.applications.filter((application) => {
-      if (tab == "pending") return true;
-      return application.status == tab;
+      }
+      return job;
     });
-    let updatedApplications = [...data];
-    updatedApplications[jobIndex] = updatedJob;
-    setData(updatedApplications);
-    setTab((prev) => ({ ...prev, [id]: tab }));
+    setData(filteredJobs);
   };
+
+  // const switchTab = (id, tab) => {
+  //   let jobIndex = applications.findIndex((job) => job.id == id);
+  //   let updatedJob = { ...applications[jobIndex] };
+  //   updatedJob.applications = updatedJob.applications.filter((application) => {
+  //     if (tab == "pending") return true;
+  //     return application.status == tab;
+  //   });
+  //   let updatedApplications = [...data];
+  //   updatedApplications[jobIndex] = updatedJob;
+  //   setData(updatedApplications);
+  //   setTab((prev) => ({ ...prev, [id]: tab }));
+  // };
 
   const setApplicationStatus = (job_id, app_id, status, cb = () => { }) => {
     updateApplication(app_id, { status }, () => {
-      let jobIndex = applications.findIndex((job) => job.id == job_id);
-      const updatedJob = { ...applications[jobIndex] };
+      let jobIndex = data.findIndex((job) => job.id == job_id);
+      const updatedJob = { ...data[jobIndex] };
       let updatedApplications = updatedJob.applications;
       let appIndex = updatedApplications.findIndex((app) => app.id == app_id);
       let updatedApp = { ...updatedApplications[appIndex] };
       updatedApp.status = status;
       updatedApplications[appIndex] = updatedApp;
       updatedJob.applications = updatedApplications;
-      const updatedData = [...applications];
+      const updatedData = [...data];
       updatedData[jobIndex] = { ...updatedJob };
       setData(updatedData);
-      // getApplicationsAllStatus(user.uuid, 0, 0, statusApplication);
       showAlert("Creative status change successful");
       cb();
     });
   };
 
   const paginate = (page) => {
-    getApplicationsAllStatus(user.uuid, 0, page, statusApplication);
+    getApplicationsAllStatus(user.uuid, 0, 0, statusApplication, (foundJobs) => {
+      filterJobApplicants(foundJobs);
+    });
   };
 
   return (
@@ -121,8 +128,8 @@ const TabularApplicantJobs = () => {
                 </tr>
               </thead>
               <tbody>
-                {applications &&
-                  applications.map((item) => (
+                {data &&
+                  data.map((item) => (
                     <MyJobApplicantsWidget
                       job={item}
                       setApplicationStatus={setApplicationStatus}

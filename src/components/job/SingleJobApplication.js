@@ -8,6 +8,7 @@ import moment from "moment";
 import { TfiBackRight, TfiCheck, TfiCheckBox, TfiClose, TfiDownload, TfiLoop, TfiNotepad } from "react-icons/tfi";
 import { CircularProgress } from "@mui/material";
 
+// Not in use now
 const SingleJobApplication = (props) => {
 
     const [thisApplication, setThisApplication] = useState(props?.application);
@@ -96,7 +97,7 @@ const SingleJobApplication = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className="ali-right col-sm-4">
+                <div className="align-right col-sm-4">
                     <div className="applicant-action-button action-button">
                         {changingApplicationStatus && (<CircularProgress style={{ width: '30px', height: '30px' }} />)}
                         <Tooltip title="Add Notes">

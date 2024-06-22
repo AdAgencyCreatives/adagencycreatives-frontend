@@ -255,7 +255,7 @@ const getApplications = (dispatch) => {
 
 
 const getApplicationsAllStatus = (dispatch) => {
-  return async (uid, applications_count = 0, page = false, application_status = false) => {
+  return async (uid, applications_count = 0, page = false, application_status = false, cb = () => { }) => {
     let applications = [];
     setLoadingApp(dispatch, true);
     try {
@@ -267,6 +267,7 @@ const getApplicationsAllStatus = (dispatch) => {
         type: "set_applications",
         payload: response.data,
       });
+      cb(response.data.data);
     } catch (error) { }
     setLoadingApp(dispatch, false);
   };
