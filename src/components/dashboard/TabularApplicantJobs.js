@@ -38,7 +38,7 @@ const TabularApplicantJobs = () => {
 
   const filterJobApplicants = (foundJobs) => {
     const filteredJobs = foundJobs.map((job) => {
-      if (job?.advisor_id != user?.id) {
+      if (job.advisor_id != null && job.advisor_id != user.id) {
         var shortlistedApplicants = job.applications.filter((application) => application.status == "shortlisted");
         var updatedJob = { ...job };
         updatedJob.applications = shortlistedApplicants;
