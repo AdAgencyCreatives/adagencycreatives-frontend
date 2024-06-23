@@ -113,7 +113,7 @@ const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
     setSelectedAgency(selected_agency);
     setIsJobPostAllowed(
       selected_agency?.agency?.status?.status == "active" &&
-        selected_agency?.agency?.status?.quota_left > 0
+      selected_agency?.agency?.status?.quota_left > 0
     );
     handleDropdownChange(item, name);
   };
@@ -353,8 +353,8 @@ const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
           value: isEdit
             ? new Date(single_job.expired_at)
             : subscription?.ends_at
-            ? new Date(subscription?.ends_at)
-            : new Date(),
+              ? new Date(subscription?.ends_at)
+              : new Date(),
         },
         {
           label: "Job Description",
@@ -450,8 +450,8 @@ const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
         expired_at: isEdit
           ? new Date(single_job.expired_at)
           : subscription?.ends_at
-          ? new Date(subscription?.ends_at)
-          : new Date(),
+            ? new Date(subscription?.ends_at)
+            : new Date(),
         external_link: (isEdit && single_job.external_link) || "",
         apply_type: (isEdit && single_job.apply_type) || "",
         years_of_experience: (isEdit && single_job.experience) || "",
@@ -530,7 +530,7 @@ const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
 
         showAlert(
           (resource == "sub_agency_logo" ? "Logo" : "Video") +
-            " uploaded successfully"
+          " uploaded successfully"
         );
       });
     }
@@ -706,7 +706,7 @@ const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
                         <DatePicker
                           className="form-control"
                           selected={
-                            field?.name == "expired_at" && field?.maxDate
+                            field?.name == "expired_at" && field.value > field?.maxDate
                               ? field.maxDate
                               : field.value
                           }
