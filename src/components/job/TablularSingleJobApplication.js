@@ -56,7 +56,7 @@ const TabularSingleJobApplication = (props) => {
   return (
     <>
       <tr>
-        <td style={{ width: "35%" }}>
+        <td style={{ width: "28%" }}>
           <Link
             className="link link-black hover-gold link-bold"
             to={"/creative/" + thisApplication.slug}
@@ -64,7 +64,7 @@ const TabularSingleJobApplication = (props) => {
             {thisApplication.user}
           </Link>
         </td>
-        <td style={{ width: "25%" }}>
+        <td style={{ width: "27%" }}>
           {thisApplication?.creative_category || "--"}
         </td>
         <td style={{ width: "12%" }}>

@@ -314,6 +314,10 @@ ul.dropdown-list:before {
     font-weight: 500;
 }
 
+.link-underline {
+    text-decoration: underline;
+}
+
 .menu-item {
     position: relative;
 }
@@ -963,7 +967,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
 }
 
 .agency-dashboard-container .job-table-info-content {
-    min-width: 300px;
+    min-width: 200px;
 }
 
 .agency-dashboard-container .job-location.location {
@@ -1085,9 +1089,16 @@ nav ul.dropdown-list .list-item-text.j-fix {
 
 
 .agency-page-myjobs.tabular .badge {
-    width: 150px !important;
+    width: 100px !important;
 }
 
 .job-metas .title-wrapper.job-status {
     font-size: 12pt;
+}
+
+.job-status-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

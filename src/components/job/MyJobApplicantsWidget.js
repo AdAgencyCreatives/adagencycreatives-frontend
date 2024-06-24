@@ -71,7 +71,7 @@ const MyJobApplicantsWidget = ({
     <>
       <tr key={thisJob.id}>
         {(user?.role == "advisor" || user?.role == "recruiter") && (
-          <td style={{ minWidth: "150px" }} className="job-table-status">
+          <td style={{ minWidth: "100px" }} className="job-table-status">
             <b>{thisJob.agency.name}</b>
           </td>
         )}
@@ -84,45 +84,18 @@ const MyJobApplicantsWidget = ({
                   className="link link-black hover-gold link-bold"
                   to={"/job/" + thisJob.slug}
                 >
-                  {thisJob.title}
+                  <u>{thisJob.title}</u>
                 </Link>
               </h3>
               {thisJob.priority.is_featured ? (
-                <IoCheckmarkCircle color="#34A853" size={30} />
+                <IoCheckmarkCircle color="#34A853" size={30} style={{ minWidth: "30px", minHeight: "30px" }} />
               ) : (
                 ""
               )}
             </div>
           </div>
         </td>
-        <td className="job-table-info">
-          <div className="job-table-info-content" style={{ minWidth: "200px" }}>
-            <div className="job-metas">
-              <div className="job-location location">
-                {(thisJob?.location?.state?.length ||
-                  thisJob?.location?.city?.length) && <IoLocationOutline />}
-                {thisJob.location?.state && (
-                  <Link
-                    className="link link-black hover-gold"
-                    to={`/job-location-state/${thisJob.location.state}`}
-                  >
-                    {thisJob.location.state}
-                  </Link>
-                )}
-                {thisJob?.location?.state?.length &&
-                  thisJob?.location?.city?.length && <span>,&nbsp;</span>}
-                {thisJob.location?.city && (
-                  <Link
-                    className="link link-black hover-gold"
-                    to={`/job-location-city/${thisJob.location.city}`}
-                  >
-                    {thisJob.location.city}
-                  </Link>
-                )}
-              </div>
-            </div>
-          </div>
-        </td>
+
 
         <td className="job-table-applicants text-theme nowrap">
           {job?.applications?.length > 0 ? (
@@ -150,16 +123,40 @@ const MyJobApplicantsWidget = ({
           )}
         </td>
 
-        <td>
-          <div className="job-table-info-content-date-expiry">
-            <div className="created">
-              {moment(thisJob.created_at).format("MMM D, YYYY")}
+        <td className="job-table-info">
+          <div className="job-table-info-content" style={{ minWidth: "100px" }}>
+            <div className="job-metas">
+              <div className="job-location location" style={{ display: "flex", justifyContent: "center" }}>
+                {(thisJob?.location?.state?.length ||
+                  thisJob?.location?.city?.length) && <IoLocationOutline />}
+                {thisJob.location?.state && (
+                  <Link
+                    className="link link-black hover-gold"
+                    to={`/job-location-state/${thisJob.location.state}`}
+                  >
+                    {thisJob.location.state}
+                  </Link>
+                )}
+                {thisJob?.location?.state?.length &&
+                  thisJob?.location?.city?.length && <span>,&nbsp;</span>}
+                {thisJob.location?.city && (
+                  <Link
+                    className="link link-black hover-gold"
+                    to={`/job-location-city/${thisJob.location.city}`}
+                  >
+                    {thisJob.location.city}
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         </td>
 
         <td>
           <div className="job-table-info-content-date-expiry">
+            <div className="created">
+              {moment(thisJob.created_at).format("MMM D, YYYY")}
+            </div>
             <div className="expiry-date">
               <span className="text-danger">
                 {moment(thisJob.expired_at).format("MMM D, YYYY")}
@@ -187,17 +184,21 @@ const MyJobApplicantsWidget = ({
           {thisJob?.deleted_at &&
             new Date(thisJob?.deleted_at) <
             Date.parse(new Date().toISOString()) ? (
-            <span className="badge bg-danger">
-              Deleted:&nbsp;<TimeAgo datetime={thisJob?.deleted_at} />
-            </span>
+            <div className="job-status-center">
+              <span className="badge bg-danger">
+                Deleted
+              </span><TimeAgo datetime={thisJob?.deleted_at} />
+            </div>
           ) : (
             <>
               {thisJob?.expired_at &&
                 new Date(thisJob?.expired_at) <=
                 Date.parse(new Date().toISOString()) && (
-                  <span className="badge bg-danger">
-                    Expired:&nbsp;<TimeAgo datetime={thisJob?.expired_at} />
-                  </span>
+                  <div className="job-status-center">
+                    <span className="badge bg-danger">
+                      Expired
+                    </span><TimeAgo datetime={thisJob?.expired_at} />
+                  </div>
                 )}
             </>
           )}
@@ -205,7 +206,7 @@ const MyJobApplicantsWidget = ({
       </tr>
       {showApplications && (
         <tr>
-          <td colSpan={4}>
+          <td colSpan={6}>
             {thisJob?.applications?.length > 0 ? (
               <TabularJobApplications
                 job={thisJob}

@@ -82,7 +82,7 @@ const TabularApplicantJobs = () => {
   };
 
   const paginate = (page) => {
-    getApplicationsAllStatus(user.uuid, 0, 0, statusApplication, (foundJobs) => {
+    getApplicationsAllStatus(user.uuid, 0, page, statusApplication, (foundJobs) => {
       filterJobApplicants(foundJobs);
     });
   };
@@ -110,20 +110,19 @@ const TabularApplicantJobs = () => {
               title={"jobs"}
             />
           )}
-          <div className="table-responsive">
-            <table className="job-table">
+          <div className="table-responsive" style={{ transform: "rotateX(180deg)" }}>
+            <table className="job-table" style={{ transform: "rotateX(180deg)" }}>
               <thead>
                 <tr>
                   {(user?.role == "advisor" || user?.role == "recruiter") && (
-                    <th style={{ minWidth: "150px" }} className="title">
+                    <th style={{ minWidth: "100px" }} className="title">
                       Agency
                     </th>
                   )}
                   <th className="title">Title</th>
-                  <th className="title">Location</th>
                   <th className="applicants">Applicants</th>
-                  <th className="date">Created</th>
-                  <th className="date">Expiration</th>
+                  <th className="title">Location</th>
+                  <th className="date">Created &<br />Expiration</th>
                   <th className="status">Status</th>
                 </tr>
               </thead>
