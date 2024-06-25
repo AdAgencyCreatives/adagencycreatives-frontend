@@ -38,14 +38,21 @@ const TabularApplicantJobs = () => {
 
   const filterJobApplicants = (foundJobs) => {
     const filteredJobs = foundJobs.map((job) => {
+      var updatedJob = { ...job };
+
       if (job.advisor_id != null && job.advisor_id != user.id) {
         var shortlistedApplicants = job.applications.filter((application) => application.status == "shortlisted");
-        var updatedJob = { ...job };
         updatedJob.applications = shortlistedApplicants;
-        return updatedJob;
-
+      } else {
+        var sortedApplications = [];
+        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "pending"));
+        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "accepted"));
+        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "shortlisted"));
+        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "rejected"));
+        updatedJob.applications = sortedApplications;
       }
-      return job;
+
+      return updatedJob;
     });
     setData(filteredJobs);
   };
