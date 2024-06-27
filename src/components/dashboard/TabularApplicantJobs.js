@@ -98,6 +98,7 @@ const TabularApplicantJobs = () => {
     <div className="agency-page-myjobs tabular">
       <AddNotesModal
         open={open}
+        setOpen={setOpen}
         handleClose={handleClose}
         resource_id={appId}
         type="applications"

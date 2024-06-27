@@ -12,7 +12,7 @@ import { convertUTCDateToLocalDate } from "../../UtcToLocalDateTime";
 import DelayedOutput from "../../DelayedOutput";
 import { IoClose, IoCloseCircleSharp, IoCloseSharp, IoPencil } from "react-icons/io5";
 
-const AddNotesModal = ({ resource_id, type, open, handleClose, statusJob }) => {
+const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJob }) => {
   const [note, setNote] = useState("");
   const [message, setMessage] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
@@ -109,6 +109,7 @@ const AddNotesModal = ({ resource_id, type, open, handleClose, statusJob }) => {
       scroll="body"
     >
       <div className="add-note-modal">
+        <div className="close-modal"><IoCloseCircleSharp size={30} onClick={(e) => setOpen(false)} /></div>
         <div className="addnote-header"></div>
         <div className="addnote-body">
           <div className="job-apply-email-form-wrapper">

@@ -179,6 +179,7 @@ const AgencyShortlist = () => {
       </div>
       <AddNotesModal
         open={openNotes}
+        setOpen={setOpenNotes}
         handleClose={handleCloseNotes}
         resource_id={appId}
         type="agencies"

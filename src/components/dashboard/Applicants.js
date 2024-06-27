@@ -116,6 +116,7 @@ const Applicants = () => {
         <div className="card-title">Recent Applicants</div>
         <AddNotesModal
           open={open}
+          setOpen={setOpen}
           handleClose={handleClose}
           resource_id={appId}
           type="applications"

@@ -207,6 +207,7 @@ const Header = ({ data, role, user }) => {
                     </button>
                     <Invite
                       open={openInvite}
+                      setOpen={setOpenInvite}
                       handleClose={handleCloseInvite}
                       item={data}
                     />

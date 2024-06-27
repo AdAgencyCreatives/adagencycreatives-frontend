@@ -7,8 +7,9 @@ import {
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 import { useState } from "react";
+import { IoCloseCircleSharp } from "react-icons/io5";
 
-const Invite = ({ open, handleClose, item }) => {
+const Invite = ({ open, setOpen, handleClose, item }) => {
   const [jobId, setJobId] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(false);
@@ -97,12 +98,13 @@ const Invite = ({ open, handleClose, item }) => {
     >
       {item && (
         <div className="add-note-modal">
+          <div className="close-modal"><IoCloseCircleSharp size={30} onClick={(e) => setOpen(false)} /></div>
           <div className="addnote-header"></div>
           <div className="addnote-body">
             <div className="job-apply-email-form-wrapper">
               <div className="inner">
                 <p style={{ fontSize: 25, fontWeight: 500 }}>
-                  Invite to apply job
+                  Invite to apply to Job
                 </p>
                 <p className="fs-5">Select job to invite this user</p>
                 {message && (

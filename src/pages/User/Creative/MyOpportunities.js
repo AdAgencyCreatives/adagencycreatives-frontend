@@ -49,6 +49,7 @@ const MyOpportunities = () => {
       <h3 className="page-title">Applied Jobs</h3>
       <AddNotesModal
         open={open}
+        setOpen={setOpen}
         handleClose={handleClose}
         resource_id={appId}
         type="applications"
