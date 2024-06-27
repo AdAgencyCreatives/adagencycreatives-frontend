@@ -199,7 +199,7 @@ const Sidebar = ({ data, user }) => {
           {linkedin || website ? (
             <div className="mt-4">
               <div className="details">
-                <div className="text mb-3">Agency</div>
+                <div className="text mb-3">{agencyType}</div>
                 <div className="value d-flex flex-wrap gap-3">
                   {linkedin && (
                     <Link
