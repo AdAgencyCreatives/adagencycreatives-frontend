@@ -73,9 +73,9 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
       {
         label: "Portfolio Site *",
         required: true,
-        type: "url",
+        type: "text",
         name: "portfolio_site",
-        placeholder: "Portfolio Site * (Start with http:// or https://)",
+        placeholder: "Portfolio Site *",
       },
       {
         label: "",
@@ -137,13 +137,13 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
         name: "linkedin_profile",
         placeholder: "LinkedIn Profile *",
       },
-      {
-        label: "",
-        type: "hidden",
-        name: "portfolio_site",
-        placeholder: "Portfolio Site *",
-        value: " ",
-      },
+      // {
+      //   label: "",
+      //   type: "hidden",
+      //   name: "portfolio_site",
+      //   placeholder: "Portfolio Site *",
+      //   value: "",
+      // },
     ],
   });
 
@@ -152,7 +152,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
 
     updatedFields[type][index].value = value;
     if (updatedFields[type][index].type === 'url') {
-      updatedFields[type][index].error = !isValidHttpUrl(value) ? 'Please enter a valid url.' : '';
+      // updatedFields[type][index].error = !isValidHttpUrl(value) ? 'Please enter a valid url.' : '';
     } else if (updatedFields[type][index].type === 'password') {
       let err = hasPasswordError(value);
       if (err?.length) {
