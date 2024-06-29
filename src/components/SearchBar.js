@@ -9,9 +9,39 @@ const SearchBar = ({ placeholder, onSearch, role, advance_search_capabilities, s
   const [input, setInput] = useState("");
   const [permission, setPermission] = useState(null);
 
+  const modifyInput = (text) => {
+    let searchItems = [
+      ["  ", " "],
+      [",,", ","],
+      ["..", "."],
+      [" ,", ","],
+      [" .", "."],
+      [",.", ","],
+      [".,", ","],
+    ];
+
+    let newText = text || "";
+    let continueSearch = true;
+
+    while (continueSearch) {
+      continueSearch = false;
+      searchItems.forEach(element => {
+        while (newText.indexOf(element[0]) >= 0) {
+          newText = newText.replace(element[0], element[1]);
+          continueSearch = true;
+        }
+      });
+    }
+
+    return newText;
+  };
+
+
   const handleCloseTitleRecommendations = (e, data) => {
     data?.setOpen(false)
-    const searchKeyword = input + data?.value + (permission?.append_comma ? ", " : "");
+    let trimmedInput = modifyInput(input.trim());
+    let appendComma = trimmedInput?.length > 0 && trimmedInput.charAt(trimmedInput.length - 1) != ',';
+    const searchKeyword = trimmedInput + (appendComma ? ', ' : ' ') + data?.value + (permission?.append_comma ? ", " : "");
     setInput(searchKeyword);
     onSearch(searchKeyword);
     inputRef?.current?.focus();
@@ -55,7 +85,9 @@ const SearchBar = ({ placeholder, onSearch, role, advance_search_capabilities, s
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        onSearch(input);
+        let trimmedInput = modifyInput(input.trim());
+        setInput(trimmedInput);
+        onSearch(trimmedInput);
         return false;
       }}
     >

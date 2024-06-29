@@ -91,6 +91,8 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
   }, [open, user]);
 
   useEffect(() => {
+    setSelectedNote(null);
+    setNote('');
     setMessage(false);
   }, [open]);
 
