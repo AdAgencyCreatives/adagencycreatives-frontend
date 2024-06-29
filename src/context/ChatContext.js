@@ -160,11 +160,12 @@ const setActiveContact = (dispatch) => {
 };
 
 const uploadAttachment = (dispatch) => {
-  return async (data, src) => {
+  return async (data, src, cb = () => { }) => {
     dispatch({
       type: "add_attachment",
       payload: src,
     });
+    cb("upload_start", { src: src, uploaded: false });
     try {
       const response = await api.post("/attachments", data, {
         headers: {
@@ -175,6 +176,7 @@ const uploadAttachment = (dispatch) => {
         type: "set_uploaded_attachment_status",
         payload: response.data.data,
       });
+      cb("upload_finish", response.data.data);
     } catch (error) { }
   };
 };

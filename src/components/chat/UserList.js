@@ -19,8 +19,8 @@ import {
 import { Link } from "react-router-dom";
 import { api } from "../../api/api";
 
-const UserList = ({ messageType, page, data, handleItemClick, refreshContacts, setMessageData }) => {
-
+const UserList = (props) => {
+  const { messageType, page, data, handleItemClick, refreshContacts, setMessageData } = props;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpenEdit, setIsDialogOpenEdit] = useState(false);
   const [isId, setIsId] = useState(false);
@@ -31,6 +31,7 @@ const UserList = ({ messageType, page, data, handleItemClick, refreshContacts, s
   useEffect(() => {
     setConversationData(data);
   }, [data]);
+
   const {
     state: { user },
   } = useContext(AuthContext);
@@ -115,8 +116,8 @@ const UserList = ({ messageType, page, data, handleItemClick, refreshContacts, s
     if (deletedCount) {
       // window.location.reload();
       setMessageData([]);
-      // await refreshContacts();
-      // showAlert("Conversation deleted");
+      await refreshContacts();
+      showAlert("Conversation deleted");
     }
   };
 
@@ -212,7 +213,7 @@ const UserList = ({ messageType, page, data, handleItemClick, refreshContacts, s
                 </Tooltip>
               </div>
             </div>
-            <div className="user-message" dangerouslySetInnerHTML={{ __html: getShortMessage(sanitizeText(item.message)) }}></div>
+            <div className="user-message" dangerouslySetInnerHTML={{ __html: getShortMessage((item?.sender_id == user?.id ? "You" : item.contact.first_name) + ": " + sanitizeText(item.message)) }}></div>
           </div>
         </li>
       ))}

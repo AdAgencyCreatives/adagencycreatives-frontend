@@ -54,8 +54,10 @@ const ChatBox = ({
   } = useContext(AlertContext);
 
   const [showPicker, setShowPicker] = useState(false);
-  // const [messageData, setMessageData] = useState([]);
   const [content, setContent] = useState("");
+  const [draftMessages, setDraftMessages] = useState({});
+  const [draftAttachments, setDraftAttachments] = useState({});
+  const [chatBoxAttachments, setChatBoxAttachments] = useState([]);
   const containerRef = useRef();
   const uploadRef = useRef();
   const logoRef = useRef();
@@ -75,7 +77,19 @@ const ChatBox = ({
 
   useEffect(() => {
     setMessageData(messages);
+    // setContent(draftMessages[contact.uuid] || "");
   }, [messages]);
+
+  useEffect(() => {
+    if (contact) {
+      setContent(draftMessages[contact.uuid] || "");
+      setChatBoxAttachments(draftAttachments[contact.uuid] || []);
+    }
+  }, [contact]);
+
+  useEffect(() => {
+
+  }, [attachments]);
 
   useEffect(() => {
     if (!hasMoreData) {
@@ -90,6 +104,38 @@ const ChatBox = ({
 
   const handleMessageChange = (e) => {
     setContent(e.target.value);
+    updateDraftMessage(e.target.value);
+  };
+
+  const updateDraftMessage = (msg) => {
+    let newDraftMessages = { ...draftMessages };
+    let messageBody = msg;
+    newDraftMessages[contact.uuid] = messageBody;
+    setDraftMessages(newDraftMessages);
+  };
+
+  const updateDraftAttachment = (action, response = null) => {
+    let newDraftAttachments = { ...draftAttachments };
+
+    if (action == "reset") {
+      newDraftAttachments[contact.uuid] = response;
+      setDraftAttachments(newDraftAttachments);
+      setChatBoxAttachments(response);
+      return;
+    }
+
+    let atts = newDraftAttachments[contact.uuid] || [];
+
+    if (atts?.length > 0 && action == "upload_finish") {
+      atts[atts.length - 1] = response;
+      atts[atts.length - 1].uploaded = true;
+    } else {
+      atts.push(response);
+    }
+
+    newDraftAttachments[contact.uuid] = atts;
+    setDraftAttachments(newDraftAttachments);
+    setChatBoxAttachments(atts);
   };
 
   const handleSubmit = async () => {
@@ -106,8 +152,8 @@ const ChatBox = ({
       },
     ]); */
     let messageBody = content;
-    if (attachments.length) {
-      attachments.forEach((item) => {
+    if (chatBoxAttachments.length) {
+      chatBoxAttachments.forEach((item) => {
         messageBody += "<br/>";
         messageBody += item.url;
       });
@@ -118,17 +164,14 @@ const ChatBox = ({
     // const type = messageType ?? (messageData.slice(-1).pop()?.type ?? 'job');
     await sendMessage(user.uuid, contact.uuid, messageBody, type);
     //showAlert("Message sent");
+
     setContent("");
-    const id = contact.uuid;
+    setChatBoxAttachments([]);
+    updateDraftMessage("");
+    updateDraftAttachment("reset", []);
 
-    // let existingObject = contacts.find((obj) => obj.contact.uuid === id);
-    // if (!existingObject) {
-    //   setChatBox("list");
-    //   getMessages(id, type);
-    //   await getContacts(type);
-    // }
-
-    // await refreshContacts();
+    await getMessages(contact.uuid, type);
+    await getContacts(type);
   };
 
   const parseDate = (dateString) => {
@@ -165,7 +208,9 @@ const ChatBox = ({
       formData.append("file", file);
       formData.append("user_id", user.uuid);
       formData.append("resource_type", "message_" + (isVideo ? "video" : (isImage ? "image" : "file")));
-      await uploadAttachment(formData, src);
+      await uploadAttachment(formData, src, (action, response) => {
+        updateDraftAttachment(action, response);
+      });
     }
   };
   const parseDateShort = (dateString) => {
@@ -292,14 +337,13 @@ const ChatBox = ({
     setFormDelete(true);
     try {
       const response = await api.post("/delete-single-message/" + isId);
-      console.log(response.data);
+      showAlert("Message deleted")
     } catch (error) { }
     setFormDelete(false);
     setIsDialogOpen(false);
-    // window.location.reload();
 
-    // await refreshContacts();
-    // await getMessages(contact.uuid, type);
+    await getMessages(contact.uuid, type);
+    await getContacts(type);
   };
 
   const handleEdit = async () => {
@@ -313,9 +357,9 @@ const ChatBox = ({
     } catch (error) { }
     setFormEdit(false);
     setIsDialogOpenEdit(false);
-    // window.location.reload();
-    // await refreshContacts();
-    // await getMessages(contact.uuid, type);
+
+    await getMessages(contact.uuid, type);
+    await getContacts(type);
   };
 
   useEffect(() => {
@@ -523,31 +567,33 @@ const ChatBox = ({
                                   This message was deleted
                                 </span>
                               ) : (
-                                <div dangerouslySetInnerHTML={{ __html: message }}></div>
+                                <>
+                                  <div dangerouslySetInnerHTML={{ __html: message }}></div>
+                                  <div className="message_attachments">
+                                    {attachments.length > 0 &&
+                                      attachments.map((attachment, index) => (<>
+                                        {attachment.resource_type && attachment.resource_type == "message_video" ? (
+                                          <div className="video-container">
+                                            <video className="video" controls muted playsInline>
+                                              <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
+                                              Sorry, your browser doesn't support videos.
+                                            </video>
+                                          </div>
+                                        ) : (<>
+                                          {attachment.resource_type && attachment.resource_type == "message_image" ? (
+                                            <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                                              <img className="post-image" src={attachment.url || ""} alt="" />
+                                            </a>
+                                          ) : (
+                                            <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
+                                              <img className="post-image" src={FileIcon} alt="" />
+                                            </a>
+                                          )}
+                                        </>)}
+                                      </>))}
+                                  </div>
+                                </>
                               )}
-                              <div className="message_attachments">
-                                {attachments.length > 0 &&
-                                  attachments.map((attachment, index) => (<>
-                                    {attachment.resource_type && attachment.resource_type == "message_video" ? (
-                                      <div className="video-container">
-                                        <video className="video" controls muted playsInline>
-                                          <source src={attachment.url} type={"video/" + attachment.url.substring(attachment.url.lastIndexOf('.') + 1)} />
-                                          Sorry, your browser doesn't support videos.
-                                        </video>
-                                      </div>
-                                    ) : (<>
-                                      {attachment.resource_type && attachment.resource_type == "message_image" ? (
-                                        <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
-                                          <img className="post-image" src={attachment.url || ""} alt="" />
-                                        </a>
-                                      ) : (
-                                        <a href={attachment.url || "#"} target="_blank" rel="noreferrer">
-                                          <img className="post-image" src={FileIcon} alt="" />
-                                        </a>
-                                      )}
-                                    </>)}
-                                  </>))}
-                              </div>
                             </div>
                           </div>
                         </div>
@@ -576,10 +622,10 @@ const ChatBox = ({
                 />
               </div>
             </div>
-            {attachments.length > 0 && (
+            {chatBoxAttachments.length > 0 && (
               <div className="attachments">
-                {attachments.map((attachment, index) => (
-                  <div className="item" key={"at_" + index}>
+                {chatBoxAttachments.map((attachment, index) => {
+                  return (<div className="item" key={"at_" + index}>
                     {!attachment.uploaded ? (
                       <Loader fullHeight={false} />
                     ) : (<>
@@ -599,8 +645,8 @@ const ChatBox = ({
                         )}
                       </>)}
                     </>)}
-                  </div>
-                ))}
+                  </div>);
+                })}
               </div>
             )}
             <div className="message-actions">

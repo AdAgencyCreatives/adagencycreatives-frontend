@@ -44,9 +44,7 @@ const JobChat = ({ messageType }) => {
         refreshContacts();
         getMessages(contactTmp.uuid, typeTmp);
       })();
-
     }
-
   }, [conversation_updated_notifications]);
 
   const handleItemClick = (item, type) => {
@@ -69,6 +67,7 @@ const JobChat = ({ messageType }) => {
   const refreshContacts = async () => {
     await getContacts(messageType);
   };
+
   const handleBackButton = () => {
     setUserListMobile("");
     setChatBoxMobile("mobile-hide");

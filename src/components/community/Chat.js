@@ -10,15 +10,23 @@ import { HiOutlineUserGroup } from "react-icons/hi2";
 import "../../styles/Chat.scss";
 import { useState, useEffect, useContext } from "react";
 import ChatBox from "../chat/ChatBox";
-import { Context } from "../../context/ChatContext";
+import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as ChatContext } from "../../context/ChatContext";
+
 import UserList from "../chat/UserList";
 import { getMyFriends } from "../../context/FriendsDataContext";
 
 const Chat = ({ messageType }) => {
+
+  const {
+    state: { conversation_updated_notifications },
+  } = useContext(AuthContext);
+
+
   const {
     state: { contacts },
     getMessages, getContacts,
-  } = useContext(Context);
+  } = useContext(ChatContext);
 
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState("messages");
@@ -29,10 +37,11 @@ const Chat = ({ messageType }) => {
   const [contact, setContact] = useState({});
   const [type, setType] = useState(messageType);
   const [friends, setFriends] = useState([]);
-
+  const [checkClick, setCheckClick] = useState(false);
   const [userSelected, setUserSelected] = useState(null);
   const [paged, setPaged] = useState(2);
   const [hasMoreData, setHasMoreData] = useState(false);
+  const [messageData, setMessageData] = useState([]);
 
   useEffect(() => {
     getContacts(type);
@@ -49,15 +58,36 @@ const Chat = ({ messageType }) => {
     setContactsList(contacts);
   }, [contacts]);
 
+  useEffect(() => {
+    if (conversation_updated_notifications?.length > 0) {
+      (async () => {
+        let typeTmp = type;
+        let contactTmp = contact;
+        refreshContacts();
+        getMessages(contactTmp.uuid, typeTmp);
+      })();
+    }
+  }, [conversation_updated_notifications]);
+
   const handleItemClick = (item, type) => {
     setChatBox("list");
     setUserListMobile("mobile-hide");
     setChatBoxMobile("");
+    setCheckClick(true);
+    setPaged(2);
+    setHasMoreData(false);
     if (item.uuid != contact.uuid) {
+      console.log("item.uuid", item.uuid);
+      setMessageData([]);
       getMessages(item.uuid, type);
       setContact(item);
       setType(type);
     }
+    refreshContacts();
+  };
+
+  const refreshContacts = async () => {
+    await getContacts(messageType);
   };
 
   const handleBackButton = () => {
@@ -88,8 +118,6 @@ const Chat = ({ messageType }) => {
     setContactsList([...updatedList])
   };
 
-  const [messageData, setMessageData] = useState([]);
-
   const chatBoxProps = {
     contact,
     type,
@@ -107,6 +135,7 @@ const Chat = ({ messageType }) => {
     hasMoreData,
     messageData,
     setMessageData,
+    refreshContacts,
   };
 
   return (
@@ -158,7 +187,7 @@ const Chat = ({ messageType }) => {
               </div>
             </div>
             <div className="box-content">
-              <UserList messageType={type} page="lounge" data={contactsList} handleItemClick={handleItemClick} />
+              <UserList messageType={type} page="lounge" data={contactsList} handleItemClick={handleItemClick} refreshContacts={refreshContacts} setMessageData={setMessageData} />
             </div>
           </div>
         </div>
