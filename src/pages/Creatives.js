@@ -325,22 +325,22 @@ const Creatives = () => {
                           role == "agency" ||
                           role == "advisor" ||
                           role == "recruiter") && (
-                          <Tooltip title={"Shortlist"} type="featured">
-                            <button
-                              className={
-                                "shortlist-btn" +
-                                (isShortlisted ? " active" : "")
-                              }
-                              onClick={() =>
-                                isShortlisted
-                                  ? removeFromShortlist(isShortlisted.id)
-                                  : addToShortlist(item.id)
-                              }
-                            >
-                              <IoBookmarkOutline />
-                            </button>
-                          </Tooltip>
-                        )}
+                            <Tooltip title={"Shortlist"} type="featured">
+                              <button
+                                className={
+                                  "shortlist-btn" +
+                                  (isShortlisted ? " active" : "")
+                                }
+                                onClick={() =>
+                                  isShortlisted
+                                    ? removeFromShortlist(isShortlisted.id)
+                                    : addToShortlist(item.id)
+                                }
+                              >
+                                <IoBookmarkOutline />
+                              </button>
+                            </Tooltip>
+                          )}
                         <ImageLoader
                           item={item}
                           source={item?.user_thumbnail || item.profile_image}
@@ -413,7 +413,7 @@ const Creatives = () => {
       </div>
       {creatives && creatives.length === 0 ? (
         <div className="no_result">
-          <p>There is no result.</p>
+          <p>Please try again. No exact results found.</p>
         </div>
       ) : (
         <span></span>

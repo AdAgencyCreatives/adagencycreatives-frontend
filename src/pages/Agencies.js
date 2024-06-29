@@ -153,7 +153,7 @@ const Agencies = () => {
       </div>
       {agencies && agencies.length === 0 ? (
         <div className="no_result">
-          <p>There is no result.</p>
+          <p>Please try again. No exact results found.</p>
         </div>
       ) : (
         <span></span>
