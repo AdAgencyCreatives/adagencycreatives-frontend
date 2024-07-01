@@ -1,65 +1,65 @@
 import { useContext, useState, useEffect } from "react";
-import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as AuthContext } from "../../context/AuthContext";
-import { Link } from "react-router-dom";
-import SingleJobApplication from "./SingleJobApplication";
 import TabularSingleJobApplication from "./TablularSingleJobApplication";
+import moment from "moment";
 
 const TabularJobApplications = (props) => {
-  const [applications, setApplications] = useState(null);
-  const [showAllApplications, setShowAllApplications] = useState(true);
-  const [limitShowApplications, setLimitShowApplications] = useState(3);
 
-  const { showAlert } = useContext(AlertContext);
+  const MIN_APPLICANTS_ENABLE_FILTER = 0;
+  const [applications, setApplications] = useState(null);
+
+  const [filterName, setFilterName] = useState("");
+  const [filterTitle, setFilterTitle] = useState("");
+  const [filterAppliedDate, setFilterAppliedDate] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
 
   const {
     state: { user },
   } = useContext(AuthContext);
 
   useEffect(() => {
-    // const applications = sortApplications(props?.job?.applications);
-    const applications = props?.job?.applications;
-
-    if (showAllApplications) {
-      setApplications(applications);
-    } else {
-      setApplications(
-        applications?.length < limitShowApplications
-          ? applications
-          : applications.slice(0, limitShowApplications)
-      );
-    }
-  }, [showAllApplications]);
-
-  useEffect(() => {
-    // const applications = sortApplications(props?.job?.applications);
-    const applications = props?.job?.applications;
-
-    // setLimitShowApplications(
-    //   props?.isJobExpired || props?.isJobDeleted ? 0 : limitShowApplications
-    // );
-    // setApplications(
-    //   props?.isJobExpired || props?.isJobDeleted
-    //     ? null
-    //     : applications?.length < limitShowApplications
-    //     ? applications
-    //     : applications.slice(0, limitShowApplications)
-    // );
-
-    setApplications(applications);
+    setApplications(props?.job?.applications);
   }, []);
 
-  const sortApplications = (applications) => {
-    const rejected = applications.filter((app) => {
-      return app.status === "rejected";
-    });
-    let others = applications.filter((app) => {
-      return app.status !== "rejected";
-    });
+  const getStatus = (rawStatus) => {
+    return rawStatus?.length > 0
+      ? rawStatus == "pending"
+        ? "Pending"
+        : rawStatus == "accepted"
+          ? "Approved"
+          : rawStatus == "shortlisted"
+            ? "Recommended"
+            : "Not Aligned"
+      : "";
+  };
 
-    applications = others.concat(rejected);
+  const filterApplications = (e) => {
+    let filteredApplications = props?.job?.applications?.length > 0 ? props?.job?.applications.filter((app) => {
+      let result = true;
+      if (filterName?.length > 0) {
+        result = result & app?.user?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0;
+      }
+      if (filterTitle?.length > 0) {
+        result = result & app?.creative_category?.toLowerCase().indexOf(filterTitle.toLowerCase()) >= 0;
+      }
+      if (filterAppliedDate?.length > 0) {
+        result = result & moment(app?.created_at).format("MMMM D, YYYY")?.toLowerCase().indexOf(filterAppliedDate.toLowerCase()) >= 0;
+      }
+      if (filterStatus?.length > 0) {
+        result = result & getStatus(app?.status)?.toLowerCase().indexOf(filterStatus.toLowerCase()) >= 0;
+      }
 
-    return applications;
+      return result;
+    }) : [];
+    setApplications(filteredApplications);
+  };
+
+  const resetFilters = (e) => {
+    setFilterName("");
+    setFilterTitle("");
+    setFilterAppliedDate("");
+    setFilterStatus("");
+    setApplications(props?.job?.applications);
   };
 
   return (
@@ -84,6 +84,27 @@ const TabularJobApplications = (props) => {
                 Actions
               </th>
             </tr>
+            {props?.job?.applications?.length > MIN_APPLICANTS_ENABLE_FILTER && (
+              <tr>
+                <td className="title" style={{ widtd: "28%" }}>
+                  <input className="form-control" type="text" value={filterName} onChange={e => setFilterName(e.target.value)} />
+                </td>
+                <td className="title" style={{ widtd: "27%" }}>
+                  <input className="form-control" type="text" value={filterTitle} onChange={e => setFilterTitle(e.target.value)} />
+                </td>
+                <td className="date" style={{ widtd: "12%" }}>
+                  <input className="form-control" type="text" value={filterAppliedDate} onChange={e => setFilterAppliedDate(e.target.value)} />
+                </td>
+                <td className="status" style={{ widtd: "13%" }}>
+                  <input className="form-control" type="text" value={filterStatus} onChange={e => setFilterStatus(e.target.value)} />
+                </td>
+                <td className="actions" style={{ widtd: "20%" }}>
+                  <input className="btn btn-dark" type="button" value={"Filter"} onClick={e => filterApplications(e)} />
+                  &nbsp;
+                  <input className="btn btn-dark" type="button" value={"Reset"} onClick={e => resetFilters(e)} />
+                </td>
+              </tr>
+            )}
           </thead>
           <tbody>
             {applications?.map((application) => (
