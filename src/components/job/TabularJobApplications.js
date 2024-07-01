@@ -5,7 +5,7 @@ import moment from "moment";
 
 const TabularJobApplications = (props) => {
 
-  const MIN_APPLICANTS_ENABLE_FILTER = 0;
+  const MIN_APPLICANTS_ENABLE_FILTER = 20;
   const [applications, setApplications] = useState(null);
 
   const [filterName, setFilterName] = useState("");
