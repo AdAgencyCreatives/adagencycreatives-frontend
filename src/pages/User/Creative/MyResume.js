@@ -106,7 +106,7 @@ const MyResume = () => {
         label: "Completion Date",
         type: "date",
         name: "completed_at",
-        value: new Date(),
+        value: '',
       },
     ],
   };
@@ -981,11 +981,14 @@ const MyResume = () => {
 
   const handleDateChange = (name, item_index, data_index, key_name, date) => {
     try {
-      date = date == null ? new Date() : date;
+      //date = date == null ? new Date() : date;
       const value = moment(date).format("YYYY-MM-DD HH:mm:ss");
 
-      if (value != 'Invalid Date')
+      if (value != 'Invalid date')
         handleRepeaterChange(name, item_index, data_index, key_name, value);
+      else
+        handleRepeaterChange(name, item_index, data_index, key_name, '');
+
     } catch (error) {
 
     }
@@ -1026,10 +1029,11 @@ const MyResume = () => {
                     ) : child.type == "date" ? (
                       <DatePicker
                         className="form-control"
-                        selected={child.value ? new Date(child.value) : ""}
+                        selected={child.value == null || child.value == '' ? '' : new Date(child.value)}
                         onChange={(date) => handleDateChange(field.name, index, cindex, child.name, date)}
                         dateFormat="MMMM d, yyyy"
                         maxDate={child?.futureDisable ? new Date() : false}
+                        placeholderText="00/00/0000"
                       />
                     ) : (
                       ""
