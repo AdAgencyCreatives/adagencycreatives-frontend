@@ -980,8 +980,16 @@ const MyResume = () => {
   };
 
   const handleDateChange = (name, item_index, data_index, key_name, date) => {
-    const value = moment(date).format("YYYY-MM-DD HH:mm:ss");
-    handleRepeaterChange(name, item_index, data_index, key_name, value);
+    try {
+      date = date == null ? new Date() : date;
+      const value = moment(date).format("YYYY-MM-DD HH:mm:ss");
+
+      if (value != 'Invalid Date')
+        handleRepeaterChange(name, item_index, data_index, key_name, value);
+    } catch (error) {
+
+    }
+
   };
 
   const getRepeaterField = (field) => (
