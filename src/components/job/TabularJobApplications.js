@@ -73,23 +73,6 @@ const TabularJobApplications = (props) => {
       <div className="table-responsive">
         <table className="job-table">
           <thead>
-            <tr>
-              <th className="title" style={{ width: "28%" }}>
-                Name
-              </th>
-              <th className="title" style={{ width: "27%" }}>
-                Title
-              </th>
-              <th className="date" style={{ width: "12%" }}>
-                Applied Date
-              </th>
-              <th className="status" style={{ width: "13%" }}>
-                Status
-              </th>
-              <th className="actions" style={{ width: "20%" }}>
-                Actions
-              </th>
-            </tr>
             {props?.job?.applications?.length > MIN_APPLICANTS_ENABLE_FILTER && (
               <tr>
                 <td colSpan={2} className="title" style={{ widtd: "55%" }}>
@@ -111,6 +94,23 @@ const TabularJobApplications = (props) => {
                 </td>
               </tr>
             )}
+            <tr>
+              <th className="title" style={{ width: "28%" }}>
+                Name
+              </th>
+              <th className="title" style={{ width: "27%" }}>
+                Title
+              </th>
+              <th className="date" style={{ width: "12%" }}>
+                Applied Date
+              </th>
+              <th className="status" style={{ width: "13%" }}>
+                Status
+              </th>
+              <th className="actions" style={{ width: "20%" }}>
+                Actions
+              </th>
+            </tr>
           </thead>
           <tbody>
             {applications?.map((application) => (
