@@ -1,4 +1,4 @@
-import { IoClose, IoSearchOutline } from "react-icons/io5";
+import { IoClose, IoCloseCircleSharp, IoSearchOutline } from "react-icons/io5";
 
 import "../../../styles/Chat.scss";
 import { useEffect, useState, useContext } from "react";
@@ -121,17 +121,17 @@ const JobChat = ({ messageType }) => {
           <div className={`users-box ${userListMobile}`}>
             <div className="box-header">
               <div className="header-top d-flex justify-space-between">
-                <div className="box-title">Messaging</div>
+                <div className="box-title">Applicants</div>
               </div>
               <div className="message-search-box">
                 <IoSearchOutline />
                 <input
                   className="message-search-input"
                   value={search}
-                  placeholder="Search Contacts..."
+                  placeholder="Search applicants..."
                   onChange={(e) => filterContacts(e.target.value)}
                 />
-                {search && <IoClose className="clear-message" onClick={() => filterContacts("")} />}
+                {search && <IoCloseCircleSharp size={25} className="clear-message" onClick={() => filterContacts("")} />}
               </div>
               <div className="message-tabs">
                 <div
