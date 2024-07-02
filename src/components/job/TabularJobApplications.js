@@ -5,7 +5,7 @@ import moment from "moment";
 
 const TabularJobApplications = (props) => {
 
-  const MIN_APPLICANTS_ENABLE_FILTER = 20;
+  const MIN_APPLICANTS_ENABLE_FILTER = 0;
   const [applications, setApplications] = useState(null);
 
   const [filterName, setFilterName] = useState("");
@@ -62,6 +62,12 @@ const TabularJobApplications = (props) => {
     setApplications(props?.job?.applications);
   };
 
+  const handleFilterKeyUp = (e) => {
+    if (e.key == 'Enter' || e.which == 13) {
+      filterApplications(e);
+    }
+  };
+
   return (
     <div className="applicants-wrapper">
       <div className="table-responsive">
@@ -86,17 +92,17 @@ const TabularJobApplications = (props) => {
             </tr>
             {props?.job?.applications?.length > MIN_APPLICANTS_ENABLE_FILTER && (
               <tr>
-                <td className="title" style={{ widtd: "28%" }}>
-                  <input className="form-control" type="text" value={filterName} onChange={e => setFilterName(e.target.value)} />
+                <td colSpan={2} className="title" style={{ widtd: "55%" }}>
+                  <input className="form-control" type="text" value={filterName} onChange={e => setFilterName(e.target.value)} placeholder="Filter Name" onKeyUp={e => handleFilterKeyUp(e)} />
                 </td>
-                <td className="title" style={{ widtd: "27%" }}>
+                {/* <td className="title" style={{ widtd: "27%" }}>
                   <input className="form-control" type="text" value={filterTitle} onChange={e => setFilterTitle(e.target.value)} />
                 </td>
                 <td className="date" style={{ widtd: "12%" }}>
                   <input className="form-control" type="text" value={filterAppliedDate} onChange={e => setFilterAppliedDate(e.target.value)} />
-                </td>
-                <td className="status" style={{ widtd: "13%" }}>
-                  <input className="form-control" type="text" value={filterStatus} onChange={e => setFilterStatus(e.target.value)} />
+                </td> */}
+                <td colSpan={2} className="status" style={{ widtd: "25%" }}>
+                  <input className="form-control" type="text" value={filterStatus} onChange={e => setFilterStatus(e.target.value)} placeholder="Filter Status" onKeyUp={e => handleFilterKeyUp(e)} />
                 </td>
                 <td className="actions" style={{ widtd: "20%" }}>
                   <input className="btn btn-dark" type="button" value={"Filter"} onClick={e => filterApplications(e)} />
