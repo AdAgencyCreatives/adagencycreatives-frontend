@@ -9,9 +9,6 @@ const TabularJobApplications = (props) => {
   const [applications, setApplications] = useState(null);
 
   const [filterName, setFilterName] = useState("");
-  const [filterTitle, setFilterTitle] = useState("");
-  const [filterAppliedDate, setFilterAppliedDate] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
 
   const {
     state: { user },
@@ -21,34 +18,12 @@ const TabularJobApplications = (props) => {
     setApplications(props?.job?.applications);
   }, []);
 
-  const getStatus = (rawStatus) => {
-    return rawStatus?.length > 0
-      ? rawStatus == "pending"
-        ? "Pending"
-        : rawStatus == "accepted"
-          ? "Approved"
-          : rawStatus == "shortlisted"
-            ? "Recommended"
-            : "Not Aligned"
-      : "";
-  };
-
-  const filterApplications = (e) => {
+  const filterApplications = (searchName) => {
     let filteredApplications = props?.job?.applications?.length > 0 ? props?.job?.applications.filter((app) => {
       let result = true;
-      if (filterName?.length > 0) {
-        result = result & app?.user?.toLowerCase().indexOf(filterName.toLowerCase()) >= 0;
+      if (searchName?.length > 0) {
+        result = result & app?.user?.toLowerCase().indexOf(searchName.toLowerCase()) >= 0;
       }
-      if (filterTitle?.length > 0) {
-        result = result & app?.creative_category?.toLowerCase().indexOf(filterTitle.toLowerCase()) >= 0;
-      }
-      if (filterAppliedDate?.length > 0) {
-        result = result & moment(app?.created_at).format("MMMM D, YYYY")?.toLowerCase().indexOf(filterAppliedDate.toLowerCase()) >= 0;
-      }
-      if (filterStatus?.length > 0) {
-        result = result & getStatus(app?.status)?.toLowerCase().indexOf(filterStatus.toLowerCase()) >= 0;
-      }
-
       return result;
     }) : [];
     setApplications(filteredApplications);
@@ -56,16 +31,7 @@ const TabularJobApplications = (props) => {
 
   const resetFilters = (e) => {
     setFilterName("");
-    setFilterTitle("");
-    setFilterAppliedDate("");
-    setFilterStatus("");
     setApplications(props?.job?.applications);
-  };
-
-  const handleFilterKeyUp = (e) => {
-    if (e.key == 'Enter' || e.which == 13) {
-      filterApplications(e);
-    }
   };
 
   return (
@@ -75,21 +41,13 @@ const TabularJobApplications = (props) => {
           <thead>
             {props?.job?.applications?.length > MIN_APPLICANTS_ENABLE_FILTER && (
               <tr>
-                <td colSpan={2} className="title" style={{ widtd: "55%" }}>
-                  <input className="form-control" type="text" value={filterName} onChange={e => setFilterName(e.target.value)} placeholder="Filter Name" onKeyUp={e => handleFilterKeyUp(e)} />
-                </td>
-                {/* <td className="title" style={{ widtd: "27%" }}>
-                  <input className="form-control" type="text" value={filterTitle} onChange={e => setFilterTitle(e.target.value)} />
-                </td>
-                <td className="date" style={{ widtd: "12%" }}>
-                  <input className="form-control" type="text" value={filterAppliedDate} onChange={e => setFilterAppliedDate(e.target.value)} />
-                </td> */}
-                <td colSpan={2} className="status" style={{ widtd: "25%" }}>
-                  <input className="form-control" type="text" value={filterStatus} onChange={e => setFilterStatus(e.target.value)} placeholder="Filter Status" onKeyUp={e => handleFilterKeyUp(e)} />
+                <td colSpan={4} className="title" style={{ widtd: "80%" }}>
+                  <input className="form-control" type="text" value={filterName} onChange={e => {
+                    setFilterName(e.target.value);
+                    filterApplications(e.target.value);
+                  }} placeholder="Search name..." />
                 </td>
                 <td className="actions" style={{ widtd: "20%" }}>
-                  <input className="btn btn-dark" type="button" value={"Filter"} onClick={e => filterApplications(e)} />
-                  &nbsp;
                   <input className="btn btn-dark" type="button" value={"Reset"} onClick={e => resetFilters(e)} />
                 </td>
               </tr>
