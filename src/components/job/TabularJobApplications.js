@@ -5,7 +5,7 @@ import moment from "moment";
 
 const TabularJobApplications = (props) => {
 
-  const MIN_APPLICANTS_ENABLE_FILTER = 20;
+  const MIN_APPLICANTS_ENABLE_FILTER = 5;
   const [applications, setApplications] = useState(null);
 
   const [filterName, setFilterName] = useState("");
@@ -39,7 +39,7 @@ const TabularJobApplications = (props) => {
       <div className="table-responsive">
         <table className="job-table">
           <thead>
-            {props?.job?.applications?.length > MIN_APPLICANTS_ENABLE_FILTER && (
+            {props?.job?.applications?.length >= MIN_APPLICANTS_ENABLE_FILTER && (
               <tr>
                 <td colSpan={4} className="title" style={{ widtd: "80%" }}>
                   <input className="form-control" type="text" value={filterName} onChange={e => {
