@@ -16,6 +16,7 @@ import { CircularProgress } from "@mui/material";
 import ContentEditable from 'react-contenteditable'
 import { api } from "../../api/api";
 import { Context as CreativesContext } from "../../context/CreativesContext";
+import { sendLoungeMentionNotifications } from "../../context/NotificationsDataContext";
 
 const CreateComment = (props) => {
 
@@ -167,19 +168,20 @@ const CreateComment = (props) => {
       "user_id": user.uuid,
       "post_id": props.post.id,
       "content": content
-    }, (response) => {
+    }, async (response) => {
       if (taggerUsers.length > 0) {
-        const schedule_data = {
+        const notifications_data = {
           "sender_id": response.data.data.user_id,
-          "recipient_id": taggerUsers,
-          "post_id": response.data.data.post_id,
-          "type": 1,
-          "notification_text": `${response.data.data.user} commented on your post`,
+          "recipient_ids": taggerUsers,
+          "post_id": response.data.data.id,
+          "notification_type": 'lounge_mention',
+          "notification_text": `${response.data.data.author} commented on you in his post`,
+          "send_email": "yes",
         };
-        const response_schedule = api.post("/schedule-notifications", schedule_data);
-        // console.log("schedule data", schedule_data);
-        // console.log("schedule response", response_schedule);
+        let result = await sendLoungeMentionNotifications(notifications_data);
+        console.log(result);
       }
+      setTaggerUsers([]);
     });
   };
 

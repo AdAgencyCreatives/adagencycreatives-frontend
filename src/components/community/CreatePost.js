@@ -22,6 +22,7 @@ import { Context as CreativesContext } from "../../context/CreativesContext";
 import { api } from "../../api/api";
 
 import { saveAttachment } from "../../context/AttachmentsDataContext";
+import { sendLoungeMentionNotifications } from "../../context/NotificationsDataContext";
 
 const CreatePost = (props) => {
 
@@ -186,19 +187,20 @@ const CreatePost = (props) => {
       "group_id": props.feed_group,
       "content": content,
       "attachment_ids": uploadPostAttachments
-    }, (response) => {
+    }, async (response) => {
       if (taggerUsers.length > 0) {
-        const schedule_data = {
+        const notifications_data = {
           "sender_id": response.data.data.user_id,
-          "recipient_id": taggerUsers,
+          "recipient_ids": taggerUsers,
           "post_id": response.data.data.id,
-          "type": 0,
+          "notification_type": 'lounge_mention',
           "notification_text": `${response.data.data.author} commented on you in his post`,
+          "send_email": "yes",
         };
-        const response_schedule = api.post("/schedule-notifications", schedule_data);
-        // console.log("schedule data", schedule_data);
-        // console.log("schedule response", response_schedule);
+        let result = await sendLoungeMentionNotifications(notifications_data);
+        console.log(result);
       }
+      setTaggerUsers([]);
     });
   };
 
