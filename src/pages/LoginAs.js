@@ -5,7 +5,13 @@ import Loader from "../components/Loader";
 import "../styles/Logout.scss";
 import { Context } from "../context/AuthContext";
 
+import { useNavigate } from 'react-router-dom';
+
+
 const LoginAs = () => {
+
+  const navigate = useNavigate();
+
   const { token } = useParams("token");
 
   const { state, verifyToken } = useContext(Context);
@@ -14,7 +20,16 @@ const LoginAs = () => {
     if (token) {
       verifyToken(token)
         .then((result) => {
-          window.location = "/";
+          let data = result.data;
+          if (data?.user?.role?.length > 0) {
+            if (data.user.role == 'creative') {
+              navigate('/community');
+            } else if (data.user.role == 'agency' || data.user.role == 'advisor' || data.user.role == 'recruiter') {
+              navigate('/dashboard');
+            } else {
+              navigate('/');
+            }
+          }
         })
         .catch((error) => {
           // console.error("Error:", error);

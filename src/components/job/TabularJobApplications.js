@@ -42,13 +42,14 @@ const TabularJobApplications = (props) => {
             {props?.job?.applications?.length >= MIN_APPLICANTS_ENABLE_FILTER && (
               <tr>
                 <th colSpan={4} className="title" style={{ widtd: "80%" }}>
-                  <span style={{ marginBottom: "10px" }}>Search My Applicants</span>
+                  <div>Search My Applicants</div>
                   <input className="form-control" type="text" value={filterName} onChange={e => {
                     setFilterName(e.target.value);
                     filterApplications(e.target.value);
-                  }} placeholder="Search name..." />
+                  }} placeholder="Search by name..." />
                 </th>
                 <th className="actions" style={{ widtd: "20%" }}>
+                  <div>&nbsp;</div>
                   <input className="btn btn-dark" type="button" value={"Reset"} onClick={e => resetFilters(e)} />
                 </th>
               </tr>

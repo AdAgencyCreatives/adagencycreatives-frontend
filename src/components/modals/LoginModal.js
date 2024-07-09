@@ -64,15 +64,16 @@ const LoginModal = ({ open, handleClose, setModal }) => {
       handleClose();
       if (data?.user?.role?.length > 0) {
         if (data.user.role == 'creative') {
-          if (window?.location?.href?.indexOf("http://localhost:3000") === 0 || window?.location?.href?.indexOf("https://staging.adagencycreatives.com") === 0) {
-            sendAdminFriendRequest(data);
-          }
+          // if (window?.location?.href?.indexOf("http://localhost:3000") === 0 || window?.location?.href?.indexOf("https://staging.adagencycreatives.com") === 0) {
+          //   sendAdminFriendRequest(data);
+          // }
           navigate('/community');
         } else if (data.user.role == 'agency' || data.user.role == 'advisor' || data.user.role == 'recruiter') {
           navigate('/dashboard');
+        } else {
+          navigate('/');
         }
       }
-
     });
   };
 
