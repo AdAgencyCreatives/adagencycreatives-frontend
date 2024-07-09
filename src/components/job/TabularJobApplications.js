@@ -5,7 +5,7 @@ import moment from "moment";
 
 const TabularJobApplications = (props) => {
 
-  const MIN_APPLICANTS_ENABLE_FILTER = 5;
+  const MIN_APPLICANTS_ENABLE_FILTER = 1;
   const [applications, setApplications] = useState(null);
 
   const [filterName, setFilterName] = useState("");
@@ -41,15 +41,16 @@ const TabularJobApplications = (props) => {
           <thead>
             {props?.job?.applications?.length >= MIN_APPLICANTS_ENABLE_FILTER && (
               <tr>
-                <td colSpan={4} className="title" style={{ widtd: "80%" }}>
+                <th colSpan={4} className="title" style={{ widtd: "80%" }}>
+                  <span style={{ marginBottom: "10px" }}>Search My Applicants</span>
                   <input className="form-control" type="text" value={filterName} onChange={e => {
                     setFilterName(e.target.value);
                     filterApplications(e.target.value);
                   }} placeholder="Search name..." />
-                </td>
-                <td className="actions" style={{ widtd: "20%" }}>
+                </th>
+                <th className="actions" style={{ widtd: "20%" }}>
                   <input className="btn btn-dark" type="button" value={"Reset"} onClick={e => resetFilters(e)} />
-                </td>
+                </th>
               </tr>
             )}
             <tr>
