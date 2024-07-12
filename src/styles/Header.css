@@ -1117,8 +1117,8 @@ nav ul.dropdown-list .list-item-text.j-fix {
     border: 2px solid #000;
     border-radius: 10px;
     padding: 20px 30px;
-    font-weight: 600;
-    font-size: medium;
+    font-weight: 400;
+    font-size: 20px;
     font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     top: 145px;
     right: -100%;
