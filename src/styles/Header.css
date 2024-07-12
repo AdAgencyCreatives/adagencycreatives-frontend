@@ -1112,8 +1112,9 @@ nav ul.dropdown-list .list-item-text.j-fix {
     width: max-content;
     min-width: 300px;
     height: auto;
-    background-color: #000;
-    color: var(--color-primary);
+    background-color: #fff;
+    color: #000;
+    border: 2px solid #000;
     border-radius: 10px;
     padding: 20px 30px;
     font-weight: 600;
