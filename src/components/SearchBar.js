@@ -38,7 +38,12 @@ const SearchBar = ({ placeholder, onSearch, role, advance_search_capabilities, s
 
 
   const handleCloseTitleRecommendations = (e, data) => {
-    data?.setOpen(false)
+    if (data?.setOpen) {
+      data?.setOpen(false)
+    }
+    if (!data?.value) {
+      return;
+    }
     // let trimmedInput = modifyInput(input.trim());
     // let appendComma = trimmedInput?.length > 0 && trimmedInput.charAt(trimmedInput.length - 1) != ',';
     // const searchKeyword = trimmedInput + (appendComma ? ', ' : ' ') + data?.value + (permission?.append_comma ? ", " : "");
