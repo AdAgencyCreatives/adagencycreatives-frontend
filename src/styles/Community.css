@@ -451,31 +451,6 @@ img.post-avatar {
     color: #000;
 }
 
-.sliding-message {
-    position: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: max-content;
-    min-width: 300px;
-    height: auto;
-    background-color: #000;
-    color: var(--color-primary);
-    border-radius: 10px;
-    padding: 20px 30px;
-    font-weight: 600;
-    font-size: medium;
-    font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-    top: 145px;
-    right: -100%;
-    transition: right 1s;
-    z-index: 99;
-}
-
-.sliding-message.active {
-    right: 20px;
-}
-
 .registration-success-message {
     position: fixed;
     top: 50%;

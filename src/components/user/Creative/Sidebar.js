@@ -325,7 +325,7 @@ const Sidebar = ({ data, user }) => {
                       validateAccess(
                         e,
                         [!hasSubscription, !isCreative],
-                        "Add a job post to download resumes"
+                        "Post a Job to download resumes"
                       )
                     }
                   >
