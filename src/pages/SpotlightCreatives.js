@@ -44,7 +44,7 @@ const SpotlightCreatives = () => {
                         width={150}
                         height={150}
                       />
-                      <div className="date">{item.created_at}</div>
+                      <div className="date">{item.published_at}</div>
                       <div className="spotlight-meta" dangerouslySetInnerHTML={{ __html: decodeEntities(item.title) }}></div>
                       <div className="watch-link">
                         <div className="">
