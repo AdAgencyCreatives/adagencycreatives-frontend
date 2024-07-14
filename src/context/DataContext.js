@@ -139,13 +139,14 @@ const getAssignedAgencies = (dispatch) => {
 };
 
 const getCategories = (dispatch) => {
-  return async () => {
+  return async (cb = () => { }) => {
     try {
       const response = await api.get("/get_categories");
       dispatch({
         type: "set_categories",
         payload: response.data,
       });
+      cb(response.data.data);
     } catch (error) { }
   };
 };

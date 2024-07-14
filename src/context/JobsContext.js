@@ -350,7 +350,7 @@ const markFilled = (dispatch) => {
 };
 
 const getJobAlerts = (dispatch) => {
-  return async (id) => {
+  return async (id, cb = () => { }) => {
     setLoading(dispatch, true);
     try {
       const response = await api.get("/job-alerts/?filter[user_id]=" + id);
@@ -358,15 +358,16 @@ const getJobAlerts = (dispatch) => {
         type: "set_job_alert",
         payload: response.data,
       });
+      cb(response.data.data);
     } catch (error) { }
     setLoading(dispatch, false);
   };
 };
 
 const setJobAlert = (dispatch) => {
-  return async (uuid, user_id, category_id, status) => {
+  return async (user_id, category_id, status, cb = () => { }) => {
     try {
-      const response = await api.patch(`/job-alerts/${uuid}`, {
+      const response = await api.post(`/add-remove-job-alerts`, {
         user_id,
         category_id,
         status,
@@ -375,6 +376,7 @@ const setJobAlert = (dispatch) => {
         type: "set_job_alert",
         payload: response.data,
       });
+      cb(response.data.data);
     } catch (error) { }
   };
 };
