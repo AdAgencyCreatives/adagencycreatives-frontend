@@ -194,28 +194,32 @@ const Header = ({ data }) => {
                 ) : (
                   <>
                     {isLoading && (<CircularProgress />)}
-                    <Link
-                      to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}
-                      target={data.apply_type.toLowerCase() == "external" ? "_blank" : ""}
-                      className="btn btn-apply btn-apply-job-external "
-                      onClick={(e) => {
-                        if (!isCreative) {
-                          showAlert("Login as a Creative to apply");
-                          e.preventDefault();
-                        } else if (data.apply_type.toLowerCase() == "internal") {
-                          e.preventDefault();
-                          setJob(data.id);
-                          setOpen(true);
-                        } else if (data.apply_type.toLowerCase() == "external") {
-                          handleApplyExternalJob(data);
-                        }
-                      }}
-                      disabled={isLoading ? "disabled" : ""}
-                    >
-                      Apply Now
-                      <i className="next flaticon-right-arrow"></i>
+                    <Tooltip type="featured" title={
+                      <div style={{ whiteSpace: 'pre-line', color: '#000000', fontWeight: '600' }}>{"Before applying we recommend" + "\n" + "you review your resume details" + "\n" + "Dashboard > My Resume"}</div>
+                    }>
+                      <Link
+                        to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}
+                        target={data.apply_type.toLowerCase() == "external" ? "_blank" : ""}
+                        className="btn btn-apply btn-apply-job-external "
+                        onClick={(e) => {
+                          if (!isCreative) {
+                            showAlert("Login as a Creative to apply");
+                            e.preventDefault();
+                          } else if (data.apply_type.toLowerCase() == "internal") {
+                            e.preventDefault();
+                            setJob(data.id);
+                            setOpen(true);
+                          } else if (data.apply_type.toLowerCase() == "external") {
+                            handleApplyExternalJob(data);
+                          }
+                        }}
+                        disabled={isLoading ? "disabled" : ""}
+                      >
+                        Apply Now
+                        <i className="next flaticon-right-arrow"></i>
 
-                    </Link>
+                      </Link>
+                    </Tooltip>
                   </>
                 )}
               </div>

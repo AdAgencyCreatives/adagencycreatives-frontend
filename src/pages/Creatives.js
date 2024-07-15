@@ -212,7 +212,8 @@ const Creatives = () => {
     ) {
       // return { message: "Post a Job to view (" + categoryCreativeCount.creative_count + ") " + categoryCreativeCount.name, proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
       return {
-        message: "Post a Job to view " + categoryCreativeCount.name,
+        // message: "Post a Job to view " + categoryCreativeCount.name,
+        message: "Post a Job for advance search feature",
         proceed: true,
         terms_allowed: Math.min(searchTerms.length, 1),
       };
