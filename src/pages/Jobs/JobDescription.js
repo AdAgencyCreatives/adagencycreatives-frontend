@@ -24,11 +24,11 @@ const JobDescription = () => {
   } = useContext(JobsContext);
 
   const {
-    state: { token },
+    state: { user, token },
   } = useContext(AuthContext);
 
   useEffect(() => {
-    getJob(job, (status) => { setPageStatus(status); });
+    getJob(job, user, (status) => { setPageStatus(status); });
   }, [job, token]);
 
   useEffect(() => {

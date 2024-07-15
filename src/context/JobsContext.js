@@ -185,10 +185,10 @@ const getJobEndpoint = (user = null) => {
 };
 
 const getJob = (dispatch) => {
-  return async (slug, cb = false) => {
+  return async (slug, user, cb = false) => {
     try {
       const response = await api.get(
-        getJobEndpoint() + "?filter[slug]=" + slug
+        getJobEndpoint(user) + "?filter[slug]=" + slug
       );
       getRelatedJobs(dispatch, response.data.data[0].category_id);
       dispatch({
