@@ -16,6 +16,7 @@ import CreativeLocation from "../components/CreativeLocation";
 
 const Creatives = () => {
   const [isCreativeLoading, setIsCreativeLoading] = useState(true);
+  const [foundPermission, setFoundPermission] = useState(null);
   const { creatives, loading, loadMore, searchCreativesAdvanced } =
     useCreatives("creative");
   const {
@@ -84,7 +85,9 @@ const Creatives = () => {
     let searchTerms =
       searchString.indexOf(",") >= 0 ? searchString.split(",") : [searchString];
 
+    setFoundPermission(null);
     let permission = proceed_search(searchString, searchTerms);
+    setFoundPermission(permission);
 
     showAlert(permission.message);
 
@@ -143,18 +146,19 @@ const Creatives = () => {
         message: "It seems you are not logged in",
         proceed: false,
         terms_allowed: 0,
+        advance_search_message: "",
       };
     }
 
     if (role == "admin" || role == "advisor") {
-      return { message: "", proceed: true, terms_allowed: searchTerms.length };
+      return { message: "", proceed: true, terms_allowed: searchTerms.length, advance_search_message: "" };
     }
 
     if (
       (role == "agency" || role == "recruiter") &&
       advance_search_capabilities
     ) {
-      return { message: "", proceed: true, terms_allowed: searchTerms.length };
+      return { message: "", proceed: true, terms_allowed: searchTerms.length, advance_search_message: "" };
     }
 
     if (
@@ -167,6 +171,7 @@ const Creatives = () => {
         message: "",
         proceed: true,
         terms_allowed: Math.min(searchTerms.length, 2),
+        advance_search_message: ""
       };
     }
 
@@ -181,6 +186,7 @@ const Creatives = () => {
         message: "",
         proceed: true,
         terms_allowed: Math.min(searchTerms.length, 2),
+        advance_search_message: ""
       };
     }
 
@@ -201,6 +207,7 @@ const Creatives = () => {
         message: "Post a Job for advance search capabilities" + appendText,
         proceed: true,
         terms_allowed: Math.min(searchTerms.length, 1),
+        advance_search_message: "Post a Job for advance search capabilities"
       };
     }
 
@@ -213,13 +220,28 @@ const Creatives = () => {
       // return { message: "Post a Job to view (" + categoryCreativeCount.creative_count + ") " + categoryCreativeCount.name, proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
       return {
         // message: "Post a Job to view " + categoryCreativeCount.name,
-        message: "Post a Job for advance search feature",
+        // message: "Post a Job for advance search feature",
+        message: "Post a Job for advance search capabilities",
         proceed: true,
         terms_allowed: Math.min(searchTerms.length, 1),
+        advance_search_message: "Post a Job for advance search capabilities"
       };
     }
 
-    return { message: "", proceed: true, terms_allowed: 1 };
+    //Special case: If creative is trying to search for cateogry
+    if (
+      (role == "creative") &&
+      isCategorySearch
+    ) {
+      return {
+        message: "Post a Job for advance search capabilities",
+        proceed: true,
+        terms_allowed: Math.min(searchTerms.length, 1),
+        advance_search_message: "For advanced search features we recommend<br>your agency set up an account and post a job."
+      };
+    }
+
+    return { message: "", proceed: true, terms_allowed: 1, advance_search_message: "" };
   };
 
   useEffect(() => {
@@ -415,6 +437,9 @@ const Creatives = () => {
       {creatives && creatives.length === 0 ? (
         <div className="no_result">
           <p>Please try again. No exact results found.</p>
+          {foundPermission?.advance_search_message?.length > 0 && (
+            <p className="highlight" dangerouslySetInnerHTML={{ __html: foundPermission?.advance_search_message }}></p>
+          )}
         </div>
       ) : (
         <span></span>

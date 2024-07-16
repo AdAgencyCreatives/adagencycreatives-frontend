@@ -195,7 +195,7 @@ const Header = ({ data }) => {
                   <>
                     {isLoading && (<CircularProgress />)}
                     <Tooltip type="featured" title={
-                      <div style={{ whiteSpace: 'pre-line', color: '#000000' }}>{"Before applying we recommend" + "\n" + "you review your resume details" + "\n" + "Dashboard > My Resume"}</div>
+                      <div className="no-transform" style={{ whiteSpace: 'pre-line', color: '#000000' }}>{"Before applying we recommend" + "\n" + "you review your resume details" + "\n" + "Dashboard > My Resume"}</div>
                     }>
                       <Link
                         to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}

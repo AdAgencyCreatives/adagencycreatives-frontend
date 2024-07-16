@@ -1129,3 +1129,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .sliding-message.active {
     right: 20px;
 }
+
+.no-transform {
+    text-transform: none !important;
+}
