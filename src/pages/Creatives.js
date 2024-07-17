@@ -208,7 +208,7 @@ const Creatives = () => {
         message: "Post a Job for advance search capabilities" + appendText,
         proceed: true,
         terms_allowed: Math.min(searchTerms.length, 1),
-        advance_search_message: "Post a Job for advance search capabilities"
+        advance_search_message: "Post a Job for advance search capabilities."
       };
     }
 
@@ -225,7 +225,7 @@ const Creatives = () => {
         message: "Post a Job for advance search capabilities",
         proceed: true,
         terms_allowed: Math.min(searchTerms.length, 1),
-        advance_search_message: "Post a Job for advance search capabilities"
+        advance_search_message: "Post a Job for advance search capabilities."
       };
     }
 
@@ -424,10 +424,15 @@ const Creatives = () => {
       </div>
       {creatives && creatives.length === 0 ? (
         <div className="no_result">
-          <p>Please try again. No exact results found.</p>
-          {!isCreative && foundPermission?.advance_search_message?.length > 0 && (
-            <p dangerouslySetInnerHTML={{ __html: foundPermission?.advance_search_message }}></p>
-          )}
+          <p style={{ textAlign: 'center' }}>
+            <span>Please try again. No exact results found.</span>
+            {!isCreative && foundPermission?.advance_search_message?.length > 0 && (
+              <>
+                <br />
+                <span dangerouslySetInnerHTML={{ __html: foundPermission?.advance_search_message }}></span>
+              </>
+            )}
+          </p>
         </div>
       ) : (
         <span></span>
