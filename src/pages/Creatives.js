@@ -229,19 +229,6 @@ const Creatives = () => {
       };
     }
 
-    //Special case: If creative is trying to search for cateogry
-    if (
-      (role == "creative") &&
-      isCategorySearch
-    ) {
-      return {
-        message: "Post a Job for advance search capabilities",
-        proceed: true,
-        terms_allowed: Math.min(searchTerms.length, 1),
-        advance_search_message: "For advanced search features we recommend<br>your agency set up an account and post a job."
-      };
-    }
-
     return { message: "", proceed: true, terms_allowed: 1, advance_search_message: "" };
   };
 
