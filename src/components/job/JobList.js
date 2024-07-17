@@ -208,7 +208,7 @@ const JobList = ({ data, showAgency = true }) => {
                       <>
                         {isLoading && (<CircularProgress />)}
                         <Tooltip type="featured" title={
-                          <div className="no-transform" style={{ whiteSpace: 'pre-line', color: '#000000' }}>{"Before applying we recommend" + "\n" + "you review your resume details" + "\n" + "Dashboard > My Resume"}</div>
+                          <div className="no-transform" style={{ whiteSpace: 'pre-line', color: '#000000' }}>{"Before applying we recommend" + "\n" + "you review your resume details" + "\n" + "Job Dashboard > My Resume"}</div>
                         }>
                           <Link
                             to={

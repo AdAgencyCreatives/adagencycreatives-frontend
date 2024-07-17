@@ -40,6 +40,7 @@ const Creatives = () => {
   const isAdmin = role == "admin";
   const isAdvisor = role == "advisor";
   const isAgency = role == "agency";
+  const isCreative = role == "creative";
 
   const { showAlert } = useContext(AlertContext);
 
@@ -437,8 +438,8 @@ const Creatives = () => {
       {creatives && creatives.length === 0 ? (
         <div className="no_result">
           <p>Please try again. No exact results found.</p>
-          {foundPermission?.advance_search_message?.length > 0 && (
-            <p className="highlight" dangerouslySetInnerHTML={{ __html: foundPermission?.advance_search_message }}></p>
+          {!isCreative && foundPermission?.advance_search_message?.length > 0 && (
+            <p dangerouslySetInnerHTML={{ __html: foundPermission?.advance_search_message }}></p>
           )}
         </div>
       ) : (
