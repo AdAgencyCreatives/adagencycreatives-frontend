@@ -77,7 +77,7 @@ const CreativeSearch = () => {
         //alert(query_search_string);
 
         console.log("Searching: " + query_search_string);
-        await searchCreativesAdvanced(which_search(), query_search_string);
+        await searchCreativesAdvanced(which_search(), query_search_string, role);
         if (user) await getAllBookmarks(user.uuid, "creatives");
     };
 

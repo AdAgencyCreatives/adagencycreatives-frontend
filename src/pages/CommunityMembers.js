@@ -27,7 +27,7 @@ const CommunityMembers = () => {
     setIsLoading(true);
     let terms = value.split(',');
     let search = terms && terms.length && terms.length > 1 ? terms[0] : value;
-    searchCreativesAdvanced("search2", search);
+    searchCreativesAdvanced("search2", search, role);
   };
 
   useEffect(() => {
