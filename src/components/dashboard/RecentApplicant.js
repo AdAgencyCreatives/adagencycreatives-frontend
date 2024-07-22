@@ -13,12 +13,15 @@ import moment from "moment";
 import { useState, useContext } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
 import TimeAgo from "../TimeAgo";
+import useApplicationStatusHelper from "../../hooks/useApplicationStatusHelper";
 
 const RecentApplicant = ({ job, application, setApplicationStatus, onRemoveFromRecent, setAppId, setOpen, isJobDeleted, isJobExpired }) => {
 
     const [thisApplication, setThisApplication] = useState(application);
     const [changingApplicationStatus, setChangingApplicationStatus] =
         useState(false);
+
+    const { getStatusName, getStatusBadge } = useApplicationStatusHelper();
 
     const {
         state: { user },
@@ -69,27 +72,8 @@ const RecentApplicant = ({ job, application, setApplicationStatus, onRemoveFromR
                                         </Link>
                                     </h2>
                                     {job?.apply_type.toLowerCase() != "external" ? (
-                                        <span
-                                            className={
-                                                "badge " +
-                                                thisApplication.status +
-                                                " bg-" +
-                                                (thisApplication.status == "pending"
-                                                    ? "info"
-                                                    : thisApplication.status == "accepted"
-                                                        ? "success"
-                                                        : thisApplication.status == "recommended"
-                                                            ? "primary"
-                                                            : "danger")
-                                            }
-                                        >
-                                            {thisApplication.status == "pending"
-                                                ? "Pending"
-                                                : thisApplication.status == "accepted"
-                                                    ? "Approved"
-                                                    : thisApplication.status == "recommended"
-                                                        ? "Recommended"
-                                                        : "Not Aligned"}
+                                        <span className={"badge " + getStatusBadge(thisApplication.status)} >
+                                            {getStatusName(thisApplication?.status)}
                                         </span>
                                     ) : (
                                         <span className="badge bg-success">Interested</span>
