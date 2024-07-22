@@ -46,8 +46,10 @@ const TabularApplicantJobs = () => {
       } else {
         var sortedApplications = [];
         sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "pending"));
+        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "hired"));
         sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "accepted"));
         sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "recommended"));
+        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "shortlisted"));
         sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "rejected"));
         updatedJob.applications = sortedApplications;
       }

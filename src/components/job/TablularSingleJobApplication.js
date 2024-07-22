@@ -226,7 +226,7 @@ const TabularSingleJobApplication = (props) => {
               (!props?.job?.advisor_id || user?.role == "advisor") &&
               props?.job?.apply_type.toLowerCase() != "external" && (
                 <>
-                  {/* <Tooltip
+                  <Tooltip
                     title="Shortlist"
                     onClick={() => {
                       setChangingApplicationStatus(true);
@@ -257,7 +257,7 @@ const TabularSingleJobApplication = (props) => {
                     <button className="btn p-0 border-0 btn-hover-primary">
                       <TfiMedall className="icon-rounded" />
                     </button>
-                  </Tooltip> */}
+                  </Tooltip>
                   <Tooltip
                     title="Not Aligned"
                     onClick={() => {

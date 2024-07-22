@@ -144,10 +144,14 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
                 onClick={submitNote}
                 className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3 fs-5"
               >
-                {selectedNote?.id ? 'Update' : 'Add'} Note {isLoading && <CircularProgress size={20} />}
+                {selectedNote?.id ? 'Update' : 'Add'} Note
               </button>
               {selectedNote?.id && (<Link className="reset-note" onClick={(e) => onCancelEditNote(e)}>Cancel</Link>)}
-
+              {isLoading && (
+                <h3 className="text-center mb-4">
+                  <CircularProgress size={20} />
+                </h3>
+              )}
               <div className="notes-list-item">
                 {notes?.length > 0 ? (
                   <>
@@ -201,6 +205,7 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
                   </DelayedOutput>
                 )}
               </div>
+
             </div>
           </div>
         </div>
