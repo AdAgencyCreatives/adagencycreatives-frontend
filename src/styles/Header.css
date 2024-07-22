@@ -1053,7 +1053,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
     font-weight: normal;
 }
 
-.agency-page-myjobs.tabular  {}
+.agency-page-myjobs.tabular {}
 
 .action-button a,
 .action-button button {
@@ -1132,4 +1132,8 @@ nav ul.dropdown-list .list-item-text.j-fix {
 
 .no-transform {
     text-transform: none !important;
+}
+
+.badge.bg-shortlisted {
+    background-color: #090070;
 }

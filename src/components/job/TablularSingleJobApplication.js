@@ -55,6 +55,48 @@ const TabularSingleJobApplication = (props) => {
     );
   };
 
+  const getStatusName = (applicationStatus) => {
+    let result = "N/A";
+    if (applicationStatus == "pending") {
+      result = "Pending";
+    } else if (applicationStatus == "accepted") {
+      result = "Approved";
+    } else if (applicationStatus == "rejected") {
+      result = "Not Aligned";
+    } else if (applicationStatus == "archived") {
+      result = "Removed";
+    } else if (applicationStatus == "recommended") {
+      result = "Recommended";
+    } else if (applicationStatus == "shortlisted") {
+      result = "Shortlisted";
+    } else if (applicationStatus == "hired") {
+      result = "Hired";
+    }
+    return result;
+  };
+
+  const getStatusBadge = (applicationStatus) => {
+    let result = "badge bg-";
+    if (applicationStatus == "pending") {
+      result += "info";
+    } else if (applicationStatus == "accepted") {
+      result += "success";
+    } else if (applicationStatus == "rejected") {
+      result += "danger";
+    } else if (applicationStatus == "archived") {
+      result += "danger";
+    } else if (applicationStatus == "recommended") {
+      result += "primary";
+    } else if (applicationStatus == "shortlisted") {
+      result += "shortlisted";
+    } else if (applicationStatus == "hired") {
+      result += "primary";
+    } else {
+      result += "secondary";
+    }
+    return result;
+  };
+
   return (
     <>
       <tr>
@@ -78,27 +120,8 @@ const TabularSingleJobApplication = (props) => {
         </td>
         <td style={{ width: "13%" }}>
           {props?.job?.apply_type.toLowerCase() != "external" ? (
-            <span
-              className={
-                "badge " +
-                thisApplication.status +
-                " bg-" +
-                (thisApplication.status == "pending"
-                  ? "info"
-                  : thisApplication.status == "accepted"
-                    ? "success"
-                    : thisApplication.status == "recommended"
-                      ? "primary"
-                      : "danger")
-              }
-            >
-              {thisApplication.status == "pending"
-                ? "Pending"
-                : thisApplication.status == "accepted"
-                  ? "Approved"
-                  : thisApplication.status == "recommended"
-                    ? "Recommended"
-                    : "Not Aligned"}
+            <span className={"badge " + getStatusBadge(thisApplication.status)} >
+              {getStatusName(thisApplication?.status)}
             </span>
           ) : (
             <span className="badge bg-success">Interested</span>
