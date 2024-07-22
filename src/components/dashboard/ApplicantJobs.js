@@ -48,8 +48,8 @@ const ApplicantJobs = () => {
 
   useEffect(() => {
     if (user.role === "agency") {
-      setStatusApplication("shortlisted");
-      getApplicationsAllStatus(user.uuid, 0, 0, "shortlisted");
+      setStatusApplication("recommended");
+      getApplicationsAllStatus(user.uuid, 0, 0, "recommended");
     } else {
       getApplicationsAllStatus(user.uuid, 0, 0, statusApplication);
     }

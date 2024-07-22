@@ -13,6 +13,8 @@ import {
   TfiDownload,
   TfiLoop,
   TfiNotepad,
+  TfiPin2,
+  TfiMedall
 } from "react-icons/tfi";
 import { CircularProgress } from "@mui/material";
 
@@ -85,7 +87,7 @@ const TabularSingleJobApplication = (props) => {
                   ? "info"
                   : thisApplication.status == "accepted"
                     ? "success"
-                    : thisApplication.status == "shortlisted"
+                    : thisApplication.status == "recommended"
                       ? "primary"
                       : "danger")
               }
@@ -94,7 +96,7 @@ const TabularSingleJobApplication = (props) => {
                 ? "Pending"
                 : thisApplication.status == "accepted"
                   ? "Approved"
-                  : thisApplication.status == "shortlisted"
+                  : thisApplication.status == "recommended"
                     ? "Recommended"
                     : "Not Aligned"}
             </span>
@@ -133,7 +135,7 @@ const TabularSingleJobApplication = (props) => {
                             setThisApplicationStatus(
                               props?.job.id,
                               thisApplication.id,
-                              "shortlisted",
+                              "recommended",
                               hideChangingApplicationStatus
                             );
                           }}
@@ -202,8 +204,39 @@ const TabularSingleJobApplication = (props) => {
               props?.job?.apply_type.toLowerCase() != "external" && (
                 <>
                   <Tooltip
+                    title="Shortlist"
+                    onClick={() => {
+                      setChangingApplicationStatus(true);
+                      setThisApplicationStatus(
+                        props?.job.id,
+                        thisApplication.id,
+                        "shortlisted",
+                        hideChangingApplicationStatus
+                      );
+                    }}
+                  >
+                    <button className="btn p-0 border-0 btn-hover-primary">
+                      <TfiPin2 className="icon-rounded" />
+                    </button>
+                  </Tooltip>
+                  <Tooltip
+                    title="Hired"
+                    onClick={() => {
+                      setChangingApplicationStatus(true);
+                      setThisApplicationStatus(
+                        props?.job.id,
+                        thisApplication.id,
+                        "hired",
+                        hideChangingApplicationStatus
+                      );
+                    }}
+                  >
+                    <button className="btn p-0 border-0 btn-hover-primary">
+                      <TfiMedall className="icon-rounded" />
+                    </button>
+                  </Tooltip>
+                  <Tooltip
                     title="Not Aligned"
-                    // onClick={() => deleteApplication(thisApplication.id)}
                     onClick={() => {
                       setChangingApplicationStatus(true);
                       setThisApplicationStatus(

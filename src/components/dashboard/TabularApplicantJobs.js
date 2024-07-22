@@ -41,13 +41,13 @@ const TabularApplicantJobs = () => {
       var updatedJob = { ...job };
 
       if (job.advisor_id != null && job.advisor_id != user.id) {
-        var shortlistedApplicants = job.applications.filter((application) => application.status == "shortlisted");
-        updatedJob.applications = shortlistedApplicants;
+        var recommendedApplicants = job.applications.filter((application) => application.status == "recommended");
+        updatedJob.applications = recommendedApplicants;
       } else {
         var sortedApplications = [];
         sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "pending"));
         sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "accepted"));
-        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "shortlisted"));
+        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "recommended"));
         sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "rejected"));
         updatedJob.applications = sortedApplications;
       }

@@ -78,7 +78,7 @@ const RecentApplicant = ({ job, application, setApplicationStatus, onRemoveFromR
                                                     ? "info"
                                                     : thisApplication.status == "accepted"
                                                         ? "success"
-                                                        : thisApplication.status == "shortlisted"
+                                                        : thisApplication.status == "recommended"
                                                             ? "primary"
                                                             : "danger")
                                             }
@@ -87,7 +87,7 @@ const RecentApplicant = ({ job, application, setApplicationStatus, onRemoveFromR
                                                 ? "Pending"
                                                 : thisApplication.status == "accepted"
                                                     ? "Approved"
-                                                    : thisApplication.status == "shortlisted"
+                                                    : thisApplication.status == "recommended"
                                                         ? "Recommended"
                                                         : "Not Aligned"}
                                         </span>
@@ -179,7 +179,7 @@ const RecentApplicant = ({ job, application, setApplicationStatus, onRemoveFromR
                                                             setThisApplicationStatus(
                                                                 job.id,
                                                                 thisApplication.id,
-                                                                "shortlisted",
+                                                                "recommended",
                                                                 hideChangingApplicationStatus
                                                             );
                                                         }}

@@ -60,7 +60,7 @@ const SingleJobApplication = (props) => {
                                                 ? "info"
                                                 : thisApplication.status == "accepted"
                                                     ? "success"
-                                                    : thisApplication.status == "shortlisted"
+                                                    : thisApplication.status == "recommended"
                                                         ? "primary"
                                                         : "danger")
                                         }
@@ -69,7 +69,7 @@ const SingleJobApplication = (props) => {
                                             ? "Pending"
                                             : thisApplication.status == "accepted"
                                                 ? "Approved"
-                                                : thisApplication.status == "shortlisted"
+                                                : thisApplication.status == "recommended"
                                                     ? "Recommended"
                                                     : "Not Aligned"
                                         }
@@ -122,7 +122,7 @@ const SingleJobApplication = (props) => {
                                                 setThisApplicationStatus(
                                                     props?.job.id,
                                                     thisApplication.id,
-                                                    "shortlisted",
+                                                    "recommended",
                                                     hideChangingApplicationStatus
                                                 );
                                             }}

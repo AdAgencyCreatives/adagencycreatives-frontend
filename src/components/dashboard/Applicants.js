@@ -59,9 +59,9 @@ const Applicants = () => {
   const filterJobApplicants = (foundJobs) => {
     const filteredJobs = foundJobs.map((job) => {
       if (job?.advisor_id != user?.id) {
-        var shortlistedApplicants = job.applications.filter((application) => application.status == "shortlisted");
+        var recommendedApplicants = job.applications.filter((application) => application.status == "recommended");
         var updatedJob = { ...job };
-        updatedJob.applications = shortlistedApplicants;
+        updatedJob.applications = recommendedApplicants;
         return updatedJob;
 
       }
