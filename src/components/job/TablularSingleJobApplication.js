@@ -3,7 +3,7 @@ import { Context as CreativesContext } from "../../context/CreativesContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
-import { IoTimeOutline } from "react-icons/io5";
+import { IoBookmarkOutline, IoTimeOutline } from "react-icons/io5";
 import moment from "moment";
 import {
   TfiBackRight,
@@ -14,7 +14,8 @@ import {
   TfiLoop,
   TfiNotepad,
   TfiPin2,
-  TfiMedall
+  TfiMedall,
+  TfiLocationPin
 } from "react-icons/tfi";
 import { CircularProgress } from "@mui/material";
 
@@ -226,7 +227,7 @@ const TabularSingleJobApplication = (props) => {
               (!props?.job?.advisor_id || user?.role == "advisor") &&
               props?.job?.apply_type.toLowerCase() != "external" && (
                 <>
-                  {/* <Tooltip
+                  <Tooltip
                     title="Shortlist"
                     onClick={() => {
                       setChangingApplicationStatus(true);
@@ -239,7 +240,7 @@ const TabularSingleJobApplication = (props) => {
                     }}
                   >
                     <button className="btn p-0 border-0 btn-hover-primary">
-                      <TfiPin2 className="icon-rounded" />
+                      <IoBookmarkOutline className="icon-rounded" />
                     </button>
                   </Tooltip>
                   <Tooltip
@@ -257,7 +258,7 @@ const TabularSingleJobApplication = (props) => {
                     <button className="btn p-0 border-0 btn-hover-primary">
                       <TfiMedall className="icon-rounded" />
                     </button>
-                  </Tooltip> */}
+                  </Tooltip>
                   <Tooltip
                     title="Not Aligned"
                     onClick={() => {
