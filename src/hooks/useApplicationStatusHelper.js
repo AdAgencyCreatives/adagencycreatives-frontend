@@ -7,7 +7,7 @@ const useApplicationStatusHelper = () => {
         if (applicationStatus == "pending") {
             result = "Pending";
         } else if (applicationStatus == "accepted") {
-            result = "Approved";
+            result = "Interested";
         } else if (applicationStatus == "rejected") {
             result = "Not Aligned";
         } else if (applicationStatus == "archived") {
@@ -25,19 +25,19 @@ const useApplicationStatusHelper = () => {
     const getStatusBadge = (applicationStatus) => {
         let result = "badge bg-";
         if (applicationStatus == "pending") {
-            result += "info";
+            result += "pending";
         } else if (applicationStatus == "accepted") {
-            result += "success";
+            result += "interested";
         } else if (applicationStatus == "rejected") {
-            result += "danger";
+            result += "not-aligned";
         } else if (applicationStatus == "archived") {
-            result += "danger";
+            result += "not-aligned";
         } else if (applicationStatus == "recommended") {
-            result += "primary";
+            result += "recommended";
         } else if (applicationStatus == "shortlisted") {
             result += "shortlisted";
         } else if (applicationStatus == "hired") {
-            result += "primary";
+            result += "hired";
         } else {
             result += "secondary";
         }

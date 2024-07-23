@@ -79,7 +79,7 @@ const MyJobApplicantsWidget = ({
         <td className="job-table-info">
           <div className="job-table-info-content">
             <div className="title-wrapper" style={{ marginBottom: "0px" }}>
-              <h3 className="job-table-info-content-title">
+              <h3 className="job-table-info-content-title" style={{ flex: "1" }}>
                 <Link
                   className="link link-black hover-gold link-bold"
                   to={"/job/" + thisJob.slug}

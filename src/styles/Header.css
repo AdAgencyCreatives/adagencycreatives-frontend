@@ -1134,6 +1134,30 @@ nav ul.dropdown-list .list-item-text.j-fix {
     text-transform: none !important;
 }
 
-.badge.bg-shortlisted {
+.badge.bg-secondary {
+    background-color: #d3d3d3;
+}
+
+.badge.bg-hired {
+    background-color: #34A853;
+}
+
+.badge.bg-pending {
+    background-color: #0dcaf0;
+}
+
+.badge.bg-interested {
+    background-color: #d3a11f;
+}
+
+.badge.bg-recommended {
     background-color: #090070;
+}
+
+.badge.bg-shortlisted {
+    background-color: #000000;
+}
+
+.badge.bg-not-aligned {
+    background-color: #f40606;
 }

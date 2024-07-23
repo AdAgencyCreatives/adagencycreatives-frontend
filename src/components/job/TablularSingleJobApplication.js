@@ -11,12 +11,9 @@ import {
   TfiCheckBox,
   TfiClose,
   TfiDownload,
-  TfiLoop,
   TfiNotepad,
-  TfiPin2,
-  TfiMedall,
-  TfiLocationPin
 } from "react-icons/tfi";
+import { IoStar } from "react-icons/io5";
 import { CircularProgress } from "@mui/material";
 import useApplicationStatusHelper from "../../hooks/useApplicationStatusHelper";
 
@@ -217,7 +214,7 @@ const TabularSingleJobApplication = (props) => {
                     }}
                   >
                     <button className="btn p-0 border-0 btn-hover-primary">
-                      <TfiMedall className="icon-rounded" />
+                      <IoStar className="icon-rounded" />
                     </button>
                   </Tooltip>
                   <Tooltip
