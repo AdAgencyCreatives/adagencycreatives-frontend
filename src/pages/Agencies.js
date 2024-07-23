@@ -7,15 +7,18 @@ import { Context as AlertContext } from "../context/AlertContext";
 import { Context as AuthContext } from "../context/AuthContext";
 import { Context as DataContext } from "../context/DataContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
+import { useHistoryState } from "../hooks/useHistoryState";
 import { useContext, useEffect, useState } from "react";
 import Tooltip from "../components/Tooltip";
 import AuthModal from "../components/modals/AuthModal";
 import DelayedOutput from "../components/DelayedOutput";
 import ImageLoader from "../components/ImageLoader";
+import { getTabScrollButtonUtilityClass } from "@mui/material";
 
 const Agencies = () => {
+  const [input, setInput] = useHistoryState("input", "");
   const [isAgencyLoading, setIsAgencyLoading] = useState(true);
-  const { agencies, loading, loadMore, loadedAll, searchAgencies, agencySearch1 } = useAgencies();
+  const { agencies, getAgencies, loading, loadMore, loadedAll, searchAgencies, agencySearch1 } = useAgencies('agency');
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const handleOpen = () => setAuthModalOpen(true);
@@ -51,6 +54,11 @@ const Agencies = () => {
   };
 
   const searchUser = async (value) => {
+    if (!value || value.length == 0) {
+      getAgencies();
+      return;
+    }
+
     setIsAgencyLoading(true);
     await agencySearch1(value);
     if (user) await getAllBookmarks(user.uuid, "agencies");
@@ -66,13 +74,26 @@ const Agencies = () => {
       setIsAgencyLoading(false);
   }, [agencies]);
 
+  useEffect(() => {
+    if (input?.length > 0) {
+      searchUser(input);
+    } else {
+      getAgencies();
+    }
+  }, []);
+
   return (
     <div className="dark-container mb-0">
       <div className="container p-md-0 px-5">
         <DelayedOutput>
           <h1 className="community-title text-white text-center mb-4">Agencies</h1>
         </DelayedOutput>
-        <SearchBar placeholder="Select one: by name or location" onSearch={searchUser} />
+        <SearchBar
+          input={input}
+          setInput={setInput}
+          placeholder="Select one: by name or location"
+          onSearch={searchUser}
+        />
         <div className="row g-4">
           {!isAgencyLoading ? (
             <>

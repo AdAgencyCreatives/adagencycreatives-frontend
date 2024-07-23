@@ -25,8 +25,6 @@ const useAgencies = (page, role) => {
       getAgencieRoles(page, role);
     } else if (page == "home") {
       getFeaturedAgencies();
-    } else {
-      getAgencies();
     }
   }, [role]);
 
@@ -35,7 +33,7 @@ const useAgencies = (page, role) => {
     else setLoadedAll(true)
   };
 
-  return { agencies, loading, loadMore, loadedAll, searchAgencies, agencySearch1, agencySearch2 };
+  return { agencies, getAgencies, loading, loadMore, loadedAll, searchAgencies, agencySearch1, agencySearch2 };
 };
 
 export default useAgencies;

@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
 import { Context as DataContext } from "../context/DataContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
+import { useHistoryState } from "../hooks/useHistoryState";
 import Tooltip from "../components/Tooltip";
 import ImageLoader from "../components/ImageLoader";
 import { Context as AlertContext } from "../context/AlertContext";
@@ -15,6 +16,7 @@ import Location from "../components/CreativeLocation";
 import CreativeLocation from "../components/CreativeLocation";
 
 const Creatives = () => {
+  const [input, setInput] = useHistoryState("input", "");
   const [isCreativeLoading, setIsCreativeLoading] = useState(true);
   const [foundPermission, setFoundPermission] = useState(null);
   const { creatives, getCreatives, loading, loadMore, searchCreativesAdvanced } =
@@ -304,6 +306,14 @@ const Creatives = () => {
     if (creatives?.length === 9) setIsCreativeLoading(false);
   }, [creatives]);
 
+  useEffect(() => {
+    if (input?.length > 0) {
+      searchUser(input);
+    } else {
+      getCreatives();
+    }
+  }, []);
+
   return (
     <div className="dark-container mb-0 creatives-directory">
       <div className="container p-md-0 px-5">
@@ -315,6 +325,8 @@ const Creatives = () => {
         {token && (
           <>
             <SearchBar
+              input={input}
+              setInput={setInput}
               placeholder={creativeSearchPlaceholder}
               onSearch={searchUser}
               role={role}

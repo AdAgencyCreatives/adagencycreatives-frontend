@@ -22,8 +22,6 @@ const useCreatives = (page) => {
       getHomeCreatives();
     } else if (page == "creatives-search") {
       // do nothing
-    } else {
-      getCreatives();
     }
   }, []);
 

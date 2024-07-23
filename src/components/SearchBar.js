@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import "../styles/SearchBar.css";
 import TitleRecommendationsModal from "./dashboard/Modals/TitleRecommendationsModal";
-import { useHistoryState } from "../hooks/useHistoryState";
 
-const SearchBar = ({ placeholder, onSearch, role, advance_search_capabilities, subscription_status }) => {
+const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_search_capabilities, subscription_status }) => {
 
   const inputRef = useRef(null);
 
-  const [input, setInput] = useHistoryState("input", "");
   const [permission, setPermission] = useState(null);
 
   const modifyInput = (text) => {
@@ -58,12 +56,6 @@ const SearchBar = ({ placeholder, onSearch, role, advance_search_capabilities, s
   useEffect(() => {
     setPermission(get_permission());
   }, [role, subscription_status]);
-
-  useEffect(() => {
-    if (input?.length > 0) {
-      onSearch(input);
-    }
-  }, []);
 
   const get_permission = () => {
 
