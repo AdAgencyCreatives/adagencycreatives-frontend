@@ -20,7 +20,7 @@ const useCreatives = (page) => {
   useEffect(() => {
     if (page == "home") {
       getHomeCreatives();
-    } else if(page == "creatives-search") {
+    } else if (page == "creatives-search") {
       // do nothing
     } else {
       getCreatives();
@@ -31,7 +31,7 @@ const useCreatives = (page) => {
     if (nextPage) loadCreatives(nextPage);
   };
 
-  return { creatives, loading, loadMore, searchCreatives, searchCreativesAdvanced, searchCreativesFull };
+  return { creatives, getCreatives, loading, loadMore, searchCreatives, searchCreativesAdvanced, searchCreativesFull };
 };
 
 export default useCreatives;

@@ -17,7 +17,7 @@ import CreativeLocation from "../components/CreativeLocation";
 const Creatives = () => {
   const [isCreativeLoading, setIsCreativeLoading] = useState(true);
   const [foundPermission, setFoundPermission] = useState(null);
-  const { creatives, loading, loadMore, searchCreativesAdvanced } =
+  const { creatives, getCreatives, loading, loadMore, searchCreativesAdvanced } =
     useCreatives("creative");
   const {
     state: { bookmarks, categories_creative_count },
@@ -81,6 +81,12 @@ const Creatives = () => {
   };
 
   const searchUser = async (value) => {
+
+    if (!value || value.length == 0) {
+      getCreatives();
+      return;
+    }
+
     setIsCreativeLoading(true);
     let searchString = "" + (value ? value : "");
     let searchTerms =

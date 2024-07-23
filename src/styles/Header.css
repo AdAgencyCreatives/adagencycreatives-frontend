@@ -1161,3 +1161,19 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .badge.bg-not-aligned {
     background-color: #f40606;
 }
+
+.search-bar {
+    position: relative;
+}
+
+.search-bar .clear-search {
+    position: absolute;
+    bottom: 0px;
+    right: 20px;
+    cursor: pointer;
+    color: #000000;
+}
+
+.search-bar .clear-search:hover {
+    color: #d3a11f
+}
