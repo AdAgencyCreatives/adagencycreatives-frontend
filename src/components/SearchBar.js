@@ -99,12 +99,6 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
     >
       <div className="search-box row gy-3">
         <div className="search-bar col-md-10">
-          {input?.length > 0 && (
-            <a className="clear-search" onClick={(e) => {
-              setInput("");
-              onSearch("");
-            }}>Clear Search</a>
-          )}
           <input
             ref={inputRef}
             className="search-input form-control"
@@ -118,6 +112,12 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
           <button type="submit" className="btn">
             Search
           </button>
+        </div>
+        <div className="search-btn col-md-2">
+          <button type="button" className="btn btn-white" onClick={(e) => {
+            setInput("");
+            onSearch("");
+          }}>Reset</button>
         </div>
       </div>
     </form>

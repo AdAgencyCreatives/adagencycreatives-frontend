@@ -246,6 +246,16 @@ ul.dropdown-list:before {
     background-color: var(--color-primary) !important;
 }
 
+.btn.btn-white {
+    border: 2px solid white;
+    background-color: white !important;
+    color: black !important;
+}
+
+.btn.btn-white:hover {
+    border: 2px solid var(--color-primary);
+    background-color: var(--color-primary) !important;
+}
 
 .btn.btn-silver {
     border: 2px solid silver;
