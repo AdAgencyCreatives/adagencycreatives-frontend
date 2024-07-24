@@ -67,7 +67,7 @@ const MyJobWidget = (props) => {
             <td className="job-table-info">
                 <div className="job-table-info-content">
                     <div className="title-wrapper">
-                        <h3 className="job-table-info-content-title">
+                        <h3 className="job-table-info-content-title" style={{ flex: "1" }}>
                             <Link className="link link-black hover-gold" to={"/job/" + job.slug}>{job.title}</Link>
                         </h3>
                         {job.priority.is_featured ? (
