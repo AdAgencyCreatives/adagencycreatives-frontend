@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "../styles/SearchBar.css";
 import TitleRecommendationsModal from "./dashboard/Modals/TitleRecommendationsModal";
+import { IoCloseCircleOutline, IoCloseCircleSharp, IoCloseOutline, IoCloseSharp, IoSearchCircleSharp, IoSearchSharp } from "react-icons/io5";
 
 const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_search_capabilities, subscription_status }) => {
 
@@ -99,6 +100,7 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
     >
       <div className="search-box row gy-3">
         <div className="search-bar col-md-10">
+          <IoSearchSharp className="search-icon" />
           <input
             ref={inputRef}
             className="search-input form-control"
@@ -106,18 +108,18 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
+          {input?.length > 0 && (
+            <IoCloseCircleSharp className="reset-search-icon" onClick={(e) => {
+              setInput("");
+              onSearch("");
+            }} />
+          )}
           <TitleRecommendationsModal permission={permission} handleClose={handleCloseTitleRecommendations} />
         </div>
         <div className="search-btn col-md-2">
           <button type="submit" className="btn">
             Search
           </button>
-        </div>
-        <div className="search-btn col-md-2">
-          <button type="button" className="btn btn-white" onClick={(e) => {
-            setInput("");
-            onSearch("");
-          }}>Reset</button>
         </div>
       </div>
     </form>

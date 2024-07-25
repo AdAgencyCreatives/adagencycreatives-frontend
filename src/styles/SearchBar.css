@@ -8,11 +8,33 @@
 }
 
 input.search-input {
-    padding: 14px;
+    padding: 15px 40px;
     font-size: 20px;
     border-radius: 8px;
     border: none;
-    padding-left: 25px;
+}
+
+.search-bar .search-icon {
+    background: white;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    left: 18px;
+    top: 15px;
+}
+
+.search-bar .reset-search-icon {
+    background: white;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    right: 18px;
+    top: 15px;
+    cursor: pointer;
+}
+
+.search-bar .reset-search-icon:hover {
+    fill: var(--color-primary);
 }
 
 .search-btn button {
@@ -31,8 +53,8 @@ input.search-input {
     border: 1px solid black;
 }
 
-@media (max-width: 767px){
-    .search-bar input.search-input{
+@media (max-width: 767px) {
+    .search-bar input.search-input {
         padding-left: 15px;
     }
 }
@@ -44,8 +66,8 @@ input.search-input {
 
 img.title-recommendations {
     position: absolute;
-    right: -5px;
-    top: -30px;
+    right: 0px;
+    top: -38px;
     cursor: pointer;
     width: 50px;
     height: 50px;
@@ -62,4 +84,3 @@ img.title-recommendations {
 .title-recommendation-item:hover {
     border-bottom: 3px solid #000 !important;
 }
-
