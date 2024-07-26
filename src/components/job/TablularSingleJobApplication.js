@@ -37,6 +37,11 @@ const TabularSingleJobApplication = (props) => {
     removeBookmark,
   } = useContext(DataContext);
 
+  useEffect(() => {
+    (async () => {
+      if (user) await getAllBookmarks(user.uuid, "creatives");
+    })();
+  }, [user])
 
   const addToShortlist = (id) => {
     createBookmark(user.uuid, "creatives", id, () => {
@@ -48,6 +53,32 @@ const TabularSingleJobApplication = (props) => {
     removeBookmark(id, () => {
       console.log("Creative deleted from shortlist");
     });
+  };
+
+  const changeApplicationStatus = (status) => {
+    let wasShortlisted = thisApplication.status == "shortlisted";
+
+    setChangingApplicationStatus(true);
+    setThisApplicationStatus(
+      props?.job.id,
+      thisApplication.id,
+      status,
+      hideChangingApplicationStatus
+    );
+
+    if (status == "shortlisted") {
+      addToShortlist(thisApplication.creative_id);
+    } else {
+      if (wasShortlisted) {
+        const isShortlisted =
+          bookmarks.find(
+            (bookmark) => bookmark.resource.user_id == thisApplication.user_id
+          ) || false;
+        if (isShortlisted) {
+          removeFromShortlist(isShortlisted.id);
+        }
+      }
+    }
   };
 
   const hideChangingApplicationStatus = () => {
@@ -134,13 +165,7 @@ const TabularSingleJobApplication = (props) => {
                         <Tooltip
                           title="Share Recommended Talent"
                           onClick={() => {
-                            setChangingApplicationStatus(true);
-                            setThisApplicationStatus(
-                              props?.job.id,
-                              thisApplication.id,
-                              "recommended",
-                              hideChangingApplicationStatus
-                            );
+                            changeApplicationStatus("recommended");
                           }}
                         >
                           <button className="btn p-0 border-0 btn-hover-primary">
@@ -151,13 +176,7 @@ const TabularSingleJobApplication = (props) => {
                       <Tooltip
                         title="Interested"
                         onClick={() => {
-                          setChangingApplicationStatus(true);
-                          setThisApplicationStatus(
-                            props?.job.id,
-                            thisApplication.id,
-                            "accepted",
-                            hideChangingApplicationStatus
-                          );
+                          changeApplicationStatus(thisApplication, "accepted");
                         }}
                       >
                         <button className="btn p-0 border-0 btn-hover-primary">
@@ -169,13 +188,7 @@ const TabularSingleJobApplication = (props) => {
                     <Tooltip
                       title="Undo"
                       onClick={() => {
-                        setChangingApplicationStatus(true);
-                        setThisApplicationStatus(
-                          props?.job.id,
-                          thisApplication.id,
-                          "pending",
-                          hideChangingApplicationStatus
-                        );
+                        changeApplicationStatus("pending");
                       }}
                     >
                       <button className="btn p-0 border-0 btn-hover-primary">
@@ -209,14 +222,7 @@ const TabularSingleJobApplication = (props) => {
                   <Tooltip
                     title="Shortlist"
                     onClick={() => {
-                      setChangingApplicationStatus(true);
-                      setThisApplicationStatus(
-                        props?.job.id,
-                        thisApplication.id,
-                        "shortlisted",
-                        hideChangingApplicationStatus
-                      );
-                      addToShortlist(thisApplication.creative_id);
+                      changeApplicationStatus("shortlisted");
                     }}
                   >
                     <button className="btn p-0 border-0 btn-hover-primary">
@@ -226,13 +232,7 @@ const TabularSingleJobApplication = (props) => {
                   <Tooltip
                     title="Hired"
                     onClick={() => {
-                      setChangingApplicationStatus(true);
-                      setThisApplicationStatus(
-                        props?.job.id,
-                        thisApplication.id,
-                        "hired",
-                        hideChangingApplicationStatus
-                      );
+                      changeApplicationStatus("hired");
                     }}
                   >
                     <button className="btn p-0 border-0 btn-hover-primary">
@@ -242,13 +242,7 @@ const TabularSingleJobApplication = (props) => {
                   <Tooltip
                     title="Not Aligned"
                     onClick={() => {
-                      setChangingApplicationStatus(true);
-                      setThisApplicationStatus(
-                        props?.job.id,
-                        thisApplication.id,
-                        "rejected",
-                        hideChangingApplicationStatus
-                      );
+                      changeApplicationStatus("rejected");
                     }}
                   >
                     <button className="btn p-0 border-0 btn-hover-primary">
