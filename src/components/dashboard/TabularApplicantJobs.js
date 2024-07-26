@@ -103,7 +103,7 @@ const TabularApplicantJobs = () => {
         setOpen={setOpen}
         handleClose={handleClose}
         resource_id={appId}
-        type="applications"
+        type="creatives"
       />
       <h3 className="page-title">All Applicants</h3>
       {isLoadingApp ? (

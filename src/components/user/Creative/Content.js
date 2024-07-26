@@ -56,7 +56,7 @@ const Content = ({ user, role, data, education, experience }) => {
         (async () => {
           let result = await capturePortfolioSnapshot(data.user_id, refreshWait);
           if (result) {
-            let status = result.data.status;
+            let status = result?.data?.status || '';
             if (status == 'success' || status == 'failed') {
               setCountDown(0);
               setRefreshStatus(status);

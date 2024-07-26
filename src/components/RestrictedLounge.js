@@ -12,8 +12,9 @@ const RestrictedLounge = () => {
                     <div className="col-md-12 mb-4 mb-md-0">
                         <div className="restricted-creatives-only">
                             <div className="restricted-message">
-                                <h4>The Lounge is restricted for Creatives only.</h4>
-                                <h5>Please login as a Creative to access The Lounge.</h5>
+                                {/* <h4>The Lounge is restricted for Creatives only.</h4> */}
+                                {/* <h5>Please login as a Creative to access The Lounge.</h5> */}
+                                <h5>A creative login is required for access.</h5>
                             </div>
                         </div>
                     </div>

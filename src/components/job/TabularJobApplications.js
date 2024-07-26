@@ -48,7 +48,7 @@ const TabularJobApplications = (props) => {
                     filterApplications(e.target.value);
                   }} placeholder="Search by name..." />
                 </th>
-                <th className="actions" style={{ widtd: "20%" }}>
+                <th className="actions" style={{ width: "20%" }}>
                   <div>&nbsp;</div>
                   <input className="btn btn-dark" type="button" value={"Reset"} onClick={e => resetFilters(e)} />
                 </th>
