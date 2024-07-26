@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "../styles/SearchBar.css";
 import TitleRecommendationsModal from "./dashboard/Modals/TitleRecommendationsModal";
-import { IoCloseCircleOutline, IoCloseCircleSharp, IoCloseOutline, IoCloseSharp, IoSearchCircleSharp, IoSearchSharp } from "react-icons/io5";
+import { IoCloseCircleOutline, IoCloseCircleSharp, IoCloseOutline, IoCloseSharp, IoSearch, IoSearchCircleSharp, IoSearchOutline, IoSearchSharp } from "react-icons/io5";
 
 const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_search_capabilities, subscription_status }) => {
 
@@ -100,7 +100,7 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
     >
       <div className="search-box row gy-3">
         <div className="search-bar col-md-10">
-          <IoSearchSharp className="search-icon" />
+          <IoSearchOutline className="search-icon" />
           <input
             ref={inputRef}
             className="search-input form-control"
@@ -109,7 +109,7 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
             onChange={(e) => setInput(e.target.value)}
           />
           {input?.length > 0 && (
-            <IoCloseCircleSharp className="reset-search-icon" onClick={(e) => {
+            <IoCloseOutline className="reset-search-icon" onClick={(e) => {
               setInput("");
               onSearch("");
             }} />
