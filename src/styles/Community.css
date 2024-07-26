@@ -496,6 +496,10 @@ img.post-avatar {
     border: 1px solid var(--color-primary);
 }
 
+.post-action.post-reactions.active {
+    background-color: var(--color-primary);
+}
+
 .post-actions .post-reaction-dropdown,
 .post-actions .post-reaction-action-dropdown {
     position: absolute;
@@ -524,6 +528,10 @@ img.post-avatar {
 
 .post-actions .post-reaction-action-dropdown .image-container:hover {
     background-color: #eeeeee;
+}
+
+.post-actions .post-reaction-action-dropdown .image-container.active {
+    background-color: var(--color-primary);
 }
 
 .post-actions .post-reaction-dropdown .reaction-by img {

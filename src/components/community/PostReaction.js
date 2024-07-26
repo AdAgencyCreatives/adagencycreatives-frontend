@@ -5,6 +5,9 @@ import LoungePostIconLaughBlack from "../../assets/images/lounge-post-icon-laugh
 import LoungePostIconLaughGold from "../../assets/images/lounge-post-icon-laugh-gold.png";
 import LoungePostIconLoveBlack from "../../assets/images/lounge-post-icon-love-black.png";
 import LoungePostIconLoveGold from "../../assets/images/lounge-post-icon-love-gold.png";
+import LoungePostIconSmileyLike from "../../assets/images/smiley-like.png";
+import LoungePostIconSmileyLaugh from "../../assets/images/smiley-laugh.png";
+import LoungePostIconSmileyLove from "../../assets/images/smiley-heart.png";
 
 import NumUnit from "../NumUnit";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -118,21 +121,21 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                 if (element.reaction_type == 'like') {
                     postReactionsUnique[element.reaction_type] = {
                         'type': element.reaction_type,
-                        'icon': LoungePostIconLikeGold,
+                        'icon': LoungePostIconSmileyLike,
                         'count': 0,
                         'reactions': []
                     };
                 } else if (element.reaction_type == 'laugh') {
                     postReactionsUnique[element.reaction_type] = {
                         'type': element.reaction_type,
-                        'icon': LoungePostIconLaughGold,
+                        'icon': LoungePostIconSmileyLaugh,
                         'count': 0,
                         'reactions': []
                     };
                 } else if (element.reaction_type == 'heart') {
                     postReactionsUnique[element.reaction_type] = {
                         'type': element.reaction_type,
-                        'icon': LoungePostIconLoveGold,
+                        'icon': LoungePostIconSmileyLove,
                         'count': 0,
                         'reactions': []
                     };
@@ -198,14 +201,14 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
         }
     };
 
-    const getReactionIcon = (icon = LoungePostIconLikeBlack) => {
+    const getReactionIcon = (icon = LoungePostIconSmileyLike) => {
         let reactionIcon = icon;
         let userReactionType = userReaction?.length > 0 ? userReaction[0]?.reaction_type : "";
 
         switch (userReactionType) {
-            case "like": reactionIcon = LoungePostIconLikeGold; break;
-            case "laugh": reactionIcon = LoungePostIconLaughGold; break;
-            case "heart": reactionIcon = LoungePostIconLoveGold; break;
+            case "like": reactionIcon = LoungePostIconSmileyLike; break;
+            case "laugh": reactionIcon = LoungePostIconSmileyLaugh; break;
+            case "heart": reactionIcon = LoungePostIconSmileyLove; break;
             default: reactionIcon = icon;
         }
 
@@ -267,14 +270,14 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                     }} />
                 )}
                 <div id={reactionActionKey} className={"post-reaction-action-dropdown d-none"}>
-                    <div className="image-container" onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'like' ? '' : 'like')}>
-                        <img src={getUserReactionType() == 'like' ? LoungePostIconLikeGold : LoungePostIconLikeBlack} style={{ width: "20px" }} alt="" />
+                    <div className={"image-container" + (getUserReactionType() == 'like' ? " active" : "")} onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'like' ? '' : 'like')}>
+                        <img src={LoungePostIconSmileyLike} style={{ width: "30px", height: "30px" }} alt="" />
                     </div>
-                    <div className="image-container" onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'laugh' ? '' : 'laugh')}>
-                        <img src={getUserReactionType() == 'laugh' ? LoungePostIconLaughGold : LoungePostIconLaughBlack} style={{ width: "20px" }} alt="" />
+                    <div className={"image-container" + (getUserReactionType() == 'laugh' ? " active" : "")} onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'laugh' ? '' : 'laugh')}>
+                        <img src={LoungePostIconSmileyLaugh} style={{ width: "30px", height: "30px" }} alt="" />
                     </div>
-                    <div className="image-container" onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'heart' ? '' : 'heart')}>
-                        <img src={getUserReactionType() == 'heart' ? LoungePostIconLoveGold : LoungePostIconLoveBlack} style={{ width: "20px" }} alt="" />
+                    <div className={"image-container" + (getUserReactionType() == 'heart' ? " active" : "")} onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'heart' ? '' : 'heart')}>
+                        <img src={LoungePostIconSmileyLove} style={{ width: "30px", height: "30px" }} alt="" />
                     </div>
                 </div>
                 {postReactionStats?.length > 0 && (<>
