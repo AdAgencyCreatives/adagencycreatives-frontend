@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { Context as CreativesContext } from "../../context/CreativesContext";
 import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as DataContext } from "../../context/DataContext";
 import { Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import { IoBookmarkOutline, IoTimeOutline } from "react-icons/io5";
@@ -28,6 +29,26 @@ const TabularSingleJobApplication = (props) => {
   const {
     state: { user },
   } = useContext(AuthContext);
+
+  const {
+    state: { bookmarks, },
+    createBookmark,
+    getAllBookmarks,
+    removeBookmark,
+  } = useContext(DataContext);
+
+
+  const addToShortlist = (id) => {
+    createBookmark(user.uuid, "creatives", id, () => {
+      console.log("Creative added to shortlist");
+    });
+  };
+
+  const removeFromShortlist = (id) => {
+    removeBookmark(id, () => {
+      console.log("Creative deleted from shortlist");
+    });
+  };
 
   const hideChangingApplicationStatus = () => {
     setChangingApplicationStatus(false);
@@ -195,6 +216,7 @@ const TabularSingleJobApplication = (props) => {
                         "shortlisted",
                         hideChangingApplicationStatus
                       );
+                      addToShortlist(thisApplication.creative_id);
                     }}
                   >
                     <button className="btn p-0 border-0 btn-hover-primary">

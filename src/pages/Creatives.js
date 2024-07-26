@@ -21,6 +21,7 @@ const Creatives = () => {
   const [foundPermission, setFoundPermission] = useState(null);
   const { creatives, getCreatives, loading, loadMore, searchCreativesAdvanced } =
     useCreatives("creative");
+
   const {
     state: { bookmarks, categories_creative_count },
     createBookmark,
