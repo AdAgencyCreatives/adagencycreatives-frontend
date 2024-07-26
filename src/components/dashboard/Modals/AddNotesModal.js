@@ -1,6 +1,6 @@
 import Dialog from "@mui/material/Dialog";
 import "../../../styles/Modal/AddNotesModal.scss";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Context as JobsContext } from "../../../context/JobsContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
@@ -11,11 +11,18 @@ import TimeAgo from "../../TimeAgo";
 import { convertUTCDateToLocalDate } from "../../UtcToLocalDateTime";
 import DelayedOutput from "../../DelayedOutput";
 import { IoClose, IoCloseCircleSharp, IoCloseSharp, IoPencil } from "react-icons/io5";
+import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';
 
 const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJob }) => {
+
+  const editorRefTinyMCE = useRef(null);
+
   const [note, setNote] = useState("");
   const [message, setMessage] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
+  const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
+  const [useTinyMCE, setUseTinyMCE] = useState(true);
+  const [requireContent, setRequireContent] = useState(false);
 
   const {
     state: { notes, notesNextPage, isLoading },
@@ -102,6 +109,23 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
 
   usePopupScrollLoader(isLoading, loadMore);
 
+  useEffect(() => {
+    /* Hack to resolve focus issue with TinyMCE editor in bootstrap model dialog */
+    const handler = (e) => {
+      if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
+        e.stopImmediatePropagation();
+      }
+    };
+    document.addEventListener("focusin", handler);
+    return () => document.removeEventListener("focusin", handler);
+  }, []);
+
+  const performInitTinyMCE = (evt, editor) => {
+    setIsLoadingTinyMCE(false);
+    editorRefTinyMCE.current = editor;
+    editor.focus();
+  };
+
   return (
     <Dialog
       open={open}
@@ -129,14 +153,42 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
 
               <div className="form-group">
                 <label>Message</label>
-                <textarea
-                  className="form-control"
-                  name="message"
-                  placeholder="Message"
-                  required="required"
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
-                ></textarea>
+                {useTinyMCE ? (
+                  <>
+                    <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
+                      <CircularProgress />
+                    </div>
+                    <EditorTinyMCE
+                      onInit={(evt, editor) => performInitTinyMCE(evt, editor)}
+                      apiKey='j1xmsbgy7mm4sd2czch7suv0680w3flyx8n2daatar52pxm3'
+                      init={{
+                        height: 250,
+                        menubar: false,
+                        // plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                        // toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                        plugins: 'anchor autolink charmap codesample emoticons link lists searchreplace visualblocks wordcount',
+                        toolbar: 'bold italic underline | numlist bullist link | removeformat',
+                        content_css: ['https://fonts.googleapis.com/css?family=Jost:400,500,600,700,800&#038;subset=latin%2Clatin-ext'],
+                        font_family_formats: 'JOST=JOST',
+                        content_style: 'body, * { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important; font-size: 14pt } a { color: #d3a11f; cursor: pointer; } a:hover { color: #000; }',
+                        placeholder: 'What do you want to talk about?',
+                        paste_block_drop: true
+                      }}
+                      initialValue=""
+                      value={note}
+                      onEditorChange={(e) => setNote(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "")}
+                    />
+                  </>
+                ) : (
+                  <textarea
+                    className="form-control"
+                    name="message"
+                    placeholder="Message"
+                    required="required"
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                  ></textarea>
+                )}
               </div>
               <input type="hidden" name="action" />
               <input type="hidden" name="application_id" />
@@ -160,7 +212,7 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
                     </h3>
                     {notes.map((note) => (
                       <div key={note.id} className="note-item fs-5">
-                        <p className="mb-0">{note.body}</p>
+                        <div dangerouslySetInnerHTML={{ __html: note.body }}></div>
                         <p className="mb-0">
                           <small>
                             {/* <TimeAgo datetime={note.updated_at} />,&nbsp; */}

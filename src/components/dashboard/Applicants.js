@@ -119,7 +119,7 @@ const Applicants = () => {
           setOpen={setOpen}
           handleClose={handleClose}
           resource_id={appId}
-          type="applications"
+          type="creatives"
         />
         <div className="card-body">
           {isLoading ? (

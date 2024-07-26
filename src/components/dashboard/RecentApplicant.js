@@ -141,7 +141,7 @@ const RecentApplicant = ({ job, application, setApplicationStatus, onRemoveFromR
                                 <button
                                     className="btn p-0 border-0 btn-hover-primary"
                                     onClick={() => {
-                                        setAppId(thisApplication.id);
+                                        setAppId(thisApplication.creative_id);
                                         setOpen(true);
                                     }}
                                 >
