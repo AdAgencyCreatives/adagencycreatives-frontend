@@ -423,6 +423,8 @@ const MyResume = () => {
   useEffect(() => {
     if (Object.keys(single_creative).length > 0 && !isLoading) {
       setFormData({
+        title: single_creative.title,
+        category_id: categoriesList.find((category) => category.label == single_creative.category)?.value || "",
         state_id: single_creative.location && single_creative.location.state_id,
         city_id: single_creative.location && single_creative.location.city_id,
         about: single_creative.about,
@@ -435,7 +437,7 @@ const MyResume = () => {
         is_opentorelocation: single_creative.is_opentorelocation,
       });
     }
-  }, [isLoading, media_experiences, industry_experiences, strengths]);
+  }, [isLoading, categoriesList, media_experiences, industry_experiences, strengths]);
 
   //Set initial education form data
   useEffect(() => {
