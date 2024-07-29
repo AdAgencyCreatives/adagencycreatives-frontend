@@ -497,14 +497,17 @@ img.post-avatar {
 }
 
 .post-action.post-reactions.active {
-    background-color: var(--color-primary);
+    background-color: #dddddd;
+}
+
+.post-actions .post-reaction-action-dropdown {
+    position: absolute;
 }
 
 .post-actions .post-reaction-dropdown,
 .post-actions .post-reaction-action-dropdown {
-    position: absolute;
     left: 0px;
-    bottom: 40px;
+    bottom: 55px;
     background-color: white;
     border-radius: 10px;
     display: flex;
@@ -513,7 +516,7 @@ img.post-avatar {
     align-items: center;
     padding: 5px;
     border: 1px solid lightgray;
-    z-index: 1;
+    z-index: 2;
     cursor: pointer;
     user-select: none;
     -moz-user-select: none;
@@ -531,7 +534,7 @@ img.post-avatar {
 }
 
 .post-actions .post-reaction-action-dropdown .image-container.active {
-    background-color: var(--color-primary);
+    background-color: #dddddd;
 }
 
 .post-actions .post-reaction-dropdown .reaction-by img {
@@ -869,7 +872,7 @@ h2.epr-emoji-category-label {
     width: 200px;
     overflow: auto;
     position: absolute;
-    bottom: 35px;
+    bottom: 40px;
     left: -10px;
     background-color: #000;
     color: #fff;
