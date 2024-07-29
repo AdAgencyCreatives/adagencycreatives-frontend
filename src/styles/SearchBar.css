@@ -17,10 +17,10 @@ input.search-input {
 .search-bar .search-icon {
     background: white;
     position: absolute;
-    width: 30px;
-    height: 30px;
-    left: 18px;
-    top: 15px;
+    width: 23px;
+    height: 23px;
+    left: 22px;
+    top: 18px;
 }
 
 .search-bar .reset-search-icon {
