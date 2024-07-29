@@ -251,6 +251,18 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
         target.classList.add('d-flex');
     };
 
+    const resetPostReactionStatsReactionsBy = (e) => {
+        console.log("leave");
+        let elems = document.getElementsByClassName('reaction-by-list');
+        if (elems?.length > 0) {
+            for (let index = 0; index < elems.length; index++) {
+                const el = elems[index];
+                el.classList.remove('d-flex');
+                el.classList.add('d-none');
+            }
+        }
+    };
+
     return (
         <>
             <div className={"post-action post-reactions" + (reactionActive ? ' active' : '')}>
@@ -262,12 +274,15 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                 }} />
 
                 {reactionsCount > 0 && (
-                    <NumUnit default={""} number={reactionsCount} onMouseDown={(e) => onShowReactionBy(e)} onClick={(e) => {
-                        document.currentPostReactionKey = null;
-                        e.preventDefault();
-                        e.stopPropagation();
-                        return false;
-                    }} />
+                    <NumUnit default={""} number={reactionsCount}
+                    // onMouseDown={(e) => onShowReactionBy(e)} 
+                    // onClick={(e) => {
+                    //     document.currentPostReactionKey = null;
+                    //     e.preventDefault();
+                    //     e.stopPropagation();
+                    //     return false;
+                    // }} 
+                    />
                 )}
                 <div id={reactionActionKey} className={"post-reaction-action-dropdown d-none"}>
                     <div className={"image-container" + (getUserReactionType() == 'like' ? " active" : "")} onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'like' ? '' : 'like')}>
@@ -280,9 +295,10 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                         <img src={LoungePostIconSmileyLove} style={{ width: "30px", height: "30px" }} alt="" />
                     </div>
                 </div>
-                {postReactionStats?.length > 0 && (<>
-                    <div id={reactionKey} className={"post-reaction-dropdown d-none"}>
-                        {/* {reactionByData && reactionByData.slice(0, Math.min(showMaxReactionBy, reactionByData.length)).map((reaction, index) => {
+            </div>
+            {postReactionStats?.length > 0 && (<>
+                <div id={reactionKey} className={"post-reaction-dropdown"} onMouseLeave={(e) => resetPostReactionStatsReactionsBy()}>
+                    {/* {reactionByData && reactionByData.slice(0, Math.min(showMaxReactionBy, reactionByData.length)).map((reaction, index) => {
 
                         return (
                             <div key={"reaction-by-post-" + post.id + "-" + reaction.id} className="reaction-by">
@@ -294,43 +310,43 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                     <div className="reactions-total">
                         {reactionsCount > showMaxReactionBy ? '+' : ''}{reactionsCount > 0 ? (reactionsCount > showMaxReactionBy ? reactionsCount - showMaxReactionBy : reactionsCount) : 0} reaction{reactionsCount > 1 ? 's' : ''}
                     </div> */}
-                        <div className="post-reactions-stats-container"
-                            onMouseDown={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                return false;
-                            }}>
-                            {postReactionStats.map((item, index) => {
-                                return (
-                                    <div key={'reaction-by-list-post-reactions-stats-item-' + index + '-' + reactionKey} className="post-reactions-stats-item">
-                                        <img src={item['icon']} alt=""
-                                            onMouseOver={(e) => showReactionsBy(e, item, index)}
-                                            onClick={(e) => showReactionsBy(e, item, index)}
-                                        />
-                                        <span className="num-unit reactions-stats-count">{item['reactions']?.length || 0}</span>
-                                        <div id={'reaction-by-list-post-reactions-stats-item-' + index + '-' + reactionKey} className="reaction-by-list d-none">
-                                            {item['reactions']?.length > 0 && item['reactions'].map((reaction) => {
-                                                return (
-                                                    <a className="avatar-link" href={"/creative/" + reaction?.username} target="__blank">
-                                                        <img src={reaction?.user_thumbnail || reaction.profile_picture} alt="" />
-                                                        <span>{reaction.user}</span>
-                                                    </a>
-                                                )
-                                            })}
-                                        </div>
+                    <div className="post-reactions-stats-container"
+                        onMouseDown={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            return false;
+                        }}
+                    >
+                        {postReactionStats.map((item, index) => {
+                            return (
+                                <div key={'reaction-by-list-post-reactions-stats-item-' + index + '-' + reactionKey} className="post-reactions-stats-item">
+                                    <img src={item['icon']} alt=""
+                                        onMouseOver={(e) => showReactionsBy(e, item, index)}
+                                        onClick={(e) => showReactionsBy(e, item, index)}
+                                    />
+                                    <span className="num-unit reactions-stats-count">{item['reactions']?.length || 0}</span>
+                                    <div id={'reaction-by-list-post-reactions-stats-item-' + index + '-' + reactionKey} className="reaction-by-list d-none">
+                                        {item['reactions']?.length > 0 && item['reactions'].map((reaction) => {
+                                            return (
+                                                <a className="avatar-link" href={"/creative/" + reaction?.username} target="__blank">
+                                                    <img src={reaction?.user_thumbnail || reaction.profile_picture} alt="" />
+                                                    <span>{reaction.user}</span>
+                                                </a>
+                                            )
+                                        })}
                                     </div>
-                                )
-                            })}
-                            <span>
-                                {reactionActive && postReactionStats?.length > 1 ? 'You and others' : ''}
-                                {reactionActive && postReactionStats?.length == 1 ? 'You' : ''}
-                                {!reactionActive && postReactionStats?.length > 0 ? 'Others' : ''}
-                            </span>
-                        </div>
-
+                                </div>
+                            )
+                        })}
+                        <span>
+                            {reactionActive && postReactionStats?.length > 1 ? 'You and others' : ''}
+                            {reactionActive && postReactionStats?.length == 1 ? 'You' : ''}
+                            {!reactionActive && postReactionStats?.length > 0 ? 'Others' : ''}
+                        </span>
                     </div>
-                </>)}
-            </div>
+
+                </div>
+            </>)}
         </>
     );
 };

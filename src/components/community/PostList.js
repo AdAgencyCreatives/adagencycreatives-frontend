@@ -103,7 +103,7 @@ const PostList = (props) => {
   };
 
   const resetDropdowns = (e) => {
-    resetPostReactionDropdowns(e);
+    // resetPostReactionDropdowns(e);
     resetPostReactionActionDropdowns(e);
     resetPostReactionStatsReactionsBy(e);
   };
