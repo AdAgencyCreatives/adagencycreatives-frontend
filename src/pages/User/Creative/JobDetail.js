@@ -1,10 +1,6 @@
-import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import {
-    IoBookmarkOutline,
     IoBriefcaseOutline,
-    IoChatbubbleEllipsesOutline,
-    IoEyeOutline,
     IoLocationOutline,
     IoCheckmarkCircle,
     IoCloseCircleSharp
@@ -17,10 +13,13 @@ import TimeAgo from "../../../components/TimeAgo";
 import { getJobById } from "../../../context/JobsDataContext";
 import { useEffect, useState } from "react";
 import { Tooltip } from "@mui/material";
+import useApplicationStatusHelper from "../../../hooks/useApplicationStatusHelper";
 
-const JobDetail = ({ item }) => {
+const JobDetail = ({ item, onRemoveFromRecent }) => {
 
     const [job, setJob] = useState(null);
+    const { getStatusName, getStatusBadge } = useApplicationStatusHelper();
+
     useEffect(() => {
         if (item?.relationships?.job) {
             setJob(item.relationships.job);
@@ -31,9 +30,17 @@ const JobDetail = ({ item }) => {
             })();
         }
     }, [item]);
+
     return (
         <tr key={item.id} className="job-table-row">
             <td className="job-table-info">
+                <div className="close-modal">
+                    <Tooltip title="Remove from recent">
+                        <Link to={"javascript:void(0);"}>
+                            <IoCloseCircleSharp size={30} onClick={(e) => onRemoveFromRecent(e, item)} />
+                        </Link>
+                    </Tooltip>
+                </div>
                 {job ? (
                     <div className="job-table-info-content">
                         <div className="d-flex">
@@ -96,16 +103,13 @@ const JobDetail = ({ item }) => {
             </td>
             <td className="job-table-status nowrap">
                 <div className="job-table-actions-inner pending_payment" style={{ textTransform: 'capitalize' }}>
-                    {item.status}
-                </div>
-            </td>
-            <td>
-                <div className="close-modal">
-                    <Tooltip title="Remove from recent">
-                        <Link to={"javascript:void(0);"}>
-                            <IoCloseCircleSharp size={30} onClick={(e) => { }} />
-                        </Link>
-                    </Tooltip>
+                    {job?.apply_type.toLowerCase() != "external" ? (
+                        <span className={"badge " + getStatusBadge(item.status)} style={{ width: "100%" }} >
+                            {getStatusName(item?.status)}
+                        </span>
+                    ) : (
+                        <span className="badge bg-success">Interested</span>
+                    )}
                 </div>
             </td>
         </tr>

@@ -5,26 +5,20 @@ import {
   IoBriefcaseOutline,
   IoChatbubbleEllipsesOutline,
   IoEyeOutline,
-  IoLocationOutline,
-  IoCheckmarkCircle
 } from "react-icons/io5";
 
 import "../../../styles/AgencyDashboard/Dashboard.scss";
-import Views from "../../../components/dashboard/Views";
 import Notifications from "../../../components/dashboard/Notifications";
-import Applicants from "../../../components/dashboard/Applicants";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import Loader from "../../../components/Loader";
-import JobList from "../../../components/job/JobList";
-import Placeholder from "../../../assets/images/placeholder.png";
-import { Link } from "react-router-dom";
-import TimeAgo from "../../../components/TimeAgo";
 import JobDetail from "./JobDetail";
+import { Context as JobsContext } from "../../../context/JobsContext";
 
 const Dashboard = () => {
 
+  const [applicationsData, setApplicationsData] = useState([]);
   const {
     state: { user },
   } = useContext(AuthContext);
@@ -35,14 +29,41 @@ const Dashboard = () => {
     getApplications,
   } = useContext(CreativesContext);
 
+  const {
+    application_remove_from_recent,
+  } = useContext(JobsContext);
+
   useEffect(() => {
     getStats();
     getApplications(user.uuid);
   }, []);
 
   useEffect(() => {
-    console.log(applications);
+    if (applications?.length > 0) {
+      const updatedApplications = [];
+      for (let appIndex = 0; appIndex < applications.length; appIndex++) {
+        const appl = applications[appIndex];
+        const remove_from_recent_arr = appl?.removed_from_recent ? appl.removed_from_recent.split(',') : [];
+        const user_id = '' + user.id;
+
+        if (!remove_from_recent_arr.includes(user_id)) {
+          updatedApplications.push(appl);
+        }
+      }
+      setApplicationsData(updatedApplications);
+    } else {
+      setApplicationsData(applications);
+    }
   }, [applications]);
+
+  const onRemoveFromRecent = async (e, application) => {
+    e.preventDefault();
+    application_remove_from_recent(application.id, user.uuid, async () => {
+      await getStats();
+      await getApplications(user.uuid);
+    });
+    return false;
+  };
 
   return (
     <div className="dashboard-wrapper agency-page-dashboard">
@@ -121,22 +142,27 @@ const Dashboard = () => {
             <div className="card-body">
               {/* <JobList data={[]} /> */}
               {loading ? (<Loader />) : (
-                <div className="table-responsive">
-                  <table className="job-table">
-                    <thead>
-                      <tr>
-                        <th className="title">Job Title</th>
-                        <th className="date">Applied</th>
-                        <th className="status">Status</th>
-                        <th className="status"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {applications?.length > 0 &&
-                        applications.map((item) => (<JobDetail item={item} />))}
-                    </tbody>
-                  </table>
-                </div>)}
+                <>
+                  {applicationsData?.length > 0 ? (
+                    <div className="table-responsive">
+                      <table className="job-table">
+                        <thead>
+                          <tr>
+                            <th className="title">Job Title</th>
+                            <th className="date">Applied</th>
+                            <th className="status">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {applicationsData.map((item) => (<JobDetail item={item} onRemoveFromRecent={onRemoveFromRecent} />))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>

@@ -43,7 +43,10 @@ const Applicants = () => {
         const updatedApplications = [];
         for (let appIndex = 0; appIndex < job.applications.length; appIndex++) {
           const appl = job.applications[appIndex];
-          if (!appl?.removed_from_recent) {
+          const remove_from_recent_arr = appl?.removed_from_recent ? appl.removed_from_recent.split(',') : [];
+          const user_id = '' + user.id;
+
+          if (!remove_from_recent_arr.includes(user_id)) {
             updatedApplications.push(appl);
           }
         }
@@ -89,7 +92,7 @@ const Applicants = () => {
 
   const onRemoveFromRecent = async (e, application) => {
     e.preventDefault();
-    application_remove_from_recent(application.id, () => {
+    application_remove_from_recent(application.id, user.uuid, () => {
       let updatedJobs = [];
 
       for (let index = 0; index < data.length; index++) {
