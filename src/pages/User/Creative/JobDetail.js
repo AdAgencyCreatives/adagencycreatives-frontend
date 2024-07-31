@@ -34,13 +34,6 @@ const JobDetail = ({ item, onRemoveFromRecent }) => {
     return (
         <tr key={item.id} className="job-table-row">
             <td className="job-table-info">
-                <div className="close-modal">
-                    <Tooltip title="Remove from recent">
-                        <Link to={"javascript:void(0);"}>
-                            <IoCloseCircleSharp size={30} onClick={(e) => onRemoveFromRecent(e, item)} />
-                        </Link>
-                    </Tooltip>
-                </div>
                 {job ? (
                     <div className="job-table-info-content">
                         <div className="d-flex">
@@ -103,6 +96,13 @@ const JobDetail = ({ item, onRemoveFromRecent }) => {
             </td>
             <td className="job-table-status nowrap">
                 <div className="job-table-actions-inner pending_payment" style={{ textTransform: 'capitalize' }}>
+                    <div className="close-modal">
+                        <Tooltip title="Remove from recent">
+                            <Link to={"javascript:void(0);"}>
+                                <IoCloseCircleSharp size={30} onClick={(e) => onRemoveFromRecent(e, item)} />
+                            </Link>
+                        </Tooltip>
+                    </div>
                     {job?.apply_type.toLowerCase() != "external" ? (
                         <span className={"badge " + getStatusBadge(item.status)} style={{ width: "100%" }} >
                             {getStatusName(item?.status)}

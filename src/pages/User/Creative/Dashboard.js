@@ -15,10 +15,12 @@ import { useContext, useEffect, useState } from "react";
 import Loader from "../../../components/Loader";
 import JobDetail from "./JobDetail";
 import { Context as JobsContext } from "../../../context/JobsContext";
+import { CircularProgress } from "@mui/material";
 
 const Dashboard = () => {
 
   const [applicationsData, setApplicationsData] = useState([]);
+
   const {
     state: { user },
   } = useContext(AuthContext);
@@ -141,7 +143,12 @@ const Dashboard = () => {
             <div className="card-title">My Recent Applications</div>
             <div className="card-body">
               {/* <JobList data={[]} /> */}
-              {loading ? (<Loader />) : (
+              {loading ? (
+                <div className="center-page">
+                  <CircularProgress />
+                  <span>Loading ...</span>
+                </div>
+              ) : (
                 <>
                   {applicationsData?.length > 0 ? (
                     <div className="table-responsive">

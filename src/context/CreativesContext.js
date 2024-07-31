@@ -430,6 +430,7 @@ const getStats = (dispatch) => {
 
 const getApplications = (dispatch) => {
   return async (uid) => {
+    setLoading(dispatch, true);
     try {
       const response = await api.get("/applications?filter[user_id]=" + uid);
       dispatch({
@@ -437,6 +438,7 @@ const getApplications = (dispatch) => {
         payload: response.data,
       });
     } catch (error) { }
+    setLoading(dispatch, false);
   };
 };
 

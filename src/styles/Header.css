@@ -1190,6 +1190,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
 
 .job-table-row {
     position: relative;
+    height: 200px;
 }
 
 .job-table-row .close-modal {
