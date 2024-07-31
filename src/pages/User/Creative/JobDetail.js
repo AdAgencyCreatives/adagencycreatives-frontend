@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import TimeAgo from "../../../components/TimeAgo";
 import { getJobById } from "../../../context/JobsDataContext";
 import { useEffect, useState } from "react";
+import { Tooltip } from "@mui/material";
 
 const JobDetail = ({ item }) => {
 
@@ -31,11 +32,10 @@ const JobDetail = ({ item }) => {
         }
     }, [item]);
     return (
-        <tr key={item.id}>
+        <tr key={item.id} className="job-table-row">
             <td className="job-table-info">
                 {job ? (
                     <div className="job-table-info-content">
-                        <div className="close-modal"><IoCloseCircleSharp size={30} onClick={(e) => { }} /></div>
                         <div className="d-flex">
                             <div className="avatar employer">
                                 <img
@@ -97,6 +97,15 @@ const JobDetail = ({ item }) => {
             <td className="job-table-status nowrap">
                 <div className="job-table-actions-inner pending_payment" style={{ textTransform: 'capitalize' }}>
                     {item.status}
+                </div>
+            </td>
+            <td>
+                <div className="close-modal">
+                    <Tooltip title="Remove from recent">
+                        <Link to={"javascript:void(0);"}>
+                            <IoCloseCircleSharp size={30} onClick={(e) => { }} />
+                        </Link>
+                    </Tooltip>
                 </div>
             </td>
         </tr>

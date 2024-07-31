@@ -1187,3 +1187,25 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .search-bar .clear-search:hover {
     color: #d3a11f
 }
+
+.job-table-row {
+    position: relative;
+}
+
+.job-table-row .close-modal {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}
+
+.job-table-row .close-modal svg {
+    fill: #000000 !important;
+}
+
+.job-table-row .close-modal:hover {
+    color: #d3a11f;
+}
+
+.job-table-row .close-modal:hover svg {
+    fill: #d3a11f !important;
+}

@@ -128,6 +128,7 @@ const Dashboard = () => {
                         <th className="title">Job Title</th>
                         <th className="date">Applied</th>
                         <th className="status">Status</th>
+                        <th className="status"></th>
                       </tr>
                     </thead>
                     <tbody>

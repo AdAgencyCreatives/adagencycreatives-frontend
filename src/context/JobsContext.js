@@ -476,7 +476,7 @@ const application_remove_from_recent = (dispatch) => {
   return async (id, cb = false) => {
     setLoading(dispatch, true);
     try {
-      const response = await api.post("applications/remove_from_recent/" + id);
+      const response = await api.post("/applications/remove_from_recent/" + id);
       dispatch({
         type: "remove_from_recent",
         payload: response.data,
