@@ -6,7 +6,8 @@ import {
     IoChatbubbleEllipsesOutline,
     IoEyeOutline,
     IoLocationOutline,
-    IoCheckmarkCircle
+    IoCheckmarkCircle,
+    IoCloseCircleSharp
 } from "react-icons/io5";
 
 import "../../../styles/AgencyDashboard/Dashboard.scss";
@@ -34,6 +35,7 @@ const JobDetail = ({ item }) => {
             <td className="job-table-info">
                 {job ? (
                     <div className="job-table-info-content">
+                        <div className="close-modal"><IoCloseCircleSharp size={30} onClick={(e) => { }} /></div>
                         <div className="d-flex">
                             <div className="avatar employer">
                                 <img

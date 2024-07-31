@@ -53,12 +53,11 @@ input.search-input {
     border: 1px solid black;
 }
 
-@media (max-width: 767px) {
+/* @media (max-width: 767px) {
     .search-bar input.search-input {
         padding-left: 15px;
     }
-}
-
+} */
 
 .search-bar {
     position: relative;
