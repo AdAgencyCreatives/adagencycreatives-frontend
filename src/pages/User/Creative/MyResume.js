@@ -1044,6 +1044,9 @@ const MyResume = () => {
                 </div>
               ))}
               <div className="text-end">
+                <button className="btn btn-secondary w-90 mb-2 text-uppercase ls-3 px-4" onClick={handleSubmit}>
+                  Save
+                </button>&nbsp;
                 <button className="btn btn-secondary w-90 mb-2 text-uppercase ls-3 px-4" onClick={() => deleteDropdown(field, index)}>
                   Remove {field.label}
                 </button>

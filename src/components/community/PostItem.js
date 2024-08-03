@@ -3,8 +3,6 @@ import {
     IoTimeOutline,
 } from "react-icons/io5";
 import Placeholder from "../../assets/images/placeholder.png";
-import LoungePostIconCommentBlack from "../../assets/images/lounge-post-icon-comment-black.png";
-import LoungePostIconCommentGold from "../../assets/images/lounge-post-icon-comment-gold.png";
 
 import { useState, useRef } from "react";
 import Divider from "../Divider";
@@ -266,18 +264,10 @@ const PostItem = (props) => {
                     getReactions={getReactions}
                     getReaction={getReaction}
                     toggleReaction={toggleReaction}
+                    commentsCount={commentsCount}
+                    toggleShowComments={toggleShowComments}
+                    showComments={showComments}
                 />
-
-                <div className="post-action post-comments" onClick={() => toggleShowComments()}>
-                    {showComments ? (
-                        <img src={LoungePostIconCommentGold} style={{ width: "20px" }} alt="" />
-                    ) : (
-                        <img src={LoungePostIconCommentBlack} style={{ width: "20px" }} alt="" />
-                    )}
-                    {commentsCount > 0 && (
-                        <NumUnit number={commentsCount} />
-                    )}
-                </div>
 
             </div>
             <div key={'comment-box-' + props.post.id} post={props.post} className={"comment-box d-" + (showComments ? 'show' : 'none')}>

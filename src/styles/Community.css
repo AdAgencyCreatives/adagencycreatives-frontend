@@ -515,7 +515,7 @@ img.post-avatar {
     column-gap: 5px;
     align-items: center;
     padding: 5px;
-    border: 1px solid lightgray;
+    /* border: 1px solid lightgray; */
     z-index: 2;
     cursor: pointer;
     user-select: none;
@@ -847,13 +847,14 @@ h2.epr-emoji-category-label {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 5px 10px 0px 10px;
+    padding: 0px 0px 0px 5px;
 }
 
 .post-reactions-stats-container img {
-    width: 30px;
-    height: 30px;
+    width: 22px;
+    height: 22px;
     object-fit: contain;
+    margin-top: -2px;
 }
 
 .post-reactions-stats-container span {
@@ -862,7 +863,10 @@ h2.epr-emoji-category-label {
 }
 
 .post-reactions-stats-container .post-reactions-stats-item {
-    position: relative
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
 }
 
 .post-reactions-stats-container .post-reactions-stats-item .reaction-by-list {
@@ -887,11 +891,11 @@ h2.epr-emoji-category-label {
     font-size: 10pt;
 }
 
-.post-reactions-stats-container .post-reactions-stats-item .num-unit.reactions-stats-count {
-    font-size: 8pt;
-    position: absolute;
+.post-reaction-dropdown .num-unit {
+    font-size: 9pt;
+    /* position: absolute;
     left: -10px;
-    bottom: 15px;
+    bottom: 15px; */
     z-index: 1;
 }
 
@@ -1004,4 +1008,19 @@ img.post-image.full-width {
     .mobile-off {
         display: none;
     }
+}
+
+.post-actions {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-action-reactions-comments-contianer {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.post-reaction-dropdown {
+    width: max-content;
 }

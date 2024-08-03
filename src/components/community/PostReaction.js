@@ -1,19 +1,21 @@
-import Placeholder from "../../assets/images/placeholder.png";
-import LoungePostIconLikeBlack from "../../assets/images/lounge-post-icon-like-black.png";
-import LoungePostIconLikeGold from "../../assets/images/lounge-post-icon-like-gold.png";
-import LoungePostIconLaughBlack from "../../assets/images/lounge-post-icon-laugh-black.png";
-import LoungePostIconLaughGold from "../../assets/images/lounge-post-icon-laugh-gold.png";
-import LoungePostIconLoveBlack from "../../assets/images/lounge-post-icon-love-black.png";
-import LoungePostIconLoveGold from "../../assets/images/lounge-post-icon-love-gold.png";
+// import Placeholder from "../../assets/images/placeholder.png";
+// import LoungePostIconLikeBlack from "../../assets/images/lounge-post-icon-like-black.png";
+// import LoungePostIconLikeGold from "../../assets/images/lounge-post-icon-like-gold.png";
+// import LoungePostIconLaughBlack from "../../assets/images/lounge-post-icon-laugh-black.png";
+// import LoungePostIconLaughGold from "../../assets/images/lounge-post-icon-laugh-gold.png";
+// import LoungePostIconLoveBlack from "../../assets/images/lounge-post-icon-love-black.png";
+// import LoungePostIconLoveGold from "../../assets/images/lounge-post-icon-love-gold.png";
 import LoungePostIconSmileyLike from "../../assets/images/smiley-like.png";
 import LoungePostIconSmileyLaugh from "../../assets/images/smiley-laugh.png";
 import LoungePostIconSmileyLove from "../../assets/images/smiley-heart.png";
+import LoungePostIconCommentBlack from "../../assets/images/lounge-post-icon-comment-black.png";
+import LoungePostIconCommentGold from "../../assets/images/lounge-post-icon-comment-gold.png";
 
 import NumUnit from "../NumUnit";
 import { useContext, useEffect, useRef, useState } from "react";
 import useLongPress from "../../hooks/useLongPress";
 
-const PostReaction = ({ post, user, post_reactions, reaction_action, getReactions, toggleReaction }) => {
+const PostReaction = ({ post, user, post_reactions, reaction_action, getReactions, toggleReaction, commentsCount, toggleShowComments, showComments }) => {
 
     const showMaxReactionBy = 5;
     const reactionKey = "post-reactions-" + post.id;
@@ -265,35 +267,36 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
 
     return (
         <>
-            <div className={"post-action post-reactions" + (reactionActive ? ' active' : '')}>
-                <img src={getReactionIcon()} style={{ width: "20px" }} alt="" {...longPressEvent} onMouseOver={(e) => {
-                    onShowReactionAction(e);
-                    window.setTimeout(() => {
-                        document.currentPostReactionActionKey = null;
-                    }, 200);
-                }} />
+            <div className="post-action-reactions-comments-contianer">
+                <div className={"post-action post-reactions" + (reactionActive ? ' active' : '')}>
+                    <img src={getReactionIcon()} style={{ width: "20px" }} alt="" {...longPressEvent} onMouseOver={(e) => {
+                        onShowReactionAction(e);
+                        window.setTimeout(() => {
+                            document.currentPostReactionActionKey = null;
+                        }, 200);
+                    }} />
 
-                {reactionsCount > 0 && (
-                    <NumUnit default={""} number={reactionsCount}
-                    // onMouseDown={(e) => onShowReactionBy(e)} 
-                    // onClick={(e) => {
-                    //     document.currentPostReactionKey = null;
-                    //     e.preventDefault();
-                    //     e.stopPropagation();
-                    //     return false;
-                    // }} 
-                    />
-                )}
-                <div id={reactionActionKey} className={"post-reaction-action-dropdown d-none"}>
-                    <div className={"image-container" + (getUserReactionType() == 'like' ? " active" : "")} onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'like' ? '' : 'like')}>
-                        <img src={LoungePostIconSmileyLike} style={{ width: "30px", height: "30px" }} alt="" />
+                    <div id={reactionActionKey} className={"post-reaction-action-dropdown d-none"}>
+                        <div className={"image-container" + (getUserReactionType() == 'like' ? " active" : "")} onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'like' ? '' : 'like')}>
+                            <img src={LoungePostIconSmileyLike} style={{ width: "30px", height: "30px" }} alt="" />
+                        </div>
+                        <div className={"image-container" + (getUserReactionType() == 'laugh' ? " active" : "")} onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'laugh' ? '' : 'laugh')}>
+                            <img src={LoungePostIconSmileyLaugh} style={{ width: "30px", height: "30px" }} alt="" />
+                        </div>
+                        <div className={"image-container" + (getUserReactionType() == 'heart' ? " active" : "")} onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'heart' ? '' : 'heart')}>
+                            <img src={LoungePostIconSmileyLove} style={{ width: "30px", height: "30px" }} alt="" />
+                        </div>
                     </div>
-                    <div className={"image-container" + (getUserReactionType() == 'laugh' ? " active" : "")} onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'laugh' ? '' : 'laugh')}>
-                        <img src={LoungePostIconSmileyLaugh} style={{ width: "30px", height: "30px" }} alt="" />
-                    </div>
-                    <div className={"image-container" + (getUserReactionType() == 'heart' ? " active" : "")} onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'heart' ? '' : 'heart')}>
-                        <img src={LoungePostIconSmileyLove} style={{ width: "30px", height: "30px" }} alt="" />
-                    </div>
+                </div>
+                <div className="post-action post-comments" onClick={() => toggleShowComments()}>
+                    {showComments ? (
+                        <img src={LoungePostIconCommentGold} style={{ width: "20px" }} alt="" />
+                    ) : (
+                        <img src={LoungePostIconCommentBlack} style={{ width: "20px" }} alt="" />
+                    )}
+                    {commentsCount > 0 && (
+                        <NumUnit number={commentsCount} />
+                    )}
                 </div>
             </div>
             {postReactionStats?.length > 0 && (<>
@@ -310,6 +313,19 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                     <div className="reactions-total">
                         {reactionsCount > showMaxReactionBy ? '+' : ''}{reactionsCount > 0 ? (reactionsCount > showMaxReactionBy ? reactionsCount - showMaxReactionBy : reactionsCount) : 0} reaction{reactionsCount > 1 ? 's' : ''}
                     </div> */}
+                    <strong>Reactions</strong>
+                    <span>All</span>
+                    {reactionsCount > 0 && (
+                        <NumUnit default={""} number={reactionsCount}
+                        // onMouseDown={(e) => onShowReactionBy(e)} 
+                        // onClick={(e) => {
+                        //     document.currentPostReactionKey = null;
+                        //     e.preventDefault();
+                        //     e.stopPropagation();
+                        //     return false;
+                        // }} 
+                        />
+                    )}
                     <div className="post-reactions-stats-container"
                         onMouseDown={(e) => {
                             e.preventDefault();
@@ -329,8 +345,8 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                                         {item['reactions']?.length > 0 && item['reactions'].map((reaction) => {
                                             return (
                                                 <a className="avatar-link" href={"/creative/" + reaction?.username} target="__blank">
-                                                    <img src={reaction?.user_thumbnail || reaction.profile_picture} alt="" />
                                                     <span>{reaction.user}</span>
+                                                    <img src={reaction?.user_thumbnail || reaction.profile_picture} alt="" />
                                                 </a>
                                             )
                                         })}
