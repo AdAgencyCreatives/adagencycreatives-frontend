@@ -335,9 +335,10 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                     >
                         {postReactionStats.map((item, index) => {
                             return (
-                                <div key={'reaction-by-list-post-reactions-stats-item-' + index + '-' + reactionKey} className="post-reactions-stats-item">
+                                <div key={'reaction-by-list-post-reactions-stats-item-' + index + '-' + reactionKey} className="post-reactions-stats-item"
+                                    onMouseOver={(e) => showReactionsBy(e, item, index)}
+                                >
                                     <img src={item['icon']} alt=""
-                                        onMouseOver={(e) => showReactionsBy(e, item, index)}
                                         onClick={(e) => showReactionsBy(e, item, index)}
                                     />
                                     <span className="num-unit reactions-stats-count">{item['reactions']?.length || 0}</span>
@@ -345,8 +346,8 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                                         {item['reactions']?.length > 0 && item['reactions'].map((reaction) => {
                                             return (
                                                 <a className="avatar-link" href={"/creative/" + reaction?.username} target="__blank">
-                                                    <span>{reaction.user}</span>
                                                     <img src={reaction?.user_thumbnail || reaction.profile_picture} alt="" />
+                                                    <span>{reaction.user}</span>
                                                 </a>
                                             )
                                         })}
@@ -354,11 +355,11 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                                 </div>
                             )
                         })}
-                        <span>
+                        {/* <span>
                             {reactionActive && postReactionStats?.length > 1 ? 'You and others' : ''}
                             {reactionActive && postReactionStats?.length == 1 ? 'You' : ''}
                             {!reactionActive && postReactionStats?.length > 0 ? 'Others' : ''}
-                        </span>
+                        </span> */}
                     </div>
 
                 </div>
