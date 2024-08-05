@@ -11,18 +11,13 @@ import TimeAgo from "../../TimeAgo";
 import { convertUTCDateToLocalDate } from "../../UtcToLocalDateTime";
 import DelayedOutput from "../../DelayedOutput";
 import { IoClose, IoCloseCircleSharp, IoCloseSharp, IoPencil } from "react-icons/io5";
-import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';
+import CustomEditor from "../../../components/CustomEditor";
 
 const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJob }) => {
-
-  const editorRefTinyMCE = useRef(null);
 
   const [note, setNote] = useState("");
   const [message, setMessage] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
-  const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
-  const [useTinyMCE, setUseTinyMCE] = useState(true);
-  const [requireContent, setRequireContent] = useState(false);
 
   const {
     state: { notes, notesNextPage, isLoading },
@@ -109,23 +104,6 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
 
   usePopupScrollLoader(isLoading, loadMore);
 
-  useEffect(() => {
-    /* Hack to resolve focus issue with TinyMCE editor in bootstrap model dialog */
-    const handler = (e) => {
-      if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
-        e.stopImmediatePropagation();
-      }
-    };
-    document.addEventListener("focusin", handler);
-    return () => document.removeEventListener("focusin", handler);
-  }, []);
-
-  const performInitTinyMCE = (evt, editor) => {
-    setIsLoadingTinyMCE(false);
-    editorRefTinyMCE.current = editor;
-    editor.focus();
-  };
-
   return (
     <Dialog
       open={open}
@@ -153,42 +131,12 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
 
               <div className="form-group">
                 <label>Message</label>
-                {useTinyMCE ? (
-                  <>
-                    <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
-                      <CircularProgress />
-                    </div>
-                    <EditorTinyMCE
-                      onInit={(evt, editor) => performInitTinyMCE(evt, editor)}
-                      apiKey='j1xmsbgy7mm4sd2czch7suv0680w3flyx8n2daatar52pxm3'
-                      init={{
-                        height: 250,
-                        menubar: false,
-                        // plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                        // toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                        plugins: 'anchor autolink charmap codesample emoticons link lists searchreplace visualblocks wordcount',
-                        toolbar: 'bold italic underline | numlist bullist link | removeformat',
-                        content_css: ['https://fonts.googleapis.com/css?family=Jost:400,500,600,700,800&#038;subset=latin%2Clatin-ext'],
-                        font_family_formats: 'JOST=JOST',
-                        content_style: 'body, * { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important; font-size: 14pt } a { color: #d3a11f; cursor: pointer; } a:hover { color: #000; }',
-                        placeholder: 'What do you want to talk about?',
-                        paste_block_drop: true
-                      }}
-                      initialValue=""
-                      value={note}
-                      onEditorChange={(e) => setNote(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "")}
-                    />
-                  </>
-                ) : (
-                  <textarea
-                    className="form-control"
-                    name="message"
-                    placeholder="Message"
-                    required="required"
-                    value={note}
-                    onChange={(e) => setNote(e.target.value)}
-                  ></textarea>
-                )}
+                <CustomEditor
+                  value={note}
+                  setValue={setNote}
+                  enableAdvanceEditor={true}
+                  placeholder=""
+                />
               </div>
               <input type="hidden" name="action" />
               <input type="hidden" name="application_id" />
@@ -199,11 +147,9 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
                 {selectedNote?.id ? 'Update' : 'Add'} Note
               </button>
               {selectedNote?.id && (<Link className="reset-note" onClick={(e) => onCancelEditNote(e)}>Cancel</Link>)}
-              {isLoading && (
-                <h3 className="text-center mb-4">
-                  <CircularProgress size={20} />
-                </h3>
-              )}
+              <div className="text-center mb-1 mt-1" style={{ visibility: isLoading ? 'visible' : 'hidden' }}>
+                <CircularProgress size={20} />
+              </div>
               <div className="notes-list-item">
                 {notes?.length > 0 ? (
                   <>
@@ -252,9 +198,7 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
                     </div>
                   </>
                 ) : (
-                  <DelayedOutput delay={2000}>
-                    <p>You currently have no notes entered.</p>
-                  </DelayedOutput>
+                  <p>You currently have no notes entered.</p>
                 )}
               </div>
 

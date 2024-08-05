@@ -3,10 +3,13 @@ import { useContext, useEffect } from "react";
 import { Context as AuthContext, logActivity } from "../../../context/AuthContext";
 import { Context as ChatContext } from "../../../context/ChatContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import CustomEditor from "../../../components/CustomEditor";
 
 const Message = ({ open, handleClose, item, type }) => {
-  const [data, setData] = useState({ subject: "", message: "" });
+
+  const [subjectData, setSubjectData] = useState("");
+  const [messageData, setMessageData] = useState("");
 
   const {
     state: { loading, },
@@ -27,10 +30,11 @@ const Message = ({ open, handleClose, item, type }) => {
   // },[open])
 
   const handleSubmit = () => {
-    sendMessage(user.uuid, item.user_id, data.message, type, () => {
+    sendMessage(user.uuid, item.user_id, messageData, type, () => {
       handleClose();
       showAlert('Message sent successfully');
-      setData({ subject: "", message: "" });
+      setSubjectData("");
+      setMessageData("");
       (async () => {
         await getMessages(user.uuid, type);
       })();
@@ -70,24 +74,17 @@ const Message = ({ open, handleClose, item, type }) => {
                     name="subject"
                     placeholder="Subject"
                     required="required"
-                    value={data.subject}
-                    onChange={(e) =>
-                      setData((prev) => ({ ...prev, subject: e.target.value }))
-                    }
+                    value={subjectData}
+                    onChange={(e) => setSubjectData(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
-                  <textarea
-                    className="form-control"
-                    name="message"
+                  <CustomEditor
+                    value={messageData}
+                    setValue={setMessageData}
+                    enableAdvanceEditor={true}
                     placeholder="Message"
-                    required="required"
-                    rows={4}
-                    value={data.message}
-                    onChange={(e) =>
-                      setData((prev) => ({ ...prev, message: e.target.value }))
-                    }
-                  ></textarea>
+                  />
                 </div>
                 <button
                   className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3"

@@ -1213,3 +1213,14 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .job-table-row .close-modal:hover svg {
     fill: #d3a11f !important;
 }
+
+.custom-editor-container {
+    position: relative;
+    min-height: 260px;
+}
+
+.custom-editor-container .circular-progress {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}

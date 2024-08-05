@@ -15,6 +15,7 @@ import EmojiPicker, { Emoji } from "emoji-picker-react";
 import { api } from "../../api/api";
 import { CircularProgress, Dialog, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
+import CustomEditor from "../CustomEditor";
 
 const ChatBox = ({
   page,
@@ -102,9 +103,8 @@ const ChatBox = ({
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
   };
 
-  const handleMessageChange = (e) => {
-    setContent(e.target.value);
-    updateDraftMessage(e.target.value);
+  const handleMessageChange = (value) => {
+    updateDraftMessage(value);
   };
 
   const updateDraftMessage = (msg) => {
@@ -327,9 +327,6 @@ const ChatBox = ({
       setMessageTmp(item.message);
     }
   };
-  const handleChange = (key, value) => {
-    setMessageTmp(value);
-  };
 
   const [formDelete, setFormDelete] = useState(false);
   const [formEdit, setFormEdit] = useState(false);
@@ -492,13 +489,11 @@ const ChatBox = ({
                                       </button>
                                     </div>
                                     <p className="text-center">
-                                      <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Message"
-                                        name="message"
+                                      <CustomEditor
                                         value={messageTmp}
-                                        onChange={(e) => handleChange("message", e.target.value)}
+                                        setValue={setMessageTmp}
+                                        enableAdvanceEditor={true}
+                                        placeholder="Message"
                                       />
                                     </p>
                                     <div className="d-flex align-items-center justify-content-end">
@@ -607,18 +602,12 @@ const ChatBox = ({
           <div className="chat-footer">
             <div className="message-box">
               <div className="message-input">
-                <ContentEditable
-                  className="message"
-                  placeholder="Enter your message..."
-                  html={content}
-                  onChange={handleMessageChange}
-                  onKeyUp={(e) => {
-                    if (e.ctrlKey && e.key === "Enter") {
-                      window.setTimeout(() => {
-                        document.getElementById('btn-send')?.click();
-                      }, 200);
-                    }
-                  }}
+                <CustomEditor
+                  value={content}
+                  setValue={setContent}
+                  onValueChange={handleMessageChange}
+                  enableAdvanceEditor={true}
+                  placeholder="Message"
                 />
               </div>
             </div>
