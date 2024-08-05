@@ -16,6 +16,7 @@ import CustomEditor from "../../../components/CustomEditor";
 const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJob }) => {
 
   const [note, setNote] = useState("");
+  const [notesData, setNotesData] = useState([]);
   const [message, setMessage] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
 
@@ -93,9 +94,14 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
   }, [open, user]);
 
   useEffect(() => {
+    setNotesData(notes || []);
+  }, [notes]);
+
+  useEffect(() => {
     setSelectedNote(null);
     setNote('');
     setMessage(false);
+    setNotesData([]);
   }, [open]);
 
   const loadMore = () => {
@@ -151,12 +157,12 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
                 <CircularProgress size={20} />
               </div>
               <div className="notes-list-item">
-                {notes?.length > 0 ? (
+                {notesData?.length > 0 ? (
                   <>
                     <h3 className="text-center mb-4">
                       <span>Recent Notes</span>
                     </h3>
-                    {notes.map((note) => (
+                    {notesData.map((note) => (
                       <div key={note.id} className="note-item fs-5">
                         <div dangerouslySetInnerHTML={{ __html: note.body }}></div>
                         <p className="mb-0">
