@@ -71,7 +71,7 @@ const AgencySearch = () => {
   }, [field, search]);
 
   return (
-    <div className="dark-container mb-0">
+    <div className="agencies-page dark-container mb-0">
       <div className="container p-md-0 px-5">
         <DelayedOutput>
           <h1 className="community-title text-white text-center mb-4">{search} Agencies</h1>
