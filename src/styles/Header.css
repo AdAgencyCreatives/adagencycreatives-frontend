@@ -906,10 +906,13 @@ nav ul.dropdown-list .list-item-text.j-fix {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.agencies-page .image-loader {
     height: 100%;
 }
 
-.image-loader img {
+.agencies-page .image-loader img {
     margin: 0px;
 }
 
