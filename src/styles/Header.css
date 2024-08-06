@@ -906,6 +906,11 @@ nav ul.dropdown-list .list-item-text.j-fix {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100%;
+}
+
+.image-loader img {
+    margin: 0px;
 }
 
 .image-loader .loader-image {
@@ -1223,4 +1228,16 @@ nav ul.dropdown-list .list-item-text.j-fix {
     position: absolute;
     left: 0px;
     top: 0px;
+}
+
+.my-jobs-search-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+}
+
+.my-jobs-search-container input[type="text"] {
+    flex: 1;
 }

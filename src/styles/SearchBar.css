@@ -11,7 +11,11 @@ input.search-input {
     padding: 15px 40px;
     font-size: 20px;
     border-radius: 8px;
-    border: none;
+    border: 1px solid #000000;
+}
+
+input.search-input:focus {
+    border: 1px solid #000000;
 }
 
 .search-bar .search-icon {

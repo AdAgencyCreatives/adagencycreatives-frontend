@@ -19,9 +19,11 @@ import { Context as AuthContext } from "../../../context/AuthContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
 import Paginate from "../../../components/Paginate";
-import DelayedOutput from "../../../components/DelayedOutput";
+import SearchBarCommon from "../../../components/SearchBarCommon";
 
 const CreativeShortlist = () => {
+
+  const [searchInput, setSearchInput] = useState("");
   const [open, setOpen] = useState(false);
   const [item, setItem] = useState({});
   const handleClose = () => setOpen(false);
@@ -45,7 +47,7 @@ const CreativeShortlist = () => {
 
   useEffect(() => {
     if (user) {
-      getBookmarks(user.uuid, "creatives");
+      getBookmarks(searchInput, user.uuid, "creatives");
     }
   }, [user]);
 
@@ -54,7 +56,7 @@ const CreativeShortlist = () => {
   }, [bookmarks]);
 
   const paginate = (page) => {
-    loadBookmarks(user.uuid, "creatives", page, () => {
+    loadBookmarks(searchInput, user.uuid, "creatives", page, () => {
       setCurrentPage(page);
       window.setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -80,12 +82,23 @@ const CreativeShortlist = () => {
     });
   };
 
+  const handleSearch = (searchText) => {
+    getBookmarks(searchText, user.uuid, "creatives");
+  }
+
   return isLoading ? (
     <Loader />
   ) : (
     <div className="agency-page-creative-shortlist">
       <h3 className="page-title">Creatives Shortlist</h3>
       <div className="card">
+        <h6>Search Creatives Shortlist</h6>
+        <SearchBarCommon
+          input={searchInput}
+          setInput={setSearchInput}
+          onSearch={handleSearch}
+          placeholder={"Search Creatives Shortlist"}
+        />
         {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"shortlisted creatives"} />}
         {bookmarks && bookmarks.length ? (
           bookmarks.map((item, index) => {
@@ -190,7 +203,7 @@ const CreativeShortlist = () => {
           })
         ) : (
           <>
-            {!meta && <p className="fs-5">Loading...</p>}
+            {/* {!meta && <p className="fs-5">Loading...</p>} */}
             {meta?.total == 0 && <p className="fs-5">There are no Creatives in your shortlist.</p>}
           </>
         )}

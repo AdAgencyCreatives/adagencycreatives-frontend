@@ -1,5 +1,5 @@
 import "../../../styles/AgencyDashboard/MyJobs.scss";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 
 import { Context as AuthContext } from "../../../context/AuthContext";
@@ -8,14 +8,16 @@ import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
 import Paginate from "../../../components/Paginate";
 import MyJobWidget from "../../../components/job/MyJobWidget";
+import SearchBarCommon from "../../../components/SearchBarCommon";
 
 const MyJobs = () => {
 
+  const [searchInput, setSearchInput] = useState("");
   const { showAlert } = useContext(AlertContext)
 
   const {
     state: { open_positions, loading, meta },
-    getOpenPositions,
+    searchOpenPositions,
   } = useContext(AgenciesContext);
 
   const {
@@ -23,12 +25,16 @@ const MyJobs = () => {
   } = useContext(AuthContext);
 
   const paginate = (page) => {
-    getOpenPositions(user.uuid, page);
+    searchOpenPositions(searchInput, user.uuid, page);
   };
 
   useEffect(() => {
-    if (user) getOpenPositions(user.uuid);
+    if (user) searchOpenPositions(searchInput, user.uuid);
   }, [user]);
+
+  const handleSearch = (searchText) => {
+    searchOpenPositions(searchText, user.uuid);
+  }
 
   return (
     <div className="agency-page-myjobs">
@@ -36,32 +42,41 @@ const MyJobs = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="card">
-          {open_positions && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"jobs"} />}
-          <div className="table-responsive">
-            <table className="job-table">
-              <thead>
-                <tr>
-                  {(user?.role == 'advisor' || user?.role == 'recruiter') && (
-                    <th className="title">Agency</th>
-                  )}
-                  <th className="title">Title</th>
-                  <th className="applicants">Applicants</th>
-                  <th className="date">Created &amp; Expired</th>
-                  <th className="status">Status</th>
-                  <th className="actions">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {open_positions &&
-                  open_positions.map((job) => (
-                    <MyJobWidget job={job} />
-                  ))}
-              </tbody>
-            </table>
+        <>
+          <div className="card">
+            <h6>Search My Jobs</h6>
+            <SearchBarCommon
+              input={searchInput}
+              setInput={setSearchInput}
+              onSearch={handleSearch}
+              placeholder={"Search My Jobs"}
+            />
+            {open_positions && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"jobs"} />}
+            <div className="table-responsive">
+              <table className="job-table">
+                <thead>
+                  <tr>
+                    {(user?.role == 'advisor' || user?.role == 'recruiter') && (
+                      <th className="title">Agency</th>
+                    )}
+                    <th className="title">Title</th>
+                    <th className="applicants">Applicants</th>
+                    <th className="date">Created &amp; Expired</th>
+                    <th className="status">Status</th>
+                    <th className="actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {open_positions &&
+                    open_positions.map((job) => (
+                      <MyJobWidget job={job} />
+                    ))}
+                </tbody>
+              </table>
+            </div>
+            {open_positions && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"jobs"} />}
           </div>
-          {open_positions && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"jobs"} />}
-        </div>
+        </>
       )}
     </div>
   );

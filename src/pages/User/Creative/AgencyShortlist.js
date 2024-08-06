@@ -13,9 +13,11 @@ import { Context as AlertContext } from "../../../context/AlertContext";
 import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 import Loader from "../../../components/Loader";
 import Paginate from "../../../components/Paginate";
-import DelayedOutput from "../../../components/DelayedOutput";
+import SearchBarCommon from "../../../components/SearchBarCommon";
 
 const AgencyShortlist = () => {
+
+  const [searchInput, setSearchInput] = useState("");
   const [openNotes, setOpenNotes] = useState(false);
   const handleCloseNotes = () => setOpenNotes(false);
   const [appId, setAppId] = useState("");
@@ -35,7 +37,7 @@ const AgencyShortlist = () => {
 
   useEffect(() => {
     if (user) {
-      getBookmarks(user.uuid, "agencies");
+      getBookmarks(searchInput, user.uuid, "agencies");
       setCurrentPage(1);
     }
   }, [user]);
@@ -45,7 +47,7 @@ const AgencyShortlist = () => {
   }, [bookmarks]);
 
   const paginate = (page) => {
-    loadBookmarks(user.uuid, "agencies", page, () => {
+    loadBookmarks(searchInput, user.uuid, "agencies", page, () => {
       setCurrentPage(page);
       window.setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -66,12 +68,23 @@ const AgencyShortlist = () => {
     });
   };
 
+  const handleSearch = (searchText) => {
+    getBookmarks(searchText, user.uuid, "agencies");
+  }
+
   return isLoading ? (
     <Loader />
   ) : (
     <div className="creative-page-agency-shortlist">
       <h3 className="page-title">Agencies Shortlist</h3>
       <div className="card">
+        <h6>Search Agencies Shortlist</h6>
+        <SearchBarCommon
+          input={searchInput}
+          setInput={setSearchInput}
+          onSearch={handleSearch}
+          placeholder={"Search Agencies Shortlist"}
+        />
         {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"shortlisted agencies"} />}
         {bookmarks?.length > 0 ? (
           bookmarks.map((item, index) => {
@@ -171,7 +184,7 @@ const AgencyShortlist = () => {
           })
         ) : (
           <>
-            {!meta && <p className="fs-5">Loading...</p>}
+            {/* {!meta && <p className="fs-5">Loading...</p>} */}
             {meta?.total == 0 && <p className="fs-5">There are no Agencies in your shortlist.</p>}
           </>
         )}

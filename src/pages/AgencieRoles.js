@@ -55,7 +55,7 @@ const AgencieRoles = () => {
   };
 
   useEffect(() => {
-    if (user) getBookmarks(user.uuid, "agencies");
+    if (user) getBookmarks("", user.uuid, "agencies");
   }, [user]);
 
   useEffect(() => {

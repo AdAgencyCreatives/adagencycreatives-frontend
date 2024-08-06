@@ -165,6 +165,21 @@ const getOpenPositions = (dispatch) => {
   };
 };
 
+const searchOpenPositions = (dispatch) => {
+  return async (searchText, uid, page = false, status = null, applications_count = 0) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get("/jobs?sort=-created_at&filter[user_id]=" + uid + (searchText?.length > 0 ? ("&filter[title]=" + searchText) : "") + (status != null && status != '' ? "&filter[status]=" + status : "") + ("&applications_count=" + applications_count) + (page ? "&page=" + page : ""));
+      const data = response.data;
+      dispatch({
+        type: "set_open_positions",
+        payload: data,
+      });
+    } catch (error) { }
+    setLoading(dispatch, false);
+  };
+};
+
 const getOpenPositionsAll = (dispatch) => {
   return async (uid, status = null, applications_count = 0) => {
     setLoading(dispatch, true);
@@ -403,6 +418,7 @@ export const { Context, Provider } = createDataContext(
     agencySearch1,
     agencySearch2,
     getOpenPositions,
+    searchOpenPositions,
     getOpenPositionsAll,
     uploadAttachment,
     removeAttachment,

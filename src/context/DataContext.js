@@ -275,9 +275,9 @@ const getIndustryExperiences = (dispatch) => {
 };
 
 const getBookmarks = (dispatch) => {
-  return async (uuid, type) => {
+  return async (search, uuid, type) => {
     try {
-      const response = await api.get("/bookmarks?filter[user_id]=" + uuid + "&resource_type=" + type);
+      const response = await api.get("/bookmarks?filter[user_id]=" + uuid + "&resource_type=" + type + (search?.length > 0 ? ("&search=" + search) : ""));
       dispatch({
         type: "set_bookmarks",
         payload: response.data,
@@ -299,10 +299,10 @@ const getAllBookmarks = (dispatch) => {
 };
 
 const loadBookmarks = (dispatch) => {
-  return async (uuid, type, page, cb = false) => {
+  return async (search, uuid, type, page, cb = false) => {
     setLoading(dispatch, true);
     try {
-      const response = await api.get("/bookmarks?filter[user_id]=" + uuid + "&resource_type=" + type + (page ? "&per_page=9&page=" + page : ""));
+      const response = await api.get("/bookmarks?filter[user_id]=" + uuid + "&resource_type=" + type + (page ? "&per_page=9&page=" + page : "") + (search?.length > 0 ? ("&search=" + search) : ""));
       dispatch({
         type: "load_bookmarks",
         payload: response.data,
