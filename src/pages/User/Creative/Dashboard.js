@@ -37,7 +37,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     getStats();
-    getApplications(user.uuid);
+    getApplications(user.uuid, "yes");
   }, []);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const Dashboard = () => {
     e.preventDefault();
     application_remove_from_recent(application.id, user.uuid, async () => {
       await getStats();
-      await getApplications(user.uuid);
+      await getApplications(user.uuid, "yes");
     });
     return false;
   };

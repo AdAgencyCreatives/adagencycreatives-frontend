@@ -64,7 +64,7 @@ const MyOpportunities = () => {
               <thead>
                 <tr>
                   <th className="title">Job Title</th>
-                  <th className="date">Status</th>
+                  <th className="date">Date Applied</th>
                   <th className="status">Status</th>
                   <th className="actions">Actions</th>
                 </tr>

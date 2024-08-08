@@ -227,12 +227,12 @@ const getRelatedJobs = async (dispatch, category) => {
 };
 
 const getApplications = (dispatch) => {
-  return async (uid, applications_count = 0, page = false, status = 1, application_status = false) => {
+  return async (uid, applications_count = 0, page = false, status = 1, application_status = false, recent_only = "no") => {
     let applications = [];
     setLoadingApp(dispatch, true);
     try {
       const response = await api.get(
-        "/jobs?sort=-created_at&filter[status]=" + status + "&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "")
+        "/jobs?sort=-created_at&filter[status]=" + status + "&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "") + "&recent_only=" + recent_only
       ); // have to set filter[status]=1 later
       // const jobs = response.data.data;
       // for (const job of jobs) {

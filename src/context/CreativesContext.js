@@ -429,10 +429,10 @@ const getStats = (dispatch) => {
 };
 
 const getApplications = (dispatch) => {
-  return async (uid) => {
+  return async (uid, recent_only = "no") => {
     setLoading(dispatch, true);
     try {
-      const response = await api.get("/applications?filter[user_id]=" + uid);
+      const response = await api.get("/applications?filter[user_id]=" + uid + "&recent_only=" + recent_only);
       dispatch({
         type: "set_applications",
         payload: response.data,

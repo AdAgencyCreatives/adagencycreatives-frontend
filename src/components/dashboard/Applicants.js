@@ -27,12 +27,12 @@ const Applicants = () => {
   const { showAlert } = useContext(AlertContext);
 
   const paginate = (page) => {
-    getApplications(user.uuid, 1, page);
+    getApplications(user.uuid, 1, page, 1, false, "yes");
   };
 
   useEffect(() => {
-    getApplications(user.uuid, 1);
-  }, []);
+    getApplications(user.uuid, 1, false, 1, false, "yes");
+  }, [user]);
 
   useEffect(() => {
     if (applications?.length > 0) {
@@ -87,28 +87,37 @@ const Applicants = () => {
       setData(updatedData);
       showAlert("Creative status change successful");
       cb();
+
+      if (status != "pending") {
+        // remove from list
+        onRemoveFromRecent(null, { id: app_id });
+      }
     });
   };
 
-  const onRemoveFromRecent = async (e, application) => {
-    e.preventDefault();
-    application_remove_from_recent(application.id, user.uuid, () => {
-      let updatedJobs = [];
+  const removeApplicationFromList = (app_id) => {
+    let updatedJobs = [];
 
-      for (let index = 0; index < data.length; index++) {
-        const job = data[index];
-        const updatedApplications = [];
-        for (let appIndex = 0; appIndex < job.applications.length; appIndex++) {
-          const appl = job.applications[appIndex];
-          if (appl.id != application.id) {
-            updatedApplications.push(appl);
-          }
+    for (let index = 0; index < data.length; index++) {
+      const job = data[index];
+      const updatedApplications = [];
+      for (let appIndex = 0; appIndex < job.applications.length; appIndex++) {
+        const appl = job.applications[appIndex];
+        if (appl.id != app_id) {
+          updatedApplications.push(appl);
         }
-
-        const updatedJob = { ...job, applications: updatedApplications };
-        updatedJobs.push(updatedJob);
       }
-      setData(updatedJobs);
+
+      const updatedJob = { ...job, applications: updatedApplications };
+      updatedJobs.push(updatedJob);
+    }
+    setData(updatedJobs);
+  };
+
+  const onRemoveFromRecent = async (e, application) => {
+    e?.preventDefault && e.preventDefault();
+    application_remove_from_recent(application.id, user.uuid, () => {
+      removeApplicationFromList(application.id);
     });
     return false;
   };
