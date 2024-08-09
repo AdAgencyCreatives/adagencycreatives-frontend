@@ -31,8 +31,10 @@ const Applicants = () => {
   };
 
   useEffect(() => {
-    getApplications(user.uuid, 1, false, 1, false, "yes");
-  }, [user]);
+    if (user?.uuid) {
+      getApplications(user.uuid, 1, false, 1, false, "yes");
+    }
+  }, []);
 
   useEffect(() => {
     if (applications?.length > 0) {
