@@ -13,8 +13,8 @@ const Applicants = () => {
   const [appId, setAppId] = useState("");
   const [data, setData] = useState([]);
   const {
-    state: { applications, isLoading, applicationMeta },
-    getApplications,
+    state: { recent_applications, isLoading, recentApplicationMeta },
+    getRecentApplications,
     updateApplication,
     deleteApplication,
     application_remove_from_recent,
@@ -27,21 +27,19 @@ const Applicants = () => {
   const { showAlert } = useContext(AlertContext);
 
   const paginate = (page) => {
-    getApplications(user.uuid, 1, page, 1, false, "yes");
+    getRecentApplications(user.uuid, 1, page, 1, false, "yes");
   };
 
   useEffect(() => {
-    if (user?.uuid) {
-      getApplications(user.uuid, 1, false, 1, false, "yes");
-    }
-  }, []);
+    getRecentApplications(user.uuid, 1, false, 1, false, "yes");
+  }, [user]);
 
   useEffect(() => {
-    if (applications?.length > 0) {
+    if (recent_applications?.length > 0) {
       let updatedJobs = [];
 
-      for (let index = 0; index < applications.length; index++) {
-        const job = applications[index];
+      for (let index = 0; index < recent_applications.length; index++) {
+        const job = recent_applications[index];
         const updatedApplications = [];
         for (let appIndex = 0; appIndex < job.applications.length; appIndex++) {
           const appl = job.applications[appIndex];
@@ -59,7 +57,7 @@ const Applicants = () => {
 
       filterJobApplicants(updatedJobs);
     }
-  }, [applications]);
+  }, [recent_applications]);
 
   const filterJobApplicants = (foundJobs) => {
     const filteredJobs = foundJobs.map((job) => {
@@ -77,14 +75,14 @@ const Applicants = () => {
 
   const setApplicationStatus = (job_id, app_id, status, cb = () => { }) => {
     updateApplication(app_id, { status }, () => {
-      let jobIndex = applications.findIndex((job) => job.id == job_id);
-      const updatedJob = { ...applications[jobIndex] };
+      let jobIndex = recent_applications.findIndex((job) => job.id == job_id);
+      const updatedJob = { ...recent_applications[jobIndex] };
       let updatedApplications = updatedJob.applications;
       let appIndex = updatedApplications.findIndex((app) => app.id == app_id);
       let updatedApp = { ...updatedApplications[appIndex] };
       updatedApp.status = status;
       updatedApplications[appIndex] = updatedApp;
-      const updatedData = [...applications];
+      const updatedData = [...recent_applications];
       updatedData[jobIndex] = { ...updatedJob };
       setData(updatedData);
       showAlert("Creative status change successful");
@@ -166,9 +164,9 @@ const Applicants = () => {
                     ))}
                 </div>
               ))}
-              {applicationMeta.total > 10 && (
+              {recentApplicationMeta.total > 10 && (
                 <Paginate
-                  meta={applicationMeta}
+                  meta={recentApplicationMeta}
                   paginate={paginate}
                   title={"recent applicants"}
                 />

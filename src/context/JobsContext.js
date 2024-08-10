@@ -18,6 +18,7 @@ const state = {
   related_jobs: [],
   applications: [],
   recent_applications: [],
+  recentApplicationMeta: {},
   formSubmit: false,
   isLoading: false,
   isLoadingApp: false,
@@ -46,7 +47,11 @@ const reducer = (state, action) => {
         // applicationsNextPage: action.payload.links.next
       };
     case "set_recent_applications":
-      return { ...state, recent_applications: action.payload.data };
+      return {
+        ...state,
+        recent_applications: action.payload.data,
+        recentApplicationMeta: action.payload.meta
+      };
     case "delete_application": {
       const app_id = action.payload.app_id;
       const job_id = action.payload.job_id;
@@ -227,12 +232,12 @@ const getRelatedJobs = async (dispatch, category) => {
 };
 
 const getApplications = (dispatch) => {
-  return async (uid, applications_count = 0, page = false, status = 1, application_status = false, recent_only = "no") => {
+  return async (uid, applications_count = 0, page = false, status = 1, application_status = false) => {
     let applications = [];
     setLoadingApp(dispatch, true);
     try {
       const response = await api.get(
-        "/jobs?sort=-created_at&filter[status]=" + status + "&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "") + "&recent_only=" + recent_only
+        "/jobs?sort=-created_at&filter[status]=" + status + "&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "")
       ); // have to set filter[status]=1 later
       // const jobs = response.data.data;
       // for (const job of jobs) {
@@ -303,16 +308,19 @@ const getNextPageApplications = (dispatch) => {
 };
 
 const getRecentApplications = (dispatch) => {
-  return async (uid) => {
-    setLoading(dispatch, true);
+  return async (uid, applications_count = 0, page = false, status = 1, application_status = false) => {
+    let applications = [];
+    setLoadingApp(dispatch, true);
     try {
-      const response = await api.get("applications?filter[user_id]=" + uid);
+      const response = await api.get(
+        "/jobs?sort=-created_at&filter[status]=" + status + "&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "")
+      );
       dispatch({
         type: "set_recent_applications",
         payload: response.data,
       });
     } catch (error) { }
-    setLoading(dispatch, false);
+    setLoadingApp(dispatch, false);
   };
 };
 
