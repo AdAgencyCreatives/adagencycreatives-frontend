@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "../styles/SearchBar.css";
 import { IoCloseOutline, IoSearchOutline } from "react-icons/io5";
 
-const SearchBar = ({ input, setInput, placeholder, onSearch }) => {
+const SearchBar = ({ input, setInput, placeholder, onSearch, searchBoxClass = "search-box" }) => {
 
     const inputRef = useRef(null);
 
@@ -13,7 +13,7 @@ const SearchBar = ({ input, setInput, placeholder, onSearch }) => {
     };
 
     return (
-        <div className="search-box row">
+        <div className={"row " + searchBoxClass}>
             <div className="search-bar col-md-10">
                 <IoSearchOutline className="search-icon" />
                 <input

@@ -50,8 +50,9 @@ const MyJobs = () => {
               setInput={setSearchInput}
               onSearch={handleSearch}
               placeholder={"Search My Jobs"}
+              searchBoxClass="search-box-common"
             />
-            {open_positions && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"jobs"} />}
+            {open_positions && meta?.total > 9 ? <Paginate meta={meta} paginate={paginate} title={"jobs"} /> : <br />}
             <div className="table-responsive">
               <table className="job-table">
                 <thead>

@@ -84,8 +84,9 @@ const AgencyShortlist = () => {
           setInput={setSearchInput}
           onSearch={handleSearch}
           placeholder={"Search Agencies Shortlist"}
+          searchBoxClass="search-box-common"
         />
-        {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"shortlisted agencies"} />}
+        {bookmarks && meta?.total > 9 ? <Paginate meta={meta} paginate={paginate} title={"shortlisted agencies"} /> : <br />}
         {bookmarks?.length > 0 ? (
           bookmarks.map((item, index) => {
             const resource = item.resource;

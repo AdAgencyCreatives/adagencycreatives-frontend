@@ -278,6 +278,25 @@ const getApplicationsAllStatus = (dispatch) => {
   };
 };
 
+const searchApplicationsAllStatus = (dispatch) => {
+  return async (searchText, uid, applications_count = 0, page = false, application_status = false, cb = () => { }) => {
+    let applications = [];
+    setLoadingApp(dispatch, true);
+    try {
+      const endpointUrl = "/jobs?sort=-created_at&filter[trashed]=with&filter[user_id]=" + uid + (searchText?.length > 0 ? ("&filter[title]=" + searchText) : "") + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
+      // const endpointUrl = "/jobs?sort=-created_at&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
+      console.log(endpointUrl);
+      const response = await api.get(endpointUrl);
+      dispatch({
+        type: "set_applications",
+        payload: response.data,
+      });
+      cb(response.data.data);
+    } catch (error) { }
+    setLoadingApp(dispatch, false);
+  };
+};
+
 const getNextPageApplications = (dispatch) => {
   return async (uid, page) => {
     let applications = [];
@@ -772,6 +791,7 @@ export const { Context, Provider } = createDataContext(
     setJobAlert,
     getApplications,
     getApplicationsAllStatus,
+    searchApplicationsAllStatus,
     getRecentApplications,
     updateApplication,
     deleteApplication,

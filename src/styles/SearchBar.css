@@ -8,7 +8,7 @@
 }
 
 input.search-input {
-    padding: 15px 40px;
+    padding: 8px 40px;
     font-size: 20px;
     border-radius: 8px;
     border: 1px solid #000000;
@@ -24,7 +24,7 @@ input.search-input:focus {
     width: 23px;
     height: 23px;
     left: 22px;
-    top: 18px;
+    top: 12px;
 }
 
 .search-bar .reset-search-icon {
@@ -33,7 +33,7 @@ input.search-input:focus {
     width: 30px;
     height: 30px;
     right: 18px;
-    top: 15px;
+    top: 9px;
     cursor: pointer;
 }
 

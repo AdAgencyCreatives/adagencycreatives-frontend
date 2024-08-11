@@ -98,8 +98,9 @@ const CreativeShortlist = () => {
           setInput={setSearchInput}
           onSearch={handleSearch}
           placeholder={"Search Creatives Shortlist"}
+          searchBoxClass="search-box-common"
         />
-        {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"shortlisted creatives"} />}
+        {bookmarks && meta?.total > 9 ? <Paginate meta={meta} paginate={paginate} title={"shortlisted creatives"} /> : <br />}
         {bookmarks && bookmarks.length ? (
           bookmarks.map((item, index) => {
             const resource = item.resource;

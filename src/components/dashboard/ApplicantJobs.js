@@ -95,6 +95,7 @@ const ApplicantJobs = () => {
     getApplicationsAllStatus(user.uuid, 0, page, statusApplication);
   };
 
+  // Deprecated
   return (
     <div className="agency-page-jobapplicants">
       <AddNotesModal

@@ -7,8 +7,10 @@ import { Context as AlertContext } from "../../context/AlertContext";
 import Paginate from "../../components/Paginate";
 import { CircularProgress } from "@mui/material";
 import MyJobApplicantsWidget from "../job/MyJobApplicantsWidget";
+import SearchBarCommon from "../../components/SearchBarCommon";
 
 const TabularApplicantJobs = () => {
+  const [searchInput, setSearchInput] = useState("");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -19,7 +21,7 @@ const TabularApplicantJobs = () => {
 
   const {
     state: { applications, isLoadingApp, applicationMeta },
-    getApplicationsAllStatus,
+    searchApplicationsAllStatus,
     updateApplication,
     deleteApplication,
   } = useContext(JobsContext);
@@ -31,10 +33,17 @@ const TabularApplicantJobs = () => {
   const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
-    getApplicationsAllStatus(user.uuid, 0, 0, statusApplication, (foundJobs) => {
+    searchApplicationsAllStatus(searchInput, user.uuid, 0, 0, statusApplication, (foundJobs) => {
       filterJobApplicants(foundJobs);
     });
   }, []);
+
+
+  const handleSearch = (searchText) => {
+    searchApplicationsAllStatus(searchInput, user.uuid, 0, 0, statusApplication, (foundJobs) => {
+      filterJobApplicants(foundJobs);
+    });
+  }
 
   const filterJobApplicants = (foundJobs) => {
     const filteredJobs = foundJobs.map((job) => {
@@ -91,7 +100,7 @@ const TabularApplicantJobs = () => {
   };
 
   const paginate = (page) => {
-    getApplicationsAllStatus(user.uuid, 0, page, statusApplication, (foundJobs) => {
+    searchApplicationsAllStatus(searchInput, user.uuid, 0, page, statusApplication, (foundJobs) => {
       filterJobApplicants(foundJobs);
     });
   };
@@ -113,13 +122,15 @@ const TabularApplicantJobs = () => {
         </div>
       ) : (
         <div className="card">
-          {applicationMeta?.total > 10 && (
-            <Paginate
-              meta={applicationMeta}
-              paginate={paginate}
-              title={"jobs"}
-            />
-          )}
+          <h6>Search All Applicants</h6>
+          <SearchBarCommon
+            input={searchInput}
+            setInput={setSearchInput}
+            onSearch={handleSearch}
+            placeholder={"Search All Applicants"}
+            searchBoxClass="search-box-common"
+          />
+          {applicationMeta?.total > 10 ? <Paginate meta={applicationMeta} paginate={paginate} title={"jobs"} /> : <br />}
           <div className="table-responsive" style={{ transform: "rotateX(180deg)" }}>
             <table className="job-table" style={{ transform: "rotateX(180deg)" }}>
               <thead>
