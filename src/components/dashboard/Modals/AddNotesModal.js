@@ -12,12 +12,14 @@ import { convertUTCDateToLocalDate } from "../../UtcToLocalDateTime";
 import DelayedOutput from "../../DelayedOutput";
 import { IoClose, IoCloseCircleSharp, IoCloseSharp, IoPencil } from "react-icons/io5";
 import CustomEditor from "../../../components/CustomEditor";
+import CommonDeleteModal from "../../../components/modals/CommonDeleteModal";
 
 const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJob }) => {
 
   const [note, setNote] = useState("");
   const [notesData, setNotesData] = useState([]);
   const [message, setMessage] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
 
   const {
@@ -75,12 +77,7 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
   };
 
   const onDeleteNote = async (item) => {
-    if (!window.confirm("Are you sure to delete this note?")) {
-      return;
-    }
     await deleteNote(item.id, () => {
-      // setMessage('Note successfully deleted');
-      // getNotes(user.uuid, resource_id, type);
       setNote('');
       showAlert('Note successfully deleted');
       handleClose();
@@ -187,11 +184,18 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
                           <Tooltip title="Remove">
                             <Link
                               className="btn p-0 border-0 btn-hover-primary"
-                              onClick={(e) => onDeleteNote(note)}
+                              onClick={(e) => setDeleteModalOpen(true)}
                             >
                               <IoClose className="icon-rounded" />
                             </Link>
                           </Tooltip>
+                          <CommonDeleteModal
+                            title="Confirm Delete Note?"
+                            message="Are you sure to delete this note?"
+                            open={deleteModalOpen}
+                            setOpen={setDeleteModalOpen}
+                            onConfirm={() => onDeleteNote(note)}
+                          />
                         </div>
                       </div>
                     ))}
