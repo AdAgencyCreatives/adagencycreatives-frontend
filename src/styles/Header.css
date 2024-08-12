@@ -1263,3 +1263,27 @@ nav ul.dropdown-list .list-item-text.j-fix {
     height: 20px;
     top: 11px;
 }
+
+.notes-action .btn {
+    color: black;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    width: 30px;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    display: inline-block;
+    background-color: #ededed;
+    transition: all 0.3s ease-in-out 0s;
+    font-size: 16px;
+    position: relative;
+    margin-left: 5px;
+}
+
+.notes-action .btn:hover {
+    background-color: var(--color-primary) !important;
+    color: black !important;
+}

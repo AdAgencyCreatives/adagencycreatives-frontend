@@ -3,6 +3,9 @@ import {
   IoLocationOutline,
   IoPersonAdd,
 } from "react-icons/io5";
+import {
+  TfiNotepad
+} from "react-icons/tfi";
 import Placeholder from "../../../assets/images/placeholder.png";
 import "../../../styles/User/ProfileHeader.scss";
 import { Link } from "react-router-dom";
@@ -19,7 +22,8 @@ import useHelper from "../../../hooks/useHelper";
 import CreativeLocation from "../../../components/CreativeLocation";
 import moment from "moment";
 import { saveAs } from 'file-saver';
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Tooltip } from "@mui/material";
+import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 
 const Header = ({ data, role, user }) => {
 
@@ -27,11 +31,14 @@ const Header = ({ data, role, user }) => {
 
   const [allowed, setAllowed] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openNotes, setOpenNotes] = useState(false);
   const [openInvite, setOpenInvite] = useState(false);
   const [item, setItem] = useState({});
   const [isDownloading, setDownloading] = useState(false);
+  const [appIdNotes, setAppIdNotes] = useState("");
 
   const handleClose = () => setOpen(false);
+  const handleCloseNotes = () => setOpenNotes(false);
   const handleCloseInvite = () => setOpenInvite(false);
   const { showAlert } = useContext(AlertContext);
   const { isShortlisted, shortlistHandler } = useShortlist(
@@ -130,7 +137,7 @@ const Header = ({ data, role, user }) => {
             />
           </div>
           <div className="meta row w-100 align-items-center">
-            <div className="col-md-6">
+            <div className="col-md-5">
               <div className="username">
                 {data.name}
                 {/* <span class="featured-text">Featured</span> */}
@@ -146,7 +153,7 @@ const Header = ({ data, role, user }) => {
               </div>
               <CreativeLocation location={data?.location} />
             </div>
-            <div className="col-md-6">
+            <div className="col-md-7">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
                 {isDownloading && (<CircularProgress style={{ minWidth: "40px", minHeight: "40px" }} />)}
                 {(isOwnProfile || !isCreative || isFriend) && (
@@ -220,6 +227,24 @@ const Header = ({ data, role, user }) => {
                     >
                       <IoBookmarkOutline size={25} />
                     </button>
+                    <Tooltip title="Add Notes">
+                      <button
+                        className="btn btn-hover-primary btn-dark"
+                        onClick={() => {
+                          setAppIdNotes(data.id);
+                          setOpenNotes(true);
+                        }}
+                      >
+                        <TfiNotepad size={25} />
+                      </button>
+                    </Tooltip>
+                    <AddNotesModal
+                      open={openNotes}
+                      setOpen={setOpenNotes}
+                      handleClose={handleCloseNotes}
+                      resource_id={appIdNotes}
+                      type="creatives"
+                    />
                   </>
                 )}
               </div>
