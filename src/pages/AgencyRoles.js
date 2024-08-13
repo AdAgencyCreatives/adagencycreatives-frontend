@@ -12,10 +12,11 @@ import Tooltip from "../components/Tooltip";
 import AuthModal from "../components/modals/AuthModal";
 import RestrictedAgency from "../components/RestrictedAgency";
 
-const AgencieRoles = () => {
+const AgencyRoles = () => {
 
   const { role } = useParams();
   const [roleId, setRoleId] = useState(role);
+  const [input, setInput] = useState("");
 
   const { agencies, loading, loadMore, loadedAll, searchAgencies } = useAgencies("agencies", roleId);
 
@@ -74,7 +75,7 @@ const AgencieRoles = () => {
           <div className="dark-container">
             <div className="container p-md-0 px-5">
               <h1 className="community-title text-white text-center mb-4">Agencies {role}</h1>
-              <SearchBar onSearch={searchUser} />
+              <SearchBar input={input} setInput={setInput} onSearch={searchUser} />
               <div className="row g-4">
                 {agencies &&
                   agencies.map((item, index) => {
@@ -150,4 +151,4 @@ const AgencieRoles = () => {
   );
 };
 
-export default AgencieRoles;
+export default AgencyRoles;

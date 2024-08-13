@@ -87,7 +87,7 @@ const getFeaturedAgencies = (dispatch) => {
   };
 };
 
-const getAgencieRoles = (dispatch) => {
+const getAgencyRoles = (dispatch) => {
   return async (page, role) => {
     try {
       const response = await api.get("/agencies?filter[status]=1&filter[is_visible]=1" + (role ? "&filter[role]=" + role : "") + (page == "home" ? "&per_page=30" : ""));
@@ -179,7 +179,7 @@ const searchOpenPositions = (dispatch) => {
   return async (searchText, uid, page = false, status = null, applications_count = 0) => {
     setLoading(dispatch, true);
     try {
-      const response = await api.get("/jobs?sort=-created_at&filter[user_id]=" + uid + (searchText?.length > 0 ? ("&filter[title]=" + searchText) : "") + (status != null && status != '' ? "&filter[status]=" + status : "") + ("&applications_count=" + applications_count) + (page ? "&page=" + page : ""));
+      const response = await api.get("/jobs?sort=-created_at&filter[user_id]=" + uid + (searchText?.length > 0 ? ("&jobSearch=" + searchText) : "") + (status != null && status != '' ? "&filter[status]=" + status : "") + ("&applications_count=" + applications_count) + (page ? "&page=" + page : ""));
       const data = response.data;
       dispatch({
         type: "set_open_positions",
@@ -452,7 +452,7 @@ export const { Context, Provider } = createDataContext(
     requestPackage,
     getSubscriptionStatus,
     sendJobInvite,
-    getAgencieRoles,
+    getAgencyRoles,
     saveAdvisorRecruiter,
     generateThumbnailAttachment,
   },

@@ -18,7 +18,7 @@ import { getTabScrollButtonUtilityClass } from "@mui/material";
 const Agencies = () => {
   const [input, setInput] = useHistoryState("input", "");
   const [isAgencyLoading, setIsAgencyLoading] = useState(true);
-  const { agencies, getAgencies, loading, loadMore, loadedAll, searchAgencies, agencySearch1 } = useAgencies('agency');
+  const { agencies, getAgencies, loading, loadMore, loadedAll, agencySearch1 } = useAgencies('agency');
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const handleOpen = () => setAuthModalOpen(true);

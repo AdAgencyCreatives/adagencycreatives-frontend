@@ -11,7 +11,7 @@ const useAgencies = (page, role) => {
     searchAgencies,
     agencySearch1,
     agencySearch2,
-    getAgencieRoles,
+    getAgencyRoles,
   } = useContext(AgenciesContext);
 
   const [loadedAll, setLoadedAll] = useState(false)
@@ -22,7 +22,7 @@ const useAgencies = (page, role) => {
     }
 
     if (role) {
-      getAgencieRoles(page, role);
+      getAgencyRoles(page, role);
     } else if (page == "home") {
       getFeaturedAgencies();
     }

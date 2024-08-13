@@ -5,7 +5,7 @@ import Creatives from "./pages/Creatives";
 import CreativeSearch from "./pages/CreativeSearch";
 import AgencySearch from "./pages/AgencySearch";
 import Agencies from "./pages/Agencies";
-import AgencieRoles from "./pages/AgencieRoles";
+import AgencyRoles from "./pages/AgencyRoles";
 import SpotlightCreatives from "./pages/SpotlightCreatives";
 import MentorResources from "./pages/MentorResources";
 import Publications from "./pages/Publications";
@@ -90,7 +90,7 @@ export const router = createBrowserRouter([
 
       {
         path: "/agencies/:role",
-        element: <AgencieRoles />,
+        element: <AgencyRoles />,
       },
 
       {
