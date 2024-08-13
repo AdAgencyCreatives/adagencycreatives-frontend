@@ -2,10 +2,12 @@ import { useContext, useState, useEffect } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
 import TabularSingleJobApplication from "./TablularSingleJobApplication";
 import moment from "moment";
+import SearchBarCommon from "../../components/SearchBarCommon";
 
 const TabularJobApplications = (props) => {
 
-  const MIN_APPLICANTS_ENABLE_FILTER = 1;
+  const MIN_APPLICANTS_ENABLE_FILTER = 5;
+  const [searchInput, setSearchInput] = useState("");
   const [applications, setApplications] = useState(null);
 
   const [filterName, setFilterName] = useState("");
@@ -29,31 +31,28 @@ const TabularJobApplications = (props) => {
     setApplications(filteredApplications);
   };
 
-  const resetFilters = (e) => {
-    setFilterName("");
-    setApplications(props?.job?.applications);
+  const handleSearch = (searchText) => {
+    filterApplications(searchText);
   };
 
   return (
     <div className="applicants-wrapper">
+      {props?.job?.applications?.length >= MIN_APPLICANTS_ENABLE_FILTER && (
+        <>
+          <h6>Search My Applicants</h6>
+          <SearchBarCommon
+            input={searchInput}
+            setInput={setSearchInput}
+            onSearch={handleSearch}
+            placeholder={"Search My Applicants"}
+            searchBoxClass="search-box-common"
+          />
+          <br />
+        </>
+      )}
       <div className="table-responsive">
         <table className="job-table">
           <thead>
-            {props?.job?.applications?.length >= MIN_APPLICANTS_ENABLE_FILTER && (
-              <tr>
-                <th colSpan={4} className="title" style={{ widtd: "80%" }}>
-                  <div>Search My Applicants</div>
-                  <input className="form-control" type="text" value={filterName} onChange={e => {
-                    setFilterName(e.target.value);
-                    filterApplications(e.target.value);
-                  }} placeholder="Search by name..." />
-                </th>
-                <th className="actions" style={{ width: "20%" }}>
-                  <div>&nbsp;</div>
-                  <input className="btn btn-dark" type="button" value={"Reset"} onClick={e => resetFilters(e)} />
-                </th>
-              </tr>
-            )}
             <tr>
               <th className="title" style={{ width: "28%" }}>
                 Name
