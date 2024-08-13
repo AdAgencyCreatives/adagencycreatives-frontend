@@ -14,6 +14,7 @@ const state = {
   role: null,
   user: null,
   auth_creative: null,
+  auth_agency: null,
   formSubmit: false,
   modal: false,
   messages_count: 0,
@@ -45,6 +46,8 @@ const authReducer = (state, action) => {
       return { ...state, user: action.payload };
     case "set_auth_creative":
       return { ...state, auth_creative: action.payload };
+    case "set_auth_agency":
+      return { ...state, auth_agency: action.payload };
     case "set_advance_search_capabilities":
       return { ...state, advance_search_capabilities: action.payload };
     case "set_subscription_status":
@@ -151,6 +154,19 @@ const signup = (dispatch) => {
   };
 };
 
+const getRoleId = (role) => {
+  // Roles => 1:admin, 2:advisor, 3:agency, 4:creative, 5:recruiter
+  let roleId = 3;
+  switch (role) {
+    case "admin": roleId = 1; break;
+    case "advisor": roleId = 2; break;
+    case "agency": roleId = 3; break;
+    case "creative": roleId = 4; break;
+    case "recruiter": roleId = 5; break;
+  }
+  return roleId;
+};
+
 const signin = (dispatch) => {
   return async (data, cb) => {
     resetFormMessage(dispatch)();
@@ -161,8 +177,15 @@ const signin = (dispatch) => {
 
       setCookie("cookie_token", response.data.token, 1000 * 60 * 60 * 24); // set for 24 hours
 
-      let creative = await getCreativeById(response.data.user.uuid);
-      setAuthCreative(dispatch, creative);
+      if (response.data.user.role == "creative") {
+        let creative = await getCreativeById(response.data.user.uuid);
+        setAuthCreative(dispatch, creative);
+
+      } else if (response.data.user.role == "agency" || response.data.user.role == "advisor" || response.data.user.role == "recruiter") {
+
+        let agency = await getAgencyById(response.data.user.uuid, getRoleId(response.data.user.role));
+        setAuthAgency(dispatch, agency);
+      }
 
       setAdvanceSearchCapabilities(dispatch, response.data.advance_search_capabilities ? response.data.advance_search_capabilities : false);
       setSubscriptionStatus(dispatch, response.data.subscription_status ? response.data.subscription_status : "");
@@ -181,6 +204,13 @@ const signin = (dispatch) => {
 export const getCreativeById = async (id) => {
   try {
     const response = await api.get("/creatives?filter[user_id]=" + id);
+    return response.data.data[0];
+  } catch (error) { }
+};
+
+export const getAgencyById = async (id, role = 3) => {
+  try {
+    const response = await api.get("/agencies?filter[user_id]=" + id + "&filter[role]=" + role);
     return response.data.data[0];
   } catch (error) { }
 };
@@ -406,6 +436,13 @@ const setUserData = (dispatch, data) => {
 const setAuthCreative = (dispatch, data) => {
   dispatch({
     type: "set_auth_creative",
+    payload: data,
+  });
+};
+
+const setAuthAgency = (dispatch, data) => {
+  dispatch({
+    type: "set_auth_agency",
     payload: data,
   });
 };

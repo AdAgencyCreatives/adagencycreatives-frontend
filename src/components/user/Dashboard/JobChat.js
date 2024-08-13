@@ -6,13 +6,21 @@ import moment from "moment";
 import UserList from "../../chat/UserList";
 import ChatBox from "../../chat/ChatBox";
 import { Context as AuthContext } from "../../../context/AuthContext";
+import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 import { Context as ChatContext } from "../../../context/ChatContext";
+import { CircularProgress, FormControlLabel, FormGroup, Switch } from "@mui/material";
 
 const JobChat = ({ messageType }) => {
 
   const {
-    state: { conversation_updated_notifications },
+    state: { user, conversation_updated_notifications },
   } = useContext(AuthContext);
+
+  const {
+    state: { single_agency, formSubmit },
+    getAgencyById, updateEmailNotifications,
+  } = useContext(AgenciesContext);
+
 
   const {
     state: { contacts },
@@ -31,6 +39,12 @@ const JobChat = ({ messageType }) => {
   const [paged, setPaged] = useState(2);
   const [hasMoreData, setHasMoreData] = useState(false);
   const [messageData, setMessageData] = useState([]);
+
+  useEffect(() => {
+    if (user?.role?.length > 0 && ["agency", "advisor", "recruiter"].includes(user.role)) {
+      getAgencyById(user, true);
+    }
+  }, [user]);
 
   useEffect(() => {
     setContactsList(contacts);
@@ -114,6 +128,16 @@ const JobChat = ({ messageType }) => {
     refreshContacts,
   };
 
+  const toggleJobNotificationsEnabled = async (agency) => {
+    let data = { email_notifications_enabled: !agency.email_notifications_enabled };
+    await updateEmailNotifications(user.uuid, data, async () => {
+      //success
+      await getAgencyById(user, true);
+    }, () => {
+      // failure
+    });
+  };
+
   return (
     <div className="chat-container mb-4 bbb">
       <div className="row g-0">
@@ -122,6 +146,18 @@ const JobChat = ({ messageType }) => {
             <div className="box-header">
               <div className="header-top d-flex justify-space-between">
                 <div className="box-title">Messaging</div>
+                {single_agency?.type == "agencies" && (
+                  <div className="box-title">
+                    <FormGroup>
+                      <FormControlLabel
+                        control={formSubmit ? <CircularProgress size={25} style={{ marginRight: '10px', marginBottom: '13px' }} /> : <Switch />}
+                        label={"Email Notifications"}
+                        checked={single_agency?.email_notifications_enabled == "1" ? true : false}
+                        onChange={(e) => toggleJobNotificationsEnabled(single_agency)}
+                      />
+                    </FormGroup>
+                  </div>
+                )}
               </div>
               <div className="message-search-box">
                 <IoSearchOutline />

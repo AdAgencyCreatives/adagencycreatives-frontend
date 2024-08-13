@@ -117,13 +117,23 @@ const getAgency = (dispatch) => {
   };
 };
 
+const getRoleId = (role) => {
+  // Roles => 1:admin, 2:advisor, 3:agency, 4:creative, 5:recruiter
+  let roleId = 3;
+  switch (role) {
+    case "admin": roleId = 1; break;
+    case "advisor": roleId = 2; break;
+    case "agency": roleId = 3; break;
+    case "creative": roleId = 4; break;
+    case "recruiter": roleId = 5; break;
+  }
+  return roleId;
+};
+
 const getAgencyById = (dispatch) => {
   return async (user, self = false) => {
-    let role = 3; // agency
+    let role = getRoleId(user?.role);
     try {
-      if (user?.role) {
-        role = (user.role == 'advisor' ? 2 : (user.role == 'recruiter' ? 5 : 3));
-      }
       const response = await api.get("/agencies?filter[status]=1&filter[user_id]=" + user.uuid + "&filter[role]=" + role + (self ? "" : "&filter[is_visible]=1"));
       const data = response.data.data[0];
       const uid = data.user_id;
@@ -225,6 +235,19 @@ const saveAgency = (dispatch) => {
     try {
       await api.patch("/agency_profile/" + uid, data);
       callback("Agency profile updated successfully");
+    } catch (error) {
+      callbackError(error.response.data.message);
+    }
+    setFormSubmit(dispatch, false);
+  };
+};
+
+const updateEmailNotifications = (dispatch) => {
+  return async (uid, data, callback, callbackError) => {
+    setFormSubmit(dispatch, true);
+    try {
+      await api.patch("/agency_update_email_notifications/" + uid, data);
+      callback("Email Notifications updated successfully");
     } catch (error) {
       callbackError(error.response.data.message);
     }
@@ -414,6 +437,7 @@ export const { Context, Provider } = createDataContext(
     getStats,
     getAgencyById,
     saveAgency,
+    updateEmailNotifications,
     searchAgencies,
     agencySearch1,
     agencySearch2,

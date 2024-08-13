@@ -190,8 +190,8 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
                             </Link>
                           </Tooltip>
                           <CommonDeleteModal
-                            title="Confirm Delete Note?"
-                            message="Are you sure to delete this note?"
+                            title="Confirming Deletion Request"
+                            message="Are you sure you want to delete this note?"
                             open={deleteModalOpen}
                             setOpen={setDeleteModalOpen}
                             onConfirm={() => onDeleteNote(note)}
