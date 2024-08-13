@@ -113,7 +113,7 @@ const ApplicantJobs = () => {
         </div>
       ) : (
         <div className="card">
-          {applicationMeta?.total > 10 && (
+          {applicationMeta?.total > 9 && (
             <Paginate
               meta={applicationMeta}
               paginate={paginate}
@@ -240,7 +240,7 @@ const ApplicantJobs = () => {
           ) : (
             <p>No New Applicants To Show</p>
           )}
-          {applicationMeta?.total > 10 && (
+          {applicationMeta?.total > 9 && (
             <Paginate
               meta={applicationMeta}
               paginate={paginate}

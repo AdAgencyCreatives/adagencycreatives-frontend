@@ -283,7 +283,7 @@ const searchApplicationsAllStatus = (dispatch) => {
     let applications = [];
     setLoadingApp(dispatch, true);
     try {
-      const endpointUrl = "/jobs?sort=-created_at&filter[trashed]=with&filter[user_id]=" + uid + (searchText?.length > 0 ? ("&filter[title]=" + searchText) : "") + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
+      const endpointUrl = "/jobs?sort=-created_at&filter[trashed]=with&filter[user_id]=" + uid + (searchText?.length > 0 ? ("&applicantSearch=" + searchText) : "") + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
       // const endpointUrl = "/jobs?sort=-created_at&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
       console.log(endpointUrl);
       const response = await api.get(endpointUrl);

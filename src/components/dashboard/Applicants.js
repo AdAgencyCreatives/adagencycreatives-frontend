@@ -164,7 +164,7 @@ const Applicants = () => {
                     ))}
                 </div>
               ))}
-              {recentApplicationMeta.total > 10 && (
+              {recentApplicationMeta.total > 9 && (
                 <Paginate
                   meta={recentApplicationMeta}
                   paginate={paginate}

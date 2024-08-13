@@ -471,6 +471,22 @@ const getAppliedJobs = (dispatch) => {
   };
 };
 
+const searchAppliedJobs = (dispatch) => {
+  return async (searchText = "", page = false) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get("/applied_jobs" + (searchText?.length > 0 || page ? "?" : "") + (searchText?.length > 0 ? ("&searchText=") + searchText : "") + (page ? "&page=" + page : ""));
+      dispatch({
+        type: "set_applied_jobs",
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(dispatch, false);
+  };
+};
+
 const deleteApplication = (dispatch) => {
   return async (id) => {
     setLoading(dispatch, true);
@@ -501,6 +517,7 @@ export const { Context, Provider } = createDataContext(
     saveAttachment,
     saveCreativeImage,
     getAppliedJobs,
+    searchAppliedJobs,
     deleteApplication,
     getResume,
     getProfileResume,

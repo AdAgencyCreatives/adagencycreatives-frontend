@@ -52,30 +52,35 @@ const MyJobs = () => {
               placeholder={"Search My Jobs"}
               searchBoxClass="search-box-common"
             />
-            {open_positions && meta?.total > 9 ? <Paginate meta={meta} paginate={paginate} title={"jobs"} /> : <br />}
-            <div className="table-responsive">
-              <table className="job-table">
-                <thead>
-                  <tr>
-                    {(user?.role == 'advisor' || user?.role == 'recruiter') && (
-                      <th className="title">Agency</th>
-                    )}
-                    <th className="title">Title</th>
-                    <th className="applicants">Applicants</th>
-                    <th className="date">Created &amp; Expired</th>
-                    <th className="status">Status</th>
-                    <th className="actions">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {open_positions &&
-                    open_positions.map((job) => (
+            {open_positions?.length > 0 ? (<>
+              {open_positions && meta?.total > 9 ? <Paginate meta={meta} paginate={paginate} title={"jobs"} /> : <br />}
+              <div className="table-responsive">
+                <table className="job-table">
+                  <thead>
+                    <tr>
+                      {(user?.role == 'advisor' || user?.role == 'recruiter') && (
+                        <th className="title">Agency</th>
+                      )}
+                      <th className="title">Title</th>
+                      <th className="applicants">Applicants</th>
+                      <th className="date">Created &amp; Expired</th>
+                      <th className="status">Status</th>
+                      <th className="actions">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {open_positions.map((job) => (
                       <MyJobWidget job={job} />
                     ))}
-                </tbody>
-              </table>
-            </div>
-            {open_positions && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"jobs"} />}
+                  </tbody>
+                </table>
+              </div>
+              {open_positions && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"jobs"} />}
+            </>) : (<>
+              <div className="no_result">
+                <p>Please try again. No exact results found.</p>
+              </div>
+            </>)}
           </div>
         </>
       )}

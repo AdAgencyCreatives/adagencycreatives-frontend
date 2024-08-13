@@ -100,115 +100,119 @@ const CreativeShortlist = () => {
           placeholder={"Search Creatives Shortlist"}
           searchBoxClass="search-box-common"
         />
-        {bookmarks && meta?.total > 9 ? <Paginate meta={meta} paginate={paginate} title={"shortlisted creatives"} /> : <br />}
-        {bookmarks && bookmarks.length ? (
-          bookmarks.map((item, index) => {
-            const resource = item.resource;
-            return (
-              <div
-                className="candidate-list candidate-archive-layout"
-                key={item.id}
-              >
-                <div className="d-flex align-items-center flex-wrap">
-                  <div className="candidate-info">
-                    <div className="d-flex align-items-center gap-4">
-                      <div className="candidate-logo">
-                        <Link to={"/creative/" + resource.slug}>
-                          <img
-                            width="150"
-                            height="150"
-                            src={resource?.user_thumbnail || resource.profile_image || Avatar}
-                            alt=""
-                          />
-                        </Link>
-                      </div>
-
-                      <div className="candidate-info-content">
-                        <div className="title-wrapper">
-                          <h2 className="candidate-title">
-                            <Link to={"/creative/" + resource.slug} className="link-dark">{resource.name}</Link>
-                          </h2>
-                          {resource.priority.is_featured == 1 && (
-                            <span
-                              className="featured"
-                              data-toggle="tooltip"
-                              title=""
-                              data-original-title="featured"
-                            >
-                              <TfiCheck strokeWidth="1" />
-                            </span>
-                          )}
+        {bookmarks?.length > 0 ? (
+          <>
+            {bookmarks && meta?.total > 9 ? <Paginate meta={meta} paginate={paginate} title={"shortlisted creatives"} /> : <br />}
+            {bookmarks.map((item, index) => {
+              const resource = item.resource;
+              return (
+                <div
+                  className="candidate-list candidate-archive-layout"
+                  key={item.id}
+                >
+                  <div className="d-flex align-items-center flex-wrap">
+                    <div className="candidate-info">
+                      <div className="d-flex align-items-center gap-4">
+                        <div className="candidate-logo">
+                          <Link to={"/creative/" + resource.slug}>
+                            <img
+                              width="150"
+                              height="150"
+                              src={resource?.user_thumbnail || resource.profile_image || Avatar}
+                              alt=""
+                            />
+                          </Link>
                         </div>
-                        <div className="job-metas">
-                          <div className="candidate-category text-dark">
-                            {resource.category}
+
+                        <div className="candidate-info-content">
+                          <div className="title-wrapper">
+                            <h2 className="candidate-title">
+                              <Link to={"/creative/" + resource.slug} className="link-dark">{resource.name}</Link>
+                            </h2>
+                            {resource.priority.is_featured == 1 && (
+                              <span
+                                className="featured"
+                                data-toggle="tooltip"
+                                title=""
+                                data-original-title="featured"
+                              >
+                                <TfiCheck strokeWidth="1" />
+                              </span>
+                            )}
                           </div>
-                          <div className="candidate-location with-icon">
-                            {resource.location?.state && (
-                              <>
-                                <TfiLocationPin />
-                                <span className="restrict-location-search">{resource.location.state}</span>
-                              </>
-                            )}
-                            {resource.location?.city && (
-                              <>
-                                ,
-                                <span className="restrict-location-search"> {resource.location.city}</span>
-                              </>
-                            )}
+                          <div className="job-metas">
+                            <div className="candidate-category text-dark">
+                              {resource.category}
+                            </div>
+                            <div className="candidate-location with-icon">
+                              {resource.location?.state && (
+                                <>
+                                  <TfiLocationPin />
+                                  <span className="restrict-location-search">{resource.location.state}</span>
+                                </>
+                              )}
+                              {resource.location?.city && (
+                                <>
+                                  ,
+                                  <span className="restrict-location-search"> {resource.location.city}</span>
+                                </>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="ali-right">
-                    <div className="action-button">
-                      <Tooltip title="Add Notes">
-                        <Link
-                          onClick={() => {
-                            openNotesDialog(item);
-                          }}
-                        >
-                          <TfiNotepad />
-                        </Link>
-                      </Tooltip>
-                      <Tooltip title="View Profile">
-                        <Link to={"/creative/" + resource.slug}>
-                          <TfiEye />
-                        </Link>
-                      </Tooltip>
-                      <Tooltip title="Send Message">
-                        <Link
-                          onClick={(e) => {
-                            if (subscription_status != "active") {
-                              e.preventDefault();
-                              showAlert("Post A Job for message capabilities");
-                            } else {
-                              openMessageDialog(item);
-                            }
-                          }}
-                        >
-                          <TfiEmail />
-                        </Link>
-                      </Tooltip>
-                      <Tooltip title="Delete Candidate">
-                        <Link onClick={() => removeFromShortlist(item.id)}>
-                          <TfiClose />
-                        </Link>
-                      </Tooltip>
+                    <div className="ali-right">
+                      <div className="action-button">
+                        <Tooltip title="Add Notes">
+                          <Link
+                            onClick={() => {
+                              openNotesDialog(item);
+                            }}
+                          >
+                            <TfiNotepad />
+                          </Link>
+                        </Tooltip>
+                        <Tooltip title="View Profile">
+                          <Link to={"/creative/" + resource.slug}>
+                            <TfiEye />
+                          </Link>
+                        </Tooltip>
+                        <Tooltip title="Send Message">
+                          <Link
+                            onClick={(e) => {
+                              if (subscription_status != "active") {
+                                e.preventDefault();
+                                showAlert("Post A Job for message capabilities");
+                              } else {
+                                openMessageDialog(item);
+                              }
+                            }}
+                          >
+                            <TfiEmail />
+                          </Link>
+                        </Tooltip>
+                        <Tooltip title="Delete Candidate">
+                          <Link onClick={() => removeFromShortlist(item.id)}>
+                            <TfiClose />
+                          </Link>
+                        </Tooltip>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })
+              );
+            }
+            )}
+            {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"shortlisted creatives"} />}
+          </>
         ) : (
           <>
-            {/* {!meta && <p className="fs-5">Loading...</p>} */}
-            {meta?.total == 0 && <p className="fs-5">There are no Creatives in your shortlist.</p>}
+            <div className="no_result">
+              <p>Please try again. No exact results found.</p>
+            </div>
           </>
         )}
-        {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"shortlisted creatives"} />}
       </div>
       <Message
         open={open}

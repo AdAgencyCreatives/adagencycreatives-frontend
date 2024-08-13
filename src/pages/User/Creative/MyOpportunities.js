@@ -20,14 +20,17 @@ import Loader from "../../../components/Loader";
 import { TfiNotepad } from "react-icons/tfi";
 import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 import Paginate from "../../../components/Paginate";
+import SearchBarCommon from "../../../components/SearchBarCommon";
 
 const MyOpportunities = () => {
+
+  const [searchInput, setSearchInput] = useState("");
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const [appId, setAppId] = useState("");
   const {
     state: { applied_jobs, applied_jobsNextPage, applied_jobsMeta, loading },
-    getAppliedJobs,
+    searchAppliedJobs,
     deleteApplication
   } = useContext(CreativesContext);
 
@@ -37,12 +40,16 @@ const MyOpportunities = () => {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    if (token) getAppliedJobs();
+    if (token) searchAppliedJobs(searchInput);
   }, [token]);
 
   const paginate = (page) => {
-    getAppliedJobs(page);
+    searchAppliedJobs(searchInput, page);
   };
+
+  const handleSearch = (searchText) => {
+    searchAppliedJobs(searchText);
+  }
 
   return (
     <div className="agency-page-myjobs">
@@ -58,20 +65,29 @@ const MyOpportunities = () => {
         <Loader />
       ) : (
         <div className="card">
-          {applied_jobsMeta?.total > 10 && <Paginate meta={applied_jobsMeta} paginate={paginate} title={"applied jobs"} />}
-          <div className="table-responsive">
-            <table className="job-table">
-              <thead>
-                <tr>
-                  <th className="title">Job Title</th>
-                  <th className="date">Date Applied</th>
-                  <th className="status">Status</th>
-                  <th className="actions">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {applied_jobs?.length > 0 &&
-                  applied_jobs.map((item) => {
+          <h6>Search Applied Jobs</h6>
+          <SearchBarCommon
+            input={searchInput}
+            setInput={setSearchInput}
+            onSearch={handleSearch}
+            placeholder={"Search Applied Jobs"}
+            searchBoxClass="search-box-common"
+          />
+          {applied_jobs?.length > 0 ? (<>
+            <br />
+            {applied_jobsMeta?.total > 9 && <Paginate meta={applied_jobsMeta} paginate={paginate} title={"applied jobs"} />}
+            <div className="table-responsive">
+              <table className="job-table">
+                <thead>
+                  <tr>
+                    <th className="title">Job Title</th>
+                    <th className="date">Date Applied</th>
+                    <th className="status">Status</th>
+                    <th className="actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {applied_jobs.map((item) => {
                     let job = item.job;
                     return (
                       <tr>
@@ -181,10 +197,15 @@ const MyOpportunities = () => {
                       </tr>
                     );
                   })}
-              </tbody>
-            </table>
-          </div>
-          {applied_jobsMeta?.total > 10 && <Paginate meta={applied_jobsMeta} paginate={paginate} title={"applied jobs"} />}
+                </tbody>
+              </table>
+            </div>
+            {applied_jobsMeta?.total > 9 && <Paginate meta={applied_jobsMeta} paginate={paginate} title={"applied jobs"} />}
+          </>) : (<>
+            <div className="no_result">
+              <p>Please try again. No exact results found.</p>
+            </div>
+          </>)}
         </div>
       )}
     </div>

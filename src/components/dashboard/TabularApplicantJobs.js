@@ -10,6 +10,7 @@ import MyJobApplicantsWidget from "../job/MyJobApplicantsWidget";
 import SearchBarCommon from "../../components/SearchBarCommon";
 
 const TabularApplicantJobs = () => {
+
   const [searchInput, setSearchInput] = useState("");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -40,7 +41,7 @@ const TabularApplicantJobs = () => {
 
 
   const handleSearch = (searchText) => {
-    searchApplicationsAllStatus(searchInput, user.uuid, 0, 0, statusApplication, (foundJobs) => {
+    searchApplicationsAllStatus(searchText, user.uuid, 0, 0, statusApplication, (foundJobs) => {
       filterJobApplicants(foundJobs);
     });
   }
@@ -130,26 +131,26 @@ const TabularApplicantJobs = () => {
             placeholder={"Search All Applicants"}
             searchBoxClass="search-box-common"
           />
-          {applicationMeta?.total > 10 ? <Paginate meta={applicationMeta} paginate={paginate} title={"jobs"} /> : <br />}
-          <div className="table-responsive" style={{ transform: "rotateX(180deg)" }}>
-            <table className="job-table" style={{ transform: "rotateX(180deg)" }}>
-              <thead>
-                <tr>
-                  {(user?.role == "advisor" || user?.role == "recruiter") && (
-                    <th style={{ minWidth: "100px" }} className="title">
-                      Agency
-                    </th>
-                  )}
-                  <th className="title">Title</th>
-                  <th className="applicants">Applicants</th>
-                  <th className="title">Location</th>
-                  <th className="date">Created &<br />Expiration</th>
-                  <th className="status">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data &&
-                  data.map((item) => (
+          {data?.length > 0 ? (<>
+            {applicationMeta?.total > 9 ? <Paginate meta={applicationMeta} paginate={paginate} title={"jobs"} /> : <br />}
+            <div className="table-responsive" style={{ transform: "rotateX(180deg)" }}>
+              <table className="job-table" style={{ transform: "rotateX(180deg)" }}>
+                <thead>
+                  <tr>
+                    {(user?.role == "advisor" || user?.role == "recruiter") && (
+                      <th style={{ minWidth: "100px" }} className="title">
+                        Agency
+                      </th>
+                    )}
+                    <th className="title">Title</th>
+                    <th className="applicants">Applicants</th>
+                    <th className="title">Location</th>
+                    <th className="date">Created &<br />Expiration</th>
+                    <th className="status">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((item) => (
                     <MyJobApplicantsWidget
                       job={item}
                       setApplicationStatus={setApplicationStatus}
@@ -167,16 +168,16 @@ const TabularApplicantJobs = () => {
                       }
                     />
                   ))}
-              </tbody>
-            </table>
-          </div>
-          {applicationMeta?.total > 10 && (
-            <Paginate
-              meta={applicationMeta}
-              paginate={paginate}
-              title={"jobs"}
-            />
-          )}
+                </tbody>
+              </table>
+            </div>
+            {applicationMeta?.total > 9 && (<Paginate meta={applicationMeta} paginate={paginate} title={"jobs"} />
+            )}
+          </>) : (<>
+            <div className="no_result">
+              <p>Please try again. No exact results found.</p>
+            </div>
+          </>)}
         </div>
       )}
     </div>
