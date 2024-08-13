@@ -11,6 +11,7 @@ import RestrictedLounge from "../components/RestrictedLounge";
 import usePageDataHelper from "../hooks/usePageDataHelper";
 import DelayedOutput from "../components/DelayedOutput";
 import Calendar from "react-calendar";
+import Loader from "../components/Loader";
 
 const Community = () => {
   const { pageData, getPageDataItem } = usePageDataHelper("community");
@@ -22,7 +23,7 @@ const Community = () => {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    setTimeout(() => setLoaded(true), 200);
+    setTimeout(() => setLoaded(true), 1000);
   }, []);
 
   return (
@@ -35,7 +36,7 @@ const Community = () => {
         <div className="container-fluid mt-4 px-2 px-md-5">
           {!token || !role || (role != "admin" && role != "creative") ? (
             <>
-              {loaded && (
+              {loaded ? (
                 <div className="col-md-7 order-md-2 order-2 mx-auto">
                   <div className="container-fluid mt-4">
                     <div className="row">
@@ -51,6 +52,10 @@ const Community = () => {
                     </div>
                   </div>
                 </div>
+              ) : (
+                <>
+                  <Loader fullHeight={false} />
+                </>
               )}
             </>
           ) : (
