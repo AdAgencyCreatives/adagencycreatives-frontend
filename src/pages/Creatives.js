@@ -211,7 +211,7 @@ const Creatives = () => {
       };
     }
 
-    if (role == "admin" || role == "advisor") {
+    if (role == "admin" || (role == "advisor" && subscription_status == "active")) {
       return { message: "", proceed: true, terms_allowed: searchTerms.length, advance_search_message: "" };
     }
 
@@ -256,7 +256,7 @@ const Creatives = () => {
 
     //Special case: If agency doesn't have a subscription status: active and trying to search for more than one terms. e.g.: a,b
     if (
-      (role == "agency" || role == "recruiter") &&
+      (role == "agency" || role == "advisor" || role == "recruiter") &&
       (!subscription_status || subscription_status != "active") &&
       searchTerms.length > 1
     ) {
@@ -385,9 +385,9 @@ const Creatives = () => {
               advance_search_capabilities={advance_search_capabilities}
               subscription_status={subscription_status}
             />
-            {(advanceSearchHasData && which_search() == "search3") && (
+            {((isAdmin || (isAdvisor && subscription_status == "active")) && advanceSearchHasData && which_search() == "search3") && (
               <div className="search-level2">
-                <div className="search-title">Level 2</div>
+                <div className="search-title">Search within Results</div>
                 <SearchBar
                   input={inputLevel2}
                   setInput={setInputLevel2}
@@ -449,8 +449,9 @@ const Creatives = () => {
                               if (!token) {
                                 e.preventDefault();
                                 showAlert("Please login to access");
+                                return false;
                               }
-                              return false;
+                              return true;
                             }}
                           >
                             {item.name}
@@ -462,6 +463,19 @@ const Creatives = () => {
                               <Link
                                 className=""
                                 to={`/creatives/search/industry-title/${item.category}`}
+                                onClick={(e) => {
+                                  if (!token) {
+                                    e.preventDefault();
+                                    showAlert("Please login to access");
+                                    return false;
+                                  }
+                                  if (isAdvisor && subscription_status != "active") {
+                                    e.preventDefault();
+                                    showAlert("Post a Job for advance search capabilities");
+                                    return false;
+                                  }
+                                  return true;
+                                }}
                               >
                                 {item.category || ""}
                               </Link>

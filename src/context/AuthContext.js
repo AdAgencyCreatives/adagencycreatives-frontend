@@ -187,7 +187,7 @@ const signin = (dispatch) => {
         setAuthAgency(dispatch, agency);
       }
 
-      setAdvanceSearchCapabilities(dispatch, response.data.advance_search_capabilities ? response.data.advance_search_capabilities : false);
+      setAdvanceSearchCapabilities(dispatch, response.data?.subscription_status?.toLowerCase() == "active");
       setSubscriptionStatus(dispatch, response.data.subscription_status ? response.data.subscription_status : "");
       dispatch({
         type: "set_form_message",
