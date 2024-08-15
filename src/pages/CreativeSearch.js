@@ -195,75 +195,81 @@ const CreativeSearch = () => {
                     />
                 )} */}
                 <div className="row g-4">
-                    {creatives &&
-                        creatives.map((item, index) => {
-                            const isShortlisted =
-                                bookmarks.find(
-                                    (bookmark) => bookmark.resource.user_id == item.user_id
-                                ) || false;
-                            return (
-                                <div className="col-md-4 col-sm-6 col-12" key={`creative-${item.user_id}`}>
-                                    <div className="sliderContent agencies-slider">
-                                        {role == "agency" && (
-                                            <Tooltip title={"Shortlist"} type="featured">
-                                                <button
-                                                    className={
-                                                        "shortlist-btn" + (isShortlisted ? " active" : "")
-                                                    }
-                                                    onClick={() =>
-                                                        isShortlisted
-                                                            ? removeFromShortlist(isShortlisted.id)
-                                                            : addToShortlist(item.id)
-                                                    }
-                                                >
-                                                    <IoBookmarkOutline />
-                                                </button>
-                                            </Tooltip>
-                                        )}
-                                        <img
-                                            src={item?.user_thumbnail || item.profile_image || Placeholder}
-                                            className="candidateLogo"
-                                            width={150}
-                                            height={150}
-                                            alt=""
-                                            onError={(e) => {
-                                                e.target.src = Placeholder; // Set the backup image source
-                                            }}
-                                        />
-                                        <div className="agencyName">
-                                            <Link className="text-dark" to={`/creative/${item.slug}`}>
-                                                {item.name}
-                                            </Link>
-                                        </div>
-                                        <div className="position">
-                                            {isAdmin || isAdvisor ? (<>
-                                                <Link className="" to={`/creatives/search/industry-title/${item.category}`}>
-                                                    {item.category || ""}
-                                                </Link>
-                                            </>) : (<>
-                                                {item.category || ""}
-                                            </>)}
-                                        </div>
-                                        <CreativeLocation location={item?.location} />
-                                        <div className="profileLink">
-                                            <Link
-                                                to={token ? `/creative/${item.slug}` : "#"}
-                                                onClick={(e) => {
-                                                    if (!token) {
-                                                        e.preventDefault();
-                                                        showAlert("Please login to access");
-                                                    }
-                                                    return false;
+                    {isAdmin || (isAdvisor && subscription_status == "active") ? (<>
+                        {creatives &&
+                            creatives.map((item, index) => {
+                                const isShortlisted =
+                                    bookmarks.find(
+                                        (bookmark) => bookmark.resource.user_id == item.user_id
+                                    ) || false;
+                                return (
+                                    <div className="col-md-4 col-sm-6 col-12" key={`creative-${item.user_id}`}>
+                                        <div className="sliderContent agencies-slider">
+                                            {role == "agency" && (
+                                                <Tooltip title={"Shortlist"} type="featured">
+                                                    <button
+                                                        className={
+                                                            "shortlist-btn" + (isShortlisted ? " active" : "")
+                                                        }
+                                                        onClick={() =>
+                                                            isShortlisted
+                                                                ? removeFromShortlist(isShortlisted.id)
+                                                                : addToShortlist(item.id)
+                                                        }
+                                                    >
+                                                        <IoBookmarkOutline />
+                                                    </button>
+                                                </Tooltip>
+                                            )}
+                                            <img
+                                                src={item?.user_thumbnail || item.profile_image || Placeholder}
+                                                className="candidateLogo"
+                                                width={150}
+                                                height={150}
+                                                alt=""
+                                                onError={(e) => {
+                                                    e.target.src = Placeholder; // Set the backup image source
                                                 }}
-                                                reloadDocument
-                                            >
-                                                View Profile
-                                            </Link>
+                                            />
+                                            <div className="agencyName">
+                                                <Link className="text-dark" to={`/creative/${item.slug}`}>
+                                                    {item.name}
+                                                </Link>
+                                            </div>
+                                            <div className="position">
+                                                {isAdmin || isAdvisor ? (<>
+                                                    <Link className="" to={`/creatives/search/industry-title/${item.category}`}>
+                                                        {item.category || ""}
+                                                    </Link>
+                                                </>) : (<>
+                                                    {item.category || ""}
+                                                </>)}
+                                            </div>
+                                            <CreativeLocation location={item?.location} />
+                                            <div className="profileLink">
+                                                <Link
+                                                    to={token ? `/creative/${item.slug}` : "#"}
+                                                    onClick={(e) => {
+                                                        if (!token) {
+                                                            e.preventDefault();
+                                                            showAlert("Please login to access");
+                                                        }
+                                                        return false;
+                                                    }}
+                                                    reloadDocument
+                                                >
+                                                    View Profile
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
+                    </>) : (<>
+                        <div className="no_result">
+                            <p>Post a Job for advance search capabilities</p>
+                        </div>
+                    </>)}
                     <div className="load-more text-center">
                         {loading && (
                             <div className="spinner-border text-light" role="status">

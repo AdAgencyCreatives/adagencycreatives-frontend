@@ -31,7 +31,7 @@ const Sidebar = ({ data, user }) => {
   const { showAlert } = useContext(AlertContext);
 
   const {
-    state: { subscription_status },
+    state: { token, subscription_status },
   } = useContext(AuthContext);
 
   const {
@@ -128,7 +128,21 @@ const Sidebar = ({ data, user }) => {
         {renderedList.map((item, index) => (
           <span key={index}>
             {isAdmin || isAdvisor ? (<>
-              <Link to={"/creatives/search/" + field + "/" + encodeSpecial(encodeURI(item))}>
+              <Link to={"/creatives/search/" + field + "/" + encodeSpecial(encodeURI(item))}
+                onClick={(e) => {
+                  if (!token) {
+                    e.preventDefault();
+                    showAlert("Please login to access");
+                    return false;
+                  }
+                  if (isAdvisor && subscription_status != "active") {
+                    e.preventDefault();
+                    showAlert("Post a Job for advance search capabilities");
+                    return false;
+                  }
+                  return true;
+                }}
+              >
                 {(index > 0 ? ', ' : '') + `${item}`}
               </Link>
             </>) : (<>
@@ -146,7 +160,21 @@ const Sidebar = ({ data, user }) => {
           remainingItems.map((item, index) => (
             <span key={index}>
               {isAdmin || isAdvisor ? (<>
-                <Link to={"/creatives/search/" + field + "/" + encodeSpecial(encodeURI(item))}>
+                <Link to={"/creatives/search/" + field + "/" + encodeSpecial(encodeURI(item))}
+                  onClick={(e) => {
+                    if (!token) {
+                      e.preventDefault();
+                      showAlert("Please login to access");
+                      return false;
+                    }
+                    if (isAdvisor && subscription_status != "active") {
+                      e.preventDefault();
+                      showAlert("Post a Job for advance search capabilities");
+                      return false;
+                    }
+                    return true;
+                  }}
+                >
                   {`, ${item}`}
                 </Link>
               </>) : (<>
@@ -209,7 +237,21 @@ const Sidebar = ({ data, user }) => {
                 <div className="text">Years of Experience</div>
                 <div className="value">
                   {isAdmin || isAdvisor ? (<>
-                    <Link to={"/creatives/search/years-of-experience/" + encodeSpecial(encodeURI(data.years_of_experience))}>
+                    <Link to={"/creatives/search/years-of-experience/" + encodeSpecial(encodeURI(data.years_of_experience))}
+                      onClick={(e) => {
+                        if (!token) {
+                          e.preventDefault();
+                          showAlert("Please login to access");
+                          return false;
+                        }
+                        if (isAdvisor && subscription_status != "active") {
+                          e.preventDefault();
+                          showAlert("Post a Job for advance search capabilities");
+                          return false;
+                        }
+                        return true;
+                      }}
+                    >
                       {data.years_of_experience}
                     </Link>
                   </>) : (<>
