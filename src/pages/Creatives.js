@@ -16,8 +16,11 @@ import Location from "../components/CreativeLocation";
 import CreativeLocation from "../components/CreativeLocation";
 
 const Creatives = () => {
+
   const [input, setInput] = useHistoryState("input", "");
+  const [inputLevel2, setInputLevel2] = useHistoryState("inputLevel2", "");
   const [isCreativeLoading, setIsCreativeLoading] = useState(true);
+  const [advanceSearchHasData, setAdvanceSearchHasData] = useState(false);
   const [foundPermission, setFoundPermission] = useState(null);
   const { creatives, getCreatives, loading, loadMore, searchCreativesAdvanced } =
     useCreatives("creative");
@@ -85,7 +88,11 @@ const Creatives = () => {
 
   const searchUser = async (value) => {
 
+    setAdvanceSearchHasData(false);
+    setInputLevel2("");
+
     if (!value || value.length == 0) {
+
       getCreatives();
       return;
     }
@@ -110,7 +117,51 @@ const Creatives = () => {
       permission.terms_allowed
     );
 
-    await searchCreativesAdvanced(which_search(), query_search_string, role);
+    await searchCreativesAdvanced(which_search(), query_search_string, role, "", (data) => {
+      setAdvanceSearchHasData(data?.length > 0);
+    });
+    if (user) await getAllBookmarks(user.uuid, "creatives");
+    setIsCreativeLoading(false);
+  };
+
+  const searchUserLevel2 = async (value) => {
+
+    if (!value || value.length == 0) {
+      searchUser(input);
+      return;
+    }
+
+    setIsCreativeLoading(true);
+
+    let searchStringLevel1 = "" + (input ? input : "");
+    let searchTermsLevel1 =
+      searchStringLevel1.indexOf(",") >= 0 ? searchStringLevel1.split(",") : [searchStringLevel1];
+
+    let searchStringLevel2 = "" + (value ? value : "");
+    let searchTermsLevel2 =
+      searchStringLevel2.indexOf(",") >= 0 ? searchStringLevel2.split(",") : [searchStringLevel2];
+
+    setFoundPermission(null);
+    let permission = proceed_search(searchStringLevel2, searchTermsLevel2);
+    setFoundPermission(permission);
+
+    showAlert(permission.message);
+
+    if (!permission.proceed) {
+      return;
+    }
+
+    let query_search_string_level1 = build_search_string(
+      searchTermsLevel1,
+      permission.terms_allowed
+    );
+
+    let query_search_string_level2 = build_search_string(
+      searchTermsLevel2,
+      permission.terms_allowed
+    );
+
+    await searchCreativesAdvanced(which_search(), query_search_string_level1, role, query_search_string_level2);
     if (user) await getAllBookmarks(user.uuid, "creatives");
     setIsCreativeLoading(false);
   };
@@ -334,12 +385,26 @@ const Creatives = () => {
               advance_search_capabilities={advance_search_capabilities}
               subscription_status={subscription_status}
             />
+            {(advanceSearchHasData && which_search() == "search3") && (
+              <div className="search-level2">
+                <div className="search-title">Level 2</div>
+                <SearchBar
+                  input={inputLevel2}
+                  setInput={setInputLevel2}
+                  placeholder={creativeSearchPlaceholder}
+                  onSearch={searchUserLevel2}
+                  role={role}
+                  advance_search_capabilities={advance_search_capabilities}
+                  subscription_status={subscription_status}
+                />
+              </div>
+            )}
           </>
         )}
         <div className="row g-4">
           {!isCreativeLoading ? (
             <>
-              {creatives &&
+              {creatives?.length > 0 &&
                 creatives.map((item, index) => {
                   const isShortlisted =
                     bookmarks.find(

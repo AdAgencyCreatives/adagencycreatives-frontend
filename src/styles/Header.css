@@ -1287,3 +1287,23 @@ nav ul.dropdown-list .list-item-text.j-fix {
     background-color: var(--color-primary) !important;
     color: black !important;
 }
+
+.search-level2 {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 0px 150px 0px 0px;
+}
+
+.search-level2 .search-title {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+    margin-top: 12px;
+    margin-left: 6px;
+}
+
+.search-level2 form {
+    width: 100%;
+}

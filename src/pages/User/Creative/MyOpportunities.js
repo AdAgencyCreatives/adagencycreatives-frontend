@@ -90,16 +90,18 @@ const MyOpportunities = () => {
                   {applied_jobs.map((item) => {
                     let job = item.job;
                     return (
-                      <tr>
+                      <tr key={item.id}>
                         <td className="job-table-info">
                           <div className="job-table-info-content">
                             <div className="d-flex">
                               <div className="avatar employer">
-                                <img
-                                  src={job.agency.user_thumbnail || job.agency.logo || Placeholder}
-                                  height={100}
-                                  width={100}
-                                />
+                                <Tooltip title={job.agency.name} placement="left" arrow>
+                                  <img
+                                    src={job.agency.user_thumbnail || job.agency.logo || Placeholder}
+                                    height={100}
+                                    width={100}
+                                  />
+                                </Tooltip>
                               </div>
                               <div className="ms-3">
                                 <div className="title-wrapper">

@@ -18,7 +18,7 @@ const state = {
   profile_resume: null,
   portfolio_items: [],
   video: null,
-  notifications: []
+  notifications: [],
 };
 
 const reducer = (state, action) => {
@@ -178,16 +178,16 @@ const searchCreatives = (dispatch) => {
 };
 
 const searchCreativesAdvanced = (dispatch) => {
-  return async (type, query, role) => {
+  return async (type, query, role, queryLevel2 = "", cb = () => { }) => {
     setLoading(dispatch, true);
-
     try {
-      const response = await api.get("/creatives/" + type + "?search=" + query + "&role=" + role);
+      const response = await api.get("/creatives/" + type + "?search=" + query + "&role=" + role + (queryLevel2?.length > 0 ? ("&search_level2=" + queryLevel2) : ""));
 
       dispatch({
         type: "set_creatives",
         payload: response.data,
       });
+      cb(response.data?.data);
     } catch (error) { }
     setLoading(dispatch, false);
   };

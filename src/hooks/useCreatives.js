@@ -4,7 +4,7 @@ import { Context as AuthContext } from "../context/AuthContext";
 
 const useCreatives = (page) => {
   const {
-    state: { creatives, nextPage, loading },
+    state: { creatives, nextPage, loading, },
     getCreatives,
     getHomeCreatives,
     loadCreatives,
