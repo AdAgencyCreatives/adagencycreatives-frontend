@@ -1295,6 +1295,10 @@ nav ul.dropdown-list .list-item-text.j-fix {
     padding: 0px 150px 0px 0px;
 }
 
+.creative-search .search-level2 {
+    padding: 0px;
+}
+
 .search-level2 .search-title {
     color: #ffffff;
     font-size: 16px;

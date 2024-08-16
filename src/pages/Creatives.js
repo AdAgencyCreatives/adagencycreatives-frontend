@@ -12,10 +12,22 @@ import Tooltip from "../components/Tooltip";
 import ImageLoader from "../components/ImageLoader";
 import { Context as AlertContext } from "../context/AlertContext";
 import DelayedOutput from "../components/DelayedOutput";
-import Location from "../components/CreativeLocation";
 import CreativeLocation from "../components/CreativeLocation";
+import usePermissions from "../hooks/usePermissions";
 
 const Creatives = () => {
+
+  const {
+    isAdmin,
+    isAdvisor,
+    isAgency,
+    isCreative,
+    isRecruiter,
+    hasSubscription,
+    build_search_string,
+    which_search,
+    proceed_search,
+  } = usePermissions();
 
   const [input, setInput] = useHistoryState("input", "");
   const [inputLevel2, setInputLevel2] = useHistoryState("inputLevel2", "");
@@ -26,11 +38,10 @@ const Creatives = () => {
     useCreatives("creative");
 
   const {
-    state: { bookmarks, categories_creative_count },
+    state: { bookmarks, },
     createBookmark,
     getAllBookmarks,
     removeBookmark,
-    getCategoriesCreativeCount,
   } = useContext(DataContext);
 
   const {
@@ -42,11 +53,6 @@ const Creatives = () => {
       advance_search_capabilities,
     },
   } = useContext(AuthContext);
-
-  const isAdmin = role == "admin";
-  const isAdvisor = role == "advisor";
-  const isAgency = role == "agency";
-  const isCreative = role == "creative";
 
   const { showAlert } = useContext(AlertContext);
 
@@ -61,6 +67,7 @@ const Creatives = () => {
     });
   };
 
+
   const removeFromShortlist = (id) => {
     removeBookmark(id, () => {
       showAlert("Creative deleted from shortlist");
@@ -68,23 +75,6 @@ const Creatives = () => {
   };
 
   useScrollLoader(loading, loadMore);
-
-  const getCategorySearch = (searchTerms) => {
-    for (let index = 0; index < searchTerms.length; index++) {
-      const element = searchTerms[index];
-      for (
-        let cccIndex = 0;
-        cccIndex < categories_creative_count.length;
-        cccIndex++
-      ) {
-        const cccElement = categories_creative_count[cccIndex];
-        if (cccElement.name.toLowerCase() == element.toLowerCase()) {
-          return cccElement;
-        }
-      }
-    }
-    return null;
-  };
 
   const searchUser = async (value) => {
 
@@ -166,132 +156,6 @@ const Creatives = () => {
     setIsCreativeLoading(false);
   };
 
-  const build_search_string = (searchTerms, terms_allowed) => {
-    return searchTerms.slice(0, terms_allowed).join(",");
-  };
-
-  const which_search = () => {
-    if (!role) {
-      return "search1";
-    }
-
-    if (role == "admin" || role == "advisor") {
-      return "search3";
-    }
-
-    if (
-      role == "creative" ||
-      ((role == "agency" || role == "recruiter") &&
-        subscription_status == "active")
-    ) {
-      return "search2";
-    }
-
-    if (
-      (role == "agency" || role == "recruiter") &&
-      subscription_status != "active"
-    ) {
-      return "search1";
-    }
-
-    return "search1";
-  };
-
-  const proceed_search = (searchString, searchTerms) => {
-    // if (!searchString || !searchString.length) {
-    //   return { message: "Please enter some text to search", proceed: false, terms_allowed: 0 };
-    // }
-
-    if (!role) {
-      return {
-        message: "It seems you are not logged in",
-        proceed: false,
-        terms_allowed: 0,
-        advance_search_message: "",
-      };
-    }
-
-    if (role == "admin" || (role == "advisor" && subscription_status == "active")) {
-      return { message: "", proceed: true, terms_allowed: searchTerms.length, advance_search_message: "" };
-    }
-
-    if (
-      (role == "agency" || role == "recruiter") &&
-      advance_search_capabilities
-    ) {
-      return { message: "", proceed: true, terms_allowed: searchTerms.length, advance_search_message: "" };
-    }
-
-    if (
-      (role == "agency" || role == "recruiter") &&
-      subscription_status &&
-      subscription_status == "active" &&
-      searchTerms.length <= 2
-    ) {
-      return {
-        message: "",
-        proceed: true,
-        terms_allowed: Math.min(searchTerms.length, 2),
-        advance_search_message: ""
-      };
-    }
-
-    //Special case: If agency does have a subscription status: active but trying to search for more than two terms. e.g.: a,b,c
-    if (
-      (role == "agency" || role == "recruiter") &&
-      subscription_status &&
-      subscription_status == "active" &&
-      searchTerms.length > 2
-    ) {
-      return {
-        message: "",
-        proceed: true,
-        terms_allowed: Math.min(searchTerms.length, 2),
-        advance_search_message: ""
-      };
-    }
-
-    let categoryCreativeCount = getCategorySearch(searchTerms);
-    let isCategorySearch = categoryCreativeCount != null;
-
-    //Special case: If agency doesn't have a subscription status: active and trying to search for more than one terms. e.g.: a,b
-    if (
-      (role == "agency" || role == "advisor" || role == "recruiter") &&
-      (!subscription_status || subscription_status != "active") &&
-      searchTerms.length > 1
-    ) {
-      // let appendText = isCategorySearch ? "\n<br />Found: (" + categoryCreativeCount.creative_count + ") " + categoryCreativeCount.name : "";
-      let appendText = isCategorySearch
-        ? "\n<br />Found: " + categoryCreativeCount.name
-        : "";
-      return {
-        message: "Post a Job for advance search capabilities" + appendText,
-        proceed: true,
-        terms_allowed: Math.min(searchTerms.length, 1),
-        advance_search_message: "Post a Job for advance search capabilities."
-      };
-    }
-
-    //Special case: If agency doesn't have a subscription status: active and trying to search for cateogry
-    if (
-      (role == "agency" || role == "recruiter") &&
-      (!subscription_status || subscription_status != "active") &&
-      isCategorySearch
-    ) {
-      // return { message: "Post a Job to view (" + categoryCreativeCount.creative_count + ") " + categoryCreativeCount.name, proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
-      return {
-        // message: "Post a Job to view " + categoryCreativeCount.name,
-        // message: "Post a Job for advance search feature",
-        message: "Post a Job for advance search capabilities",
-        proceed: true,
-        terms_allowed: Math.min(searchTerms.length, 1),
-        advance_search_message: "Post a Job for advance search capabilities."
-      };
-    }
-
-    return { message: "", proceed: true, terms_allowed: 1, advance_search_message: "" };
-  };
-
   useEffect(() => {
     if (user) getAllBookmarks(user.uuid, "creatives");
   }, [user]);
@@ -302,7 +166,7 @@ const Creatives = () => {
     }
 
     if (
-      (role == "agency" || role == "recruiter") &&
+      (isAgency || isRecruiter) &&
       advance_search_capabilities
     ) {
       setCreativeSearchPlaceholder(
@@ -321,14 +185,14 @@ const Creatives = () => {
       return;
     }
 
-    if (role == "creative") {
+    if (isCreative) {
       setCreativeSearchPlaceholder(
         "Select one: by name, location, or select a title"
       );
     }
 
-    if (role == "agency" || role == "recruiter") {
-      if (subscription_status == "active") {
+    if (isAgency || isRecruiter) {
+      if (hasSubscription) {
         setCreativeSearchPlaceholder(
           "Select up to two: name, location, and/or select a title"
         );
@@ -343,7 +207,7 @@ const Creatives = () => {
       return;
     }
 
-    if (role == "admin" || role == "advisor") {
+    if (isAdmin || (isAdvisor && hasSubscription)) {
       setCreativeSearchPlaceholder(
         "Search by name, title, location, company, industry experience, media, full-time etc."
       );
@@ -351,11 +215,7 @@ const Creatives = () => {
   }, [role]);
 
   useEffect(() => {
-    getCategoriesCreativeCount();
-  }, []);
-
-  useEffect(() => {
-    if (creatives?.length === 9) setIsCreativeLoading(false);
+    if (creatives?.length >= 0) setIsCreativeLoading(false);
   }, [creatives]);
 
   useEffect(() => {
@@ -385,7 +245,7 @@ const Creatives = () => {
               advance_search_capabilities={advance_search_capabilities}
               subscription_status={subscription_status}
             />
-            {((isAdmin || (isAdvisor && subscription_status == "active")) && advanceSearchHasData && which_search() == "search3") && (
+            {((isAdmin || (isAdvisor && hasSubscription)) && advanceSearchHasData && which_search() == "search3") && (
               <div className="search-level2">
                 <div className="search-title">Search within Results</div>
                 <SearchBar
@@ -417,9 +277,9 @@ const Creatives = () => {
                     >
                       <div className="sliderContent agencies-slider">
                         {(role == "admin" ||
-                          role == "agency" ||
+                          isAgency ||
                           role == "advisor" ||
-                          role == "recruiter") && (
+                          isRecruiter) && (
                             <Tooltip title={"Shortlist"} type="featured">
                               <button
                                 className={

@@ -194,11 +194,11 @@ const searchCreativesAdvanced = (dispatch) => {
 };
 
 const searchCreativesFull = (dispatch) => {
-  return async (field, search) => {
+  return async (field, search, searcLevel2 = "") => {
     setLoading(dispatch, true);
 
     try {
-      const response = await api.get("/creatives/search4/?field=" + field + "&search=" + search);
+      const response = await api.get("/creatives/search4/?field=" + field + "&search=" + search + (searcLevel2?.length > 0 ? ("&search_level2=" + searcLevel2) : ""));
 
       dispatch({
         type: "set_creatives",
