@@ -34,6 +34,7 @@ const Creatives = () => {
   const [isCreativeLoading, setIsCreativeLoading] = useState(true);
   const [advanceSearchHasData, setAdvanceSearchHasData] = useState(false);
   const [foundPermission, setFoundPermission] = useState(null);
+  const [foundPermissionLevel2, setFoundPermissionLevel2] = useState(null);
   const { creatives, getCreatives, loading, loadMore, searchCreativesAdvanced } =
     useCreatives("creative");
 
@@ -132,12 +133,17 @@ const Creatives = () => {
       searchStringLevel2.indexOf(",") >= 0 ? searchStringLevel2.split(",") : [searchStringLevel2];
 
     setFoundPermission(null);
-    let permission = proceed_search(searchStringLevel2, searchTermsLevel2);
+    let permission = proceed_search(searchStringLevel1, searchTermsLevel1);
     setFoundPermission(permission);
 
-    showAlert(permission.message);
+    setFoundPermissionLevel2(null);
+    let permissionLevel2 = proceed_search(searchStringLevel2, searchTermsLevel2);
+    setFoundPermissionLevel2(permissionLevel2);
 
-    if (!permission.proceed) {
+    // showAlert(permission.message);
+    showAlert(permissionLevel2.message);
+
+    if (!permissionLevel2.proceed) {
       return;
     }
 
@@ -148,7 +154,7 @@ const Creatives = () => {
 
     let query_search_string_level2 = build_search_string(
       searchTermsLevel2,
-      permission.terms_allowed
+      permissionLevel2.terms_allowed
     );
 
     await searchCreativesAdvanced(which_search(), query_search_string_level1, role, query_search_string_level2);

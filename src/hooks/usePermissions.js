@@ -158,7 +158,7 @@ const usePermissions = () => {
 
         //Special case: If agency doesn't have a subscription status: active and trying to search for cateogry
         if (
-            (role == "agency" || role == "recruiter") &&
+            (role == "agency" || role == "advisor" || role == "recruiter") &&
             (!subscription_status || subscription_status != "active") &&
             isCategorySearch
         ) {
