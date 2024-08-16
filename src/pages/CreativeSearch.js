@@ -80,6 +80,7 @@ const CreativeSearch = () => {
     useEffect(() => {
         if (user) getAllBookmarks(user.uuid, "creatives");
         if (user && field && search) {
+            setInputLevel2("");
             searchCreativesFull(field, encodeSpecial(search));
         }
     }, [user, field, search]);
