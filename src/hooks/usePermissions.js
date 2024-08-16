@@ -34,8 +34,9 @@ const usePermissions = () => {
     const hasSubscription = subscription_status == "active";
 
     const getCategorySearch = (searchTerms) => {
+        let foundCategories = [];
         for (let index = 0; index < searchTerms.length; index++) {
-            const element = searchTerms[index];
+            const element = searchTerms[index].trim();
             for (
                 let cccIndex = 0;
                 cccIndex < categories_creative_count.length;
@@ -43,15 +44,27 @@ const usePermissions = () => {
             ) {
                 const cccElement = categories_creative_count[cccIndex];
                 if (cccElement.name.toLowerCase() == element.toLowerCase()) {
-                    return cccElement;
+                    foundCategories.push(cccElement);
                 }
             }
         }
-        return null;
+        return foundCategories;
     };
 
     const build_search_string = (searchTerms, terms_allowed) => {
-        return searchTerms.slice(0, terms_allowed).join(",");
+        if ((isAgency || isAdvisor || isRecruiter) && !hasSubscription) {
+            let reducedTerms = [];
+            for (let index = 0; index < searchTerms.length; index++) {
+                const searchTerm = searchTerms[index].trim();
+                let categoryCreatives = getCategorySearch([searchTerm]);
+                if (!categoryCreatives?.length > 0) {
+                    reducedTerms.push(searchTerm);
+                }
+            }
+            searchTerms = reducedTerms;
+        }
+
+        return searchTerms.slice(0, Math.min(terms_allowed, searchTerms.length)).join(",");
     };
 
     const which_search = () => {
@@ -135,8 +148,8 @@ const usePermissions = () => {
             };
         }
 
-        let categoryCreativeCount = getCategorySearch(searchTerms);
-        let isCategorySearch = categoryCreativeCount != null;
+        let foundCategories = getCategorySearch(searchTerms);
+        let isCategorySearch = foundCategories?.length > 0;
 
         //Special case: If agency doesn't have a subscription status: active and trying to search for more than one terms. e.g.: a,b
         if (
@@ -145,9 +158,11 @@ const usePermissions = () => {
             searchTerms.length > 1
         ) {
             // let appendText = isCategorySearch ? "\n<br />Found: (" + categoryCreativeCount.creative_count + ") " + categoryCreativeCount.name : "";
-            let appendText = isCategorySearch
-                ? "\n<br />Found: " + categoryCreativeCount.name
-                : "";
+            let appendText = "";
+            if (isCategorySearch) {
+                let foundCategoryNames = foundCategories.map(item => item.name);
+                appendText += "\n<br />Found: " + foundCategoryNames.join(', ');
+            }
             return {
                 message: "Post a Job for advance search capabilities" + appendText,
                 proceed: true,

@@ -13,6 +13,7 @@ const state = {
   subscription: null,
   request_package: null,
   video: null,
+  creative_applications: [],
 };
 
 const reducer = (state, action) => {
@@ -37,6 +38,8 @@ const reducer = (state, action) => {
       return { ...state, video: action.payload.data[0] };
     case "set_open_positions":
       return { ...state, open_positions: action.payload.data, meta: action.payload.meta };
+    case "set_creative_applications":
+      return { ...state, creative_applications: action.payload.data };
     case "delete_job":
       return {
         ...state,
@@ -427,6 +430,21 @@ const generateThumbnailAttachment = (dispatch) => {
   };
 };
 
+const getCreativeApplications = (dispatch) => {
+  return async (job_user_id, creative_user_id) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get("/get_creative_applications?job_user_id=" + job_user_id + "&creative_user_id=" + creative_user_id);
+      const data = response.data;
+      dispatch({
+        type: "set_creative_applications",
+        payload: data,
+      });
+    } catch (error) { }
+    setLoading(dispatch, false);
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
@@ -455,6 +473,7 @@ export const { Context, Provider } = createDataContext(
     getAgencyRoles,
     saveAdvisorRecruiter,
     generateThumbnailAttachment,
+    getCreativeApplications,
   },
   state
 );

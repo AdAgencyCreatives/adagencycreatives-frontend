@@ -41,8 +41,8 @@ const Sidebar = ({ data, user }) => {
   } = useContext(CreativesContext);
 
   const {
-    state: { subscription },
-    getSubscriptionStatus,
+    state: { subscription, creative_applications, },
+    getSubscriptionStatus, getCreativeApplications
   } = useContext(AgenciesContext);
 
   const isCreative = user?.role == "creative";
@@ -53,6 +53,7 @@ const Sidebar = ({ data, user }) => {
   const isOwnProfile = user?.uuid == data.user_id;
 
   const [hasSubscription, setSubscription] = useState(false);
+  const [hasCreativeApplications, setHasCreativeApplications] = useState(false);
   const [isDownloading, setDownloading] = useState(false);
 
   useEffect(() => {
@@ -92,7 +93,15 @@ const Sidebar = ({ data, user }) => {
     getMyFriends().then(result => {
       setIsFriend(result.some((item) => item.user.uuid == data.user_id))
     });
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    getCreativeApplications(user.uuid, data.id);
+  }, []);
+
+  useEffect(() => {
+    setHasCreativeApplications(creative_applications?.length > 0);
+  }, [creative_applications]);
 
   useEffect(() => {
     if (checkPermissions()) getResume(data.user_id);
@@ -263,7 +272,7 @@ const Sidebar = ({ data, user }) => {
           ) : (
             ""
           )}
-          {data.email && (isOwnProfile || isAdmin || isAgency || isAdvisor || isFriend) && (
+          {data.email && (isOwnProfile || isAdmin || ((isAgency || isAdvisor) && (subscription_status == "active" || hasCreativeApplications)) || isFriend) && (
             <div className="item">
               <IoMailOutline size={22} />
               <div className="details">
@@ -272,7 +281,7 @@ const Sidebar = ({ data, user }) => {
               </div>
             </div>
           )}
-          {data.phone_number && (isOwnProfile || isAdmin || isAgency || isAdvisor || isFriend) && (
+          {data.phone_number && (isOwnProfile || isAdmin || ((isAgency || isAdvisor) && (subscription_status == "active" || hasCreativeApplications)) || isFriend) && (
             <div className="item">
               <IoCallOutline size={22} />
               <div className="details">

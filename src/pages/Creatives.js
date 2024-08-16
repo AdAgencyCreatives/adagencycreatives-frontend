@@ -108,10 +108,12 @@ const Creatives = () => {
       permission.terms_allowed
     );
 
-    await searchCreativesAdvanced(which_search(), query_search_string, role, "", (data) => {
-      setAdvanceSearchHasData(data?.length > 0);
-    });
-    if (user) await getAllBookmarks(user.uuid, "creatives");
+    if (query_search_string?.length > 0) {
+      await searchCreativesAdvanced(which_search(), query_search_string, role, "", (data) => {
+        setAdvanceSearchHasData(data?.length > 0);
+      });
+      if (user) await getAllBookmarks(user.uuid, "creatives");
+    }
     setIsCreativeLoading(false);
   };
 
