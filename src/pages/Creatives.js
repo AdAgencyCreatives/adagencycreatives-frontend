@@ -212,7 +212,7 @@ const Creatives = () => {
         "Search by name, title, location, company, industry experience, media, full-time etc."
       );
     }
-  }, [role]);
+  }, [role, hasSubscription]);
 
   useEffect(() => {
     if (creatives?.length >= 0) setIsCreativeLoading(false);
