@@ -1311,3 +1311,11 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .search-level2 form {
     width: 100%;
 }
+
+.link-svg-dark svg {
+    color: #000;
+}
+
+.link-svg-dark:hover svg {
+    color: var(--color-primary);
+}

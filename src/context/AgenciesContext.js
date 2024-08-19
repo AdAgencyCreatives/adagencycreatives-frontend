@@ -245,19 +245,6 @@ const saveAgency = (dispatch) => {
   };
 };
 
-const updateEmailNotifications = (dispatch) => {
-  return async (uid, data, callback, callbackError) => {
-    setFormSubmit(dispatch, true);
-    try {
-      await api.patch("/agency_update_email_notifications/" + uid, data);
-      callback("Email Notifications updated successfully");
-    } catch (error) {
-      callbackError(error.response.data.message);
-    }
-    setFormSubmit(dispatch, false);
-  };
-};
-
 const saveAdvisorRecruiter = (dispatch) => {
   return async (role, uid, data, callback, callbackError) => {
     setFormSubmit(dispatch, true);
@@ -455,7 +442,6 @@ export const { Context, Provider } = createDataContext(
     getStats,
     getAgencyById,
     saveAgency,
-    updateEmailNotifications,
     searchAgencies,
     agencySearch1,
     agencySearch2,

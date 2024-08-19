@@ -6,6 +6,8 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import { Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import { IoCheckmarkCircle, IoClose, IoLocationOutline, IoSyncOutline, IoLockOpen, IoPencil } from "react-icons/io5";
+import { FaHandsHelping } from "react-icons/fa";
+
 import moment from "moment";
 
 const MyJobWidget = (props) => {
@@ -68,6 +70,13 @@ const MyJobWidget = (props) => {
                 <div className="job-table-info-content">
                     <div className="title-wrapper">
                         <h3 className="job-table-info-content-title" style={{ flex: "1" }}>
+                            {(job?.advisor_id && job?.advisor_id != user.id) && (
+                                <Tooltip title={"Posted by " + (job?.advisor_name || "")} placement="left" arrow>
+                                    <Link className="link-svg-dark" onClick={(e) => { e.preventDefault(); return false; }}>
+                                        <FaHandsHelping style={{ marginRight: '5px' }} />
+                                    </Link>
+                                </Tooltip>
+                            )}
                             <Link className="link link-black hover-gold" to={"/job/" + job.slug}>{job.title}</Link>
                         </h3>
                         {job.priority.is_featured ? (
@@ -172,7 +181,7 @@ const MyJobWidget = (props) => {
                     </div>
                 )}
             </td>
-        </tr>
+        </tr >
     );
 };
 

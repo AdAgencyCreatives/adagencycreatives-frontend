@@ -1,25 +1,21 @@
-import {
-  IoClose, IoCloseCircle, IoCloseCircleOutline, IoCloseCircleSharp,
-} from "react-icons/io5";
-import { FiCamera, FiImage, FiPaperclip, FiVideo } from "react-icons/fi";
+import { IoCloseCircleSharp, } from "react-icons/io5";
+import { FiCamera, FiVideo } from "react-icons/fi";
 import { Modal } from "@mui/material";
 import { useRef, useState } from "react";
 import Divider from "../Divider";
-import ModalCss from "../../styles/Modal/PostModal.scss";
 import EmojiPicker, { Emoji } from "emoji-picker-react";
 import { BsEmojiSmile } from "react-icons/bs";
 import ImagePicker from "./Modals/ImagePicker";
 import { useContext, useEffect, useCallback } from "react";
-import { Context as AuthContext, containsOffensiveWords } from "../../context/AuthContext";
+import { Context as AuthContext } from "../../context/AuthContext";
+import { containsOffensiveWords } from "../../helpers/functions";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import Placeholder from "../../assets/images/placeholder.png";
 import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';
 import { CircularProgress } from "@mui/material";
 import ContentEditable from 'react-contenteditable'
-import ConfirmDeleteModal from "../community/Modals/ConfirmDeleteModal";
 import { Context as CreativesContext } from "../../context/CreativesContext";
-import { api } from "../../api/api";
 
 import { saveAttachment } from "../../context/AttachmentsDataContext";
 import { sendLoungeMentionNotifications } from "../../context/NotificationsDataContext";

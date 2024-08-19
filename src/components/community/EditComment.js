@@ -1,14 +1,13 @@
 import {
   IoPencilOutline, IoCloseCircleSharp,
 } from "react-icons/io5";
-import { FiCamera, FiImage, FiPaperclip } from "react-icons/fi";
 import { Modal } from "@mui/material";
 import { useState, useRef } from "react";
-import ModalCss from "../../styles/Modal/PostModal.scss";
 import ImagePicker from "./Modals/ImagePicker";
 import Divider from "../Divider";
 import { useContext, useEffect, useCallback } from "react";
-import { Context as AuthContext, containsOffensiveWords } from "../../context/AuthContext";
+import { Context as AuthContext } from "../../context/AuthContext";
+import { containsOffensiveWords } from "../../helpers/functions";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import Placeholder from "../../assets/images/placeholder.png";
 import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';

@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
 import { Context as AlertContext } from "../context/AlertContext";
+import { offensiveWords, removeCharacters } from "../config";
 
 const useHelper = () => {
 
@@ -276,7 +277,7 @@ const useHelper = () => {
         capitalize,
         getAorAn,
         hasPasswordError,
-        isObject
+        isObject,
     };
 }
 

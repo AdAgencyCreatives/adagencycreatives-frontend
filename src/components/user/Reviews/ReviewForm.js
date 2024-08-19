@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { IoStar } from "react-icons/io5";
 import { Context as DataContext } from "../../../context/DataContext";
-import { containsOffensiveWords } from "../../../context/AuthContext";
+import { containsOffensiveWords } from "../../../helpers/functions";
 
 const ReviewForm = ({ user, data, mutateReviews, setDispalyForm, hasReviews, editReview, setEditReview, userReview }) => {
   const [rating, setRating] = useState(5);

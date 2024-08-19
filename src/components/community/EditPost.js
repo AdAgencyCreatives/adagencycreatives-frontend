@@ -1,16 +1,16 @@
 import {
-    IoPencilOutline, IoClose, IoCloseCircle, IoCloseCircleOutline, IoCloseCircleSharp,
+    IoPencilOutline, IoCloseCircleSharp,
 } from "react-icons/io5";
 import { FiCamera, FiImage, FiPaperclip, FiVideo } from "react-icons/fi";
 import { Modal } from "@mui/material";
 import { useRef, useState } from "react";
 import Divider from "../Divider";
-import ModalCss from "../../styles/Modal/PostModal.scss";
 import EmojiPicker, { Emoji } from "emoji-picker-react";
 import { BsEmojiSmile } from "react-icons/bs";
 import ImagePicker from "./Modals/ImagePicker";
-import { useContext, useEffect, useCallback } from "react";
-import { Context as AuthContext, containsOffensiveWords } from "../../context/AuthContext";
+import { useContext, useEffect, } from "react";
+import { Context as AuthContext } from "../../context/AuthContext";
+import { containsOffensiveWords } from "../../helpers/functions";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import { Context as CreativesContext } from "../../context/CreativesContext";
