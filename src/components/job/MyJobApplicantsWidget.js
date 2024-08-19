@@ -1,21 +1,18 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as JobsContext } from "../../context/JobsContext";
-import { Context as AgenciesContext } from "../../context/AgenciesContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Button, Tooltip } from "@mui/material";
-import { Link, useAsyncError } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   IoCheckmarkCircle,
-  IoClose,
   IoLocationOutline,
-  IoSyncOutline,
-  IoLockOpen,
-  IoPencil,
 } from "react-icons/io5";
 import moment from "moment";
 import TimeAgo from "../TimeAgo";
 import TabularJobApplications from "./TabularJobApplications";
+import { FaHandsHelping } from "react-icons/fa";
+
 
 const MyJobApplicantsWidget = ({
   job,
@@ -79,7 +76,14 @@ const MyJobApplicantsWidget = ({
         <td className="job-table-info">
           <div className="job-table-info-content">
             <div className="title-wrapper" style={{ marginBottom: "0px" }}>
-              <h3 className="job-table-info-content-title" style={{ flex: "1" }}>
+              <h3 className="job-table-info-content-title" style={{ flex: "1", display: 'flex' }}>
+                {(thisJob?.advisor_id && thisJob?.advisor_id != user.id) && (
+                  <Tooltip title={<div className="advisor-tooltip">This job was posted by an Advisor</div>} placement="top" arrow>
+                    <Link className="link-svg-dark" onClick={(e) => { e.preventDefault(); return false; }}>
+                      <FaHandsHelping style={{ marginRight: '5px' }} />
+                    </Link>
+                  </Tooltip>
+                )}
                 <Link
                   className="link link-black hover-gold link-bold"
                   to={"/job/" + thisJob.slug}
