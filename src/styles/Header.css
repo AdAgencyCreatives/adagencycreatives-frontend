@@ -1319,3 +1319,13 @@ nav ul.dropdown-list .list-item-text.j-fix {
 .link-svg-dark:hover svg {
     color: var(--color-primary);
 }
+
+.advisor-tooltip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    word-wrap: normal;
+    max-width: 75px;
+    text-align: center;
+    text-transform: none;
+}

@@ -71,7 +71,7 @@ const MyJobWidget = (props) => {
                     <div className="title-wrapper">
                         <h3 className="job-table-info-content-title" style={{ flex: "1" }}>
                             {(job?.advisor_id && job?.advisor_id != user.id) && (
-                                <Tooltip title={"Posted by " + (job?.advisor_name || "")} placement="left" arrow>
+                                <Tooltip title={<div className="advisor-tooltip">This job was posted by an Advisor</div>} placement="top" arrow>
                                     <Link className="link-svg-dark" onClick={(e) => { e.preventDefault(); return false; }}>
                                         <FaHandsHelping style={{ marginRight: '5px' }} />
                                     </Link>
