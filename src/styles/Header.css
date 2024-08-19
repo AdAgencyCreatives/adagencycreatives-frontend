@@ -1336,12 +1336,16 @@ nav ul.dropdown-list .list-item-text.j-fix {
     flex-wrap: wrap !important;
 }
 
+.profile-content .portfolio-item {
+    width: 200px !important;
+}
+
 @media(max-width: 767px) {
     .profile-content .react-photo-album .react-photo-album--row {
         justify-content: center !important;
     }
-}
 
-.profile-content .portfolio-item {
-    width: 200px !important;
+    .profile-content .portfolio-item {
+        width: 150px !important;
+    }
 }
