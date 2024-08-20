@@ -151,40 +151,25 @@ const usePermissions = () => {
         let foundCategories = getCategorySearch(searchTerms);
         let isCategorySearch = foundCategories?.length > 0;
 
-        //Special case: If agency doesn't have a subscription status: active and trying to search for more than one terms. e.g.: a,b
+        //Special case: If agency doesn't have a subscription status: active and trying to search for more than one terms. e.g.: a,b or trying to search for category
         if (
             (role == "agency" || role == "advisor" || role == "recruiter") &&
             (!subscription_status || subscription_status != "active") &&
-            searchTerms.length > 1
+            (searchTerms.length > 1 || isCategorySearch)
         ) {
+
             // let appendText = isCategorySearch ? "\n<br />Found: (" + categoryCreativeCount.creative_count + ") " + categoryCreativeCount.name : "";
             let appendText = "";
             if (isCategorySearch) {
                 let foundCategoryNames = foundCategories.map(item => item.name);
-                appendText += "\n<br />Found: " + foundCategoryNames.join(', ');
+                appendText += "Want to find: " + foundCategoryNames.join(', ') + '?\n<br />';
             }
-            return {
-                message: "Post a Job for advance search capabilities" + appendText,
-                proceed: true,
-                terms_allowed: Math.min(searchTerms.length, 1),
-                advance_search_message: "Post a Job for advance search capabilities."
-            };
-        }
 
-        //Special case: If agency doesn't have a subscription status: active and trying to search for cateogry
-        if (
-            (role == "agency" || role == "advisor" || role == "recruiter") &&
-            (!subscription_status || subscription_status != "active") &&
-            isCategorySearch
-        ) {
-            // return { message: "Post a Job to view (" + categoryCreativeCount.creative_count + ") " + categoryCreativeCount.name, proceed: true, terms_allowed: Math.min(searchTerms.length, 1) };
             return {
-                // message: "Post a Job to view " + categoryCreativeCount.name,
-                // message: "Post a Job for advance search feature",
-                message: "Post a Job for advance search capabilities",
+                message: (isCategorySearch ? appendText : "") + "Post a Job for advance search capabilities",
                 proceed: true,
                 terms_allowed: Math.min(searchTerms.length, 1),
-                advance_search_message: "Post a Job for advance search capabilities."
+                advance_search_message: (isCategorySearch ? appendText : "") + "Post a Job for advance search capabilities.",
             };
         }
 

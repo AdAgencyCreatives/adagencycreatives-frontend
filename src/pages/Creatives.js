@@ -83,7 +83,6 @@ const Creatives = () => {
     setInputLevel2("");
 
     if (!value || value.length == 0) {
-
       getCreatives();
       return;
     }
@@ -100,6 +99,7 @@ const Creatives = () => {
     showAlert(permission.message);
 
     if (!permission.proceed) {
+      getCreatives();
       return;
     }
 
@@ -113,6 +113,8 @@ const Creatives = () => {
         setAdvanceSearchHasData(data?.length > 0);
       });
       if (user) await getAllBookmarks(user.uuid, "creatives");
+    } else {
+      //await getCreatives();
     }
     setIsCreativeLoading(false);
   };
@@ -227,12 +229,12 @@ const Creatives = () => {
   }, [creatives]);
 
   useEffect(() => {
-    if (input?.length > 0) {
+    if (role && input?.length > 0) {
       searchUser(input);
     } else {
       getCreatives();
     }
-  }, []);
+  }, [role]);
 
   return (
     <div className="dark-container mb-0 creatives-directory">
