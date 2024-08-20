@@ -162,14 +162,14 @@ const usePermissions = () => {
             let appendText = "";
             if (isCategorySearch) {
                 let foundCategoryNames = foundCategories.map(item => item.name);
-                appendText += "Want to find: " + foundCategoryNames.join(', ') + '?\n<br />';
+                appendText += "Are you looking for: " + foundCategoryNames.join(', ') + '?\n<br />';
             }
 
             return {
-                message: (isCategorySearch ? appendText : "") + "Post a Job for advance search capabilities",
+                message: (isCategorySearch ? appendText : "") + "Post a Job to utilize the advance search capabilities",
                 proceed: true,
                 terms_allowed: Math.min(searchTerms.length, 1),
-                advance_search_message: (isCategorySearch ? appendText : "") + "Post a Job for advance search capabilities.",
+                advance_search_message: (isCategorySearch ? appendText : "") + "Post a Job to utilize the advance search capabilities.",
             };
         }
 
