@@ -16,22 +16,27 @@
 }
 
 .no_result {
-  min-height: 400px;
+  /* min-height: 400px; */
   background-color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: 20px;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .no_result p {
   font-size: 20px;
   color: #000;
+  margin: 0;
+  padding: 0;
 }
 
 @media (max-width: 767px) {
   .no_result {
-    min-height: 200px;
+    margin: 50px;
   }
 }
 
@@ -39,14 +44,4 @@
   .dark-container {
     padding-top: 95px;
   }
-}
-
-.no_result .highlight {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px 10px;
-  background-color: var(--color-primary);
-  color: #000;
-  border-radius: 10px;
 }

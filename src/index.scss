@@ -242,6 +242,11 @@ li.page-item {
   .container {
     max-width: 650px;
   }
+
+  .creatives-directory .container {
+    max-width: 100%;
+    padding: 0px 20px !important;
+  }
 }
 
 @media (min-width: 800px) {

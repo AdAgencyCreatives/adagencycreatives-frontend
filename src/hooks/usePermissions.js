@@ -166,10 +166,10 @@ const usePermissions = () => {
             }
 
             return {
-                message: (isCategorySearch ? appendText : "") + "Post a Job to utilize the advance search capabilities",
+                message: (isCategorySearch ? appendText : "") + "Post a Job to utilize the advance search features",
                 proceed: true,
                 terms_allowed: Math.min(searchTerms.length, 1),
-                advance_search_message: (isCategorySearch ? appendText : "") + "Post a Job to utilize the advance search capabilities.",
+                advance_search_message: (isCategorySearch ? appendText : "") + "Post a Job to utilize the advance search features.",
             };
         }
 

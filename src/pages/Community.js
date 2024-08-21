@@ -3,7 +3,7 @@ import CreatePost from "../components/community/CreatePost";
 import LeftSidebar from "../components/community/LeftSidebar";
 import PostList from "../components/community/PostList";
 import RightSidebarWidgets from "../components/RightSidebarWidgets";
-
+import ModalCss from "../styles/Modal/PostModal.scss";
 import { useContext, useEffect, useState } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
 
