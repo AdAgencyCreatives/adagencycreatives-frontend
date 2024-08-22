@@ -58,24 +58,23 @@
     }
 
     .circle {
-        background-color: rgb(211, 161, 31);
+        background-color: #000;
         color: var(--color-primary);
         -webkit-border-radius: 50%;
         -moz-border-radius: 50%;
         -ms-border-radius: 50%;
         -o-border-radius: 50%;
         border-radius: 50%;
-        width: 10px;
-        height: 10px;
+        width: 12px;
+        height: 12px;
         line-height: 30px;
         text-align: center;
         left: 0;
         position: absolute;
-        top: 14px;
+        top: 6px;
         font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
-        outline: 10px solid rgba(211, 161, 31, .15);
     }
 
     .top-info {
@@ -115,9 +114,9 @@
         content: "";
         height: calc(100% - 52px);
         width: 2px;
-        left: 4px;
+        left: 5px;
         position: absolute;
-        top: 45px;
+        top: 37px;
     }
 
     .content:last-child:after {
