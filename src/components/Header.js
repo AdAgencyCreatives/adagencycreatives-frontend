@@ -166,7 +166,8 @@ function Header(props) {
       <Grid container justifyContent="space-between" alignItems="center" backgroundColor="white" sx={{ paddingY: 3, paddingX: 1 }}>
         <Grid item xs={9}>
           <Link className="site-logo" to="/">
-            <img className="" src={Logo} alt="Adagency Creatives" />
+            {/* <img className="" src={Logo} alt="Adagency Creatives" /> */}
+            Ad Agency Creatives
           </Link>
         </Grid>
         <Grid item xs={3} sx={{ textAlign: "right" }} className="right-menu">
@@ -231,8 +232,9 @@ function Header(props) {
           <Toolbar>
             <Grid container justifyContent="space-between" alignItems="center" className="header_container">
               <Grid item lg={3} md={2} xs={8} className="left-logo">
-                <Link className="site-logo">
-                  <img className="" src={Logo} alt="Adagency Creatives" />
+                <Link className="site-logo" to={"/"}>
+                  {/* <img className="" src={Logo} alt="Adagency Creatives" /> */}
+                  Ad Agency Creatives
                 </Link>
               </Grid>
               <Grid item lg={9} md={10} xs={4} sx={{ textAlign: "right", padding: "10px" }} className="right-menu">
