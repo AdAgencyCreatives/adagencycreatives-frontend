@@ -51,7 +51,7 @@ const JobContent = ({ user, data, item, setAuthModalOpen }) => {
   const handleApplyExternalJob = async (job) => {
     await getResume(user.uuid);
     await getProfileResume(user.uuid);
-    const response = await applyJob(user.uuid, job?.id, "Interested", resume?.length ? resume[0].id : -1, "External");
+    const response = await applyJob(user.uuid, job?.id, "Clicked Apply Now", resume?.length ? resume[0].id : -1, "External");
     setIsJobApplied(true);
 
   };

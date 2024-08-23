@@ -135,7 +135,7 @@ const TabularSingleJobApplication = (props) => {
               {getStatusName(thisApplication?.status)}
             </span>
           ) : (
-            <span className="badge bg-success">Interested</span>
+            <span className="badge bg-success">Clicked Apply Now</span>
           )}
         </td>
         <td style={{ width: "20%" }} className="job-table-actions nowrap">

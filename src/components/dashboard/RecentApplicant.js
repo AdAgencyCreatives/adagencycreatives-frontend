@@ -76,7 +76,7 @@ const RecentApplicant = ({ job, application, setApplicationStatus, onRemoveFromR
                                             {getStatusName(thisApplication?.status)}
                                         </span>
                                     ) : (
-                                        <span className="badge bg-success">Interested</span>
+                                        <span className="badge bg-success">Clicked Apply Now</span>
                                     )}
                                 </div>
                                 <div className="job-metas">
