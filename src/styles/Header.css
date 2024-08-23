@@ -1355,3 +1355,9 @@ nav ul.dropdown-list .list-item-text.j-fix {
         width: 150px !important;
     }
 }
+
+h2.community-subtitle ul,
+h2.community-subtitle ul li {
+    list-style: none;
+    display: inline-block;
+}
