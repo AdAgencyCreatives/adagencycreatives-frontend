@@ -34,6 +34,7 @@
     "react-datepicker": "^4.21.0",
     "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
+    "react-easy-crop": "^5.0.8",
     "react-google-recaptcha": "^3.1.0",
     "react-icons": "^4.10.1",
     "react-photo-album": "^2.3.0",

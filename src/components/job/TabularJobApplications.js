@@ -50,43 +50,51 @@ const TabularJobApplications = (props) => {
           <br />
         </>
       )}
-      <div className="table-responsive">
-        <table className="job-table">
-          <thead>
-            <tr>
-              <th className="title" style={{ width: "28%" }}>
-                Name
-              </th>
-              <th className="title" style={{ width: "27%" }}>
-                Title
-              </th>
-              <th className="date" style={{ width: "12%" }}>
-                Applied Date
-              </th>
-              <th className="status" style={{ width: "13%" }}>
-                Status
-              </th>
-              <th className="actions" style={{ width: "20%" }}>
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {applications?.map((application) => (
-              <TabularSingleJobApplication
-                key={"job-application-" + application.id}
-                application={application}
-                job={props?.job}
-                setApplicationStatus={props?.setApplicationStatus}
-                setAppId={props?.setAppId}
-                setOpen={props?.setOpen}
-                isJobExpired={props?.isJobExpired}
-                isJobDeleted={props?.isJobDeleted}
-              />
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {applications?.length > 0 ? (
+        <div className="table-responsive">
+          <table className="job-table">
+            <thead>
+              <tr>
+                <th className="title" style={{ width: "28%" }}>
+                  Name
+                </th>
+                <th className="title" style={{ width: "27%" }}>
+                  Title
+                </th>
+                <th className="date" style={{ width: "12%" }}>
+                  Applied Date
+                </th>
+                <th className="status" style={{ width: "13%" }}>
+                  Status
+                </th>
+                <th className="actions" style={{ width: "20%" }}>
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {applications?.map((application) => (
+                <TabularSingleJobApplication
+                  key={"job-application-" + application.id}
+                  application={application}
+                  job={props?.job}
+                  setApplicationStatus={props?.setApplicationStatus}
+                  setAppId={props?.setAppId}
+                  setOpen={props?.setOpen}
+                  isJobExpired={props?.isJobExpired}
+                  isJobDeleted={props?.isJobDeleted}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <>
+          <div className="no_result">
+            <p>Please try again. No exact results found.</p>
+          </div>
+        </>
+      )}
     </div>
   );
 };

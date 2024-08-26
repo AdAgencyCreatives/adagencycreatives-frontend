@@ -6,6 +6,7 @@ import { Button, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import {
   IoCheckmarkCircle,
+  IoCloseCircleSharp,
   IoLocationOutline,
 } from "react-icons/io5";
 import moment from "moment";
@@ -13,6 +14,11 @@ import TimeAgo from "../TimeAgo";
 import TabularJobApplications from "./TabularJobApplications";
 import { FaHandsHelping } from "react-icons/fa";
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const MyJobApplicantsWidget = ({
   job,
@@ -208,9 +214,18 @@ const MyJobApplicantsWidget = ({
           )}
         </td>
       </tr>
-      {showApplications && (
-        <tr>
-          <td colSpan={6}>
+      <Dialog
+        open={showApplications && thisJob?.applications?.length > 0}
+        onClose={(e) => setShowApplications(false)}
+        scroll="body"
+        fullWidth={true}
+        maxWidth={false}
+      >
+        <DialogTitle>My Applicants — {job?.title}</DialogTitle>
+        <DialogContent>
+          <DialogContentText></DialogContentText>
+          <div className="agency-page-myjobs tabular dialog">
+            <IoCloseCircleSharp size={30} className="close-modal" onClick={(e) => setShowApplications(false)} />
             {thisJob?.applications?.length > 0 ? (
               <TabularJobApplications
                 job={thisJob}
@@ -231,9 +246,12 @@ const MyJobApplicantsWidget = ({
             ) : (
               <p>No New Applicants To Show</p>
             )}
-          </td>
-        </tr>
-      )}
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button className="btn btn-dark" onClick={(e) => setShowApplications(false)}>CLOSE</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

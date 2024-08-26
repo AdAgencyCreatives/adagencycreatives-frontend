@@ -1251,6 +1251,12 @@ nav ul.dropdown-list .list-item-text.j-fix {
     flex: 1;
 }
 
+@media(max-width: 767px) {
+    .search-box-common {
+        gap: 10px;
+    }
+}
+
 .search-box-common .search-btn button {
     font-size: 16px;
 }
@@ -1360,4 +1366,21 @@ h2.community-subtitle ul,
 h2.community-subtitle ul li {
     list-style: none;
     display: inline-block;
+}
+
+.agency-page-myjobs.tabular.dialog td {
+    min-width: 150px;
+}
+
+.dialog .close-modal {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}
+
+.dialog .close-modal:hover {
+    color: #d3a11f;
 }
