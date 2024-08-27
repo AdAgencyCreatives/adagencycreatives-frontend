@@ -11,10 +11,17 @@ import { Context as AuthContext } from "../../../context/AuthContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
 import { CircularProgress } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 
 import useHelper from "../../../hooks/useHelper";
 import useUploadHelper from "../../../hooks/useUploadHelper";
 import IconMessage from "../../../components/IconMessage";
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const Profile = () => {
   const imageUploadRef = useRef();
@@ -692,6 +699,22 @@ const Profile = () => {
               </button>
             </div>
           </form>
+          <Dialog
+            open={false}
+            onClose={(e) => { }}
+            scroll="body"
+            fullWidth={true}
+            maxWidth={false}
+          >
+            <DialogTitle style={{ fontWeight: '700' }}>Adjust Image</DialogTitle>
+            <DialogContent>
+              <DialogContentText></DialogContentText>
+
+            </DialogContent>
+            <DialogActions>
+              <Button className="btn btn-dark" onClick={(e) => { }}>CLOSE</Button>
+            </DialogActions>
+          </Dialog>
         </div>
       </div >
     </div >

@@ -221,7 +221,7 @@ const MyJobApplicantsWidget = ({
         fullWidth={true}
         maxWidth={false}
       >
-        <DialogTitle>My Applicants — {job?.title}</DialogTitle>
+        <DialogTitle style={{ fontWeight: '700' }}>My Applicants — {job?.title}</DialogTitle>
         <DialogContent>
           <DialogContentText></DialogContentText>
           <div className="agency-page-myjobs tabular dialog">
