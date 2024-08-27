@@ -16,7 +16,7 @@ const NewChat = ({ setContact, contacts, userSelected, setUserSelected }) => {
   } = useContext(AuthContext);
 
   const {
-    state: { single_creative, creatives, loading },
+    state: { creatives, loading },
     searchCreatives, getCreativeById
   } = useContext(CreativesContext);
 
@@ -81,15 +81,8 @@ const NewChat = ({ setContact, contacts, userSelected, setUserSelected }) => {
               <Loader fullHeight={false} />
             ) : (
               search &&
-              creatives &&
+              creatives?.length > 0 &&
               creatives
-                .filter(
-                  (creative) =>
-                    !contacts.some(
-                      (item) => item.contact.uuid === creative.user_id
-                    )
-                ) // Filter search results from users alreaddy in contact list
-                .filter((creative) => creative.user_id != user.uuid) // Filter search results from current user
                 .map((item, index) => {
                   return (
                     <div
