@@ -16,14 +16,10 @@ import { Button, Tooltip } from "@mui/material";
 import useHelper from "../../../hooks/useHelper";
 import useUploadHelper from "../../../hooks/useUploadHelper";
 import IconMessage from "../../../components/IconMessage";
-
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import ImageCropperModal from "../../../components/ImageCropperModal";
 
 const Profile = () => {
+
   const imageUploadRef = useRef();
   const logoRef = useRef();
   const [media, setMedia] = useState([]);
@@ -34,6 +30,8 @@ const Profile = () => {
   const [formData, setFormData] = useState({});
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [isMounted, setIsMounted] = useState(false);
+  const [openAdjustImageDialog, setOpenAdjustImageDialog] = useState(false);
+  const [adjustImageField, setAdjustImageField] = useState(null);
   const [baseUrl, setBaseUrl] = useState([]);
 
   const { getNumericString, isObject } = useHelper();
@@ -43,7 +41,6 @@ const Profile = () => {
   const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
   const videoUploadGuideMessage = getUploadGuideMessage(videoUploadGuide);
   const [imageUploading, setImageUploading] = useState(false);
-
 
   useEffect(() => {
     setIsMounted(true);
@@ -549,11 +546,16 @@ const Profile = () => {
                             </button>
                             <button
                               type="button"
-                              className="btn btn-secondary w-100 text-uppercase"
+                              className="btn btn-secondary w-100 mb-2 text-uppercase"
                               onClick={removeLogo}
                             >
                               <FiTrash2 /> Remove
                             </button>
+                            <ImageCropperModal
+                              open={openAdjustImageDialog}
+                              setOpen={setOpenAdjustImageDialog}
+                              field={field}
+                            />
                           </div>
                           <input
                             type="file"
@@ -699,22 +701,6 @@ const Profile = () => {
               </button>
             </div>
           </form>
-          <Dialog
-            open={false}
-            onClose={(e) => { }}
-            scroll="body"
-            fullWidth={true}
-            maxWidth={false}
-          >
-            <DialogTitle style={{ fontWeight: '700' }}>Adjust Image</DialogTitle>
-            <DialogContent>
-              <DialogContentText></DialogContentText>
-
-            </DialogContent>
-            <DialogActions>
-              <Button className="btn btn-dark" onClick={(e) => { }}>CLOSE</Button>
-            </DialogActions>
-          </Dialog>
         </div>
       </div >
     </div >
