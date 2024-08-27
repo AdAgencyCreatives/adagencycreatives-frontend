@@ -10,22 +10,21 @@ import { FiSettings } from "react-icons/fi";
 import Cropper from 'react-easy-crop'
 import { useState } from 'react';
 import { useEffect } from 'react';
+import axios from 'axios';
 
-export default function ImageCropperModal({ open, setOpen, field }) {
+export default function ImageCropperModal({ open, setOpen, field, onCropComplete = false }) {
 
-    const [image, setImage] = useState([]);
-    const [croppedImage, setCroppedImage] = useState(null);
-
-    const [crop, setCrop] = useState({ x: 0, y: 0 });
-    const [zoom, setZoom] = useState(1);
     const [selectedCroppedArea, setSelectedCroppedArea] = useState(null);
     const [selectedCroppedAreaPixels, setSelectedCroppedAreaPixels] = useState(null);
 
-    const onCropComplete = (croppedArea, croppedAreaPixels) => {
+    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [zoom, setZoom] = useState(1);
+
+    const handleOnCropComplete = (croppedArea, croppedAreaPixels) => {
         setSelectedCroppedArea(croppedArea);
         setSelectedCroppedAreaPixels(croppedAreaPixels);
 
-        console.log(croppedArea, croppedAreaPixels);
+        //console.log(croppedArea, croppedAreaPixels);
     }
 
     const handleCancel = (e) => {
@@ -37,68 +36,19 @@ export default function ImageCropperModal({ open, setOpen, field }) {
     };
 
     const handleUpdateImage = (e) => {
-        cropImage(image, selectedCroppedAreaPixels, console.log).then((image) => {
-            setCroppedImage(image);
-        });
+        onCropComplete && onCropComplete(selectedCroppedArea, selectedCroppedAreaPixels);
+        setOpen(false);
+        setCrop({ x: 0, y: 0 });
+        setZoom(1);
+        setSelectedCroppedArea(null);
+        setSelectedCroppedAreaPixels(null);
     };
 
     useEffect(() => {
         if (!open) {
             handleCancel(null);
-        } else {
-            setImage([field?.value]);
         }
     }, [open]);
-
-    const createImage = (url) =>
-        new Promise((resolve, reject) => {
-            const image = new Image();
-            image.addEventListener("load", () => resolve(image));
-            image.addEventListener("error", (error) => reject(error));
-            image.setAttribute("crossOrigin", "anonymous"); // needed to avoid cross-origin issues on CodeSandbox
-            image.src = url;
-        });
-
-    // Copy from "https://codesandbox.io/s/react-easy-crop-demo-with-cropped-output-q8q1mnr01w?from-embed=&file=/src/cropImage.js:0-2289"
-    async function getCroppedImg(imageSrc, pixelCrop) {
-        const image = await createImage(imageSrc);
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-
-        const maxSize = Math.max(image.width, image.height);
-        const safeArea = 2 * ((maxSize / 2) * Math.sqrt(2));
-
-        canvas.width = safeArea;
-        canvas.height = safeArea;
-
-        ctx.drawImage(
-            image,
-            safeArea / 2 - image.width * 0.5,
-            safeArea / 2 - image.height * 0.5
-        );
-        const data = ctx.getImageData(0, 0, safeArea, safeArea);
-
-        canvas.width = pixelCrop.width;
-        canvas.height = pixelCrop.height;
-
-        ctx.putImageData(
-            data,
-            Math.round(0 - safeArea / 2 + image.width * 0.5 - pixelCrop.x),
-            Math.round(0 - safeArea / 2 + image.height * 0.5 - pixelCrop.y)
-        );
-
-        return canvas.toDataURL("image/jpeg");
-    }
-
-    const cropImage = async (image, croppedAreaPixels, onError) => {
-        try {
-            const croppedImage = await getCroppedImg(image, croppedAreaPixels);
-            return croppedImage;
-        } catch (err) {
-            onError(err);
-        }
-    };
-
 
     return (
         <>
@@ -126,7 +76,7 @@ export default function ImageCropperModal({ open, setOpen, field }) {
                                 zoom={zoom}
                                 aspect={4 / 3}
                                 onCropChange={setCrop}
-                                onCropComplete={onCropComplete}
+                                onCropComplete={handleOnCropComplete}
                                 onZoomChange={setZoom}
                             />
                         </div>
@@ -145,7 +95,6 @@ export default function ImageCropperModal({ open, setOpen, field }) {
                             />
                         </div>
                     </div>
-                    {croppedImage && <img src={croppedImage} alt="blab" />}
                 </DialogContent>
                 <DialogActions>
                     <Button className="btn btn-gold hover-dark" onClick={(e) => handleUpdateImage(e)}>UPDATE IMAGE</Button>

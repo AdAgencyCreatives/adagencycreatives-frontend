@@ -87,6 +87,7 @@ const Profile = () => {
     saveCreative,
     saveCreativeImage,
     generateThumbnailAttachment,
+    generateCroppedAttachment,
   } = useContext(CreativesContext);
 
   const {
@@ -120,7 +121,7 @@ const Profile = () => {
           ContentState.createFromText(single_creative.about ? single_creative.about : "")
         )
       );
-      console.log(single_creative);
+      // console.log(single_creative);
       const fields = [
         {
           label: "Upload Your Profile Picture Avatar",
@@ -493,6 +494,14 @@ const Profile = () => {
     }
   };
 
+  const onCropComplete = (selectedCroppedArea, selectedCroppedAreaPixels) => {
+    (async () => {
+      await generateCroppedAttachment(user.uuid, selectedCroppedAreaPixels.x, selectedCroppedAreaPixels.y, selectedCroppedAreaPixels.width, selectedCroppedAreaPixels.height);
+      reloadUserData(user.uuid);
+      showAlert("Creative profile updated successfully");
+    })();
+  };
+
   return isLoading ? (
     <Loader />
   ) : (
@@ -555,6 +564,7 @@ const Profile = () => {
                               open={openAdjustImageDialog}
                               setOpen={setOpenAdjustImageDialog}
                               field={field}
+                              onCropComplete={onCropComplete}
                             />
                           </div>
                           <input

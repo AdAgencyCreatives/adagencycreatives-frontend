@@ -416,6 +416,21 @@ const generateThumbnailAttachment = (dispatch) => {
   };
 };
 
+const generateCroppedAttachment = (dispatch) => {
+  return async (user_id, x, y, width, height) => {
+    try {
+      const response = await api.get(
+        "/generate-cropped-attachment?user_id=" + user_id
+        + "&x=" + x
+        + "&y=" + y
+        + "&width=" + width
+        + "&height=" + height
+      );
+      return response.data.data;
+    } catch (error) { }
+  };
+};
+
 const getStats = (dispatch) => {
   return async () => {
     try {
@@ -530,6 +545,7 @@ export const { Context, Provider } = createDataContext(
     capturePortfolioSnapshot,
     removePortfolioCaptureLog,
     generateThumbnailAttachment,
+    generateCroppedAttachment,
   },
   state
 );

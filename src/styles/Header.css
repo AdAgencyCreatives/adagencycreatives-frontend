@@ -1393,7 +1393,7 @@ h2.community-subtitle ul li {
 
 .image-cropper-container {
     position: relative;
-    min-height: 50vh;
+    height: 420px;
 }
 
 .crop-container {
