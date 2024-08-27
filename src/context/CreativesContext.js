@@ -143,7 +143,7 @@ const getCreative = (dispatch) => {
 };
 
 const getCreativeById = (dispatch) => {
-  return async (id) => {
+  return async (id, cb = () => { }) => {
     try {
       const response = await api.get("/creatives?filter[status]=1&filter[user_id]=" + id);
       const data = response.data.data[0];
@@ -158,6 +158,7 @@ const getCreativeById = (dispatch) => {
         type: "set_single_creative",
         payload: data,
       });
+      cb(data);
     } catch (error) { }
   };
 };

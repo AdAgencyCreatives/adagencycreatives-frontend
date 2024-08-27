@@ -176,7 +176,7 @@ export const router = createBrowserRouter([
         element: <Messages />,
       },
       {
-        path: "/messages/:any",
+        path: "/messages/:contact_uuid",
         element: <Messages />,
       },
       {

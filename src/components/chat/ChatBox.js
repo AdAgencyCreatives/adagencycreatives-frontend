@@ -38,6 +38,7 @@ const ChatBox = ({
   messageType,
   refreshContacts,
 }) => {
+
   const {
     state: { messages, loading, contacts, attachments, activeContact },
     sendMessage,
@@ -169,6 +170,9 @@ const ChatBox = ({
     setChatBoxAttachments([]);
     updateDraftMessage("");
     updateDraftAttachment("reset", []);
+
+    setChatBox("list");
+    setContact(contact);
 
     await getMessages(contact.uuid, type);
     await getContacts(type);
@@ -378,7 +382,7 @@ const ChatBox = ({
 
   return (
     <>
-      {activeContact ? (
+      {activeContact || chatBox == "new" ? (
         <div className={`chat-box ${chatBoxMobile}`}>
           <div className="chat-mobile-top d-md-none d-flex">
             <IoArrowBack size={20} onClick={handleBackButton} />

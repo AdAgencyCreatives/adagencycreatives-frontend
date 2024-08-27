@@ -3,8 +3,12 @@ import Avatar from "../../assets/images/placeholder.png";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as CreativesContext } from "../../context/CreativesContext";
 import Loader from "../Loader";
+import { useLocation, useParams } from "react-router-dom";
 
 const NewChat = ({ setContact, contacts, userSelected, setUserSelected }) => {
+
+  const { contact_uuid } = useParams();
+
   const [search, setSearch] = useState();
 
   const {
@@ -12,8 +16,8 @@ const NewChat = ({ setContact, contacts, userSelected, setUserSelected }) => {
   } = useContext(AuthContext);
 
   const {
-    state: { creatives, loading },
-    searchCreatives,
+    state: { single_creative, creatives, loading },
+    searchCreatives, getCreativeById
   } = useContext(CreativesContext);
 
   const handleOnChange = (e) => {
@@ -28,6 +32,16 @@ const NewChat = ({ setContact, contacts, userSelected, setUserSelected }) => {
     setUserSelected(item);
     setContact({ ...item, uuid: item.user_id });
   };
+
+  useEffect(() => {
+    if (contact_uuid?.length > 0) {
+      (async () => {
+        await getCreativeById(contact_uuid, (data) => {
+          selectUser(data);
+        });
+      })();
+    }
+  }, [contact_uuid]);
 
   useEffect(() => {
     if (!userSelected) {

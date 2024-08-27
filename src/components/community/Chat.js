@@ -16,7 +16,12 @@ import { Context as ChatContext } from "../../context/ChatContext";
 import UserList from "../chat/UserList";
 import { getMyFriends } from "../../context/FriendsDataContext";
 
+import { useNavigate, useParams } from "react-router-dom";
+
 const Chat = ({ messageType }) => {
+
+  const { contact_uuid } = useParams();
+  const navigate = useNavigate();
 
   const {
     state: { conversation_updated_notifications },
@@ -46,6 +51,21 @@ const Chat = ({ messageType }) => {
   useEffect(() => {
     getContacts(type);
   }, [type]);
+
+  useEffect(() => {
+    if (contact_uuid?.length > 0) {
+      if (contactsList?.length > 0) {
+        let filtered = contactsList.filter(item => item.contact.uuid == contact_uuid);
+        if (filtered?.length > 0) {
+          handleItemClick(filtered[0].contact, type);
+        } else {
+          setChatBox("new");
+        }
+      } else {
+        setChatBox("new");
+      }
+    }
+  }, [contact_uuid, contactsList]);
 
   useEffect(() => {
     (async () => {
@@ -84,6 +104,12 @@ const Chat = ({ messageType }) => {
       setType(type);
     }
     refreshContacts();
+
+    if (contact_uuid?.length > 0) {
+      let url = window.location.pathname.replace("/" + contact_uuid, "");
+      navigate(url);
+    }
+
   };
 
   const refreshContacts = async () => {
