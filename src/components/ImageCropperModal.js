@@ -11,8 +11,11 @@ import Cropper from 'react-easy-crop'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { CircularProgress } from '@mui/material';
 
 export default function ImageCropperModal({ open, setOpen, field, onCropComplete = false }) {
+
+    const [updatingImage, setUpdatingImage] = useState(false);
 
     const [selectedCroppedArea, setSelectedCroppedArea] = useState(null);
     const [selectedCroppedAreaPixels, setSelectedCroppedAreaPixels] = useState(null);
@@ -23,7 +26,6 @@ export default function ImageCropperModal({ open, setOpen, field, onCropComplete
     const handleOnCropComplete = (croppedArea, croppedAreaPixels) => {
         setSelectedCroppedArea(croppedArea);
         setSelectedCroppedAreaPixels(croppedAreaPixels);
-
         //console.log(croppedArea, croppedAreaPixels);
     }
 
@@ -36,12 +38,15 @@ export default function ImageCropperModal({ open, setOpen, field, onCropComplete
     };
 
     const handleUpdateImage = (e) => {
-        onCropComplete && onCropComplete(selectedCroppedArea, selectedCroppedAreaPixels);
-        setOpen(false);
-        setCrop({ x: 0, y: 0 });
-        setZoom(1);
-        setSelectedCroppedArea(null);
-        setSelectedCroppedAreaPixels(null);
+        setUpdatingImage(true);
+        onCropComplete && onCropComplete(selectedCroppedArea, selectedCroppedAreaPixels, () => {
+            setUpdatingImage(false);
+            setOpen(false);
+            setCrop({ x: 0, y: 0 });
+            setZoom(1);
+            setSelectedCroppedArea(null);
+            setSelectedCroppedAreaPixels(null);
+        });
     };
 
     useEffect(() => {
@@ -97,6 +102,7 @@ export default function ImageCropperModal({ open, setOpen, field, onCropComplete
                     </div>
                 </DialogContent>
                 <DialogActions>
+                    {updatingImage && (<CircularProgress size={20} />)}
                     <Button className="btn btn-gold hover-dark" onClick={(e) => handleUpdateImage(e)}>UPDATE IMAGE</Button>
                     <Button className="btn btn-dark" onClick={(e) => handleCancel(e)}>CANCEL</Button>
                 </DialogActions>

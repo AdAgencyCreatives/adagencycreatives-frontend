@@ -494,10 +494,11 @@ const Profile = () => {
     }
   };
 
-  const onCropComplete = (selectedCroppedArea, selectedCroppedAreaPixels) => {
+  const onCropComplete = (selectedCroppedArea, selectedCroppedAreaPixels, cb = () => { }) => {
     (async () => {
       await generateCroppedAttachment(user.uuid, selectedCroppedAreaPixels.x, selectedCroppedAreaPixels.y, selectedCroppedAreaPixels.width, selectedCroppedAreaPixels.height);
       reloadUserData(user.uuid);
+      cb();
       showAlert("Creative profile updated successfully");
     })();
   };
