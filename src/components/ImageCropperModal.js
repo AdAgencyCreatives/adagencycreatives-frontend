@@ -10,7 +10,6 @@ import { FiSettings } from "react-icons/fi";
 import Cropper from 'react-easy-crop'
 import { useState } from 'react';
 import { useEffect } from 'react';
-import axios from 'axios';
 import { CircularProgress } from '@mui/material';
 
 export default function ImageCropperModal({ open, setOpen, field, onCropComplete = false }) {
@@ -83,13 +82,14 @@ export default function ImageCropperModal({ open, setOpen, field, onCropComplete
                                 onCropChange={setCrop}
                                 onCropComplete={handleOnCropComplete}
                                 onZoomChange={setZoom}
+                                cropSize={{ width: 150, height: 150 }}
                             />
                         </div>
                         <div className="controls">
                             <input
                                 type="range"
                                 value={zoom}
-                                min={1}
+                                min={0.1}
                                 max={3}
                                 step={0.1}
                                 aria-labelledby="Zoom"
