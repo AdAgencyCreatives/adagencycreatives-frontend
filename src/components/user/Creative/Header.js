@@ -24,6 +24,9 @@ import moment from "moment";
 import { saveAs } from 'file-saver';
 import { CircularProgress, Tooltip } from "@mui/material";
 import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
+import { PDFDownloadLink, BlobProvider } from '@react-pdf/renderer';
+
+import CreativeProfilePdf from "../CreativeProfilePdf"
 
 const Header = ({ data, role, user }) => {
 
@@ -55,6 +58,7 @@ const Header = ({ data, role, user }) => {
   const isAdmin = role == "admin";
   const isAdvisor = role == "advisor";
   const isAgency = role == "agency";
+  const isRecruiter = role == "recruiter";
   const isOwnProfile = isCreative && user?.uuid == data.user_id;
   const [isFriend, setIsFriend] = useState(false)
   const [hasSubscription, setSubscription] = useState(false);
@@ -155,24 +159,40 @@ const Header = ({ data, role, user }) => {
             </div>
             <div className="col-md-7">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
+                {(isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription)) && (
+                  <>
+                    <PDFDownloadLink className="mobile-view" document={<CreativeProfilePdf />} fileName={getDownloadFilename() + ".pdf"}>
+                      <button className={"btn btn-dark fs-5"}>
+                        Download Profile PDF
+                      </button>
+                    </PDFDownloadLink>
+                    <a className="desktop-view" href={"/creative-profile/" + data.slug} target="_blank">
+                      <button className={"btn btn-dark fs-5"}>
+                        View/Download Profile PDF
+                      </button>
+                    </a>
+                  </>
+                )}
                 {isDownloading && (<CircularProgress style={{ minWidth: "40px", minHeight: "40px" }} />)}
                 {(isOwnProfile || !isCreative || isFriend) && (
-                  <a
-                    href={"javascript:void(0)"}
-                    onClick={(e) => isDownloading ? showAlert("Please wait. Download in progress, or refresh page") : downloadResume(data.resume)}>
-                    <button
-                      className={"btn btn-dark fs-5" + (isDownloading ? " disabled" : "")}
-                      onClick={(e) => isAdmin || (isAdvisor && hasSubscription) ||
-                        validateAccess(
-                          e,
-                          [!hasSubscription, !isCreative],
-                          "Post a Job to download resumes"
-                        )
-                      }
-                    >
-                      Download Resume
-                    </button>
-                  </a>
+                  <>
+                    <a
+                      href={"javascript:void(0)"}
+                      onClick={(e) => isDownloading ? showAlert("Please wait. Download in progress, or refresh page") : downloadResume(data.resume)}>
+                      <button
+                        className={"btn btn-dark fs-5" + (isDownloading ? " disabled" : "")}
+                        onClick={(e) => isAdmin || (isAdvisor && hasSubscription) ||
+                          validateAccess(
+                            e,
+                            [!hasSubscription, !isCreative],
+                            "Post a Job to download resumes"
+                          )
+                        }
+                      >
+                        Download Resume
+                      </button>
+                    </a>
+                  </>
                 )}
                 {!isOwnProfile && (
                   <>
