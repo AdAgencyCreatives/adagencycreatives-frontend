@@ -44,7 +44,7 @@ export default function ViewProfilePdf() {
 
     return (
         <>
-            <PDFDownloadLink document={<CreativeProfilePdf />} fileName='creative-profile.pdf'>
+            {/* <PDFDownloadLink document={<CreativeProfilePdf />} fileName='creative-profile.pdf'>
                 Download
             </PDFDownloadLink>
             &nbsp;
@@ -54,10 +54,10 @@ export default function ViewProfilePdf() {
                         Print
                     </a>
                 )}
-            </BlobProvider>
-            {/* <PDFViewer style={{ width: '100vw', height: '100vh' }}>
+            </BlobProvider> */}
+            <PDFViewer style={{ width: '100vw', height: '100vh' }}>
                 <CreativeProfilePdf />
-            </PDFViewer> */}
+            </PDFViewer>
         </>
     );
 }
