@@ -79,6 +79,7 @@
 
     .actions {
         gap: 10px;
+        flex-wrap: wrap !important;
     }
 
     @media screen and (max-width: 767px) {

@@ -1,3 +1,7 @@
+
+import React from 'react';
+import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+
 import CreativeContent from "../../components/user/Creative/Content";
 import CreativeHeader from "../../components/user/Creative/Header";
 import CreativeSidebar from "../../components/user/Creative/Sidebar";

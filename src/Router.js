@@ -22,6 +22,7 @@ import Notifications from "./pages/Notifications";
 import Activities from "./pages/Activities";
 import About from "./pages/About";
 import ViewPage from "./pages/User/ViewPage";
+import ViewProfilePdf from "./pages/User/ViewProfilePdf";
 import JobDescription from "./pages/Jobs/JobDescription";
 import UserDashboard from "./pages/User/UserDashboard";
 import Checkout from "./pages/Cart/Checkout";
@@ -194,6 +195,10 @@ export const router = createBrowserRouter([
       {
         path: "/:type/:username",
         element: <ViewPage />,
+      },
+      {
+        path: "/creative-profile/:username",
+        element: <ViewProfilePdf />,
       },
       {
         path: "/groups/create",
