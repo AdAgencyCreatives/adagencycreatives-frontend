@@ -230,12 +230,12 @@
         overflow: auto;
         // height: 100%;
         padding: 20px 15px 40px 20px;
-        height: 318px;
+        height: 200px;
     }
 
 
     .chat-item {
-        margin-bottom: 20px;
+        margin-bottom: 5px;
         display: flex;
         gap: 10px;
 
@@ -257,7 +257,7 @@
         }
 
         .text {
-            margin-top: 10px;
+            margin: 5px 0px;
             font-size: 15px;
 
             .message_attachments {
