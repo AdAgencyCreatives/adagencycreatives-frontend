@@ -17,6 +17,8 @@ import { useContext } from 'react';
 
 export default function ViewProfilePdf() {
 
+    const [data, setData] = useState(null);
+
     const { username } = useParams();
 
     const {
@@ -27,11 +29,6 @@ export default function ViewProfilePdf() {
     const [timedLoading, setTimedLoading] = useState(true);
 
     const [setSkipHeaderFooter] = useOutletContext();
-    useEffect(() => {
-        setSkipHeaderFooter(true);
-        var body = document.querySelector("body");
-        body.classList.add("no-overflow");
-    }, []);
 
     const {
         isAdmin,
@@ -62,17 +59,22 @@ export default function ViewProfilePdf() {
         }
     }, [allowed]);
 
+    useEffect(() => {
+        setData(single_creative && Object.keys(single_creative)?.length > 0 ? single_creative : null);
+    }, [single_creative]);
+
     window.setTimeout(() => {
         setTimedLoading(false);
-    }, 3000);
+    }, 5000);
 
     return (
         <>
-            {allowed ? (
+            {data && (
                 <PDFViewer style={{ width: '100vw', height: '100vh' }}>
                     <CreativeProfilePdf data={single_creative} />
                 </PDFViewer>
-            ) : (
+            )}
+            {!allowed && (
                 <RestrictedAccess
                     title={timedLoading ? 'View/Download Profile PDF' : 'Restricted Access'}
                     message={timedLoading ? <>

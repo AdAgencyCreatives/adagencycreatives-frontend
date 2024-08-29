@@ -161,7 +161,7 @@ const Header = ({ data, role, user }) => {
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
                 {(isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription)) && (
                   <>
-                    <PDFDownloadLink className="mobile-view" document={<CreativeProfilePdf />} fileName={getDownloadFilename() + ".pdf"}>
+                    <PDFDownloadLink className="mobile-view" document={<CreativeProfilePdf data={data} />} fileName={getDownloadFilename() + ".pdf"}>
                       <button className={"btn btn-dark fs-5"}>
                         Download Profile PDF
                       </button>
