@@ -1,8 +1,5 @@
 import React from 'react';
-import { pdf, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
-import { saveAs } from 'file-saver';
-
-import moment from "moment";
+import { Document, Image, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 
 /* Create styles */
 const styles = StyleSheet.create({
@@ -16,29 +13,29 @@ const styles = StyleSheet.create({
         padding: 0,
     },
     sectionHeader: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '30px',
         margin: 0,
         padding: '30px',
         backgroundColor: '#f6f6f6'
+    },
+    sectionHeaderImage: {
+        width: '50px',
+        height: '50px',
+        objectFit: 'cover',
+        border: '1px solid #000'
     }
 });
 
 /* Create Document Component */
-export default function CreativeProfilePdf({ data = null }) {
-
-    const getClientDateTime = () => {
-        return moment(new Date()).format("YYYY-MM-DD");
-    };
-
-    const getDownloadFilename = () => {
-        if (data?.name?.length > 0)
-            return (data.name).replace(" ", "_") + "_AdAgencyCreatives_" + getClientDateTime();
-        return "";
-    }
+export default function CreativeProfilePdf({ data = null, filename = "", creative_education = null, creative_experience = null }) {
 
     const Header = () => {
         return (
             <>
                 <View style={styles.sectionHeader}>
+                    <Image source={data?.user_thumbnail || data.profile_image} style={styles.sectionHeaderImage} />
                     <Text>{data.name || ""}</Text>
                 </View>
             </>
@@ -152,7 +149,7 @@ export default function CreativeProfilePdf({ data = null }) {
     return (
         <>
             <Document
-                title={getDownloadFilename()}
+                title={filename}
                 author={"Ad Agency Creatives"}
                 subject={(data.name || "") + " - Creative Profile PDF - Ad Agency Creatives"}
             >

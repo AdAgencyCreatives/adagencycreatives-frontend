@@ -14,10 +14,15 @@ import { CircularProgress } from '@mui/material';
 import { useLocation, useParams } from "react-router-dom";
 import { Context as CreativesContext } from "../../context/CreativesContext";
 import { useContext } from 'react';
+import moment from "moment";
 
 export default function ViewProfilePdf() {
 
-    const [data, setData] = useState(null);
+    const [filename, setFilename] = useState("");
+
+    const getClientDateTime = () => {
+        return moment(new Date()).format("YYYY-MM-DD");
+    };
 
     const { username } = useParams();
 
@@ -44,37 +49,44 @@ export default function ViewProfilePdf() {
 
     const allowed = (isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription));
 
-    useEffect(() => {
-        setSkipHeaderFooter(allowed);
+    const skipHeaderFooter = () => {
+        setSkipHeaderFooter(true);
         var body = document.querySelector("body");
+        body.classList.add("no-overflow");
+    };
+
+    useEffect(() => {
         if (allowed) {
-            body.classList.add("no-overflow");
             getCreative(username, (error) => {
                 if (error) {
                     console.log(error);
+                    setTimedLoading(false);
                 }
             });
-        } else {
-            body.classList.remove("no-overflow");
         }
     }, [allowed]);
 
     useEffect(() => {
-        setData(single_creative && Object.keys(single_creative)?.length > 0 ? single_creative : null);
+        if (single_creative && Object.keys(single_creative)?.length > 0) {
+            setFilename(single_creative.name.replace(" ", "_") + "_AdAgencyCreatives_" + getClientDateTime());
+            setTimedLoading(false);
+        }
     }, [single_creative]);
 
     window.setTimeout(() => {
         setTimedLoading(false);
-    }, 5000);
+    }, 30000);
 
     return (
         <>
-            {data && (
-                <PDFViewer style={{ width: '100vw', height: '100vh' }}>
-                    <CreativeProfilePdf data={single_creative} />
-                </PDFViewer>
-            )}
-            {!allowed && (
+            {single_creative && Object.keys(single_creative)?.length > 0 ? (
+                <>
+                    {skipHeaderFooter()}
+                    <PDFViewer style={{ width: '100vw', height: '100vh' }}>
+                        <CreativeProfilePdf data={single_creative} filename={filename} creative_education={creative_education} creative_experience={creative_experience} />
+                    </PDFViewer>
+                </>
+            ) : (
                 <RestrictedAccess
                     title={timedLoading ? 'View/Download Profile PDF' : 'Restricted Access'}
                     message={timedLoading ? <>

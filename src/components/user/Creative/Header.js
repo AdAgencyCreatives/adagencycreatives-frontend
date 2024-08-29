@@ -28,7 +28,7 @@ import { PDFDownloadLink, BlobProvider } from '@react-pdf/renderer';
 
 import CreativeProfilePdf from "../CreativeProfilePdf"
 
-const Header = ({ data, role, user }) => {
+const Header = ({ data, role, user, creative_education, creative_experience }) => {
 
   const { encodeSpecial, decodeSpecial } = useHelper();
 
@@ -159,9 +159,9 @@ const Header = ({ data, role, user }) => {
             </div>
             <div className="col-md-7">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
-                {(isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription)) && (
+                {((isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription)) && data && Object.keys(data).length > 0) && (
                   <>
-                    <PDFDownloadLink className="mobile-view" document={<CreativeProfilePdf data={data} />} fileName={getDownloadFilename() + ".pdf"}>
+                    <PDFDownloadLink className="mobile-view" document={<CreativeProfilePdf data={data} filename={getDownloadFilename()} creative_education={creative_education} creative_experience={creative_experience} />} fileName={getDownloadFilename() + ".pdf"}>
                       <button className={"btn btn-dark fs-5"}>
                         Download Profile PDF
                       </button>

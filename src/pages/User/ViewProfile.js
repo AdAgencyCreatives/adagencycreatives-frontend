@@ -144,7 +144,7 @@ const Profile = () => {
           <>
             <div className="profile-header">
               {page === "creative" ? (
-                <CreativeHeader data={data} role={role} user={user} />
+                <CreativeHeader data={data} role={role} user={user} creative_education={creative_education} creative_experience={creative_experience} />
               ) : (
                 <AgencyHeader data={data} role={role} user={user} />
               )}
