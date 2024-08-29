@@ -7,7 +7,11 @@ import { useContext, useEffect } from "react";
 import { Context } from "../context/SpotlightContext";
 import useHelper from "../hooks/useHelper";
 
+import { useHistoryState } from "../hooks/useHistoryState";
+
 const SpotlightCreatives = () => {
+
+  const [input, setInput] = useHistoryState("input", "");
 
   const { decodeEntities } = useHelper();
 
@@ -17,7 +21,11 @@ const SpotlightCreatives = () => {
   } = useContext(Context);
 
   useEffect(() => {
-    getSCreatives();
+    if (input?.length > 0) {
+      searchSCreative(input);
+    } else {
+      getSCreatives();
+    }
   }, []);
 
   const searchSCreative = (keyword) => {
@@ -30,7 +38,12 @@ const SpotlightCreatives = () => {
         <h1 className="community-title text-white text-center mb-4">
           Creative Spotlights
         </h1>
-        <SearchBar placeholder="Search by name or title" onSearch={searchSCreative} />
+        <SearchBar
+          input={input}
+          setInput={setInput}
+          placeholder="Search by name or title"
+          onSearch={searchSCreative}
+        />
         <div className="row g-4">
           {screatives &&
             screatives.map((item, index) => {

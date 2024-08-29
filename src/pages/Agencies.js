@@ -70,7 +70,7 @@ const Agencies = () => {
   }, [user]);
 
   useEffect(() => {
-    if (agencies?.length === 9)
+    if (agencies?.length > 0)
       setIsAgencyLoading(false);
   }, [agencies]);
 

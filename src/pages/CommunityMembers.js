@@ -11,9 +11,13 @@ import CommunityMemberWidget from "../components/community/CommunityMemberWidget
 import RestrictedLounge from "../components/RestrictedLounge";
 import { CircularProgress } from "@mui/material";
 import SearchBar from "../components/SearchBar";
+import { useHistoryState } from "../hooks/useHistoryState";
 
 const CommunityMembers = () => {
-  const { creatives, loading, loadMore, searchCreativesAdvanced } = useCreatives();
+
+  const [input, setInput] = useHistoryState("input", "");
+
+  const { creatives, loading, loadMore, getCreatives, searchCreativesAdvanced } = useCreatives();
   const [isLoading, setIsLoading] = useState(true);
 
   const {
@@ -23,6 +27,12 @@ const CommunityMembers = () => {
   useScrollLoader(loading, loadMore);
 
   const searchUser = (value) => {
+
+    if (!value || value.length == 0) {
+      getCreatives();
+      return;
+    }
+
     console.log("searching");
     setIsLoading(true);
     let terms = value.split(',');
@@ -31,8 +41,16 @@ const CommunityMembers = () => {
   };
 
   useEffect(() => {
-    setIsLoading(false);
+    if (creatives?.length >= 0) setIsLoading(false);
   }, [creatives]);
+
+  useEffect(() => {
+    if (role && input?.length > 0) {
+      searchUser(input);
+    } else {
+      getCreatives();
+    }
+  }, [role]);
 
   return (
     <>
@@ -54,7 +72,7 @@ const CommunityMembers = () => {
                   </div>
                 ) : (
                   <>
-                    <SearchBar onSearch={searchUser} placeholder="Search by member name" />
+                    <SearchBar input={input} setInput={setInput} onSearch={searchUser} placeholder="Search by member name" />
 
                     {creatives && creatives.length ? (
                       <div className="row g-4 px-1">

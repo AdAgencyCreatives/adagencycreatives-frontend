@@ -12,8 +12,12 @@ import { Context as GroupsContext } from "../context/GroupsContext";
 import { Context as AlertContext } from "../context/AlertContext";
 import SearchBar from "../components/SearchBar";
 import GroupsHeader from "../components/user/GroupsHeader";
+import { useHistoryState } from "../hooks/useHistoryState";
 
 const Groups = () => {
+
+  const [input, setInput] = useHistoryState("input", "");
+
   const [isLoading, setIsLoading] = useState(true);
   const [groupsFound, setGroupsFound] = useState(null);
 
@@ -123,9 +127,14 @@ const Groups = () => {
                   </div>
                 ) : (
                   <>
-                    {!currentView && <SearchBar placeholder="Search by group name"
-                      onSearch={searchGroups}
-                    />}
+                    {!currentView && (
+                      <SearchBar
+                        input={input}
+                        setInput={setInput}
+                        placeholder="Search by group name"
+                        onSearch={searchGroups}
+                      />
+                    )}
 
                     {groupsFound && groupsFound.length ? (
                       <div className="row g-4 px-1">
