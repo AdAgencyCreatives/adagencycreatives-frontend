@@ -1,4 +1,3 @@
-import { api } from "../api/api";
 import createDataContext from "./createDataContext";
 
 const state = { message: "" };
@@ -32,6 +31,9 @@ const hideAlert = (dispatch) => {
 
 export const { Context, Provider } = createDataContext(
   reducer,
-  { showAlert,hideAlert },
+  {
+    showAlert,
+    hideAlert
+  },
   state
 );

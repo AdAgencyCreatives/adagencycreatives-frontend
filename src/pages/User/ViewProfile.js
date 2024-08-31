@@ -153,7 +153,7 @@ const Profile = () => {
               <div className="container">
                 <div className="row">
                   <div className="col-lg-8 col-md-6 col-12">
-                    {page == "creative" && <Portfolio id={data.user_id} />}
+                    {page == "creative" && <Portfolio portfolio_items={data.portfolio_items} />}
                     {!(data?.role == 'advisor' || data?.role == 'recruiter') && (
                       <div className="content-section">
                         <h1 className="content-title mt-0">About</h1>

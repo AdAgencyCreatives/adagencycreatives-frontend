@@ -6,16 +6,9 @@ import "yet-another-react-lightbox/styles.css";
 import { IoAddCircle } from "react-icons/io5";
 import { Fullscreen, Zoom } from "yet-another-react-lightbox/plugins";
 
-const Portfolio = ({ id }) => {
-  const {
-    state: { portfolio_items },
-    getPortfolio,
-  } = useContext(Context);
-  const [index, setIndex] = useState(-1);
+const Portfolio = ({ portfolio_items }) => {
 
-  useEffect(() => {
-    getPortfolio(id);
-  }, [id]);
+  const [index, setIndex] = useState(-1);
 
   return portfolio_items.length > 0 && (
     <div className="content-section mb-5">
@@ -24,7 +17,7 @@ const Portfolio = ({ id }) => {
         <PhotoAlbum
           layout="rows"
           photos={portfolio_items.map((item) => ({
-            src: item.url,
+            src: item,
             height: 170,
             width: 170,
           }))}
@@ -32,7 +25,7 @@ const Portfolio = ({ id }) => {
           onClick={({ index: current }) => setIndex(current)}
           renderPhoto={({ photo, wrapperStyle, renderDefaultPhoto }) => {
             let current = portfolio_items.findIndex(
-              (item) => item.url == photo.src
+              (item) => item == photo.src
             );
             return (
               <div
@@ -50,7 +43,7 @@ const Portfolio = ({ id }) => {
         <Lightbox
           plugins={[Fullscreen, Zoom]}
           slides={portfolio_items.map((item) => ({
-            src: item.url,
+            src: item,
           }))}
           index={index}
           open={index >= 0}

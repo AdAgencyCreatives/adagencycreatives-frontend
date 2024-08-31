@@ -5,6 +5,7 @@ import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import { useOutletContext } from "react-router-dom";
 import { useEffect } from 'react';
 import usePermissions from '../../hooks/usePermissions';
+import { Context as CreativesContext } from "../../context/CreativesContext";
 
 import CreativeProfilePdf from "../../components/user/CreativeProfilePdf"
 import RestrictedAccess from "../../components/RestrictedAccess";
@@ -12,7 +13,6 @@ import { useState } from 'react';
 import { CircularProgress } from '@mui/material';
 
 import { useLocation, useParams } from "react-router-dom";
-import { Context as CreativesContext } from "../../context/CreativesContext";
 import { useContext } from 'react';
 import moment from "moment";
 
@@ -75,7 +75,7 @@ export default function ViewProfilePdf() {
 
     window.setTimeout(() => {
         setTimedLoading(false);
-    }, 30000);
+    }, 10000);
 
     return (
         <>
@@ -83,7 +83,7 @@ export default function ViewProfilePdf() {
                 <>
                     {skipHeaderFooter()}
                     <PDFViewer style={{ width: '100vw', height: '100vh' }}>
-                        <CreativeProfilePdf data={single_creative} filename={filename} creative_education={creative_education} creative_experience={creative_experience} />
+                        <CreativeProfilePdf data={single_creative} filename={filename} creative_education={creative_education} creative_experience={creative_experience} portfolio_items={single_creative.portfolio_items_base64} />
                     </PDFViewer>
                 </>
             ) : (

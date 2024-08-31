@@ -67,9 +67,17 @@ const LoginModal = ({ open, handleClose, setModal }) => {
           // if (window?.location?.href?.indexOf("http://localhost:3000") === 0 || window?.location?.href?.indexOf("https://staging.adagencycreatives.com") === 0) {
           //   sendAdminFriendRequest(data);
           // }
-          navigate('/community');
+          if (window.location.pathname == "/") {
+            navigate('/community');
+          } else {
+            navigate(window.location.pathname);
+          }
         } else if (data.user.role == 'agency' || data.user.role == 'advisor' || data.user.role == 'recruiter') {
-          navigate('/dashboard');
+          if (window.location.pathname == "/") {
+            navigate('/dashboard');
+          } else {
+            navigate(window.location.pathname);
+          }
         } else {
           navigate('/');
         }
