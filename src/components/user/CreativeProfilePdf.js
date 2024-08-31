@@ -8,6 +8,7 @@ import jostBold from "../../assets/fonts/Jost/static/Jost-Bold.ttf";
 import alta from "../../assets/fonts/Alta_Typeface/Alta_regular.otf";
 
 import moment from 'moment';
+import Placeholder from "../../assets/images/placeholder.png";
 
 Font.register({
     family: "JOST",
@@ -235,9 +236,18 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
         return (
             <>
                 <View style={styles.sectionHeader}>
-                    {data?.user_thumbnail_base64?.length > 0 && (
-                        <Image source={data?.user_thumbnail_base64} style={styles.sectionHeaderImage} />
+                    {data?.profile_image_base64?.length > 0 ? (
+                        <Image source={data?.profile_image_base64} style={styles.sectionHeaderImage} />
+                    ) : (
+                        <>
+                            {data?.user_thumbnail_base64?.length > 0 ? (
+                                <Image source={data?.user_thumbnail_base64} style={styles.sectionHeaderImage} />
+                            ) : (
+                                <Image source={Placeholder} style={styles.sectionHeaderImage} />
+                            )}
+                        </>
                     )}
+
                     <View style={[styles.flexCols, styles.sectionHeaderDetail]}>
                         {data?.name?.length > 0 && (
                             <Text style={{ fontSize: '26px', fontWeight: 'normal', lineHeight: '1.5em' }}>{data.name || ""}</Text>
@@ -430,8 +440,10 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                     return (
                         <>
                             <View style={[styles.flexRows, { gap: '8px', alignItems: 'flex-start', paddingBottom: '8px' }]}>
-                                {data?.profile_picture_base64?.length > 0 && (
+                                {data?.profile_picture_base64?.length > 0 ? (
                                     <Image src={data.profile_picture_base64} style={{ marginTop: '5px', width: '50px', height: '50px', objectFit: 'cover', borderRadius: '100%' }} />
+                                ) : (
+                                    <Image source={Placeholder} style={styles.sectionHeaderImage} />
                                 )}
                                 <View style={[styles.flexCols]}>
                                     <View style={[styles.flexRows, { gap: '8px' }]}>
