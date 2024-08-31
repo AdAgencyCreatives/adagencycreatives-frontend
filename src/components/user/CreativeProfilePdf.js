@@ -235,16 +235,24 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
         return (
             <>
                 <View style={styles.sectionHeader}>
-                    <Image source={data?.user_thumbnail_base64} style={styles.sectionHeaderImage} />
+                    {data?.user_thumbnail_base64?.length > 0 && (
+                        <Image source={data?.user_thumbnail_base64} style={styles.sectionHeaderImage} />
+                    )}
                     <View style={[styles.flexCols, styles.sectionHeaderDetail]}>
-                        <Text style={{ fontSize: '26px', fontWeight: 'normal', lineHeight: '1.5em' }}>{data.name || ""}</Text>
-                        <Text style={{ fontSize: '16px', fontWeight: 'normal', lineHeight: '1.5em' }}>{data.category || ""}</Text>
-                        <View style={[styles.flexRows]}>
-                            <View style={{ marginTop: '2px', marginRight: '4px' }}>
-                                <IoLocationOutlineSvg size={14} />
+                        {data?.name?.length > 0 && (
+                            <Text style={{ fontSize: '26px', fontWeight: 'normal', lineHeight: '1.5em' }}>{data.name || ""}</Text>
+                        )}
+                        {data?.category?.length > 0 && (
+                            <Text style={{ fontSize: '16px', fontWeight: 'normal', lineHeight: '1.5em' }}>{data.category || ""}</Text>
+                        )}
+                        {(data?.location?.state?.length > 0 || data?.location?.city?.length > 0) && (
+                            <View style={[styles.flexRows]}>
+                                <View style={{ marginTop: '2px', marginRight: '4px' }}>
+                                    <IoLocationOutlineSvg size={14} />
+                                </View>
+                                <Text style={{ fontSize: '14px', fontWeight: 'light', lineHeight: '1.5em' }}>{data.location.state || ""}{(data?.location?.state?.length > 0 && data?.location?.city?.length > 0) && <>, </>}{data.location.city || ""}</Text>
                             </View>
-                            <Text style={{ fontSize: '14px', fontWeight: 'light', lineHeight: '1.5em' }}>{data.location.state || ""}, {data.location.city || ""}</Text>
-                        </View>
+                        )}
                     </View>
                 </View>
             </>
@@ -258,10 +266,12 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
             const About = () => {
                 return (
                     <>
-                        <View style={[styles.flexCols]}>
-                            <Text style={styles.heading1}>About</Text>
-                            <Text style={styles.lightText}>{skipPara(data.about)}</Text>
-                        </View>
+                        {data?.about?.length > 0 && (
+                            <View style={[styles.flexCols]}>
+                                <Text style={styles.heading1}>About</Text>
+                                <Text style={styles.lightText}>{skipPara(data.about)}</Text>
+                            </View>
+                        )}
                     </>
                 );
             };
@@ -269,22 +279,24 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
             const ProfileThumbnails = () => {
                 return (
                     <>
-                        <View style={[styles.flexCols]}>
-                            <Text style={styles.heading1}>Profile Thumbnails</Text>
-                            <View style={[styles.flexRows, { flexWrap: 'wrap', gap: '8px' }]}>
-                                {data.portfolio_items_base64?.length > 0 && (
-                                    <>
-                                        {data.portfolio_items_base64.map(item => {
-                                            return (
-                                                <>
-                                                    <Image src={item} style={{ width: '90px', height: '90px', borderRadius: '8px', objectFit: 'cover' }} />
-                                                </>
-                                            );
-                                        })}
-                                    </>
-                                )}
+                        {data?.portfolio_items_base64?.length > 0 && (
+                            <View style={[styles.flexCols]}>
+                                <Text style={styles.heading1}>Profile Thumbnails</Text>
+                                <View style={[styles.flexRows, { flexWrap: 'wrap', gap: '8px' }]}>
+                                    {data.portfolio_items_base64?.length > 0 && (
+                                        <>
+                                            {data.portfolio_items_base64.map(item => {
+                                                return (
+                                                    <>
+                                                        <Image src={item} style={{ width: '90px', height: '90px', borderRadius: '8px', objectFit: 'cover' }} />
+                                                    </>
+                                                );
+                                            })}
+                                        </>
+                                    )}
+                                </View>
                             </View>
-                        </View>
+                        )}
                     </>
                 );
             };
@@ -292,12 +304,14 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
             const PortfolioSite = () => {
                 return (
                     <>
-                        <View style={[styles.flexCols]} wrap={false}>
-                            <Text style={styles.heading1}>Portfolio Site</Text>
-                            <View style={[styles.flexRows]}>
-                                <Image src={data.portfolio_website_base64} style={{ width: '250', height: 'auto', objectFit: 'cover' }} />
+                        {data?.portfolio_website_base64?.length > 0 && (
+                            <View style={[styles.flexCols]} wrap={false}>
+                                <Text style={styles.heading1}>Portfolio Site</Text>
+                                <View style={[styles.flexRows]}>
+                                    <Image src={data.portfolio_website_base64} style={{ width: '250', height: 'auto', objectFit: 'cover' }} />
+                                </View>
                             </View>
-                        </View>
+                        )}
                     </>
                 );
             };
@@ -305,16 +319,23 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
             const Education = () => {
 
                 const Item = ({ data }) => {
+
                     return (
                         <>
                             <View style={[styles.flexRows, { gap: '8px', alignItems: 'flex-start', paddingBottom: '8px' }]} wrap={false}>
                                 <Text style={{ fontSize: '20px', fontWeight: 'bold', marginTop: '-11px' }}>.</Text>
                                 <View style={[styles.flexCols]}>
                                     <View style={[styles.flexRows, { gap: '8px' }]}>
-                                        <Text style={[styles.heading3]}>{data.degree || ""}</Text>
-                                        <Text style={[styles.lightText, { fontSize: '10px', padding: '2px 0px 0px 0px' }]}>{data.completed_at && moment(data.completed_at).format("M/D/YYYY")}</Text>
+                                        {data?.degree?.length > 0 && (
+                                            <Text style={[styles.heading3]}>{data.degree || ""}</Text>
+                                        )}
+                                        {data?.completed_at?.length > 0 && (
+                                            <Text style={[styles.lightText, { fontSize: '10px', padding: '2px 0px 0px 0px' }]}>{data.completed_at && moment(data.completed_at).format("M/D/YYYY")}</Text>
+                                        )}
                                     </View>
-                                    <Text style={styles.heading3}>{data.college || ""}</Text>
+                                    {data?.college?.length > 0 && (
+                                        <Text style={styles.heading3}>{data.college || ""}</Text>
+                                    )}
                                 </View>
                             </View>
                         </>
@@ -323,12 +344,14 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
 
                 return (
                     <>
-                        <View style={[styles.flexCols]}>
-                            <Text style={styles.heading1}>Education</Text>
+                        {creative_education?.length > 0 && (
                             <View style={[styles.flexCols]}>
-                                {creative_education?.length > 0 ? creative_education?.map(item => <Item data={item} />) : <></>}
+                                <Text style={styles.heading1}>Education</Text>
+                                <View style={[styles.flexCols]}>
+                                    {creative_education?.length > 0 ? creative_education?.map(item => <Item data={item} />) : <></>}
+                                </View>
                             </View>
-                        </View>
+                        )}
                     </>
                 );
             };
@@ -336,21 +359,28 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
             const WorkExperience = () => {
 
                 const Item = ({ data }) => {
+
                     return (
                         <>
                             <View style={[styles.flexRows, { gap: '8px', alignItems: 'flex-start', paddingBottom: '8px' }]} wrap={false}>
                                 <Text style={{ fontSize: '20px', fontWeight: 'bold', marginTop: '-11px' }}>.</Text>
                                 <View style={[styles.flexCols]}>
                                     <View style={[styles.flexRows, { gap: '8px' }]}>
-                                        <Text style={[styles.heading3]}>{data.title || ""}</Text>
+                                        {data?.title?.length > 0 && (
+                                            <Text style={[styles.heading3]}>{data.title || ""}</Text>
+                                        )}
                                         <Text style={[styles.lightText, { fontSize: '10px', padding: '2px 0px 0px 0px' }]}>
                                             {data?.started_at && moment(data.started_at).format("M/D/YYYY")}
                                             {(data?.started_at && data?.completed_at) && <>–</>}
                                             {data?.completed_at && moment(data.completed_at).format("M/D/YYYY")}
                                         </Text>
                                     </View>
-                                    <Text style={styles.heading3}>{data.company || ""}</Text>
-                                    <Text style={styles.lightText}>{data.description || ""}</Text>
+                                    {data?.company?.length > 0 && (
+                                        <Text style={styles.heading3}>{data.company || ""}</Text>
+                                    )}
+                                    {data?.description?.length > 0 && (
+                                        <Text style={styles.lightText}>{data.description || ""}</Text>
+                                    )}
                                 </View>
                             </View>
                         </>
@@ -359,12 +389,14 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
 
                 return (
                     <>
-                        <View style={[styles.flexCols]}>
-                            <Text style={styles.heading1}>Work & Experience</Text>
+                        {creative_experience?.length > 0 && (
                             <View style={[styles.flexCols]}>
-                                {creative_experience?.length > 0 ? creative_experience?.map(item => <Item data={item} />) : <></>}
+                                <Text style={styles.heading1}>Work & Experience</Text>
+                                <View style={[styles.flexCols]}>
+                                    {creative_experience?.length > 0 ? creative_experience?.map(item => <Item data={item} />) : <></>}
+                                </View>
                             </View>
-                        </View>
+                        )}
                     </>
                 );
             };
@@ -398,20 +430,30 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                     return (
                         <>
                             <View style={[styles.flexRows, { gap: '8px', alignItems: 'flex-start', paddingBottom: '8px' }]}>
-                                <Image src={data.profile_picture_base64} style={{ marginTop: '5px', width: '50px', height: '50px', objectFit: 'cover', borderRadius: '100%' }} />
+                                {data?.profile_picture_base64?.length > 0 && (
+                                    <Image src={data.profile_picture_base64} style={{ marginTop: '5px', width: '50px', height: '50px', objectFit: 'cover', borderRadius: '100%' }} />
+                                )}
                                 <View style={[styles.flexCols]}>
                                     <View style={[styles.flexRows, { gap: '8px' }]}>
-                                        <Text style={[styles.heading3]}>{data.user || ""}</Text>
-                                        <View style={[styles.flexRows, { gap: '2px', alignItems: 'center' }]}>
-                                            <View style={[styles.flexCols, { justifyContent: 'center', alignItems: 'center', width: '18px', height: '18px', backgroundColor: '#daa520', borderRadius: '100%' }]}>
-                                                <Text style={[styles.lightText, { padding: '0px', fontSize: '8px', fontWeight: 'medium' }]}>{data.rating}.0</Text>
+                                        {data?.user?.length > 0 && (
+                                            <Text style={[styles.heading3]}>{data.user || ""}</Text>
+                                        )}
+                                        {(data?.rating + "")?.length > 0 && (
+                                            <View style={[styles.flexRows, { gap: '2px', alignItems: 'center' }]}>
+                                                <View style={[styles.flexCols, { justifyContent: 'center', alignItems: 'center', width: '18px', height: '18px', backgroundColor: '#daa520', borderRadius: '100%' }]}>
+                                                    <Text style={[styles.lightText, { padding: '0px', fontSize: '8px', fontWeight: 'medium' }]}>{data.rating}.0</Text>
+                                                </View>
+                                                <RenderStars count={data.rating} color='#daa520' size={12} />
+                                                <RenderStars count={5 - data.rating} color='#00000' size={12} />
                                             </View>
-                                            <RenderStars count={data.rating} color='#daa520' size={12} />
-                                            <RenderStars count={5 - data.rating} color='#00000' size={12} />
-                                        </View>
+                                        )}
                                     </View>
-                                    <Text style={styles.lightText}>{moment(data.created_at).format("MMMM D, YYYY")}</Text>
-                                    <Text style={styles.lightText}>{data.comment || ""}</Text>
+                                    {data?.created_at?.length > 0 && (
+                                        <Text style={styles.lightText}>{moment(data.created_at).format("MMMM D, YYYY")}</Text>
+                                    )}
+                                    {data?.comment?.length > 0 && (
+                                        <Text style={styles.lightText}>{data.comment || ""}</Text>
+                                    )}
                                 </View>
                             </View>
                         </>
@@ -476,41 +518,55 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                     <>
                         <View style={[styles.flexCols, styles.creativeDetails]}>
                             <Text style={[styles.heading2, { paddingTop: '14px' }]}>Creative Details</Text>
-                            <Item icon={<IoCalendarClearOutlineSvg size={12} />} heading={"Years of Experience"} content={
-                                <>
-                                    {data.years_of_experience}
-                                </>}
-                            />
-                            <Item icon={<IoMailOutlineSvg size={12} />} heading={"Email"} content={
-                                <>
-                                    {data.email}
-                                </>}
-                            />
-                            <Item icon={<IoCallOutlineSvg size={12} />} heading={"Phone Number"} content={
-                                <>
-                                    {formatPhone(data.phone_number)}
-                                </>}
-                            />
-                            <Item icon={<BullseyeIcon size={12} />} heading={"Industry Experience"} content={
-                                <>
-                                    {data.industry_experience?.length > 0 ? data.industry_experience.join(', ') : ''}
-                                </>}
-                            />
-                            <Item icon={<AdIcon size={12} />} heading={"Media Experience"} content={
-                                <>
-                                    {data.media_experience?.length > 0 ? data.media_experience.join(', ') : ''}
-                                </>}
-                            />
-                            <Item icon={<TimeIcon size={12} />} heading={"Type of Work"} content={
-                                <>
-                                    {data.employment_type?.length > 0 ? data.employment_type.join(', ') : ''}
-                                </>}
-                            />
-                            <Item icon={<FaStarSvg size={12} />} heading={"Strengths"} content={
-                                <>
-                                    {data.character_strengths?.length > 0 ? data.character_strengths.join(', ') : ''}
-                                </>}
-                            />
+                            {data?.years_of_experience?.length > 0 && (
+                                <Item icon={<IoCalendarClearOutlineSvg size={12} />} heading={"Years of Experience"} content={
+                                    <>
+                                        {data.years_of_experience}
+                                    </>}
+                                />
+                            )}
+                            {data?.email?.length > 0 && (
+                                <Item icon={<IoMailOutlineSvg size={12} />} heading={"Email"} content={
+                                    <>
+                                        {data.email}
+                                    </>}
+                                />
+                            )}
+                            {data?.phone_number?.length > 0 && (
+                                <Item icon={<IoCallOutlineSvg size={12} />} heading={"Phone Number"} content={
+                                    <>
+                                        {formatPhone(data.phone_number)}
+                                    </>}
+                                />
+                            )}
+                            {data?.industry_experience?.length > 0 && (
+                                <Item icon={<BullseyeIcon size={12} />} heading={"Industry Experience"} content={
+                                    <>
+                                        {data.industry_experience?.length > 0 ? data.industry_experience.join(', ') : ''}
+                                    </>}
+                                />
+                            )}
+                            {data?.media_experience?.length > 0 && (
+                                <Item icon={<AdIcon size={12} />} heading={"Media Experience"} content={
+                                    <>
+                                        {data.media_experience?.length > 0 ? data.media_experience.join(', ') : ''}
+                                    </>}
+                                />
+                            )}
+                            {data?.employment_type?.length > 0 && (
+                                <Item icon={<TimeIcon size={12} />} heading={"Type of Work"} content={
+                                    <>
+                                        {data.employment_type?.length > 0 ? data.employment_type.join(', ') : ''}
+                                    </>}
+                                />
+                            )}
+                            {data?.character_strengths?.length > 0 && (
+                                <Item icon={<FaStarSvg size={12} />} heading={"Strengths"} content={
+                                    <>
+                                        {data.character_strengths?.length > 0 ? data.character_strengths.join(', ') : ''}
+                                    </>}
+                                />
+                            )}
                         </View >
                     </>
                 );

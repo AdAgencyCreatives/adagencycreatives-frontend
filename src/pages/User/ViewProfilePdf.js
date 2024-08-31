@@ -28,7 +28,7 @@ export default function ViewProfilePdf() {
 
     const {
         state: { single_creative, creative_education, creative_experience },
-        getCreative,
+        getCreativeForPdf,
     } = useContext(CreativesContext);
 
     const [timedLoading, setTimedLoading] = useState(true);
@@ -57,7 +57,7 @@ export default function ViewProfilePdf() {
 
     useEffect(() => {
         if (allowed) {
-            getCreative(username, (error) => {
+            getCreativeForPdf(username, (error) => {
                 if (error) {
                     console.log(error);
                     setTimedLoading(false);
