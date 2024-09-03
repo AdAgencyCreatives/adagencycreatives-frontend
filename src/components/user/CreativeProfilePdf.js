@@ -120,20 +120,14 @@ const styles = StyleSheet.create({
 /* Create Document Component */
 export default function CreativeProfilePdf({ data = null, filename = "", creative_education = null, creative_experience = null }) {
 
-    const skipPara = (text) => {
-        if (!text || !text?.length > 0) {
-            return "";
-        }
+    const htmlToText = (html) => {
+        var tempDivElement = document.createElement("div");
 
-        if (text.indexOf("<p>") == 0) {
-            text = text.substring(3);
-        }
+        // Set the HTML content with the given value
+        tempDivElement.innerHTML = html;
 
-        if (text.indexOf("</p>") == text.length - 4) {
-            text = text.substring(0, text.length - 4);
-        }
-
-        return text;
+        // Retrieve the text property of the element 
+        return tempDivElement.textContent || tempDivElement.innerText || "";
     };
 
     const isCharNumber = (c) => {
@@ -273,13 +267,22 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
 
         const ContentLeft = () => {
 
+            const getAboutLines = () => {
+                let lines = [];
+                let aboutText = htmlToText(data.about);
+                if (aboutText.indexOf('\n') >= 0) {
+                    lines = aboutText.split('\n');
+                }
+                return lines;
+            };
+
             const About = () => {
                 return (
                     <>
                         {data?.about?.length > 0 && (
                             <View style={[styles.flexCols]}>
                                 <Text style={styles.heading1}>About</Text>
-                                <Text style={styles.lightText}>{skipPara(data.about)}</Text>
+                                {getAboutLines().map(line => <Text style={styles.lightText}>{line}</Text>)}
                             </View>
                         )}
                     </>
