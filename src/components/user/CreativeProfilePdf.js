@@ -272,6 +272,8 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                 let aboutText = htmlToText(data.about);
                 if (aboutText.indexOf('\n') >= 0) {
                     lines = aboutText.split('\n');
+                } else {
+                    lines = [aboutText];
                 }
                 return lines;
             };
