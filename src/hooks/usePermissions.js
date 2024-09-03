@@ -177,6 +177,10 @@ const usePermissions = () => {
     };
 
     return {
+        token,
+        role,
+        user,
+        subscription_status,
         isAdmin,
         isAdvisor,
         isAgency,

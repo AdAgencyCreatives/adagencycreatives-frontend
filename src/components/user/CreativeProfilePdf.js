@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
 });
 
 /* Create Document Component */
-export default function CreativeProfilePdf({ data = null, filename = "", creative_education = null, creative_experience = null }) {
+export default function CreativeProfilePdf({ data = null, filename = "", creative_education = null, creative_experience = null, allowPhone = false }) {
 
     const htmlToText = (html) => {
         var tempDivElement = document.createElement("div");
@@ -549,7 +549,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                                     </>}
                                 />
                             )}
-                            {data?.phone_number?.length > 0 && (
+                            {allowPhone && data?.phone_number?.length > 0 && (
                                 <Item icon={<IoCallOutlineSvg size={12} />} heading={"Phone Number"} content={
                                     <>
                                         {formatPhone(data.phone_number)}

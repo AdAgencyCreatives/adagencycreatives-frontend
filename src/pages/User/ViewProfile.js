@@ -42,8 +42,7 @@ const Profile = () => {
 
   const {
     state: { single_agency, open_positions },
-    getAgency,
-    getOpenPositions,
+    getAgency, getOpenPositions,
   } = useContext(AgenciesContext);
 
   const {
@@ -114,6 +113,26 @@ const Profile = () => {
 
 
   }, [single_creative, single_agency]);
+
+  useEffect(() => {
+    if (page == "creative") {
+      setData(single_creative);
+      if (single_creative && Object.keys(single_creative)?.length > 0) {
+        if (single_creative?.seo?.tags?.length > 0) changeSeo('keywords', single_creative.seo.tags);
+        if (single_creative?.seo?.description?.length > 0) changeSeo('description', single_creative.seo.description);
+        if (single_creative?.seo?.title?.length > 0) changeSeo('title', single_creative.seo.title);
+      }
+    } else if (page == "agency") {
+      setData(single_agency);
+      if (single_agency && Object.keys(single_agency)?.length > 0) {
+        if (single_agency?.seo?.tags?.length > 0) changeSeo('keywords', single_agency.seo.tags);
+        if (single_agency?.seo?.description?.length > 0) changeSeo('description', single_agency.seo.description);
+        if (single_agency?.seo?.title?.length > 0) changeSeo('title', single_agency.seo.title);
+      }
+    }
+
+
+  }, [user, single_creative]);
 
   const isCreative = user?.role == "creative";
   const isAdmin = user?.role == "admin";

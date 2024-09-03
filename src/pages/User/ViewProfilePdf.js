@@ -6,6 +6,7 @@ import { useOutletContext } from "react-router-dom";
 import { useEffect } from 'react';
 import usePermissions from '../../hooks/usePermissions';
 import { Context as CreativesContext } from "../../context/CreativesContext";
+import { Context as AgenciesContext } from "../../context/AgenciesContext";
 
 import CreativeProfilePdf from "../../components/user/CreativeProfilePdf"
 import RestrictedAccess from "../../components/RestrictedAccess";
@@ -26,16 +27,9 @@ export default function ViewProfilePdf() {
 
     const { username } = useParams();
 
-    const {
-        state: { single_creative, creative_education, creative_experience },
-        getCreativeForPdf,
-    } = useContext(CreativesContext);
-
-    const [timedLoading, setTimedLoading] = useState(true);
-
-    const [setSkipHeaderFooter] = useOutletContext();
 
     const {
+        user,
         isAdmin,
         isAdvisor,
         isAgency,
@@ -46,6 +40,20 @@ export default function ViewProfilePdf() {
         which_search,
         proceed_search,
     } = usePermissions();
+
+    const {
+        state: { single_creative, creative_education, creative_experience },
+        getCreativeForPdf,
+    } = useContext(CreativesContext);
+
+    const {
+        isCreativeApplicant,
+    } = useContext(AgenciesContext);
+
+    const [timedLoading, setTimedLoading] = useState(true);
+    const [hasCreativeApplied, setHasCreativeApplied] = useState(false);
+
+    const [setSkipHeaderFooter] = useOutletContext();
 
     const allowed = (isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription));
 
@@ -73,6 +81,14 @@ export default function ViewProfilePdf() {
         }
     }, [single_creative]);
 
+    useEffect(() => {
+        if (user && single_creative && Object.keys(single_creative)?.length > 0) {
+            isCreativeApplicant(user.uuid, single_creative.user_id, (data) => {
+                setHasCreativeApplied(data);
+            });
+        }
+    }, [user, single_creative]);
+
     window.setTimeout(() => {
         setTimedLoading(false);
     }, 10000);
@@ -83,7 +99,7 @@ export default function ViewProfilePdf() {
                 <>
                     {skipHeaderFooter()}
                     <PDFViewer style={{ width: '100vw', height: '100vh' }}>
-                        <CreativeProfilePdf data={single_creative} filename={filename} creative_education={creative_education} creative_experience={creative_experience} portfolio_items={single_creative.portfolio_items_base64} />
+                        <CreativeProfilePdf data={single_creative} filename={filename} creative_education={creative_education} creative_experience={creative_experience} portfolio_items={single_creative.portfolio_items_base64} allowPhone={isAdmin || hasCreativeApplied} />
                     </PDFViewer>
                 </>
             ) : (

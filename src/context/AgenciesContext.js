@@ -432,6 +432,16 @@ const getCreativeApplications = (dispatch) => {
   };
 };
 
+const isCreativeApplicant = (dispatch) => {
+  return async (job_user_id, creative_user_id, cb = () => { }) => {
+    try {
+      const response = await api.get("/is_creative_applicant?job_user_id=" + job_user_id + "&creative_user_id=" + creative_user_id);
+      const data = response.data;
+      cb(response.data);
+    } catch (error) { }
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
   {
@@ -460,6 +470,7 @@ export const { Context, Provider } = createDataContext(
     saveAdvisorRecruiter,
     generateThumbnailAttachment,
     getCreativeApplications,
+    isCreativeApplicant,
   },
   state
 );

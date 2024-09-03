@@ -42,7 +42,7 @@ const Sidebar = ({ data, user }) => {
 
   const {
     state: { subscription, creative_applications, },
-    getSubscriptionStatus, getCreativeApplications
+    getSubscriptionStatus, isCreativeApplicant,
   } = useContext(AgenciesContext);
 
   const isCreative = user?.role == "creative";
@@ -96,12 +96,11 @@ const Sidebar = ({ data, user }) => {
   }, []);
 
   useEffect(() => {
-    getCreativeApplications(user.uuid, data.id);
-  }, []);
-
-  useEffect(() => {
-    setHasCreativeApplications(creative_applications?.length > 0);
-  }, [creative_applications]);
+    if (user?.uuid?.length > 0 && data?.user_id?.length > 0)
+      isCreativeApplicant(user.uuid, data.user_id, (data) => {
+        setHasCreativeApplications(data);
+      });
+  }, [user, data]);
 
   useEffect(() => {
     if (checkPermissions()) getResume(data.user_id);
@@ -272,7 +271,7 @@ const Sidebar = ({ data, user }) => {
           ) : (
             ""
           )}
-          {data.email && (isOwnProfile || isAdmin || ((isAgency || isAdvisor) && (subscription_status == "active" || hasCreativeApplications)) || isFriend) && (
+          {data.email && (isOwnProfile || isAdmin || ((isAgency || isAdvisor || isRecruiter) && (subscription_status == "active" || hasCreativeApplications)) || isFriend) && (
             <div className="item">
               <IoMailOutline size={22} />
               <div className="details">
@@ -281,7 +280,7 @@ const Sidebar = ({ data, user }) => {
               </div>
             </div>
           )}
-          {data.phone_number && (isOwnProfile || isAdmin || ((isAgency || isAdvisor) && (subscription_status == "active")) || isFriend) && (
+          {data.phone_number && (isOwnProfile || isAdmin || ((isAgency || isAdvisor || isRecruiter) && (subscription_status == "active" && hasCreativeApplications)) || isFriend) && (
             <div className="item">
               <IoCallOutline size={22} />
               <div className="details">
