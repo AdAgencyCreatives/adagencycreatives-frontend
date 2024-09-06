@@ -99,7 +99,9 @@ const CommunityMembers = () => {
                         </div>
                       </div>
                     ) : (
-                      <div className="center-page">Sorry, nothing here.</div>
+                      <div className="no_result">
+                        <p>Please try again. No exact results found.</p>
+                      </div>
                     )}
                   </>
                 )}
