@@ -45,10 +45,6 @@ export default function ViewProfilePdf() {
         getCreativeForPdf,
     } = useContext(CreativesContext);
 
-    const {
-        isCreativeApplicant,
-    } = useContext(AgenciesContext);
-
     const [timedLoading, setTimedLoading] = useState(true);
     const [hasCreativeApplied, setHasCreativeApplied] = useState(false);
 
@@ -80,14 +76,6 @@ export default function ViewProfilePdf() {
         }
     }, [single_creative]);
 
-    useEffect(() => {
-        if (user && single_creative && Object.keys(single_creative)?.length > 0) {
-            isCreativeApplicant(user.uuid, single_creative.user_id, (data) => {
-                setHasCreativeApplied(data);
-            });
-        }
-    }, [user, single_creative]);
-
     window.setTimeout(() => {
         setTimedLoading(false);
     }, 10000);
@@ -98,7 +86,7 @@ export default function ViewProfilePdf() {
                 <>
                     {skipHeaderFooter()}
                     <PDFViewer style={{ width: '100vw', height: '100vh' }}>
-                        <CreativeProfilePdf data={single_creative} filename={filename} creative_education={creative_education} creative_experience={creative_experience} portfolio_items={single_creative.portfolio_items_base64} allowPhone={isAdmin || hasCreativeApplied} />
+                        <CreativeProfilePdf data={single_creative} filename={filename} creative_education={creative_education} creative_experience={creative_experience} portfolio_items={single_creative.portfolio_items_base64} allowPhone={isAdmin || single_creative?.logged_in_user?.is_creative_applicant} />
                     </PDFViewer>
                 </>
             ) : (

@@ -40,8 +40,6 @@ const Header = ({ data, role, user, creative_education, creative_experience }) =
   const [item, setItem] = useState({});
   const [isDownloading, setDownloading] = useState(false);
   const [appIdNotes, setAppIdNotes] = useState("");
-  const [hasCreativeApplied, setHasCreativeApplied] = useState(false);
-  const [allQuriesDone, setAllQueriesDone] = useState(false);
 
   const handleClose = () => setOpen(false);
   const handleCloseNotes = () => setOpenNotes(false);
@@ -57,10 +55,6 @@ const Header = ({ data, role, user, creative_education, creative_experience }) =
     state: { subscription_status },
   } = useContext(AuthContext);
 
-  const {
-    isCreativeApplicant,
-  } = useContext(AgenciesContext);
-
   const isCreative = role == "creative";
   const isAdmin = role == "admin";
   const isAdvisor = role == "advisor";
@@ -74,14 +68,6 @@ const Header = ({ data, role, user, creative_education, creative_experience }) =
     setSubscription(subscription_status == "active");
     console.log(subscription_status);
   }, [subscription_status]);
-
-  useEffect(() => {
-    if (user?.uuid?.length > 0 && data?.user_id?.length > 0)
-      isCreativeApplicant(user.uuid, data.user_id, (data) => {
-        setHasCreativeApplied(data);
-        setAllQueriesDone(true);
-      });
-  }, [user, data]);
 
   const validateAccess = (e, permissions, message) => {
     if (permissions.length > 0) {
@@ -174,9 +160,9 @@ const Header = ({ data, role, user, creative_education, creative_experience }) =
             </div>
             <div className="col-md-7">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
-                {allQuriesDone && ((isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription)) && data && Object.keys(data).length > 0) && (
+                {((isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription)) && data && Object.keys(data).length > 0) && (
                   <>
-                    <PDFDownloadLink className="" document={<CreativeProfilePdf data={data} filename={getDownloadFilename()} creative_education={creative_education} creative_experience={creative_experience} />} fileName={getDownloadFilename() + ".pdf"} allowPhone={isAdmin || hasCreativeApplied}>
+                    <PDFDownloadLink className="" document={<CreativeProfilePdf data={data} filename={getDownloadFilename()} creative_education={creative_education} creative_experience={creative_experience} allowPhone={isAdmin || data?.logged_in_user?.is_creative_applicant} />} fileName={getDownloadFilename() + ".pdf"}>
                       <button className={"btn btn-dark fs-5"}>
                         Download Profile PDF
                       </button>
