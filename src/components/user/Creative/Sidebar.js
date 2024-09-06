@@ -41,7 +41,7 @@ const Sidebar = ({ data, user }) => {
   } = useContext(CreativesContext);
 
   const {
-    state: { subscription, creative_applications, },
+    state: { subscription, },
     getSubscriptionStatus, isCreativeApplicant,
   } = useContext(AgenciesContext);
 

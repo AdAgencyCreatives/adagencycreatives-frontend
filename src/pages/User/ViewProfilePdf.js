@@ -27,7 +27,6 @@ export default function ViewProfilePdf() {
 
     const { username } = useParams();
 
-
     const {
         user,
         isAdmin,

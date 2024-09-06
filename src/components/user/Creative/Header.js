@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useContext, useEffect, useState } from "react";
 import { Context as AuthContext } from "../../../context/AuthContext";
+import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 import FriendshipWidget from "../../../components/community/FriendshipWidget";
 import Message from "../../dashboard/Modals/Message";
@@ -39,6 +40,8 @@ const Header = ({ data, role, user, creative_education, creative_experience }) =
   const [item, setItem] = useState({});
   const [isDownloading, setDownloading] = useState(false);
   const [appIdNotes, setAppIdNotes] = useState("");
+  const [hasCreativeApplied, setHasCreativeApplied] = useState(false);
+  const [allQuriesDone, setAllQueriesDone] = useState(false);
 
   const handleClose = () => setOpen(false);
   const handleCloseNotes = () => setOpenNotes(false);
@@ -54,6 +57,10 @@ const Header = ({ data, role, user, creative_education, creative_experience }) =
     state: { subscription_status },
   } = useContext(AuthContext);
 
+  const {
+    isCreativeApplicant,
+  } = useContext(AgenciesContext);
+
   const isCreative = role == "creative";
   const isAdmin = role == "admin";
   const isAdvisor = role == "advisor";
@@ -67,6 +74,14 @@ const Header = ({ data, role, user, creative_education, creative_experience }) =
     setSubscription(subscription_status == "active");
     console.log(subscription_status);
   }, [subscription_status]);
+
+  useEffect(() => {
+    if (user?.uuid?.length > 0 && data?.user_id?.length > 0)
+      isCreativeApplicant(user.uuid, data.user_id, (data) => {
+        setHasCreativeApplied(data);
+        setAllQueriesDone(true);
+      });
+  }, [user, data]);
 
   const validateAccess = (e, permissions, message) => {
     if (permissions.length > 0) {
@@ -159,18 +174,18 @@ const Header = ({ data, role, user, creative_education, creative_experience }) =
             </div>
             <div className="col-md-7">
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
-                {((isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription)) && data && Object.keys(data).length > 0) && (
+                {allQuriesDone && ((isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription)) && data && Object.keys(data).length > 0) && (
                   <>
-                    <PDFDownloadLink className="mobile-view" document={<CreativeProfilePdf data={data} filename={getDownloadFilename()} creative_education={creative_education} creative_experience={creative_experience} />} fileName={getDownloadFilename() + ".pdf"}>
+                    <PDFDownloadLink className="" document={<CreativeProfilePdf data={data} filename={getDownloadFilename()} creative_education={creative_education} creative_experience={creative_experience} />} fileName={getDownloadFilename() + ".pdf"} allowPhone={isAdmin || hasCreativeApplied}>
                       <button className={"btn btn-dark fs-5"}>
                         Download Profile PDF
                       </button>
                     </PDFDownloadLink>
-                    <a className="desktop-view" href={"/creative-profile/" + data.slug} target="_blank">
+                    {/* <a className="desktop-view" href={"/creative-profile/" + data.slug} target="_blank">
                       <button className={"btn btn-dark fs-5"}>
                         View/Download Profile PDF
                       </button>
-                    </a>
+                    </a> */}
                   </>
                 )}
                 {isDownloading && (<CircularProgress style={{ minWidth: "40px", minHeight: "40px" }} />)}

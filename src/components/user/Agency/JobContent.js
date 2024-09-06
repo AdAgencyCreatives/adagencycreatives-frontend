@@ -167,9 +167,34 @@ const JobContent = ({ user, data, item, setAuthModalOpen }) => {
                             {role == "creative" && (
                               <>
                                 {isLoading && (<CircularProgress />)}
-                                <Tooltip type="featured" title={
-                                  <div className="no-transform" style={{ whiteSpace: 'pre-line', color: '#000000' }}>{"Before applying we recommend" + "\n" + "you review your resume details" + "\n" + "Job Dashboard > My Resume"}</div>
-                                }>
+                                {user?.role?.length > 0 ? (
+                                  <Tooltip type="featured" title={
+                                    <div className="no-transform" style={{ whiteSpace: 'pre-line', color: '#000000' }}>{"Before applying we recommend" + "\n" + "you review your resume details" + "\n" + "Job Dashboard > My Resume"}</div>
+                                  }>
+                                    <Link
+                                      to={item.apply_type.toLowerCase() == "external" ? rectify_url(item.external_link) : ""}
+                                      target={item.apply_type.toLowerCase() == "external" ? "_blank" : ""}
+                                      className="btn btn-apply btn-apply-job-external "
+                                      onClick={(e) => {
+                                        if (!isCreative) {
+                                          showAlert("Login as a Creative to apply");
+                                          e.preventDefault();
+                                        } else if (item.apply_type.toLowerCase() == "internal") {
+                                          e.preventDefault();
+                                          setJob(item.id);
+                                          setOpen(true);
+                                        } else if (item.apply_type.toLowerCase() == "external") {
+                                          handleApplyExternalJob(item);
+                                        }
+                                      }}
+                                      disabled={isLoading ? "disabled" : ""}
+                                    >
+                                      Apply Now
+                                      <i className="next flaticon-right-arrow"></i>
+
+                                    </Link>
+                                  </Tooltip>
+                                ) : (
                                   <Link
                                     to={item.apply_type.toLowerCase() == "external" ? rectify_url(item.external_link) : ""}
                                     target={item.apply_type.toLowerCase() == "external" ? "_blank" : ""}
@@ -192,7 +217,7 @@ const JobContent = ({ user, data, item, setAuthModalOpen }) => {
                                     <i className="next flaticon-right-arrow"></i>
 
                                   </Link>
-                                </Tooltip>
+                                )}
                               </>
                             )}
                           </>
