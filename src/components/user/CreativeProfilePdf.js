@@ -9,6 +9,7 @@ import alta from "../../assets/fonts/Alta_Typeface/Alta_regular.otf";
 
 import moment from 'moment';
 import Placeholder from "../../assets/images/placeholder.png";
+import AdAgencyLogo from "../../assets/images/AdAgency.png";
 
 Font.register({
     family: "JOST",
@@ -33,7 +34,21 @@ const styles = StyleSheet.create({
         fontFamily: 'JOST',
         flexDirection: 'column',
         backgroundColor: '#fff',
-        padding: '12.7mm'
+        padding: '12.7mm 12.7mm 25.4mm 12.7mm'
+    },
+    fixed: {
+        bottom: '12.7mm',
+        left: '12.7mm',
+        width: '100%',
+        height: '12.7mm',
+        padding: 0,
+        margin: 0,
+        position: 'absolute',
+        backgroundColor: '#000',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     section: {
         margin: 0,
@@ -201,6 +216,21 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
         );
     };
 
+    const CopyrightSvg = ({ size = 16, color = "currentColor" }) => {
+        return (
+            <Svg stroke={color} fill={color} strokeWidth="0" viewBox="0 0 512 512" height={size + "px"} width={size + "px"} xmlns="http://www.w3.org/2000/svg">
+                <Path d="M138.357,0C62.066,0,0,62.066,0,138.357s62.066,138.357,138.357,138.357s138.357-62.066,138.357-138.357
+		S214.648,0,138.357,0z M138.357,258.715C71.992,258.715,18,204.723,18,138.357S71.992,18,138.357,18
+		s120.357,53.992,120.357,120.357S204.723,258.715,138.357,258.715z"/>
+                <Path d="M194.798,160.903c-4.188-2.677-9.753-1.454-12.432,2.732c-8.694,13.593-23.503,21.708-39.614,21.708
+		c-25.908,0-46.985-21.078-46.985-46.986s21.077-46.986,46.985-46.986c15.633,0,30.2,7.747,38.968,20.723
+		c2.782,4.117,8.375,5.201,12.496,2.418c4.118-2.782,5.201-8.377,2.418-12.496c-12.118-17.937-32.262-28.645-53.882-28.645
+		c-35.833,0-64.985,29.152-64.985,64.986s29.152,64.986,64.985,64.986c22.281,0,42.759-11.218,54.778-30.009
+		C200.208,169.147,198.985,163.582,194.798,160.903z"/>
+            </Svg>
+        );
+    };
+
     const BullseyeIcon = ({ size = 16 }) => {
         return (
             <Image src="data:image/png;base64,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"
@@ -230,19 +260,19 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
         return (
             <>
                 <View style={styles.sectionHeader}>
-                    {data?.profile_image_base64?.length > 0 ? (
-                        <Image source={data?.profile_image_base64} style={styles.sectionHeaderImage} />
+                    {data?.user_thumbnail_base64?.length > 0 ? (
+                        <Image source={data?.user_thumbnail_base64} style={styles.sectionHeaderImage} />
                     ) : (
                         <>
-                            {data?.user_thumbnail_base64?.length > 0 ? (
-                                <Image source={data?.user_thumbnail_base64} style={styles.sectionHeaderImage} />
+                            {data?.profile_image_base64?.length > 0 ? (
+                                <Image source={data?.profile_image_base64} style={styles.sectionHeaderImage} />
                             ) : (
                                 <Image source={Placeholder} style={styles.sectionHeaderImage} />
                             )}
                         </>
                     )}
 
-                    <View style={[styles.flexCols, styles.sectionHeaderDetail]}>
+                    <View style={[styles.flexCols, styles.sectionHeaderDetail, { flex: 1 }]}>
                         {data?.name?.length > 0 && (
                             <Text style={{ fontSize: '26px', fontWeight: 'normal', lineHeight: '1.5em' }}>{data.name || ""}</Text>
                         )}
@@ -258,6 +288,8 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                             </View>
                         )}
                     </View>
+
+                    <Image source={AdAgencyLogo} style={styles.sectionHeaderImage} />
                 </View>
             </>
         );
@@ -448,7 +480,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                                 {data?.profile_picture_base64?.length > 0 ? (
                                     <Image src={data.profile_picture_base64} style={{ marginTop: '5px', width: '50px', height: '50px', objectFit: 'cover', borderRadius: '100%' }} />
                                 ) : (
-                                    <Image source={Placeholder} style={styles.sectionHeaderImage} />
+                                    <Image source={Placeholder} style={{ marginTop: '5px', width: '50px', height: '50px', objectFit: 'cover', borderRadius: '100%' }} />
                                 )}
                                 <View style={[styles.flexCols]}>
                                     <View style={[styles.flexRows, { gap: '8px' }]}>
@@ -479,18 +511,20 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
 
                 return (
                     <>
-                        <View style={[styles.flexCols]} wrap={false}>
-                            <View style={[styles.flexRows]}>
-                                <Text style={styles.heading1}>Creative Reviews</Text>
-                                <View style={[styles.flexRows, { margin: '14px', justifyContent: 'center', alignItems: 'center', width: 'auto', padding: '0px 5px', height: '20px', backgroundColor: '#daa520', borderRadius: '100%', gap: '5px' }]}>
-                                    <FaStarSvg size={12} />
-                                    <Text style={[styles.heading3]}>{average(data.reviews || [])}</Text>
+                        {data.reviews?.length > 0 && (
+                            <View style={[styles.flexCols]} wrap={false}>
+                                <View style={[styles.flexRows]}>
+                                    <Text style={styles.heading1}>Creative Reviews</Text>
+                                    <View style={[styles.flexRows, { margin: '14px', justifyContent: 'center', alignItems: 'center', width: 'auto', padding: '0px 5px', height: '20px', backgroundColor: '#daa520', borderRadius: '100%', gap: '5px' }]}>
+                                        <FaStarSvg size={12} />
+                                        <Text style={[styles.heading3]}>{average(data.reviews || [])}</Text>
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={[styles.flexCols]}>
-                                {data.reviews?.length > 0 ? data.reviews?.map(item => <Item data={item} />) : <></>}
-                            </View>
-                        </View >
+                                <View style={[styles.flexCols]}>
+                                    {data.reviews.map(item => <Item data={item} />)}
+                                </View>
+                            </View >
+                        )}
                     </>
                 );
             };
@@ -629,7 +663,12 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
     const Footer = () => {
         return (
             <>
-
+                <View fixed style={[styles.fixed]}>
+                    <View style={{ marginTop: '14px', marginRight: '-4px' }}><CopyrightSvg size={20} color='#fff' /></View>
+                    <Text style={[styles.lightText, { color: '#fff', padding: 0, margin: 0, lineHeight: 1, fontWeight: 'medium' }]}>
+                        {(new Date()).getFullYear()} Ad Agency Creatives. All Rights Reserved.
+                    </Text>
+                </View>
             </>
         );
     };
