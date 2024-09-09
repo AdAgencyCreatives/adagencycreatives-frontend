@@ -28,6 +28,7 @@ export default function ViewProfilePdf() {
     const { username } = useParams();
 
     const {
+        token,
         user,
         isAdmin,
         isAdvisor,
@@ -78,7 +79,7 @@ export default function ViewProfilePdf() {
 
     window.setTimeout(() => {
         setTimedLoading(false);
-    }, 10000);
+    }, 30000);
 
     return (
         <>
@@ -90,12 +91,21 @@ export default function ViewProfilePdf() {
                     </PDFViewer>
                 </>
             ) : (
-                <RestrictedAccess
-                    title={timedLoading ? 'View/Download Profile PDF' : 'Restricted Access'}
-                    message={timedLoading ? <>
-                        <CircularProgress size={30} /><br />Loading...
-                    </> : 'Active subscription required. Post a Job to View/Download Profile PDF'}
-                />
+                <>
+                    {(!token || !user) ? (
+                        <RestrictedAccess
+                            title={'Restricted Access'}
+                            message={'Please login to view profile'}
+                        />
+                    ) : (
+                        <RestrictedAccess
+                            title={timedLoading ? 'View/Download Profile PDF' : 'Restricted Access'}
+                            message={timedLoading ? <>
+                                <CircularProgress size={30} /><br />Loading...
+                            </> : 'Active subscription required. Post a Job to View/Download Profile PDF'}
+                        />
+                    )}
+                </>
             )}
         </>
     );
