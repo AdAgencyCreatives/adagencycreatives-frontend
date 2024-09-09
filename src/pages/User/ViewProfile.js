@@ -54,7 +54,7 @@ const Profile = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 30000);
   }, []);
 
   useEffect(() => {
@@ -93,6 +93,12 @@ const Profile = () => {
       getOpenPositions(data.user_id, 0, 1);
     }
   }, [page, data]);
+
+  useEffect(() => {
+    if (Object.keys(data)?.length > 0) {
+      setLoading(false);
+    }
+  }, [data]);
 
   useEffect(() => {
     if (page == "creative") {
