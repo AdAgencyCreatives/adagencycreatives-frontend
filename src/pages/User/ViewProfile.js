@@ -37,7 +37,7 @@ const Profile = () => {
 
   const {
     state: { single_creative, creative_education, creative_experience },
-    getCreative,
+    getCreativeForPdf,
   } = useContext(CreativesContext);
 
   const {
@@ -64,7 +64,7 @@ const Profile = () => {
   useEffect(() => {
     if (token) {
       if (page == "creative") {
-        getCreative(username, (error) => {
+        getCreativeForPdf(username, (error) => {
           if (error) {
             setLoading(false);
           }
