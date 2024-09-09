@@ -1,5 +1,5 @@
-import React from 'react';
-import { Circle, Document, Font, Image, Page, Path, Rect, StyleSheet, Svg, Text, View } from '@react-pdf/renderer';
+import React, { cloneElement } from 'react';
+import { Circle, Document, Font, Image, Link, Page, Path, Rect, StyleSheet, Svg, Text, View } from '@react-pdf/renderer';
 
 import jost from "../../assets/fonts/Jost/static/Jost-Regular.ttf";
 import jostLight from "../../assets/fonts/Jost/static/Jost-Light.ttf";
@@ -66,6 +66,11 @@ const styles = StyleSheet.create({
         margin: 0,
         padding: 0,
     },
+    flexCenter: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     sectionHeader: {
         display: 'flex',
         flexDirection: 'row',
@@ -129,6 +134,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#f6f6f6',
         borderRadius: '8px',
         padding: '0px 10px 6px 10px'
+    },
+
+    linkButton: {
+        fontWeight: 'medium',
+        width: '100%',
+        backgroundColor: '#000',
+        color: '#daa520',
+        borderRadius: '3px',
+        textDecoration: 'none',
+        lineHeight: 1,
+        minHeight: '35px'
     },
 });
 
@@ -579,7 +595,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                             {data?.email?.length > 0 && (
                                 <Item icon={<IoMailOutlineSvg size={12} />} heading={"Email"} content={
                                     <>
-                                        {data.email}
+                                        <Link src={"mailto:" + data.email} style={{ color: '#daa520', textDecoration: 'none' }}>{data.email}</Link>
                                     </>}
                                 />
                             )}
@@ -634,7 +650,9 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
             const Resume = () => {
                 return (
                     <>
-
+                        <View style={[styles.flexCols, styles.creativeDetails, { marginTop: '10px', padding: '10px' }]}>
+                            <Link src={data.resume} style={[styles.flexCenter, styles.lightText, styles.linkButton]}>Resume</Link>
+                        </View>
                     </>
                 );
             };
