@@ -650,7 +650,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
             const Resume = () => {
                 return (
                     <>
-                        <View style={[styles.flexCols, styles.creativeDetails, { marginTop: '10px', padding: '10px' }]}>
+                        <View wrap style={[styles.flexCols, styles.creativeDetails, { marginTop: '10px', padding: '10px' }]}>
                             <Link src={data.resume} style={[styles.flexCenter, styles.lightText, styles.linkButton]}>Resume</Link>
                         </View>
                     </>
