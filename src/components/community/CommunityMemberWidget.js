@@ -58,7 +58,7 @@ const CommunityMemberWidget = (props) => {
                                 <Link className="text-dark" to={`/creative/${props.creative.slug}`}>
                                     {props.creative.name}
                                 </Link></div>
-                            <div className="position">{props.creative.title}</div>
+                            <div className="position">{props.creative.category}</div>
                             <UserLocation location={props.creative?.location} />
                         </div>
                         <div className="user-actions">

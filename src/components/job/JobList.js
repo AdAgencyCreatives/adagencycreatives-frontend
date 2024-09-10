@@ -207,7 +207,7 @@ const JobList = ({ data, showAgency = true }) => {
                     ) : (
                       <>
                         {isLoading && (<CircularProgress />)}
-                        {user?.role?.length > 0 ? (
+                        {user?.role?.length > 0 && user?.role == "creative" ? (
                           <Tooltip type="featured" title={
                             <div className="no-transform" style={{ whiteSpace: 'pre-line', color: '#000000' }}>{"Before applying we recommend" + "\n" + "you review your resume details" + "\n" + "Job Dashboard > My Resume"}</div>
                           }>

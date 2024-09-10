@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         bottom: '12.7mm',
         left: '12.7mm',
         width: '100%',
-        height: '12.7mm',
+        height: '7mm',
         padding: 0,
         margin: 0,
         position: 'absolute',
@@ -326,7 +326,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                 return (
                     <>
                         {data?.about?.length > 0 && (
-                            <View style={[styles.flexCols]}>
+                            <View wrap={false} style={[styles.flexCols]}>
                                 <Text style={styles.heading1}>About</Text>
                                 {getAboutLines().map(line => <Text style={styles.lightText}>{line}</Text>)}
                             </View>
@@ -339,7 +339,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                 return (
                     <>
                         {data?.portfolio_items_base64?.length > 0 && (
-                            <View style={[styles.flexCols]}>
+                            <View wrap={false} style={[styles.flexCols]}>
                                 <Text style={styles.heading1}>Profile Thumbnails</Text>
                                 <View style={[styles.flexRows, { flexWrap: 'wrap', gap: '8px' }]}>
                                     {data.portfolio_items_base64?.length > 0 && (
@@ -378,7 +378,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                 return (
                     <>
                         {data?.portfolio_website_base64?.length > 0 && (
-                            <View style={[styles.flexCols]} wrap={false}>
+                            <View wrap={false} style={[styles.flexCols]}>
                                 <Text style={styles.heading1}>Portfolio Site</Text>
                                 {portfolio_link?.length > 0 ? (
                                     <Link src={portfolio_link} style={[styles.flexRows]}>
@@ -402,7 +402,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
 
                     return (
                         <>
-                            <View style={[styles.flexRows, { gap: '8px', alignItems: 'flex-start', paddingBottom: '8px' }]} wrap={false}>
+                            <View wrap={false} style={[styles.flexRows, { gap: '8px', alignItems: 'flex-start', paddingBottom: '8px' }]}>
                                 <Text style={{ fontSize: '20px', fontWeight: 'bold', marginTop: '-11px' }}>.</Text>
                                 <View style={[styles.flexCols]}>
                                     <View style={[styles.flexRows, { gap: '8px' }]}>
@@ -442,7 +442,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
 
                     return (
                         <>
-                            <View style={[styles.flexRows, { gap: '8px', alignItems: 'flex-start', paddingBottom: '8px' }]} wrap={false}>
+                            <View wrap={false} style={[styles.flexRows, { gap: '8px', alignItems: 'flex-start', paddingBottom: '8px' }]}>
                                 <Text style={{ fontSize: '20px', fontWeight: 'bold', marginTop: '-11px' }}>.</Text>
                                 <View style={[styles.flexCols]}>
                                     <View style={[styles.flexRows, { gap: '8px' }]}>
@@ -509,7 +509,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
 
                     return (
                         <>
-                            <View style={[styles.flexRows, { gap: '8px', alignItems: 'flex-start', paddingBottom: '8px' }]}>
+                            <View wrap={false} style={[styles.flexRows, { gap: '8px', alignItems: 'flex-start', paddingBottom: '8px' }]}>
                                 {data?.profile_picture_base64?.length > 0 ? (
                                     <Image src={data.profile_picture_base64} style={{ marginTop: '5px', width: '50px', height: '50px', objectFit: 'cover', borderRadius: '100%' }} />
                                 ) : (
@@ -545,7 +545,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                 return (
                     <>
                         {data.reviews?.length > 0 && (
-                            <View style={[styles.flexCols]} wrap={false}>
+                            <View style={[styles.flexCols]}>
                                 <View style={[styles.flexRows]}>
                                     <Text style={styles.heading1}>Creative Reviews</Text>
                                     <View style={[styles.flexRows, { margin: '14px', justifyContent: 'center', alignItems: 'center', width: 'auto', padding: '0px 5px', height: '20px', backgroundColor: '#daa520', borderRadius: '100%', gap: '5px' }]}>
@@ -583,7 +583,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                 const Item = ({ icon, heading, content }) => {
                     return (
                         <>
-                            <View style={[styles.flexRows]}>
+                            <View wrap={false} style={[styles.flexRows]}>
                                 <View style={{ paddingTop: '2px', paddingRight: '8px' }}>
                                     {icon}
                                 </View>
@@ -708,7 +708,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                             width: '100%',
                             height: '100%',
                         }}>
-                            <Text style={[styles.lightText, { color: '#fff', padding: 0, margin: 0, lineHeight: 1, fontWeight: 'medium' }]}>
+                            <Text style={[styles.lightText, { color: '#fff', padding: 0, margin: '-4px 0px 0px 0px', lineHeight: 1, fontWeight: 'medium' }]}>
                                 ©️ {(new Date()).getFullYear()} Ad Agency Creatives. All Rights Reserved.
                             </Text>
                         </View>
