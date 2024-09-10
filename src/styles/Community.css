@@ -7,6 +7,12 @@
     min-height: 73.2px;
 }
 
+@media (max-width: 767px) {
+    .community-title {
+        font-size: 32px !important;
+    }
+}
+
 .community-subtitle {
     font-size: 20px;
     color: white;
