@@ -44,11 +44,7 @@ const styles = StyleSheet.create({
         padding: 0,
         margin: 0,
         position: 'absolute',
-        backgroundColor: '#000',
         display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     section: {
         margin: 0,
@@ -237,12 +233,12 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
             <Svg stroke={color} fill={color} strokeWidth="0" viewBox="0 0 512 512" height={size + "px"} width={size + "px"} xmlns="http://www.w3.org/2000/svg">
                 <Path d="M138.357,0C62.066,0,0,62.066,0,138.357s62.066,138.357,138.357,138.357s138.357-62.066,138.357-138.357
 		S214.648,0,138.357,0z M138.357,258.715C71.992,258.715,18,204.723,18,138.357S71.992,18,138.357,18
-		s120.357,53.992,120.357,120.357S204.723,258.715,138.357,258.715z"/>
+		s120.357,53.992,120.357,120.357S204.723,258.715,138.357,258.715z" />
                 <Path d="M194.798,160.903c-4.188-2.677-9.753-1.454-12.432,2.732c-8.694,13.593-23.503,21.708-39.614,21.708
 		c-25.908,0-46.985-21.078-46.985-46.986s21.077-46.986,46.985-46.986c15.633,0,30.2,7.747,38.968,20.723
 		c2.782,4.117,8.375,5.201,12.496,2.418c4.118-2.782,5.201-8.377,2.418-12.496c-12.118-17.937-32.262-28.645-53.882-28.645
 		c-35.833,0-64.985,29.152-64.985,64.986s29.152,64.986,64.985,64.986c22.281,0,42.759-11.218,54.778-30.009
-		C200.208,169.147,198.985,163.582,194.798,160.903z"/>
+		C200.208,169.147,198.985,163.582,194.798,160.903z" />
             </Svg>
         );
     };
@@ -699,12 +695,25 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
     const Footer = () => {
         return (
             <>
-                <View fixed style={[styles.fixed]}>
-                    <View style={{ marginTop: '14px', marginRight: '-4px' }}><CopyrightSvg size={20} color='#fff' /></View>
-                    <Text style={[styles.lightText, { color: '#fff', padding: 0, margin: 0, lineHeight: 1, fontWeight: 'medium' }]}>
-                        {(new Date()).getFullYear()} Ad Agency Creatives. All Rights Reserved.
-                    </Text>
-                </View>
+                <View render={({ pageNumber, totalPages }) => (
+                    (pageNumber == 1 || pageNumber == totalPages) && (
+                        <View style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: '#000',
+                            margin: 0,
+                            padding: 0,
+                            width: '100%',
+                            height: '100%',
+                        }}>
+                            <Text style={[styles.lightText, { color: '#fff', padding: 0, margin: 0, lineHeight: 1, fontWeight: 'medium' }]}>
+                                ©️ {(new Date()).getFullYear()} Ad Agency Creatives. All Rights Reserved.
+                            </Text>
+                        </View>
+                    )
+                )} fixed style={[styles.fixed]} />
             </>
         );
     };
