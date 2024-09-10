@@ -79,7 +79,7 @@ export default function ViewProfilePdf() {
 
     window.setTimeout(() => {
         setTimedLoading(false);
-    }, 30000);
+    }, 90000);
 
     return (
         <>
@@ -100,9 +100,7 @@ export default function ViewProfilePdf() {
                     ) : (
                         <RestrictedAccess
                             title={timedLoading ? 'View/Download Profile PDF' : 'Restricted Access'}
-                            message={timedLoading ? <>
-                                <CircularProgress size={30} /><br />Loading...
-                            </> : 'Active subscription required. Post a Job to View/Download Profile PDF'}
+                            message={<CircularProgress size={30} />}
                         />
                     )}
                 </>
