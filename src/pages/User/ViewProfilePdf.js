@@ -95,7 +95,7 @@ export default function ViewProfilePdf() {
                     {(!token || !user) ? (
                         <RestrictedAccess
                             title={'Restricted Access'}
-                            message={'Please login to view profile'}
+                            message={'Login to view this page'}
                         />
                     ) : (
                         <RestrictedAccess

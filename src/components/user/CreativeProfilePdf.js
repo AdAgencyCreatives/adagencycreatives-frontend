@@ -9,7 +9,7 @@ import alta from "../../assets/fonts/Alta_Typeface/Alta_regular.otf";
 
 import moment from 'moment';
 import Placeholder from "../../assets/images/placeholder.png";
-import AdAgencyLogo from "../../assets/images/AdAgency.png";
+import AdAgencyLogo from "../../assets/images/AdAgencyWhiteBlack.jpeg";
 
 Font.register({
     family: "JOST",
@@ -365,14 +365,35 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
             };
 
             const PortfolioSite = () => {
+                const rectify_url = (url) => {
+                    if (!url) {
+                        return url;
+                    }
+
+                    let lowerUrl = ("" + url).toLowerCase();
+                    let haveHttps = lowerUrl.indexOf("https://") >= 0;
+                    let haveHttp = lowerUrl.indexOf("http://") >= 0;
+
+                    return !(haveHttps || haveHttp) ? ("https://" + url) : url;
+                };
+
+                const portfolio_link = rectify_url(data.links?.find((item) => item.type = "portfolio")?.url) ?? "#";
+
                 return (
                     <>
                         {data?.portfolio_website_base64?.length > 0 && (
                             <View style={[styles.flexCols]} wrap={false}>
                                 <Text style={styles.heading1}>Portfolio Site</Text>
-                                <View style={[styles.flexRows]}>
-                                    <Image src={data.portfolio_website_base64} style={{ width: '250', height: 'auto', objectFit: 'cover' }} />
-                                </View>
+                                {portfolio_link?.length > 0 ? (
+                                    <Link src={portfolio_link} style={[styles.flexRows]}>
+                                        <Image src={data.portfolio_website_base64} style={{ width: '250', height: 'auto', objectFit: 'cover' }} />
+                                    </Link>
+                                ) : (
+                                    <View style={[styles.flexRows]}>
+                                        <Image src={data.portfolio_website_base64} style={{ width: '250', height: 'auto', objectFit: 'cover' }} />
+                                    </View>
+                                )}
+
                             </View>
                         )}
                     </>
@@ -650,9 +671,6 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
             const Resume = () => {
                 return (
                     <>
-                        <View wrap={false} style={[styles.flexCols, styles.creativeDetails, { marginTop: '10px', padding: '10px' }]}>
-                            <Link src={data.resume} style={[styles.flexCenter, styles.lightText, styles.linkButton]}>Resume</Link>
-                        </View>
                     </>
                 );
             };
