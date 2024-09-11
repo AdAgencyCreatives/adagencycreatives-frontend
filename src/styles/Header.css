@@ -1463,7 +1463,7 @@ h2.community-subtitle ul li {
 }
 
 .desktop-view {
-    display: block;
+    display: inline-block;
 }
 
 @media (pointer:none),

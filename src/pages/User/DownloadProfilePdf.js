@@ -1,26 +1,19 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { PDFViewer, PDFDownloadLink, BlobProvider } from '@react-pdf/renderer';
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
-import { useOutletContext } from "react-router-dom";
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import { useEffect } from 'react';
 import usePermissions from '../../hooks/usePermissions';
 import { Context as CreativesContext } from "../../context/CreativesContext";
-import { Context as AgenciesContext } from "../../context/AgenciesContext";
 
 import CreativeProfilePdf from "../../components/user/CreativeProfilePdf"
 import RestrictedAccess from "../../components/RestrictedAccess";
 import { useState } from 'react';
 import { CircularProgress } from '@mui/material';
 
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useContext } from 'react';
 import moment from "moment";
-import zIndex from '@mui/material/styles/zIndex';
 
 export default function ViewProfilePdf() {
-
-    const [filename, setFilename] = useState("");
 
     const getClientDateTime = () => {
         return moment(new Date()).format("YYYY-MM-DD");
@@ -48,17 +41,8 @@ export default function ViewProfilePdf() {
     } = useContext(CreativesContext);
 
     const [timedLoading, setTimedLoading] = useState(true);
-    const [hasCreativeApplied, setHasCreativeApplied] = useState(false);
-
-    const [setSkipHeaderFooter] = useOutletContext();
 
     const allowed = (isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription));
-
-    const skipHeaderFooter = () => {
-        setSkipHeaderFooter(true);
-        var body = document.querySelector("body");
-        body.classList.add("no-overflow");
-    };
 
     useEffect(() => {
         if (allowed) {
@@ -73,7 +57,6 @@ export default function ViewProfilePdf() {
 
     useEffect(() => {
         if (single_creative && Object.keys(single_creative)?.length > 0) {
-            setFilename(single_creative.name.replace(" ", "_") + "_AdAgencyCreatives_" + getClientDateTime());
             setTimedLoading(false);
         }
     }, [single_creative]);
@@ -82,19 +65,31 @@ export default function ViewProfilePdf() {
         setTimedLoading(false);
     }, 90000);
 
+    const getDownloadFilename = () => {
+        return (single_creative.name).replace(" ", "_") + "_AdAgencyCreatives_" + getClientDateTime();
+    }
+
     return (
         <>
             {single_creative && Object.keys(single_creative)?.length > 0 ? (
                 <>
-                    {/* {skipHeaderFooter()} */}
                     <RestrictedAccess
-                        title={'View Profile PDF'}
+                        title={
+                            <>
+                                <span className='desktop-view'>View/</span>
+                                <span>Download Profile PDF</span>
+                            </>
+                        }
                         message={
                             <>
-                                <h3>Opening PDF...</h3>
-                                <PDFViewer style={{ zIndex: '999999', position: 'fixed', left: '0px', top: '0px', width: '100vw', height: '100vh' }}>
-                                    <CreativeProfilePdf data={single_creative} filename={filename} creative_education={creative_education} creative_experience={creative_experience} portfolio_items={single_creative.portfolio_items_base64} allowPhone={isAdmin || single_creative?.logged_in_user?.is_creative_applicant} />
-                                </PDFViewer>
+                                <Link className="btn btn-dark fs-5 desktop-view" to={"/creative-profile/" + username} style={{ marginRight: '10px' }} target='_blank'>
+                                    View Profile PDF
+                                </Link>
+                                <PDFDownloadLink className="" document={<CreativeProfilePdf data={single_creative} filename={getDownloadFilename()} creative_education={creative_education} creative_experience={creative_experience} allowPhone={isAdmin || single_creative?.logged_in_user?.is_creative_applicant} />} fileName={getDownloadFilename() + ".pdf"}>
+                                    <button className={"btn btn-dark fs-5"}>
+                                        Download Profile PDF
+                                    </button>
+                                </PDFDownloadLink>
                             </>
                         }
                     />
@@ -108,7 +103,12 @@ export default function ViewProfilePdf() {
                         />
                     ) : (
                         <RestrictedAccess
-                            title={timedLoading ? 'View Profile PDF' : 'Restricted Access'}
+                            title={timedLoading ? (
+                                <>
+                                    <span className='desktop-view'>View/</span>
+                                    <span>Download Profile PDF</span>
+                                </>
+                            ) : 'Restricted Access'}
                             message={<CircularProgress size={30} />}
                         />
                     )}

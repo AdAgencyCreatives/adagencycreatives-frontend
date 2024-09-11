@@ -23,6 +23,7 @@ import Activities from "./pages/Activities";
 import About from "./pages/About";
 import ViewPage from "./pages/User/ViewPage";
 import ViewProfilePdf from "./pages/User/ViewProfilePdf";
+import DownloadProfilePdf from "./pages/User/DownloadProfilePdf";
 import JobDescription from "./pages/Jobs/JobDescription";
 import UserDashboard from "./pages/User/UserDashboard";
 import Checkout from "./pages/Cart/Checkout";
@@ -199,6 +200,10 @@ export const router = createBrowserRouter([
       {
         path: "/creative-profile/:username",
         element: <ViewProfilePdf />,
+      },
+      {
+        path: "/creative-pdf/:username",
+        element: <DownloadProfilePdf />,
       },
       {
         path: "/groups/create",

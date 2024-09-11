@@ -25,19 +25,14 @@ import moment from "moment";
 import { saveAs } from 'file-saver';
 import { CircularProgress, Tooltip } from "@mui/material";
 import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
-import { PDFDownloadLink, BlobProvider } from '@react-pdf/renderer';
 
-import CreativeProfilePdf from "../CreativeProfilePdf"
-
-const Header = ({ data, role, user, creative_education, creative_experience }) => {
+const Header = ({ data, role, user, username }) => {
 
   const { encodeSpecial, decodeSpecial } = useHelper();
 
-  const [allowed, setAllowed] = useState(false);
   const [open, setOpen] = useState(false);
   const [openNotes, setOpenNotes] = useState(false);
   const [openInvite, setOpenInvite] = useState(false);
-  const [item, setItem] = useState({});
   const [isDownloading, setDownloading] = useState(false);
   const [appIdNotes, setAppIdNotes] = useState("");
 
@@ -162,16 +157,9 @@ const Header = ({ data, role, user, creative_education, creative_experience }) =
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
                 {((isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription)) && data && Object.keys(data).length > 0) && (
                   <>
-                    <PDFDownloadLink className="" document={<CreativeProfilePdf data={data} filename={getDownloadFilename()} creative_education={creative_education} creative_experience={creative_experience} allowPhone={isAdmin || data?.logged_in_user?.is_creative_applicant} />} fileName={getDownloadFilename() + ".pdf"}>
-                      <button className={"btn btn-dark fs-5"}>
-                        Download Profile PDF
-                      </button>
-                    </PDFDownloadLink>
-                    {/* <a className="desktop-view" href={"/creative-profile/" + data.slug} target="_blank">
-                      <button className={"btn btn-dark fs-5"}>
-                        View/Download Profile PDF
-                      </button>
-                    </a> */}
+                    <Link className="btn btn-dark fs-5" to={"/creative-pdf/" + username}>
+                      View/Download Profile PDF
+                    </Link>
                   </>
                 )}
                 {isDownloading && (<CircularProgress style={{ minWidth: "40px", minHeight: "40px" }} />)}

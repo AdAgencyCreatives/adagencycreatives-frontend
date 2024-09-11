@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
 import CreativeContent from "../../components/user/Creative/Content";
 import CreativeHeader from "../../components/user/Creative/Header";
@@ -10,8 +9,8 @@ import AgencyContent from "../../components/user/Agency/Content";
 import AgencyHeader from "../../components/user/Agency/Header";
 import AgencySidebar from "../../components/user/Agency/Sidebar";
 
-import { useLocation, useParams } from "react-router-dom";
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import Loader from "../../components/Loader";
 import RestrictedUser from "../../components/RestrictedUser";
 
@@ -37,7 +36,7 @@ const Profile = () => {
 
   const {
     state: { single_creative, creative_education, creative_experience },
-    getCreative, getCreativeForPdf
+    getCreative,
   } = useContext(CreativesContext);
 
   const {
@@ -64,20 +63,11 @@ const Profile = () => {
   useEffect(() => {
     if (token) {
       if (page == "creative") {
-
-        if (role == "creative") {
-          getCreative(username, (error) => {
-            if (error) {
-              setLoading(false);
-            }
-          });
-        } else {
-          getCreativeForPdf(username, (error) => {
-            if (error) {
-              setLoading(false);
-            }
-          });
-        }
+        getCreative(username, (error) => {
+          if (error) {
+            setLoading(false);
+          }
+        });
       }
     }
 
@@ -183,7 +173,7 @@ const Profile = () => {
           <>
             <div className="profile-header">
               {page === "creative" ? (
-                <CreativeHeader data={data} role={role} user={user} creative_education={creative_education} creative_experience={creative_experience} />
+                <CreativeHeader data={data} role={role} user={user} username={username} />
               ) : (
                 <AgencyHeader data={data} role={role} user={user} />
               )}

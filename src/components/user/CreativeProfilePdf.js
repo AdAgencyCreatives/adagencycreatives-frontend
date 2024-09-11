@@ -28,6 +28,8 @@ Font.register({
     src: alta
 });
 
+Font.registerHyphenationCallback(word => [word]); // remove this line for justified text with word break with dashes
+
 /* Create styles */
 const styles = StyleSheet.create({
     page: {
