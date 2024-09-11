@@ -82,6 +82,9 @@ export default function ViewProfilePdf() {
                         }
                         message={
                             <>
+                                <Link className="btn btn-dark fs-5" to={"/creative/" + username} style={{ marginRight: '10px' }}>
+                                    Back
+                                </Link>
                                 <Link className="btn btn-dark fs-5 desktop-view" to={"/creative-profile/" + username} style={{ marginRight: '10px' }} target='_blank'>
                                     View Profile PDF
                                 </Link>
