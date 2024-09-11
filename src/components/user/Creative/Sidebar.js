@@ -280,7 +280,7 @@ const Sidebar = ({ data, user }) => {
               </div>
             </div>
           )}
-          {data.phone_number && (isOwnProfile || isAdmin || ((isAgency || isAdvisor || isRecruiter) && (subscription_status == "active" && hasCreativeApplications)) || isFriend) && (
+          {data.phone_number && (isOwnProfile || isAdmin || ((isAgency || isAdvisor || isRecruiter) && (subscription_status == "active" && hasCreativeApplications))) && (
             <div className="item">
               <IoCallOutline size={22} />
               <div className="details">

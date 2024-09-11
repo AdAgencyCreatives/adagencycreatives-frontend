@@ -383,7 +383,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                             <View wrap={false} style={[styles.flexCols]}>
                                 <Text style={styles.heading1}>Portfolio Site</Text>
                                 {portfolio_link?.length > 0 ? (
-                                    <Link src={portfolio_link} style={[styles.flexRows]}>
+                                    <Link src={portfolio_link} style={[styles.flexRows, { border: "2px solid #daa520" }]}>
                                         <Image src={data.portfolio_website_base64} style={{ width: '250', height: 'auto', objectFit: 'cover' }} />
                                     </Link>
                                 ) : (
