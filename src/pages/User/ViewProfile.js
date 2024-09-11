@@ -37,7 +37,7 @@ const Profile = () => {
 
   const {
     state: { single_creative, creative_education, creative_experience },
-    getCreativeForPdf,
+    getCreative, getCreativeForPdf
   } = useContext(CreativesContext);
 
   const {
@@ -54,7 +54,7 @@ const Profile = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 30000);
+    }, 90000);
   }, []);
 
   useEffect(() => {
@@ -64,11 +64,20 @@ const Profile = () => {
   useEffect(() => {
     if (token) {
       if (page == "creative") {
-        getCreativeForPdf(username, (error) => {
-          if (error) {
-            setLoading(false);
-          }
-        });
+
+        if (role == "creative") {
+          getCreative(username, (error) => {
+            if (error) {
+              setLoading(false);
+            }
+          });
+        } else {
+          getCreativeForPdf(username, (error) => {
+            if (error) {
+              setLoading(false);
+            }
+          });
+        }
       }
     }
 
@@ -146,6 +155,11 @@ const Profile = () => {
   const isAgency = user?.role == "agency";
   const isRecruiter = user?.role == "recruiter";
   const isOwnProfile = user?.uuid == data.user_id;
+
+  useEffect(() => {
+    setLoading(true);
+    setData({});
+  }, []);
 
   if (isLoading) {
     console.log('loading...');

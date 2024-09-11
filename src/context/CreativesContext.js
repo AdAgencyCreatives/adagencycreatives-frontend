@@ -122,6 +122,10 @@ const getRelatedCreatives = (dispatch) => {
 const getCreative = (dispatch) => {
   return async (slug, cb = false) => {
     try {
+      dispatch({
+        type: "set_single_creative",
+        payload: {},
+      });
       const response = await api.get("/creatives?filter[status]=1&filter[slug]=" + slug);
       const data = response.data.data[0];
       const uid = data.user_id;
@@ -237,6 +241,10 @@ const searchCreativesFull = (dispatch) => {
 
 const getCreativeEducation = async (dispatch, uid) => {
   try {
+    dispatch({
+      type: "set_creative_education",
+      payload: {},
+    });
     const response = await api.get("/educations?per_page=9999&filter[user_id]=" + uid);
     dispatch({
       type: "set_creative_education",
@@ -247,6 +255,10 @@ const getCreativeEducation = async (dispatch, uid) => {
 
 const getCreativeExperience = async (dispatch, uid) => {
   try {
+    dispatch({
+      type: "set_creative_experience",
+      payload: {},
+    });
     const response = await api.get("/experiences?per_page=9999&filter[user_id]=" + uid);
     dispatch({
       type: "set_creative_experience",

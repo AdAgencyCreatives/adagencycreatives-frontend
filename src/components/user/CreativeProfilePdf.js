@@ -708,7 +708,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
                             width: '100%',
                             height: '100%',
                         }}>
-                            <Text style={[styles.lightText, { color: '#fff', padding: 0, margin: '-4px 0px 0px 0px', lineHeight: 1, fontWeight: 'medium' }]}>
+                            <Text style={[styles.lightText, { color: '#fff', padding: 0, margin: '-8px 0px 0px 0px', lineHeight: 1, fontWeight: 'medium' }]}>
                                 ©️ {(new Date()).getFullYear()} Ad Agency Creatives. All Rights Reserved.
                             </Text>
                         </View>
