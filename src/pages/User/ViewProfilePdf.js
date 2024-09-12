@@ -93,7 +93,7 @@ export default function ViewProfilePdf() {
                             <>
                                 <h3>Opening PDF...</h3>
                                 <PDFViewer style={{ zIndex: '999999', position: 'fixed', left: '0px', top: '0px', width: '100vw', height: '100vh' }}>
-                                    <CreativeProfilePdf data={single_creative} filename={filename} creative_education={creative_education} creative_experience={creative_experience} portfolio_items={single_creative.portfolio_items_base64} allowPhone={isAdmin || single_creative?.logged_in_user?.is_creative_applicant} />
+                                    <CreativeProfilePdf data={single_creative} filename={filename} allowPhone={isAdmin || single_creative?.logged_in_user?.is_creative_applicant} />
                                 </PDFViewer>
                             </>
                         }

@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
 });
 
 /* Create Document Component */
-export default function CreativeProfilePdf({ data = null, filename = "", creative_education = null, creative_experience = null, allowPhone = false }) {
+export default function CreativeProfilePdf({ data = null, filename = "", allowPhone = false }) {
 
     const htmlToText = (html) => {
         var tempDivElement = document.createElement("div");
@@ -426,11 +426,11 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
 
                 return (
                     <>
-                        {creative_education?.length > 0 && (
+                        {data.educations?.length > 0 && (
                             <View style={[styles.flexCols]}>
                                 <Text style={styles.heading1}>Education</Text>
                                 <View style={[styles.flexCols]}>
-                                    {creative_education?.length > 0 ? creative_education?.map(item => <Item data={item} />) : <></>}
+                                    {data.educations?.length > 0 ? data.educations?.map(item => <Item data={item} />) : <></>}
                                 </View>
                             </View>
                         )}
@@ -471,11 +471,11 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
 
                 return (
                     <>
-                        {creative_experience?.length > 0 && (
+                        {data.experiences?.length > 0 && (
                             <View style={[styles.flexCols]}>
                                 <Text style={styles.heading1}>Work & Experience</Text>
                                 <View style={[styles.flexCols]}>
-                                    {creative_experience?.length > 0 ? creative_experience?.map(item => <Item data={item} />) : <></>}
+                                    {data.experiences?.length > 0 ? data.experiences?.map(item => <Item data={item} />) : <></>}
                                 </View>
                             </View>
                         )}
@@ -484,15 +484,6 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
             };
 
             const CreativeReviews = () => {
-
-                const average = (items) => {
-                    let sum = 0;
-                    for (let index = 0; index < items.length; index++) {
-                        const element = items[index];
-                        sum += element.rating;
-                    }
-                    return (sum / (items.length || 1)).toFixed(2);
-                };
 
                 const Item = ({ data }) => {
 
@@ -546,17 +537,17 @@ export default function CreativeProfilePdf({ data = null, filename = "", creativ
 
                 return (
                     <>
-                        {data.reviews?.length > 0 && (
+                        {data.reviews?.data?.length > 0 && (
                             <View style={[styles.flexCols]}>
                                 <View style={[styles.flexRows]}>
                                     <Text style={styles.heading1}>Creative Reviews</Text>
                                     <View style={[styles.flexRows, { margin: '14px', justifyContent: 'center', alignItems: 'center', width: 'auto', padding: '0px 5px', height: '20px', backgroundColor: '#daa520', borderRadius: '100%', gap: '5px' }]}>
                                         <FaStarSvg size={12} />
-                                        <Text style={[styles.heading3]}>{average(data.reviews || [])}</Text>
+                                        <Text style={[styles.heading3]}>{data.reviews.meta.average_rating}</Text>
                                     </View>
                                 </View>
                                 <View style={[styles.flexCols]}>
-                                    {data.reviews.map(item => <Item data={item} />)}
+                                    {data.reviews.data.map(item => <Item data={item} />)}
                                 </View>
                             </View >
                         )}

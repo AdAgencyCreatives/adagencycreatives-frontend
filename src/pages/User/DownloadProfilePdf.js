@@ -81,19 +81,28 @@ export default function ViewProfilePdf() {
                             </>
                         }
                         message={
-                            <>
+                            <div style={{ display: 'inline-block' }}>
                                 <Link className="btn btn-dark fs-5" to={"/creative/" + username} style={{ marginRight: '10px' }}>
                                     Visit Profile
                                 </Link>
                                 <Link className="btn btn-dark fs-5 desktop-view" to={"/creative-profile/" + username} style={{ marginRight: '10px' }} target='_blank'>
                                     View Profile PDF
                                 </Link>
-                                <PDFDownloadLink className="" document={<CreativeProfilePdf data={single_creative} filename={getDownloadFilename()} creative_education={creative_education} creative_experience={creative_experience} allowPhone={isAdmin || single_creative?.logged_in_user?.is_creative_applicant} />} fileName={getDownloadFilename() + ".pdf"}>
-                                    <button className={"btn btn-dark fs-5"}>
-                                        Download Profile PDF
-                                    </button>
+                                <PDFDownloadLink className="" document={<CreativeProfilePdf data={single_creative} filename={getDownloadFilename()} allowPhone={isAdmin || single_creative?.logged_in_user?.is_creative_applicant} />} fileName={getDownloadFilename() + ".pdf"}>
+                                    {({ blob, url, loading, error }) =>
+                                        loading ? (
+                                            <div style={{ display: 'inline-block' }}>
+                                                <CircularProgress size={30} /> Preparing PDF...
+                                            </div>
+                                        ) : (
+                                            <button className={"btn btn-dark fs-5"}>
+                                                Download Profile PDF
+                                            </button>
+                                        )
+                                    }
+
                                 </PDFDownloadLink>
-                            </>
+                            </div>
                         }
                     />
                 </>

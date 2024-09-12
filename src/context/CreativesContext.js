@@ -149,15 +149,10 @@ const getCreative = (dispatch) => {
 const getCreativeForPdf = (dispatch) => {
   return async (slug, cb = false) => {
     try {
-      const response = await api.get("/creatives?base64=yes&filter[status]=1&filter[slug]=" + slug);
+      const response = await api.get("/creatives?base64=yes&educations=yes&experiences=yes&reviews=yes&filter[status]=1&filter[slug]=" + slug);
       const data = response.data.data[0];
       const uid = data.user_id;
       const currentPage = window.location.pathname;
-      if (currentPage != '/change-password' && currentPage != '/change-password/' && currentPage != 'change-password/') {
-        getCreativeEducation(dispatch, uid);
-        getCreativeExperience(dispatch, uid);
-      }
-      // console.log('data', data);
       dispatch({
         type: "set_single_creative",
         payload: data,
