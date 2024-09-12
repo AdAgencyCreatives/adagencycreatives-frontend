@@ -157,7 +157,7 @@ const Header = ({ data, role, user, username }) => {
               <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
                 {((isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription)) && data && Object.keys(data).length > 0) && (
                   <>
-                    <Link className="btn btn-dark fs-5" to={"/creative-pdf/" + username}>
+                    <Link className="btn btn-dark fs-5" to={"/creative-pdf/" + username} target="_blank">
                       View/Download Profile PDF
                     </Link>
                   </>
