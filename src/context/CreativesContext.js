@@ -238,7 +238,7 @@ const getCreativeEducation = async (dispatch, uid) => {
   try {
     dispatch({
       type: "set_creative_education",
-      payload: {},
+      payload: [],
     });
     const response = await api.get("/educations?per_page=9999&filter[user_id]=" + uid);
     dispatch({
@@ -252,7 +252,7 @@ const getCreativeExperience = async (dispatch, uid) => {
   try {
     dispatch({
       type: "set_creative_experience",
-      payload: {},
+      payload: [],
     });
     const response = await api.get("/experiences?per_page=9999&filter[user_id]=" + uid);
     dispatch({

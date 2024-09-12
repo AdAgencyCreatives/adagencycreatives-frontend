@@ -379,7 +379,7 @@ const MyResume = () => {
           name: "educations",
           column: "12",
           schema: { ...educationObject },
-          items: creative_education.length
+          items: creative_education?.length > 0
             ? creative_education.map((item) => {
               return {
                 showDropdown: false,
@@ -400,7 +400,7 @@ const MyResume = () => {
           name: "experiences",
           column: "12",
           schema: { ...experienceObject },
-          items: creative_experience.length
+          items: creative_experience?.length > 0
             ? creative_experience.map((item) => {
               return {
                 showDropdown: false,
@@ -441,27 +441,31 @@ const MyResume = () => {
 
   //Set initial education form data
   useEffect(() => {
-    setEducationList(
-      creative_education.map((item) => ({
-        id: item.id,
-        degree: item.degree,
-        college: item.college,
-        completed_at: item.completed_at,
-      }))
-    );
+    if (creative_education?.length > 0) {
+      setEducationList(
+        creative_education.map((item) => ({
+          id: item.id,
+          degree: item.degree,
+          college: item.college,
+          completed_at: item.completed_at,
+        }))
+      );
+    }
   }, [creative_education]);
 
   useEffect(() => {
-    setExperienceList(
-      creative_experience.map((item) => ({
-        id: item.id,
-        title: item.title,
-        company: item.company,
-        started_at: item.started_at,
-        description: item.description,
-        completed_at: item.completed_at,
-      }))
-    );
+    if (creative_experience?.length > 0) {
+      setExperienceList(
+        creative_experience.map((item) => ({
+          id: item.id,
+          title: item.title,
+          company: item.company,
+          started_at: item.started_at,
+          description: item.description,
+          completed_at: item.completed_at,
+        }))
+      );
+    }
   }, [creative_experience]);
 
   //Fetch initial Cities
