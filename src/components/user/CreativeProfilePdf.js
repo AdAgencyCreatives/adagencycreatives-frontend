@@ -444,7 +444,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", allowPh
 
                     return (
                         <>
-                            <View wrap={false} style={[styles.flexRows, { gap: '8px', alignItems: 'flex-start', paddingBottom: '8px' }]}>
+                            <View style={[styles.flexRows, { gap: '8px', alignItems: 'flex-start', paddingBottom: '8px' }]}>
                                 <Text style={{ fontSize: '20px', fontWeight: 'bold', marginTop: '-11px' }}>.</Text>
                                 <View style={[styles.flexCols]}>
                                     <View style={[styles.flexRows, { gap: '8px' }]}>
