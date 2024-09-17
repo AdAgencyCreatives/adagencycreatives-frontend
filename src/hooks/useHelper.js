@@ -89,6 +89,9 @@ const useHelper = () => {
     };
 
     const injectHyperlinks = (text) => {
+        if (text.indexOf('class="welcome-lounge"') >= 0) {
+            return text;
+        }
         text = text.replace("&nbsp;", ">>&nbsp;<<");
         // console.log(text);
         // const expressionWithHttp =

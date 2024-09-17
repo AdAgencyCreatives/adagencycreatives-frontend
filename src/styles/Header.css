@@ -1476,3 +1476,45 @@ h2.community-subtitle ul li {
         display: none;
     }
 }
+
+div.welcome-lounge {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.welcome-lounge .user_image {
+    position: absolute;
+    border-radius: 100%;
+    width: 40%;
+    height: 40%;
+    object-fit: cover;
+}
+
+div.welcome-lounge .user_info {
+    position: absolute;
+    bottom: 5%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+div.welcome-lounge .user_info div {
+    color: #fff;
+    font-variant: small-caps;
+    line-height: 1em;
+}
+
+div.welcome-lounge .user_info .name {
+    font-size: 36px;
+}
+
+div.welcome-lounge .user_info .category {
+    font-size: 24px;
+}
+
+div.welcome-lounge .user_info .location {
+    font-size: 18px;
+}

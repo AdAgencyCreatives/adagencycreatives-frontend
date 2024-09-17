@@ -53,6 +53,9 @@ const PostItem = (props) => {
     const [imageSliderIndex, setImageSliderIndex] = useState(0);
 
     useEffect(() => {
+        if (postContent?.length > 0 && postContent.indexOf('class="welcome-lounge"') >= 0) {
+            return;
+        }
         if (dimensions && postContent?.length > 500 && !showMoreClicked) {
             setDisplayShowMore(true);
         }
@@ -204,7 +207,7 @@ const PostItem = (props) => {
                 <div className="post-body" dangerouslySetInnerHTML={{ __html: postContent }}></div>
             </div>
             <ImageDialog image={imageDialogImage} setImage={setImageDialogImage} open={imageDialogOpen} setOpen={setImageDialogOpen} />
-            {postContent?.length > 500 && (
+            {displayShowMore && (
                 <div className="show-more-container">
                     <Link className="show-more" onClick={(e) => {
                         setShowMoreClicked(value => !value);
