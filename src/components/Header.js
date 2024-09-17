@@ -13,7 +13,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
-import Logo from "../assets/images/logo.png";
 import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { AiOutlineUser, AiOutlineBell, AiOutlineClose } from "react-icons/ai";
@@ -28,8 +27,8 @@ import { Context as AuthContext } from "../context/AuthContext";
 import { checkCookie } from "../helpers/functions";
 import { Context as AlertContext } from "../context/AlertContext";
 import { Context as SubscriptionContext } from "../context/SubscriptionContext";
-import Placeholder from "../assets/images/placeholder.png";
 import { agencyNav, creativeNav } from "../nav/DashboardNav";
+import AvatarImageLoader from "./AvatarImageLoader";
 
 import SlidingMessage from "./SlidingMessage";
 import ScrollButton from "./ScrollButton";
@@ -311,15 +310,7 @@ function Header(props) {
                   {state.token ? (
                     <div className="nav-item has-children ms-2">
                       <div className="logged-in-menu">
-                        <img
-                          src={state.user?.user_thumbnail || state.user.image || Placeholder}
-                          height="50"
-                          width="50"
-                          className="avatar-rounded rounded-circle object-fit-cover"
-                          onError={(e) => {
-                            e.target.src = Placeholder; // Set the backup image source
-                          }}
-                        />
+                        <AvatarImageLoader user={state?.user} />
                         <div className="username">
                           {state.user.first_name} {state.user.last_name}
                         </div>

@@ -1,5 +1,4 @@
 import moment from "moment";
-import Avatar from "../../assets/images/placeholder.png";
 import { useContext, useEffect } from "react";
 import { Context } from "../../context/ChatContext";
 import { Tooltip, Dialog, CircularProgress } from "@mui/material";
@@ -18,6 +17,8 @@ import {
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { api } from "../../api/api";
+
+import AvatarImageLoader from "../AvatarImageLoader";
 
 const UserList = (props) => {
   const { messageType, page, data, handleItemClick, refreshContacts, setMessageData } = props;
@@ -192,7 +193,7 @@ const UserList = (props) => {
           }}
           key={item.id}
         >
-          <img src={item.contact?.user_thumbnail || item.contact.image || Avatar} height={40} width={40} alt="" />
+          <AvatarImageLoader user={item?.contact} height={40} width={40} />
           <div className="user-details">
             <div className="d-flex justify-content-between align-items-center">
               <div className="username">

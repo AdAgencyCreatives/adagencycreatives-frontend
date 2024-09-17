@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import Avatar from "../../../assets/images/NathanWalker_ProfilePic-150x150.jpg";
 import "../../../styles/AgencyDashboard/CreativeShortlist.scss";
 import {
   TfiEye,
@@ -20,6 +19,7 @@ import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
 import Paginate from "../../../components/Paginate";
 import SearchBarCommon from "../../../components/SearchBarCommon";
+import CreativeImageLoader from "../../../components/CreativeImageLoader";
 
 const CreativeShortlist = () => {
 
@@ -115,12 +115,7 @@ const CreativeShortlist = () => {
                       <div className="d-flex align-items-center gap-4">
                         <div className="candidate-logo">
                           <Link to={"/creative/" + resource.slug}>
-                            <img
-                              width="150"
-                              height="150"
-                              src={resource?.user_thumbnail || resource.profile_image || Avatar}
-                              alt=""
-                            />
+                            <CreativeImageLoader creative={resource} />
                           </Link>
                         </div>
 

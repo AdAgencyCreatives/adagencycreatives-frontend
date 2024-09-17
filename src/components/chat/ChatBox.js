@@ -1,7 +1,5 @@
-import ContentEditable from "react-contenteditable";
 import Loader from "../Loader";
 import { IoArrowBack, IoClose, IoCloseCircleSharp, IoCloseOutline, IoInformation, IoInformationCircle, IoInformationCircleOutline, IoPencil } from "react-icons/io5";
-import Avatar from "../../assets/images/placeholder.png";
 import FileIcon from "../../assets/images/FileIcon.png";
 import VideoIcon from "../../assets/images/VideoIcon.png";
 import { useEffect, useState, useRef, useContext } from "react";
@@ -16,6 +14,7 @@ import { api } from "../../api/api";
 import { CircularProgress, Dialog, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import CustomEditor from "../CustomEditor";
+import AvatarImageLoader from "../AvatarImageLoader";
 
 const ChatBox = ({
   page,
@@ -510,12 +509,7 @@ const ChatBox = ({
                               </div>
                             </div>
                           </Dialog>
-                          <img
-                            src={sender?.user_thumbnail || sender.image || Avatar}
-                            height={35}
-                            width={35}
-                            className="chat-avatar" alt=""
-                          />
+                          <AvatarImageLoader user={sender} height={40} width={40} className="chat-avatar" />
                           <div className="details">
                             <div className="sender">
                               {sender.first_name + " " + sender.last_name}

@@ -918,6 +918,11 @@ nav ul.dropdown-list .list-item-text.j-fix {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: min-content;
+}
+
+.image-loader img {
+    border-radius: 100%;
 }
 
 .agencies-page .image-loader {
@@ -1517,4 +1522,67 @@ div.welcome-lounge .user_info .category {
 
 div.welcome-lounge .user_info .location {
     font-size: 18px;
+}
+
+.image-placeholder {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    width: 100px;
+    height: 100px;
+    margin: 0;
+    padding: 0;
+}
+
+.user-avatar .image-placeholder,
+.chat-item .image-placeholder,
+.chat-box .image-loader,
+.post-item .image-placeholder,
+.users-list .image-placeholder {
+    width: 40px;
+    height: 40px;
+}
+
+.chat-box img.candidateLogo {
+    margin: 0;
+}
+
+.logged-in-menu .image-placeholder {
+    width: 50px;
+    height: 50px;
+}
+
+.sliderContent.members-list .image-placeholder {
+    margin: 0 auto 15px;
+}
+
+.image-placeholder .placeholder-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    font-size: 48px;
+    font-weight: 500;
+    text-transform: uppercase;
+    background-color: #000;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+.user-avatar .image-placeholder .placeholder-item,
+.chat-item .image-placeholder .placeholder-item,
+.post-item .image-placeholder .placeholder-item,
+.users-list .image-placeholder .placeholder-item {
+    font-size: 24px;
+}
+
+.logged-in-menu .image-placeholder .placeholder-item {
+    font-size: 32px;
 }

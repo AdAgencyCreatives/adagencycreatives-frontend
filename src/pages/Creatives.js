@@ -1,4 +1,3 @@
-import Placeholder from "../assets/images/placeholder.png";
 import { IoBookmarkOutline, IoLocationOutline } from "react-icons/io5";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
@@ -9,7 +8,7 @@ import { Context as DataContext } from "../context/DataContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
 import { useHistoryState } from "../hooks/useHistoryState";
 import Tooltip from "../components/Tooltip";
-import ImageLoader from "../components/ImageLoader";
+import CreativeImageLoader from "../components/CreativeImageLoader";
 import { Context as AlertContext } from "../context/AlertContext";
 import DelayedOutput from "../components/DelayedOutput";
 import CreativeLocation from "../components/CreativeLocation";
@@ -306,11 +305,7 @@ const Creatives = () => {
                               </button>
                             </Tooltip>
                           )}
-                        <ImageLoader
-                          item={item}
-                          source={item?.user_thumbnail || item.profile_image}
-                          Placeholder={Placeholder}
-                        />
+                        <CreativeImageLoader creative={item} />
                         <div className="agencyName">
                           <Link
                             className="text-dark"

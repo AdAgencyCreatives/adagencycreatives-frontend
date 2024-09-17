@@ -2,18 +2,14 @@ import Placeholder from "../../assets/images/placeholder.png";
 import { IoEarth, IoBookmarkOutline, IoLocationOutline, IoMailOpen, IoPersonAdd, IoClose, IoCloseSharp, IoCheckmarkCircleSharp, IoBandageOutline, IoBanSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { Context as AuthContext, logActivity } from "../../context/AuthContext";
-import { getSingleFriendship, requestFriendship, respondFriendship } from "../../context/FriendsDataContext";
-import MessageModal from "../MessageModal";
+import { Context as AuthContext } from "../../context/AuthContext";
 
-import SlidingMessage from "../../components/SlidingMessage";
 import { Tooltip } from "@mui/material";
-import { CircularProgress } from "@mui/material";
-import { saveNotification } from "../../context/NotificationsDataContext";
 
 import FriendshipWidget from "./FriendshipWidget";
 import GroupRequestWidget from "./GroupRequestWidget";
 import UserLocation from "../UserLocation";
+import CreativeImageLoader from "../CreativeImageLoader";
 
 const CommunityMemberWidget = (props) => {
 
@@ -43,16 +39,7 @@ const CommunityMemberWidget = (props) => {
             {visibleAfterProcess && (
                 <div className="col-lg-4 col-md-6 col-12" style={{ "marginBottom": "10px" }}>
                     <div className="sliderContent members-list">
-                        <img
-                            src={props.creative?.user_thumbnail || props.creative.profile_image || Placeholder}
-                            className="candidateLogo"
-                            width={150}
-                            height={150}
-                            alt=""
-                            onError={(e) => {
-                                e.target.src = Placeholder; // Set the backup image source
-                            }}
-                        />
+                        <CreativeImageLoader creative={props?.creative} />
                         <div className="member-data">
                             <div className="agencyName">
                                 <Link className="text-dark" to={`/creative/${props.creative.slug}`}>

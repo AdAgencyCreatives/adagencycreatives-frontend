@@ -25,6 +25,7 @@ import moment from "moment";
 import { saveAs } from 'file-saver';
 import { CircularProgress, Tooltip } from "@mui/material";
 import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
+import CreativeImageLoader from "../../../components/CreativeImageLoader";
 
 const Header = ({ data, role, user, username }) => {
 
@@ -127,14 +128,7 @@ const Header = ({ data, role, user, username }) => {
       <div className="row align-items-center justify-content-between">
         <div className="col-12 d-flex align-items-top">
           <div className="avatar rounded">
-            <img
-              src={data?.user_thumbnail || data.profile_image || Placeholder}
-              height={100}
-              width={100}
-              onError={(e) => {
-                e.target.src = Placeholder; // Set the backup image source
-              }}
-            />
+            <CreativeImageLoader creative={data} />
           </div>
           <div className="meta row w-100 align-items-center">
             <div className="col-md-5">

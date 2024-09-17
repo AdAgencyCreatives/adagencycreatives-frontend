@@ -4,6 +4,7 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as CreativesContext } from "../../context/CreativesContext";
 import Loader from "../Loader";
 import { useLocation, useParams } from "react-router-dom";
+import CreativeImageLoader from "../CreativeImageLoader";
 
 const NewChat = ({ setContact, contacts, userSelected, setUserSelected }) => {
 
@@ -55,11 +56,7 @@ const NewChat = ({ setContact, contacts, userSelected, setUserSelected }) => {
         {userSelected ? (
           <div className="d-flex align-items-center gap-2">
             <div className="user-avatar">
-              <img
-                src={userSelected?.user_thumbnail || userSelected.profile_image || Avatar}
-                height={40}
-                width={40}
-              />
+              <CreativeImageLoader creative={userSelected} width={40} height={40} />
             </div>
             <div className="username">{userSelected.name}</div>
           </div>
@@ -91,11 +88,7 @@ const NewChat = ({ setContact, contacts, userSelected, setUserSelected }) => {
                       onClick={() => selectUser(item)}
                     >
                       <div className="user-avatar">
-                        <img
-                          src={item?.user_thumbnail || item.profile_image || Avatar}
-                          height={40}
-                          width={40}
-                        />
+                        <CreativeImageLoader creative={item} width={40} height={40} />
                       </div>
                       <div className="user-details">
                         <div className="username">{item.name} </div>

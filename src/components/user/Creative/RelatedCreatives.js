@@ -6,6 +6,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import CreativeLocation from "../../CreativeLocation";
+import CreativeImageLoader from "../../../components/CreativeImageLoader";
 
 const RelatedCreatives = ({ data }) => {
   const [relatedCreatives, setRelatedCreatives] = useState([]);
@@ -48,13 +49,7 @@ const RelatedCreatives = ({ data }) => {
                 <div className="inner-left">
                   <div className="">
                     <Link to={"/job/" + item.slug}>
-                      <img
-                        width="150"
-                        height="150"
-                        src={item?.user_thumbnail || item.profile_image || Placeholder}
-                        className="candidateLogo"
-                        alt=""
-                      />
+                      <CreativeImageLoader creative={item} />
                     </Link>
                   </div>
                   <div className="meta row w-100 align-items-center">

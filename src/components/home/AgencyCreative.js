@@ -1,6 +1,4 @@
-import Placeholder from "../../assets/images/placeholder.png";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
-import { IoLocationOutline } from "react-icons/io5";
 import { useContext, useEffect, useState } from "react";
 import { useRef } from "react";
 import { PaginationStyle } from "../../styles/PaginationStyle";
@@ -10,8 +8,8 @@ import useHelper from "../../hooks/useHelper";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import CreativeLocation from "../../components/CreativeLocation";
-import Loader from "../Loader";
 import SliderLoader from "../SliderLoader";
+import CreativeImageLoader from "../CreativeImageLoader";
 
 const AgencyCreatives = ({ validateAccess }) => {
 
@@ -88,16 +86,7 @@ const AgencyCreatives = ({ validateAccess }) => {
             return (
               <swiper-slide key={`slide${index}`}>
                 <div className="sliderContent agencies-slider">
-                  <img
-                    src={item?.user_thumbnail || item.profile_image || Placeholder}
-                    className="candidateLogo"
-                    width={150}
-                    height={150}
-                    alt=""
-                    onError={(e) => {
-                      e.target.src = Placeholder; // Set the backup image source
-                    }}
-                  />
+                  <CreativeImageLoader creative={item} />
                   <div className="agencyName">{item.name}</div>
                   <div className="position">
                     {isAdmin || isAdvisor ? (<>

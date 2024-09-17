@@ -2,7 +2,6 @@ import {
     IoEllipsisVertical,
     IoTimeOutline,
 } from "react-icons/io5";
-import Placeholder from "../../assets/images/placeholder.png";
 
 import { useState, useRef } from "react";
 import Divider from "../Divider";
@@ -11,7 +10,6 @@ import { useContext, useEffect } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import TimeAgo from "../TimeAgo";
-import NumUnit from "../NumUnit";
 import ConfirmDeleteModal from "./Modals/ConfirmDeleteModal";
 import EditPost from "./EditPost";
 import CreateComment from "./CreateComment";
@@ -23,6 +21,7 @@ import PostReaction from "./PostReaction";
 import ImageDialog from "../ImageDialog";
 
 import ImageSlider from "./Modals/ImageSlider";
+import PostImageLoader from "../PostImageLoader";
 
 const useRefDimensions = (ref) => {
     const [dimensions, setDimensions] = useState({ width: 1, height: 2 })
@@ -172,7 +171,7 @@ const PostItem = (props) => {
     return (
         <div key={'div-post-item-' + props.post.id} className="post-item">
             <div className="post-header">
-                <img className="post-avatar" src={props.post?.user_thumbnail || props.post.author_avatar || Placeholder} alt="" />
+                <PostImageLoader post={props?.post} />
                 <div className="post-meta">
                     <div className="post-username">
                         <a className="user-slug" href={"/creative/" + props.post.author_slug}>

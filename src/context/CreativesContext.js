@@ -76,7 +76,7 @@ const reducer = (state, action) => {
 const getCreatives = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/home/creatives?filter[status]=1&filter[is_visible]=1");
+      const response = await api.get("/creatives?filter[status]=1&filter[is_visible]=1");
       dispatch({
         type: "set_creatives",
         payload: response.data,

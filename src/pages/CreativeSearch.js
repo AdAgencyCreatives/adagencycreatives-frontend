@@ -1,4 +1,3 @@
-import Placeholder from "../assets/images/placeholder.png";
 import { IoBookmarkOutline, IoLocationOutline } from "react-icons/io5";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
@@ -15,6 +14,7 @@ import CreativeLocation from "../components/CreativeLocation";
 import { useHistoryState } from "../hooks/useHistoryState";
 import usePermissions from "../hooks/usePermissions";
 import Loader from "../components/Loader";
+import CreativeImageLoader from "../components/CreativeImageLoader";
 
 const CreativeSearch = () => {
 
@@ -234,16 +234,7 @@ const CreativeSearch = () => {
                                                             </button>
                                                         </Tooltip>
                                                     )}
-                                                    <img
-                                                        src={item?.user_thumbnail || item.profile_image || Placeholder}
-                                                        className="candidateLogo"
-                                                        width={150}
-                                                        height={150}
-                                                        alt=""
-                                                        onError={(e) => {
-                                                            e.target.src = Placeholder; // Set the backup image source
-                                                        }}
-                                                    />
+                                                    <CreativeImageLoader creative={item} />
                                                     <div className="agencyName">
                                                         <Link className="text-dark" to={`/creative/${item.slug}`}>
                                                             {item.name}

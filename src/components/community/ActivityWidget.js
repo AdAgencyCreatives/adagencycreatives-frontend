@@ -9,7 +9,7 @@ import { useState, useEffect, useContext } from "react";
 import TimeAgo from "../TimeAgo";
 import UtcToLocalDateTime from "../UtcToLocalDateTime";
 import MessageModal from "../MessageModal";
-
+import AvatarImageLoader from "../AvatarImageLoader";
 
 const ActivityWidget = (props) => {
 
@@ -72,7 +72,7 @@ const ActivityWidget = (props) => {
             <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
             <div className="notif-item">
                 <div className="user-avatar">
-                    <img src={props.activity.user?.user_thumbnail || props.activity.user.image || Placeholder} alt="" height={50} width={50} />
+                    <AvatarImageLoader user={props.activity.user} height={40} width={40} />
                 </div>
                 <div className="notif-details">
                     <div className="username">{props.creative ? props.creative.name : ""}</div>
