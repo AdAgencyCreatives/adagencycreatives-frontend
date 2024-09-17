@@ -5,6 +5,7 @@ import { useContext, useState } from "react";
 import { Box, Drawer } from "@mui/material";
 import { Context as AuthContext } from "../../context/AuthContext";
 import UserLocation from "../UserLocation";
+import CreativeImageLoader from "../CreativeImageLoader";
 
 const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
   const {
@@ -34,14 +35,19 @@ const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
           <div className="user-logo">
             <div className="employer-logo">
               <Link to={profileLink + user.slug}>
-                <img
-                  width="150"
-                  height="150"
-                  src={user?.user_thumbnail || (user.type == "creatives" ? user.profile_image : user.logo) || Placeholder}
-                  onError={(e) => {
-                    e.target.src = Placeholder; // Set the backup image source
-                  }}
-                />
+                {user?.type == "creatives" && user?.name?.length > 0 && (
+                  <CreativeImageLoader creative={user} width={90} height={90} />
+                )}
+                {user?.type == "agencies" && (
+                  <img
+                    width="150"
+                    height="150"
+                    src={user?.user_thumbnail || user.logo || Placeholder}
+                    onError={(e) => {
+                      e.target.src = Placeholder; // Set the backup image source
+                    }}
+                  />
+                )}
               </Link>
             </div>
           </div>

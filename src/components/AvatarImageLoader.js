@@ -4,7 +4,7 @@ const AvatarImageLoader = ({ user = null, width = 50, height = 50, className = "
     return (
         <CommonImageLoader
             imageSource={user?.user_thumbnail || user?.image}
-            charPlaceholder={user?.first_name?.length > 0 ? user.first_name.charAt(0) : 'C'}
+            charPlaceholder={user?.first_name?.length > 0 ? user.first_name.charAt(0) : ''}
             width={width}
             height={height}
             className={className}

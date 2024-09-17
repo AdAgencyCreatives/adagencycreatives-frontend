@@ -5,7 +5,7 @@ const PostImageLoader = ({ post = null, width = false, height = false, className
     return (
         <CommonImageLoader
             imageSource={post?.user_thumbnail || post?.author_avatar}
-            charPlaceholder={post?.author?.length > 0 ? post.author.charAt(0) : 'C'}
+            charPlaceholder={post?.author?.length > 0 ? post.author.charAt(0) : ''}
             width={width}
             height={height}
             className={className}

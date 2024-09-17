@@ -5,7 +5,7 @@ const AgencyImageLoader = ({ agency = null, width = 100, height = 100, className
     return (
         <CommonImageLoader
             imageSource={agency?.user_thumbnail || agency.logo}
-            charPlaceholder={agency?.name?.length > 0 ? agency.name.charAt(0) : 'C'}
+            charPlaceholder={agency?.name?.length > 0 ? agency.name.charAt(0) : ''}
             width={width}
             height={height}
             className={className}
