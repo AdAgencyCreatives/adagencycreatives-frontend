@@ -9,6 +9,7 @@ import LoungePostIconSmileyLike from "../../assets/images/smiley-like.png";
 import LoungePostIconSmileyLaugh from "../../assets/images/smiley-laugh.png";
 import LoungePostIconSmileyLove from "../../assets/images/smiley-heart.png";
 import LoungePostIconCommentBlack from "../../assets/images/lounge-post-icon-comment-black.png";
+import LoungePostIconCommentBlackWhite from "../../assets/images/lounge-post-icon-comment-black-white.png";
 import LoungePostIconCommentGold from "../../assets/images/lounge-post-icon-comment-gold.png";
 
 import NumUnit from "../NumUnit";
@@ -292,7 +293,7 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                     {showComments ? (
                         <img src={LoungePostIconCommentGold} style={{ width: "20px" }} alt="" />
                     ) : (
-                        <img src={LoungePostIconCommentBlack} style={{ width: "20px" }} alt="" />
+                        <img src={LoungePostIconCommentBlackWhite} style={{ width: "20px" }} alt="" />
                     )}
                     {commentsCount > 0 && (
                         <NumUnit number={commentsCount} />
