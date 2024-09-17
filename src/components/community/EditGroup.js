@@ -8,10 +8,10 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import { containsOffensiveWords } from "../../helpers/functions";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as GroupsContext } from "../../context/GroupsContext";
-import Placeholder from "../../assets/images/placeholder.png";
 import { Editor } from '@tinymce/tinymce-react';
 import { CircularProgress } from "@mui/material";
 import ContentEditable from 'react-contenteditable'
+import AvatarImageLoader from "../AvatarImageLoader";
 
 const EditGroup = (props) => {
 
@@ -179,7 +179,7 @@ const EditGroup = (props) => {
                 <div className="create-post-modal post-modal edit-group">
                     <div className="postmodal-header">
                         <div className="user-avatar">
-                            <img src={user?.user_thumbnail || user.image || Placeholder} height={50} width={50} alt="" />
+                            <AvatarImageLoader user={user} height={50} width={50} />
                         </div>
                         <div className="user-meta">
                             <p className="username mb-0">{user ? user.first_name + ' ' + user.last_name : 'User'} :: Edit Group</p>

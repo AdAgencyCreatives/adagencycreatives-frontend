@@ -11,7 +11,6 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import { containsOffensiveWords } from "../../helpers/functions";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
-import Placeholder from "../../assets/images/placeholder.png";
 import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';
 import { CircularProgress } from "@mui/material";
 import ContentEditable from 'react-contenteditable'
@@ -19,6 +18,7 @@ import { Context as CreativesContext } from "../../context/CreativesContext";
 
 import { saveAttachment } from "../../context/AttachmentsDataContext";
 import { sendLoungeMentionNotifications } from "../../context/NotificationsDataContext";
+import AvatarImageLoader from "../AvatarImageLoader";
 
 const CreatePost = (props) => {
 
@@ -304,7 +304,7 @@ const CreatePost = (props) => {
     <div className={props?.className}>
       <div className="status-box">
         <div className="user-avatar">
-          <img src={user?.user_thumbnail || user.image || Placeholder} alt="" />
+          <AvatarImageLoader user={user} height={50} width={50} />
         </div>
         <div className="textarea">
           <textarea
@@ -359,7 +359,7 @@ const CreatePost = (props) => {
           </div>
           <div className="postmodal-header">
             <div className="user-avatar">
-              <img src={user?.user_thumbnail || user.image || Placeholder} height={50} width={50} alt="" />
+              <AvatarImageLoader user={user} height={50} width={50} />
             </div>
             <div className="user-meta">
               <p className="username mb-0">{user ? user.first_name + ' ' + user.last_name : 'User'} :: New Post</p>

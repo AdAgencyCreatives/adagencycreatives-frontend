@@ -1,15 +1,12 @@
-import Placeholder from "../../assets/images/placeholder.png";
 import { IoEyeOffOutline, IoEyeOutline, IoTimeOutline, IoTrashOutline } from "react-icons/io5";
 import { IconButton, Tooltip } from "@mui/material";
 import "../../styles/Notifications.scss";
-import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { deleteNotification, getNotifications, updateNotification } from "../../context/NotificationsDataContext";
 import { useState, useEffect, useContext } from "react";
 import TimeAgo from "../TimeAgo";
-import UtcToLocalDateTime from "../UtcToLocalDateTime";
 import MessageModal from "../MessageModal";
-
+import AvatarImageLoader from "../AvatarImageLoader";
 
 const NotificationWidget = (props) => {
 
@@ -79,7 +76,7 @@ const NotificationWidget = (props) => {
                     <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} size="xs" />
                     <div className="notif-item">
                         <div className="user-avatar">
-                            <img src={props.notification.user?.user_thumbnail || props.notification.user.image || Placeholder} alt="" height={50} width={50} />
+                            <AvatarImageLoader user={props.notification.user} height={50} width={50} />
                         </div>
                         <div className="notif-details">
                             <div className="username">{props.creative ? props.creative.name : ""}</div>

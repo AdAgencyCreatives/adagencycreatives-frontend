@@ -9,10 +9,10 @@ import { useContext, useEffect, useCallback } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { containsOffensiveWords } from "../../helpers/functions";
 import { Context as CommunityContext } from "../../context/CommunityContext";
-import Placeholder from "../../assets/images/placeholder.png";
 import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';
 import { CircularProgress } from "@mui/material";
 import ContentEditable from 'react-contenteditable'
+import AvatarImageLoader from "../AvatarImageLoader";
 
 const EditComment = (props) => {
 
@@ -115,7 +115,7 @@ const EditComment = (props) => {
         <div className="create-post-modal post-modal">
           <div className="postmodal-header">
             <div className="user-avatar">
-              <img src={user?.user_thumbnail || user.image || Placeholder} height={50} width={50} alt="" />
+              <AvatarImageLoader user={user} height={50} width={50} />
             </div>
             <div className="user-meta">
               <p className="username mb-0">{user ? user.first_name + ' ' + user.last_name : 'User'} :: Edit Comment</p>

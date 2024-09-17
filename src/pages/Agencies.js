@@ -13,7 +13,6 @@ import Tooltip from "../components/Tooltip";
 import AuthModal from "../components/modals/AuthModal";
 import DelayedOutput from "../components/DelayedOutput";
 import ImageLoader from "../components/ImageLoader";
-import { getTabScrollButtonUtilityClass } from "@mui/material";
 
 const Agencies = () => {
   const [input, setInput] = useHistoryState("input", "");
@@ -111,15 +110,6 @@ const Agencies = () => {
                       )}
                       <Link to={`/agency/${item.slug}`} className="employer-logo" reloadDocument>
                         <ImageLoader item={item} source={item?.user_thumbnail || item.logo} Placeholder={Placeholder} />
-                        {/* <img
-                          src={item?.user_thumbnail || item.logo || Placeholder}
-                          width={150}
-                          height={150}
-                          alt=""
-                          onError={(e) => {
-                            e.target.src = Placeholder;
-                          }}
-                        /> */}
                       </Link>
                       <h3 className="employer-title">
                         <Link to={`/agency/${item.slug}`} className="text-dark" reloadDocument>

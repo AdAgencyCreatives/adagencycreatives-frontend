@@ -13,6 +13,7 @@ import EditComment from "./EditComment";
 
 import useHelper from "../../hooks/useHelper";
 import { Link } from "@mui/material";
+import CommentImageLoader from "../CommentImageLoader";
 
 const Comment = (props) => {
 
@@ -76,7 +77,7 @@ const Comment = (props) => {
                 <></>
             )}
             <div className="comment-avatar">
-                <img src={props.comment?.user_thumbnail || props.comment.profile_picture || defaultAvatar} />
+                <CommentImageLoader comment={props.comment} height={50} width={50} />
             </div>
             <div className="comment-meta">
                 <p className="username">
