@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         width: '100px',
         height: '100px',
         objectFit: 'cover',
-        borderRadius: '50px'
+        borderRadius: '100%'
     },
     sectionHeaderDetail: {
         margin: 0,
@@ -281,7 +281,9 @@ export default function CreativeProfilePdf({ data = null, filename = "", allowPh
                             {data?.profile_image_base64?.length > 0 ? (
                                 <Image source={data?.profile_image_base64} style={styles.sectionHeaderImage} />
                             ) : (
-                                <Image source={Placeholder} style={styles.sectionHeaderImage} />
+                                <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#000', width: '100px', height: '100px', borderRadius: '100%' }}>
+                                    <Text style={[styles.heading1, { color: '#fff', fontFamily: 'JOST', fontWeight: 'medium', fontSize: '48px' }]}>{data?.name?.charAt(0) || ''}</Text>
+                                </View>
                             )}
                         </>
                     )}

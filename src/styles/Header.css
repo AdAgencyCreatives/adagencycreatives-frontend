@@ -1586,3 +1586,14 @@ div.welcome-lounge .user_info .location {
 .logged-in-menu .image-placeholder .placeholder-item {
     font-size: 32px;
 }
+
+.image-loader .image-loading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
