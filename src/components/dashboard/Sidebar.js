@@ -7,6 +7,7 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import UserLocation from "../UserLocation";
 import CreativeImageLoader from "../CreativeImageLoader";
 import AgencyImageLoader from "../AgencyImageLoader";
+import AvatarImageLoader from "../AvatarImageLoader";
 
 const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
   const {
@@ -36,12 +37,13 @@ const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
           <div className="user-logo">
             <div className="employer-logo">
               <Link to={profileLink + user.slug}>
-                {user?.type == "creatives" && user?.name?.length > 0 && (
+                {/* {user?.type == "creatives" && user?.name?.length > 0 && (
                   <CreativeImageLoader creative={user} width={90} height={90} />
                 )}
                 {user?.type == "agencies" && user?.name?.length > 0 && (
                   <AgencyImageLoader agency={user} height={90} width={90} />
-                )}
+                )} */}
+                <AvatarImageLoader user={user} height={90} width={90} />
               </Link>
             </div>
           </div>
