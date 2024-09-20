@@ -1494,11 +1494,13 @@ div.welcome-lounge {
 }
 
 div.welcome-lounge .user_image {
-    position: absolute;
     border-radius: 100%;
-    width: 33%;
-    height: 33%;
+    height: 35%;
     object-fit: cover;
+    position: absolute;
+    width: 35%;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 div.welcome-lounge .user_info {

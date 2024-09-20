@@ -485,22 +485,23 @@ img.post-avatar {
     justify-content: center;
     align-items: center;
     line-height: 0;
-    width: max-content;
-    height: 20px;
-    background-color: #fff;
+    /* width: max-content; */
+    /* height: 20px; */
+    /* background-color: #fff; */
     color: #000;
-    border: 1px solid #000;
-    border-radius: 10px;
-    cursor: pointer;
-    padding: 3px 3px 3px 2px;
-    min-width: 20px;
+    /* border: 1px solid #000; */
+    /* border-radius: 10px; */
+    /* cursor: pointer; */
+    /* padding: 3px 3px 3px 2px; */
+    /* min-width: 20px; */
+    font-size: 14px;
 }
 
-.num-unit:hover {
+/* .num-unit:hover {
     background-color: var(--color-primary);
     color: #000;
     border: 1px solid var(--color-primary);
-}
+} */
 
 .post-action.post-reactions.active {
     background-color: #dddddd;
@@ -528,6 +529,10 @@ img.post-avatar {
     -moz-user-select: none;
     min-width: max-content;
     min-height: 45px;
+}
+
+.post-actions .post-reaction-dropdown {
+    font-size: 14px;
 }
 
 .post-actions .post-reaction-action-dropdown .image-container {
