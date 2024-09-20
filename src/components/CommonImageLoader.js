@@ -11,7 +11,7 @@ const CommonImageLoader = ({ imageSource = "", charPlaceholder = "C", width = fa
 
     useEffect(() => {
         setImageLoaded(false);
-        showLoader(false);
+        setShowLoader(false);
     }, []);
 
     useEffect(() => {
