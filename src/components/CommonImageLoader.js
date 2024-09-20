@@ -10,17 +10,28 @@ const CommonImageLoader = ({ imageSource = "", charPlaceholder = "C", width = fa
     const [showLoader, setShowLoader] = useState(false);
 
     useEffect(() => {
-        return () => {
-            setImageLoaded(false);
-        };
+        setImageLoaded(false);
+        showLoader(false);
     }, []);
+
+    useEffect(() => {
+        setImageLoaded(false);
+        showLoader(false);
+        if (imageRef.current && imageRef.current.src != imageSource) {
+            imageRef.current.onload = () => {
+                setImageLoaded(true);
+                setShowLoader(false);
+            };
+            setShowLoader(true);
+            imageRef.current.src = imageSource;
+        }
+    }, [imageSource]);
 
     useEffect(() => {
         if (imageRef.current) {
             imageRef.current.onload = () => {
                 setImageLoaded(true);
                 setShowLoader(false);
-
             };
             setShowLoader(true);
             imageRef.current.src = imageSource;

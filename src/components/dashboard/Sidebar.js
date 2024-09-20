@@ -39,7 +39,7 @@ const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
                 {user?.type == "creatives" && user?.name?.length > 0 && (
                   <CreativeImageLoader creative={user} width={90} height={90} />
                 )}
-                {user?.type == "agencies" && (
+                {user?.type == "agencies" && user?.name?.length > 0 && (
                   <AgencyImageLoader agency={user} height={90} width={90} />
                 )}
               </Link>
