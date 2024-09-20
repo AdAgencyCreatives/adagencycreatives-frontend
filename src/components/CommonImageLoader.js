@@ -16,7 +16,7 @@ const CommonImageLoader = ({ imageSource = "", charPlaceholder = "C", width = fa
 
     useEffect(() => {
         setImageLoaded(false);
-        showLoader(false);
+        setShowLoader(false);
         if (imageRef.current && imageRef.current.src != imageSource) {
             imageRef.current.onload = () => {
                 setImageLoaded(true);
