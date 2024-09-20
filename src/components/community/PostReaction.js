@@ -15,6 +15,8 @@ import LoungePostIconCommentGold from "../../assets/images/lounge-post-icon-comm
 import NumUnit from "../NumUnit";
 import { useContext, useEffect, useRef, useState } from "react";
 import useLongPress from "../../hooks/useLongPress";
+import { hexToRgb } from "@mui/material";
+import { height, minWidth, padding } from "@mui/system";
 
 const PostReaction = ({ post, user, post_reactions, reaction_action, getReactions, toggleReaction, commentsCount, toggleShowComments, showComments }) => {
 
@@ -315,16 +317,17 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                         {reactionsCount > showMaxReactionBy ? '+' : ''}{reactionsCount > 0 ? (reactionsCount > showMaxReactionBy ? reactionsCount - showMaxReactionBy : reactionsCount) : 0} reaction{reactionsCount > 1 ? 's' : ''}
                     </div> */}
                     <strong>Reactions</strong>
-                    <span>All</span>
+                    <span>All:</span>
                     {reactionsCount > 0 && (
                         <NumUnit default={""} number={reactionsCount}
-                        // onMouseDown={(e) => onShowReactionBy(e)} 
-                        // onClick={(e) => {
-                        //     document.currentPostReactionKey = null;
-                        //     e.preventDefault();
-                        //     e.stopPropagation();
-                        //     return false;
-                        // }} 
+                            // onMouseDown={(e) => onShowReactionBy(e)} 
+                            // onClick={(e) => {
+                            //     document.currentPostReactionKey = null;
+                            //     e.preventDefault();
+                            //     e.stopPropagation();
+                            //     return false;
+                            // }} 
+                            style={{ justifyContent: 'start', padding: 0, border: 0, borderRadius: 0, width: 'unset', height: 'unset', minWidth: '' }}
                         />
                     )}
                     <div className="post-reactions-stats-container"

@@ -485,23 +485,23 @@ img.post-avatar {
     justify-content: center;
     align-items: center;
     line-height: 0;
-    /* width: max-content; */
-    /* height: 20px; */
-    /* background-color: #fff; */
+    width: max-content;
+    height: 20px;
+    background-color: #fff;
     color: #000;
-    /* border: 1px solid #000; */
-    /* border-radius: 10px; */
-    /* cursor: pointer; */
-    /* padding: 3px 3px 3px 2px; */
-    /* min-width: 20px; */
+    border: 1px solid #000;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 3px 3px 3px 2px;
+    min-width: 20px;
     font-size: 14px;
 }
 
-/* .num-unit:hover {
+.num-unit:hover {
     background-color: var(--color-primary);
     color: #000;
     border: 1px solid var(--color-primary);
-} */
+}
 
 .post-action.post-reactions.active {
     background-color: #dddddd;
@@ -858,7 +858,7 @@ h2.epr-emoji-category-label {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 0px 0px 0px 5px;
+    padding: 0px 0px 0px 0px;
 }
 
 .post-reactions-stats-container img {
@@ -870,7 +870,6 @@ h2.epr-emoji-category-label {
 
 .post-reactions-stats-container span {
     font-family: 'Jost';
-    font-size: 12pt;
 }
 
 .post-reactions-stats-container .post-reactions-stats-item {
@@ -903,10 +902,6 @@ h2.epr-emoji-category-label {
 }
 
 .post-reaction-dropdown .num-unit {
-    font-size: 9pt;
-    /* position: absolute;
-    left: -10px;
-    bottom: 15px; */
     z-index: 1;
 }
 
