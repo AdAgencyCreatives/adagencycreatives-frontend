@@ -394,16 +394,24 @@ const verifyToken = (dispatch) => async (token) => {
     );
 
     setIsLoading(dispatch, false);
+
     setToken(dispatch)(response.data.token, response.data.user.role);
     setUserData(dispatch, response.data.user);
 
     setCookie("cookie_token", response.data.token, 1000 * 60 * 60 * 24); // set for 24 hours
 
-    let creative = await getCreativeById(response.data.user.uuid);
-    setAuthCreative(dispatch, creative);
+    if (response.data.user.role == "creative") {
+      let creative = await getCreativeById(response.data.user.uuid);
+      setAuthCreative(dispatch, creative);
 
-    setAdvanceSearchCapabilities(dispatch, response.data.advance_search_capabilities ? response.data.advance_search_capabilities : false);
-    setSubscriptionStatus(dispatch, response.data.subscription_status);
+    } else if (response.data.user.role == "agency" || response.data.user.role == "advisor" || response.data.user.role == "recruiter") {
+
+      let agency = await getAgencyById(response.data.user.uuid, getRoleId(response.data.user.role));
+      setAuthAgency(dispatch, agency);
+    }
+
+    setAdvanceSearchCapabilities(dispatch, response.data?.subscription_status?.toLowerCase() == "active");
+    setSubscriptionStatus(dispatch, response.data.subscription_status ? response.data.subscription_status : "");
 
     dispatch({
       type: "set_form_message",
