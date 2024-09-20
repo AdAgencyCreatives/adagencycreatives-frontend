@@ -49,12 +49,8 @@
     .avatar {
 
         &.rounded img {
-            border-radius: 50px;
+            border-radius: 100%;
             object-fit: cover;
-        }
-
-        &.employer img {
-            border-radius: 5px;
         }
     }
 

@@ -3,20 +3,12 @@ import { Context as CreativesContext } from "../context/CreativesContext";
 import TimeAgo from "./TimeAgo";
 import { IoTimeOutline } from "react-icons/io5";
 import UtcToLocalDateTime from "./UtcToLocalDateTime";
+import PostImageLoader from "./PostImageLoader";
 
 const TrendingPostWidgetRightSidebar = (props) => {
   const [defaultAvatar, setDefaultAvatar] = useState(
     "https://api.adagencycreatives.com/assets/img/placeholder.png"
   );
-
-  const {
-    state: { single_creative, creative_experience },
-    getCreativeById,
-  } = useContext(CreativesContext);
-
-  useEffect(() => {
-    getCreativeById(props.trending_post.user_id);
-  }, []);
 
   function trimContent(content) {
     var el = document.createElement('div');
@@ -33,14 +25,7 @@ const TrendingPostWidgetRightSidebar = (props) => {
     <li className="vcard">
       <div className="item-avatar">
         <a href={"/creative/" + props.trending_post.author_slug}>
-          <img
-            data-src={props.trending_post.author_avatar || defaultAvatar}
-            width="50"
-            height="50"
-            alt={"Profile avatar of " + props.trending_post.author}
-            className="avatar ls-is-cached lazyloaded"
-            src={props.trending_post.author_avatar || defaultAvatar}
-          />
+          <PostImageLoader post={props.trending_post} width={40} height={40} />
         </a>
       </div>
       <div className="item">

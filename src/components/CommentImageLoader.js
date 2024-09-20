@@ -1,6 +1,6 @@
 import CommonImageLoader from "./CommonImageLoader";
 
-const CommentImageLoader = ({ comment = null, width = 100, height = 100, className = "candidateLogo" }) => {
+const CommentImageLoader = ({ comment = null, width = 100, height = 100, className = "" }) => {
 
     return (
         <CommonImageLoader

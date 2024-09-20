@@ -1,6 +1,6 @@
 import CommonImageLoader from "./CommonImageLoader";
 
-const AgencyImageLoader = ({ agency = null, width = 100, height = 100, className = "candidateLogo" }) => {
+const AgencyImageLoader = ({ agency = null, width = 100, height = 100, className = "" }) => {
 
     return (
         <CommonImageLoader
