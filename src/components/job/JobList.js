@@ -11,6 +11,7 @@ import { Context as JobsContext } from "../../context/JobsContext";
 import ApplyJob from "./ApplyJob";
 import useHelper from "../../hooks/useHelper";
 import { CircularProgress } from "@mui/material";
+import AgencyImageLoader from "../AgencyImageLoader";
 
 const JobList = ({ data, showAgency = true }) => {
 
@@ -71,13 +72,7 @@ const JobList = ({ data, showAgency = true }) => {
             <div className="inner-left">
               <div className="employer-logo">
                 <Link to={"/job/" + item.slug}>
-                  <img
-                    width="150"
-                    height="150"
-                    src={item.agency?.user_thumbnail || item.agency.logo || Placeholder}
-                    className=""
-                    alt=""
-                  />
+                  <AgencyImageLoader agency={item.agency} height={50} width={50} />
                 </Link>
               </div>
               <div className="meta row w-100 align-items-center">

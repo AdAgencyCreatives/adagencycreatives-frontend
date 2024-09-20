@@ -14,6 +14,7 @@ import { getJobById } from "../../../context/JobsDataContext";
 import { useEffect, useState } from "react";
 import { Tooltip } from "@mui/material";
 import useApplicationStatusHelper from "../../../hooks/useApplicationStatusHelper";
+import AgencyImageLoader from "../../../components/AgencyImageLoader";
 
 const JobDetail = ({ item, onRemoveFromRecent }) => {
 
@@ -38,11 +39,7 @@ const JobDetail = ({ item, onRemoveFromRecent }) => {
                     <div className="job-table-info-content">
                         <div className="d-flex">
                             <div className="avatar employer">
-                                <img
-                                    src={job?.agency?.user_thumbnail || job?.agency?.logo || Placeholder}
-                                    height={100}
-                                    width={100}
-                                />
+                                <AgencyImageLoader agency={job?.agency} height={100} width={100} />
                             </div>
                             <div className="ms-3">
                                 <div className="title-wrapper">

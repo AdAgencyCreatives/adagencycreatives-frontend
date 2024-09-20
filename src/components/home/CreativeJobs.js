@@ -8,6 +8,7 @@ import { Context as JobsContext } from "../../context/JobsContext";
 import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../context/AuthContext";
 import SliderLoader from "../SliderLoader";
+import AgencyImageLoader from "../AgencyImageLoader";
 
 const CreativeJobs = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -132,14 +133,7 @@ const CreativeJobs = () => {
                       </Link>
                     </div>
                     <Link to={`/job/${item.slug}`} className="employer-logo">
-                      <img
-                        src={item.agency?.user_thumbnail || item.agency.logo}
-                        width={150}
-                        height={150}
-                        onError={(e) => {
-                          e.target.src = Placeholder;
-                        }}
-                      />
+                      <AgencyImageLoader agency={item.agency} height={90} width={90} />
                     </Link>
                     <h3 className="employer-title">
                       <Link to={`/agency/${item.agency.slug}`}>

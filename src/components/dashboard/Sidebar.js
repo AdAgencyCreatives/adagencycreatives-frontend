@@ -6,6 +6,7 @@ import { Box, Drawer } from "@mui/material";
 import { Context as AuthContext } from "../../context/AuthContext";
 import UserLocation from "../UserLocation";
 import CreativeImageLoader from "../CreativeImageLoader";
+import AgencyImageLoader from "../AgencyImageLoader";
 
 const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
   const {
@@ -39,14 +40,7 @@ const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
                   <CreativeImageLoader creative={user} width={90} height={90} />
                 )}
                 {user?.type == "agencies" && (
-                  <img
-                    width="150"
-                    height="150"
-                    src={user?.user_thumbnail || user.logo || Placeholder}
-                    onError={(e) => {
-                      e.target.src = Placeholder; // Set the backup image source
-                    }}
-                  />
+                  <AgencyImageLoader agency={user} height={90} width={90} />
                 )}
               </Link>
             </div>

@@ -21,6 +21,7 @@ import { TfiNotepad } from "react-icons/tfi";
 import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 import Paginate from "../../../components/Paginate";
 import SearchBarCommon from "../../../components/SearchBarCommon";
+import AgencyImageLoader from "../../../components/AgencyImageLoader";
 
 const MyOpportunities = () => {
 
@@ -96,11 +97,7 @@ const MyOpportunities = () => {
                             <div className="d-flex">
                               <div className="avatar employer">
                                 <Tooltip title={job.agency.name} placement="left" arrow>
-                                  <img
-                                    src={job.agency.user_thumbnail || job.agency.logo || Placeholder}
-                                    height={100}
-                                    width={100}
-                                  />
+                                  <AgencyImageLoader agency={job?.agency} height={100} width={100} />
                                 </Tooltip>
                               </div>
                               <div className="ms-3">

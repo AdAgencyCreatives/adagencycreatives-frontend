@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import useAgencies from "../../hooks/useAgencies";
 import { Context as AuthContext } from "../../context/AuthContext";
 import SliderLoader from "../SliderLoader";
+import AgencyImageLoader from "../AgencyImageLoader";
 
 const AdAgencies = () => {
 
@@ -91,15 +92,7 @@ const AdAgencies = () => {
                 <swiper-slide key={`slide${index}`}>
                   <div className="sliderContent adagencies-slider" style={{ height: '350px' }}>
                     <Link to={`/agency/${item.slug}`} className="employer-logo">
-                      <img
-                        src={item?.user_thumbnail || item.logo || Placeholder}
-                        width={150}
-                        height={150}
-                        onError={(e) => {
-                          e.target.src = Placeholder;
-                        }}
-                        alt=""
-                      />
+                      <AgencyImageLoader agency={item} height={90} width={90} />
                     </Link>
                     <h3 className="employer-title">
                       {item?.name?.length ? (

@@ -13,6 +13,7 @@ import AuthModal from "../components/modals/AuthModal";
 import DelayedOutput from "../components/DelayedOutput";
 import { useParams } from "react-router-dom";
 import useHelper from "../hooks/useHelper";
+import AgencyImageLoader from "../components/AgencyImageLoader";
 
 const AgencySearch = () => {
 
@@ -92,15 +93,7 @@ const AgencySearch = () => {
                       </Tooltip>
                     )}
                     <Link to={`/agency/${item.slug}`} className="employer-logo" reloadDocument>
-                      <img
-                        src={item?.user_thumbnail || item.logo || Placeholder}
-                        width={150}
-                        height={150}
-                        alt=""
-                        onError={(e) => {
-                          e.target.src = Placeholder;
-                        }}
-                      />
+                      <AgencyImageLoader agency={item} height={90} width={90} />
                     </Link>
                     <h3 className="employer-title">
                       <Link to={`/agency/${item.slug}`} className="text-dark" reloadDocument>

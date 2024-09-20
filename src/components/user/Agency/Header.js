@@ -8,6 +8,7 @@ import Placeholder from "../../../assets/images/placeholder.png";
 import "../../../styles/User/ProfileHeader.scss";
 import { Link } from "react-router-dom";
 import useShortlist from "../../../hooks/useShortlist";
+import AgencyImageLoader from "../../AgencyImageLoader";
 
 const Header = ({ data, role, user }) => {
   const isAgency = role == "agency";
@@ -24,7 +25,7 @@ const Header = ({ data, role, user }) => {
       <div className="row align-items-center justify-content-between">
         <div className="col-12 d-flex align-items-top flex-md-row flex-column">
           <div className="avatar employer">
-            <img src={data?.user_thumbnail || data.logo || Placeholder} height={100} width={100} onError={(e) => { e.target.src = Placeholder; }} />
+            <AgencyImageLoader agency={data} height={100} width={100} />
           </div>
           <div className="meta row w-100 align-items-center">
             <div className="col-md-6 px-md-3 px-0">

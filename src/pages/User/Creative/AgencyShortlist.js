@@ -14,6 +14,7 @@ import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 import Loader from "../../../components/Loader";
 import Paginate from "../../../components/Paginate";
 import SearchBarCommon from "../../../components/SearchBarCommon";
+import AgencyImageLoader from "../../../components/AgencyImageLoader";
 
 const AgencyShortlist = () => {
 
@@ -97,11 +98,7 @@ const AgencyShortlist = () => {
                     <div className="col-12 d-md-flex align-items-top d-sm-block">
                       <div className="avatar employer me-3">
                         <Link to={`/agency/${resource?.slug}`}>
-                          <img
-                            src={resource?.user_thumbnail || resource?.logo || Placeholder}
-                            height={50}
-                            width={50}
-                          />
+                          <AgencyImageLoader agency={resource} height={50} width={50} />
                         </Link>
                       </div>
                       <div className="meta row w-100 align-items-center">

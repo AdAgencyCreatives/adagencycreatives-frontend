@@ -1,4 +1,3 @@
-import Placeholder from "../assets/images/placeholder.png";
 import { IoBookmarkOutline, IoLocationOutline } from "react-icons/io5";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
@@ -12,7 +11,7 @@ import { useContext, useEffect, useState } from "react";
 import Tooltip from "../components/Tooltip";
 import AuthModal from "../components/modals/AuthModal";
 import DelayedOutput from "../components/DelayedOutput";
-import ImageLoader from "../components/ImageLoader";
+import AgencyImageLoader from "../components/AgencyImageLoader";
 
 const Agencies = () => {
   const [input, setInput] = useHistoryState("input", "");
@@ -109,7 +108,7 @@ const Agencies = () => {
                         </Tooltip>
                       )}
                       <Link to={`/agency/${item.slug}`} className="employer-logo" reloadDocument>
-                        <ImageLoader item={item} source={item?.user_thumbnail || item.logo} Placeholder={Placeholder} />
+                        <AgencyImageLoader agency={item} height={90} width={90} />
                       </Link>
                       <h3 className="employer-title">
                         <Link to={`/agency/${item.slug}`} className="text-dark" reloadDocument>

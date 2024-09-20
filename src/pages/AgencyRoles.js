@@ -11,6 +11,7 @@ import { useContext, useEffect, useState } from "react";
 import Tooltip from "../components/Tooltip";
 import AuthModal from "../components/modals/AuthModal";
 import RestrictedAgency from "../components/RestrictedAgency";
+import AgencyImageLoader from "../components/AgencyImageLoader";
 
 const AgencyRoles = () => {
 
@@ -91,15 +92,7 @@ const AgencyRoles = () => {
                             </Tooltip>
                           )}
                           <Link to={`/agency/${item.slug}/${role}`} className="employer-logo" reloadDocument>
-                            <img
-                              src={item?.user_thumbnail || item.logo || Placeholder}
-                              width={150}
-                              height={150}
-                              alt=""
-                              onError={(e) => {
-                                e.target.src = Placeholder;
-                              }}
-                            />
+                            <AgencyImageLoader agency={item} height={90} width={90} />
                           </Link>
                           <h3 className="employer-title">
                             <Link to={`/agency/${item.slug}/${role}`} className="text-dark" reloadDocument>

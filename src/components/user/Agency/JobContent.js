@@ -11,6 +11,7 @@ import { Context as CreativesContext } from "../../../context/CreativesContext";
 import { Context as JobsContext } from "../../../context/JobsContext";
 import useHelper from "../../../hooks/useHelper";
 import ApplyJob from "../../job/ApplyJob";
+import AgencyImageLoader from "../../AgencyImageLoader";
 
 const JobContent = ({ user, data, item, setAuthModalOpen }) => {
 
@@ -67,13 +68,7 @@ const JobContent = ({ user, data, item, setAuthModalOpen }) => {
           <div className="inner-left">
             <div className="employer-logo">
               <Link to={"/job/" + item.slug}>
-                <img
-                  width="150"
-                  height="150"
-                  src={item.agency?.user_thumbnail || item.agency.logo}
-                  className=""
-                  alt=""
-                />
+                <AgencyImageLoader agency={item.agency} height={90} width={90} />
               </Link>
             </div>
             <div className="meta row w-100 align-items-center">
