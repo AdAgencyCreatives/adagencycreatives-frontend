@@ -2,14 +2,6 @@ import { Link, useParams } from "react-router-dom";
 import Header from "../../components/user/Header";
 import "../../styles/User.scss";
 import LeftSidebar from "../../components/community/LeftSidebar";
-import {
-  IoArrowBack,
-  IoArrowForward,
-  IoLocationOutline,
-  IoMailOpen,
-  IoPersonAdd,
-} from "react-icons/io5";
-import Placeholder from "../../assets/images/placeholder.png";
 import { useContext, useEffect, useState } from "react";
 import RestrictedLounge from "../../components/RestrictedLounge";
 import { Context as AuthContext } from "../../context/AuthContext";
@@ -21,11 +13,17 @@ import {
 
 import MyFriendWidget from "../../components/community/MyFriendWidget";
 import { CircularProgress } from "@mui/material";
+import { useHistoryState } from "../../hooks/useHistoryState";
+import SearchBarCommon from "../../components/SearchBarCommon";
 
 const Friends = () => {
+
   const [isLoading, setIsLoading] = useState(true);
   const [myFriends, setMyFriends] = useState(null);
   const [myFriendShips, setMyFriendShips] = useState(null);
+  const [input, setInput] = useHistoryState("input", "");
+  const [searchedFriends, setSearchedFriends] = useState([]);
+  const [searchApplied, setSearchApplied] = useState(false);
 
   const {
     state: { role, user, token },
@@ -64,11 +62,18 @@ const Friends = () => {
         )
       ) {
         getMyFriendsAsync();
+        setInput("");
+        setSearchApplied(false);
       } else if (friendshipsParam == "requests") {
         getFriendRequestsAsync(user.uuid);
+        setInput("");
+        setSearchApplied(false);
       } else {
         getMyFriendShipsAsync(user.uuid, friendshipsParam);
+        setInput("");
+        setSearchApplied(false);
       }
+
     }
   }, [user, friendshipsParam]);
 
@@ -87,6 +92,17 @@ const Friends = () => {
       setIsLoading(false);
     }
   }, [user, myFriendShips]);
+
+  const searchFriends = (searchText) => {
+    if (searchText?.length > 0) {
+      let searchResults = (friendshipsParam?.length > 0 ? myFriendShips : myFriends).filter(item => (item.user.first_name + ' ' + item.user.last_name).toLowerCase().indexOf(searchText.toLowerCase()) >= 0);
+      setSearchedFriends(searchResults);
+      setSearchApplied(true);
+    } else {
+      setSearchedFriends([]);
+      setSearchApplied(false);
+    }
+  };
 
   return (
     <>
@@ -107,15 +123,20 @@ const Friends = () => {
                   </div>
                 </div>
                 <div className="row">
+                  <SearchBarCommon
+                    input={input}
+                    setInput={setInput}
+                    placeholder={"Search by Name"}
+                    onSearch={searchFriends}
+                  />
                   {isLoading ? (
                     <div className="center-page">
                       <CircularProgress />
                       <span>Loading ...</span>
                     </div>
                   ) : (<>
-                    {!(friendshipsParam && friendshipsParam.length) &&
-                      myFriends &&
-                      myFriends.map((my_friend, index) => {
+                    {!(friendshipsParam?.length > 0) &&
+                      (searchApplied ? searchedFriends : (myFriends?.length > 0 ? myFriends : [])).map((my_friend, index) => {
                         return (
                           <MyFriendWidget
                             key={"my-friend-" + my_friend.user.uuid}
@@ -124,10 +145,9 @@ const Friends = () => {
                         );
                       })}
 
-                    {friendshipsParam &&
-                      friendshipsParam.length &&
-                      myFriendShips &&
-                      myFriendShips.map((my_friendship, index) => {
+                    {friendshipsParam?.length > 0 &&
+                      myFriendShips?.length > 0 &&
+                      (searchApplied ? searchedFriends : (myFriendShips?.length > 0 ? myFriendShips : [])).map((my_friendship, index) => {
                         return (
                           <MyFriendWidget
                             key={"my-friendship-" + my_friendship.user.uuid}
