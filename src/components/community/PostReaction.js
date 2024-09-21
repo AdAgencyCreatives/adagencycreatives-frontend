@@ -316,8 +316,7 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                     <div className="reactions-total">
                         {reactionsCount > showMaxReactionBy ? '+' : ''}{reactionsCount > 0 ? (reactionsCount > showMaxReactionBy ? reactionsCount - showMaxReactionBy : reactionsCount) : 0} reaction{reactionsCount > 1 ? 's' : ''}
                     </div> */}
-                    <strong>Reactions</strong>
-                    <span className="num-unit">All:</span>
+                    <span className="num-unit">Reactions All:</span>
                     {reactionsCount > 0 && (
                         <NumUnit default={""} number={reactionsCount}
                         // onMouseDown={(e) => onShowReactionBy(e)} 
