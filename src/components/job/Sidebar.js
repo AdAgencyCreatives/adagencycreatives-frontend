@@ -60,7 +60,7 @@ const Sidebar = ({ data }) => {
             <div className="value">{data.experience}</div>
           </div>
         </div>
-        {data.industry_experience.length ? (
+        {data?.industry_experience?.length > 0 ? (
           <div className="item">
             <img src={bullseye} height={22} width={22} />
             <div className="details">
@@ -74,16 +74,16 @@ const Sidebar = ({ data }) => {
           ""
         )}
         {data.media_experience?.length && (
-            <div className="item">
-              <img src={adicon} height={22} width={22} />
-              <div className="details">
-                <div className="text">Media Experience</div>
-                <div className="value">
-                  {data.media_experience?.join(", ") ?? ''}
-                </div>
+          <div className="item">
+            <img src={adicon} height={22} width={22} />
+            <div className="details">
+              <div className="text">Media Experience</div>
+              <div className="value">
+                {data.media_experience?.join(", ") ?? ''}
               </div>
             </div>
-          )}
+          </div>
+        )}
       </div>
     </div>
   );

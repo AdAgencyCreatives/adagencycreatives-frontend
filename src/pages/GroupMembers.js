@@ -109,7 +109,7 @@ const GroupMembers = () => {
                                     </div>
                                 ) : (
                                     <>
-                                        {isGroupMember && group_members && group_members.length ? (
+                                        {isGroupMember && group_members?.length > 0 ? (
                                             <div className="row g-4 px-1">
                                                 {group_members &&
                                                     group_members.map((group_member, index) => {
@@ -138,7 +138,9 @@ const GroupMembers = () => {
                                                 {!isGroupMember ? (<>
                                                     <div className="center-page">Sorry, your are not a member of this group.</div>
                                                 </>) : (<>
-                                                    <div className="center-page">Sorry, nothing here.</div>
+                                                    <div className="no_result">
+                                                        <p>Please try again. No exact results found.</p>
+                                                    </div>
                                                 </>)}
                                             </>
                                         )}

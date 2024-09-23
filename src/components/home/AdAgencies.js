@@ -95,7 +95,7 @@ const AdAgencies = () => {
                       <AgencyImageLoader agency={item} height={90} width={90} />
                     </Link>
                     <h3 className="employer-title">
-                      {item?.name?.length ? (
+                      {item?.name?.length > 0 ? (
                         <Link to={`/agency/${item.slug}`}>{item.name}</Link>
                       ) : (<>&nbsp;</>)}
                     </h3>

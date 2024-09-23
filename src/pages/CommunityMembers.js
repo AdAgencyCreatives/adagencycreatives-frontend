@@ -74,7 +74,7 @@ const CommunityMembers = () => {
                   <>
                     <SearchBar input={input} setInput={setInput} onSearch={searchUser} placeholder="Search by member name" />
 
-                    {creatives && creatives.length ? (
+                    {creatives?.length > 0 ? (
                       <div className="row g-4 px-1">
                         {creatives &&
                           creatives.map((creative, index) => {

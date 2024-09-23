@@ -215,7 +215,7 @@ const ApplicantJobs = () => {
                     </div>
                   </div>
                 </div>
-                {item.applications && item.applications.length ? (
+                {item?.applications?.length > 0 ? (
                   <JobApplications
                     job={item}
                     setApplicationStatus={setApplicationStatus}

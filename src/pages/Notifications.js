@@ -45,7 +45,7 @@ const Notifications = () => {
   }, [notifications]);
 
   const onDelete = (notification) => {
-    const remainingNotifications = notifications.filter((notif)=>notif.uuid != notification.uuid);
+    const remainingNotifications = notifications.filter((notif) => notif.uuid != notification.uuid);
     updateNotifications(remainingNotifications);
     getNotificationsCount(user.uuid);
   };
@@ -83,7 +83,7 @@ const Notifications = () => {
                   </div>
                 ) : (
                   <>
-                    {notifications && notifications.length ? (
+                    {notifications?.length > 0 ? (
                       <div className="notif-list">
                         {notifications &&
                           notifications.map((notification, index) => {
@@ -99,7 +99,9 @@ const Notifications = () => {
                           })}
                       </div>
                     ) : (
-                      <div className="center-page nothing">Sorry, nothing here.</div>
+                      <div className="no_result">
+                        <p>Please try again. No exact results found.</p>
+                      </div>
                     )}
                   </>
                 )}

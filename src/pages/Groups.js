@@ -136,7 +136,7 @@ const Groups = () => {
                       />
                     )}
 
-                    {groupsFound && groupsFound.length ? (
+                    {groupsFound?.length > 0 ? (
                       <div className="row g-4 px-1">
                         {groupsFound &&
                           groupsFound.map((group, index) => {
@@ -162,7 +162,9 @@ const Groups = () => {
                         </div>
                       </div>
                     ) : (
-                      <div className="center-page">Sorry, nothing here.</div>
+                      <div className="no_result">
+                        <p>Please try again. No exact results found.</p>
+                      </div>
                     )}
                   </>
                 )}

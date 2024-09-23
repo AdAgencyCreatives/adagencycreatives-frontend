@@ -106,7 +106,7 @@ const GroupRequests = () => {
                                     </div>
                                 ) : (
                                     <>
-                                        {groupRequests && groupRequests.length ? (
+                                        {groupRequests?.length > 0 ? (
                                             <div className="row g-4 px-1">
                                                 {groupRequests.map((group_request, index) => {
                                                     return (
@@ -131,7 +131,9 @@ const GroupRequests = () => {
                                             </div>
                                         ) : (
                                             <>
-                                                <div className="center-page">Sorry, nothing here.</div>
+                                                <div className="no_result">
+                                                    <p>Please try again. No exact results found.</p>
+                                                </div>
                                             </>
                                         )}
                                     </>

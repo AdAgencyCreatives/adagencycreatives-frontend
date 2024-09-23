@@ -123,7 +123,7 @@ const Sidebar = ({ data, user }) => {
               </div>
             </div>
           )}
-          {preferences.length ? (
+          {preferences?.length > 0 ? (
             <div className="item mt-4">
               <MdHomeWork />
               <div className="details">
@@ -134,7 +134,7 @@ const Sidebar = ({ data, user }) => {
           ) : (
             ""
           )}
-          {data.industry_experience.length ? (
+          {data?.industry_experience?.length > 0 ? (
             <div className="item mt-4">
               <img src={bullseye} height={22} width={22} alt="" />
               <div className="details">
@@ -147,7 +147,7 @@ const Sidebar = ({ data, user }) => {
           ) : (
             ""
           )}
-          {data.media_experience.length ? (
+          {data?.media_experience?.length > 0 ? (
             <div className="item mt-4">
               <img src={adicon} height={22} width={22} alt="" />
               <div className="details">

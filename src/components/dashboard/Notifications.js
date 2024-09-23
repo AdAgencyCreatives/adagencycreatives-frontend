@@ -29,7 +29,7 @@ const Notifications = () => {
             ) : (
                 <div className="card notification_sidebar">
                     <div className="card-title">Notifications</div>
-                    {notifications && notifications.length ? (
+                    {notifications?.length > 0 ? (
                         <div className="notif-list">
                             {notifications.map((notification) => {
                                 return (
@@ -54,7 +54,9 @@ const Notifications = () => {
                             {meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"notifications"} />}
                         </div>
                     ) : (
-                        <div className="center-page nothing">Sorry, nothing here.</div>
+                        <div className="no_result">
+                            <p>Please try again. No exact results found.</p>
+                        </div>
                     )}
                 </div>
             )}

@@ -257,7 +257,7 @@ const useFormData = (props = {}) => {
       editorRef.focus();
       showAlert("The content cannot be empty");
     } else {
-      let newFormData = { ...formData, 'repost_job_id': isRepost ? single_job.id : '', 'employment_type': (formData['employment_type'] && formData['employment_type'].length ? (Array.isArray(formData['employment_type']) ? formData['employment_type'].join(',') : formData['employment_type']) : "") };
+      let newFormData = { ...formData, 'repost_job_id': isRepost ? single_job.id : '', 'employment_type': (formData['employment_type'] && formData['employment_type']?.length > 0 ? (Array.isArray(formData['employment_type']) ? formData['employment_type'].join(',') : formData['employment_type']) : "") };
       console.log(isRepost);
       if (isEdit && !isRepost) {
         await saveJob(id, newFormData);

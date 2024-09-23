@@ -128,7 +128,7 @@ const AgencyShortlist = () => {
                                 </Link>
                               </div>
                             )}
-                            {resource?.industry_experience.length ? (
+                            {resource?.industry_experience?.length > 0 ? (
                               <div className="position">
                                 <IoBriefcaseOutline />
                                 {resource?.industry_experience.map(

@@ -289,7 +289,7 @@ const EditPost = (props) => {
                             value={"@" + taggerSearchText}
                             onBlur={(e) => handleTaggerBlur(e)}
                         />
-                        <div className="tagger-dropdown" style={{ display: taggerSearchResults?.length ? 'block' : 'none' }}>
+                        <div className="tagger-dropdown" style={{ display: taggerSearchResults?.length > 0 ? 'block' : 'none' }}>
                             {taggerSearchResults?.length && taggerSearchResults?.map((item, index) => {
                                 return (
                                     <div className="tagger-item" onClick={(e) => onTaggerItemSelected(e, item)}>

@@ -515,9 +515,9 @@ export const logActivity = async (user_id, type, message, body) => {
   try {
     const response = await api.post("/activities", {
       user_id: user_id,
-      type: type && type.length ? type : "general",
-      message: message && message.length ? message : "",
-      body: body && body.length ? body : "{}",
+      type: type?.length > 0 ? type : "general",
+      message: message?.length > 0 ? message : "",
+      body: body && body.length > 0 ? body : "{}",
     });
     return response.data;
   } catch (error) { }

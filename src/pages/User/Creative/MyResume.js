@@ -658,7 +658,7 @@ const MyResume = () => {
 
     setSubmissionInProcess(true);
     console.log(educationList, experienceList);
-    let newFormData = { ...formData, 'employment_type': (formData['employment_type'] && formData['employment_type'].length ? (Array.isArray(formData['employment_type']) ? formData['employment_type'].join(',') : formData['employment_type']) : "") };
+    let newFormData = { ...formData, 'employment_type': (formData['employment_type']?.length > 0 ? (Array.isArray(formData['employment_type']) ? formData['employment_type'].join(',') : formData['employment_type']) : "") };
     await saveResume(user.uuid, newFormData, educationList, experienceList);
     await getCreativeById(user.uuid);
     showAlert("Resume updated successfully");

@@ -373,7 +373,7 @@ const Jobs = () => {
               <div className="sidebar-toggle d-md-none d-inline-block">
                 <IoMenu onClick={() => setMobileOpen((prevState) => !prevState)} />
               </div>
-              {Object.keys(filters).length ? (
+              {Object.keys(filters)?.length > 0 ? (
                 <>
                   <div className="results-filter-wrapper">
                     <h3 className="title">Filters</h3>
@@ -455,7 +455,7 @@ const Jobs = () => {
                     </div>
                   </div>
                 )}
-                {jobs.length ? <JobList data={jobs} /> : <>
+                {jobs?.length > 0 ? <JobList data={jobs} /> : <>
                   <DelayedOutput delay={5000}>
                     <p>No Jobs found</p>
                   </DelayedOutput>

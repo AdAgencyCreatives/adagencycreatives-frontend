@@ -739,7 +739,7 @@ const AgencyProfile = () => {
                           className="dropdown-container"
                           options={field.data.map((option) => ({
                             ...option,
-                            // isDisabled: formData.length ? formData[field.name].length > 7 : false,
+                            // isDisabled: formData?.length > 0 ? formData[field.name].length > 7 : false,
                           }))}
                           isMulti={field.isMulti || false}
                           ref={(ref) => (field.name == "city_id" ? (cityRef.current = ref) : false)}

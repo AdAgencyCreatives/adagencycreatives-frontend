@@ -96,7 +96,7 @@ const ForgotPassword = () => {
                                     required="required"
                                     value={email}
                                     onChange={(e) => handleChange(e.target.value)}
-                                    disabled={queryParams?.get('email')?.length ? "disabled" : ""}
+                                    disabled={queryParams?.get('email')?.length > 0 ? "disabled" : ""}
                                 />
                             </div>
                             <div style={{ "display": (showLoading ? "flex" : "none"), "justify-content": "center" }}><CircularProgress /></div>

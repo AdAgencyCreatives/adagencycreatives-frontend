@@ -15,7 +15,7 @@ const NewMemberWidgetRightSidebar = (props) => {
                     </a>
                 </div>
                 <div className="item-industry-experience">
-                    {/* {singleCreative && singleCreative.industry_experience && singleCreative.industry_experience.length ? singleCreative.industry_experience.slice(0, Math.min(showMaxIndustryExperiences, singleCreative.industry_experience.length)).join(', ') : ""} */}
+                    {/* {singleCreative?.industry_experience?.length > 0 ? singleCreative.industry_experience.slice(0, Math.min(showMaxIndustryExperiences, singleCreative.industry_experience.length)).join(', ') : ""} */}
                     {props.new_member.category}
                 </div>
                 <div className="item-meta">
