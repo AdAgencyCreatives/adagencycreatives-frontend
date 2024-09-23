@@ -61,6 +61,9 @@ const GroupMembers = () => {
                         setIsLoading(false);
                     });
                     setIsGroupMember(true);
+                } else {
+                    setIsGroupMember(false);
+                    setIsLoading(false);
                 }
             })();
         }
