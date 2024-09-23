@@ -19,7 +19,7 @@ const reducer = (state, action) => {
         groups: action.payload.data,
         nextPage: action.payload.links.next,
       };
-      case "set_group_members":
+    case "set_group_members":
       return {
         ...state,
         group_members: action.payload.data,
@@ -33,17 +33,17 @@ const reducer = (state, action) => {
         groups: [...state.groups, ...action.payload.data],
         nextPage: action.payload.links.next,
       };
-      case "save_group":
+    case "save_group":
       return {
         ...state,
         groups: (action.payload.reflect ? [action.payload.data, ...state.groups] : state.groups),
       };
-      case "update_group":
+    case "update_group":
       return {
         ...state,
         groups: state.groups.map((item, index) => item.id == action.payload.data.id ? action.payload.data : item),
       };
-      case "delete_group":
+    case "delete_group":
       return {
         ...state,
         groups: state.groups.filter((item) => item.id != action.payload.data.id),
@@ -67,19 +67,22 @@ const getGroups = (dispatch) => {
         type: "set_groups",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
 const getGroupMembers = (dispatch) => {
-  return async (group_id) => {
+  return async (group_id, cb = () => { }) => {
     try {
       const response = await api.get("/group-members?filter[group_id]=" + group_id);
       dispatch({
         type: "set_group_members",
         payload: response.data,
       });
-    } catch (error) {}
+      cb({ status: 'success', data: response.data });
+    } catch (error) {
+      cb({ status: 'error', data: error });
+    }
   };
 };
 
@@ -91,7 +94,7 @@ const getMembershipGroups = (dispatch) => {
         type: "set_groups",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -119,7 +122,7 @@ const getUserGroups = (dispatch) => {
         type: "set_groups",
         payload: data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -131,7 +134,7 @@ const searchGroups = (dispatch) => {
         type: "set_groups",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -144,7 +147,7 @@ const loadGroups = (dispatch) => {
         type: "load_groups",
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
     setLoading(dispatch, false);
   };
 };
@@ -191,7 +194,7 @@ const updateGroup = (dispatch) => {
       payload: true,
     });
     try {
-      const response = await api.post("/groups/update/"+id, data, {
+      const response = await api.post("/groups/update/" + id, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -215,7 +218,7 @@ const updateGroup = (dispatch) => {
 const deleteGroup = (dispatch) => {
   return async (id) => {
     try {
-      const response = await api.delete("/groups/"+id);
+      const response = await api.delete("/groups/" + id);
       dispatch({
         type: "delete_group",
         payload: response.data,

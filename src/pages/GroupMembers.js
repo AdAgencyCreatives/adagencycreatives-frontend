@@ -57,7 +57,9 @@ const GroupMembers = () => {
             (async () => {
                 let result = await getGroupMembership(group_uuid, user.uuid)
                 if (result && result.creative.user_id == user.uuid) {
-                    getGroupMembers(group_uuid);
+                    getGroupMembers(group_uuid, (response) => {
+                        setIsLoading(false);
+                    });
                     setIsGroupMember(true);
                 }
             })();
