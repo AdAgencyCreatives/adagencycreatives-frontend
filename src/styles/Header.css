@@ -1495,10 +1495,10 @@ div.welcome-lounge {
 
 div.welcome-lounge .user_image {
     border-radius: 100%;
-    height: 35%;
+    height: 28%;
     object-fit: cover;
     position: absolute;
-    width: 35%;
+    width: 28%;
     margin-right: 10px;
     margin-bottom: 10px;
 }
