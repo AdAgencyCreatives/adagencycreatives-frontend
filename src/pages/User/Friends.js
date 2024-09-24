@@ -144,6 +144,11 @@ const Friends = () => {
                           />
                         );
                       })}
+                    {(!(friendshipsParam?.length > 0) && searchApplied && !(searchedFriends?.length > 0)) && (
+                      <div className="no_result">
+                        <p>Please try again. No exact results found.</p>
+                      </div>
+                    )}
 
                     {friendshipsParam?.length > 0 &&
                       myFriendShips?.length > 0 &&
@@ -155,6 +160,11 @@ const Friends = () => {
                           />
                         );
                       })}
+                    {((friendshipsParam?.length > 0) && searchApplied && !(searchedFriends?.length > 0)) && (
+                      <div className="no_result">
+                        <p>Please try again. No exact results found.</p>
+                      </div>
+                    )}
                   </>)}
                 </div>
 

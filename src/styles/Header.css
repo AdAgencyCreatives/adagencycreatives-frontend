@@ -1491,6 +1491,7 @@ div.welcome-lounge {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 33%;
 }
 
 div.welcome-lounge .user_image {
@@ -1505,35 +1506,29 @@ div.welcome-lounge .user_image {
 
 div.welcome-lounge .user_info {
     position: absolute;
-    bottom: 3%;
+    bottom: 2%;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-size: 16px;
 }
 
 div.welcome-lounge .user_info div {
     color: #fff;
     font-variant: small-caps;
-    line-height: 1.5em;
-}
-
-div.welcome-lounge .user_info .name {
-    font-size: 32px;
-}
-
-div.welcome-lounge .user_info .category {
-    font-size: 32px;
-}
-
-div.welcome-lounge .user_info .location {
-    font-size: 32px;
+    font-size: 1.1em;
+    line-height: 1.1em;
 }
 
 @media (max-width: 1024px) {
+    /* div.welcome-lounge {
+        width: 100% !important;
+    } */
+
     div.welcome-lounge .user_info div {
-        font-size: 20px !important;
-        line-height: 1.15em !important;
+        font-size: 8px !important;
+        line-height: 1.1em !important;
     }
 }
 
