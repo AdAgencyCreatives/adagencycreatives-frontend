@@ -7,7 +7,7 @@ import jostMedium from "../../assets/fonts/Jost/static/Jost-Medium.ttf";
 import jostBold from "../../assets/fonts/Jost/static/Jost-Bold.ttf";
 import alta from "../../assets/fonts/Alta_Typeface/Alta_regular.otf";
 
-import moment from 'moment';
+import moment, { relativeTimeRounding } from 'moment';
 import Placeholder from "../../assets/images/placeholder.png";
 import AdAgencyLogo from "../../assets/images/AdAgencyWhiteBlack.jpeg";
 
@@ -702,9 +702,13 @@ export default function CreativeProfilePdf({ data = null, filename = "", allowPh
                             padding: 0,
                             width: '100%',
                             height: '100%',
+                            position: 'relative',
                         }}>
                             <Text style={[styles.lightText, { color: '#fff', padding: 0, margin: '-5px 0px 0px 0px', lineHeight: 1, fontWeight: 'medium' }]}>
                                 ©️ {(new Date()).getFullYear()} Ad Agency Creatives. All Rights Reserved.
+                            </Text>
+                            <Text style={[styles.lightText, { color: '#000', padding: 0, margin: 0, lineHeight: 1, fontWeight: 'medium', position: 'absolute', top: '-18px', right: '0px', width: '75px', textAlign: 'right' }]}>
+                                {pageNumber}/{totalPages}
                             </Text>
                         </View>
                     )
