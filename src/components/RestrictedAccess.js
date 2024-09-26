@@ -1,10 +1,23 @@
+import { useEffect, useState } from "react";
 import useHelper from "../hooks/useHelper";
+import { CircularProgress } from "@mui/material";
 
 const RestrictedAccess = ({ title = "Restricted Access", message = "Login to view this page." }) => {
 
+    const [timedLoading, setTimedLoading] = useState(true);
+    const [timeoutDelay, setTimeoutDelay] = useState(3000);
+
     const { capitalize, getAorAn } = useHelper();
 
-    return (
+    useEffect(() => {
+        window.setTimeout(() => {
+            setTimedLoading(false);
+        }, timeoutDelay);
+    }, []);
+
+    return timedLoading ? (
+        <CircularProgress />
+    ) : (
         <div className="dark-container page-community mb-0 mt-4">
             <h1 className="community-title">{title}</h1>
             <div className="container-fluid mt-4">
