@@ -15,7 +15,7 @@ Font.register({
     family: "JOST",
     format: "truetype",
     fonts: [
-        { src: jost },
+        { src: jost, fontWeight: 'regular' },
         { src: jostLight, fontWeight: 'light' },
         { src: jostMedium, fontWeight: 'medium' },
         { src: jostBold, fontWeight: 'bold' },
