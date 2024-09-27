@@ -23,7 +23,7 @@ const Community = () => {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    setTimeout(() => setLoaded(true), 1500);
+    setTimeout(() => setLoaded(true), 3000);
   }, []);
 
   return (
