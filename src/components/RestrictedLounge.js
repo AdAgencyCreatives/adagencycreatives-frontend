@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import useHelper from "../hooks/useHelper";
 import { CircularProgress } from "@mui/material";
 
 const RestrictedLounge = () => {
