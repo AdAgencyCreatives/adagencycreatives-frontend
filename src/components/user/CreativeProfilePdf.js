@@ -15,7 +15,7 @@ Font.register({
     family: "JOST",
     format: "truetype",
     fonts: [
-        { src: jost, fontWeight: 'regular' },
+        { src: jost },
         { src: jostLight, fontWeight: 'light' },
         { src: jostMedium, fontWeight: 'medium' },
         { src: jostBold, fontWeight: 'bold' },
@@ -706,7 +706,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", allowPh
                         <Text style={[styles.lightText, { color: '#fff', padding: 0, margin: '-5px 0px 0px 0px', lineHeight: 1, fontWeight: 'medium' }]}>
                             ©️ {(new Date()).getFullYear()} Ad Agency Creatives. All Rights Reserved.
                         </Text>
-                        <Text style={[styles.lightText, { color: '#000', padding: 0, margin: 0, lineHeight: 1, fontWeight: 'regular', position: 'absolute', top: '-18px', right: '0px', width: '75px', textAlign: 'right' }]}>
+                        <Text style={[styles.lightText, { color: '#000', padding: 0, margin: 0, lineHeight: 1, fontWeight: 'normal', position: 'absolute', top: '-18px', right: '0px', width: '75px', textAlign: 'right' }]}>
                             {pageNumber}/{totalPages}
                         </Text>
                     </View>
