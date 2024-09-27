@@ -429,7 +429,7 @@ export default function CreativeProfilePdf({ data = null, filename = "", allowPh
                 return (
                     <>
                         {data.educations?.length > 0 && (
-                            <View style={[styles.flexCols]}>
+                            <View wrap={false} style={[styles.flexCols]}>
                                 <Text style={styles.heading1}>Education</Text>
                                 <View style={[styles.flexCols]}>
                                     {data.educations?.length > 0 ? data.educations?.map(item => <Item data={item} />) : <></>}
