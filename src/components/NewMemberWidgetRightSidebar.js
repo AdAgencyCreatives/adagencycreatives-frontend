@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { Context as CreativesContext } from "../context/CreativesContext";
+import { Link } from "react-router-dom";
 
 const NewMemberWidgetRightSidebar = (props) => {
 
@@ -19,9 +19,9 @@ const NewMemberWidgetRightSidebar = (props) => {
                     {props.new_member.category}
                 </div>
                 <div className="item-meta">
-                    <a href={"/creative/" + props.new_member.slug}>
+                    <Link to={"/creative/" + props.new_member.slug}>
                         <span className="activity">Portfolio</span>
-                    </a>
+                    </Link>
                 </div>
             </div>
         </li>
