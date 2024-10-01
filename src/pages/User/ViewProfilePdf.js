@@ -88,7 +88,7 @@ export default function ViewProfilePdf() {
                 <>
                     {/* {skipHeaderFooter()} */}
                     <RestrictedAccess
-                        title={'View Profile PDF'}
+                        title={'View AAC Profile'}
                         message={
                             <>
                                 <h3>Opening PDF...</h3>
@@ -108,7 +108,7 @@ export default function ViewProfilePdf() {
                         />
                     ) : (
                         <RestrictedAccess
-                            title={timedLoading ? 'View Profile PDF' : 'Restricted Access'}
+                            title={timedLoading ? 'View AAC Profile' : 'Restricted Access'}
                             message={<CircularProgress size={30} />}
                         />
                     )}

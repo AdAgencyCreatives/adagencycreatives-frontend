@@ -5,7 +5,7 @@ import { CircularProgress } from "@mui/material";
 const RestrictedAccess = ({ title = "Restricted Access", message = "Login to view this page." }) => {
 
     const [timedLoading, setTimedLoading] = useState(true);
-    const [timeoutDelay, setTimeoutDelay] = useState(3000);
+    const [timeoutDelay, setTimeoutDelay] = useState(30000);
 
     const { capitalize, getAorAn } = useHelper();
 

@@ -77,7 +77,7 @@ export default function ViewProfilePdf() {
                         title={
                             <>
                                 <span className='desktop-view'>View/</span>
-                                <span>Download Profile PDF</span>
+                                <span>Download AAC Profile</span>
                             </>
                         }
                         message={
@@ -118,7 +118,7 @@ export default function ViewProfilePdf() {
                             title={timedLoading ? (
                                 <>
                                     <span className='desktop-view'>View/</span>
-                                    <span>Download Profile PDF</span>
+                                    <span>Download AAC Profile</span>
                                 </>
                             ) : 'Restricted Access'}
                             message={<CircularProgress size={30} />}
