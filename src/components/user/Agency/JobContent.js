@@ -68,7 +68,7 @@ const JobContent = ({ user, data, item, setAuthModalOpen }) => {
           <div className="inner-left">
             <div className="employer-logo">
               <Link to={"/job/" + item.slug}>
-                <AgencyImageLoader agency={item.agency} height={90} width={90} />
+                <AgencyImageLoader agency={item.agency} height={50} width={50} />
               </Link>
             </div>
             <div className="meta row w-100 align-items-center">
