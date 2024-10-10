@@ -17,7 +17,7 @@ const RestrictedAccess = ({ title = "Restricted Access", message = "Login to vie
 
     return timedLoading ? (
         <div className="dark-container page-community mb-0 mt-4">
-            <h1 className="community-title"></h1>
+            <h1 className="community-title">Please wait</h1>
             <div className="container-fluid mt-4">
                 <div className="row">
                     <div className="col-md-12 mb-4 mb-md-0">

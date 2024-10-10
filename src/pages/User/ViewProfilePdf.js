@@ -86,18 +86,23 @@ export default function ViewProfilePdf() {
         <>
             {single_creative && Object.keys(single_creative)?.length > 0 ? (
                 <>
-                    {/* {skipHeaderFooter()} */}
-                    <RestrictedAccess
-                        title={'View AAC Profile'}
-                        message={
-                            <>
-                                <h3>Opening PDF...</h3>
-                                <PDFViewer style={{ zIndex: '999999', position: 'fixed', left: '0px', top: '0px', width: '100vw', height: '100vh' }}>
-                                    <CreativeProfilePdf data={single_creative} filename={filename} allowPhone={isAdmin || single_creative?.logged_in_user?.is_creative_applicant} />
-                                </PDFViewer>
-                            </>
-                        }
-                    />
+                    <div className="dark-container page-community mb-0 mt-4">
+                        <h1 className="community-title">View AAC Profile</h1>
+                        <div className="container-fluid mt-4">
+                            <div className="row">
+                                <div className="col-md-12 mb-4 mb-md-0">
+                                    <div className="restricted-creatives-only">
+                                        <div className="restricted-message">
+                                            <h3>Opening PDF...</h3>
+                                            <PDFViewer style={{ zIndex: '999999', position: 'fixed', left: '0px', top: '0px', width: '100vw', height: '100vh' }}>
+                                                <CreativeProfilePdf data={single_creative} filename={filename} allowPhone={isAdmin || single_creative?.logged_in_user?.is_creative_applicant} />
+                                            </PDFViewer>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </>
             ) : (
                 <>
@@ -108,8 +113,10 @@ export default function ViewProfilePdf() {
                         />
                     ) : (
                         <RestrictedAccess
-                            title={timedLoading ? 'View AAC Profile' : 'Restricted Access'}
-                            message={<CircularProgress size={30} />}
+                            title={'Loading AAC Profile'}
+                            message={<CircularProgress size={30}
+                                delay={500}
+                            />}
                         />
                     )}
                 </>
