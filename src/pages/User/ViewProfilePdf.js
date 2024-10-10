@@ -88,6 +88,7 @@ export default function ViewProfilePdf() {
                 <RestrictedAccess
                     title={'Restricted Access'}
                     message={'Login to view this page'}
+                    delayTitle='Loading AAC Profile'
                 />
             ) : (
                 <>
