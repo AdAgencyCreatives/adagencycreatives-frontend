@@ -176,7 +176,7 @@ const TabularSingleJobApplication = (props) => {
                       <Tooltip
                         title="Interested"
                         onClick={() => {
-                          changeApplicationStatus(thisApplication, "accepted");
+                          changeApplicationStatus("accepted");
                         }}
                       >
                         <button className="btn p-0 border-0 btn-hover-primary">
