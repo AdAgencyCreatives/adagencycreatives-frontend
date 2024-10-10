@@ -71,61 +71,56 @@ export default function ViewProfilePdf() {
 
     return (
         <>
-            {single_creative && Object.keys(single_creative)?.length > 0 ? (
-                <>
+            <>
+                {(!token || !user) ? (
                     <RestrictedAccess
-                        title={
-                            <>
-                                <span className='desktop-view'>View/</span>
-                                <span>Download AAC Profile</span>
-                            </>
-                        }
-                        message={
-                            <div style={{ display: 'inline-block' }}>
-                                <Link className="btn btn-dark fs-5" to={"/creative/" + username} style={{ marginRight: '10px' }}>
-                                    Visit Profile
-                                </Link>
-                                <a className="btn btn-dark fs-5 desktop-view" href={"/creative-profile/" + username} style={{ marginRight: '10px' }}>
-                                    View Profile PDF
-                                </a>
-                                <PDFDownloadLink className="" document={<CreativeProfilePdf data={single_creative} filename={getDownloadFilename()} allowPhone={isAdmin || single_creative?.logged_in_user?.is_creative_applicant} />} fileName={getDownloadFilename() + ".pdf"}>
-                                    {({ blob, url, loading, error }) =>
-                                        loading ? (
-                                            <div style={{ display: 'inline-block' }}>
-                                                <CircularProgress size={30} /> Preparing PDF...
-                                            </div>
-                                        ) : (
-                                            <button className={"btn btn-dark fs-5"}>
-                                                Download Profile PDF
-                                            </button>
-                                        )
-                                    }
-
-                                </PDFDownloadLink>
-                            </div>
-                        }
+                        title={'Restricted Access'}
+                        message={'Login to view this page'}
                     />
-                </>
-            ) : (
-                <>
-                    {(!token || !user) ? (
-                        <RestrictedAccess
-                            title={'Restricted Access'}
-                            message={'Login to view this page'}
-                        />
-                    ) : (
-                        <RestrictedAccess
-                            title={timedLoading ? (
-                                <>
-                                    <span className='desktop-view'>View/</span>
-                                    <span>Download AAC Profile</span>
-                                </>
-                            ) : 'Restricted Access'}
-                            message={<CircularProgress size={30} />}
-                        />
-                    )}
-                </>
-            )}
+                ) : (
+                    <>
+                        <div className="dark-container page-community mb-0 mt-4">
+                            <h1 className="community-title"><span className='desktop-view'>View/</span>
+                                <span>Download AAC Profile</span></h1>
+                            <div className="container-fluid mt-4">
+                                <div className="row">
+                                    <div className="col-md-12 mb-4 mb-md-0">
+                                        <div className="restricted-creatives-only">
+                                            <div className="restricted-message">
+                                                <div style={{ display: 'inline-block' }}>
+                                                    <Link className="btn btn-dark fs-5" to={"/creative/" + username} style={{ marginRight: '10px' }}>
+                                                        Visit Profile
+                                                    </Link>
+                                                    <a className="btn btn-dark fs-5 desktop-view" href={"/creative-profile/" + username} style={{ marginRight: '10px' }}>
+                                                        View Profile PDF
+                                                    </a>
+                                                    {single_creative && Object.keys(single_creative)?.length > 0 ? (
+                                                        <PDFDownloadLink className="" document={<CreativeProfilePdf data={single_creative} filename={getDownloadFilename()} allowPhone={isAdmin || single_creative?.logged_in_user?.is_creative_applicant} />} fileName={getDownloadFilename() + ".pdf"}>
+                                                            {({ blob, url, loading, error }) =>
+                                                                loading ? (
+                                                                    <div style={{ display: 'inline-block' }}>
+                                                                        <CircularProgress size={30} /> Preparing PDF...
+                                                                    </div>
+                                                                ) : (
+                                                                    <button className={"btn btn-dark fs-5"}>
+                                                                        Download Profile PDF
+                                                                    </button>
+                                                                )
+                                                            }
+                                                        </PDFDownloadLink>
+                                                    ) : (
+                                                        <CircularProgress size={30} />
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )}
+            </>
         </>
     );
 }
