@@ -109,7 +109,9 @@ export default function ViewProfilePdf() {
                                                             }
                                                         </PDFDownloadLink>
                                                     ) : (
-                                                        <CircularProgress size={30} />
+                                                        <>
+                                                            <CircularProgress size={30} /> Generating PDF...
+                                                        </>
                                                     )}
                                                 </div>
                                             </div>
