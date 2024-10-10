@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import useHelper from "../hooks/useHelper";
 import { CircularProgress } from "@mui/material";
 
-const RestrictedAccess = ({ title = "Restricted Access", message = "Login to view this page." }) => {
+const RestrictedAccess = ({ title = "Restricted Access", message = "Login to view this page.", delay = 30000 }) => {
 
     const [timedLoading, setTimedLoading] = useState(true);
-    const [timeoutDelay, setTimeoutDelay] = useState(30000);
+    const [timeoutDelay, setTimeoutDelay] = useState(delay);
 
     const { capitalize, getAorAn } = useHelper();
 
