@@ -862,7 +862,7 @@ const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
                                   onInit={(evt, editor) =>
                                     performInitTinyMCE(evt, editor)
                                   }
-                                  apiKey='0de1wvfzr5x0z7za5hi7txxvlhepurk5812ub5p0fu5tnywh'
+                                  apiKey='niqd0bqfftqm2iti1rxdr0ddt1b46akht531kj0uv4snnaie'
                                   init={{
                                     height: 400,
                                     menubar: false,
