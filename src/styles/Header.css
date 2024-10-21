@@ -1633,3 +1633,7 @@ div.welcome-lounge .user_info div {
     justify-content: center;
     align-items: center;
 }
+
+img.agency-image-loader {
+    border-radius: 5px !important;
+}
