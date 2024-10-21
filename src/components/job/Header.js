@@ -179,13 +179,21 @@ const Header = ({ data }) => {
                 {isJobApplied ? (
                   <Tooltip title={data.apply_type.toLowerCase() == "external" ? "" : "Already Applied"}>
                     {data.apply_type.toLowerCase() == "external" ? (
-                      <Link
-                        to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}
-                        target={data.apply_type.toLowerCase() == "external" ? "_blank" : ""}
-                        className={"btn btn-apply active external"}
-                      >
-                        Interested
-                      </Link>
+                      <>
+                        {data?.status == "expired" ? (<>
+                          <div className={"btn btn-apply active internal"}>
+                            Job Closed
+                          </div>
+                        </>) : (<>
+                          <Link
+                            to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}
+                            target={data.apply_type.toLowerCase() == "external" ? "_blank" : ""}
+                            className={"btn btn-apply active external"}
+                          >
+                            Interested
+                          </Link>
+                        </>)}
+                      </>
                     ) : (
                       <div className={"btn btn-apply active internal"}>
                         Applied
@@ -195,10 +203,44 @@ const Header = ({ data }) => {
                 ) : (
                   <>
                     {isLoading && (<CircularProgress />)}
-                    {user?.role?.length > 0 && user?.role == "creative" ? (
-                      <Tooltip type="featured" title={
-                        <div className="no-transform" style={{ whiteSpace: 'pre-line', color: '#000000' }}>{"Before applying we recommend" + "\n" + "you review your resume details" + "\n" + "Job Dashboard > My Resume"}</div>
-                      }>
+                    {data?.status == "expired" ? (<>
+                      <div className={"btn btn-apply expired"}>
+                        Job Closed
+                      </div>
+                    </>) : (<>
+                      {user?.role?.length > 0 && user?.role == "creative" ? (
+                        <Tooltip type="featured" title={
+                          <div className="no-transform" style={{ whiteSpace: 'pre-line', color: '#000000' }}>{"Before applying we recommend" + "\n" + "you review your resume details" + "\n" + "Job Dashboard > My Resume"}</div>
+                        }>
+                          <Link
+                            to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}
+                            target={data.apply_type.toLowerCase() == "external" ? "_blank" : ""}
+                            className="btn btn-apply btn-apply-job-external "
+                            onClick={(e) => {
+                              if (data?.status == "expired") {
+                                showAlert("Job Closed");
+                                e.preventDefault();
+                                return;
+                              }
+                              if (!isCreative) {
+                                showAlert("Login as a Creative to apply");
+                                e.preventDefault();
+                              } else if (data.apply_type.toLowerCase() == "internal") {
+                                e.preventDefault();
+                                setJob(data.id);
+                                setOpen(true);
+                              } else if (data.apply_type.toLowerCase() == "external") {
+                                handleApplyExternalJob(data);
+                              }
+                            }}
+                            disabled={isLoading ? "disabled" : ""}
+                          >
+                            Apply Now
+                            <i className="next flaticon-right-arrow"></i>
+
+                          </Link>
+                        </Tooltip>
+                      ) : (
                         <Link
                           to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}
                           target={data.apply_type.toLowerCase() == "external" ? "_blank" : ""}
@@ -221,31 +263,9 @@ const Header = ({ data }) => {
                           <i className="next flaticon-right-arrow"></i>
 
                         </Link>
-                      </Tooltip>
-                    ) : (
-                      <Link
-                        to={data.apply_type.toLowerCase() == "external" ? rectify_url(data.external_link) : ""}
-                        target={data.apply_type.toLowerCase() == "external" ? "_blank" : ""}
-                        className="btn btn-apply btn-apply-job-external "
-                        onClick={(e) => {
-                          if (!isCreative) {
-                            showAlert("Login as a Creative to apply");
-                            e.preventDefault();
-                          } else if (data.apply_type.toLowerCase() == "internal") {
-                            e.preventDefault();
-                            setJob(data.id);
-                            setOpen(true);
-                          } else if (data.apply_type.toLowerCase() == "external") {
-                            handleApplyExternalJob(data);
-                          }
-                        }}
-                        disabled={isLoading ? "disabled" : ""}
-                      >
-                        Apply Now
-                        <i className="next flaticon-right-arrow"></i>
+                      )}
+                    </>)}
 
-                      </Link>
-                    )}
                   </>
                 )}
               </div>

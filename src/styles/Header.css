@@ -973,6 +973,19 @@ nav ul.dropdown-list .list-item-text.j-fix {
     color: #fff;
 }
 
+.btn.btn-apply.expired {
+    cursor: default;
+    background-color: #d3a11f;
+    color: #000;
+    border: 2px solid #d3a11f;
+}
+
+.btn.btn-apply.expired:hover {
+    background-color: #d3a11f;
+    color: #000;
+    border: 2px solid #d3a11f;
+}
+
 .password-reset {
     flex-direction: column;
 }
