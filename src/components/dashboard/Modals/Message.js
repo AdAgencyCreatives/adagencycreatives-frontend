@@ -5,8 +5,9 @@ import { Context as ChatContext } from "../../../context/ChatContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 import { useState, useRef } from "react";
 import CustomEditor from "../../../components/CustomEditor";
+import { IoCloseCircleSharp } from "react-icons/io5";
 
-const Message = ({ open, handleClose, item, type }) => {
+const Message = ({ open, setOpen = false, handleClose = false, item, type }) => {
 
   const [subjectData, setSubjectData] = useState("");
   const [messageData, setMessageData] = useState("");
@@ -43,16 +44,24 @@ const Message = ({ open, handleClose, item, type }) => {
     logActivity(user.uuid, "message_sent", "You sent message to Creative: " + item.name, "{user_id:'" + user.uuid + "', creative_id:'" + item.user_id + "'}");
   };
 
+  const closeMessageDialog = () => {
+    setOpen && setOpen(false);
+    handleClose && handleClose();
+    setSubjectData("");
+    setMessageData("");
+  };
+
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
+      onClose={closeMessageDialog}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       scroll="body"
     >
       {item && (
         <div className="add-note-modal">
+          <div className="close-modal"><IoCloseCircleSharp size={30} onClick={(e) => closeMessageDialog()} /></div>
           <div className="addnote-header"></div>
           <div className="addnote-body">
             <div className="job-apply-email-form-wrapper">

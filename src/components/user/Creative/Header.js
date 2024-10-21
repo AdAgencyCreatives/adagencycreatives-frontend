@@ -193,6 +193,7 @@ const Header = ({ data, role, user, username }) => {
                     </button>
                     <Message
                       open={open}
+                      setOpen={setOpen}
                       handleClose={handleClose}
                       item={data}
                       type="private"
