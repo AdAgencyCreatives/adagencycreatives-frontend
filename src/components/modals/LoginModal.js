@@ -68,7 +68,8 @@ const LoginModal = ({ open, handleClose, setModal }) => {
           //   sendAdminFriendRequest(data);
           // }
           if (window.location.pathname == "/") {
-            navigate('/community');
+            // navigate('/community');
+            navigate('/dashboard');
           } else {
             navigate(window.location.pathname);
           }
