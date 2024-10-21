@@ -417,6 +417,21 @@ const generateThumbnailAttachment = (dispatch) => {
   };
 };
 
+const generateCroppedAttachment = (dispatch) => {
+  return async (user_id, x, y, width, height) => {
+    try {
+      const response = await api.get(
+        "/generate-cropped-attachment?user_id=" + user_id
+        + "&x=" + x
+        + "&y=" + y
+        + "&width=" + width
+        + "&height=" + height
+      );
+      return response.data.data;
+    } catch (error) { }
+  };
+};
+
 const getCreativeApplications = (dispatch) => {
   return async (job_user_id, creative_user_id) => {
     setLoading(dispatch, true);
@@ -469,6 +484,7 @@ export const { Context, Provider } = createDataContext(
     getAgencyRoles,
     saveAdvisorRecruiter,
     generateThumbnailAttachment,
+    generateCroppedAttachment,
     getCreativeApplications,
     isCreativeApplicant,
   },

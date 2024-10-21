@@ -13,6 +13,7 @@ import { Context as AuthContext } from "../../../context/AuthContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
 import { CircularProgress, filledInputClasses } from "@mui/material";
+import ImageCropperModal from "../../../components/ImageCropperModal";
 
 import useHelper from "../../../hooks/useHelper";
 import useUploadHelper from "../../../hooks/useUploadHelper";
@@ -40,6 +41,8 @@ const AgencyProfile = () => {
 
   const [isLogoUploaded, setIsLogoUploaded] = useState(false);
   const [isVideoUploaded, setIsVideoUploaded] = useState(false);
+
+  const [openAdjustImageDialog, setOpenAdjustImageDialog] = useState(false);
 
   const [useTinyMCE, setUseTinyMCE] = useState(true);
   const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
@@ -107,6 +110,7 @@ const AgencyProfile = () => {
     getVideo,
     removeAttachment,
     generateThumbnailAttachment,
+    generateCroppedAttachment,
   } = useContext(AgenciesContext);
 
   const {
@@ -609,6 +613,16 @@ const AgencyProfile = () => {
     showAlert("Logo removed successfully");
   };
 
+  const onCropComplete = (selectedCroppedArea, selectedCroppedAreaPixels, cb = () => { }) => {
+    (async () => {
+      await generateCroppedAttachment(user.uuid, selectedCroppedAreaPixels.x, selectedCroppedAreaPixels.y, selectedCroppedAreaPixels.width, selectedCroppedAreaPixels.height);
+      reloadUserData(user.uuid);
+      cb();
+      showAlert("Agency profile updated successfully");
+    })();
+  };
+
+
   return isLoading ? (
     <Loader />
   ) : (
@@ -645,9 +659,15 @@ const AgencyProfile = () => {
                             <button type="button" className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => imageUploadRef.current.click()}>
                               <FiPaperclip /> Upload
                             </button>
-                            <button type="button" className="btn btn-secondary w-100 text-uppercase" onClick={() => removeLogo(field?.id)}>
+                            <button type="button" className="btn btn-secondary w-100 mb-2 text-uppercase" onClick={() => removeLogo(field?.id)}>
                               <FiTrash2 /> Remove
                             </button>
+                            <ImageCropperModal
+                              open={openAdjustImageDialog}
+                              setOpen={setOpenAdjustImageDialog}
+                              field={field}
+                              onCropComplete={onCropComplete}
+                            />
                           </div>
                           <input type="file" ref={imageUploadRef} className="d-none" onChange={(e) => handleFileChange(e, "agency_logo", logoRef, field)} accept={field.accept} />
                         </div>
