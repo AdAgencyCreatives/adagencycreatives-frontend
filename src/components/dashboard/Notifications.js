@@ -55,7 +55,7 @@ const Notifications = () => {
                         </div>
                     ) : (
                         <div className="no_result">
-                            <p>Please try again. No exact results found.</p>
+                            {/* <p>Please try again. No exact results found.</p> */}
                         </div>
                     )}
                 </div>
