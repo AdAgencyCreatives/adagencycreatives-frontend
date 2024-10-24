@@ -512,7 +512,14 @@ const ChatBox = ({
                           <AvatarImageLoader user={sender} height={40} width={40} className="chat-avatar" />
                           <div className="details">
                             <div className="sender">
-                              {sender.first_name + " " + sender.last_name}
+                              {(sender?.role == "creative" || sender?.role == "agency") ? (<>
+                                <Link
+                                  to={"/" + sender?.role + "/" + sender?.username}
+                                  className="link link-black hover-gold"
+                                >{sender.first_name + " " + sender.last_name}</Link>
+                              </>) : (<>
+                                {sender.first_name + " " + sender.last_name}
+                              </>)}
                               <span className="time">{time}</span>
                               {item?.edited_at && (
                                 <Tooltip title={parseDate(item?.edited_at)}>

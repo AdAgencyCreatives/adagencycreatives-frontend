@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, useRouteError } from "react-router-dom";
 import App from "./App";
 import Home from "./pages/Home";
 import Creatives from "./pages/Creatives";
@@ -44,9 +44,22 @@ import Tech from "./pages/Mentor/Tech";
 import ResetPassword from "./pages/ResetPassword";
 import FilmFestival1 from "./pages/FilmFestival1";
 import GroupRequests from "./pages/GroupRequests";
+import ErrorBoundary from "./components/ErrorBoundary";
+
+const RouteErrorBoundary = () => {
+  const error = useRouteError();
+  return (
+    <div role="alert">
+      <h1>Sorry, an unexpected error has occurred.</h1>
+      <p>{error.statusText || error.message}</p>
+    </div>
+  );
+};
 
 export const router = createBrowserRouter([
   {
+    // errorElement: <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw', height: '100vh' }}><button className="btn btn-dark hover-gold" onClick={(e) => window.location.reload()}>Reload</button></div>,
+    errorElement: <RouteErrorBoundary />,
     element: <App />,
     children: [
       {
