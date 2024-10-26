@@ -8,7 +8,7 @@ import {
 } from "react-icons/io5";
 import jobLogo from "../../assets/images/job.png";
 import "../../styles/User/ProfileHeader.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Tooltip from "../Tooltip";
 import moment from "moment";
 import { Context } from "../../context/AuthContext";
@@ -20,14 +20,18 @@ import ApplyJob from "./ApplyJob";
 import { CircularProgress } from "@mui/material";
 import useHelper from "../../hooks/useHelper";
 import AgencyImageLoader from "../AgencyImageLoader";
+import CommonModal from "../modals/CommonModal";
+import ViewCreativeProfile from "../../pages/User/ViewCreativeProfile";
 
 const Header = ({ data }) => {
   const [open, setOpen] = useState(false);
+  const [openApplyNow, setOpenApplyNow] = useState(false);
   const handleClose = () => setOpen(false);
   const [job, setJob] = useState(null);
   const [isJobApplied, setIsJobApplied] = useState(false);
 
   const { rectify_url } = useHelper();
+  const navigate = useNavigate();
 
   const {
     state: { user, role },
@@ -227,18 +231,41 @@ const Header = ({ data }) => {
                                 e.preventDefault();
                               } else if (data.apply_type.toLowerCase() == "internal") {
                                 e.preventDefault();
-                                setJob(data.id);
-                                setOpen(true);
+                                setOpenApplyNow(true);
                               } else if (data.apply_type.toLowerCase() == "external") {
                                 handleApplyExternalJob(data);
                               }
+
                             }}
                             disabled={isLoading ? "disabled" : ""}
                           >
                             Apply Now
                             <i className="next flaticon-right-arrow"></i>
-
                           </Link>
+                          {data.apply_type.toLowerCase() == "internal" && (
+                            <CommonModal
+                              dialogTitle="Review Your Profile"
+                              open={openApplyNow}
+                              setOpen={setOpenApplyNow}
+                              onClose={() => { }}
+                              actions={[
+                                {
+                                  buttonText: "Apply", buttonAction: (e) => {
+                                    setJob(data.id);
+                                    setOpen(true);
+                                  }, invokeOnClose: true,
+                                },
+                                {
+                                  buttonText: "Revise", buttonAction: (e) => {
+                                    navigate("/my-resume");
+                                  }
+                                }
+                              ]}
+                              actionsClassName="common-modal-actions-apply-now"
+                            >
+                              <ViewCreativeProfile />
+                            </CommonModal>
+                          )}
                         </Tooltip>
                       ) : (
                         <Link
@@ -249,19 +276,12 @@ const Header = ({ data }) => {
                             if (!isCreative) {
                               showAlert("Login as a Creative to apply");
                               e.preventDefault();
-                            } else if (data.apply_type.toLowerCase() == "internal") {
-                              e.preventDefault();
-                              setJob(data.id);
-                              setOpen(true);
-                            } else if (data.apply_type.toLowerCase() == "external") {
-                              handleApplyExternalJob(data);
                             }
                           }}
                           disabled={isLoading ? "disabled" : ""}
                         >
                           Apply Now
                           <i className="next flaticon-right-arrow"></i>
-
                         </Link>
                       )}
                     </>)}
@@ -273,7 +293,7 @@ const Header = ({ data }) => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

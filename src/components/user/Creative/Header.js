@@ -27,7 +27,7 @@ import { CircularProgress, Tooltip } from "@mui/material";
 import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 import CreativeImageLoader from "../../../components/CreativeImageLoader";
 
-const Header = ({ data, role, user, username }) => {
+const Header = ({ data, role, user, username, showButtons = true }) => {
 
   const { encodeSpecial, decodeSpecial } = useHelper();
 
@@ -148,110 +148,112 @@ const Header = ({ data, role, user, username }) => {
               <CreativeLocation location={data?.location} />
             </div>
             <div className="col-md-7">
-              <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
-                {((isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription)) && data && Object.keys(data).length > 0) && (
-                  <>
-                    <Link className="btn btn-dark fs-5" to={"/creative-pdf/" + username} target="_blank">
-                      View/Download AAC Profile
-                    </Link>
-                  </>
-                )}
-                {isDownloading && (<CircularProgress style={{ minWidth: "40px", minHeight: "40px" }} />)}
-                {(isOwnProfile || !isCreative || isFriend) && (
-                  <>
-                    <a
-                      href={"javascript:void(0)"}
-                      onClick={(e) => isDownloading ? showAlert("Please wait. Download in progress, or refresh page") : downloadResume(data.resume)}>
+              {showButtons && (
+                <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
+                  {((isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription)) && data && Object.keys(data).length > 0) && (
+                    <>
+                      <Link className="btn btn-dark fs-5" to={"/creative-pdf/" + username} target="_blank">
+                        View/Download AAC Profile
+                      </Link>
+                    </>
+                  )}
+                  {isDownloading && (<CircularProgress style={{ minWidth: "40px", minHeight: "40px" }} />)}
+                  {(isOwnProfile || !isCreative || isFriend) && (
+                    <>
+                      <a
+                        href={"javascript:void(0)"}
+                        onClick={(e) => isDownloading ? showAlert("Please wait. Download in progress, or refresh page") : downloadResume(data.resume)}>
+                        <button
+                          className={"btn btn-dark fs-5" + (isDownloading ? " disabled" : "")}
+                          onClick={(e) => isAdmin || (isAdvisor && hasSubscription) ||
+                            validateAccess(
+                              e,
+                              [!hasSubscription, !isCreative],
+                              "Post a Job to download resumes"
+                            )
+                          }
+                        >
+                          Download Resume
+                        </button>
+                      </a>
+                    </>
+                  )}
+                  {!isOwnProfile && (
+                    <>
                       <button
-                        className={"btn btn-dark fs-5" + (isDownloading ? " disabled" : "")}
-                        onClick={(e) => isAdmin || (isAdvisor && hasSubscription) ||
+                        className="btn btn-dark fs-5"
+                        onClick={(e) =>
                           validateAccess(
                             e,
                             [!hasSubscription, !isCreative],
-                            "Post a Job to download resumes"
-                          )
+                            "Post a Job for private message capabilities"
+                          ) && setOpen(true)
                         }
                       >
-                        Download Resume
+                        Private Message
                       </button>
-                    </a>
-                  </>
-                )}
-                {!isOwnProfile && (
-                  <>
-                    <button
-                      className="btn btn-dark fs-5"
-                      onClick={(e) =>
-                        validateAccess(
-                          e,
-                          [!hasSubscription, !isCreative],
-                          "Post a Job for private message capabilities"
-                        ) && setOpen(true)
-                      }
-                    >
-                      Private Message
-                    </button>
-                    <Message
-                      open={open}
-                      setOpen={setOpen}
-                      handleClose={handleClose}
-                      item={data}
-                      type="private"
-                    />
-                    {/* {isCreative ? "private" : "job"} */}
-                  </>
-                )}
-                {isCreative && <FriendshipWidget creative={data} />}
-                {!isCreative && (
-                  <>
-                    <button
-                      className="btn btn-dark fs-5"
-                      onClick={(e) =>
-                        validateAccess(
-                          e,
-                          [!hasSubscription, !isCreative],
-                          "Post a Job to invite creatives to apply"
-                        ) && setOpenInvite(true)
-                      }
-                    >
-                      Invite
-                    </button>
-                    <Invite
-                      open={openInvite}
-                      setOpen={setOpenInvite}
-                      handleClose={handleCloseInvite}
-                      item={data}
-                    />
-                    <button
-                      className={
-                        "btn btn-hover-primary" +
-                        (isShortlisted ? " btn-theme" : " btn-dark")
-                      }
-                      onClick={(e) => shortlistHandler('Creative')}
-                    >
-                      <IoBookmarkOutline size={25} />
-                    </button>
-                    <Tooltip title="Add Notes">
+                      <Message
+                        open={open}
+                        setOpen={setOpen}
+                        handleClose={handleClose}
+                        item={data}
+                        type="private"
+                      />
+                      {/* {isCreative ? "private" : "job"} */}
+                    </>
+                  )}
+                  {isCreative && <FriendshipWidget creative={data} />}
+                  {!isCreative && (
+                    <>
                       <button
-                        className="btn btn-hover-primary btn-dark"
-                        onClick={() => {
-                          setAppIdNotes(data.id);
-                          setOpenNotes(true);
-                        }}
+                        className="btn btn-dark fs-5"
+                        onClick={(e) =>
+                          validateAccess(
+                            e,
+                            [!hasSubscription, !isCreative],
+                            "Post a Job to invite creatives to apply"
+                          ) && setOpenInvite(true)
+                        }
                       >
-                        <TfiNotepad size={25} />
+                        Invite
                       </button>
-                    </Tooltip>
-                    <AddNotesModal
-                      open={openNotes}
-                      setOpen={setOpenNotes}
-                      handleClose={handleCloseNotes}
-                      resource_id={appIdNotes}
-                      type="creatives"
-                    />
-                  </>
-                )}
-              </div>
+                      <Invite
+                        open={openInvite}
+                        setOpen={setOpenInvite}
+                        handleClose={handleCloseInvite}
+                        item={data}
+                      />
+                      <button
+                        className={
+                          "btn btn-hover-primary" +
+                          (isShortlisted ? " btn-theme" : " btn-dark")
+                        }
+                        onClick={(e) => shortlistHandler('Creative')}
+                      >
+                        <IoBookmarkOutline size={25} />
+                      </button>
+                      <Tooltip title="Add Notes">
+                        <button
+                          className="btn btn-hover-primary btn-dark"
+                          onClick={() => {
+                            setAppIdNotes(data.id);
+                            setOpenNotes(true);
+                          }}
+                        >
+                          <TfiNotepad size={25} />
+                        </button>
+                      </Tooltip>
+                      <AddNotesModal
+                        open={openNotes}
+                        setOpen={setOpenNotes}
+                        handleClose={handleCloseNotes}
+                        resource_id={appIdNotes}
+                        type="creatives"
+                      />
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

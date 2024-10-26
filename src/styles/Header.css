@@ -1637,3 +1637,19 @@ div.welcome-lounge .user_info div {
 img.agency-image-loader {
     border-radius: 100% !important;
 }
+
+.common-modal-actions-apply-now {
+    justify-content: center !important;
+}
+
+.common-modal-actions-apply-now .btn.btn-apply {
+    background-color: #d3a11f !important;
+    color: #000 !important;
+    border-color: #d3a11f !important;
+    padding: 10px 30px !important;
+}
+
+.common-modal-actions-apply-now .btn.btn-apply:hover {
+    background-color: #d3a11f !important;
+    color: #fff !important;
+}

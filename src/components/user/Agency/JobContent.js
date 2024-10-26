@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../../styles/User/ProfileContent.scss";
 import { IoBriefcaseOutline, IoStar } from "react-icons/io5";
 import Tooltip from "../../Tooltip";
@@ -12,13 +12,18 @@ import { Context as JobsContext } from "../../../context/JobsContext";
 import useHelper from "../../../hooks/useHelper";
 import ApplyJob from "../../job/ApplyJob";
 import AgencyImageLoader from "../../AgencyImageLoader";
+import ViewCreativeProfile from "../../../pages/User/ViewCreativeProfile";
+import CommonModal from "../../modals/CommonModal";
 
 const JobContent = ({ user, data, item, setAuthModalOpen }) => {
 
   const [open, setOpen] = useState(false);
+  const [openApplyNow, setOpenApplyNow] = useState(false);
   const handleClose = () => setOpen(false);
   const [job, setJob] = useState(null);
   const [isJobApplied, setIsJobApplied] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsJobApplied(item?.applications?.find(application => application?.user_id == user?.uuid) ? true : false);
@@ -174,8 +179,7 @@ const JobContent = ({ user, data, item, setAuthModalOpen }) => {
                                       e.preventDefault();
                                     } else if (item.apply_type.toLowerCase() == "internal") {
                                       e.preventDefault();
-                                      setJob(item.id);
-                                      setOpen(true);
+                                      setOpenApplyNow(true);
                                     } else if (item.apply_type.toLowerCase() == "external") {
                                       handleApplyExternalJob(item);
                                     }
@@ -184,8 +188,31 @@ const JobContent = ({ user, data, item, setAuthModalOpen }) => {
                                 >
                                   Apply Now
                                   <i className="next flaticon-right-arrow"></i>
-
                                 </Link>
+                                {item.apply_type.toLowerCase() == "internal" && (
+                                  <CommonModal
+                                    dialogTitle="Review Your Profile"
+                                    open={openApplyNow}
+                                    setOpen={setOpenApplyNow}
+                                    onClose={() => { }}
+                                    actions={[
+                                      {
+                                        buttonText: "Apply", buttonAction: (e) => {
+                                          setJob(item.id);
+                                          setOpen(true);
+                                        }, invokeOnClose: true,
+                                      },
+                                      {
+                                        buttonText: "Revise", buttonAction: (e) => {
+                                          navigate("/my-resume");
+                                        }
+                                      }
+                                    ]}
+                                    actionsClassName="common-modal-actions-apply-now"
+                                  >
+                                    <ViewCreativeProfile />
+                                  </CommonModal>
+                                )}
                               </Tooltip>
                             ) : (
                               <Link
@@ -196,19 +223,12 @@ const JobContent = ({ user, data, item, setAuthModalOpen }) => {
                                   if (!isCreative) {
                                     showAlert("Login as a Creative to apply");
                                     e.preventDefault();
-                                  } else if (item.apply_type.toLowerCase() == "internal") {
-                                    e.preventDefault();
-                                    setJob(item.id);
-                                    setOpen(true);
-                                  } else if (item.apply_type.toLowerCase() == "external") {
-                                    handleApplyExternalJob(item);
                                   }
                                 }}
                                 disabled={isLoading ? "disabled" : ""}
                               >
                                 Apply Now
                                 <i className="next flaticon-right-arrow"></i>
-
                               </Link>
                             )}
 

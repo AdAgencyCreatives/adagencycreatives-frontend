@@ -118,6 +118,7 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
       scroll="body"
     >
       <div className="add-note-modal job-apply-modal">
+        <div className="close-modal"><IoCloseCircleSharp size={30} onClick={(e) => setOpen(false)} /></div>
         <div className="addnote-header"></div>
         <div className="addnote-body">
           <div className="job-apply-email-form-wrapper">

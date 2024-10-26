@@ -25,7 +25,7 @@ import moment from "moment";
 import { saveAs } from 'file-saver';
 import { CircularProgress } from "@mui/material";
 
-const Sidebar = ({ data, user }) => {
+const Sidebar = ({ data, user, showButtons = true }) => {
 
   const { encodeSpecial, decodeSpecial, formatPhone } = useHelper();
   const { showAlert } = useContext(AlertContext);
@@ -339,13 +339,15 @@ const Sidebar = ({ data, user }) => {
           ) : (
             ""
           )}
-          {isOwnProfile || isAdmin ? (
-            <Link to="/my-resume">
-              <button className="btn btn-dark w-100 py-3 fs-5 mb-3">
-                Edit My Resume
-              </button>
-            </Link>
-          ) : ("")}
+          {showButtons && (<>
+            {isOwnProfile || isAdmin ? (
+              <Link to="/my-resume">
+                <button className="btn btn-dark w-100 py-3 fs-5 mb-3">
+                  Edit My Resume
+                </button>
+              </Link>
+            ) : ("")}
+          </>)}
         </div>
       </div>
       <div className="sidebar-item my-4">
@@ -355,40 +357,44 @@ const Sidebar = ({ data, user }) => {
             <video src={video.url} controls></video>
           </div>
         ) : (
-          <button className="btn btn-dark w-100 py-3 fs-5">Coming Soon</button>
+          <>
+            {showButtons && (<button className="btn btn-dark w-100 py-3 fs-5">Coming Soon</button>)}
+          </>
         )}
       </div>
+      {showButtons && (<>
+        {resume?.length > 0 ? (
+          <div className="sidebar-item my-4">
+            <h4 className="title">Resume</h4>
+            <div className="content">
+              {resume.map((item) => (
+                <>
+                  {isDownloading && (<CircularProgress style={{ minWidth: "40px", minHeight: "40px" }} />)}
+                  <a
+                    href={"javascript:void(0)"}
+                    onClick={(e) => isDownloading ? showAlert("Please wait. Download in progress, or refresh page") : downloadResume(item.url)}>
+                    <button
+                      className={"btn btn-dark w-100 py-3 fs-5 mb-3" + (isDownloading ? " disabled" : "")}
+                      onClick={(e) => isAdmin || (isAdvisor && hasSubscription) ||
+                        validateAccess(
+                          e,
+                          [!hasSubscription, !isCreative],
+                          "Post a Job to download resumes"
+                        )
+                      }
+                    >
+                      Download Resume
+                    </button>
+                  </a>
+                </>
+              ))}
+            </div >
+          </div>
+        ) : (
+          ""
+        )}
+      </>)}
 
-      {resume?.length > 0 ? (
-        <div className="sidebar-item my-4">
-          <h4 className="title">Resume</h4>
-          <div className="content">
-            {resume.map((item) => (
-              <>
-                {isDownloading && (<CircularProgress style={{ minWidth: "40px", minHeight: "40px" }} />)}
-                <a
-                  href={"javascript:void(0)"}
-                  onClick={(e) => isDownloading ? showAlert("Please wait. Download in progress, or refresh page") : downloadResume(item.url)}>
-                  <button
-                    className={"btn btn-dark w-100 py-3 fs-5 mb-3" + (isDownloading ? " disabled" : "")}
-                    onClick={(e) => isAdmin || (isAdvisor && hasSubscription) ||
-                      validateAccess(
-                        e,
-                        [!hasSubscription, !isCreative],
-                        "Post a Job to download resumes"
-                      )
-                    }
-                  >
-                    Download Resume
-                  </button>
-                </a>
-              </>
-            ))}
-          </div >
-        </div>
-      ) : (
-        ""
-      )}
     </>
   );
 };
