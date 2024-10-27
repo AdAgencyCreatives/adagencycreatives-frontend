@@ -162,9 +162,9 @@ const JobListItem = ({
                                     <>
                                         {isLoading && (<CircularProgress />)}
                                         {user?.role?.length > 0 && user?.role == "creative" ? (
-                                            <Tooltip type="featured" title={
-                                                <div className="no-transform" style={{ whiteSpace: 'pre-line', color: '#000000' }}>{"Before applying we recommend" + "\n" + "you review your resume details" + "\n" + "Job Dashboard > My Resume"}</div>
-                                            }>
+                                            <Tooltip type="featured"
+                                            // title={<div className="no-transform" style={{ whiteSpace: 'pre-line', color: '#000000' }}>{"Before applying we recommend" + "\n" + "you review your resume details" + "\n" + "Job Dashboard > My Resume"}</div>}
+                                            >
                                                 <Link
                                                     to={
                                                         item.apply_type.toLowerCase() == "external"
@@ -191,6 +191,7 @@ const JobListItem = ({
                                                 {item.apply_type.toLowerCase() == "internal" && (
                                                     <CommonModal
                                                         dialogTitle="Review Your Profile"
+                                                        dialogTitleStyle={{ textAlign: 'center' }}
                                                         open={openApplyNow}
                                                         setOpen={setOpenApplyNow}
                                                         onClose={() => { }}

@@ -1645,11 +1645,16 @@ img.agency-image-loader {
 .common-modal-actions-apply-now .btn.btn-apply {
     background-color: #d3a11f !important;
     color: #000 !important;
-    border-color: #d3a11f !important;
+    border: 2px solid #d3a11f !important;
     padding: 10px 30px !important;
 }
 
 .common-modal-actions-apply-now .btn.btn-apply:hover {
     background-color: #d3a11f !important;
     color: #fff !important;
+    border: 2px solid #d3a11f !important;
+}
+
+.common-modal-actions-apply-now .btn.btn-apply:active {
+    border: 2px solid #000 !important;
 }
