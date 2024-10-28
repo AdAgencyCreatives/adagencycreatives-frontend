@@ -67,7 +67,10 @@
             border: 1px solid;
             display: flex;
             align-items: center;
+        }
 
+        button:hover {
+            background: #d3a11f;
         }
     }
 }
