@@ -25,7 +25,8 @@ const LoginAs = () => {
               let data = result.data;
               if (data?.user?.role?.length > 0) {
                 if (data.user.role == 'creative') {
-                  navigate('/community');
+                  // navigate('/community');
+                  navigate('/dashboard');
                 } else if (data.user.role == 'agency' || data.user.role == 'advisor' || data.user.role == 'recruiter') {
                   navigate('/dashboard');
                 } else {
