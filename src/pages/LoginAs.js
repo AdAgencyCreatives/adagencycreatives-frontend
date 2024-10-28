@@ -14,26 +14,31 @@ const LoginAs = () => {
 
   const { token } = useParams("token");
 
-  const { state, verifyToken } = useContext(Context);
+  const { state, logout, verifyToken } = useContext(Context);
 
   useEffect(() => {
     if (token) {
-      verifyToken(token)
-        .then((result) => {
-          let data = result.data;
-          if (data?.user?.role?.length > 0) {
-            if (data.user.role == 'creative') {
-              navigate('/community');
-            } else if (data.user.role == 'agency' || data.user.role == 'advisor' || data.user.role == 'recruiter') {
-              navigate('/dashboard');
-            } else {
-              navigate('/');
-            }
-          }
-        })
-        .catch((error) => {
-          // console.error("Error:", error);
+      (async () => {
+        await logout(() => {
+          verifyToken(token)
+            .then((result) => {
+              let data = result.data;
+              if (data?.user?.role?.length > 0) {
+                if (data.user.role == 'creative') {
+                  navigate('/community');
+                } else if (data.user.role == 'agency' || data.user.role == 'advisor' || data.user.role == 'recruiter') {
+                  navigate('/dashboard');
+                } else {
+                  navigate('/');
+                }
+              }
+            })
+            .catch((error) => {
+              // console.error("Error:", error);
+            });
         });
+      })();
+
     }
   }, [token]);
 
