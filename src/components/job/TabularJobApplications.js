@@ -35,6 +35,26 @@ const TabularJobApplications = (props) => {
     filterApplications(searchText);
   };
 
+  const handleSetApplicationStatus = (job_id, application_id, application_status, cb = () => { }) => {
+    props?.setApplicationStatus && props?.setApplicationStatus(job_id, application_id, application_status, () => {
+      cb();
+      var updatedApplications = applications.map((application) => {
+        if (application_id == application.id) {
+          return { ...application, 'status': application_status };
+        }
+        return application;
+      });
+
+      var sortedApplications = [];
+      sortedApplications = sortedApplications.concat(updatedApplications.filter((application) => application.status == "hired"));
+      sortedApplications = sortedApplications.concat(updatedApplications.filter((application) => application.status == "pending"));
+      sortedApplications = sortedApplications.concat(updatedApplications.filter((application) => application.status == "accepted"));
+      sortedApplications = sortedApplications.concat(updatedApplications.filter((application) => application.status == "recommended"));
+      sortedApplications = sortedApplications.concat(updatedApplications.filter((application) => application.status == "shortlisted"));
+      sortedApplications = sortedApplications.concat(updatedApplications.filter((application) => application.status == "rejected"));
+      setApplications(sortedApplications);
+    });
+  };
   return (
     <div className="applicants-wrapper">
       {props?.job?.applications?.length >= MIN_APPLICANTS_ENABLE_FILTER && (
@@ -78,7 +98,7 @@ const TabularJobApplications = (props) => {
                   key={"job-application-" + application.id}
                   application={application}
                   job={props?.job}
-                  setApplicationStatus={props?.setApplicationStatus}
+                  setApplicationStatus={handleSetApplicationStatus}
                   setAppId={props?.setAppId}
                   setOpen={props?.setOpen}
                   isJobExpired={props?.isJobExpired}
