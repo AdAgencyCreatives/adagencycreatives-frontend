@@ -17,7 +17,7 @@ const TabularJobApplications = (props) => {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    setApplications(props?.job?.applications);
+    sortApplications(props?.job?.applications);
   }, []);
 
   const filterApplications = (searchName) => {
@@ -45,16 +45,21 @@ const TabularJobApplications = (props) => {
         return application;
       });
 
-      var sortedApplications = [];
-      sortedApplications = sortedApplications.concat(updatedApplications.filter((application) => application.status == "hired"));
-      sortedApplications = sortedApplications.concat(updatedApplications.filter((application) => application.status == "pending"));
-      sortedApplications = sortedApplications.concat(updatedApplications.filter((application) => application.status == "accepted"));
-      sortedApplications = sortedApplications.concat(updatedApplications.filter((application) => application.status == "recommended"));
-      sortedApplications = sortedApplications.concat(updatedApplications.filter((application) => application.status == "shortlisted"));
-      sortedApplications = sortedApplications.concat(updatedApplications.filter((application) => application.status == "rejected"));
-      setApplications(sortedApplications);
+      sortApplications(updatedApplications);
     });
   };
+
+  const sortApplications = (applicationsToSort) => {
+    var sortedApplications = [];
+    sortedApplications = sortedApplications.concat(applicationsToSort.filter((application) => application.status == "hired"));
+    sortedApplications = sortedApplications.concat(applicationsToSort.filter((application) => application.status == "pending"));
+    sortedApplications = sortedApplications.concat(applicationsToSort.filter((application) => application.status == "accepted"));
+    sortedApplications = sortedApplications.concat(applicationsToSort.filter((application) => application.status == "recommended"));
+    sortedApplications = sortedApplications.concat(applicationsToSort.filter((application) => application.status == "shortlisted"));
+    sortedApplications = sortedApplications.concat(applicationsToSort.filter((application) => application.status == "rejected"));
+    setApplications(sortedApplications);
+  };
+
   return (
     <div className="applicants-wrapper">
       {props?.job?.applications?.length >= MIN_APPLICANTS_ENABLE_FILTER && (
