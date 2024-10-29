@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AuthContext } from "../../context/AuthContext";
@@ -27,10 +27,23 @@ const MyJobApplicantsWidget = ({
   setOpen,
   isJobExpired,
   isJobDeleted,
+  currentPage = 1
 }) => {
   const [thisJob, setThisJob] = useState(job);
   const [showApplications, setShowApplications] = useState(false);
   const { showAlert } = useContext(AlertContext);
+
+  const anchor = window.location.hash.slice(1);
+
+  useEffect(() => {
+    if (window.location.pathname == "/applicant-jobs" && anchor?.length > 0) {
+      let parts = anchor.split("&");
+      let job_slug = parts?.length > 1 ? parts[1].replace("job=", "") : "";
+      if (job?.slug == job_slug) {
+        setShowApplications(true);
+      }
+    }
+  }, [anchor]);
 
   const {
     state: { user },
@@ -68,6 +81,11 @@ const MyJobApplicantsWidget = ({
         showAlert("Oops! Unable to fill Job at the moment");
       }
     })();
+  };
+
+  const handleClose = () => {
+    window.location.hash = "page=" + currentPage;
+    setShowApplications(false);
   };
 
   return (
@@ -121,7 +139,10 @@ const MyJobApplicantsWidget = ({
                   margin: "0px",
                   width: "100px",
                 }}
-                onClick={(e) => setShowApplications((state) => !state)}
+                onClick={(e) => setShowApplications((state) => {
+                  window.location.hash = "page=" + currentPage + (!state ? "&job=" + job?.slug : "");
+                  return !state;
+                })}
               >
                 {showApplications ? "Hide" : "Show"}&nbsp;
                 <span className="number">{thisJob?.applications?.length}</span>
@@ -216,7 +237,7 @@ const MyJobApplicantsWidget = ({
       </tr>
       <Dialog
         open={showApplications && thisJob?.applications?.length > 0}
-        onClose={(e) => setShowApplications(false)}
+        onClose={(e) => handleClose()}
         scroll="body"
         fullWidth={true}
         maxWidth={false}
@@ -225,7 +246,7 @@ const MyJobApplicantsWidget = ({
         <DialogContent>
           <DialogContentText></DialogContentText>
           <div className="agency-page-myjobs tabular dialog">
-            <IoCloseCircleSharp size={30} className="close-modal" onClick={(e) => setShowApplications(false)} />
+            <IoCloseCircleSharp size={30} className="close-modal" onClick={(e) => handleClose()} />
             {thisJob?.applications?.length > 0 ? (
               <TabularJobApplications
                 job={thisJob}
@@ -249,7 +270,7 @@ const MyJobApplicantsWidget = ({
           </div>
         </DialogContent>
         <DialogActions>
-          <Button className="btn btn-dark" onClick={(e) => setShowApplications(false)}>CLOSE</Button>
+          <Button className="btn btn-dark" onClick={(e) => handleClose()}>CLOSE</Button>
         </DialogActions>
       </Dialog>
     </>

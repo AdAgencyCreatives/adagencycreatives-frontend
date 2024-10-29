@@ -19,6 +19,9 @@ const TabularApplicantJobs = () => {
   const [data, setData] = useState([]);
   const [tab, setTab] = useState({});
   const [statusApplication, setStatusApplication] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const anchor = window.location.hash.slice(1);
 
   const {
     state: { applications, isLoadingApp, applicationMeta },
@@ -34,9 +37,22 @@ const TabularApplicantJobs = () => {
   const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
-    searchApplicationsAllStatus(searchInput, user.uuid, 0, 0, statusApplication, (foundJobs) => {
-      filterJobApplicants(foundJobs);
-    });
+    let loadNormal = true;
+
+    if (window.location.pathname == "/applicant-jobs" && anchor?.length > 0) {
+      let parts = anchor.split("&");
+      let page = parts?.length > 0 ? parts[0].replace("page=", "") : 1;
+      if (page > 1 && currentPage != page) {
+        loadNormal = false;
+        paginate(page);
+      }
+    }
+
+    if (loadNormal) {
+      searchApplicationsAllStatus(searchInput, user.uuid, 0, 0, statusApplication, (foundJobs) => {
+        filterJobApplicants(foundJobs);
+      });
+    }
   }, []);
 
 
@@ -101,6 +117,17 @@ const TabularApplicantJobs = () => {
   };
 
   const paginate = (page) => {
+
+    setCurrentPage(page);
+
+    // Create a URLSearchParams object
+    let params = new URLSearchParams(window.location.hash.replace("#", ""));
+
+    // Set new query parameters
+    params.set('page', page); // Replace 'key' with your parameter name and 'value' with your parameter value
+
+    window.location.hash = params.toString();
+
     searchApplicationsAllStatus(searchInput, user.uuid, 0, page, statusApplication, (foundJobs) => {
       filterJobApplicants(foundJobs);
     });
@@ -166,6 +193,7 @@ const TabularApplicantJobs = () => {
                         new Date(item?.deleted_at) <
                         Date.parse(new Date().toISOString())
                       }
+                      currentPage={currentPage}
                     />
                   ))}
                 </tbody>

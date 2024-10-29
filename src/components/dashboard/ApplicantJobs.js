@@ -33,8 +33,6 @@ const ApplicantJobs = () => {
   const [tab, setTab] = useState({});
   const [statusApplication, setStatusApplication] = useState(false);
 
-  const anchor = window.location.hash.slice(1);
-
   const {
     state: { applications, isLoadingApp, applicationMeta },
     getApplicationsAllStatus,
@@ -96,10 +94,6 @@ const ApplicantJobs = () => {
   const paginate = (page) => {
     getApplicationsAllStatus(user.uuid, 0, page, statusApplication);
   };
-
-  useEffect(() => {
-    console.log(anchor);
-  }, [anchor]);
 
   // Deprecated
   return (
