@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as JobsContext } from "../../context/JobsContext";
 import TabularSingleJobApplication from "./TablularSingleJobApplication";
 import moment from "moment";
 import SearchBarCommon from "../../components/SearchBarCommon";
@@ -16,8 +17,19 @@ const TabularJobApplications = (props) => {
     state: { user },
   } = useContext(AuthContext);
 
+  const {
+    application_remove_from_recent,
+  } = useContext(JobsContext);
+
   useEffect(() => {
     sortApplications(props?.job?.applications);
+
+    if (props?.job?.applications?.length > 0) {
+      for (let index = 0; index < props.job.applications.length; index++) {
+        const element = props.job.applications[index];
+        application_remove_from_recent(element.id, user.uuid);
+      }
+    }
   }, []);
 
   const filterApplications = (searchName) => {
