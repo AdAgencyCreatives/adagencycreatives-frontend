@@ -319,7 +319,7 @@ const EditPost = (props) => {
                                 </div>
                                 <EditorTinyMCE
                                     onInit={(evt, editor) => performInitTinyMCE(evt, editor)}
-                                    apiKey='j1xmsbgy7mm4sd2czch7suv0680w3flyx8n2daatar52pxm3'
+                                    apiKey='niqd0bqfftqm2iti1rxdr0ddt1b46akht531kj0uv4snnaie'
                                     init={{
                                         height: 250,
                                         menubar: false,
