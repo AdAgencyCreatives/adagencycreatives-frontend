@@ -386,11 +386,11 @@ export default function CreativeProfilePdf({ data = null, filename = "", allowPh
                                 <Text style={styles.heading1}>Portfolio Site</Text>
                                 {portfolio_link?.length > 0 ? (
                                     <Link src={portfolio_link} style={[styles.flexRows, { border: "2px solid #daa520" }]}>
-                                        <Image src={data.portfolio_website_base64} style={{ width: '250', height: 'auto', objectFit: 'cover' }} />
+                                        <Image src={data.portfolio_website_base64} style={{ width: '400', height: 'auto', objectFit: 'cover' }} />
                                     </Link>
                                 ) : (
                                     <View style={[styles.flexRows]}>
-                                        <Image src={data.portfolio_website_base64} style={{ width: '250', height: 'auto', objectFit: 'cover' }} />
+                                        <Image src={data.portfolio_website_base64} style={{ width: '400', height: 'auto', objectFit: 'cover' }} />
                                     </View>
                                 )}
 
