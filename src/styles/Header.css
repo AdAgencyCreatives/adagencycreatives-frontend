@@ -1175,7 +1175,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
     top: 145px;
     right: -100%;
     transition: right 1s;
-    z-index: 99;
+    z-index: 1500;
 }
 
 .sliding-message.active {
