@@ -71,12 +71,13 @@ const TabularApplicantJobs = () => {
         updatedJob.applications = recommendedApplicants;
       } else {
         var sortedApplications = [];
-        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "hired"));
-        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "pending"));
-        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "accepted"));
-        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "recommended"));
-        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "shortlisted"));
-        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "rejected"));
+        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "hired").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
+        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "pending").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
+        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "accepted").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
+        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "recommended").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
+        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "shortlisted").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
+        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "rejected").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
+
         updatedJob.applications = sortedApplications;
       }
 
