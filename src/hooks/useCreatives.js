@@ -4,7 +4,7 @@ import { Context as AuthContext } from "../context/AuthContext";
 
 const useCreatives = (page) => {
   const {
-    state: { creatives, nextPage, loading, },
+    state: { creatives, home_creatives, nextPage, loading, },
     getCreatives,
     getHomeCreatives,
     loadCreatives,
@@ -29,7 +29,7 @@ const useCreatives = (page) => {
     if (nextPage) loadCreatives(nextPage);
   };
 
-  return { creatives, getCreatives, loading, loadMore, searchCreatives, searchCreativesAdvanced, searchCreativesFull };
+  return { creatives, home_creatives, getCreatives, getHomeCreatives, loading, loadMore, searchCreatives, searchCreativesAdvanced, searchCreativesFull };
 };
 
 export default useCreatives;

@@ -16,7 +16,7 @@ const AgencyCreatives = ({ validateAccess }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const swiperElRef = useRef(null);
-  const { creatives } = useCreatives("home");
+  const { home_creatives } = useCreatives("home");
   const { encodeSpecial, decodeSpecial } = useHelper();
   const { showAlert } = useContext(AlertContext);
   const {
@@ -82,7 +82,7 @@ const AgencyCreatives = ({ validateAccess }) => {
           loop="true"
           autop
         >
-          {creatives && creatives.map((item, index) => {
+          {home_creatives && home_creatives.map((item, index) => {
             return (
               <swiper-slide key={`slide${index}`}>
                 <div className="sliderContent agencies-slider">

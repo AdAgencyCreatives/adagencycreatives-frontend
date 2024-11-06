@@ -3,6 +3,7 @@ import createDataContext from "./createDataContext";
 
 const state = {
   creatives: null,
+  home_creatives: null,
   nextPage: null,
   loading: false,
   single_creative: {},
@@ -27,6 +28,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         creatives: action.payload.data,
+        nextPage: action.payload.links.next,
+      };
+    case "set_home_creatives":
+      return {
+        ...state,
+        home_creatives: action.payload.data,
         nextPage: action.payload.links.next,
       };
     case "set_single_creative":
@@ -90,7 +97,7 @@ const getHomeCreatives = (dispatch) => {
     try {
       const response = await api.get("/home/creatives?sort=-featured_at&filter[is_featured]=1&filter[status]=1&filter[is_visible]=1&per_page=30");
       dispatch({
-        type: "set_creatives",
+        type: "set_home_creatives",
         payload: response.data,
       });
     } catch (error) { }
