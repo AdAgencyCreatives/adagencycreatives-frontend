@@ -21,6 +21,7 @@ import Portfolio from "../../components/user/Creative/Portfolio";
 import NotFound from "../../components/NotFound";
 import { capitalize } from "@mui/material";
 import useSeoHelper from "../../hooks/useSeoHelper";
+import RestrictedAgency from '../../components/RestrictedAgency';
 
 const Profile = () => {
 
@@ -53,7 +54,7 @@ const Profile = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 90000);
+    }, 5000);
   }, []);
 
   useEffect(() => {
@@ -160,7 +161,7 @@ const Profile = () => {
     {Object.keys(data).length === 0 ? (
       <>
         {page == "creative" && !token && !user ? (
-          <RestrictedUser role={roleName ? roleName : page} />
+          <RestrictedUser delay={0} />
         ) : (
           <NotFound heading={"Not Found"} content={capitalize(roleName ? roleName : page) + " profile with slug [" + username + "] not found."} />
         )}
@@ -168,7 +169,7 @@ const Profile = () => {
     ) : (
       <>
         {!isOwnProfile && !isAdmin && (roleName == "advisor" || roleName == "recruiter") ? (
-          <RestrictedUser role={"admin"} />
+          <RestrictedAgency role={roleName ? roleName : page} delay={0} />
         ) : (
           <>
             <div className="profile-header">
