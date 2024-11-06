@@ -383,26 +383,26 @@ const Creatives = () => {
                 )}
               </div>
             </div>
+            {creatives && creatives.length === 0 ? (
+              <div className="no_result">
+                <p style={{ textAlign: 'center' }}>
+                  <span>Please try again. No exact results found.</span>
+                  {!isCreative && foundPermission?.advance_search_message?.length > 0 && (
+                    <>
+                      <br />
+                      <span dangerouslySetInnerHTML={{ __html: foundPermission?.advance_search_message }}></span>
+                    </>
+                  )}
+                </p>
+              </div>
+            ) : (
+              <span></span>
+            )}
           </>
         ) : (
           <RestrictedAccess delay={5000} delayTitle="Please wait" />
         )}
       </div>
-      {creatives && creatives.length === 0 ? (
-        <div className="no_result">
-          <p style={{ textAlign: 'center' }}>
-            <span>Please try again. No exact results found.</span>
-            {!isCreative && foundPermission?.advance_search_message?.length > 0 && (
-              <>
-                <br />
-                <span dangerouslySetInnerHTML={{ __html: foundPermission?.advance_search_message }}></span>
-              </>
-            )}
-          </p>
-        </div>
-      ) : (
-        <span></span>
-      )}
     </div>
   );
 };
