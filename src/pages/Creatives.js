@@ -13,7 +13,6 @@ import { Context as AlertContext } from "../context/AlertContext";
 import DelayedOutput from "../components/DelayedOutput";
 import CreativeLocation from "../components/CreativeLocation";
 import usePermissions from "../hooks/usePermissions";
-import RestrictedAccess from "../components/RestrictedAccess";
 
 const Creatives = () => {
 
@@ -239,13 +238,13 @@ const Creatives = () => {
   return (
     <div className="dark-container mb-0 creatives-directory">
       <div className="container p-md-0 px-5">
-        {token ? (
+        <DelayedOutput>
+          <h1 className="community-title text-white text-center mb-4">
+            Creatives
+          </h1>
+        </DelayedOutput>
+        {token && (
           <>
-            <DelayedOutput>
-              <h1 className="community-title text-white text-center mb-4">
-                Creatives
-              </h1>
-            </DelayedOutput>
             <SearchBar
               input={input}
               setInput={setInput}
@@ -269,140 +268,138 @@ const Creatives = () => {
                 />
               </div>
             )}
-            <div className="row g-4">
-              {!isCreativeLoading ? (
-                <>
-                  {creatives?.length > 0 &&
-                    creatives.map((item, index) => {
-                      const isShortlisted =
-                        bookmarks.find(
-                          (bookmark) => bookmark.resource.user_id == item.user_id
-                        ) || false;
-                      return (
-                        <div
-                          className="col-md-4 col-sm-6 col-12"
-                          key={`creative-${item?.user_id}`}
-                        >
-                          <div className="sliderContent agencies-slider">
-                            {(role == "admin" ||
-                              isAgency ||
-                              role == "advisor" ||
-                              isRecruiter) && (
-                                <Tooltip title={"Shortlist"} type="featured">
-                                  <button
-                                    className={
-                                      "shortlist-btn" +
-                                      (isShortlisted ? " active" : "")
-                                    }
-                                    onClick={() =>
-                                      isShortlisted
-                                        ? removeFromShortlist(isShortlisted.id)
-                                        : addToShortlist(item.id)
-                                    }
-                                  >
-                                    <IoBookmarkOutline />
-                                  </button>
-                                </Tooltip>
-                              )}
-                            <CreativeImageLoader creative={item} />
-                            <div className="agencyName">
+          </>
+        )}
+        <div className="row g-4">
+          {!isCreativeLoading ? (
+            <>
+              {creatives?.length > 0 &&
+                creatives.map((item, index) => {
+                  const isShortlisted =
+                    bookmarks.find(
+                      (bookmark) => bookmark.resource.user_id == item.user_id
+                    ) || false;
+                  return (
+                    <div
+                      className="col-md-4 col-sm-6 col-12"
+                      key={`creative-${item?.user_id}`}
+                    >
+                      <div className="sliderContent agencies-slider">
+                        {(role == "admin" ||
+                          isAgency ||
+                          role == "advisor" ||
+                          isRecruiter) && (
+                            <Tooltip title={"Shortlist"} type="featured">
+                              <button
+                                className={
+                                  "shortlist-btn" +
+                                  (isShortlisted ? " active" : "")
+                                }
+                                onClick={() =>
+                                  isShortlisted
+                                    ? removeFromShortlist(isShortlisted.id)
+                                    : addToShortlist(item.id)
+                                }
+                              >
+                                <IoBookmarkOutline />
+                              </button>
+                            </Tooltip>
+                          )}
+                        <CreativeImageLoader creative={item} />
+                        <div className="agencyName">
+                          <Link
+                            className="text-dark"
+                            to={token ? `/creative/${item.slug}` : "#"}
+                            onClick={(e) => {
+                              if (!token) {
+                                e.preventDefault();
+                                showAlert("Please login to access");
+                                return false;
+                              }
+                              return true;
+                            }}
+                          >
+                            {item.name}
+                          </Link>
+                        </div>
+                        <div className="position">
+                          {isAdmin || isAdvisor ? (
+                            <>
                               <Link
-                                className="text-dark"
-                                to={token ? `/creative/${item.slug}` : "#"}
+                                className=""
+                                to={`/creatives/search/industry-title/${item.category}`}
                                 onClick={(e) => {
                                   if (!token) {
                                     e.preventDefault();
                                     showAlert("Please login to access");
                                     return false;
                                   }
+                                  if (isAdvisor && subscription_status != "active") {
+                                    e.preventDefault();
+                                    showAlert("Post a Job for advance search capabilities");
+                                    return false;
+                                  }
                                   return true;
                                 }}
                               >
-                                {item.name}
+                                {item.category || ""}
                               </Link>
-                            </div>
-                            <div className="position">
-                              {isAdmin || isAdvisor ? (
-                                <>
-                                  <Link
-                                    className=""
-                                    to={`/creatives/search/industry-title/${item.category}`}
-                                    onClick={(e) => {
-                                      if (!token) {
-                                        e.preventDefault();
-                                        showAlert("Please login to access");
-                                        return false;
-                                      }
-                                      if (isAdvisor && subscription_status != "active") {
-                                        e.preventDefault();
-                                        showAlert("Post a Job for advance search capabilities");
-                                        return false;
-                                      }
-                                      return true;
-                                    }}
-                                  >
-                                    {item.category || ""}
-                                  </Link>
-                                </>
-                              ) : (
-                                <>{item.category || ""}</>
-                              )}
-                            </div>
-                            <CreativeLocation location={item?.location} />
-                            <div className="profileLink">
-                              <Link
-                                to={token ? `/creative/${item.slug}` : "#"}
-                                onClick={(e) => {
-                                  if (!token) {
-                                    e.preventDefault();
-                                    showAlert("Please login to access");
-                                  }
-                                  return false;
-                                }}
-                              >
-                                View Profile
-                              </Link>
-                            </div>
-                          </div>
+                            </>
+                          ) : (
+                            <>{item.category || ""}</>
+                          )}
                         </div>
-                      );
-                    })}
-                </>
-              ) : (
-                <div className="load-more text-center">
-                  <div className="spinner-border text-light" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </div>
-                </div>
-              )}
-              <div className="load-more text-center">
-                {loading && !isCreativeLoading && (
-                  <div className="spinner-border text-light" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </div>
-                )}
+                        <CreativeLocation location={item?.location} />
+                        <div className="profileLink">
+                          <Link
+                            to={token ? `/creative/${item.slug}` : "#"}
+                            onClick={(e) => {
+                              if (!token) {
+                                e.preventDefault();
+                                showAlert("Please login to access");
+                              }
+                              return false;
+                            }}
+                          >
+                            View Profile
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+            </>
+          ) : (
+            <div className="load-more text-center">
+              <div className="spinner-border text-light" role="status">
+                <span className="visually-hidden">Loading...</span>
               </div>
             </div>
-            {creatives && creatives.length === 0 ? (
-              <div className="no_result">
-                <p style={{ textAlign: 'center' }}>
-                  <span>Please try again. No exact results found.</span>
-                  {!isCreative && foundPermission?.advance_search_message?.length > 0 && (
-                    <>
-                      <br />
-                      <span dangerouslySetInnerHTML={{ __html: foundPermission?.advance_search_message }}></span>
-                    </>
-                  )}
-                </p>
+          )}
+          <div className="load-more text-center">
+            {loading && !isCreativeLoading && (
+              <div className="spinner-border text-light" role="status">
+                <span className="visually-hidden">Loading...</span>
               </div>
-            ) : (
-              <span></span>
             )}
-          </>
-        ) : (
-          <RestrictedAccess delay={5000} delayTitle="Please wait" />
-        )}
+          </div>
+        </div>
       </div>
+      {creatives && creatives.length === 0 ? (
+        <div className="no_result">
+          <p style={{ textAlign: 'center' }}>
+            <span>Please try again. No exact results found.</span>
+            {!isCreative && foundPermission?.advance_search_message?.length > 0 && (
+              <>
+                <br />
+                <span dangerouslySetInnerHTML={{ __html: foundPermission?.advance_search_message }}></span>
+              </>
+            )}
+          </p>
+        </div>
+      ) : (
+        <span></span>
+      )}
     </div>
   );
 };

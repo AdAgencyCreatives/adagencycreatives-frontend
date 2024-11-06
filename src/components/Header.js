@@ -225,30 +225,30 @@ function Header(props) {
 
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box key={"main-box"} sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar elevation={0} component="nav" id="top-nav-fixed" sx={{ backgroundColor: "#fff", padding: { sm: "10px 0", xs: "0" } }}>
           <Toolbar>
-            <Grid container justifyContent="space-between" alignItems="center" className="header_container">
-              <Grid item lg={3} md={2} xs={8} className="left-logo">
+            <Grid key="main-grid" container justifyContent="space-between" alignItems="center" className="header_container">
+              <Grid key="grid-1" item lg={3} md={2} xs={8} className="left-logo">
                 <Link className="site-logo" to={"/"}>
                   {/* <img className="" src={Logo} alt="Adagency Creatives" /> */}
                   Ad Agency Creatives
                 </Link>
               </Grid>
-              <Grid item lg={9} md={10} xs={4} sx={{ textAlign: "right", padding: "10px" }} className="right-menu">
-                <Box sx={{ display: { md: "none", display: "flex", alignItems: "center", justifyContent: "center" } }}>
-                  <IconButton href={state.token ? "/dashboard" : "#"} color="primary" onClick={() => (!state.token ? setAuthModalOpen(true) : "")}>
+              <Grid key="grid-2" item lg={9} md={10} xs={4} sx={{ textAlign: "right", padding: "10px" }} className="right-menu">
+                <Box key="grid-box-1" sx={{ display: { md: "none", display: "flex", alignItems: "center", justifyContent: "center" } }}>
+                  <IconButton key="icon-button-1" href={state.token ? "/dashboard" : "#"} color="primary" onClick={() => (!state.token ? setAuthModalOpen(true) : "")}>
                     <AiOutlineUser />
                   </IconButton>
 
                   {state.role == "creative" && (
-                    <IconButton href="/notifications" color="primary">
+                    <IconButton key="icon-button-2" href="/notifications" color="primary">
                       <AiOutlineBell />
                     </IconButton>
                   )}
 
-                  <Link
+                  <Link key="link-1"
                     to="/post-a-job"
                     sx={{ backgroundColor: "#000", color: "white" }}
                     className="btn btn-dark btn-narrow"
@@ -257,15 +257,15 @@ function Header(props) {
                     P
                   </Link>
 
-                  <IconButton aria-label="open drawer" edge="start" onClick={handleDrawerToggle} sx={{ p: 0, ml: 1, textAlign: "right" }}>
+                  <IconButton key="icon-button-3" aria-label="open drawer" edge="start" onClick={handleDrawerToggle} sx={{ p: 0, ml: 1, textAlign: "right" }}>
                     <a href="#navbar-offcanvas" className="btn-showmenu flex-column d-flex text-end align-items-end">
-                      <span className="inner1"></span>
-                      <span className="inner2"></span>
-                      <span className="inner3"></span>
+                      <span key={"sp-1"} className="inner1"></span>
+                      <span key={"sp-2"} className="inner2"></span>
+                      <span key={"sp-3"} className="inner3"></span>
                     </a>
                   </IconButton>
                 </Box>
-                <Box
+                <Box key="grid-box-2"
                   sx={{
                     display: { xs: "none", md: "flex" },
                     alignItems: "center",
@@ -300,6 +300,7 @@ function Header(props) {
                     </>
                   ))}
                   <Button
+                    key={"button-last"}
                     href="/post-a-job"
                     sx={{ backgroundColor: "#000", color: "white" }}
                     className="post-job-link"
@@ -308,7 +309,7 @@ function Header(props) {
                     Post A Job
                   </Button>
                   {state.token ? (
-                    <div className="nav-item has-children ms-2">
+                    <div key={"div-last"} className="nav-item has-children ms-2">
                       <div className="logged-in-menu">
                         <AvatarImageLoader user={state?.user} />
                         <div className="username">
@@ -328,7 +329,9 @@ function Header(props) {
                       </div>
                     </div>
                   ) : (
-                    <Button color="link" className="login-btn" onClick={() => setAuthModalOpen(true)}>
+                    <Button
+                      key={"button-alt"}
+                      color="link" className="login-btn" onClick={() => setAuthModalOpen(true)}>
                       Login/Register
                     </Button>
                   )}

@@ -20,6 +20,8 @@ const useCreatives = (page) => {
   useEffect(() => {
     if (page == "home") {
       getHomeCreatives();
+    } else if (page == "creative") {
+      getCreatives();
     } else if (page == "creatives-search") {
       // do nothing
     }
