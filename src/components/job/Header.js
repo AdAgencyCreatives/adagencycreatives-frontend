@@ -233,7 +233,8 @@ const Header = ({ data }) => {
                                 e.preventDefault();
                                 setOpenApplyNow(true);
                               } else if (data.apply_type.toLowerCase() == "external") {
-                                handleApplyExternalJob(data);
+                                e.preventDefault();
+                                setOpenApplyNow(true);
                               }
 
                             }}
@@ -242,7 +243,7 @@ const Header = ({ data }) => {
                             Apply Now
                             <i className="next flaticon-right-arrow"></i>
                           </Link>
-                          {data.apply_type.toLowerCase() == "internal" && (
+                          {(data.apply_type.toLowerCase() == "internal" || data.apply_type.toLowerCase() == "external") && (
                             <CommonModal
                               dialogTitle="Review Your Profile"
                               dialogTitleStyle={{ textAlign: 'center' }}
@@ -252,8 +253,13 @@ const Header = ({ data }) => {
                               actions={[
                                 {
                                   buttonText: "Apply", buttonAction: (e) => {
-                                    setJob(data.id);
-                                    setOpen(true);
+                                    if (data.apply_type.toLowerCase() == "internal") {
+                                      setJob(data.id);
+                                      setOpen(true);
+                                    } else if (data.apply_type.toLowerCase() == "external") {
+                                      window.open(rectify_url(data.external_link), "_blank");
+                                      handleApplyExternalJob(data);
+                                    }
                                   }, invokeOnClose: true,
                                 },
                                 {

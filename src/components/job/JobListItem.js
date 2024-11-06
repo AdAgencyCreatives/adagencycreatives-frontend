@@ -181,14 +181,15 @@ const JobListItem = ({
                                                             e.preventDefault();
                                                             setOpenApplyNow(true);
                                                         } else if (item.apply_type.toLowerCase() == "external") {
-                                                            handleApplyExternalJob(item);
+                                                            e.preventDefault();
+                                                            setOpenApplyNow(true);
                                                         }
                                                     }}
                                                 >
                                                     Apply Now
                                                     <i className="next flaticon-right-arrow"></i>
                                                 </Link>
-                                                {item.apply_type.toLowerCase() == "internal" && (
+                                                {(item.apply_type.toLowerCase() == "internal" || item.apply_type.toLowerCase() == "external") && (
                                                     <CommonModal
                                                         dialogTitle="Review Your Profile"
                                                         dialogTitleStyle={{ textAlign: 'center' }}
@@ -198,8 +199,13 @@ const JobListItem = ({
                                                         actions={[
                                                             {
                                                                 buttonText: "Apply", buttonAction: (e) => {
-                                                                    setJob(item.id);
-                                                                    setOpen(true);
+                                                                    if (item.apply_type.toLowerCase() == "internal") {
+                                                                        setJob(item.id);
+                                                                        setOpen(true);
+                                                                    } else if (item.apply_type.toLowerCase() == "external") {
+                                                                        window.open(rectify_url(item.external_link), "_blank");
+                                                                        handleApplyExternalJob(item);
+                                                                    }
                                                                 }, invokeOnClose: true,
                                                             },
                                                             {
