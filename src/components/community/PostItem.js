@@ -169,7 +169,7 @@ const PostItem = (props) => {
     };
 
     return (
-        <div key={'div-post-item-' + props.post.id} className="post-item">
+        <div id={props?.post.uuid} key={'div-post-item-' + props.post.id} className="post-item">
             <div className="post-header">
                 <PostImageLoader post={props?.post} />
                 <div className="post-meta">
