@@ -166,18 +166,19 @@ const CreateComment = (props) => {
       "post_id": props.post.id,
       "content": content
     }, async (response) => {
-      if (taggerUsers.length > 0) {
-        const notifications_data = {
-          "sender_id": response.data.data.user_id,
-          "recipient_ids": taggerUsers,
-          "post_id": response.data.data.id,
-          "notification_type": 'lounge_mention',
-          "notification_text": `${response.data.data.author} commented on you in his post`,
-          "send_email": "yes",
-        };
-        let result = await sendLoungeMentionNotifications(notifications_data);
-        console.log(result);
-      }
+      // this functionality moved to backend
+      // if (taggerUsers.length > 0) {
+      //   const notifications_data = {
+      //     "sender_id": response.data.data.user_id,
+      //     "recipient_ids": taggerUsers,
+      //     "post_id": response.data.data.id,
+      //     "notification_type": 'lounge_mention',
+      //     "notification_text": `${response.data.data.author} commented on you in a post`,
+      //     "send_email": "yes",
+      //   };
+      //   let result = await sendLoungeMentionNotifications(notifications_data);
+      //   console.log(result);
+      // }
       setTaggerUsers([]);
     });
   };
