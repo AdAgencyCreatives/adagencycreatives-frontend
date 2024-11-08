@@ -22,8 +22,22 @@ const Community = () => {
     state: { token, role },
   } = useContext(AuthContext);
 
+  function scrollIntoViewWithOffset(selector, offset) {
+    const element = document.querySelector(selector);
+    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  }
+
   useEffect(() => {
-    setTimeout(() => setLoaded(true), 3000);
+    setTimeout(() => {
+      setLoaded(true);
+      scrollIntoViewWithOffset('div[data-id="' + window.location.hash.substring(1) + '"]', 100); // Adjust the offset as needed
+    }, 3000);
   }, []);
 
   return (
