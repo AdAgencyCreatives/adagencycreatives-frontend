@@ -189,7 +189,7 @@ const UserList = (props) => {
           className={(item.contact.uuid == activeContact) ? "active" : ""}
           onClick={() => {
             handleItemClick(item.contact, messageType, conversationData);
-            handleItemClick(item.contact, messageType, conversationData);
+            handleItemClick(item.contact, messageType, conversationData); // Need this duplicate call to force changes, don't remove unless handle click changes are reflected completely.
             document.getElementById("message-status-" + item.contact.uuid)?.classList?.remove('unread');
           }}
           key={item.id}
