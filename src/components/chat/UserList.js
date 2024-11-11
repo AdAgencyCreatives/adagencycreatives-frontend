@@ -184,10 +184,11 @@ const UserList = (props) => {
           </div>
         </div>
       </Dialog>
-      {conversationData?.map((item) => (
+      {conversationData?.length > 0 && conversationData?.map((item) => (
         <li data-id={item.contact.uuid}
           className={(item.contact.uuid == activeContact) ? "active" : ""}
           onClick={() => {
+            handleItemClick(item.contact, messageType, conversationData);
             handleItemClick(item.contact, messageType, conversationData);
             document.getElementById("message-status-" + item.contact.uuid)?.classList?.remove('unread');
           }}

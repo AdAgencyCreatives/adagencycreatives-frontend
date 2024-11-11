@@ -36,6 +36,7 @@ const JobChat = ({ messageType }) => {
 
   useEffect(() => {
     setContactsList(contacts);
+    switchTab(tab == "unread" ? "read" : tab);
   }, [contacts]);
 
   useEffect(() => {
