@@ -29,7 +29,7 @@ const JobDescription = () => {
 
   useEffect(() => {
     getJob(job, user, (status) => { setPageStatus(status); });
-  }, [job, token]);
+  }, [job, user]);
 
   useEffect(() => {
     if (single_job && Object.keys(single_job)?.length > 0) {

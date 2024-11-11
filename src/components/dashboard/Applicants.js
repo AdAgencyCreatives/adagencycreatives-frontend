@@ -144,24 +144,29 @@ const Applicants = () => {
               {data.map((item, index) => (
                 <div className="applicants-inner" key={index}>
                   {item?.applications?.length > 0 &&
-                    item?.applications.map((application) => (
-                      <RecentApplicant job={item} application={application}
-                        setApplicationStatus={setApplicationStatus}
-                        onRemoveFromRecent={onRemoveFromRecent}
-                        setAppId={setAppId}
-                        setOpen={setOpen}
-                        isJobExpired={
-                          item?.expired_at &&
-                          new Date(item?.expired_at) <=
-                          Date.parse(new Date().toISOString())
-                        }
-                        isJobDeleted={
-                          item?.deleted_at &&
-                          new Date(item?.deleted_at) <
-                          Date.parse(new Date().toISOString())
-                        }
-                      />
-                    ))}
+                    item?.applications.map((application) => {
+                      if (application?.type == "applications") {
+                        return (
+                          <RecentApplicant job={item} application={application}
+                            setApplicationStatus={setApplicationStatus}
+                            onRemoveFromRecent={onRemoveFromRecent}
+                            setAppId={setAppId}
+                            setOpen={setOpen}
+                            isJobExpired={
+                              item?.expired_at &&
+                              new Date(item?.expired_at) <=
+                              Date.parse(new Date().toISOString())
+                            }
+                            isJobDeleted={
+                              item?.deleted_at &&
+                              new Date(item?.deleted_at) <
+                              Date.parse(new Date().toISOString())
+                            }
+                          />
+                        );
+                      }
+                      return (<></>);
+                    })}
                 </div>
               ))}
               {recentApplicationMeta.total > 9 && (

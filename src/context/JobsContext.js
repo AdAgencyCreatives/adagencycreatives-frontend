@@ -195,7 +195,7 @@ const getJob = (dispatch) => {
       const response = await api.get(
         getJobEndpoint(user) + "?filter[slug]=" + slug
       );
-      getRelatedJobs(dispatch, response.data.data[0].category_id);
+      getRelatedJobs(dispatch, response.data.data[0].category_id, user);
       dispatch({
         type: "set_single_job",
         payload: response.data.data[0],
@@ -210,6 +210,10 @@ const getJob = (dispatch) => {
 const getJobById = (dispatch) => {
   return async (id) => {
     try {
+      dispatch({
+        type: "set_single_job",
+        payload: {},
+      });
       const response = await api.get("/jobs/" + id);
       dispatch({
         type: "set_single_job",
@@ -219,10 +223,10 @@ const getJobById = (dispatch) => {
   };
 };
 
-const getRelatedJobs = async (dispatch, category) => {
+const getRelatedJobs = async (dispatch, category, user = null) => {
   try {
     const response = await api.get(
-      "/jobs?filter[status]=" + status + "&filter[category_id]=" + category
+      getJobEndpoint(user) + "?filter[status]=" + status + "&filter[category_id]=" + category
     );
     dispatch({
       type: "set_related_jobs",

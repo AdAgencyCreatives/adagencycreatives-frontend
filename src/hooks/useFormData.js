@@ -94,7 +94,7 @@ const useFormData = (props = {}) => {
       getYearsExperience();
       getStrengths();
     }
-  }, [token]);
+  }, [token, id]);
 
   //Fetch initial Cities
   useEffect(() => {

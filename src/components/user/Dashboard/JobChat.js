@@ -80,7 +80,7 @@ const JobChat = ({ messageType }) => {
       if (name == "all") return true;
       else if (name == "read")
         return (item.read_at || item.message_type == "sent");
-      else return (!item.read_at && item.message_type != "sent");
+      else return (!(item.read_at || item.message_type == "sent"));
     });
     setContactsList([...updatedList]);
     setTab(name);
