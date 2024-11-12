@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useRouteError } from 'react-router-dom';
+import { Link, useRouteError } from 'react-router-dom';
 import WeWillBeRightBack from "../assets/images/we-will-be-right-back.jpg"
 
 const RouterErrorBoundary = () => {
@@ -10,6 +10,9 @@ const RouterErrorBoundary = () => {
     }, [error]);
     return (
         <div className='we-will-be-right-back'>
+            <Link className="site-logo" to={"/"}>
+                Ad Agency Creatives
+            </Link>
             <div className='message' role="alert">
                 <h3 style={{ textAlign: 'center' }}>It seems something is not right.</h3>
                 <div style={{ textAlign: 'center' }}>
