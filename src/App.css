@@ -58,10 +58,12 @@ body.no-overflow {
   align-items: center;
   width: 100vw;
   height: 100vh;
+  overflow: auto;
+  padding: 50px;
 }
 
 .we-will-be-right-back img {
-  width: 50%;
+  width: 500px;
   height: auto;
   object-fit: cover;
 }
@@ -72,16 +74,46 @@ body.no-overflow {
 }
 
 .we-will-be-right-back .message {
-  width: 50%;
+  width: 500px;
 }
 
-@media (max-width: 767px) {
+.we-will-be-right-back .message * {
+  margin: 0;
+  padding: 0;
+}
+
+.we-will-be-right-back .site-logo {
+  line-height: 1;
+}
+
+@media (orientation:portrait) and (max-width: 767px) {
+
+  .we-will-be-right-back {
+    padding: 15px !important;
+  }
+
   .we-will-be-right-back img {
-    width: 90% !important;
+    width: 100% !important;
   }
 
   .we-will-be-right-back .message {
-    width: 90% !important;
+    width: 100% !important;
+  }
+}
+
+@media (orientation:landscape) and (max-height: 480px) {
+
+  .we-will-be-right-back {
+    padding: 15px !important;
+  }
+
+  .we-will-be-right-back img {
+    width: auto !important;
+    height: 50% !important;
+  }
+
+  .we-will-be-right-back .message {
+    width: auto !important;
   }
 }
 
