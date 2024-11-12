@@ -1,12 +1,17 @@
 import React, { useEffect } from 'react';
 import { Link, useRouteError } from 'react-router-dom';
 import WeWillBeRightBack from "../assets/images/we-will-be-right-back.jpg"
+import { notifyError } from '../context/ErrorDataContext';
 
 const RouterErrorBoundary = () => {
     const error = useRouteError();
 
     useEffect(() => {
         console.log(error);
+        notifyError({
+            url: window.location.href,
+            error_message: error.statusText || error.message,
+        });
     }, [error]);
     return (
         <div className='we-will-be-right-back'>
