@@ -36,6 +36,7 @@ import { Context as AuthContext } from "./context/AuthContext";
 import Logout from "./pages/Logout";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import DemoError from "./pages/DemoError";
 import Inspire from "./pages/Mentor/Inspire";
 import Art from "./pages/Mentor/Art";
 import Portfolio from "./pages/Mentor/Portfolio";
@@ -44,27 +45,21 @@ import Tech from "./pages/Mentor/Tech";
 import ResetPassword from "./pages/ResetPassword";
 import FilmFestival1 from "./pages/FilmFestival1";
 import GroupRequests from "./pages/GroupRequests";
-import ErrorBoundary from "./components/ErrorBoundary";
-
-const RouteErrorBoundary = () => {
-  const error = useRouteError();
-  return (
-    <div role="alert">
-      <h1>Sorry, an unexpected error has occurred.</h1>
-      <p>{error.statusText || error.message}</p>
-    </div>
-  );
-};
+import RouterErrorBoundary from "./components/RouterErrorBoundary";
 
 export const router = createBrowserRouter([
   {
-    // errorElement: <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw', height: '100vh' }}><button className="btn btn-dark hover-gold" onClick={(e) => window.location.reload()}>Reload</button></div>,
-    errorElement: <RouteErrorBoundary />,
+    errorElement: <RouterErrorBoundary />,
     element: <App />,
     children: [
       {
         path: "/",
         element: <Home />,
+      },
+
+      {
+        path: "/demo-error",
+        element: <DemoError />,
       },
 
       {

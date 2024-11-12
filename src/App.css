@@ -49,3 +49,42 @@ body.no-overflow {
     padding-top: 95px;
   }
 }
+
+.we-will-be-right-back {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.we-will-be-right-back img {
+  width: 50%;
+  height: auto;
+  object-fit: cover;
+}
+
+.we-will-be-right-back .buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.we-will-be-right-back .message {
+  width: 50%;
+}
+
+@media (max-width: 767px) {
+  .we-will-be-right-back img {
+    width: 90% !important;
+  }
+
+  .we-will-be-right-back .message {
+    width: 90% !important;
+  }
+}
+
+iframe#webpack-dev-server-client-overlay {
+  display: none;
+}
