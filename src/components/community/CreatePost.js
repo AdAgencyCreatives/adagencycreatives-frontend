@@ -389,7 +389,19 @@ const CreatePost = (props) => {
                     font_family_formats: 'JOST=JOST',
                     content_style: 'body, * { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important; font-size: 14pt } a { color: #d3a11f; cursor: pointer; } a:hover { color: #000; }',
                     placeholder: 'What do you want to talk about?',
-                    paste_block_drop: true
+                    paste_block_drop: true,
+                    forced_root_block: false, // Disable wrapping content in paragraph tags 
+                    setup: (editor) => {
+                      editor.on('keydown', (e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) { // Enter key without Shift 
+                          e.preventDefault();
+                          editor.execCommand('InsertLineBreak');
+                        } else if (e.key === 'Enter' && e.shiftKey) { // Enter key with Shift
+                          e.preventDefault();
+                          editor.execCommand('InsertParagraph');
+                        }
+                      });
+                    },
                   }}
                   initialValue=""
                   onEditorChange={(e) => setContent(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "")}

@@ -1246,6 +1246,18 @@ const MyResume = () => {
                       toolbar: 'bold italic underline strikethrough | blocks fontfamily fontsize | numlist bullist link | emoticons charmap | align lineheight | indent outdent | removeformat',
                       content_style: 'body, * { font-family: "JOST", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important; font-size: 14pt }',
                       placeholder: '',
+                      forced_root_block: false, // Disable wrapping content in paragraph tags 
+                      setup: (editor) => {
+                        editor.on('keydown', (e) => {
+                          if (e.key === 'Enter' && !e.shiftKey) { // Enter key without Shift 
+                            e.preventDefault();
+                            editor.execCommand('InsertLineBreak');
+                          } else if (e.key === 'Enter' && e.shiftKey) { // Enter key with Shift
+                            e.preventDefault();
+                            editor.execCommand('InsertParagraph');
+                          }
+                        });
+                      },
                     }}
                     value={formData[field.name]}
                     onEditorChange={(e) => {

@@ -205,6 +205,18 @@ const EditGroup = (props) => {
                                         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
                                         description_style: 'body { font-family:Jost, Arial, sans-serify; font-size:14pt }',
                                         placeholder: 'Enter group description',
+                                        forced_root_block: false, // Disable wrapping content in paragraph tags 
+                                        setup: (editor) => {
+                                            editor.on('keydown', (e) => {
+                                                if (e.key === 'Enter' && !e.shiftKey) { // Enter key without Shift 
+                                                    e.preventDefault();
+                                                    editor.execCommand('InsertLineBreak');
+                                                } else if (e.key === 'Enter' && e.shiftKey) { // Enter key with Shift
+                                                    e.preventDefault();
+                                                    editor.execCommand('InsertParagraph');
+                                                }
+                                            });
+                                        },
                                     }}
                                     initialValue=""
                                     onChange={(e) => setDescription(editorRef.current ? editorRef.current.getDescription() : "")}
