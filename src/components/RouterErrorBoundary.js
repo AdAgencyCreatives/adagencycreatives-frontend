@@ -19,15 +19,12 @@ const RouterErrorBoundary = () => {
                 Ad Agency Creatives
             </Link>
             <div className='message' role="alert">
-                <h3 style={{ textAlign: 'center' }}>It seems something is not right.</h3>
-                <h4 style={{ textAlign: 'center' }}>We are working on it.</h4>
-                {/* <div style={{ textAlign: 'center' }}>
-                    We are working on it, but if you keep getting this screen for long,
-                    you may want to reach us: <a href='mailto:membersupport@adagencycreatives.com'>membersupport@adagencycreatives.com</a>.
-                </div> */}
+                <h5 style={{ textAlign: 'center' }}>It seems something is not right.</h5>
+                <h5 style={{ textAlign: 'center' }}>We are working on it.</h5>
                 <div style={{ display: 'none' }}>{error.statusText || error.message}</div>
             </div>
             <img src={WeWillBeRightBack} />
+            <h5 style={{ textAlign: 'center' }}>We will be right back.</h5>
             <div className='buttons'>
                 <Link className='btn btn-dark hover-gold' to={"/"}>Home</Link>
                 <button className="btn btn-dark hover-gold" onClick={(e) => window.location.reload()}>Reload</button>
