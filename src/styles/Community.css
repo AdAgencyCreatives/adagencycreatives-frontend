@@ -517,7 +517,7 @@ img.post-avatar {
 .post-actions .post-reaction-dropdown,
 .post-actions .post-reaction-action-dropdown {
     left: 0px;
-    bottom: 55px;
+    bottom: 35px;
     background-color: white;
     border-radius: 10px;
     display: flex;
