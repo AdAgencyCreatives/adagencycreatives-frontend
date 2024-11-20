@@ -1664,3 +1664,8 @@ img.agency-image-loader {
     color: #d3a11f !important;
     border: 2px solid #000 !important;
 }
+
+.close-modal.registration-success {
+    right: 35px !important;
+    top: 35px !important;
+}

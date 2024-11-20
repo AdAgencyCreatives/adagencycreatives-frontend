@@ -21,6 +21,7 @@ const CommonModal = (
         closeButtonText = "CLOSE",
         closeButtonClass = "btn btn-dark",
         sx = false,
+        closeIconClass = "close-modal"
     }) => {
 
     const handleOnClose = (callbackOnClose = false) => {
@@ -59,7 +60,7 @@ const CommonModal = (
                 <DialogContent>
                     <DialogContentText>{dialogContentText}</DialogContentText>
                     <div className={className}>
-                        <IoCloseCircleSharp size={30} className="close-modal" onClick={handleOnClose} />
+                        <IoCloseCircleSharp size={30} className={closeIconClass} onClick={handleOnClose} />
                         {children}
                     </div>
                 </DialogContent>

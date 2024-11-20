@@ -23,7 +23,7 @@ const RegistrationSuccessModal = ({ }) => {
 
     return (
         <CommonModal
-            dialogTitle="REGISTRATION REQUEST SENT"
+            dialogTitle="REQUEST SENT"
             dialogTitleStyle={{ textAlign: 'center' }}
             open={open}
             setOpen={setOpen}
@@ -31,13 +31,14 @@ const RegistrationSuccessModal = ({ }) => {
             onClose={() => { handleOnClose(); }}
             actionsClassName="common-modal-actions-apply-now"
             fullWidth={false}
-            sx={{ '& .MuiDialog-paper': { width: '500px', maxWidth: '500px' } }}
+            sx={{ '& .MuiDialog-paper': { position: 'relative', width: '500px', maxWidth: '500px', padding: '30px' } }}
             closeButtonClass="btn btn-dark registration-success"
+            closeIconClass="close-modal registration-success"
         >
             <p>Thank you for successfully registering.
                 You'll receive an email with next steps.</p>
             <p>It could be a few business days to verify your
-                registration request. You'll receive and email when verification is complete.</p>
+                registration request. You'll receive an email when verification is complete.</p>
             <p>In the meantime, enjoy exploring our home page.</p>
             <p>- Ad Agency Creatives</p>
         </CommonModal>
