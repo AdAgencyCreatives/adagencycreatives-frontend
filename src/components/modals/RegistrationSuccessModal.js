@@ -13,7 +13,7 @@ const RegistrationSuccessModal = ({ }) => {
             setOpen(true);
             window.setTimeout(() => {
                 handleOnClose();
-            }, 20000);
+            }, 200000);
         }
     }, [window.location.hash]);
 
@@ -29,6 +29,7 @@ const RegistrationSuccessModal = ({ }) => {
             setOpen={setOpen}
             closeButtonText="Home Page"
             onClose={() => { handleOnClose(); }}
+            dialogClass={"dialog-registration-success"}
             actionsClassName="common-modal-actions-apply-now"
             fullWidth={false}
             sx={{ '& .MuiDialog-paper': { position: 'relative', width: '500px', maxWidth: '500px', padding: '30px' } }}

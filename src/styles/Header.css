@@ -1669,3 +1669,10 @@ img.agency-image-loader {
     right: 35px !important;
     top: 45px !important;
 }
+
+@media (max-width: 767px) {
+    .dialog-registration-success .MuiDialog-paper {
+        width: calc(100% - 63px) !important;
+        max-width: calc(100% - 63px) !important;
+    }
+}

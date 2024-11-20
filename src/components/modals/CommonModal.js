@@ -15,6 +15,7 @@ const CommonModal = (
         dialogTitle = "",
         dialogTitleStyle = { fontWeight: '700' },
         dialogContentText = "",
+        dialogClass = "",
         className = "agency-page-myjobs tabular dialog",
         actions = [],
         actionsClassName = "common-modal-actions",
@@ -40,6 +41,7 @@ const CommonModal = (
                 maxWidth={maxWidth}
                 style={{ zIndex: 1600 }}
                 sx={sx}
+                className={dialogClass}
             >
                 <DialogTitle style={dialogTitleStyle}>{dialogTitle}</DialogTitle>
                 {actions?.length > 0 && (
