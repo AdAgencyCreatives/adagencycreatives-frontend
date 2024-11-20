@@ -15,10 +15,12 @@ import Loader from "../../../components/Loader";
 import Paginate from "../../../components/Paginate";
 import SearchBarCommon from "../../../components/SearchBarCommon";
 import AgencyImageLoader from "../../../components/AgencyImageLoader";
+import DelayedOutput from "../../../components/DelayedOutput";
 
 const AgencyShortlist = () => {
 
   const [searchInput, setSearchInput] = useState("");
+  const [searchPerformed, setSearchPerformed] = useState(false);
   const [openNotes, setOpenNotes] = useState(false);
   const handleCloseNotes = () => setOpenNotes(false);
   const [appId, setAppId] = useState("");
@@ -70,8 +72,15 @@ const AgencyShortlist = () => {
   };
 
   const handleSearch = (searchText) => {
-    getBookmarks(searchText, user.uuid, "agencies");
+    setSearchPerformed(false);
+    getBookmarks(searchText, user.uuid, "agencies", () => {
+      setSearchPerformed(true);
+    });
   }
+
+  useEffect(() => {
+    setSearchPerformed(false);
+  }, []);
 
   return isLoading ? (
     <Loader />
@@ -187,7 +196,13 @@ const AgencyShortlist = () => {
         ) : (
           <>
             <div className="no_result">
-              <p>Please try again. No exact results found.</p>
+              {searchInput?.length > 0 && searchPerformed && bookmarks?.length == 0 ? (
+                <p>Please try again. No exact results found.</p>
+              ) : (
+                <DelayedOutput delay={5000}>
+                  <p>You have not shortlisted any agency yet.</p>
+                </DelayedOutput>
+              )}
             </div>
           </>
         )}

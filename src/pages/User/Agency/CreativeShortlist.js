@@ -20,10 +20,12 @@ import Loader from "../../../components/Loader";
 import Paginate from "../../../components/Paginate";
 import SearchBarCommon from "../../../components/SearchBarCommon";
 import CreativeImageLoader from "../../../components/CreativeImageLoader";
+import DelayedOutput from "../../../components/DelayedOutput";
 
 const CreativeShortlist = () => {
 
   const [searchInput, setSearchInput] = useState("");
+  const [searchPerformed, setSearchPerformed] = useState(false);
   const [open, setOpen] = useState(false);
   const [item, setItem] = useState({});
   const handleClose = () => setOpen(false);
@@ -83,8 +85,15 @@ const CreativeShortlist = () => {
   };
 
   const handleSearch = (searchText) => {
-    getBookmarks(searchText, user.uuid, "creatives");
+    setSearchPerformed(false);
+    getBookmarks(searchText, user.uuid, "creatives", () => {
+      setSearchPerformed(true);
+    });
   }
+
+  useEffect(() => {
+    setSearchPerformed(false);
+  }, []);
 
   return isLoading ? (
     <Loader />
@@ -124,7 +133,7 @@ const CreativeShortlist = () => {
                             <h2 className="candidate-title">
                               <Link to={"/creative/" + resource.slug} className="link-dark">{resource.name}</Link>
                             </h2>
-                            {resource.priority.is_featured == 1 && (
+                            {/* {resource.priority.is_featured == 1 && (
                               <span
                                 className="featured"
                                 data-toggle="tooltip"
@@ -133,7 +142,7 @@ const CreativeShortlist = () => {
                               >
                                 <TfiCheck strokeWidth="1" />
                               </span>
-                            )}
+                            )} */}
                           </div>
                           <div className="job-metas">
                             <div className="candidate-category text-dark">
@@ -202,11 +211,15 @@ const CreativeShortlist = () => {
             {bookmarks && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"shortlisted creatives"} />}
           </>
         ) : (
-          <>
-            <div className="no_result">
+          <div className="no_result">
+            {searchInput?.length > 0 && searchPerformed && bookmarks?.length == 0 ? (
               <p>Please try again. No exact results found.</p>
-            </div>
-          </>
+            ) : (
+              <DelayedOutput delay={5000}>
+                <p>You have not shortlisted any creative yet.</p>
+              </DelayedOutput>
+            )}
+          </div>
         )}
       </div>
       <Message

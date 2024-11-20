@@ -275,13 +275,14 @@ const getIndustryExperiences = (dispatch) => {
 };
 
 const getBookmarks = (dispatch) => {
-  return async (search, uuid, type) => {
+  return async (search, uuid, type, cb = () => { }) => {
     try {
       const response = await api.get("/bookmarks?filter[user_id]=" + uuid + "&resource_type=" + type + (search?.length > 0 ? ("&search=" + search) : ""));
       dispatch({
         type: "set_bookmarks",
         payload: response.data,
       });
+      cb();
     } catch (error) { }
   };
 };
