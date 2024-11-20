@@ -1658,3 +1658,9 @@ img.agency-image-loader {
 .common-modal-actions-apply-now .btn.btn-apply:active {
     border: 2px solid #000 !important;
 }
+
+.btn.btn-dark.registration-success:hover {
+    background-color: #000 !important;
+    color: #d3a11f !important;
+    border: 2px solid #000 !important;
+}

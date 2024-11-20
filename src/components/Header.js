@@ -32,6 +32,7 @@ import AvatarImageLoader from "./AvatarImageLoader";
 
 import SlidingMessage from "./SlidingMessage";
 import ScrollButton from "./ScrollButton";
+import RegistrationSuccessModal from "./modals/RegistrationSuccessModal";
 
 const drawerWidth = "85%";
 
@@ -365,6 +366,7 @@ function Header(props) {
       </Box>
       <AuthModal open={authModalOpen} handleClose={handleClose} />
       <SlidingMessage message={message} />
+      <RegistrationSuccessModal />
       <ScrollButton />
     </>
   );

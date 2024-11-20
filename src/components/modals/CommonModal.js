@@ -17,7 +17,10 @@ const CommonModal = (
         dialogContentText = "",
         className = "agency-page-myjobs tabular dialog",
         actions = [],
-        actionsClassName = "common-modal-actions"
+        actionsClassName = "common-modal-actions",
+        closeButtonText = "CLOSE",
+        closeButtonClass = "btn btn-dark",
+        sx = false,
     }) => {
 
     const handleOnClose = (callbackOnClose = false) => {
@@ -35,6 +38,7 @@ const CommonModal = (
                 fullWidth={fullWidth}
                 maxWidth={maxWidth}
                 style={{ zIndex: 1600 }}
+                sx={sx}
             >
                 <DialogTitle style={dialogTitleStyle}>{dialogTitle}</DialogTitle>
                 {actions?.length > 0 && (
@@ -60,7 +64,7 @@ const CommonModal = (
                     </div>
                 </DialogContent>
                 <DialogActions>
-                    <Button className="btn btn-dark" onClick={handleOnClose}>CLOSE</Button>
+                    <Button className={closeButtonClass} onClick={handleOnClose}>{closeButtonText}</Button>
                 </DialogActions>
             </Dialog>
         </>

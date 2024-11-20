@@ -4,7 +4,7 @@ import { IoClose } from "react-icons/io5";
 
 const SlideInMessage = (props) => {
 
-    const {hideAlert} = useContext(Context)
+    const { hideAlert } = useContext(Context)
 
     useEffect(() => {
         if (props.message && props.message.length > 0) {
@@ -19,11 +19,11 @@ const SlideInMessage = (props) => {
         return (
             <div className={"registration-success-message sliding-message" + (props.message && props.message.length > 0 ? ' active' : '')}>
                 <div className="close" onClick={() => hideAlert()}><IoClose /></div>
-                <p>Hello,</p>
+                <p>Registration Request Sent</p>
                 <p>Thank you for successfully registering.
-                You'll receive an email with next steps.</p>
+                    You'll receive an email with next steps.</p>
                 <p>It could be a few business days for us to verify your
-                registration request. Be on the look out for our email.</p>
+                    registration request. Be on the look out for our email.</p>
                 <p>In the meantime, enjoy exploring our home page.</p>
                 <p>- Ad Agency Creatives</p>
             </div>
