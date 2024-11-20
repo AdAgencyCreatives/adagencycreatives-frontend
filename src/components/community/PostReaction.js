@@ -279,7 +279,7 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                         }, 200);
                     }} />
 
-                    <div id={reactionActionKey} className={"post-reaction-action-dropdown d-none"}>
+                    <div id={reactionActionKey} className={"post-reaction-action-dropdown d-none"} style={{ border: "1px solid lightgray" }}>
                         <div className={"image-container" + (getUserReactionType() == 'like' ? " active" : "")} onMouseDown={(e) => doToggleReaction(post.id, getUserReactionType() == 'like' ? '' : 'like')}>
                             <img src={LoungePostIconSmileyLike} style={{ width: "30px", height: "30px" }} alt="" />
                         </div>

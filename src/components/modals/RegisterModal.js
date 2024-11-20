@@ -7,6 +7,7 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as AlertContext } from "../../context/AlertContext";
 import { isValidHttpUrl } from "../common";
 import useHelper from "../../hooks/useHelper";
+import { useNavigate } from "react-router-dom";
 
 const RegisterModal = ({ open, handleClose, setModal, form }) => {
   const { state, signup } = useContext(AuthContext);
@@ -19,6 +20,7 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
   const [formSubmit, setFormSubmit] = useState(false);
 
   const { hasPasswordError } = useHelper();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (formMessage) {
@@ -211,7 +213,8 @@ const RegisterModal = ({ open, handleClose, setModal, form }) => {
     try {
       const result = await signup(fields[tab], tab);
       handleClose();
-      showAlert("registration-success"); // never change this as it displays registration success message.
+      //showAlert("registration-success"); // never change this as it displays registration success message.
+      navigate("#registration-success");
     } catch (e) {
       dialogRef.current.getElementsByClassName("MuiDialog-container")[0].scrollTo({
         top: 0,
