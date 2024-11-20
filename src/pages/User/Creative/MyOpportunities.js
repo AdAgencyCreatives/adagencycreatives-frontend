@@ -107,14 +107,14 @@ const MyOpportunities = () => {
                                       {job.title}
                                     </Link>
                                   </h3>
-                                  {job.priority.is_featured ? (
+                                  {/* {job.priority.is_featured ? (
                                     <IoCheckmarkCircle
                                       color="#34A853"
                                       size={30}
                                     />
                                   ) : (
                                     ""
-                                  )}
+                                  )} */}
                                 </div>
                                 <div className="job-metas">
                                   {job.category && (

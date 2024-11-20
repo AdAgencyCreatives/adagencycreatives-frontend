@@ -115,11 +115,11 @@ const MyJobApplicantsWidget = ({
                   <u>{thisJob.title}</u>
                 </Link>
               </h3>
-              {thisJob.priority.is_featured ? (
+              {/* {thisJob.priority.is_featured ? (
                 <IoCheckmarkCircle color="#34A853" size={30} style={{ minWidth: "30px", minHeight: "30px" }} />
               ) : (
                 ""
-              )}
+              )} */}
             </div>
           </div>
         </td>
