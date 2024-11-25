@@ -54,10 +54,6 @@ function App() {
     getToken();
   }, []);
 
-  window.setInterval(() => {
-    getToken();
-  }, 60000);
-
   const isCurrentPage = (relativeUrl) => {
     return (window.location.pathname + (window.location.search && window.location.search.length > 1 ? window.location.search : '')) == relativeUrl;
   }
