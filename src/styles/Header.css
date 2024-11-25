@@ -1676,3 +1676,12 @@ img.agency-image-loader {
         max-width: calc(100% - 63px) !important;
     }
 }
+
+.flex-center-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    margin: 30px;
+    gap: 30px;
+}

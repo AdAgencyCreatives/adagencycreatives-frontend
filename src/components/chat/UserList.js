@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { Context } from "../../context/ChatContext";
 import { Tooltip, Dialog, CircularProgress } from "@mui/material";
 import { Context as AuthContext } from "../../context/AuthContext";
@@ -28,6 +28,21 @@ const UserList = (props) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [messageTmp, setMessageTmp] = useState();
   const [conversationData, setConversationData] = useState([]);
+
+  const { userListLoading, setUserListLoading } = props;
+  const itemsRef = useRef(null);
+
+  useEffect(() => {
+    if (conversationData.length > 0) {
+      // Check if items are rendered 
+      const interval = setInterval(() => {
+        if (itemsRef.current) {
+          setUserListLoading(false);
+          clearInterval(interval);
+        }
+      }, 100);
+    }
+  }, [conversationData]);
 
   useEffect(() => {
     setConversationData(data);
@@ -149,7 +164,7 @@ const UserList = (props) => {
   };
 
   return (
-    <ul className="users-list">
+    <>
       <Dialog
         open={isDialogOpen} onClose={closeDeleteConversation}
         aria-labelledby="modal-modal-title"
@@ -184,42 +199,49 @@ const UserList = (props) => {
           </div>
         </div>
       </Dialog>
-      {conversationData?.length > 0 && conversationData?.map((item) => (
-        <li data-id={item.contact.uuid}
-          className={(item.contact.uuid == activeContact) ? "active" : ""}
-          onClick={() => {
-            handleItemClick(item.contact, messageType, conversationData);
-            handleItemClick(item.contact, messageType, conversationData); // Need this duplicate call to force changes, don't remove unless handle click changes are reflected completely.
-            document.getElementById("message-status-" + item.contact.uuid)?.classList?.remove('unread');
-          }}
-          key={item.id}
-        >
-          <AvatarImageLoader user={item?.contact} height={40} width={40} />
-          <div className="user-details">
-            <div className="d-flex justify-content-between align-items-center">
-              <div className="username">
-                {item.contact.first_name} {item.contact.last_name}
-              </div>
-              <div id={"message-status-" + item.contact.uuid} className={"message-time" + ((item.read_at || item.message_type == "sent") ? "" : " unread")}>
-                {parseDateShort(item.created_at)}
+      {userListLoading && (
+        <div className="flex-center-center">
+          <CircularProgress />
+        </div>
+      )}
+      <ul ref={itemsRef} className="users-list">
+        {conversationData?.length > 0 && conversationData?.map((item) => (
+          <li data-id={item.contact.uuid}
+            className={(item.contact.uuid == activeContact) ? "active" : ""}
+            onClick={() => {
+              handleItemClick(item.contact, messageType, conversationData);
+              handleItemClick(item.contact, messageType, conversationData); // Need this duplicate call to force changes, don't remove unless handle click changes are reflected completely.
+              document.getElementById("message-status-" + item.contact.uuid)?.classList?.remove('unread');
+            }}
+            key={item.id}
+          >
+            <AvatarImageLoader user={item?.contact} height={40} width={40} />
+            <div className="user-details">
+              <div className="d-flex justify-content-between align-items-center">
+                <div className="username">
+                  {item.contact.first_name} {item.contact.last_name}
+                </div>
+                <div id={"message-status-" + item.contact.uuid} className={"message-time" + ((item.read_at || item.message_type == "sent") ? "" : " unread")}>
+                  {parseDateShort(item.created_at)}
 
+                </div>
+                <div className="job-action">
+                  <Tooltip title="Remove">
+                    <Link
+                      className="btn p-0 border-0 btn-hover-primary"
+                      onClick={() => deleteConversation(item)}
+                    >
+                      <IoClose className="icon-rounded" />
+                    </Link>
+                  </Tooltip>
+                </div>
               </div>
-              <div className="job-action">
-                <Tooltip title="Remove">
-                  <Link
-                    className="btn p-0 border-0 btn-hover-primary"
-                    onClick={() => deleteConversation(item)}
-                  >
-                    <IoClose className="icon-rounded" />
-                  </Link>
-                </Tooltip>
-              </div>
+              <div className="user-message" dangerouslySetInnerHTML={{ __html: getShortMessage((item?.sender_id == user?.id ? "You" : item.contact.first_name) + ": " + sanitizeText(item.message)) }}></div>
             </div>
-            <div className="user-message" dangerouslySetInnerHTML={{ __html: getShortMessage((item?.sender_id == user?.id ? "You" : item.contact.first_name) + ": " + sanitizeText(item.message)) }}></div>
-          </div>
-        </li>
-      ))}
-    </ul>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 };
 

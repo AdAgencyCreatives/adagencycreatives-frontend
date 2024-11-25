@@ -33,6 +33,7 @@ const JobChat = ({ messageType }) => {
   const [paged, setPaged] = useState(2);
   const [hasMoreData, setHasMoreData] = useState(false);
   const [messageData, setMessageData] = useState([]);
+  const [userListLoading, setUserListLoading] = useState(true);
 
   useEffect(() => {
     setContactsList(contacts);
@@ -179,12 +180,26 @@ const JobChat = ({ messageType }) => {
               </div>
             </div>
             <div className="box-content">
-              <UserList messageType={type} page="job" data={contactsList} handleItemClick={handleItemClick} refreshContacts={refreshContacts} setMessageData={setMessageData} />
+              <UserList
+                messageType={type}
+                page="job"
+                data={contactsList}
+                handleItemClick={handleItemClick}
+                refreshContacts={refreshContacts}
+                setMessageData={setMessageData}
+                userListLoading={userListLoading}
+                setUserListLoading={setUserListLoading}
+              />
             </div>
           </div>
         </div>
         <div className="col-md-8 col-12">
-          <ChatBox messageType={type} page="job" {...chatBoxProps} />
+          <ChatBox
+            messageType={type}
+            page="job"
+            userListLoading={userListLoading}
+            {...chatBoxProps}
+          />
         </div>
       </div>
     </div>

@@ -36,6 +36,7 @@ const ChatBox = ({
   setMessageData,
   messageType,
   refreshContacts,
+  userListLoading,
 }) => {
 
   const {
@@ -687,9 +688,18 @@ const ChatBox = ({
           </div>
         </div>
       ) : (
-        <div className="no-contact-selected">
-          <span className="alert alert-secondary">Select a contact to view messages</span>
-        </div>
+        <>
+          {userListLoading ? (
+            <div className="flex-center-center">
+              <CircularProgress />
+            </div>
+          ) : (
+            <div className="no-contact-selected">
+              <span className="alert alert-secondary">Select a contact to view messages</span>
+            </div>
+          )}
+        </>
+
       )}
     </>
   );
