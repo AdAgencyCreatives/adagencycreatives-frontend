@@ -47,6 +47,7 @@ const Chat = ({ messageType }) => {
   const [paged, setPaged] = useState(2);
   const [hasMoreData, setHasMoreData] = useState(false);
   const [messageData, setMessageData] = useState([]);
+  const [userListLoading, setUserListLoading] = useState(true);
 
   useEffect(() => {
     getContacts(type);
@@ -213,12 +214,25 @@ const Chat = ({ messageType }) => {
               </div>
             </div>
             <div className="box-content">
-              <UserList messageType={type} page="lounge" data={contactsList} handleItemClick={handleItemClick} refreshContacts={refreshContacts} setMessageData={setMessageData} />
+              <UserList
+                messageType={type}
+                page="lounge"
+                data={contactsList}
+                handleItemClick={handleItemClick}
+                refreshContacts={refreshContacts}
+                setMessageData={setMessageData}
+                userListLoading={userListLoading}
+                setUserListLoading={setUserListLoading}
+              />
             </div>
           </div>
         </div>
         <div className="col-md-8 col-12">
-          <ChatBox messageType={type} page="lounge" {...chatBoxProps} />
+          <ChatBox
+            messageType={type}
+            page="lounge"
+            userListLoading={userListLoading}
+            {...chatBoxProps} />
         </div>
       </div>
     </div>
