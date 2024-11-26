@@ -288,7 +288,7 @@ const TabularSingleJobApplication = (props) => {
                             <p>Communication is important to our users. Don’t worry, we let them down gently.</p>
                             <div className="d-flex align-items-center justify-content-end">
                               <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={changingApplicationStatus} onClick={handleClickNotAlignedDialog}>
-                                Not Aligned {changingApplicationStatus && <CircularProgress size={20} />}
+                                {changingApplicationStatus ? "Applying" : "Not Aligned"}  {changingApplicationStatus && <CircularProgress size={20} />}
                               </button>
                             </div>
                           </div>
