@@ -2,9 +2,9 @@ import { useContext, useState, useEffect } from "react";
 import { Context as CreativesContext } from "../../context/CreativesContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as DataContext } from "../../context/DataContext";
-import { Tooltip } from "@mui/material";
+import { Dialog, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
-import { IoBookmarkOutline, IoTimeOutline } from "react-icons/io5";
+import { IoBookmarkOutline, IoCloseOutline, IoTimeOutline } from "react-icons/io5";
 import moment from "moment";
 import {
   TfiBackRight,
@@ -20,9 +20,9 @@ import useApplicationStatusHelper from "../../hooks/useApplicationStatusHelper";
 
 const TabularSingleJobApplication = (props) => {
   const [thisApplication, setThisApplication] = useState(props?.application);
-
   const [changingApplicationStatus, setChangingApplicationStatus] =
     useState(false);
+  const [isOpenNotAlignedDialog, setIsOpenNotAlignedDialog] = useState(false);
 
   const { getStatusName, getStatusBadge } = useApplicationStatusHelper();
 
@@ -55,7 +55,7 @@ const TabularSingleJobApplication = (props) => {
     });
   };
 
-  const changeApplicationStatus = (status) => {
+  const changeApplicationStatus = (status, cb = () => { }) => {
     let wasShortlisted = thisApplication.status == "shortlisted";
 
     setChangingApplicationStatus(true);
@@ -63,7 +63,10 @@ const TabularSingleJobApplication = (props) => {
       props?.job.id,
       thisApplication.id,
       status,
-      hideChangingApplicationStatus
+      () => {
+        hideChangingApplicationStatus();
+        cb();
+      }
     );
 
     if (status == "shortlisted") {
@@ -106,6 +109,16 @@ const TabularSingleJobApplication = (props) => {
         cb();
       }
     );
+  };
+
+  const handleCloseNotAlignedDialog = () => {
+    setIsOpenNotAlignedDialog(false);
+  };
+
+  const handleClickNotAlignedDialog = () => {
+    changeApplicationStatus("rejected", () => {
+      handleCloseNotAlignedDialog();
+    });
   };
 
   return (
@@ -242,18 +255,52 @@ const TabularSingleJobApplication = (props) => {
                   <Tooltip
                     title="Not Aligned"
                     onClick={() => {
-                      changeApplicationStatus("rejected");
+                      setIsOpenNotAlignedDialog(true);
                     }}
                   >
                     <button className="btn p-0 border-0 btn-hover-primary">
                       <TfiClose className="icon-rounded" />
                     </button>
                   </Tooltip>
+                  <Dialog
+                    open={isOpenNotAlignedDialog}
+                    onClose={handleCloseNotAlignedDialog}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    scroll="body"
+                  >
+                    <div className="auth-modal">
+                      <div className="auth-header"></div>
+                      <div className="auth-body">
+                        <div className="job-apply-email-form-wrapper">
+                          <div className="inner">
+                            <div className="d-flex align-items-center justify-content-between mb-4">
+                              <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
+                                Decline Applicant?
+                              </h3>
+                              <button
+                                className="border-0 bg-transparent text-primary"
+                                onClick={handleCloseNotAlignedDialog}>
+                                <IoCloseOutline size={30} />
+                              </button>
+                            </div>
+                            <p>Once you decline the applicant they will automatically receive a Status Update email from Ad Agency Creatives.</p>
+                            <p>Communication is important to our users. Don’t worry, we let them down gently.</p>
+                            <div className="d-flex align-items-center justify-content-end">
+                              <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={changingApplicationStatus} onClick={handleClickNotAlignedDialog}>
+                                Not Aligned {changingApplicationStatus && <CircularProgress size={20} />}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Dialog>
                 </>
               )}
           </div>
         </td>
-      </tr>
+      </tr >
     </>
   );
 };
