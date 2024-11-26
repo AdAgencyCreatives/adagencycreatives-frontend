@@ -233,135 +233,141 @@ const Sidebar = ({ data, user, showButtons = true }) => {
     }
   };
 
+  const is_available_years_of_experience = data?.years_of_experience?.length > 0;
+  const is_available_email = data?.email?.length > 0 && (isOwnProfile || isAdmin || ((isAgency || isAdvisor || isRecruiter) && (subscription_status == "active" || hasCreativeApplications)) || isFriend);
+  const is_available_phone = data?.phone_number?.length > 0 && (isOwnProfile || isAdmin || ((isAgency || isAdvisor || isRecruiter) && (subscription_status == "active" && hasCreativeApplications)));
+  const is_available_industry_experience = data?.industry_experience?.length > 0;
+  const is_available_media_experience = data?.media_experience?.length > 0;
+  const is_available_employment_type = data?.employment_type?.length > 0 && data?.employment_type[0]?.length > 0;
+  const is_available_character_strengths = data?.character_strengths?.length > 0;
+
+  const is_available_creative_detail = is_available_years_of_experience || is_available_email || is_available_phone || is_available_industry_experience || is_available_media_experience || is_available_employment_type || is_available_character_strengths;
+
   return (
     <>
-      <div className="sidebar-item">
-        <h4 className="title">Creative Details</h4>
-        <div className="content">
-          {data.years_of_experience !== "" ? (
-            <div className="item">
-              <IoCalendarClearOutline />
-              <div className="details">
-                <div className="text">Years of Experience</div>
-                <div className="value">
-                  {isAdmin || isAdvisor ? (<>
-                    <Link to={"/creatives/search/years-of-experience/" + encodeSpecial(encodeURI(data.years_of_experience))}
-                      onClick={(e) => {
-                        if (!token) {
-                          e.preventDefault();
-                          showAlert("Please login to access");
-                          return false;
-                        }
-                        if (isAdvisor && subscription_status != "active") {
-                          e.preventDefault();
-                          showAlert("Post a Job for advance search capabilities");
-                          return false;
-                        }
-                        return true;
-                      }}
-                    >
+      {is_available_creative_detail && (
+        <div className="sidebar-item">
+          <h4 className="title">Creative Details</h4>
+          <div className="content">
+            {is_available_years_of_experience && (
+              <div className="item">
+                <IoCalendarClearOutline />
+                <div className="details">
+                  <div className="text">Years of Experience</div>
+                  <div className="value">
+                    {isAdmin || isAdvisor ? (<>
+                      <Link to={"/creatives/search/years-of-experience/" + encodeSpecial(encodeURI(data.years_of_experience))}
+                        onClick={(e) => {
+                          if (!token) {
+                            e.preventDefault();
+                            showAlert("Please login to access");
+                            return false;
+                          }
+                          if (isAdvisor && subscription_status != "active") {
+                            e.preventDefault();
+                            showAlert("Post a Job for advance search capabilities");
+                            return false;
+                          }
+                          return true;
+                        }}
+                      >
+                        {data.years_of_experience}
+                      </Link>
+                    </>) : (<>
                       {data.years_of_experience}
-                    </Link>
-                  </>) : (<>
-                    {data.years_of_experience}
-                  </>)}
+                    </>)}
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            ""
-          )}
-          {data.email && (isOwnProfile || isAdmin || ((isAgency || isAdvisor || isRecruiter) && (subscription_status == "active" || hasCreativeApplications)) || isFriend) && (
-            <div className="item">
-              <IoMailOutline size={22} />
-              <div className="details">
-                <div className="text">Email</div>
-                <div className="value" style={{ wordBreak: 'break-word' }}>{data.email}</div>
-              </div>
-            </div>
-          )}
-          {data.phone_number && (isOwnProfile || isAdmin || ((isAgency || isAdvisor || isRecruiter) && (subscription_status == "active" && hasCreativeApplications))) && (
-            <div className="item">
-              <IoCallOutline size={22} />
-              <div className="details">
-                <div className="text">Phone Number</div>
-                <div className="value">{formatPhone(data.phone_number)}</div>
-              </div>
-            </div>
-          )}
-          {data?.industry_experience?.length > 0 ? (
-            <div className="item">
-              <img src={bullseye} height={22} width={22} />
-              <div className="details">
-                <div className="text">Industry Experience</div>
-                <div className="value">
-                  {renderListData(data.industry_experience, "i", isAdmin, isAdvisor, 'industry-experience')}
+            )}
+            {is_available_email && (
+              <div className="item">
+                <IoMailOutline size={22} />
+                <div className="details">
+                  <div className="text">Email</div>
+                  <div className="value" style={{ wordBreak: 'break-word' }}>{data.email}</div>
                 </div>
               </div>
-            </div>
-          ) : (
-            ""
-          )}
-          {data?.media_experience?.length > 0 ? (
-            <div className="item">
-              <img src={adicon} height={22} width={22} />
-              <div className="details">
-                <div className="text">Media Experience</div>
-                <div className="value">
-                  {renderListData(data.media_experience, "m", isAdmin, isAdvisor, 'media-experience')}
+            )}
+            {is_available_phone && (
+              <div className="item">
+                <IoCallOutline size={22} />
+                <div className="details">
+                  <div className="text">Phone Number</div>
+                  <div className="value">{formatPhone(data.phone_number)}</div>
                 </div>
               </div>
-            </div>
-          ) : (
-            ""
-          )}
-          {data.employment_type && (
-            <div className="item">
-              <img src={time} height={22} width={22} />
-              <div className="details">
-                <div className="text">Type of Work</div>
-                <div className="value">
-                  {renderListData(String(data.employment_type).split(','), "e", isAdmin, isAdvisor, 'work-type')}
+            )}
+            {is_available_industry_experience && (
+              <div className="item">
+                <img src={bullseye} height={22} width={22} />
+                <div className="details">
+                  <div className="text">Industry Experience</div>
+                  <div className="value">
+                    {renderListData(data.industry_experience, "i", isAdmin, isAdvisor, 'industry-experience')}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-          {data?.character_strengths?.length > 0 ? (
-            <div className="item">
-              <img src={strength} height={22} width={22} />
-              <div className="details">
-                <div className="text">Strengths</div>
-                <div className="value">
-                  {renderListData(data.character_strengths, "c", isAdmin, isAdvisor, 'strengths')}
+            )}
+            {is_available_media_experience && (
+              <div className="item">
+                <img src={adicon} height={22} width={22} />
+                <div className="details">
+                  <div className="text">Media Experience</div>
+                  <div className="value">
+                    {renderListData(data.media_experience, "m", isAdmin, isAdvisor, 'media-experience')}
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            ""
-          )}
-          {showButtons && (<>
-            {isOwnProfile || isAdmin ? (
-              <Link to="/my-resume">
-                <button className="btn btn-dark w-100 py-3 fs-5 mb-3">
-                  Edit My Resume
-                </button>
-              </Link>
-            ) : ("")}
-          </>)}
-        </div>
-      </div>
-      <div className="sidebar-item my-4">
-        <h4 className="title">Video</h4>
-        {video ? (
-          <div className="video-section mt-4">
-            <video src={video.url} controls></video>
+            )}
+            {is_available_employment_type && (
+              <div className="item">
+                <img src={time} height={22} width={22} />
+                <div className="details">
+                  <div className="text">Type of Work</div>
+                  <div className="value">
+                    {renderListData(String(data.employment_type).split(','), "e", isAdmin, isAdvisor, 'work-type')}
+                  </div>
+                </div>
+              </div>
+            )}
+            {is_available_character_strengths && (
+              <div className="item">
+                <img src={strength} height={22} width={22} />
+                <div className="details">
+                  <div className="text">Strengths</div>
+                  <div className="value">
+                    {renderListData(data.character_strengths, "c", isAdmin, isAdvisor, 'strengths')}
+                  </div>
+                </div>
+              </div>
+            )}
+            {showButtons && (<>
+              {isOwnProfile || isAdmin ? (
+                <Link to="/my-resume">
+                  <button className="btn btn-dark w-100 py-3 fs-5 mb-3">
+                    Edit My Resume
+                  </button>
+                </Link>
+              ) : ("")}
+            </>)}
           </div>
-        ) : (
-          <>
-            {showButtons && (<button className="btn btn-dark w-100 py-3 fs-5">Coming Soon</button>)}
-          </>
-        )}
-      </div>
+        </div>
+      )}
+      {video?.url?.length > 0 && (
+        <div className="sidebar-item my-4">
+          <h4 className="title">Video</h4>
+          {video ? (
+            <div className="video-section mt-4">
+              <video src={video.url} controls></video>
+            </div>
+          ) : (
+            <>
+              {showButtons && (<button className="btn btn-dark w-100 py-3 fs-5">Coming Soon</button>)}
+            </>
+          )}
+        </div>
+      )}
       {showButtons && (<>
         {resume?.length > 0 ? (
           <div className="sidebar-item my-4">
