@@ -1685,3 +1685,52 @@ img.agency-image-loader {
     margin: 30px;
     gap: 30px;
 }
+
+.search-suggestions {
+    display: flex;
+    padding: 10px;
+    gap: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 1;
+    border: 2px solid #d3a11f;
+    top: 45px;
+    left: 50px;
+    min-width: 200px;
+    width: max-content;
+}
+
+@media(max-width: 767px) {
+    .search-suggestions {
+        max-width: calc(100vw - 150px);
+    }
+}
+
+.search-suggestions select,
+.search-suggestions select option {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    border: 0;
+    outline: 0;
+    overflow: hidden;
+    display: block;
+    width: 100%;
+}
+
+.search-suggestions select option {
+    color: #000;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.search-suggestions select option:hover,
+.search-suggestions select option:active,
+.search-suggestions select option:focus,
+.search-suggestions select option:checked {
+    background-color: #d3a11f !important;
+    color: #fff !important;
+}

@@ -38,7 +38,7 @@ const CreativeSearch = () => {
     const [isCreativeLoading, setIsCreativeLoading] = useState(true);
     const [foundPermission, setFoundPermission] = useState(null);
 
-    const { creatives, loading, loadMore, searchCreativesAdvanced, searchCreativesFull } = useCreatives("creatives-search");
+    const { search_creatives, loading, loadMore, searchCreativesFull } = useCreatives("creatives-search");
     const {
         state: { bookmarks },
         createBookmark,
@@ -173,8 +173,8 @@ const CreativeSearch = () => {
     }, [role, hasSubscription]);
 
     useEffect(() => {
-        if (creatives?.length >= 0) setIsCreativeLoading(false);
-    }, [creatives]);
+        if (search_creatives?.length >= 0) setIsCreativeLoading(false);
+    }, [search_creatives]);
 
     useEffect(() => {
         setTimeout(() => setLoaded(true), 2000);
@@ -209,8 +209,8 @@ const CreativeSearch = () => {
                     {isAdmin || (isAdvisor && hasSubscription) ? (<>
                         {!isCreativeLoading ? (
                             <>
-                                {creatives &&
-                                    creatives.map((item, index) => {
+                                {search_creatives &&
+                                    search_creatives.map((item, index) => {
                                         const isShortlisted =
                                             bookmarks.find(
                                                 (bookmark) => bookmark.resource.user_id == item.user_id

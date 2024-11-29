@@ -1,13 +1,24 @@
 import { useEffect, useRef, useState } from "react";
 import "../styles/SearchBar.css";
-import TitleRecommendationsModal from "./dashboard/Modals/TitleRecommendationsModal";
-import { IoCloseCircleOutline, IoCloseCircleSharp, IoCloseOutline, IoCloseSharp, IoSearch, IoSearchCircleSharp, IoSearchOutline, IoSearchSharp } from "react-icons/io5";
+import { IoCloseOutline, IoSearchOutline } from "react-icons/io5";
+import { getSearchItems } from "../context/SearchDataContext";
+import { lime } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_search_capabilities, subscription_status }) => {
 
+  const navigate = useNavigate();
+
   const inputRef = useRef(null);
+  const selectRef = useRef(null);
 
   const [permission, setPermission] = useState(null);
+  const [searchItems, setSearchItems] = useState([]);
+  const [loadingSearchItems, setLoadingSearchItems] = useState(true);
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [limitSuggestions, setLimitSuggestions] = useState(25);
+  const [showAllSuggestions, setShowAllSuggestions] = useState(false);
 
   const modifyInput = (text) => {
     let searchItems = [
@@ -36,27 +47,49 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
     return newText;
   };
 
-
-  const handleCloseTitleRecommendations = (e, data) => {
-    if (data?.setOpen) {
-      data?.setOpen(false)
-    }
-    if (!data?.value) {
-      return;
-    }
-    // let trimmedInput = modifyInput(input.trim());
-    // let appendComma = trimmedInput?.length > 0 && trimmedInput.charAt(trimmedInput.length - 1) != ',';
-    // const searchKeyword = trimmedInput + (appendComma ? ', ' : ' ') + data?.value + (permission?.append_comma ? ", " : "");
-
-    const searchKeyword = data?.value + ", ";
-    setInput(searchKeyword);
-    onSearch(searchKeyword);
-    inputRef?.current?.focus();
-  };
-
   useEffect(() => {
     setPermission(get_permission());
   }, [role, subscription_status]);
+
+  const handleDataError = (error) => {
+    console.log("Error:");
+    console.log(error);
+  }
+
+  useEffect(() => {
+    (async () => {
+      await getSearchItems((data, error) => {
+        if (data) {
+          let search_items = [];
+          let urls = [];
+          urls['categories'] = "/creatives/search/industry-title/";
+          urls['states'] = "/creatives/location/state/";
+          urls['cities'] = "/creatives/location/city/";
+          urls['employment_types'] = "/creatives/search/work-type/";
+          urls['years_of_experience'] = "/creatives/search/years-of-experience/";
+          urls['media_experiences'] = "/creatives/search/years-of-experience//";
+          urls['strengths'] = "/creatives/search/strengths/";
+          urls['industry_experiences'] = "/creatives/search/industry-experience//";
+          let keys = Object.keys(data);
+          for (let index = 0; index < keys.length; index++) {
+            const key = keys[index];
+            if (data[key]?.length > 0) {
+              for (let dIndex = 0; dIndex < data[key].length; dIndex++) {
+                const item = data[key][dIndex];
+
+                search_items.push({ type: key, name: item['name'], url: urls[key] + item['name'] });
+              }
+            }
+          }
+          setSearchItems(search_items);
+        }
+        if (error) {
+          handleDataError(error);
+        }
+        setLoadingSearchItems(false);
+      });
+    })();
+  }, []);
 
   const get_permission = () => {
 
@@ -87,14 +120,43 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
     return { visible: true, message: "Post a Job for advance search feature", proceed: false, append_comma: false };
   };
 
+  const handleSearchInput = (e) => {
+    setInput(e.target.value)
+
+    let filtered_search_items = filterSearchItems(e.target.value);
+    setSuggestions(filtered_search_items);
+    setShowSuggestions(filtered_search_items?.length > 0);
+    // console.log(filtered_search_items);
+  };
+
+  const filterSearchItems = (searchText) => {
+    if (searchText?.length > 0) {
+      searchText = searchText.toLowerCase();
+      let filtered = searchItems.filter(item => item.name.toLowerCase().indexOf(searchText) != -1);
+      return filtered;
+    }
+    return [];
+  };
+
+  const handleSearchClick = (item) => {
+    setShowSuggestions(false);
+    navigate(selectRef.current.options[selectRef.current.selectedIndex].value);
+  };
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        let trimmedInput = modifyInput(input.trim());
-        setInput(trimmedInput);
-        onSearch(trimmedInput);
+
+        if (showSuggestions && selectRef?.current?.selectedIndex != -1) {
+          e.preventDefault();
+          e.stopPropagation();
+          handleSearchClick(selectRef.current.options[selectRef.current.selectedIndex].data);
+        } else {
+          let trimmedInput = modifyInput(input.trim());
+          setInput(trimmedInput);
+          onSearch(trimmedInput);
+        }
         return false;
       }}
     >
@@ -106,7 +168,22 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
             className="search-input form-control"
             placeholder={placeholder}
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => handleSearchInput(e)}
+            onKeyUp={(e) => {
+              if (e.key == 'Escape' || e.key == 'Enter') {
+                setShowSuggestions(false);
+              }
+            }}
+            onKeyDown={(e) => {
+              if (e.key == 'ArrowDown') {
+                e.preventDefault();
+                e.stopPropagation();
+                if (selectRef?.current) {
+                  selectRef?.current.focus();
+                  selectRef.current.selectedIndex = 0;
+                }
+              }
+            }}
           />
           {input?.length > 0 && (
             <IoCloseOutline className="reset-search-icon" onClick={(e) => {
@@ -114,7 +191,22 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
               onSearch("");
             }} />
           )}
-          <TitleRecommendationsModal permission={permission} handleClose={handleCloseTitleRecommendations} />
+          <div className="search-suggestions" style={{ display: showSuggestions ? 'flex' : 'none' }}>
+            {suggestions?.length > 0 && (<>
+              <select
+                ref={selectRef}
+                onBlur={(e) => {
+                  if (selectRef?.current) {
+                    selectRef.current.selectedIndex = -1;
+                  }
+                }}
+                size={Math.max(2, showAllSuggestions ? suggestions.length : (limitSuggestions > suggestions.length ? suggestions.length : limitSuggestions))}
+                style={{ height: (showAllSuggestions ? suggestions.length : (limitSuggestions > suggestions.length ? suggestions.length : limitSuggestions) == 1 ? '45px' : 'auto') }}
+              >
+                {suggestions.slice(0, showAllSuggestions ? suggestions.length - 1 : limitSuggestions - 1).map((item, index) => <option key={index} value={item.url} data={item} onClick={(e) => handleSearchClick(item)}>{item.name}</option>)}
+              </select>
+            </>)}
+          </div>
         </div>
         <div className="search-btn col-md-2">
           <button type="submit" className="btn">

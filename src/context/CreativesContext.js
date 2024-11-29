@@ -3,6 +3,7 @@ import createDataContext from "./createDataContext";
 
 const state = {
   creatives: null,
+  search_creatives: null,
   home_creatives: null,
   nextPage: null,
   loading: false,
@@ -30,6 +31,12 @@ const reducer = (state, action) => {
         creatives: action.payload.data,
         nextPage: action.payload.links.next,
       };
+    case "set_search_creatives":
+      return {
+        ...state,
+        search_creatives: action.payload.data,
+        nextPage: action.payload.links.next,
+      };
     case "set_home_creatives":
       return {
         ...state,
@@ -50,6 +57,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         creatives: [...state.creatives, ...action.payload.data],
+        nextPage: action.payload.links.next,
+      };
+    case "load_search_creatives":
+      return {
+        ...state,
+        search_creatives: [...state.search_creatives, ...action.payload.data],
         nextPage: action.payload.links.next,
       };
     case "set_loading":
@@ -231,7 +244,7 @@ const searchCreativesFull = (dispatch) => {
       const response = await api.get("/creatives/search4/?field=" + field + "&search=" + search + (searcLevel2?.length > 0 ? ("&search_level2=" + searcLevel2) : ""));
 
       dispatch({
-        type: "set_creatives",
+        type: "set_search_creatives",
         payload: response.data,
       });
     } catch (error) {
@@ -276,6 +289,20 @@ const loadCreatives = (dispatch) => {
       const response = await api.get(page);
       dispatch({
         type: "load_creatives",
+        payload: response.data,
+      });
+    } catch (error) { }
+    setLoading(dispatch, false);
+  };
+};
+
+const loadSearchCreatives = (dispatch) => {
+  return async (page) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get(page);
+      dispatch({
+        type: "load_search_creatives",
         payload: response.data,
       });
     } catch (error) { }
@@ -560,6 +587,7 @@ export const { Context, Provider } = createDataContext(
     getStats,
     getApplications,
     loadCreatives,
+    loadSearchCreatives,
     getCreative,
     getCreativeForPdf,
     getCreativeById,

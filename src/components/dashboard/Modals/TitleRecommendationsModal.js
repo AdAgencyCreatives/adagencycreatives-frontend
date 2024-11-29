@@ -14,6 +14,7 @@ import { IoCloseCircleSharp } from "react-icons/io5";
 import InfoIconImage from "../../../assets/images/info-icon.png";
 import Loader from "../../Loader";
 
+// This component was being used with src/components/SearchBar.js, then dumped to src/components/BackupSearchBar.js on 2024-11-28
 const TitleRecommendationsModal = ({ permission, handleClose }) => {
 
     const [open, setOpen] = useState(false);
