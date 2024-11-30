@@ -1694,7 +1694,7 @@ img.agency-image-loader {
     border-radius: 5px;
     position: absolute;
     z-index: 1;
-    border: 2px solid #d3a11f;
+    border: 2px solid #000;
     top: 45px;
     left: 50px;
     min-width: 200px;
@@ -1731,6 +1731,6 @@ img.agency-image-loader {
 .search-suggestions select option:active,
 .search-suggestions select option:focus,
 .search-suggestions select option:checked {
-    background-color: #d3a11f !important;
+    background-color: #000 !important;
     color: #fff !important;
 }

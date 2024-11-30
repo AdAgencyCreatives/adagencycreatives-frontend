@@ -15,7 +15,6 @@ import { useHistoryState } from "../hooks/useHistoryState";
 import usePermissions from "../hooks/usePermissions";
 import Loader from "../components/Loader";
 import CreativeImageLoader from "../components/CreativeImageLoader";
-import { has } from "immutable";
 
 const CreativeSearch = () => {
 
@@ -60,9 +59,8 @@ const CreativeSearch = () => {
     const { showAlert } = useContext(AlertContext);
 
     const [creativeSearchPlaceholder, setCreativeSearchPlaceholder] = useState(
-        "Search by name or location"
+        "Search: name or location"
     );
-    //"Search by name, title, location, company, industry experience, media, full-time etc."
 
     const addToShortlist = (id) => {
         createBookmark(user.uuid, "creatives", id, () => {
@@ -129,7 +127,7 @@ const CreativeSearch = () => {
             advance_search_capabilities
         ) {
             setCreativeSearchPlaceholder(
-                "Search by name, title, location, company, industry experience, media, full-time etc."
+                "Search: name, title, location, company, industry experience, media, full-time etc."
             );
         }
     }, [role, advance_search_capabilities]);
@@ -146,17 +144,17 @@ const CreativeSearch = () => {
 
         if (isCreative) {
             setCreativeSearchPlaceholder(
-                "Select one: by name, location, or select a title"
+                "Search: title, name, or location"
             );
         }
 
         if (isAgency || isRecruiter) {
             if (hasSubscription) {
                 setCreativeSearchPlaceholder(
-                    "Select up to two: name, location, and/or select a title"
+                    "Search: title, name, or location"
                 );
             } else {
-                setCreativeSearchPlaceholder("Select one: by name or location");
+                setCreativeSearchPlaceholder("Search: name or location");
             }
         }
     }, [role, subscription_status]);
@@ -166,9 +164,9 @@ const CreativeSearch = () => {
             return;
         }
 
-        if (isAdmin || ((isAdvisor || isAgency) && hasSubscription)) {
+        if (isAdmin || (isAdvisor && hasSubscription)) {
             setCreativeSearchPlaceholder(
-                "Search by name, title, location, company, industry experience, media, full-time etc."
+                "Search: name, title, location, company, industry experience, media, full-time etc."
             );
         }
     }, [role, hasSubscription]);
@@ -189,11 +187,11 @@ const CreativeSearch = () => {
                         {/* Advance Creatives Search */}
                         {search} Creatives
                     </h1>
-                    <Link style={{ fontSize: 'large' }} className="link link-gold" to={"/creatives/"}>Reset Search</Link>
+                    {/* <Link style={{ fontSize: 'large' }} className="link link-gold" to={"/creatives/"}>Reset Search</Link> */}
                 </div>
                 {token && (
                     <>
-                        {(isAdmin || ((isAdvisor || isAgency) && hasSubscription)) && (
+                        {(isAdmin || (isAdvisor && hasSubscription)) && (
                             <div className="search-level2">
                                 <div className="search-title">Search within Results</div>
                                 <SearchBar
@@ -210,7 +208,7 @@ const CreativeSearch = () => {
                     </>
                 )}
                 <div className="row g-4">
-                    {isAdmin || ((isAdvisor || isAgency) && hasSubscription) ? (<>
+                    {isAdmin || (isAdvisor && hasSubscription) ? (<>
                         {!isCreativeLoading ? (
                             <>
                                 {search_creatives &&
@@ -245,7 +243,7 @@ const CreativeSearch = () => {
                                                         </Link>
                                                     </div>
                                                     <div className="position">
-                                                        {isAdmin || ((isAdvisor || isAgency) && hasSubscription) ? (<>
+                                                        {isAdmin || (isAdvisor && hasSubscription) ? (<>
                                                             <Link
                                                                 className=""
                                                                 to={`/creatives/search/industry-title/${item.category}`}

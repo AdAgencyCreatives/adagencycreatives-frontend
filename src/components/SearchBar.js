@@ -130,7 +130,8 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
                 let item_display_name = item['name'];
                 let found = search_items.filter(sitem => sitem.name.toLowerCase() == item['name'].toLowerCase());
                 if (found?.length > 0) {
-                  item_display_name = item['name'] + " (" + key + ")";
+                  // item_display_name = item['name'] + " (" + key + ")";
+                  continue;
                 }
                 search_items.push({ type: key, name: item['name'], url: urls[key] + item['name'], displayName: item_display_name });
               }
@@ -188,10 +189,27 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
   };
 
   const filterSearchItems = (searchText) => {
+    let filtered = [];
     if (searchText?.length > 0) {
       searchText = searchText.toLowerCase();
       let allowed_types = get_allowed_types();
-      let filtered = searchItems.filter(item => item.name.toLowerCase().indexOf(searchText) == 0);
+      let filtered_starts_with = searchItems.filter(item => item.name.toLowerCase().indexOf(searchText) == 0);
+      let filtered_contains = searchItems.filter(item => item.name.toLowerCase().indexOf(searchText) > 0);
+      if (filtered_starts_with?.length > 0) {
+        filtered = [...filtered, ...filtered_starts_with];
+      }
+      if (filtered_contains?.length > 0) {
+        filtered = [...filtered, ...filtered_contains];
+      }
+    }
+    return filtered;
+  };
+
+  const compareSearchItems = (searchText) => {
+    if (searchText?.length > 0) {
+      searchText = searchText.toLowerCase();
+      let allowed_types = get_allowed_types();
+      let filtered = searchItems.filter(item => item.name.toLowerCase() == searchText);
       return filtered;
     }
     return [];
@@ -200,14 +218,15 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
   const handleSearchClick = (item) => {
     setShowSuggestions(false);
 
-    if (isAdmin || ((isAdvisor || isAgency) && hasSubscription)) {
-      navigate(selectRef.current.options[selectRef.current.selectedIndex].getAttribute('data_url'));
-    } else {
-      let trimmedInput = modifyInput(selectRef.current.options[selectRef.current.selectedIndex].value);
-      setInput(trimmedInput);
-      setSearchTriggered(true);
-      onSearch(trimmedInput);
-    }
+    // if (isAdmin || (isAdvisor && hasSubscription)) {
+    //   navigate(selectRef.current.options[selectRef.current.selectedIndex].getAttribute('data_url'));
+    //   return;
+    // }
+
+    let trimmedInput = modifyInput(selectRef.current.options[selectRef.current.selectedIndex].value);
+    setInput(trimmedInput);
+    setSearchTriggered(true);
+    onSearch(trimmedInput, true);
   };
 
   useEffect(() => {
@@ -232,9 +251,18 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
           handleSearchClick(selectRef.current.options[selectRef.current.selectedIndex].data);
         } else {
           let trimmedInput = modifyInput(input.trim());
+          let isFromSearchItems = false;
+          let compared_search_items = [];
+          if (!(trimmedInput.indexOf(",") >= 0)) {
+            compared_search_items = compareSearchItems(trimmedInput);
+            isFromSearchItems = compared_search_items?.length > 0;
+            if (isFromSearchItems) {
+              trimmedInput = compared_search_items[0].name;
+            }
+          }
           setInput(trimmedInput);
           setSearchTriggered(true);
-          onSearch(trimmedInput);
+          onSearch(trimmedInput, isFromSearchItems);
         }
         return false;
       }}

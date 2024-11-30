@@ -29,12 +29,14 @@ const Creatives = () => {
   } = usePermissions();
 
   const [input, setInput] = useHistoryState("input", "");
+  const [inputClicked, setInputClicked] = useHistoryState("inputClicked", false);
   const [inputLevel2, setInputLevel2] = useHistoryState("inputLevel2", "");
   const [isCreativeLoading, setIsCreativeLoading] = useState(true);
-  const [isSearchDone, setIsSearchDone] = useState(false);
+  const [searchDone, setSearchDone] = useState("");
   const [advanceSearchHasData, setAdvanceSearchHasData] = useState(false);
   const [foundPermission, setFoundPermission] = useState(null);
   const [foundPermissionLevel2, setFoundPermissionLevel2] = useState(null);
+
   const { creatives, getCreatives, loading, loadMore, searchCreativesAdvanced } =
     useCreatives("creative");
 
@@ -58,9 +60,8 @@ const Creatives = () => {
   const { showAlert } = useContext(AlertContext);
 
   const [creativeSearchPlaceholder, setCreativeSearchPlaceholder] = useState(
-    "Select one: by name or location"
+    "Search: name or location"
   );
-  //"Search by name, title, location, company, industry experience, media, full-time etc."
 
   const addToShortlist = (id) => {
     createBookmark(user.uuid, "creatives", id, () => {
@@ -77,11 +78,12 @@ const Creatives = () => {
 
   useScrollLoader(loading, loadMore);
 
-  const searchUser = async (value) => {
+  const searchUser = async (value, clicked = false) => {
 
+    setInputClicked(clicked);
     setAdvanceSearchHasData(false);
     setInputLevel2("");
-    setIsSearchDone(false);
+    setSearchDone("")
 
     if (!value || value.length == 0) {
       getCreatives();
@@ -110,7 +112,7 @@ const Creatives = () => {
     );
 
     if (query_search_string?.length > 0) {
-      setIsSearchDone(true);
+      setSearchDone(value);
       await searchCreativesAdvanced(which_search(), query_search_string, role, "", (data) => {
         setAdvanceSearchHasData(data?.length > 0);
       });
@@ -182,7 +184,7 @@ const Creatives = () => {
       advance_search_capabilities
     ) {
       setCreativeSearchPlaceholder(
-        "Search by name, title, location, company, industry experience, media, full-time etc."
+        "Search: name, title, location, company, industry experience, media, full-time etc."
       );
     }
   }, [role, advance_search_capabilities]);
@@ -199,17 +201,17 @@ const Creatives = () => {
 
     if (isCreative) {
       setCreativeSearchPlaceholder(
-        "Select one: by name, location, or select a title"
+        "Search: title, name, or location"
       );
     }
 
     if (isAgency || isRecruiter) {
       if (hasSubscription) {
         setCreativeSearchPlaceholder(
-          "Select up to two: name, location, and/or select a title"
+          "Search: title, name, or location"
         );
       } else {
-        setCreativeSearchPlaceholder("Select one: by name or location");
+        setCreativeSearchPlaceholder("Search: name or location");
       }
     }
   }, [role, subscription_status]);
@@ -221,7 +223,7 @@ const Creatives = () => {
 
     if (isAdmin || (isAdvisor && hasSubscription)) {
       setCreativeSearchPlaceholder(
-        "Search by name, title, location, company, industry experience, media, full-time etc."
+        "Search: name, title, location, company, industry experience, media, full-time etc."
       );
     }
   }, [role, hasSubscription]);
@@ -243,7 +245,7 @@ const Creatives = () => {
       <div className="container p-md-0 px-5">
         <DelayedOutput>
           <h1 className="community-title text-white text-center mb-4">
-            {isSearchDone ? "Search Results" : "Creatives"}
+            {searchDone ? (inputClicked ? searchDone + " Creatives" : "Search Results") : "Creatives"}
           </h1>
         </DelayedOutput>
         {token && (
@@ -326,7 +328,7 @@ const Creatives = () => {
                           </Link>
                         </div>
                         <div className="position">
-                          {isAdmin || ((isAdvisor || isAgency) && hasSubscription) ? (<>
+                          {isAdmin || (isAdvisor && hasSubscription) ? (<>
                             <Link
                               className=""
                               to={`/creatives/search/industry-title/${item.category}`}
