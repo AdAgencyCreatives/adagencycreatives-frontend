@@ -15,6 +15,7 @@ import { useHistoryState } from "../hooks/useHistoryState";
 import usePermissions from "../hooks/usePermissions";
 import Loader from "../components/Loader";
 import CreativeImageLoader from "../components/CreativeImageLoader";
+import { has } from "immutable";
 
 const CreativeSearch = () => {
 
@@ -244,8 +245,24 @@ const CreativeSearch = () => {
                                                         </Link>
                                                     </div>
                                                     <div className="position">
-                                                        {isAdmin || isAdvisor ? (<>
-                                                            <Link className="" to={`/creatives/search/industry-title/${item.category}`}>
+                                                        {isAdmin || ((isAdvisor || isAgency) && hasSubscription) ? (<>
+                                                            <Link
+                                                                className=""
+                                                                to={`/creatives/search/industry-title/${item.category}`}
+                                                                onClick={(e) => {
+                                                                    if (!token) {
+                                                                        e.preventDefault();
+                                                                        showAlert("Please login to access");
+                                                                        return false;
+                                                                    }
+                                                                    if (isAdvisor && subscription_status != "active") {
+                                                                        e.preventDefault();
+                                                                        showAlert("Post a Job for advance search capabilities");
+                                                                        return false;
+                                                                    }
+                                                                    return true;
+                                                                }}
+                                                            >
                                                                 {item.category || ""}
                                                             </Link>
                                                         </>) : (<>

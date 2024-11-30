@@ -326,28 +326,27 @@ const Creatives = () => {
                           </Link>
                         </div>
                         <div className="position">
-                          {isAdmin || isAdvisor ? (
-                            <>
-                              <Link
-                                className=""
-                                to={`/creatives/search/industry-title/${item.category}`}
-                                onClick={(e) => {
-                                  if (!token) {
-                                    e.preventDefault();
-                                    showAlert("Please login to access");
-                                    return false;
-                                  }
-                                  if (isAdvisor && subscription_status != "active") {
-                                    e.preventDefault();
-                                    showAlert("Post a Job for advance search capabilities");
-                                    return false;
-                                  }
-                                  return true;
-                                }}
-                              >
-                                {item.category || ""}
-                              </Link>
-                            </>
+                          {isAdmin || ((isAdvisor || isAgency) && hasSubscription) ? (<>
+                            <Link
+                              className=""
+                              to={`/creatives/search/industry-title/${item.category}`}
+                              onClick={(e) => {
+                                if (!token) {
+                                  e.preventDefault();
+                                  showAlert("Please login to access");
+                                  return false;
+                                }
+                                if (isAdvisor && subscription_status != "active") {
+                                  e.preventDefault();
+                                  showAlert("Post a Job for advance search capabilities");
+                                  return false;
+                                }
+                                return true;
+                              }}
+                            >
+                              {item.category || ""}
+                            </Link>
+                          </>
                           ) : (
                             <>{item.category || ""}</>
                           )}
