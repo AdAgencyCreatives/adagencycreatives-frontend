@@ -165,7 +165,7 @@ const CreativeSearch = () => {
             return;
         }
 
-        if (isAdmin || (isAdvisor && hasSubscription)) {
+        if (isAdmin || ((isAdvisor || isAgency) && hasSubscription)) {
             setCreativeSearchPlaceholder(
                 "Search by name, title, location, company, industry experience, media, full-time etc."
             );
@@ -183,13 +183,16 @@ const CreativeSearch = () => {
     return (
         <div className="dark-container creative-search">
             <div className="container p-md-0 px-5">
-                <h1 className="community-title text-white text-center mb-4">
-                    {/* Advance Creatives Search */}
-                    {search} Creatives
-                </h1>
+                <div style={{ position: 'relative', textAlign: 'center' }} className="mb-2">
+                    <h1 className="community-title text-white text-center" style={{ margin: '0' }}>
+                        {/* Advance Creatives Search */}
+                        {search} Creatives
+                    </h1>
+                    <Link style={{ fontSize: 'large' }} className="link link-gold" to={"/creatives/"}>Reset Search</Link>
+                </div>
                 {token && (
                     <>
-                        {(isAdmin || (isAdvisor && hasSubscription)) && (
+                        {(isAdmin || ((isAdvisor || isAgency) && hasSubscription)) && (
                             <div className="search-level2">
                                 <div className="search-title">Search within Results</div>
                                 <SearchBar
@@ -206,7 +209,7 @@ const CreativeSearch = () => {
                     </>
                 )}
                 <div className="row g-4">
-                    {isAdmin || (isAdvisor && hasSubscription) ? (<>
+                    {isAdmin || ((isAdvisor || isAgency) && hasSubscription) ? (<>
                         {!isCreativeLoading ? (
                             <>
                                 {search_creatives &&

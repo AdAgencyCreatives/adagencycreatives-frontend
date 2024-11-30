@@ -31,6 +31,7 @@ const Creatives = () => {
   const [input, setInput] = useHistoryState("input", "");
   const [inputLevel2, setInputLevel2] = useHistoryState("inputLevel2", "");
   const [isCreativeLoading, setIsCreativeLoading] = useState(true);
+  const [isSearchDone, setIsSearchDone] = useState(false);
   const [advanceSearchHasData, setAdvanceSearchHasData] = useState(false);
   const [foundPermission, setFoundPermission] = useState(null);
   const [foundPermissionLevel2, setFoundPermissionLevel2] = useState(null);
@@ -80,6 +81,7 @@ const Creatives = () => {
 
     setAdvanceSearchHasData(false);
     setInputLevel2("");
+    setIsSearchDone(false);
 
     if (!value || value.length == 0) {
       getCreatives();
@@ -108,6 +110,7 @@ const Creatives = () => {
     );
 
     if (query_search_string?.length > 0) {
+      setIsSearchDone(true);
       await searchCreativesAdvanced(which_search(), query_search_string, role, "", (data) => {
         setAdvanceSearchHasData(data?.length > 0);
       });
@@ -240,7 +243,7 @@ const Creatives = () => {
       <div className="container p-md-0 px-5">
         <DelayedOutput>
           <h1 className="community-title text-white text-center mb-4">
-            Creatives
+            {isSearchDone ? "Search Results" : "Creatives"}
           </h1>
         </DelayedOutput>
         {token && (
