@@ -249,7 +249,7 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
         if (showSuggestions && suggestionIndex != -1) {
           e.preventDefault();
           e.stopPropagation();
-          handleSearchClick(suggestions[suggestionIndex]);
+          handleSearchClick(suggestions[suggestionIndex], suggestionIndex);
         } else {
           let trimmedInput = modifyInput(input.trim());
           let isFromSearchItems = false;
@@ -280,7 +280,7 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
             value={input}
             onChange={(e) => handleSearchInput(e)}
             onKeyUp={(e) => {
-              if (e.key == 'Escape' || e.key == 'Enter') {
+              if (e.key == 'Escape') {
                 setShowSuggestions(false);
                 setSuggestionIndex(-1);
               }
