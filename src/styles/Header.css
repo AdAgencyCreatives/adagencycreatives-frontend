@@ -1335,6 +1335,13 @@ nav ul.dropdown-list .list-item-text.j-fix {
     padding: 0px 150px 0px 0px;
 }
 
+@media (max-width: 767px) {
+    .search-level2 {
+        flex-direction: column !important;
+        padding: 0px !important;
+    }
+}
+
 .creative-search .search-level2 {
     padding: 0px;
 }
@@ -1707,8 +1714,8 @@ img.agency-image-loader {
     }
 }
 
-.search-suggestions select,
-.search-suggestions select option {
+.search-suggestions ul,
+.search-suggestions ul li {
     -webkit-appearance: none;
     appearance: none;
     margin: 0;
@@ -1721,16 +1728,14 @@ img.agency-image-loader {
     width: 100%;
 }
 
-.search-suggestions select option {
+.search-suggestions ul li {
     color: #000;
     cursor: pointer;
     padding: 10px;
 }
 
-.search-suggestions select option:hover,
-.search-suggestions select option:active,
-.search-suggestions select option:focus,
-.search-suggestions select option:checked {
+.search-suggestions ul li:hover,
+.search-suggestions ul li.active {
     background-color: #000 !important;
     color: #fff !important;
 }

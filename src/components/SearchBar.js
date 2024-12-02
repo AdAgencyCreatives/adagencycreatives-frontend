@@ -10,7 +10,6 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
   const navigate = useNavigate();
 
   const inputRef = useRef(null);
-  const selectRef = useRef(null);
 
   const [permission, setPermission] = useState(null);
   const [searchItems, setSearchItems] = useState([]);
@@ -19,7 +18,7 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [limitSuggestions, setLimitSuggestions] = useState(10);
   const [showAllSuggestions, setShowAllSuggestions] = useState(false);
-  const [isEventListenerAdded, setIsEventListenerAdded] = useState(false);
+  const [suggestionIndex, setSuggestionIndex] = useState(-1);
 
   const {
     isAdmin,
@@ -63,6 +62,10 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
   useEffect(() => {
     setPermission(get_permission());
   }, [role, subscription_status]);
+
+  useEffect(() => {
+    setSuggestionIndex(-1);
+  }, [input]);
 
   const handleDataError = (error) => {
     console.log("Error:");
@@ -215,29 +218,27 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
     return [];
   };
 
-  const handleSearchClick = (item) => {
+  const handleSearchClick = (item, index) => {
     setShowSuggestions(false);
 
-    // if (isAdmin || (isAdvisor && hasSubscription)) {
-    //   navigate(selectRef.current.options[selectRef.current.selectedIndex].getAttribute('data_url'));
-    //   return;
-    // }
-
-    let trimmedInput = modifyInput(selectRef.current.options[selectRef.current.selectedIndex].value);
+    let trimmedInput = modifyInput(suggestions[index].name);
     setInput(trimmedInput);
+    let filtered_search_items = filterSearchItems(trimmedInput);
+    setSuggestions(filtered_search_items);
     setSearchTriggered(true);
     onSearch(trimmedInput, true);
   };
 
   useEffect(() => {
-    if (!isEventListenerAdded) {
-      document.addEventListener('mousedown', function (event) {
-        const targetElement = event.target;
-        //console.log('Target element:', targetElement);
-      });
-      setIsEventListenerAdded(true);
+    setSuggestions([]);
+    setShowSuggestions(false);
+    setSuggestionIndex(-1);
+
+    if (input?.length > 0 && searchItems?.length > 0) {
+      let filtered_search_items = filterSearchItems(input);
+      setSuggestions(filtered_search_items);
     }
-  }, []);
+  }, [searchItems]);
 
   return (
     <form
@@ -245,10 +246,10 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
         e.preventDefault();
         e.stopPropagation();
 
-        if (showSuggestions && selectRef?.current?.selectedIndex != -1) {
+        if (showSuggestions && suggestionIndex != -1) {
           e.preventDefault();
           e.stopPropagation();
-          handleSearchClick(selectRef.current.options[selectRef.current.selectedIndex].data);
+          handleSearchClick(suggestions[suggestionIndex]);
         } else {
           let trimmedInput = modifyInput(input.trim());
           let isFromSearchItems = false;
@@ -261,6 +262,8 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
             }
           }
           setInput(trimmedInput);
+          let filtered_search_items = filterSearchItems(trimmedInput);
+          setSuggestions(filtered_search_items);
           setSearchTriggered(true);
           onSearch(trimmedInput, isFromSearchItems);
         }
@@ -279,15 +282,31 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
             onKeyUp={(e) => {
               if (e.key == 'Escape' || e.key == 'Enter') {
                 setShowSuggestions(false);
+                setSuggestionIndex(-1);
               }
             }}
             onKeyDown={(e) => {
               if (e.key == 'ArrowDown') {
                 e.preventDefault();
                 e.stopPropagation();
-                if (selectRef?.current) {
-                  selectRef?.current.focus();
-                  selectRef.current.selectedIndex = 0;
+                if (suggestionIndex + 1 < Math.min(suggestions.length, limitSuggestions)) {
+                  setSuggestionIndex(suggestionIndex + 1);
+                } else {
+                  setSuggestionIndex(0);
+                }
+                if (Math.min(suggestions.length, limitSuggestions) > 0 && !showSuggestions) {
+                  setShowSuggestions(true);
+                }
+              } else if (e.key == 'ArrowUp') {
+                e.preventDefault();
+                e.stopPropagation();
+                if (suggestionIndex > 0) {
+                  setSuggestionIndex(suggestionIndex - 1);
+                } else {
+                  setSuggestionIndex(Math.min(suggestions.length, limitSuggestions) - 1)
+                }
+                if (Math.min(suggestions.length, limitSuggestions) > 0 && !showSuggestions) {
+                  setShowSuggestions(true);
                 }
               }
             }}
@@ -302,25 +321,16 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
 
               <div className="search-suggestions" style={{ display: showSuggestions ? 'flex' : 'none' }}>
                 {suggestions?.length > 0 && (<>
-                  <select
-                    ref={selectRef}
-                    onBlur={(e) => {
-                      if (selectRef?.current) {
-                        selectRef.current.selectedIndex = -1;
-                      }
-                    }}
-                    size={Math.max(2, showAllSuggestions ? suggestions.length : (limitSuggestions > suggestions.length ? suggestions.length : limitSuggestions))}
-                    style={{ height: (showAllSuggestions ? suggestions.length : (limitSuggestions > suggestions.length ? suggestions.length : limitSuggestions) == 1 ? '45px' : 'auto') }}
-                  >
-                    {suggestions.slice(0, showAllSuggestions ? suggestions.length : Math.min(suggestions.length, limitSuggestions)).map((item, index) => <option key={index} value={item.name} data_url={item.url} onClick={(e) => handleSearchClick(item)}>{item.displayName}</option>)}
-                  </select>
+                  <ul>
+                    {suggestions.slice(0, showAllSuggestions ? suggestions.length : Math.min(suggestions.length, limitSuggestions)).map((item, index) => <li key={index} className={suggestionIndex == index ? 'active' : ''} onClick={(e) => handleSearchClick(item, index)}>{item.displayName}</li>)}
+                  </ul>
                 </>)}
               </div>
             </>
           )}
         </div>
         <div className="search-btn col-md-2">
-          <button type="submit" className="btn">
+          <button type="submit" className="btn btn-gold hover-black">
             Search
           </button>
         </div>
