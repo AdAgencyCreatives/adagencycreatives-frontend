@@ -233,15 +233,15 @@ const Sidebar = ({ data, user, showButtons = true }) => {
     }
   };
 
-  const is_available_years_of_experience = data?.years_of_experience?.length > 0;
-  const is_available_email = data?.email?.length > 0 && (isOwnProfile || isAdmin || ((isAgency || isAdvisor || isRecruiter) && (subscription_status == "active" || hasCreativeApplications)) || isFriend);
-  const is_available_phone = data?.phone_number?.length > 0 && (isOwnProfile || isAdmin || ((isAgency || isAdvisor || isRecruiter) && (subscription_status == "active" && hasCreativeApplications)));
-  const is_available_industry_experience = data?.industry_experience?.length > 0;
-  const is_available_media_experience = data?.media_experience?.length > 0;
-  const is_available_employment_type = data?.employment_type?.length > 0 && data?.employment_type[0]?.length > 0;
-  const is_available_character_strengths = data?.character_strengths?.length > 0;
+  const is_available_years_of_experience = isOwnProfile ? true : (data?.years_of_experience?.length > 0);
+  const is_available_email = isOwnProfile ? true : (data?.email?.length > 0 && (isAdmin || ((isAgency || isAdvisor || isRecruiter) && (subscription_status == "active" || hasCreativeApplications)) || isFriend));
+  const is_available_phone = isOwnProfile ? true : (data?.phone_number?.length > 0 && (isAdmin || ((isAgency || isAdvisor || isRecruiter) && (subscription_status == "active" && hasCreativeApplications))));
+  const is_available_industry_experience = isOwnProfile ? true : (data?.industry_experience?.length > 0);
+  const is_available_media_experience = isOwnProfile ? true : (data?.media_experience?.length > 0);
+  const is_available_employment_type = isOwnProfile ? true : (data?.employment_type?.length > 0 && data?.employment_type[0]?.length > 0);
+  const is_available_character_strengths = isOwnProfile ? true : (data?.character_strengths?.length > 0);
 
-  const is_available_creative_detail = is_available_years_of_experience || is_available_email || is_available_phone || is_available_industry_experience || is_available_media_experience || is_available_employment_type || is_available_character_strengths;
+  const is_available_creative_detail = isOwnProfile ? true : (is_available_years_of_experience || is_available_email || is_available_phone || is_available_industry_experience || is_available_media_experience || is_available_employment_type || is_available_character_strengths);
 
   return (
     <>
@@ -255,26 +255,28 @@ const Sidebar = ({ data, user, showButtons = true }) => {
                 <div className="details">
                   <div className="text">Years of Experience</div>
                   <div className="value">
-                    {isAdmin || isAdvisor ? (<>
-                      <Link to={"/creatives/search/years-of-experience/" + encodeSpecial(encodeURI(data.years_of_experience))}
-                        onClick={(e) => {
-                          if (!token) {
-                            e.preventDefault();
-                            showAlert("Please login to access");
-                            return false;
-                          }
-                          if (isAdvisor && subscription_status != "active") {
-                            e.preventDefault();
-                            showAlert("Post a Job for advance search capabilities");
-                            return false;
-                          }
-                          return true;
-                        }}
-                      >
+                    {data?.years_of_experience?.length > 0 && (<>
+                      {isAdmin || isAdvisor ? (<>
+                        <Link to={"/creatives/search/years-of-experience/" + encodeSpecial(encodeURI(data.years_of_experience))}
+                          onClick={(e) => {
+                            if (!token) {
+                              e.preventDefault();
+                              showAlert("Please login to access");
+                              return false;
+                            }
+                            if (isAdvisor && subscription_status != "active") {
+                              e.preventDefault();
+                              showAlert("Post a Job for advance search capabilities");
+                              return false;
+                            }
+                            return true;
+                          }}
+                        >
+                          {data.years_of_experience}
+                        </Link>
+                      </>) : (<>
                         {data.years_of_experience}
-                      </Link>
-                    </>) : (<>
-                      {data.years_of_experience}
+                      </>)}
                     </>)}
                   </div>
                 </div>
@@ -285,7 +287,11 @@ const Sidebar = ({ data, user, showButtons = true }) => {
                 <IoMailOutline size={22} />
                 <div className="details">
                   <div className="text">Email</div>
-                  <div className="value" style={{ wordBreak: 'break-word' }}>{data.email}</div>
+                  <div className="value" style={{ wordBreak: 'break-word' }}>
+                    {data?.email?.length > 0 && (<>
+                      {data.email}
+                    </>)}
+                  </div>
                 </div>
               </div>
             )}
@@ -294,7 +300,11 @@ const Sidebar = ({ data, user, showButtons = true }) => {
                 <IoCallOutline size={22} />
                 <div className="details">
                   <div className="text">Phone Number</div>
-                  <div className="value">{formatPhone(data.phone_number)}</div>
+                  <div className="value">
+                    {data?.phone_number?.length > 0 && (<>
+                      {formatPhone(data.phone_number)}
+                    </>)}
+                  </div>
                 </div>
               </div>
             )}
@@ -304,7 +314,9 @@ const Sidebar = ({ data, user, showButtons = true }) => {
                 <div className="details">
                   <div className="text">Industry Experience</div>
                   <div className="value">
-                    {renderListData(data.industry_experience, "i", isAdmin, isAdvisor, 'industry-experience')}
+                    {data?.industry_experience?.length > 0 && (<>
+                      {renderListData(data.industry_experience, "i", isAdmin, isAdvisor, 'industry-experience')}
+                    </>)}
                   </div>
                 </div>
               </div>
@@ -315,7 +327,9 @@ const Sidebar = ({ data, user, showButtons = true }) => {
                 <div className="details">
                   <div className="text">Media Experience</div>
                   <div className="value">
-                    {renderListData(data.media_experience, "m", isAdmin, isAdvisor, 'media-experience')}
+                    {data?.media_experience?.length > 0 && (<>
+                      {renderListData(data.media_experience, "m", isAdmin, isAdvisor, 'media-experience')}
+                    </>)}
                   </div>
                 </div>
               </div>
@@ -326,7 +340,9 @@ const Sidebar = ({ data, user, showButtons = true }) => {
                 <div className="details">
                   <div className="text">Type of Work</div>
                   <div className="value">
-                    {renderListData(String(data.employment_type).split(','), "e", isAdmin, isAdvisor, 'work-type')}
+                    {data?.employment_type?.length > 0 && data?.employment_type[0]?.length > 0 && (<>
+                      {renderListData(String(data.employment_type).split(','), "e", isAdmin, isAdvisor, 'work-type')}
+                    </>)}
                   </div>
                 </div>
               </div>
@@ -337,7 +353,9 @@ const Sidebar = ({ data, user, showButtons = true }) => {
                 <div className="details">
                   <div className="text">Strengths</div>
                   <div className="value">
-                    {renderListData(data.character_strengths, "c", isAdmin, isAdvisor, 'strengths')}
+                    {data?.character_strengths?.length > 0 && (<>
+                      {renderListData(data.character_strengths, "c", isAdmin, isAdvisor, 'strengths')}
+                    </>)}
                   </div>
                 </div>
               </div>

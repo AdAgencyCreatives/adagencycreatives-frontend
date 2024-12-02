@@ -152,108 +152,108 @@ const Content = ({ user, role, data, education, experience }) => {
         </a>
       </div>
       {/* Education */}
-      {education?.length > 0 ? (
+      {(isOwnProfile ? true : education?.length > 0) && (
         <div className="content-section">
           <h1 className="content-title">Education</h1>
-          <h6>Showing 1 - {education.length <= maxEducations || showAllEducations ? education.length : maxEducations} of {education.length}</h6>
-          <div className="content-list">
-            {education.slice(0, (education.length <= maxEducations || showAllEducations ? education.length : maxEducations)).map((item) => (
-              <div className="content" key={item.id}>
-                <div className="circle"></div>
-                <div className="top-info">
-                  <span className="edu_stats">
-                    {isAdmin || isAdvisor ? (<>
-                      <Link to={"/creatives/search/education-degree-program/" + encodeSpecial(encodeURI(item.degree))}>
+          {education?.length > 0 && (<>
+            <h6>Showing 1 - {education.length <= maxEducations || showAllEducations ? education.length : maxEducations} of {education.length}</h6>
+            <div className="content-list">
+              {education.slice(0, (education.length <= maxEducations || showAllEducations ? education.length : maxEducations)).map((item) => (
+                <div className="content" key={item.id}>
+                  <div className="circle"></div>
+                  <div className="top-info">
+                    <span className="edu_stats">
+                      {isAdmin || isAdvisor ? (<>
+                        <Link to={"/creatives/search/education-degree-program/" + encodeSpecial(encodeURI(item.degree))}>
+                          {item.degree}
+                        </Link>
+                      </>) : (<>
                         {item.degree}
-                      </Link>
-                    </>) : (<>
-                      {item.degree}
-                    </>)}
-                  </span>
-                  <span className="year">
-                    {item.completed_at &&
-                      moment(item.completed_at).format("M/D/YYYY")}
-                  </span>
-                </div>
-                <div className="edu_center">
-                  <span className="university">
-                    {isAdmin || isAdvisor ? (<>
-                      <Link to={"/creatives/search/education-college/" + encodeSpecial(encodeURI(item.college))}>
+                      </>)}
+                    </span>
+                    <span className="year">
+                      {item.completed_at &&
+                        moment(item.completed_at).format("M/D/YYYY")}
+                    </span>
+                  </div>
+                  <div className="edu_center">
+                    <span className="university">
+                      {isAdmin || isAdvisor ? (<>
+                        <Link to={"/creatives/search/education-college/" + encodeSpecial(encodeURI(item.college))}>
+                          {item.college}
+                        </Link>
+                      </>) : (<>
                         {item.college}
-                      </Link>
-                    </>) : (<>
-                      {item.college}
-                    </>)}
-                  </span>
+                      </>)}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-          {education?.length > maxEducations && (
-            <Link onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setShowAllEducations(state => !state);
-              return false;
-            }}>
-              Show {showAllEducations ? "Less" : "More"} Educations
-            </Link>
-          )}
+              ))}
+            </div>
+            {education?.length > maxEducations && (
+              <Link onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setShowAllEducations(state => !state);
+                return false;
+              }}>
+                Show {showAllEducations ? "Less" : "More"} Educations
+              </Link>
+            )}
+          </>)}
         </div>
-      ) : (
-        ""
       )}
 
       {/* Experience */}
-      {experience?.length > 0 ? (
+      {(isOwnProfile ? true : experience?.length > 0) && (
         <div className="content-section">
           <h1 className="content-title">Work & Experience</h1>
-          <h6>Showing 1 - {experience.length <= maxExperiences || showAllExperiences ? experience.length : maxExperiences} of {experience.length}</h6>
-          <div className="content-list">
-            {experience.slice(0, (experience.length <= maxExperiences || showAllExperiences ? experience.length : maxExperiences)).map((item) => (
-              <div className="content" key={item.id}>
-                <div className="circle"></div>
+          {experience?.length > 0 && (<>
+            <h6>Showing 1 - {experience.length <= maxExperiences || showAllExperiences ? experience.length : maxExperiences} of {experience.length}</h6>
+            <div className="content-list">
+              {experience.slice(0, (experience.length <= maxExperiences || showAllExperiences ? experience.length : maxExperiences)).map((item) => (
+                <div className="content" key={item.id}>
+                  <div className="circle"></div>
 
-                <div className="top-info work_experience">
-                  <span className="edu_stats">{item?.title}</span>
-                  <span className="year">
-                    {item?.started_at && moment(item.started_at).format("M/D/YYYY")}
-                    {(item?.started_at && item?.completed_at) && <span>–</span>}
-                    {item?.completed_at && moment(item.completed_at).format("M/D/YYYY")}
-                  </span>
-                </div>
+                  <div className="top-info work_experience">
+                    <span className="edu_stats">{item?.title}</span>
+                    <span className="year">
+                      {item?.started_at && moment(item.started_at).format("M/D/YYYY")}
+                      {(item?.started_at && item?.completed_at) && <span>–</span>}
+                      {item?.completed_at && moment(item.completed_at).format("M/D/YYYY")}
+                    </span>
+                  </div>
 
-                <div className="edu_center">
-                  <span className="university">
-                    {isAdmin || isAdvisor ? (<>
-                      <Link to={"/creatives/search/experience-company/" + encodeSpecial(encodeURI(item.company))}>
+                  <div className="edu_center">
+                    <span className="university">
+                      {isAdmin || isAdvisor ? (<>
+                        <Link to={"/creatives/search/experience-company/" + encodeSpecial(encodeURI(item.company))}>
+                          {item.company}
+                        </Link>
+                      </>) : (<>
                         {item.company}
-                      </Link>
-                    </>) : (<>
-                      {item.company}
-                    </>)}
-                  </span>
+                      </>)}
+                    </span>
+                  </div>
+                  <div className="mb0" dangerouslySetInnerHTML={{ __html: item.description }}></div>
                 </div>
-                <div className="mb0" dangerouslySetInnerHTML={{ __html: item.description }}></div>
-              </div>
-            ))}
-          </div>
-          {experience?.length > maxExperiences && (
-            <Link onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setShowAllExperiences(state => !state);
-              return false;
-            }}>
-              Show {showAllExperiences ? "Less" : "More"} Experiences
-            </Link>
-          )}
+              ))}
+            </div>
+            {experience?.length > maxExperiences && (
+              <Link onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setShowAllExperiences(state => !state);
+                return false;
+              }}>
+                Show {showAllExperiences ? "Less" : "More"} Experiences
+              </Link>
+            )}
+          </>)}
         </div>
-      ) : (
-        ""
       )}
-      {role && (role == "admin" || role == "advisor") ? (<RelatedCreatives data={data} />) : (<></>)}
-      {user && data && <Reviews user={user} data={data} />}
+      {(role && (role == "admin" || role == "advisor") && data) && (<RelatedCreatives data={data} />)}
+      {(user && data) && <Reviews user={user} data={data} />}
     </>
   );
 };
