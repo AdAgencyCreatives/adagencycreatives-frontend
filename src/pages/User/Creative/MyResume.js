@@ -1319,7 +1319,7 @@ const MyResume = () => {
       </div>
 
       <div className="card">
-        <h4 className="text-uppercase mb-4">Portfolio</h4>
+        <h4 className="text-uppercase mb-4">Sneak Peek</h4>
         <div className="profile-edit-form">
           <div className="row gx-3 gy-5 align-items-end">
             {portfolio && portfolio.map((field) => {

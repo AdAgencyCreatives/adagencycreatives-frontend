@@ -12,7 +12,7 @@ const Portfolio = ({ isOwnProfile = false, portfolio_items }) => {
 
   return (isOwnProfile ? true : portfolio_items.length > 0) && (
     <div className="content-section mb-5">
-      <h1 className="content-title mt-0">Portfolio</h1>
+      <h1 className="content-title mt-0">Sneak Peek</h1>
       {portfolio_items.length > 0 && (<>
         <div className="content">
           <PhotoAlbum

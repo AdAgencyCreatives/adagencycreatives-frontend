@@ -264,6 +264,7 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
           setInput(trimmedInput);
           let filtered_search_items = filterSearchItems(trimmedInput);
           setSuggestions(filtered_search_items);
+          setShowSuggestions(false);
           setSearchTriggered(true);
           onSearch(trimmedInput, isFromSearchItems);
         }
