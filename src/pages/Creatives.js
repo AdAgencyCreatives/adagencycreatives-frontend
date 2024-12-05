@@ -259,7 +259,7 @@ const Creatives = () => {
               advance_search_capabilities={advance_search_capabilities}
               subscription_status={subscription_status}
             />
-            {((isAdmin || (isAdvisor && hasSubscription)) && advanceSearchHasData && which_search() == "search3") && (
+            {((isAdmin || ((isAdvisor || isAgency) && hasSubscription)) && advanceSearchHasData && which_search() == "search3") && (
               <div className="search-level2">
                 <div className="search-title">Search within Results</div>
                 <SearchBar
