@@ -150,7 +150,9 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
   };
 
   useEffect(() => {
-    loadSearchItems();
+    if (role) {
+      loadSearchItems();
+    }
   }, [role]);
 
   const get_permission = () => {
