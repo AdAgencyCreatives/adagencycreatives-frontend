@@ -80,7 +80,6 @@ const RelatedCreatives = ({ data }) => {
                       <div className="d-flex justify-content-md-end mt-3 mt-md-0">
                         <Link
                           to={"/creative/" + item.slug}
-                          target="_blank"
                           className="btn btn-apply btn-apply-job-external "
                         >
                           View Profile
