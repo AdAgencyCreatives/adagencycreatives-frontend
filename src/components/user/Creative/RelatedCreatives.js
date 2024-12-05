@@ -11,7 +11,7 @@ import CreativeImageLoader from "../../../components/CreativeImageLoader";
 const RelatedCreatives = ({ data }) => {
   const [relatedCreatives, setRelatedCreatives] = useState([]);
   const {
-    state: { creatives },
+    state: { related_creatives },
     getRelatedCreatives,
   } = useContext(Context);
 
@@ -30,12 +30,12 @@ const RelatedCreatives = ({ data }) => {
   }, [data]);
 
   useEffect(() => {
-    if (creatives && creatives.length) {
+    if (related_creatives && related_creatives.length) {
       setRelatedCreatives(
-        creatives.filter((item) => item.user_id != data.user_id)
+        related_creatives.filter((item) => item.user_id != data.user_id)
       );
     }
-  }, [creatives, data]);
+  }, [related_creatives, data]);
 
   return (
     relatedCreatives.length > 0 && (

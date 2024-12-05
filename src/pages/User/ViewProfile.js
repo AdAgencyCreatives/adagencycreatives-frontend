@@ -22,6 +22,7 @@ import NotFound from "../../components/NotFound";
 import { capitalize } from "@mui/material";
 import useSeoHelper from "../../hooks/useSeoHelper";
 import RestrictedAgency from '../../components/RestrictedAgency';
+import DelayedOutput from '../../components/DelayedOutput';
 
 const Profile = () => {
 
@@ -63,6 +64,8 @@ const Profile = () => {
 
   useEffect(() => {
     if (token) {
+      setLoading(true);
+
       if (page == "creative") {
         getCreative(username, (error) => {
           if (error) {
@@ -86,7 +89,7 @@ const Profile = () => {
         }
       });
     }
-  }, [page, user, roleName]);
+  }, [page, user, username, roleName]);
 
   useEffect(() => {
     if (page == "agency" && Object.keys(data).length) {
@@ -163,7 +166,9 @@ const Profile = () => {
         {page == "creative" && !token && !user ? (
           <RestrictedUser delay={0} />
         ) : (
-          <NotFound heading={"Not Found"} content={capitalize(roleName ? roleName : page) + " profile with slug [" + username + "] not found."} />
+          <DelayedOutput delay={5000}>
+            <NotFound heading={"Not Found"} content={capitalize(roleName ? roleName : page) + " profile with slug [" + username + "] not found."} />
+          </DelayedOutput>
         )}
       </>
     ) : (

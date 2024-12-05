@@ -3,6 +3,7 @@ import createDataContext from "./createDataContext";
 
 const state = {
   creatives: null,
+  related_creatives: null,
   search_creatives: null,
   home_creatives: null,
   nextPage: null,
@@ -29,6 +30,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         creatives: action.payload.data,
+        nextPage: action.payload.links.next,
+      };
+    case "set_related_creatives":
+      return {
+        ...state,
+        related_creatives: action.payload.data,
         nextPage: action.payload.links.next,
       };
     case "set_search_creatives":
@@ -132,7 +139,7 @@ const getRelatedCreatives = (dispatch) => {
     try {
       const response = await api.get("/creatives/related?creative_id=" + user_id);
       dispatch({
-        type: "set_creatives",
+        type: "set_related_creatives",
         payload: response.data,
       });
     } catch (error) { }
