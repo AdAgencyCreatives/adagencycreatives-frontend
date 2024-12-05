@@ -72,20 +72,20 @@ const usePermissions = () => {
             return "search1";
         }
 
-        if (role == "admin" || role == "advisor") {
+        if (
+            role == "admin" || ((role == "advisor" || role == "agency") && subscription_status == "active")
+        ) {
             return "search3";
         }
 
         if (
-            role == "creative" ||
-            ((role == "agency" || role == "recruiter") &&
-                subscription_status == "active")
+            role == "creative" || (role == "recruiter" && subscription_status == "active")
         ) {
             return "search2";
         }
 
         if (
-            (role == "agency" || role == "recruiter") &&
+            (role == "advisor" || role == "agency" || role == "recruiter") &&
             subscription_status != "active"
         ) {
             return "search1";
