@@ -238,7 +238,7 @@ const Creatives = () => {
     } else {
       getCreatives();
     }
-  }, [role]);
+  }, [role, subscription_status]);
 
   return (
     <div className="dark-container mb-0 creatives-directory">

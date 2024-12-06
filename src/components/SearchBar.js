@@ -26,10 +26,6 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
     isAgency,
     isCreative,
     isRecruiter,
-    hasSubscription,
-    build_search_string,
-    which_search,
-    proceed_search,
   } = usePermissions();
 
   const modifyInput = (text) => {
@@ -79,14 +75,14 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
       return $allowed_types;
     }
 
-    if (isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription) || isCreative) {
+    if (isAdmin || ((isAdvisor || isAgency || isRecruiter) && subscription_status == 'active') || isCreative) {
       $allowed_types.push("Category");
     }
 
     $allowed_types.push("State");
     $allowed_types.push("City");
 
-    if (isAdmin || (isAdvisor && hasSubscription)) {
+    if (isAdmin || (isAdvisor && subscription_status == 'active')) {
       $allowed_types.push("Employment Type");
       $allowed_types.push("Years of Experience");
       $allowed_types.push("Media Experience");
@@ -134,7 +130,7 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
                 let found = search_items.filter(sitem => sitem.name.toLowerCase() == item['name'].toLowerCase());
                 if (found?.length > 0) {
                   // item_display_name = item['name'] + " (" + key + ")";
-                  continue;
+                  // continue;
                 }
                 search_items.push({ type: key, name: item['name'], url: urls[key] + item['name'], displayName: item_display_name });
               }
@@ -153,7 +149,7 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
     if (role) {
       loadSearchItems();
     }
-  }, [role]);
+  }, [role, subscription_status]);
 
   const get_permission = () => {
 
