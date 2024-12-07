@@ -126,11 +126,15 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
               for (let dIndex = 0; dIndex < data[key].length; dIndex++) {
                 const item = data[key][dIndex];
 
+                if (!(item?.name?.length > 0)) {
+                  continue;
+                }
+
                 let item_display_name = item['name'];
-                let found = search_items.filter(sitem => sitem.name.toLowerCase() == item['name'].toLowerCase());
+                let found = search_items.filter(sitem => sitem?.name?.toLowerCase() == item['name']?.toLowerCase());
                 if (found?.length > 0) {
                   // item_display_name = item['name'] + " (" + key + ")";
-                  // continue;
+                  continue;
                 }
                 search_items.push({ type: key, name: item['name'], url: urls[key] + item['name'], displayName: item_display_name });
               }
@@ -194,8 +198,8 @@ const SearchBar = ({ input, setInput, placeholder, onSearch, role, advance_searc
     if (searchText?.length > 0) {
       searchText = searchText.toLowerCase();
       let allowed_types = get_allowed_types();
-      let filtered_starts_with = searchItems.filter(item => item.name.toLowerCase().indexOf(searchText) == 0);
-      let filtered_contains = searchItems.filter(item => item.name.toLowerCase().indexOf(searchText) > 0);
+      let filtered_starts_with = searchItems.filter(item => item?.name?.toLowerCase().indexOf(searchText) == 0);
+      let filtered_contains = searchItems.filter(item => item?.name?.toLowerCase().indexOf(searchText) > 0);
       if (filtered_starts_with?.length > 0) {
         filtered = [...filtered, ...filtered_starts_with];
       }

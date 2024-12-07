@@ -148,6 +148,7 @@ const usePermissions = () => {
             };
         }
 
+
         let foundCategories = getCategorySearch(searchTerms);
         let isCategorySearch = foundCategories?.length > 0;
 
@@ -170,6 +171,19 @@ const usePermissions = () => {
                 proceed: true,
                 terms_allowed: Math.min(searchTerms.length, 1),
                 advance_search_message: (isCategorySearch ? appendText : "") + "Post a Job to utilize the advance search features.",
+            };
+        }
+
+        //Special case: If a creative is trying to search for more than one terms. e.g.: a,b
+        if (
+            role == "creative" && searchTerms.length > 1
+        ) {
+
+            return {
+                message: "Agency job post required for advance search feature",
+                proceed: false,
+                terms_allowed: Math.min(searchTerms.length, 1),
+                advance_search_message: "Agency job post required for advance search feature.",
             };
         }
 
