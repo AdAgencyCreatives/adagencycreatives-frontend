@@ -104,7 +104,7 @@ const Invite = ({ open, setOpen, handleClose, item }) => {
             <div className="job-apply-email-form-wrapper">
               <div className="inner">
                 <p style={{ fontSize: 25, fontWeight: 500 }}>
-                  Invite to Apply to Job
+                  Invite Creative to Apply to Your Job
                 </p>
                 <p className="fs-5">Select job to invite this user</p>
                 {message && (

@@ -99,7 +99,7 @@ const RecentApplicant = ({ job, application, setApplicationStatus, onRemoveFromR
                                                         <span className="badge bg-primary">Active</span>
                                                     )}
                                                     {job.status == "filled" && (
-                                                        <span className="badge bg-success">Filled</span>
+                                                        <span className="badge bg-danger">Closed</span>
                                                     )}
                                                 </>
                                             )}

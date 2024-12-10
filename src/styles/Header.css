@@ -1207,7 +1207,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
 }
 
 .badge.bg-interested {
-    background-color: #d3a11f;
+    background-color: #000000;
 }
 
 .badge.bg-recommended {
@@ -1215,7 +1215,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
 }
 
 .badge.bg-shortlisted {
-    background-color: #000000;
+    background-color: #d3a11f;
 }
 
 .badge.bg-not-aligned {

@@ -154,7 +154,7 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
                 <CircularProgress size={20} />
               </div>
               <div className="notes-list-item">
-                {notesData?.length > 0 ? (
+                {!isLoading && notesData?.length > 0 ? (
                   <>
                     <h3 className="text-center mb-4">
                       <span>Recent Notes</span>
@@ -208,10 +208,11 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
                     </div>
                   </>
                 ) : (
-                  <p>You currently have no notes entered.</p>
+                  <DelayedOutput delay={5000}>
+                    <p>You currently have no notes entered.</p>
+                  </DelayedOutput>
                 )}
               </div>
-
             </div>
           </div>
         </div>

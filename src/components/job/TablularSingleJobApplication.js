@@ -287,8 +287,9 @@ const TabularSingleJobApplication = (props) => {
                             <p>Once you decline the applicant they will automatically receive a Status Update email from Ad Agency Creatives.</p>
                             <p>Communication is important to our users. Don’t worry, we let them down gently.</p>
                             <div className="d-flex align-items-center justify-content-end">
-                              <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={changingApplicationStatus} onClick={handleClickNotAlignedDialog}>
-                                {changingApplicationStatus ? "Applying" : "Not Aligned"}  {changingApplicationStatus && <CircularProgress size={20} />}
+                              {changingApplicationStatus && <CircularProgress size={20} />}
+                              <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" onClick={handleClickNotAlignedDialog}>
+                                Not Aligned
                               </button>
                             </div>
                           </div>

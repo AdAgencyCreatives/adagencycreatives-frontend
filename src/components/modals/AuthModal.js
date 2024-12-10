@@ -12,9 +12,9 @@ const AuthModal = ({ open, handleClose, form = "login", registerTab = "creative"
 
   const [modal, setModal] = useState(form);
   const [openTab, setOpenTab] = useState(registerTab);
-  const { 
+  const {
     state: { token },
-    resetFormMessage 
+    resetFormMessage
   } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const AuthModal = ({ open, handleClose, form = "login", registerTab = "creative"
   }, [open]);
 
   useEffect(() => {
-    if(anchor && anchor.length && anchor.indexOf("register_") == 0 && !token) {
+    if (anchor && anchor.length && anchor.indexOf("register_") == 0 && !token) {
       setModal((anchor == "register_creative" || anchor == "register_agency") ? "register" : "login");
       setOpenTab((anchor == "register_creative" || anchor == "register_agency") ? anchor.replace("register_", "") : "creative");
     }
@@ -41,9 +41,9 @@ const AuthModal = ({ open, handleClose, form = "login", registerTab = "creative"
   }
 
   const closePopup = () => {
-    let URL = String( window?.location?.pathname ).replace( "#register_creative", "" );
-    URL = String( window?.location?.pathname ).replace( "#register_agency", "" );
-    navigate(URL); 
+    let URL = String(window?.location?.pathname).replace("#register_creative", "");
+    URL = String(window?.location?.pathname).replace("#register_agency", "");
+    navigate(URL);
     handleClose();
   }
 

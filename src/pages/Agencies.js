@@ -153,8 +153,8 @@ const Agencies = () => {
         <div className="row">
           {loadedAll && (
             <>
-              <button className="btn btn-theme btn-hover-primary text-uppercase w-auto mx-auto" onClick={() => setAuthModalOpen(true)}>
-                Your Agency
+              <button className="btn btn-white text-uppercase w-auto mx-auto" onClick={() => setAuthModalOpen(true)}>
+                Add<br />Your Agency
               </button>
               <AuthModal open={authModalOpen} handleClose={handleClose} form="register" registerTab="agency" />
             </>

@@ -53,16 +53,16 @@ const MyJobApplicantsWidget = ({
 
   const handleMarkFilled = (e, job) => {
     if (job?.status == "filled") {
-      showAlert("Job Vacancy Already Filled");
+      showAlert("Job Vacancy Already Closed");
       return;
     }
     (async () => {
       let result = await markFilled(job.id, "filled");
       if (result && result.status == "filled") {
-        showAlert("Job Marked Filled");
+        showAlert("Job Marked Closed");
         setThisJob({ ...job, status: result.status });
       } else {
-        showAlert("Oops! Unable to fill Job at the moment");
+        showAlert("Oops! Unable to close Job at the moment");
       }
     })();
   };
@@ -78,7 +78,7 @@ const MyJobApplicantsWidget = ({
         showAlert("Job Approved Successfully");
         setThisJob({ ...job, status: result.status });
       } else {
-        showAlert("Oops! Unable to fill Job at the moment");
+        showAlert("Oops! Unable to close Job at the moment");
       }
     })();
   };
@@ -208,7 +208,7 @@ const MyJobApplicantsWidget = ({
                   <span className="badge bg-primary">Active</span>
                 )}
                 {thisJob.status == "filled" && (
-                  <span className="badge bg-success">Filled</span>
+                  <span className="badge bg-danger">Closed</span>
                 )}
               </>
             )}
