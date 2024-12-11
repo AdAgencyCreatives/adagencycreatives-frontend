@@ -126,7 +126,7 @@ const MyJobWidget = (props) => {
 
             <td className="job-table-status nowrap">
                 <div className="job-table-actions-inner status">
-                    {job.status}
+                    {job.status == 'filled' ? "Closed" : job.status}
                 </div>
             </td>
 
