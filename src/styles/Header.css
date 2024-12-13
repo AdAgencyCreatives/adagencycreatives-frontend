@@ -1747,3 +1747,11 @@ img.agency-image-loader {
     background-color: #000 !important;
     color: #fff !important;
 }
+
+.download-profile-pdf-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}

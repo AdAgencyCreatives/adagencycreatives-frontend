@@ -87,7 +87,7 @@ export default function ViewProfilePdf() {
                                     <div className="col-md-12 mb-4 mb-md-0">
                                         <div className="restricted-creatives-only">
                                             <div className="restricted-message">
-                                                <div style={{ display: 'inline-block' }}>
+                                                <div className='download-profile-pdf-container'>
                                                     <Link className="btn btn-dark fs-5" to={"/creative/" + username} style={{ marginRight: '10px' }}>
                                                         Visit Profile
                                                     </Link>
