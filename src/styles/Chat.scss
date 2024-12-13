@@ -102,6 +102,12 @@
     .box-title {
         font-weight: 500;
         margin: 0;
+
+        label {
+            span {
+                font-weight: 500;
+            }
+        }
     }
 
     .new-chat {
