@@ -252,8 +252,8 @@ const Content = ({ user, role, data, education, experience }) => {
           </>)}
         </div>
       )}
-      {(role && (role == "admin" || (role == "advisor" && subscription_status == 'active')) && data) && (<RelatedCreatives data={data} />)}
       {(user && data) && <Reviews user={user} data={data} />}
+      {(role && (role == "admin" || (role == "advisor" && subscription_status == 'active')) && data) && (<RelatedCreatives data={data} />)}
     </>
   );
 };
