@@ -4,6 +4,7 @@ import { Context as AuthContext } from "../context/AuthContext";
 import { Context as AlertContext } from "../context/AlertContext";
 import useHelper from "../hooks/useHelper";
 import { useContext } from "react";
+import usePermissions from "../hooks/usePermissions";
 
 const CreativeLocation = (props) => {
 
@@ -13,12 +14,21 @@ const CreativeLocation = (props) => {
     const { showAlert } = useContext(AlertContext);
     const { encodeSpecial, decodeSpecial } = useHelper();
 
+    const {
+        isAdmin,
+        isAdvisor,
+        isAgency,
+        isCreative,
+        isRecruiter,
+        hasSubscription,
+    } = usePermissions();
+
     return (<>
         {(props?.location?.state?.length || props?.location?.city?.length) && (
             <div className="job-location location">
                 {!hideIcon && (props?.location?.state?.length || props?.location?.city?.length) && (<IoLocationOutline />)}
                 {props?.location?.state?.length && (<>
-                    {user?.role && user?.role != "creative" ? (
+                    {(isAdmin || (isAdvisor && hasSubscription)) ? (
                         <Link
                             to={`/creatives/location/state/${encodeSpecial(encodeURI(props?.location?.state))}`}
                             onClick={(e) => {
@@ -43,7 +53,7 @@ const CreativeLocation = (props) => {
                 </>)}
                 {(props?.location?.state?.length && props?.location?.city?.length) && (<span>,&nbsp;</span>)}
                 {props?.location?.city?.length && (<>
-                    {user?.role && user?.role != "creative" ? (
+                    {(isAdmin || (isAdvisor && hasSubscription)) ? (
                         <Link
                             to={`/creatives/location/city/${encodeSpecial(encodeURI(props?.location?.city))}`}
                             onClick={(e) => {
