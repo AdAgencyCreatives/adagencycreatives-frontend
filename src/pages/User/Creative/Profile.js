@@ -11,12 +11,12 @@ import { Context as AuthContext } from "../../../context/AuthContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
 import { CircularProgress } from "@mui/material";
-import { Button, Tooltip } from "@mui/material";
 
 import useHelper from "../../../hooks/useHelper";
 import useUploadHelper from "../../../hooks/useUploadHelper";
 import IconMessage from "../../../components/IconMessage";
 import ImageCropperModal from "../../../components/ImageCropperModal";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
 
@@ -41,6 +41,8 @@ const Profile = () => {
   const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
   const videoUploadGuideMessage = getUploadGuideMessage(videoUploadGuide);
   const [imageUploading, setImageUploading] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsMounted(true);
@@ -451,7 +453,13 @@ const Profile = () => {
     (async () => {
       await saveCreative(user.uuid, formData, (message) => {
         reloadUserData(user.uuid);
-        showAlert(message);
+
+        if (!single_creative?.profile_completion_progress || single_creative.profile_completion_progress < 100) {
+          showAlert("Your resume require your attention");
+          navigate("/my-resume/");
+        } else {
+          showAlert(message);
+        }
       }, (message) => {
         showAlert(message);
       });
