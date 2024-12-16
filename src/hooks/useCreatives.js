@@ -22,7 +22,7 @@ const useCreatives = (page) => {
     if (page == "home") {
       getHomeCreatives();
     } else if (page == "creative") {
-      getCreatives();
+      //getCreatives();
     } else if (page == "creatives-search") {
       // do nothing
     }
