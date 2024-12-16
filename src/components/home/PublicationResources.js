@@ -4,8 +4,8 @@ import { Context } from "../../context/DataContext";
 import { useContext, useEffect } from "react";
 
 const PublicationResources = () => {
-  const { 
-    state:{ publications },
+  const {
+    state: { publications },
     getPublications
   } = useContext(Context);
 

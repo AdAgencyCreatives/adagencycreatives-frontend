@@ -9,8 +9,8 @@ import { useScrollLoader } from "../hooks/useScrollLoader";
 const MentorResources = () => {
   const { slug } = useParams();
 
-  const { 
-    state:{ mentors, resources, mentorsNextPage, resourcesNextPage, loading },
+  const {
+    state: { mentors, resources, mentorsNextPage, resourcesNextPage, loading },
     getMentorTopics,
     getMentorResources,
     loadNextPage,
@@ -38,7 +38,7 @@ const MentorResources = () => {
           <div className="container-fluid">
             <div className="mentor-wrapper">
               <h2 className="title">{mentors[0]?.title}</h2>
-              <p className="subtitle"  dangerouslySetInnerHTML={{ __html: mentors[0]?.description }}></p>
+              <p className="subtitle" dangerouslySetInnerHTML={{ __html: mentors[0]?.description }}></p>
               <SingleMentorList items={resources} />
               <div className="load-more text-center mt-4">
                 {loading && (
@@ -53,7 +53,7 @@ const MentorResources = () => {
       ) : (
         <div className="dark-container page-mentors mb-0 mt-4">
           <div className="container-fluid">
-            <h1 className="page-title">Resources</h1>
+            <h1 className="community-title text-white text-center mb-4">Resources</h1>
             <p className="page-subtitle">
               Dedicated to the creatives out there giving back to our industry.
               <br />
