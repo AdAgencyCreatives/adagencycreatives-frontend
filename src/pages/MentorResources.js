@@ -53,7 +53,7 @@ const MentorResources = () => {
       ) : (
         <div className="dark-container page-mentors mb-0 mt-4">
           <div className="container-fluid">
-            <h1 className="community-title text-white text-center mb-4">Resources</h1>
+            <h1 className="community-title text-white text-center mb-1">Resources</h1>
             <p className="page-subtitle">
               Dedicated to the creatives out there giving back to our industry.
               <br />

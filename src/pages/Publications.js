@@ -23,7 +23,7 @@ const Publications = () => {
   return (
     <div className="dark-container page-mentors mb-0 mt-4">
       <div className="container p-md-0 px-5">
-        <h1 className="community-title text-white text-center mb-4">Publication Resources</h1>
+        <h1 className="community-title text-white text-center mb-1">Publication Resources</h1>
         <p className="page-subtitle">
           Get in the know through the advertising industry trades.
         </p>
