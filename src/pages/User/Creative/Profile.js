@@ -454,7 +454,7 @@ const Profile = () => {
       await saveCreative(user.uuid, formData, (message) => {
         reloadUserData(user.uuid);
 
-        if (!single_creative?.profile_completion_progress || single_creative.profile_completion_progress < 100) {
+        if (!single_creative?.profile_complete_progress || single_creative.profile_complete_progress < 100) {
           showAlert("Your resume require your attention");
           navigate("/my-resume/");
         } else {
