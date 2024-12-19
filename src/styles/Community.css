@@ -1,7 +1,7 @@
 .community-title {
     color: white;
     font-family: 'Alta';
-    font-size: 61px;
+    font-size: 64px;
     text-align: center;
     font-weight: bold;
     min-height: 73.2px;
@@ -9,7 +9,7 @@
 
 @media (max-width: 767px) {
     .community-title {
-        font-size: 32px !important;
+        font-size: 48px !important;
     }
 }
 

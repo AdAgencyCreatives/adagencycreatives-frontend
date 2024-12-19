@@ -415,7 +415,7 @@ button.searchBtn:hover {
 
 @media (max-width:600px) {
     h1.bannerHeading {
-        font-size: 50px;
+        font-size: 48px;
         margin: 20px 0;
     }
 }
