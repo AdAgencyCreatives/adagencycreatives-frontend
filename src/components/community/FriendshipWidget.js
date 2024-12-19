@@ -35,7 +35,7 @@ const FriendshipWidget = (props) => {
 
     const friendship_statuses = {
         "pending": "Pending",
-        "accepted": "Accepted",
+        "accepted": "Friends",
         "declined": "Declined",
         "cancelled": "Cancelled",
         "unfriended": "Unfriended",
