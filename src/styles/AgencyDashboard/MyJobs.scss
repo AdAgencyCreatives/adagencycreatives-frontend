@@ -2,6 +2,12 @@
     table.job-table {
         width: 100%;
 
+        .job-table-status {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         thead {
             background-color: #eee !important;
         }

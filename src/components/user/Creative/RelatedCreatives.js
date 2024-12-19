@@ -64,7 +64,7 @@ const RelatedCreatives = ({ data }) => {
                           </Link>
                         </h5>
                         <h2 className="employer-title mb-0">
-                          <Link to={"/creative-category/" + item.category}>
+                          <Link to={"/creatives/search/industry-title/" + item.category}>
                             {item.category}
                           </Link>
                         </h2>

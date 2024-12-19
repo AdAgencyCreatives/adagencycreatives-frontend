@@ -1006,6 +1006,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
 
 .job-table-actions-inner.status {
     text-transform: capitalize;
+    text-align: center;
 }
 
 .refresh-preview-container {
