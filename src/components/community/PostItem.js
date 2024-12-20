@@ -117,6 +117,7 @@ const PostItem = (props) => {
     }, [viewAllCommentsClicked]);
 
     const processPostContent = (plainText) => {
+        plainText = plainText.replace("/assets/img/welcome-blank.gif", "/assets/img/welcome-blank.gif?2024-12")
         return injectHyperlinks(plainText);
     };
 
