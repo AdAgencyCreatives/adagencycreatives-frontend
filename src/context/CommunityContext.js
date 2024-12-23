@@ -38,34 +38,45 @@ const appendNewPosts = (state, oldPosts, newPosts) => {
     return newPosts;
   }
 
-  let filteredNewPosts = [];
-  for (let index = 0; index < newPosts.length; index++) {
-    const newPost = newPosts[index];
+  let filteredOldPosts = [];
+  for (let idx = 0; idx < oldPosts.length; idx++) {
+    const post = oldPosts[idx];
+
+    if (post.id == state?.post_deleted) {
+      continue;
+    }
+
     let postFound = false;
-    for (let idx = 0; idx < oldPosts.length; idx++) {
-      const post = oldPosts[idx];
+    for (let index = 0; index < newPosts.length; index++) {
+      const newPost = newPosts[index];
       if (post.id == newPost.id) {
         postFound = true;
         break;
       }
     }
-    if (!postFound) {
-      filteredNewPosts.push(newPost);
-    }
-  }
 
-  let filteredOldPosts = [];
-  for (let idx = 0; idx < oldPosts.length; idx++) {
-    const post = oldPosts[idx];
-    if (!state.post_deleted || post.id != state.post_deleted) {
+    if (!postFound) {
       filteredOldPosts.push(post);
     }
   }
 
-  let data = [...filteredNewPosts, ...filteredOldPosts];
+  let data = [...newPosts, ...filteredOldPosts];
 
   return data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 };
+
+// const appendNewPosts = (state, oldPosts, newPosts) => {
+//   if (!oldPosts?.length > 0) {
+//     return newPosts;
+//   }
+
+//   let newPostIds = newPosts.map(newPost => newPost.id);
+//   let filteredOldPosts = oldPosts.filter(oldPost => (!oldPost.post_deleted || oldPost.id != state.post_deleted) && !newPostIds.includes(oldPost.id));
+
+//   let data = [...newPosts, ...filteredOldPosts];
+
+//   return data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+// };
 
 const reducer = (state, action) => {
   switch (action.type) {

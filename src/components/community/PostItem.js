@@ -76,6 +76,7 @@ const PostItem = (props) => {
     const [commentsData, setCommentsData] = useState([]);
     const [showComments, setShowComments] = useState(false);
     const [commentsCount, setCommentsCount] = useState(0);
+    const [showMaxComments, setShowMaxComments] = useState(1);
     const [viewAllCommentsClicked, setViewAllCommentsClicked] = useState(false);
 
     const toggleShowComments = () => {
@@ -101,20 +102,20 @@ const PostItem = (props) => {
         } else {
             setCommentsCount(props.post.comments_count);
         }
-    }, [post_comments]);
+    }, [props.post.updated_at, post_comments]);
 
     useEffect(() => {
         if ((comment_added && props.post.id == comment_added.post_id) || (comment_updated && props.post.id == comment_updated.post_id) || (comment_deleted && props.post.id == comment_deleted.post_id)) {
             getComments(props.post.id);
         }
-    }, [comment_added, comment_updated, comment_deleted]);
+    }, [props.post.updated_at, comment_added, comment_updated, comment_deleted]);
 
     useEffect(() => {
         if (props.post.comments) {
             setCommentsData(props.post.comments);
             setCommentsData(props.post.comments.slice(0, viewAllCommentsClicked ? props.post.comments.length : 3));
         }
-    }, [viewAllCommentsClicked]);
+    }, [props.post.updated_at, viewAllCommentsClicked]);
 
     const processPostContent = (plainText) => {
         plainText = plainText.replace("/assets/img/welcome-blank.gif", "/assets/img/welcome-blank.gif?2024-12")
@@ -125,12 +126,12 @@ const PostItem = (props) => {
         if (post_updated && post_updated.id == props.post.id) {
             setPostContent(processPostContent(post_updated.content));
         }
-    }, [post_updated]);
+    }, [props.post.updated_at, post_updated]);
 
     useEffect(() => {
         imageAttachmentIndex = 0;
         setPostContent(processPostContent(props.post.content));
-    }, []);
+    }, [props.post.updated_at]);
 
     const onUpdatePost = () => {
         setActions("none");
@@ -279,25 +280,25 @@ const PostItem = (props) => {
                     <CreateComment post={props.post} />
                 </div>
                 <h5 className="title-small">Comments</h5>
-                <div className="comments">
-                    {commentsData?.length > 0 ? commentsData.map((comment, index) => {
-                        return (
-                            <Comment key={"comment-post-" + props.post.id + "-" + comment.id} post={props.post} comment={comment} />
-                        );
-                    }) : (
-                        <></>
-                    )}
-                    {!viewAllCommentsClicked ? (
-                        <>
-                            < Divider />
-                            <div className="all-comments-button">
-                                <span className="btn btn-dark" onClick={() => viewAllComments()}>View all comments</span>
-                            </div>
-                        </>
-                    ) : (
-                        <></>
-                    )}
-                </div>
+                {commentsData?.length > 0 && (
+                    <div className="comments">
+                        {commentsData.slice(0, viewAllCommentsClicked ? commentsData.length : showMaxComments).map((comment, index) => {
+                            return (
+                                <Comment key={"comment-post-" + props.post.id + "-" + comment.id} post={props.post} comment={comment} />
+                            );
+                        })}
+                        {!viewAllCommentsClicked ? (
+                            <>
+                                < Divider />
+                                <div className="all-comments-button">
+                                    <span className="btn btn-dark" onClick={() => viewAllComments()}>View all comments</span>
+                                </div>
+                            </>
+                        ) : (
+                            <></>
+                        )}
+                    </div>
+                )}
             </div>
         </div >
     );

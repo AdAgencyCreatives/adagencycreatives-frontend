@@ -67,7 +67,7 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
             setReactionsCount(post.reactions_count);
             getReactions({ "post_id": post.id });
         }
-    }, [post_reactions]);
+    }, [post.updated_at, post_reactions]);
 
 
     useEffect(() => {
@@ -88,18 +88,18 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                     console.log('Invalid Reaction Action for Post ID: ' + reaction_action.post_id);
             }
         }
-    }, [reaction_action]);
+    }, [post.updated_at, reaction_action]);
 
     useEffect(() => {
         setReactionsCount(post.reactions_count);
         getReactions({ "post_id": post.id });
-    }, [post.reactions_count]);
+    }, [post.updated_at, post.reactions_count]);
 
     useEffect(() => {
         if (reactionByData?.length > 0) {
             setPostReactionStats(getPostReactionStats());
         }
-    }, [reactionByData]);
+    }, [post.updated_at, reactionByData]);
 
     const doToggleReaction = (post_id, type) => {
         let user_reaction_type = getUserReactionType();
