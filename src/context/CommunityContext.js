@@ -34,9 +34,10 @@ const state = {
 };
 
 const appendNewPosts = (state, oldPosts, newPosts) => {
-  if (!oldPosts || !oldPosts.length) {
+  if (!oldPosts?.length > 0) {
     return newPosts;
   }
+
   let filteredNewPosts = [];
   for (let index = 0; index < newPosts.length; index++) {
     const newPost = newPosts[index];
@@ -61,7 +62,9 @@ const appendNewPosts = (state, oldPosts, newPosts) => {
     }
   }
 
-  return [...filteredNewPosts, ...filteredOldPosts];
+  let data = [...filteredNewPosts, ...filteredOldPosts];
+
+  return data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 };
 
 const reducer = (state, action) => {
@@ -139,7 +142,8 @@ const reducer = (state, action) => {
     case "load_posts":
       return {
         ...state,
-        posts: [...state.posts, ...action.payload.data],
+        posts: appendNewPosts(state, state.posts, action.payload.data),
+        // posts: [...state.posts, ...action.payload.data],
         nextPage: action.payload.links.next,
       };
     case "reset_posts":
