@@ -1756,3 +1756,14 @@ img.agency-image-loader {
     justify-content: center;
     align-items: center;
 }
+
+.profile-header .friendship-request-status {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+
+.community-friends .friendship-request-status {
+    font-size: 16px;
+    font-weight: 400;
+}
