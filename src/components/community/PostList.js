@@ -3,6 +3,7 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as CommunityContext } from "../../context/CommunityContext";
 import PostItem from "./PostItem";
 import { useScrollLoader } from "../../hooks/useScrollLoader";
+import { CircularProgress } from "@mui/material";
 
 const PostList = (props) => {
   const [refreshPosts, setRefreshPosts] = useState({ num: 0 });
@@ -123,12 +124,19 @@ const PostList = (props) => {
   }
 
   return (
-    <div className="postlist">
-      {posts &&
-        posts.map((post, index) => (
-          <PostItem key={post.id} post={post} refreshPosts={refreshPosts} />
-        ))}
-    </div>
+    <>
+      <div className="postlist">
+        {posts &&
+          posts.map((post, index) => (
+            <PostItem key={post.id} post={post} refreshPosts={refreshPosts} />
+          ))}
+      </div>
+      {loading && (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress />
+        </div>
+      )}
+    </>
   );
 };
 
