@@ -131,11 +131,13 @@ const PostList = (props) => {
             <PostItem key={post.id} post={post} refreshPosts={refreshPosts} />
           ))}
       </div>
-      {loading && (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <CircularProgress />
-        </div>
-      )}
+      <div className="load-more text-center">
+        {loading && (
+          <div className="spinner-border text-light" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        )}
+      </div>
     </>
   );
 };

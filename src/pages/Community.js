@@ -24,9 +24,13 @@ const Community = () => {
 
   function scrollIntoViewWithOffset(selector, offset) {
     const element = document.querySelector(selector);
+    if (!element) {
+      return;
+    }
     const elementPosition = element?.getBoundingClientRect ? (element.getBoundingClientRect().top + window.pageYOffset) : 0;
     const offsetPosition = elementPosition - offset;
 
+    console.log('scrolling to ' + selector);
     window.scrollTo({
       top: offsetPosition,
       behavior: 'smooth'
