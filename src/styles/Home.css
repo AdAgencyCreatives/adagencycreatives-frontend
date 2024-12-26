@@ -831,6 +831,7 @@ a.employer-logo img {
     width: 195px;
     position: relative;
     background-color: #000;
+    z-index: 0;
 }
 
 .home-resources .mentor {

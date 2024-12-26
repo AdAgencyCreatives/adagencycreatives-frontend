@@ -12,7 +12,7 @@ import AdAgencies from "../components/home/AdAgencies";
 import MentorResources from "../components/home/MentorResources";
 import PublicationResources from "../components/home/PublicationResources";
 import FeaturedCities from "../components/home/FeaturedCities";
-import SpotlightCreative from "../components/home/SpotlightCreative";
+import SpotlightReels from "../components/home/SpotlightReels";
 import CreativeJobs from "../components/home/CreativeJobs";
 import { useState, useContext, useEffect, useRef } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
@@ -142,7 +142,7 @@ const Home = () => {
           <CreativeJobs />
 
           {/* Spotlighting Creatives Section */}
-          <SpotlightCreative />
+          <SpotlightReels />
 
           <AdAgencies />
 
