@@ -60,17 +60,17 @@ const SpotlightReels = () => {
     });
 
     return (
-        <div id="mentors" className={'home-resources spotlight-reels'}>
+        <div id="spotlight" className={'home-resources spotlight-reels'}>
             <div className="sectionHeader">
                 <h1 className="sectionTitle">Spotlight Reels</h1>
                 <div>
-                    <Link className="browseAll" to="spotlighting-creatives">
+                    <Link className="browseAll" to="spotlight-reels">
                         browse all <MdKeyboardDoubleArrowRight />
                     </Link>
                 </div>
             </div>
 
-            <div className="sectionContent mentors-section">
+            <div className="sectionContent spotlight-reel-section">
                 <>
                     <swiper-container
                         ref={swiperElRef}
@@ -89,11 +89,12 @@ const SpotlightReels = () => {
                             }
                             return (
                                 <swiper-slide key={`slide${index}`}>
-                                    <Link to={item.url} className="mentor" key={`m_${index}`} style={{ fontSize: '16px', flexDirection: 'column' }}>
-                                        <span style={{ fontSize: '1.125em', letterSpacing: '0.15em', minHeight: '30px' }}>Introducing</span>
-                                        <span style={{ fontSize: '2.625em', lineHeight: '1em', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{data[0]}</span>
-                                        <span style={{ fontSize: '1em', fontWeight: 'normal', fontFamily: 'JOST', lineHeight: '1em', minHeight: '30px' }}>{data[1]}</span>
-                                        <span style={{ position: 'absolute', right: '10px', bottom: '5px', fontSize: '0.75em', fontFamily: 'JOST', fontWeight: 'normal' }}>View &rsaquo;&rsaquo;</span>
+                                    <Link to={item.url} className="spotlight-reel" key={`m_${index}`} style={{ fontSize: '16px', flexDirection: 'column' }}>
+                                        <span className="flex-centered intro" style={{ fontSize: '1.125em', letterSpacing: '0.15em', minHeight: '60px', fontWeight: 'bold' }}>Introducing</span>
+                                        <span className="flex-centered title" style={{ fontSize: '2.625em', lineHeight: '1em', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{data[0]}</span>
+                                        <span className="flex-centered category" style={{ fontSize: '1em', fontWeight: 'normal', fontFamily: 'JOST', lineHeight: '1em', minHeight: '60px', textTransform: 'uppercase' }}>{data[1]}</span>
+                                        <span style={{ position: 'absolute', right: '10px', top: '5px', fontSize: '0.75em', fontFamily: 'JOST', fontWeight: 'normal', textTransform: 'uppercase' }}>Watch</span>
+                                        <img src={AdAgency} height={150} width={150} alt="" />
                                     </Link>
                                 </swiper-slide>
                             );

@@ -10,7 +10,7 @@ export const navItems = [
       {
         name: "Spotlight",
         hashLink: "#spotlight",
-        link: "/spotlighting-creatives",
+        link: "/spotlight-reels",
       },
       { name: "Agencies", hashLink: "#agencies", link: "/agencies" },
       {

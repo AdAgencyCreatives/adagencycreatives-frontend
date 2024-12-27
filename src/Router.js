@@ -6,7 +6,6 @@ import CreativeSearch from "./pages/CreativeSearch";
 import AgencySearch from "./pages/AgencySearch";
 import Agencies from "./pages/Agencies";
 import AgencyRoles from "./pages/AgencyRoles";
-import SpotlightCreatives from "./pages/SpotlightCreatives";
 import MentorResources from "./pages/MentorResources";
 import Publications from "./pages/Publications";
 import Contact from "./pages/Contact";
@@ -46,6 +45,7 @@ import ResetPassword from "./pages/ResetPassword";
 import FilmFestival1 from "./pages/FilmFestival1";
 import GroupRequests from "./pages/GroupRequests";
 import RouterErrorBoundary from "./components/RouterErrorBoundary";
+import SpotlightReels from "./pages/SpotlightReels";
 
 export const router = createBrowserRouter([
   {
@@ -108,8 +108,8 @@ export const router = createBrowserRouter([
         element: <About />,
       },
       {
-        path: "/spotlighting-creatives",
-        element: <SpotlightCreatives />,
+        path: "/spotlight-reels",
+        element: <SpotlightReels />,
       },
       {
         path: "/mentoring-resources",
