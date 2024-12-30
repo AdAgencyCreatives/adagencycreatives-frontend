@@ -15,7 +15,7 @@ import Portfolio from "../../components/user/Creative/Portfolio";
 import NotFound from "../../components/NotFound";
 import { capitalize } from "@mui/material";
 
-const ViewSearchCreative = ({ page = 'creative', showButtons = false }) => {
+const ViewSearchCreative = ({ page = 'creative', showButtons = false, previewCreative = null }) => {
 
     const [isLoading, setLoading] = useState(true);
 
@@ -38,8 +38,9 @@ const ViewSearchCreative = ({ page = 'creative', showButtons = false }) => {
 
     useEffect(() => {
         if (token) {
-            if (page == "creative") {
-                getCreative(user?.username, (error) => {
+            if (page == "creative" && previewCreative) {
+                setLoading(true);
+                getCreative(previewCreative?.slug, (error) => {
                     if (error) {
                         setLoading(false);
                     }
@@ -47,7 +48,7 @@ const ViewSearchCreative = ({ page = 'creative', showButtons = false }) => {
             }
         }
 
-    }, [page, user]);
+    }, [page, previewCreative]);
 
     useEffect(() => {
         if (Object.keys(data)?.length > 0) {
@@ -56,11 +57,9 @@ const ViewSearchCreative = ({ page = 'creative', showButtons = false }) => {
     }, [data]);
 
     useEffect(() => {
-        if (page == "creative") {
+        if (page == "creative" && previewCreative && single_creative && previewCreative.slug == single_creative.slug) {
             setData(single_creative);
         }
-
-
     }, [single_creative]);
 
     const isCreative = user?.role == "creative";
@@ -86,7 +85,7 @@ const ViewSearchCreative = ({ page = 'creative', showButtons = false }) => {
                 {page == "creative" && !token && !user ? (
                     <RestrictedUser role={page} />
                 ) : (
-                    <NotFound heading={"Not Found"} content={capitalize(page) + " profile with slug [" + user?.username + "] not found."} />
+                    <NotFound heading={"Not Found"} content={capitalize(page) + " profile with slug [" + previewCreative?.slug + "] not found."} />
                 )}
             </>
         ) : (

@@ -1,6 +1,6 @@
 import { IoBookmarkOutline, IoLocationOutline } from "react-icons/io5";
 import SearchBar from "../components/SearchBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useCreatives from "../hooks/useCreatives";
 import { useContext, useEffect, useState } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
@@ -13,6 +13,8 @@ import { Context as AlertContext } from "../context/AlertContext";
 import DelayedOutput from "../components/DelayedOutput";
 import CreativeLocation from "../components/CreativeLocation";
 import usePermissions from "../hooks/usePermissions";
+import ViewSearchCreative from "./User/ViewSearchCreative";
+import CommonModal from "../components/modals/CommonModal";
 
 const Creatives = () => {
 
@@ -36,6 +38,11 @@ const Creatives = () => {
   const [advanceSearchHasData, setAdvanceSearchHasData] = useState(false);
   const [foundPermission, setFoundPermission] = useState(null);
   const [foundPermissionLevel2, setFoundPermissionLevel2] = useState(null);
+  const [openCreativeProfileDialog, setOpenCreativeProfileDialog] = useState(false);
+  const [previewCreative, setPreviewCreative] = useState(null);
+
+  const navigate = useNavigate();
+  const anchor = window.location.hash.slice(1);
 
   const { creatives, getCreatives, loading, loadMore, searchCreativesAdvanced } =
     useCreatives("creative");
@@ -240,6 +247,45 @@ const Creatives = () => {
     }
   }, [role, subscription_status]);
 
+  useEffect(() => {
+    if (anchor?.length > 0 && creatives?.length > 0 && (isAdmin || (isAdvisor && hasSubscription))) {
+      let index = getPreviewIndex();
+      if (index >= 0 && index < creatives?.length) {
+        setPreviewCreative(creatives[index]);
+        setOpenCreativeProfileDialog(true);
+      }
+    }
+  }, [anchor, creatives, token, subscription_status]);
+
+
+  const getPreviewIndex = () => {
+    let params = new URLSearchParams(window.location.hash.replace("#", ""));
+    let slug = params.get("preview")?.length > 0 ? params.get("preview") : "";
+    let index = -1;
+    if (slug?.length > 0) {
+      index = creatives.findIndex(item => item.slug === slug);
+    }
+    return index;
+  };
+
+  const handleViewPrev = () => {
+    let index = getPreviewIndex();
+    if (index > 0) {
+      let params = new URLSearchParams(window.location.hash.replace("#", ""));
+      params.set('preview', creatives[index - 1].slug);
+      window.location.hash = params.toString();
+    }
+  };
+
+  const handleViewNext = () => {
+    let index = getPreviewIndex();
+    if (index >= 0 && index < creatives.length - 1) {
+      let params = new URLSearchParams(window.location.hash.replace("#", ""));
+      params.set('preview', creatives[index + 1].slug);
+      window.location.hash = params.toString();
+    }
+  };
+
   return (
     <div className="dark-container mb-0 creatives-directory">
       <div className="container p-md-0 px-5">
@@ -276,6 +322,30 @@ const Creatives = () => {
           </>
         )}
         <div className="row g-4">
+          <CommonModal
+            dialogTitle={previewCreative?.name + " Profile"}
+            dialogTitleStyle={{ textAlign: 'center' }}
+            open={openCreativeProfileDialog}
+            setOpen={setOpenCreativeProfileDialog}
+            onClose={() => {
+              navigate(window.location.pathname);
+            }}
+            actions={[
+              {
+                buttonText: "Prev", buttonAction: (e) => {
+                  handleViewPrev();
+                },
+              },
+              {
+                buttonText: "Next", buttonAction: (e) => {
+                  handleViewNext();
+                }
+              }
+            ]}
+            actionsClassName="common-modal-actions-apply-now"
+          >
+            <ViewSearchCreative previewCreative={previewCreative} />
+          </CommonModal>
           {!isCreativeLoading ? (
             <>
               {creatives?.length > 0 &&
@@ -314,13 +384,14 @@ const Creatives = () => {
                         <div className="agencyName">
                           <Link
                             className="text-dark"
-                            to={token ? `/creative/${item.slug}` : "#"}
+                            to={token ? ((isAdmin || (isAdvisor && hasSubscription)) ? "#preview=" + item.slug : `/creative/${item.slug}`) : "#"}
                             onClick={(e) => {
                               if (!token) {
                                 e.preventDefault();
                                 showAlert("Please login to access");
                                 return false;
                               }
+
                               return true;
                             }}
                           >
