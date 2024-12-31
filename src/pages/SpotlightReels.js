@@ -55,10 +55,10 @@ const SpotlightCreatives = () => {
                             return (
                                 <div className="col-sm-6 col-md-4" key={index}>
                                     <Link to={item.url} className="spotlight-reel" key={`m_${index}`} style={{ fontSize: '16px', flexDirection: 'column' }}>
-                                        <span style={{ position: 'absolute', right: '10px', top: '5px', fontSize: '0.75em', fontFamily: 'JOST', fontWeight: 'normal', textTransform: '' }}>View &gt;</span>
-                                        <span className="flex-centered intro" style={{ fontSize: '1em', fontWeight: 'normal', fontFamily: 'JOST', lineHeight: '1em', minHeight: '60px', textTransform: 'uppercase' }}>Introducing</span>
-                                        <span className="flex-centered title" style={{ fontSize: '2.625em', lineHeight: '1em', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{data[0]}</span>
-                                        <span className="flex-centered category" style={{ fontSize: '1em', fontWeight: 'normal', fontFamily: 'JOST', lineHeight: '1em', minHeight: '60px', textTransform: 'uppercase' }}>{data[1]}</span>
+                                        <span className="view">View &gt;</span>
+                                        <span className="flex-centered intro">Introducing</span>
+                                        <span className="flex-centered title">{data[0]}</span>
+                                        <span className="flex-centered category">{data[1]}</span>
                                         <img src={AdAgency} height={150} width={150} alt="" />
                                     </Link>
                                 </div>

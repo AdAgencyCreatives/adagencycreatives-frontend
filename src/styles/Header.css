@@ -1830,16 +1830,45 @@ img.agency-image-loader {
     z-index: 1;
 }
 
+.spotlight-reel .view {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 0.75em;
+    font-family: 'JOST';
+    font-weight: normal;
+    text-transform: none;
+}
+
 .spotlight-reel .intro {
     align-items: end;
     padding-bottom: 10px;
+    font-size: 1.125em;
+    font-weight: normal;
+    font-family: 'JOST';
+    line-height: 1em;
+    min-height: 60px;
+    text-transform: uppercase;
 }
 
-.spotlight-reel .title {}
+.spotlight-reel .title {
+    font-size: 2.625em;
+    line-height: 1em;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .spotlight-reel .category {
     align-items: start;
     padding-top: 10px;
+    font-size: 1em;
+    font-weight: normal;
+    font-family: 'JOST';
+    line-height: 1em;
+    min-height: 60px;
+    text-transform: uppercase;
 }
 
 @media (max-width:768px) {
