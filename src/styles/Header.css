@@ -1847,7 +1847,7 @@ img.agency-image-loader {
     font-weight: normal;
     font-family: 'JOST';
     line-height: 1em;
-    min-height: 60px;
+    min-height: 40px;
     text-transform: uppercase;
 }
 
@@ -1867,8 +1867,10 @@ img.agency-image-loader {
     font-weight: normal;
     font-family: 'JOST';
     line-height: 1em;
-    min-height: 60px;
+    min-height: 40px;
     text-transform: uppercase;
+    line-height: 1.125em;
+    padding: 0px 30px;
 }
 
 @media (max-width:768px) {
@@ -1889,4 +1891,46 @@ img.agency-image-loader {
 .page-spotlight .spotlight-reel {
     width: 100%;
     min-height: 250px;
+}
+
+.common-modal-dialog .MuiPaper-root {
+    position: relative;
+}
+
+.common-modal-dialog .slide-prev,
+.common-modal-dialog .slide-next {
+    position: absolute;
+    top: 135px;
+    padding: 0px;
+    margin: 0px;
+    background-color: #000;
+    color: #fff;
+    min-width: 25px !important;
+    height: 103px;
+    display: grid;
+    align-content: center;
+    outline: none;
+    font-size: 36px;
+}
+
+.common-modal-dialog .slide-prev:hover,
+.common-modal-dialog .slide-next:hover {
+    background-color: #d3a11f;
+}
+
+.common-modal-dialog .slide-prev {
+    left: 10px;
+}
+
+.common-modal-dialog .slide-next {
+    right: 10px;
+}
+
+.common-modal-dialog .meta.row {
+    align-items: start !important;
+}
+
+.spotlight-reel video {
+    width: 100% !important;
+    height: 100% !important;
 }

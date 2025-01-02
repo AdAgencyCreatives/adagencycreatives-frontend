@@ -9,7 +9,7 @@ export const PaginationStyle = `
         text-align: center;
         width: 50px;
         height: 50px;
-        background: rgb(0 0 0 / 15%);
+        background: #d9d9d9;
         -webkit-transition: all .5s ease-in-out 0s;
         -o-transition: all .5s ease-in-out 0s;
         transition: all .5s ease-in-out 0s;
@@ -45,7 +45,7 @@ export const ResourcePaginationStyle = `
         text-align: center;
         width: 50px;
         height: 50px;
-        background: rgb(0 0 0 / 15%);
+        background: #d9d9d9;
         -webkit-transition: all .5s ease-in-out 0s;
         -o-transition: all .5s ease-in-out 0s;
         transition: all .5s ease-in-out 0s;
@@ -59,7 +59,7 @@ export const ResourcePaginationStyle = `
       }
 
       .swiper-button-prev svg,.swiper-button-next svg{
-        color: #fff;
+        // color: #fff;
         height: 20px;
       }
 

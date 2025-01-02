@@ -26,6 +26,7 @@ import { saveAs } from 'file-saver';
 import { CircularProgress, Tooltip } from "@mui/material";
 import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 import CreativeImageLoader from "../../../components/CreativeImageLoader";
+import ResizableDiv from "../../ResizableDiv";
 
 const Header = ({ data, role, user, username, showButtons = true }) => {
 
@@ -149,8 +150,8 @@ const Header = ({ data, role, user, username, showButtons = true }) => {
             </div>
             <div className="col-md-7">
               {showButtons && (
-                <div className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
-                  {((isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription)) && data && Object.keys(data).length > 0) && (
+                <ResizableDiv uid="view-profile-actions" className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
+                  {((isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription)) && data && Object.keys(data).length > 0) && (
                     <>
                       <Link className="btn btn-dark fs-5" to={"/creative-pdf/" + username} target="_blank">
                         View/Download AAC Profile
@@ -252,7 +253,7 @@ const Header = ({ data, role, user, username, showButtons = true }) => {
                       />
                     </>
                   )}
-                </div>
+                </ResizableDiv>
               )}
             </div>
           </div>

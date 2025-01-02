@@ -15,6 +15,7 @@ import CreativeLocation from "../components/CreativeLocation";
 import usePermissions from "../hooks/usePermissions";
 import ViewSearchCreative from "./User/ViewSearchCreative";
 import CommonModal from "../components/modals/CommonModal";
+import eventEmitter from "../components/EventEmitter";
 
 const Creatives = () => {
 
@@ -248,7 +249,7 @@ const Creatives = () => {
   }, [role, subscription_status]);
 
   useEffect(() => {
-    if (anchor?.length > 0 && creatives?.length > 0 && (isAdmin || (isAdvisor && hasSubscription))) {
+    if (anchor?.length > 0 && creatives?.length > 0 && (isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription))) {
       let index = getPreviewIndex();
       if (index >= 0 && index < creatives?.length) {
         setPreviewCreative(creatives[index]);
@@ -285,6 +286,21 @@ const Creatives = () => {
       window.location.hash = params.toString();
     }
   };
+
+  useEffect(() => {
+    const handleCustomEvent = (data) => {
+      if (data?.uid == 'view-profile-actions') {
+        document.querySelector('.common-modal-actions-apply-now .slide-prev').style.height = (data?.height || 100) + 'px';
+        document.querySelector('.common-modal-actions-apply-now .slide-next').style.height = (data?.height || 100) + 'px';
+      }
+      // console.log('Received custom event:', data);
+    };
+
+    eventEmitter.on('ee_custom_event_height_changed', handleCustomEvent);
+
+    // Cleanup the event listener on component unmount 
+    return () => { eventEmitter.off('ee_custom_event_height_changed', handleCustomEvent); };
+  }, []);
 
   return (
     <div className="dark-container mb-0 creatives-directory">
@@ -323,7 +339,8 @@ const Creatives = () => {
         )}
         <div className="row g-4">
           <CommonModal
-            dialogTitle={previewCreative?.name + " Profile"}
+            maxWidth={'md'}
+            dialogTitle=""
             dialogTitleStyle={{ textAlign: 'center' }}
             open={openCreativeProfileDialog}
             setOpen={setOpenCreativeProfileDialog}
@@ -332,19 +349,21 @@ const Creatives = () => {
             }}
             actions={[
               {
-                buttonText: "Prev", buttonAction: (e) => {
+                buttonText: "‹", buttonAction: (e) => {
                   handleViewPrev();
                 },
+                buttonClass: "slide-prev",
               },
               {
-                buttonText: "Next", buttonAction: (e) => {
+                buttonText: "›", buttonAction: (e) => {
                   handleViewNext();
-                }
+                },
+                buttonClass: "slide-next",
               }
             ]}
             actionsClassName="common-modal-actions-apply-now"
           >
-            <ViewSearchCreative previewCreative={previewCreative} />
+            <ViewSearchCreative showButtons={true} previewCreative={previewCreative} />
           </CommonModal>
           {!isCreativeLoading ? (
             <>
@@ -384,7 +403,7 @@ const Creatives = () => {
                         <div className="agencyName">
                           <Link
                             className="text-dark"
-                            to={token ? ((isAdmin || (isAdvisor && hasSubscription)) ? "#preview=" + item.slug : `/creative/${item.slug}`) : "#"}
+                            to={token ? `/creative/${item.slug}` : "#"}
                             onClick={(e) => {
                               if (!token) {
                                 e.preventDefault();
@@ -427,7 +446,7 @@ const Creatives = () => {
                         <CreativeLocation location={item?.location} />
                         <div className="profileLink">
                           <Link
-                            to={token ? `/creative/${item.slug}` : "#"}
+                            to={token ? ((isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription)) ? "#preview=" + item.slug : `/creative/${item.slug}`) : "#"}
                             onClick={(e) => {
                               if (!token) {
                                 e.preventDefault();

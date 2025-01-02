@@ -7,6 +7,7 @@ import { BulletStyle, ResourcePaginationStyle } from "../../styles/PaginationSty
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { useState } from "react";
 import useHelper from "../../hooks/useHelper";
+import SpotlightReelSingle from "./SpotlightReelSingle";
 
 const SpotlightReels = () => {
 
@@ -81,21 +82,9 @@ const SpotlightReels = () => {
                         loop="true"
                     >
                         {screatives?.length > 0 && screatives.map((item, index) => {
-                            let data = decodeEntities(item.title);
-                            if (data.indexOf("<br>") >= 0) {
-                                data = data.split('<br>');
-                            } else {
-                                data = [data];
-                            }
                             return (
                                 <swiper-slide key={`slide${index}`}>
-                                    <Link to={item.url} className="spotlight-reel" key={`m_${index}`} style={{ fontSize: '16px', flexDirection: 'column' }}>
-                                        <span className="view">View &gt;</span>
-                                        <span className="flex-centered intro">Introducing</span>
-                                        <span className="flex-centered title">{data[0]}</span>
-                                        <span className="flex-centered category">{data[1]}</span>
-                                        <img src={AdAgency} height={150} width={150} alt="" />
-                                    </Link>
+                                    <SpotlightReelSingle item={item} index={index} />
                                 </swiper-slide>
                             );
                         })}

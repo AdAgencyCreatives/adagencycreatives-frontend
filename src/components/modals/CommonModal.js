@@ -15,7 +15,7 @@ const CommonModal = (
         dialogTitle = "",
         dialogTitleStyle = { fontWeight: '700' },
         dialogContentText = "",
-        dialogClass = "",
+        dialogClass = "common-modal-dialog",
         className = "agency-page-myjobs tabular dialog",
         actions = [],
         actionsClassName = "common-modal-actions",
@@ -48,7 +48,7 @@ const CommonModal = (
                     <DialogActions className={actionsClassName}>
                         {actions.map(action => {
                             return (
-                                <Button className="btn btn-apply" onClick={(e) => {
+                                <Button className={"btn " + (action?.buttonClass?.length > 0 ? action.buttonClass : 'btn-apply')} onClick={(e) => {
                                     if (action?.invokeOnClose) {
                                         handleOnClose(action?.buttonAction);
                                     } else {
