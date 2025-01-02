@@ -1,14 +1,18 @@
 .site-logo img {
-    width: 93%;
+    width: 70px;
+    height: 70px;
 }
 
 a.site-logo {
     min-width: 200px;
-    display: inline-block;
+    display: flex;
+    gap: 5px;
+    align-items: center;
     font-family: ALTA;
     text-transform: uppercase;
-    font-size: 24px;
-    font-weight: 900;
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 1em;
     letter-spacing: 0.05em !important;
     color: #000 !important;
 }
@@ -853,10 +857,14 @@ nav ul.dropdown-list .list-item-text.j-fix {
 
 @media (max-width: 440px) {
 
-    .header_container .right-menu,
     .header_container .left-logo {
-        width: 50%;
-        max-width: 50%;
+        flex-basis: 75%;
+        max-width: 75%;
+    }
+
+    .header_container .right-menu {
+        flex-basis: 25%;
+        max-width: 25%;
     }
 
     .left-logo a.site-logo {

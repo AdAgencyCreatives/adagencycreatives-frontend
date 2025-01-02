@@ -1,3 +1,4 @@
+import AdAgencyLogoRound from "../assets/images/aac-logo-round-transparent.svg";
 import "../styles/Header.css";
 import * as React from "react";
 import PropTypes from "prop-types";
@@ -166,8 +167,8 @@ function Header(props) {
       <Grid container justifyContent="space-between" alignItems="center" backgroundColor="white" sx={{ paddingY: 3, paddingX: 1 }}>
         <Grid item xs={9}>
           <Link className="site-logo" to="/">
-            {/* <img className="" src={Logo} alt="Adagency Creatives" /> */}
-            Ad Agency Creatives
+            <img className="" src={AdAgencyLogoRound} alt="Adagency Creatives" />
+            <div>Ad Agency Creatives</div>
           </Link>
         </Grid>
         <Grid item xs={3} sx={{ textAlign: "right" }} className="right-menu">
@@ -231,13 +232,13 @@ function Header(props) {
         <AppBar elevation={0} component="nav" id="top-nav-fixed" sx={{ backgroundColor: "#fff", padding: { sm: "10px 0", xs: "0" } }}>
           <Toolbar>
             <Grid key="main-grid" container justifyContent="space-between" alignItems="center" className="header_container">
-              <Grid key="grid-1" item lg={3} md={2} xs={8} className="left-logo">
+              <Grid key="grid-1" item lg={4} md={2} xs={8} className="left-logo">
                 <Link className="site-logo" to={"/"}>
-                  {/* <img className="" src={Logo} alt="Adagency Creatives" /> */}
-                  Ad Agency Creatives
+                  <img className="" src={AdAgencyLogoRound} alt="Adagency Creatives" />
+                  <div>Ad Agency Creatives</div>
                 </Link>
               </Grid>
-              <Grid key="grid-2" item lg={9} md={10} xs={4} sx={{ textAlign: "right", padding: "10px" }} className="right-menu">
+              <Grid key="grid-2" item lg={8} md={10} xs={4} sx={{ textAlign: "right", padding: "10px" }} className="right-menu">
                 <Box key="grid-box-1" sx={{ display: { md: "none", display: "flex", alignItems: "center", justifyContent: "center" } }}>
                   <IconButton key="icon-button-1" href={state.token ? "/dashboard" : "#"} color="primary" onClick={() => (!state.token ? setAuthModalOpen(true) : "")}>
                     <AiOutlineUser />

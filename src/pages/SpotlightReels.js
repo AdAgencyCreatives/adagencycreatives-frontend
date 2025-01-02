@@ -7,6 +7,7 @@ import { Context } from "../context/SpotlightContext";
 import useHelper from "../hooks/useHelper";
 
 import { useHistoryState } from "../hooks/useHistoryState";
+import SpotlightReelSingle from "../components/home/SpotlightReelSingle";
 
 const SpotlightCreatives = () => {
 
@@ -54,13 +55,7 @@ const SpotlightCreatives = () => {
                             }
                             return (
                                 <div className="col-sm-6 col-md-4" key={index}>
-                                    <Link to={item.url} className="spotlight-reel" key={`m_${index}`} style={{ fontSize: '16px', flexDirection: 'column' }}>
-                                        <span className="view">View &gt;</span>
-                                        <span className="flex-centered intro">Introducing</span>
-                                        <span className="flex-centered title">{data[0]}</span>
-                                        <span className="flex-centered category">{data[1]}</span>
-                                        <img src={AdAgency} height={150} width={150} alt="" />
-                                    </Link>
+                                    <SpotlightReelSingle item={item} index={index} />
                                 </div>
                             );
                         })}
