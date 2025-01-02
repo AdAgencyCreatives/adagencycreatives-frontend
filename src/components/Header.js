@@ -1,4 +1,4 @@
-import AdAgencyLogoRound from "../assets/images/aac-logo-round-transparent.svg";
+import AdAgencyLogoRound from "../assets/images/aac-logo-round-transparent-bold.svg";
 import "../styles/Header.css";
 import * as React from "react";
 import PropTypes from "prop-types";
