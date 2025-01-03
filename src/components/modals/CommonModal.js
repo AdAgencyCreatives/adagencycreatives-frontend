@@ -39,7 +39,7 @@ const CommonModal = (
                 scroll="body"
                 fullWidth={fullWidth}
                 maxWidth={maxWidth}
-                style={{ zIndex: 1600 }}
+                style={{ zIndex: 1299 }}
                 sx={sx}
                 className={dialogClass}
             >
