@@ -22,7 +22,15 @@ const SpotlightReelSingle = ({ item, index }) => {
 
     return (<>
         <Link to={item.url} className="spotlight-reel" key={`m_${index}`} style={{ fontSize: '16px', flexDirection: 'column' }}
-            onMouseEnter={(e) => setShowVideo(true)} onMouseLeave={(e) => setShowVideo(false)}>
+            onClick={(e) => {
+                if (!showVideo) {
+                    setShowVideo(true);
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+                return true;
+            }}>
             <video autoPlay muted style={{ display: showVideo ? 'block' : 'none' }}>
                 <source src={item.url} type="video/mp4" />
                 Your browser does not support the video tag.
