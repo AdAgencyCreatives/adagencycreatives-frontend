@@ -83,7 +83,7 @@ const SpotlightReels = () => {
                     >
                         {screatives?.length > 0 && screatives.map((item, index) => {
                             return (
-                                <swiper-slide key={`slide${index}`}>
+                                <swiper-slide key={`home-spotlight-reel-${index}`}>
                                     <SpotlightReelSingle item={item} index={index} />
                                 </swiper-slide>
                             );

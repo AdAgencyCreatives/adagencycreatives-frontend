@@ -89,7 +89,7 @@ const AdAgencies = () => {
           {agencies && agencies.length &&
             agencies.map((item, index) => {
               return (
-                <swiper-slide key={`slide${index}`}>
+                <swiper-slide key={`home-ad-agencies-${index}`}>
                   <div className="sliderContent adagencies-slider" style={{ height: '350px' }}>
                     <Link to={`/agency/${item.slug}`} className="employer-logo">
                       <AgencyImageLoader agency={item} height={90} width={90} />

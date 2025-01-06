@@ -84,7 +84,7 @@ const AgencyCreatives = ({ validateAccess }) => {
         >
           {home_creatives && home_creatives.map((item, index) => {
             return (
-              <swiper-slide key={`slide${index}`}>
+              <swiper-slide key={`home-agency-creatives-${index}`}>
                 <div className="sliderContent agencies-slider">
                   <CreativeImageLoader creative={item} />
                   <div className="agencyName">{item.name}</div>

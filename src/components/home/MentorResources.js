@@ -74,7 +74,7 @@ const MentorResources = () => {
             >
               {mentors.map((item, index) => {
                 return (
-                  <swiper-slide key={`slide${index}`}>
+                  <swiper-slide key={`home-mentor-resources-${index}`}>
                     <Link to={`/mentoring-resources/${item.slug}`} className="mentor" key={`m_${index}`}>
                       <span>{item.title}</span>
                       <img src={AdAgency} height={150} width={150} alt="" />

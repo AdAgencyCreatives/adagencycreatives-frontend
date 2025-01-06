@@ -89,7 +89,7 @@ const CreativeJobs = () => {
           {jobs &&
             jobs.map((item, index) => {
               return (
-                <swiper-slide key={`slide${index}`}>
+                <swiper-slide key={`home-creative-jobs-${index}`}>
                   <div className="sliderContent job-slider p-3 p-md-4">
                     <div className="left-badge">
                       {Object.keys(item.priority).map((key) => {

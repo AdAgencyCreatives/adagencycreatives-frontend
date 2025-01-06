@@ -83,7 +83,7 @@ const SpotlightCreative = () => {
           {screatives &&
             screatives.map((item, index) => {
               return (
-                <swiper-slide key={`slide${index}`}>
+                <swiper-slide key={`home-spotlight-creative-${index}`}>
                   <div className="sliderContent spotlight-slider">
                     <Link to={item.url}>
                       <img
