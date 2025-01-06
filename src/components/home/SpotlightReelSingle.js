@@ -1,6 +1,6 @@
 import AdAgency from "../../assets/images/AdAgency.png";
 import { Link } from "react-router-dom";
-import { useContext, useEffect, useRef } from "react";
+import { useEffect } from "react";
 import useHelper from "../../hooks/useHelper";
 import { useState } from "react";
 
@@ -18,20 +18,13 @@ const SpotlightReelSingle = ({ item, index }) => {
     }
 
     useEffect(() => {
+        setShowVideo(false);
     }, []);
 
     return (<>
         <Link to={item.url} className="spotlight-reel" key={`m_${index}`} style={{ fontSize: '16px', flexDirection: 'column' }}
-        // onClick={(e) => {
-        //     if (!showVideo) {
-        //         setShowVideo(true);
-        //         e.preventDefault();
-        //         e.stopPropagation();
-        //         return false;
-        //     }
-        //     return true;
-        // }}
-        // onMouseLeave={(e) => setShowVideo(false)}
+            onMouseEnter={(e) => setShowVideo(true)}
+            onMouseLeave={(e) => setShowVideo(false)}
         >
             <video autoPlay muted style={{ display: showVideo ? 'block' : 'none' }}>
                 <source src={item.url} type="video/mp4" />
