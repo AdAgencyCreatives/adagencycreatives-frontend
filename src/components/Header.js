@@ -238,7 +238,7 @@ function Header(props) {
                   <div>Ad Agency Creatives</div>
                 </Link>
               </Grid>
-              <Grid key="grid-2" item lg={8} md={10} xs={4} sx={{ textAlign: "right", padding: "10px" }} className="right-menu">
+              <Grid key="grid-2" item lg={8} md={10} xs={4} sx={{ textAlign: "right", padding: "10px 0px" }} className="right-menu">
                 <Box key="grid-box-1" sx={{ display: { md: "none", display: "flex", alignItems: "center", justifyContent: "center" } }}>
                   <IconButton key="icon-button-1" href={state.token ? "/dashboard" : "#"} color="primary" onClick={() => (!state.token ? setAuthModalOpen(true) : "")}>
                     <AiOutlineUser />
@@ -314,7 +314,7 @@ function Header(props) {
                     <div key={"div-last"} className="nav-item has-children ms-2">
                       <div className="logged-in-menu">
                         <AvatarImageLoader user={state?.user} />
-                        <div className="username">
+                        <div className="username" title={state.user.first_name + " " + state.user.last_name}>
                           {state.user.first_name} {state.user.last_name}
                         </div>
                       </div>
