@@ -881,11 +881,17 @@ nav ul.dropdown-list .list-item-text.j-fix {
 }
 
 .jobs-list-container .job-location.location {
+    font-size: 20px;
     margin-right: 10px;
 }
 
 .jobs-list-container .job-location.location a {
+    font-size: 20px;
     font-weight: 400;
+}
+
+.jobs-list-container .job-location.location svg {
+    font-size: 20px;
 }
 
 .job-post-badge {
