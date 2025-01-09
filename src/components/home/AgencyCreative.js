@@ -28,7 +28,9 @@ const AgencyCreatives = ({ validateAccess }) => {
   const isAgency = role == "agency";
 
   useEffect(() => {
-
+    if (!swiperElRef.current) {
+      return;
+    }
     const params = {
       injectStyles: [PaginationStyle],
       autoplay: {
@@ -60,7 +62,7 @@ const AgencyCreatives = ({ validateAccess }) => {
     Object.assign(swiperElRef.current, params);
 
     swiperElRef.current.initialize();
-  }, []);
+  }, [swiperElRef.current]);
 
   return (
     <div id="creatives">
@@ -73,50 +75,52 @@ const AgencyCreatives = ({ validateAccess }) => {
       {/* Slides */}
       <div className="sectionContent">
         {isLoading && <SliderLoader columnGap={30} slides={3} />}
-        <swiper-container
-          ref={swiperElRef}
-          init="false"
-          navigation="true"
-          slides-per-view="1"
-          space-between="30"
-          loop="true"
-          autop
-        >
-          {home_creatives && home_creatives.map((item, index) => {
-            return (
-              <swiper-slide key={`home-agency-creatives-${index}`}>
-                <div className="sliderContent agencies-slider">
-                  <CreativeImageLoader creative={item} />
-                  <div className="agencyName">{item.name}</div>
-                  <div className="position">
-                    {isAdmin || isAdvisor ? (<>
-                      <Link to={"/creatives/search/industry-title/" + encodeSpecial(encodeURI(item.category))}>
+        {home_creatives?.length > 0 && (<>
+          <swiper-container
+            ref={swiperElRef}
+            init="false"
+            navigation="true"
+            slides-per-view="1"
+            space-between="30"
+            loop="true"
+            autop
+          >
+            {home_creatives.map((item, index) => {
+              return (
+                <swiper-slide key={`home-agency-creatives-${index}`}>
+                  <div className="sliderContent agencies-slider">
+                    <CreativeImageLoader creative={item} />
+                    <div className="agencyName">{item.name}</div>
+                    <div className="position">
+                      {isAdmin || isAdvisor ? (<>
+                        <Link to={"/creatives/search/industry-title/" + encodeSpecial(encodeURI(item.category))}>
+                          {item.category}
+                        </Link>
+                      </>) : (<>
                         {item.category}
+                      </>)}
+                    </div>
+                    <CreativeLocation location={item?.location} />
+                    <div className="profileLink">
+                      <Link
+                        to={token ? `/creative/${item.slug}` : "#"}
+                        onClick={(e) => {
+                          if (!token) {
+                            e.preventDefault();
+                            showAlert("Please login to access");
+                          }
+                          return false;
+                        }}
+                      >
+                        View Profile
                       </Link>
-                    </>) : (<>
-                      {item.category}
-                    </>)}
+                    </div>
                   </div>
-                  <CreativeLocation location={item?.location} />
-                  <div className="profileLink">
-                    <Link
-                      to={token ? `/creative/${item.slug}` : "#"}
-                      onClick={(e) => {
-                        if (!token) {
-                          e.preventDefault();
-                          showAlert("Please login to access");
-                        }
-                        return false;
-                      }}
-                    >
-                      View Profile
-                    </Link>
-                  </div>
-                </div>
-              </swiper-slide>
-            );
-          })}
-        </swiper-container>
+                </swiper-slide>
+              );
+            })}
+          </swiper-container>
+        </>)}
       </div>
     </div>
   );
