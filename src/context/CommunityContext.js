@@ -91,13 +91,15 @@ const reducer = (state, action) => {
       return {
         ...state,
         trending_posts: action.payload.data,
-        nextPage: action.payload.links.next,
+        // nextPage: action.payload.links.next,
+        // interferring with lounge post nextPage urls
       };
     case "set_new_members":
       return {
         ...state,
         new_members: action.payload.data,
-        nextPage: action.payload.links.next,
+        // nextPage: action.payload.links.next,
+        // interferring with lounge posts nextPage urls
       };
     case "set_post_comments":
       return {
