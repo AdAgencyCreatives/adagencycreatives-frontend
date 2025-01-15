@@ -153,7 +153,7 @@ const Header = ({ data, role, user, username, showButtons = true }) => {
                 <ResizableDiv uid="view-profile-actions" className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
                   {((isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription)) && data && Object.keys(data).length > 0) && (
                     <>
-                      <Link className="btn btn-dark fs-5" to={"/creative-pdf/" + username} target="_blank">
+                      <Link className="btn btn-dark fs-5" to={"/creative-pdf/" + data?.slug} target="_blank">
                         View/Download AAC Profile
                       </Link>
                     </>
