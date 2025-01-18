@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   IoBookmarkOutline,
   IoLocationOutline,
@@ -27,8 +28,11 @@ import { CircularProgress, Tooltip } from "@mui/material";
 import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 import CreativeImageLoader from "../../../components/CreativeImageLoader";
 import ResizableDiv from "../../ResizableDiv";
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import DownloadProfilePdfButton from "./DownloadProfilePdfButton";
+import { Context as CreativesContext } from "../../../context/CreativesContext";
 
-const Header = ({ data, role, user, username, showButtons = true }) => {
+const Header = React.memo(({ data, role, user, username, showButtons = true }) => {
 
   const { encodeSpecial, decodeSpecial } = useHelper();
 
@@ -36,6 +40,7 @@ const Header = ({ data, role, user, username, showButtons = true }) => {
   const [openNotes, setOpenNotes] = useState(false);
   const [openInvite, setOpenInvite] = useState(false);
   const [isDownloading, setDownloading] = useState(false);
+  const [downloadProfilePdfAllowed, setDownloadProfilePdfAllowed] = useState(false);
   const [appIdNotes, setAppIdNotes] = useState("");
 
   const handleClose = () => setOpen(false);
@@ -52,6 +57,11 @@ const Header = ({ data, role, user, username, showButtons = true }) => {
     state: { subscription_status },
   } = useContext(AuthContext);
 
+  const {
+    state: { single_creative_for_pdf, },
+    getCreativeForPdf,
+  } = useContext(CreativesContext);
+
   const isCreative = role == "creative";
   const isAdmin = role == "admin";
   const isAdvisor = role == "advisor";
@@ -60,11 +70,29 @@ const Header = ({ data, role, user, username, showButtons = true }) => {
   const isOwnProfile = isCreative && user?.uuid == data.user_id;
   const [isFriend, setIsFriend] = useState(false)
   const [hasSubscription, setSubscription] = useState(false);
+  const [downloadPdfFound, setDownloadPdfFound] = useState(false);
+
+  useEffect(() => {
+    setDownloadProfilePdfAllowed(role?.length > 0 && (isAdmin || ((isAgency || isAdvisor || isRecruiter) && hasSubscription)) && data && Object.keys(data)?.length > 0);
+  }, [role, isAdmin, isAgency, isAdvisor, isRecruiter, hasSubscription]);
 
   useEffect(() => {
     setSubscription(subscription_status == "active");
-    console.log(subscription_status);
+    // console.log(subscription_status);
   }, [subscription_status]);
+
+  useEffect(() => {
+    if (downloadProfilePdfAllowed) {
+      getCreativeForPdf(data.slug, (success, error) => {
+        if (success) {
+          setDownloadPdfFound(true);
+        }
+        if (error) {
+          console.log(error);
+        }
+      });
+    }
+  }, [downloadProfilePdfAllowed]);
 
   const validateAccess = (e, permissions, message) => {
     if (permissions.length > 0) {
@@ -151,12 +179,8 @@ const Header = ({ data, role, user, username, showButtons = true }) => {
             <div className="col-md-7">
               {showButtons && (
                 <ResizableDiv uid="view-profile-actions" className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
-                  {((isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription)) && data && Object.keys(data).length > 0) && (
-                    <>
-                      <Link className="btn btn-dark fs-5" to={"/creative-pdf/" + data?.slug} target="_blank">
-                        View/Download AAC Profile
-                      </Link>
-                    </>
+                  {(downloadProfilePdfAllowed && downloadPdfFound && single_creative_for_pdf && Object.keys(single_creative_for_pdf)?.length > 0) && (
+                    <DownloadProfilePdfButton data={single_creative_for_pdf} filename={getDownloadFilename()} allowPhone={isAdmin || data?.logged_in_user?.is_creative_applicant} />
                   )}
                   {isDownloading && (<CircularProgress style={{ minWidth: "40px", minHeight: "40px" }} />)}
                   {(isOwnProfile || !isCreative || isFriend) && (
@@ -261,6 +285,6 @@ const Header = ({ data, role, user, username, showButtons = true }) => {
       </div>
     </div>
   );
-};
+});
 
 export default Header;

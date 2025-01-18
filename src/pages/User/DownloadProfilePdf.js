@@ -13,7 +13,7 @@ import { Link, useParams } from "react-router-dom";
 import { useContext } from 'react';
 import moment from "moment";
 
-export default function ViewProfilePdf() {
+export default function DownloadProfilePdf() {
 
     const getClientDateTime = () => {
         return moment(new Date()).format("YYYY-MM-DD");

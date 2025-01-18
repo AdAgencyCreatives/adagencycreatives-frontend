@@ -9,6 +9,7 @@ const state = {
   nextPage: null,
   loading: false,
   single_creative: {},
+  single_creative_for_pdf: {},
   creative_experience: [],
   creative_education: [],
   stats: null,
@@ -52,6 +53,8 @@ const reducer = (state, action) => {
       };
     case "set_single_creative":
       return { ...state, single_creative: action.payload };
+    case "set_single_creative_for_pdf":
+      return { ...state, single_creative_for_pdf: action.payload };
     case "set_video":
       return { ...state, video: action.payload.data[0] };
     case "reset_video":
@@ -181,12 +184,12 @@ const getCreativeForPdf = (dispatch) => {
       const uid = data.user_id;
       const currentPage = window.location.pathname;
       dispatch({
-        type: "set_single_creative",
+        type: "set_single_creative_for_pdf",
         payload: data,
       });
-      cb && cb();
+      cb && cb(data, null);
     } catch (error) {
-      cb && cb(error);
+      cb && cb(null, error);
     }
   };
 };
