@@ -1535,7 +1535,8 @@ div.welcome-lounge {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 75%;
+    margin: auto;
 }
 
 div.welcome-lounge .user_image {
@@ -1555,7 +1556,7 @@ div.welcome-lounge .user_info {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 32px;
+    font-size: 24px;
 }
 
 div.welcome-lounge .user_info div {
@@ -1568,7 +1569,7 @@ div.welcome-lounge .user_info div {
 @media (max-width: 767px) {
 
     div.welcome-lounge .user_info div {
-        font-size: 20px !important;
+        font-size: 16px !important;
         line-height: 1.25em !important;
     }
 }
@@ -1576,7 +1577,7 @@ div.welcome-lounge .user_info div {
 @media (max-width: 1024px) {
 
     div.welcome-lounge .user_info div {
-        font-size: 24px !important;
+        font-size: 18px !important;
         line-height: 1.25em !important;
     }
 }
@@ -1584,7 +1585,7 @@ div.welcome-lounge .user_info div {
 @media (orientation: landscape) and (max-width: 1024px) {
 
     div.welcome-lounge .user_info div {
-        font-size: 24px !important;
+        font-size: 18px !important;
         line-height: 1.25em !important;
     }
 }

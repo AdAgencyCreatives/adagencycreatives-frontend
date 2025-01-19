@@ -56,14 +56,16 @@ const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
                 <div className="employer-location">
                   <UserLocation location={user?.location} hideIcon={true} />
                 </div>
-                <div className="view-profile">
-                  <Link
-                    to={profileLink + user.slug}
-                    className="btn btn-dark btn-hover-primary"
-                  >
-                    View Profile
-                  </Link>
-                </div>
+                {(user?.role == "creative" || user?.role == "agency") && (
+                  <div className="view-profile">
+                    <Link
+                      to={profileLink + user.slug}
+                      className="btn btn-dark btn-hover-primary"
+                    >
+                      View Profile
+                    </Link>
+                  </div>
+                )}
               </>
             )}
           </div>
