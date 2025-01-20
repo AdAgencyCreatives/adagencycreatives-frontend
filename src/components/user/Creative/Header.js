@@ -191,7 +191,9 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
                     </Link>
                   </>) : (<>
                     {loadingDownloadProfile ? (<>
-                      <button className={"btn btn-silver fs-5"} style={{ minWidth: '220px', cursor: 'wait' }}>Download Profile</button>
+                      {downloadProfilePdfAllowed && (
+                        <button className={"btn btn-silver fs-5"} style={{ minWidth: '220px', cursor: 'wait' }}>Download Profile</button>
+                      )}
                     </>) : (<>
                       {(downloadProfilePdfAllowed && downloadPdfFound && single_creative_for_pdf && Object.keys(single_creative_for_pdf)?.length > 0) && (
                         <DownloadProfilePdfButton data={single_creative_for_pdf} filename={getDownloadFilename()} allowPhone={isAdmin || data?.logged_in_user?.is_creative_applicant} />
