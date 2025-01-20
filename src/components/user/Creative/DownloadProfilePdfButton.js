@@ -11,7 +11,7 @@ const DownloadProfilePdfButton = React.memo(({ data, filename, allowPhone }) => 
             {data && Object.keys(data)?.length > 0 && (
                 <PDFDownloadLink className="" document={<CreativeProfilePdf data={data} filename={filename} allowPhone={allowPhone} />} fileName={filename + ".pdf"}>
                     {({ blob, url, loading, error }) => (
-                        <button className={"btn btn-dark fs-5"} style={{ minWidth: '220px' }}>
+                        <button className={"btn btn-dark fs-5"} style={{ minWidth: '220px', cursor: loading ? 'wait' : 'pointer' }}>
                             {loading ? (
                                 <div style={{ display: 'inline-block' }}>
                                     <CircularProgress size={20} /> Preparing Download...
