@@ -34,6 +34,8 @@ import { Context as CreativesContext } from "../../../context/CreativesContext";
 
 const Header = React.memo(({ data, role, user, username, showButtons = true }) => {
 
+  const anchor = window.location.hash.slice(1);
+
   const { encodeSpecial, decodeSpecial } = useHelper();
 
   const [open, setOpen] = useState(false);
@@ -41,6 +43,7 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
   const [openInvite, setOpenInvite] = useState(false);
   const [isDownloading, setDownloading] = useState(false);
   const [downloadProfilePdfAllowed, setDownloadProfilePdfAllowed] = useState(false);
+  const [loadingDownloadProfile, setLoadingDownloadProfile] = useState(true);
   const [appIdNotes, setAppIdNotes] = useState("");
 
   const handleClose = () => setOpen(false);
@@ -86,9 +89,11 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
       getCreativeForPdf(data.slug, (success, error) => {
         if (success) {
           setDownloadPdfFound(true);
+          setLoadingDownloadProfile(false);
         }
         if (error) {
           console.log(error);
+          setLoadingDownloadProfile(false);
         }
       });
     }
@@ -109,6 +114,7 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
   };
 
   useEffect(() => {
+    setLoadingDownloadProfile(true);
     getMyFriends().then(result => {
       setIsFriend(result.some((item) => item.user.uuid == data.user_id))
     });
@@ -179,9 +185,19 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
             <div className="col-md-7">
               {showButtons && (
                 <ResizableDiv uid="view-profile-actions" className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
-                  {(downloadProfilePdfAllowed && downloadPdfFound && single_creative_for_pdf && Object.keys(single_creative_for_pdf)?.length > 0) && (
-                    <DownloadProfilePdfButton data={single_creative_for_pdf} filename={getDownloadFilename()} allowPhone={isAdmin || data?.logged_in_user?.is_creative_applicant} />
-                  )}
+                  {anchor?.length > 0 && anchor.indexOf("preview=") === 0 ? (<>
+                    <Link className="btn btn-dark fs-5" to={"/creative/" + data?.slug}>
+                      Visit Profile
+                    </Link>
+                  </>) : (<>
+                    {loadingDownloadProfile ? (<>
+                      <CircularProgress size={30} />
+                    </>) : (<>
+                      {(downloadProfilePdfAllowed && downloadPdfFound && single_creative_for_pdf && Object.keys(single_creative_for_pdf)?.length > 0) && (
+                        <DownloadProfilePdfButton data={single_creative_for_pdf} filename={getDownloadFilename()} allowPhone={isAdmin || data?.logged_in_user?.is_creative_applicant} />
+                      )}
+                    </>)}
+                  </>)}
                   {isDownloading && (<CircularProgress style={{ minWidth: "40px", minHeight: "40px" }} />)}
                   {(isOwnProfile || !isCreative || isFriend) && (
                     <>

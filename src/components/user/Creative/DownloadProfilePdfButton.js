@@ -14,9 +14,9 @@ const DownloadProfilePdfButton = React.memo(({ data, filename, allowPhone }) => 
                         <button className={"btn btn-dark fs-5"} style={{ minWidth: '220px' }}>
                             {loading ? (
                                 <div style={{ display: 'inline-block' }}>
-                                    <CircularProgress size={20} /> Preparing PDF...
+                                    <CircularProgress size={20} /> Preparing Download...
                                 </div>
-                            ) : (<>Download Profile PDF</>)}
+                            ) : (<>Download Profile</>)}
                         </button>
                     )}
                 </PDFDownloadLink>
