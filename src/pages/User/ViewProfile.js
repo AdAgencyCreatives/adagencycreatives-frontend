@@ -190,14 +190,16 @@ const Profile = () => {
                   <div className="col-lg-8 col-md-6 col-12">
                     {page == "creative" && <Portfolio isOwnProfile={isOwnProfile} portfolio_items={data.portfolio_items} />}
                     {(isOwnProfile ? true : (!(data?.role == 'advisor' || data?.role == 'recruiter') && data?.about?.length > 0)) && (
-                      <div className="content-section">
-                        <h1 className="content-title mt-0">About</h1>
-                        <p className="content">
-                          {data?.about?.length > 0 && (<>
-                            <div dangerouslySetInnerHTML={{ __html: data.about }} />
-                          </>)}
-                        </p>
-                      </div>
+                      <>
+                        {data?.about?.length > 0 && (
+                          <div className="content-section">
+                            <h1 className="content-title mt-0">About</h1>
+                            <p className="content">
+                              <div dangerouslySetInnerHTML={{ __html: data.about }} />
+                            </p>
+                          </div>
+                        )}
+                      </>
                     )}
                     <div className="profile-sidebar d-md-none">
                       {page === "creative" ? (
