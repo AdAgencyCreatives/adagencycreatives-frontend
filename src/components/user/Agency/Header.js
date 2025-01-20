@@ -18,7 +18,7 @@ const Header = ({ data, role, user }) => {
     "agencies"
   );
 
-  console.log('user', user);
+  // console.log('user', user);
 
   return (
     <div className="container">

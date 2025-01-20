@@ -15,6 +15,8 @@ const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
       role,
     } } = useContext(AuthContext);
 
+  const isProduction = (typeof process === 'undefined') ? false : (process?.env?.REACT_APP_APP_URL == "https://api.adagencycreatives.com");
+
   const isAdmin = role == "admin";
   const isAdvisor = role == "advisor";
   const isAgency = role == "agency";
@@ -56,10 +58,10 @@ const Sidebar = ({ nav, user, window, mobileOpen, setMobileOpen }) => {
                 <div className="employer-location">
                   <UserLocation location={user?.location} hideIcon={true} />
                 </div>
-                {(user?.role == "creative" || user?.role == "agency") && (
+                {(!isProduction || (user?.role == "creative" || user?.role == "agency")) && (
                   <div className="view-profile">
                     <Link
-                      to={profileLink + user.slug}
+                      to={profileLink + user.slug + ((user.role == "advisor" || user.role == "recruiter") ? "/" + user.role : "")}
                       className="btn btn-dark btn-hover-primary"
                     >
                       View Profile

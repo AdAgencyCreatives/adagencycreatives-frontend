@@ -167,6 +167,10 @@ const getOpenPositions = (dispatch) => {
   return async (uid, page = false, status = null, applications_count = 0) => {
     setLoading(dispatch, true);
     try {
+      dispatch({
+        type: "set_open_positions",
+        payload: [],
+      });
       const response = await api.get("/jobs?sort=-created_at&filter[user_id]=" + uid + (status != null && status != '' ? "&filter[status]=" + status : "") + ("&applications_count=" + applications_count) + (page ? "&page=" + page : ""));
       const data = response.data;
       dispatch({

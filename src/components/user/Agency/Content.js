@@ -19,7 +19,7 @@ const Content = ({ user, data, jobs }) => {
           ))}
         </div>
       </div>
-      {user && data && <Reviews user={user} data={data} />}
+      {user && (user?.role == "creative" || user?.role == "agency" || user?.role == "admin") && data && <Reviews user={user} data={data} />}
       <AuthModal open={authModalOpen} handleClose={handleAuthClose} />
     </>
   );
