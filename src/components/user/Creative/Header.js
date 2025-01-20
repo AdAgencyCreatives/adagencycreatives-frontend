@@ -169,7 +169,8 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
             <div className="col-md-5">
               <div className="username">
                 {data.name}
-                {/* <span class="featured-text">Featured</span> */}
+                {/* <span class="featured-text">
+                Featured</span> */}
               </div>
               <div className="position">
                 {isAdmin || (isAdvisor && hasSubscription) ? (<>
