@@ -138,7 +138,7 @@ const Dashboard = () => {
         {/* <div className="col-sm-8">
           <Views title={"Your Profile Views"} />
         </div> */}
-        <div className="col-sm-8 agency-page-myjobs">
+        <div className="col-sm-8 agency-page-myjobs my-recent-applications">
           <div className="card">
             <div className="card-title">My Recent Applications</div>
             <div className="card-body">

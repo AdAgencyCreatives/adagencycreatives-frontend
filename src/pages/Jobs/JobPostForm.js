@@ -377,28 +377,28 @@ const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
           name: "is_hybrid",
           value: isEdit && single_job.workplace_preference.is_hybrid,
         },
-        {
-          label: "How do creatives apply?",
-          required: true,
-          type: "dropdown",
-          data: apply_type,
-          name: "apply_type",
-          placeholder: "internal or external application",
-          callback: (item) => handleDropdownChange(item, "apply_type"),
-          value:
-            isEdit &&
-            apply_type.find((item) => item.value == single_job.apply_type),
-        },
-        {
-          label: "External Job Application Link",
-          required: false,
-          type: "url",
-          name: "external_link",
-          placeholder: "applicants use this link",
-          value: isEdit ? single_job.external_link || "" : "",
-          hidden: true,
-          ref: linkRef,
-        },
+        // {
+        //   label: "How do creatives apply?",
+        //   required: true,
+        //   type: "dropdown",
+        //   data: apply_type,
+        //   name: "apply_type",
+        //   placeholder: "internal or external application",
+        //   callback: (item) => handleDropdownChange(item, "apply_type"),
+        //   value:
+        //     isEdit &&
+        //     apply_type.find((item) => item.value == single_job.apply_type),
+        // },
+        // {
+        //   label: "External Job Application Link",
+        //   required: false,
+        //   type: "url",
+        //   name: "external_link",
+        //   placeholder: "applicants use this link",
+        //   value: isEdit ? single_job.external_link || "" : "",
+        //   hidden: true,
+        //   ref: linkRef,
+        // },
       ]);
     }
   }, [

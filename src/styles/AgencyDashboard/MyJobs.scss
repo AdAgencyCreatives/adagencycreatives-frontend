@@ -95,3 +95,9 @@
         font-weight: 400;
     }
 }
+
+.my-recent-applications {
+    .job-table-status {
+        display: table-cell !important;
+    }
+}
