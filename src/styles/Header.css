@@ -1950,3 +1950,7 @@ img.agency-image-loader {
     width: 100% !important;
     height: 100% !important;
 }
+
+.reactEasyCrop_CropArea {
+    border-radius: 100%;
+}
