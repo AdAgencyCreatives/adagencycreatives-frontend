@@ -347,7 +347,7 @@ const Creatives = () => {
             onClose={() => {
               navigate(window.location.pathname);
             }}
-            actions={[
+            actions={creatives?.length > 1 ? [
               {
                 buttonText: "‹", buttonAction: (e) => {
                   handleViewPrev();
@@ -360,7 +360,7 @@ const Creatives = () => {
                 },
                 buttonClass: "slide-next",
               }
-            ]}
+            ] : []}
             actionsClassName="common-modal-actions-apply-now"
           >
             <ViewSearchCreative showButtons={true} previewCreative={previewCreative} />

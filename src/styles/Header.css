@@ -1672,6 +1672,7 @@ img.agency-image-loader {
 
 .common-modal-actions-apply-now {
     justify-content: center !important;
+    padding: 0 !important;
 }
 
 .common-modal-actions-apply-now .btn.btn-apply {

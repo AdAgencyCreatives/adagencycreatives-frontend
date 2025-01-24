@@ -43,7 +43,7 @@ const CommonModal = (
                 sx={sx}
                 className={dialogClass}
             >
-                <DialogTitle style={dialogTitleStyle}>{dialogTitle}</DialogTitle>
+                <DialogTitle style={dialogTitleStyle}>{dialogTitle?.length > 0 ? dialogTitle : <>&nbsp;</>}</DialogTitle>
                 {actions?.length > 0 && (
                     <DialogActions className={actionsClassName}>
                         {actions.map(action => {
