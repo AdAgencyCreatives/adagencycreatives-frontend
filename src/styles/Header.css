@@ -1955,3 +1955,22 @@ img.agency-image-loader {
 .reactEasyCrop_CropArea {
     border-radius: 100%;
 }
+
+@media (max-width: 786px) {
+
+    .job-metas .category-job,
+    .job-metas .job-location,
+    .job-metas .job-deadline {
+        width: 100%;
+    }
+
+    .jobs-list-container .job-location.location,
+    .jobs-list-container .job-location.location a,
+    .jobs-list-container .job-location.location svg {
+        font-size: 16px;
+    }
+
+    .job-metas .job-deadline {
+        margin-left: 20px;
+    }
+}
