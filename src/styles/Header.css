@@ -1980,3 +1980,9 @@ img.agency-image-loader {
 #jobapply-form label[for="remember"] {
     cursor: pointer;
 }
+
+@media (min-width:1024px) {
+    .about-page .about-text {
+        margin: 0px 100px;
+    }
+}

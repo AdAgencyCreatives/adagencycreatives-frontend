@@ -63,14 +63,26 @@ const TabularJobApplications = (props) => {
 
   const sortApplications = (applicationsToSort) => {
     var sortedApplications = [];
-    sortedApplications = sortedApplications.concat(applicationsToSort.filter((application) => application.status == "hired").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
-    sortedApplications = sortedApplications.concat(applicationsToSort.filter((application) => application.status == "pending").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
-    sortedApplications = sortedApplications.concat(applicationsToSort.filter((application) => application.status == "accepted").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
-    sortedApplications = sortedApplications.concat(applicationsToSort.filter((application) => application.status == "recommended").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
-    sortedApplications = sortedApplications.concat(applicationsToSort.filter((application) => application.status == "shortlisted").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
-    sortedApplications = sortedApplications.concat(applicationsToSort.filter((application) => application.status == "rejected").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
-
+    var status_filters = ["hired", "pending", "accepted", "recommended", "shortlisted", "rejected"];
+    for (let index = 0; index < status_filters.length; index++) {
+      const status = status_filters[index];
+      const filtered_applications = applicationsToSort.filter((application) => application.status == status);
+      const applications_sorted_by_name = sortByDateThenByName(filtered_applications);
+      sortedApplications = sortedApplications.concat(applications_sorted_by_name);
+    }
     setApplications(sortedApplications);
+  };
+
+  const sortByDateThenByName = (applicationsToSort) => {
+    return applicationsToSort.sort((a, b) => {
+      const dateA = moment(a.created_at).startOf('day');
+      const dateB = moment(b.created_at).startOf('day');
+      const dateComparison = dateA.isBefore(dateB) ? 1 : dateA.isAfter(dateB) ? -1 : 0;
+      if (dateComparison === 0) {
+        return a.user_last_name.localeCompare(b.user_last_name);
+      }
+      return dateComparison;
+    });
   };
 
   return (

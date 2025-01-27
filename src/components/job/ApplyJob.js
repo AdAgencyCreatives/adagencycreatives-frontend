@@ -10,12 +10,14 @@ import { IoCloseCircleSharp } from "react-icons/io5";
 const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
   const [message, setMessage] = useState(false);
   const [messageMaxLength, setMessageMaxLength] = useState(500);
+  const [messageSelectionStart, setMessageSelectionStart] = useState(0);
   const [error, setError] = useState(false);
   const [jobMessage, setJobMessage] = useState("");
   const [resumeId, setResumeId] = useState(false);
   const [resumeList, setResumeList] = useState([]);
   const [isSubmit, setIsSubmit] = useState(false);
   const [isUploading, setUploading] = useState(false);
+  const jobMessageRef = useRef(null);
   const resumeRef = useRef();
 
   const {
@@ -211,6 +213,7 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
                 </div>
                 <div className="form-group">
                   <textarea
+                    ref={jobMessageRef}
                     className="form-control"
                     name="message"
                     placeholder="Message"
