@@ -323,11 +323,12 @@ const Creatives = () => {
             />
             {((isAdmin || ((isAdvisor || isAgency) && hasSubscription)) && advanceSearchHasData && which_search() == "search3") && (
               <div className="search-level2">
-                <div className="search-title">Search within Results</div>
+                {/* <div className="search-title">Search within Results</div> */}
                 <SearchBar
                   input={inputLevel2}
                   setInput={setInputLevel2}
-                  placeholder={creativeSearchPlaceholder}
+                  // placeholder={creativeSearchPlaceholder}
+                  placeholder={"Search within results"}
                   onSearch={searchUserLevel2}
                   role={role}
                   advance_search_capabilities={advance_search_capabilities}

@@ -1356,7 +1356,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
     display: flex;
     justify-content: center;
     gap: 10px;
-    padding: 0px 150px 0px 0px;
+    padding: 0px 0px 0px 0px;
 }
 
 @media (max-width: 767px) {
