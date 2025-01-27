@@ -1986,3 +1986,19 @@ img.agency-image-loader {
         margin: 0px 100px;
     }
 }
+
+.search-box-common.search-box-job .btn {
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #000;
+}
+
+.search-box-common.search-box-job .btn:hover {
+    background-color: #000;
+    color: #d3a11f;
+    border: 2px solid #000;
+}
+
+.agency-page-myjobs.tabular .job-table-status .badge.bg-primary {
+    background-color: #0dcaf0 !important;
+}
