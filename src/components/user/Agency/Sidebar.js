@@ -65,6 +65,7 @@ const Sidebar = ({ data, user }) => {
       </Link>
     );
   };
+
   const renderListData = (list, listKey) => {
     const maxItemsToShow = 5;
 
@@ -80,7 +81,7 @@ const Sidebar = ({ data, user }) => {
 
     return (
       <>
-        {listKey == "industry"
+        {listKey == "key"
           ? renderedList.map((item, index) =>
             renderLinkList(item, index == renderedList.length - 1)
           )
@@ -93,7 +94,7 @@ const Sidebar = ({ data, user }) => {
         {showAllItems[listKey] &&
           remainingItems.length > 0 &&
           remainingItems.map((item, index) => (
-            <span key={index}>, {listKey == "industry" ? renderLinkList(item, true) : item}
+            <span key={index}>, {listKey == "key" ? renderLinkList(item, true) : item}
             </span>
           ))}
       </>
@@ -140,7 +141,7 @@ const Sidebar = ({ data, user }) => {
               <div className="details">
                 <div className="text">Industry Specialty</div>
                 <div className="value">
-                  {renderListData(data.industry_experience, "industry")}
+                  {renderListData(data.industry_experience, "i")}
                 </div>
               </div>
             </div>
