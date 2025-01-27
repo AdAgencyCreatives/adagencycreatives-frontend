@@ -1875,6 +1875,7 @@ img.agency-image-loader {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0px 35px;
 }
 
 .spotlight-reel .category {
@@ -1973,4 +1974,9 @@ img.agency-image-loader {
     .job-metas .job-deadline {
         margin-left: 20px;
     }
+}
+
+#jobapply-form #remember,
+#jobapply-form label[for="remember"] {
+    cursor: pointer;
 }

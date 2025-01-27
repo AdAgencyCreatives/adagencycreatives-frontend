@@ -9,6 +9,7 @@ import { IoCloseCircleSharp } from "react-icons/io5";
 
 const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
   const [message, setMessage] = useState(false);
+  const [messageMaxLength, setMessageMaxLength] = useState(500);
   const [error, setError] = useState(false);
   const [jobMessage, setJobMessage] = useState("");
   const [resumeId, setResumeId] = useState(false);
@@ -216,8 +217,15 @@ const ApplyJob = ({ open, setOpen, handleClose, job_id, handleJob }) => {
                     required="required"
                     rows={4}
                     value={jobMessage}
-                    onChange={(e) => setJobMessage(e.target.value)}
+                    onChange={(e) => {
+                      if (e.target.value.length <= messageMaxLength) {
+                        setJobMessage(e.target.value);
+                      } else {
+                        setJobMessage(e.target.value.substring(0, messageMaxLength));
+                      }
+                    }}
                   ></textarea>
+                  <div style={{ textAlign: 'right', fontWeight: 'bold', fontSize: '12px' }}>Used {jobMessage.length} of {messageMaxLength - jobMessage.length} characters</div>
                 </div>
                 <div className="d-flex align-items-center justify-content-between mb-2 mt-3">
                   <div className="d-flex">
