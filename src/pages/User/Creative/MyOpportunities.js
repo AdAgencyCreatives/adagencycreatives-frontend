@@ -72,7 +72,7 @@ const MyOpportunities = () => {
             setInput={setSearchInput}
             onSearch={handleSearch}
             placeholder={"Search Applied Jobs"}
-            searchBoxClass="search-box-common"
+            searchBoxClass="search-box-common search-box-black-gold"
           />
           {applied_jobs?.length > 0 ? (<>
             <br />

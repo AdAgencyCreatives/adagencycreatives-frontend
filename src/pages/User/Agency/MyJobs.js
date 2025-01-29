@@ -50,7 +50,7 @@ const MyJobs = () => {
               setInput={setSearchInput}
               onSearch={handleSearch}
               placeholder={"Search My Jobs"}
-              searchBoxClass="search-box-common"
+              searchBoxClass="search-box-common search-box-black-gold"
             />
             {open_positions?.length > 0 ? (<>
               {open_positions && meta?.total > 9 ? <Paginate meta={meta} paginate={paginate} title={"jobs"} /> : <br />}

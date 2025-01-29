@@ -157,7 +157,7 @@ const TabularApplicantJobs = () => {
             setInput={setSearchInput}
             onSearch={handleSearch}
             placeholder={"Search All Applicants"}
-            searchBoxClass="search-box-common search-box-job"
+            searchBoxClass="search-box-common search-box-black-gold"
           />
           {data?.length > 0 ? (<>
             {applicationMeta?.total > 9 ? <Paginate meta={applicationMeta} paginate={paginate} title={"jobs"} /> : <br />}

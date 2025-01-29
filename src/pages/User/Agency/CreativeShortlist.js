@@ -107,7 +107,7 @@ const CreativeShortlist = () => {
           setInput={setSearchInput}
           onSearch={handleSearch}
           placeholder={"Search Creatives Shortlist"}
-          searchBoxClass="search-box-common"
+          searchBoxClass="search-box-common search-box-black-gold"
         />
         {bookmarks?.length > 0 ? (
           <>

@@ -1987,13 +1987,13 @@ img.agency-image-loader {
     }
 }
 
-.search-box-common.search-box-job .btn {
+.search-box-common.search-box-black-gold .btn {
     background-color: #000;
     color: #fff;
     border: 2px solid #000;
 }
 
-.search-box-common.search-box-job .btn:hover {
+.search-box-common.search-box-black-gold .btn:hover {
     background-color: #000;
     color: #d3a11f;
     border: 2px solid #000;
