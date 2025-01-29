@@ -161,7 +161,7 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
   return (
     <div className="container">
       <div className="row align-items-center justify-content-between">
-        <div className="col-12 d-flex align-items-top">
+        <div className="col-12 d-flex align-items-top header">
           <div className="avatar rounded">
             <CreativeImageLoader creative={data} />
           </div>
@@ -193,7 +193,7 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
                   </>) : (<>
                     {loadingDownloadProfile ? (<>
                       {downloadProfilePdfAllowed && (
-                        <button className={"btn btn-silver fs-5"} style={{ minWidth: '220px', cursor: 'wait' }}>Download Profile</button>
+                        <button className={"btn btn-silver fs-5"} style={{ cursor: 'wait' }}>Download Profile</button>
                       )}
                     </>) : (<>
                       {(downloadProfilePdfAllowed && downloadPdfFound && single_creative_for_pdf && Object.keys(single_creative_for_pdf)?.length > 0) && (

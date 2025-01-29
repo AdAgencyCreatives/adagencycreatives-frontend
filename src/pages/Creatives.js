@@ -340,6 +340,7 @@ const Creatives = () => {
         )}
         <div className="row g-4">
           <CommonModal
+            className="agency-page-myjobs tabular dialog creatives-search"
             maxWidth={'md'}
             dialogTitle=""
             dialogTitleStyle={{ textAlign: 'center' }}

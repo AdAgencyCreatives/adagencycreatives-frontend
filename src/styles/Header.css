@@ -1918,7 +1918,7 @@ img.agency-image-loader {
 .common-modal-dialog .slide-prev,
 .common-modal-dialog .slide-next {
     position: absolute;
-    top: 135px;
+    top: 152px;
     padding: 0px;
     margin: 0px;
     background-color: #000;
@@ -2001,4 +2001,26 @@ img.agency-image-loader {
 
 .agency-page-myjobs.tabular .job-table-status .badge.bg-primary {
     background-color: #0dcaf0 !important;
+}
+
+@media (max-width: 540px) {
+    .agency-page-myjobs.tabular.dialog.creatives-search .profile-header .container {
+        padding: 0px 20px;
+    }
+
+    .agency-page-myjobs.tabular.dialog.creatives-search .profile-header .container .row .header {
+        flex-direction: column;
+    }
+
+    .agency-page-myjobs.tabular.dialog.creatives-search .job-item .d-flex .inner-left {
+        flex-direction: column;
+    }
+
+    .agency-page-myjobs.tabular.dialog.creatives-search .job-item .d-flex .inner-left>div {
+        width: max-content;
+    }
+
+    .agency-page-myjobs.tabular.dialog.creatives-search .job-item .d-flex .inner-left .image-loader {
+        justify-content: start;
+    }
 }
