@@ -17,7 +17,7 @@ const DownloadProfilePdfButton = React.memo(({ data, filename, allowPhone }) => 
                             setIsLoading(false);
                         }
                         return (
-                            <button className={"btn btn-" + (isLoading || loading ? "silver" : "dark") + " fs-5"} style={{ minWidth: '220px', cursor: isLoading || loading ? 'wait' : 'pointer' }}>
+                            <button className={"btn btn-" + (isLoading || loading ? "silver" : "dark") + " fs-5"} style={{ cursor: isLoading || loading ? 'wait' : 'pointer' }}>
                                 Download Profile
                             </button>
                         );
