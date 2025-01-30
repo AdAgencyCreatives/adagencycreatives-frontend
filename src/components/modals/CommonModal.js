@@ -43,7 +43,10 @@ const CommonModal = (
                 sx={sx}
                 className={dialogClass}
             >
-                <DialogTitle style={dialogTitleStyle}>{dialogTitle?.length > 0 ? dialogTitle : <>&nbsp;</>}</DialogTitle>
+                <IoCloseCircleSharp size={30} className={closeIconClass} onClick={handleOnClose} />
+                {dialogTitle?.length > 0 && (
+                    <DialogTitle style={dialogTitleStyle}>{dialogTitle}</DialogTitle>
+                )}
                 {actions?.length > 0 && (
                     <DialogActions className={actionsClassName}>
                         {actions.map(action => {
@@ -62,7 +65,6 @@ const CommonModal = (
                 <DialogContent>
                     <DialogContentText>{dialogContentText}</DialogContentText>
                     <div className={className}>
-                        <IoCloseCircleSharp size={30} className={closeIconClass} onClick={handleOnClose} />
                         {children}
                     </div>
                 </DialogContent>

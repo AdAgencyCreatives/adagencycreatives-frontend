@@ -67,7 +67,6 @@ const JobListItem = ({
                                                         "/job-category/" +
                                                         item.category.toLowerCase().replace(/ /g, "-")
                                                     }
-                                                    reloadDocument
                                                 >
                                                     {item.category}
                                                 </Link>
@@ -96,7 +95,6 @@ const JobListItem = ({
                                         <Link
                                             className="type-job"
                                             to={"/job-type/" + item.employment_type.toLowerCase()}
-                                            reloadDocument
                                         >
                                             {item.employment_type}
                                         </Link>

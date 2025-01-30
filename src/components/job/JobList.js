@@ -61,7 +61,7 @@ const JobList = ({ data, showAgency = true }) => {
   };
 
   useEffect(() => {
-    console.log({ data });
+    //console.log({ data });
   }, [data]);
 
   return (

@@ -340,6 +340,7 @@ const Creatives = () => {
         )}
         <div className="row g-4">
           <CommonModal
+            dialogClass="common-modal-dialog creatives-search"
             className="agency-page-myjobs tabular dialog creatives-search"
             maxWidth={'md'}
             dialogTitle=""

@@ -1431,16 +1431,19 @@ h2.community-subtitle ul li {
     min-width: 150px;
 }
 
-.dialog .close-modal {
+.dialog .close-modal,
+.common-modal-dialog .MuiPaper-root .close-modal {
     position: absolute;
     right: 10px;
     top: 10px;
     cursor: pointer;
     width: 30px;
     height: 30px;
+    z-index: 2;
 }
 
-.dialog .close-modal:hover {
+.dialog .close-modal:hover,
+.common-modal-dialog .MuiPaper-root .close-modal:hover {
     color: #d3a11f;
 }
 
@@ -1918,7 +1921,7 @@ img.agency-image-loader {
 .common-modal-dialog .slide-prev,
 .common-modal-dialog .slide-next {
     position: absolute;
-    top: 152px;
+    top: 88px;
     padding: 0px;
     margin: 0px;
     background-color: #000;
@@ -2023,4 +2026,14 @@ img.agency-image-loader {
     .agency-page-myjobs.tabular.dialog.creatives-search .job-item .d-flex .inner-left .image-loader {
         justify-content: start;
     }
+}
+
+.common-modal-dialog.creatives-search .common-modal-actions-apply-now {
+    position: relative;
+    z-index: 1;
+}
+
+.common-modal-dialog.creatives-search .MuiDialogContent-root {
+    position: relative;
+    z-index: 0;
 }

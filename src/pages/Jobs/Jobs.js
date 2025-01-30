@@ -92,7 +92,7 @@ const Jobs = () => {
   }, [job_alerts]);
 
   useEffect(() => {
-    console.log({ selectRef });
+    //console.log({ selectRef });
   }, [selectRef]);
 
   /*   useEffect(() => {
@@ -384,7 +384,12 @@ const Jobs = () => {
                             return filters[item].map((i, key) => {
                               return (
                                 <li key={i.value}>
-                                  <a href="#" onClick={() => removeFilter(item, key)}>
+                                  <a href="javascript:void(0)" onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    removeFilter(item, key);
+                                    return false;
+                                  }}>
                                     <span className="close-value">x</span>
                                     &nbsp;{i.label}
                                   </a>
@@ -394,7 +399,12 @@ const Jobs = () => {
                           } else {
                             return (
                               <li key={item.value}>
-                                <a href="#" onClick={() => removeFilter(item)}>
+                                <a href="javascript:void(0)" onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  removeFilter(item);
+                                  return false;
+                                }}>
                                   <span className="close-value">x</span>
                                   &nbsp;{filters[item].label}
                                 </a>
@@ -404,10 +414,13 @@ const Jobs = () => {
                         })}
                       </ul>
                       <a
-                        href="#"
-                        onClick={() => {
+                        href="javascript:void(0)"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
                           setFilters({});
                           filterJobs({});
+                          return false;
                         }}
                       >
                         Clear all
@@ -433,19 +446,19 @@ const Jobs = () => {
                         <nav>
                           <ul className="pagination">
                             <li className={"page-item" + (meta.current_page == 1 ? " disabled" : "")} onClick={() => paginate(meta.current_page - 1)}>
-                              <a className="page-link" href="javascript:void(0);" aria-label="Previous">
+                              <a className="page-link" href="javascript:void(0)" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                               </a>
                             </li>
                             {Array.apply(null, { length: meta.last_page }).map((item, index) => (
                               <li className={"page-item " + (meta.current_page == index + 1 ? "active" : "")} onClick={() => paginate(index + 1)} key={"page" + index}>
-                                <a className="page-link" href="javascript:void(0);">
+                                <a className="page-link" href="javascript:void(0)">
                                   {index + 1}
                                 </a>
                               </li>
                             ))}
                             <li className={"page-item" + (meta.current_page == meta.last_page ? " disabled" : "")} onClick={() => paginate(meta.current_page + 1)}>
-                              <a className="page-link" href="javascript:void(0);" aria-label="Next">
+                              <a className="page-link" href="javascript:void(0)" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                               </a>
                             </li>
@@ -455,11 +468,13 @@ const Jobs = () => {
                     </div>
                   </div>
                 )}
-                {jobs?.length > 0 ? <JobList data={jobs} /> : <>
+                {jobs?.length > 0 ? (
+                  <JobList data={jobs} />
+                ) : (<>
                   <DelayedOutput delay={5000}>
                     <p>No Jobs found</p>
                   </DelayedOutput>
-                </>}
+                </>)}
                 {meta && meta?.total > 9 && (
                   <div className="row mt-3">
                     <div className="col-12">
@@ -470,19 +485,19 @@ const Jobs = () => {
                         <nav>
                           <ul className="pagination">
                             <li className={"page-item" + (meta.current_page == 1 ? " disabled" : "")} onClick={() => paginate(meta.current_page - 1)}>
-                              <a className="page-link" href="javascript:void(0);" aria-label="Previous">
+                              <a className="page-link" href="javascript:void(0)" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                               </a>
                             </li>
                             {Array.apply(null, { length: meta.last_page }).map((item, index) => (
                               <li className={"page-item " + (meta.current_page == index + 1 ? "active" : "")} onClick={() => paginate(index + 1)} key={"page" + index}>
-                                <a className="page-link" href="javascript:void(0);">
+                                <a className="page-link" href="javascript:void(0)">
                                   {index + 1}
                                 </a>
                               </li>
                             ))}
                             <li className={"page-item" + (meta.current_page == meta.last_page ? " disabled" : "")} onClick={() => paginate(meta.current_page + 1)}>
-                              <a className="page-link" href="javascript:void(0);" aria-label="Next">
+                              <a className="page-link" href="javascript:void(0)" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                               </a>
                             </li>
