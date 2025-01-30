@@ -49,7 +49,7 @@ const Community = () => {
       <div className="dark-container page-community mb-0 mt-0">
         <DelayedOutput>
           <h1 className="community-title" dangerouslySetInnerHTML={{ __html: getPageDataItem('title', pageData) }}></h1>
-          <h2 className="community-subtitle" dangerouslySetInnerHTML={{ __html: getPageDataItem('sub_title', pageData) }}></h2>
+          <h2 className="community-subtitle" dangerouslySetInnerHTML={{ __html: role?.length > 0 && role == "creative" ? getPageDataItem('sub_title', pageData) : "Creatives Only." }}></h2>
         </DelayedOutput>
         <div className="container-fluid mt-4 px-2 px-md-5">
           {!token || !role || (role != "admin" && role != "creative") ? (
