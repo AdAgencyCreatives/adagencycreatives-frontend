@@ -4,6 +4,7 @@ import createDataContext from "./createDataContext";
 const state = {
   messages: [],
   contacts: [],
+  contacts_loading: false,
   activeContact: null,
   attachments: [],
   loading: false,
@@ -49,6 +50,8 @@ const reducer = (state, action) => {
       updatedAttachments[lastIndex].uploaded = true;
       return { ...state, attachments: updatedAttachments };
 
+    case "set_contacts_loading":
+      return { ...state, contacts_loading: action.payload };
     case "set_loading":
       return { ...state, loading: action.payload };
     default:
@@ -98,12 +101,16 @@ const appendMessages = (dispatch) => {
 const getContacts = (dispatch) => {
   return async (type) => {
     try {
+      setContactsLoading(dispatch, true);
       const response = await api.get("/my-contacts?type=" + type);
       dispatch({
         type: "set_contacts",
         payload: response.data,
       });
-    } catch (error) { }
+      setContactsLoading(dispatch, false);
+    } catch (error) {
+      setContactsLoading(dispatch, false);
+    }
   };
 };
 
@@ -146,6 +153,13 @@ const addMessage = (dispatch) => {
 const setLoading = (dispatch, status) => {
   dispatch({
     type: "set_loading",
+    payload: status,
+  });
+};
+
+const setContactsLoading = (dispatch, status) => {
+  dispatch({
+    type: "set_contacts_loading",
     payload: status,
   });
 };

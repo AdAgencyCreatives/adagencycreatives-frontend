@@ -17,7 +17,7 @@ const JobChat = ({ messageType }) => {
   } = useContext(AuthContext);
 
   const {
-    state: { contacts },
+    state: { contacts, contacts_loading },
     getMessages, getContacts,
   } = useContext(ChatContext);
 
@@ -39,6 +39,10 @@ const JobChat = ({ messageType }) => {
     setContactsList(contacts);
     switchTab(tab == "unread" ? "read" : tab);
   }, [contacts]);
+
+  useEffect(() => {
+    setUserListLoading(contacts_loading);
+  }, [contacts_loading]);
 
   useEffect(() => {
     if (conversation_updated_notifications?.length > 0) {
