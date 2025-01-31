@@ -4,6 +4,7 @@ import createDataContext from "./createDataContext";
 
 const state = {
   jobs: [],
+  jobs_loading: false,
   meta: {},
   applicationMeta: {},
   links: {},
@@ -124,6 +125,8 @@ const reducer = (state, action) => {
       return { ...state, formSubmit: action.payload };
     case "set_loading":
       return { ...state, isLoading: action.payload };
+    case "set_jobs_loading":
+      return { ...state, jobs_loading: action.payload };
     case "set_loading_app":
       return { ...state, isLoadingApp: action.payload };
     default:
@@ -152,6 +155,7 @@ const getFeaturedJobs = (dispatch) => {
 const getJobs = (dispatch) => {
   return async (user) => {
     try {
+      setJobsLoading(dispatch, true);
       const response = await api.get(
         getJobEndpoint(user) + "?filter[status]=" + status + "&sort=-featured_at"
       );
@@ -159,7 +163,10 @@ const getJobs = (dispatch) => {
         type: "set_jobs",
         payload: response.data,
       });
-    } catch (error) { }
+      setJobsLoading(dispatch, false);
+    } catch (error) {
+      setJobsLoading(dispatch, false);
+    }
   };
 };
 
@@ -600,11 +607,12 @@ const paginateJob = (dispatch) => {
 
 const filterJobs = (dispatch) => {
   return async (filters, user = null) => {
-    console.log({ filters });
+    //console.log({ filters });
     dispatch({
       type: "set_filters",
       payload: filters,
     });
+    setJobsLoading(dispatch, true);
     let filter = getFilters(filters);
     try {
       const response = await api.get(
@@ -614,8 +622,10 @@ const filterJobs = (dispatch) => {
         type: "set_jobs",
         payload: response.data,
       });
+      setJobsLoading(dispatch, false);
     } catch (error) {
-      console.log(error);
+      setJobsLoading(dispatch, false);
+      // console.log(error);
     }
   };
 };
@@ -773,6 +783,13 @@ const loadNextPage = (dispatch) => {
 const setLoading = (dispatch, state) => {
   dispatch({
     type: "set_loading",
+    payload: state,
+  });
+};
+
+const setJobsLoading = (dispatch, state) => {
+  dispatch({
+    type: "set_jobs_loading",
     payload: state,
   });
 };

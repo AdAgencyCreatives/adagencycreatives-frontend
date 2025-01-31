@@ -4,12 +4,12 @@ import Select2 from "react-select";
 import "../../styles/Jobs.scss";
 import { useContext, useEffect, useRef, useState } from "react";
 import { IoArrowBack, IoArrowForward, IoBriefcaseOutline, IoMenu, IoStar } from "react-icons/io5";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as AlertContext } from "../../context/AlertContext";
 import JobList from "../../components/job/JobList";
-import { Drawer } from "@mui/material";
+import { CircularProgress, Drawer } from "@mui/material";
 
 import DelayedOutput from "../../components/DelayedOutput";
 
@@ -31,9 +31,10 @@ const Jobs = () => {
   const [notifCategory, setNotifCategory] = useState([]);
   const [agencyName, setAgencyName] = useState("");
   const params = useParams();
+  const navigate = useNavigate();
 
   const {
-    state: { jobs, meta, links, categories, states, cities, employment_type, media_experiences, job_alerts },
+    state: { jobs, jobs_loading, meta, links, categories, states, cities, employment_type, media_experiences, job_alerts },
     getJobs,
     getCategories,
     getStates,
@@ -86,7 +87,7 @@ const Jobs = () => {
         return item.category;
         // return { label: item.category, value: item.category_id };
       });
-      console.log("categories_selected", categories_selected);
+      // console.log("categories_selected", categories_selected);
       setJobTitlesSelected(categories_selected);
     }
   }, [job_alerts]);
@@ -153,13 +154,16 @@ const Jobs = () => {
 
   const changeState = (item, { action }) => {
     if (action == "select-option") {
+      setCities([]);
+      selectRef.current["city"]?.clearValue();
+      selectRef.current["city-d"]?.clearValue();
       getCities(item.value);
       addFilter(item, "state");
     }
   };
 
   const addFilter = (item, { action }, type) => {
-    console.log(selectRef);
+    //console.log(selectRef);
     let updatedFilters;
     if (action == "select-option") {
       updatedFilters = { ...filters, [type]: item };
@@ -184,7 +188,7 @@ const Jobs = () => {
       delete updatedFilters[item];
     }
 
-    console.log({ updatedFilters });
+    //console.log({ updatedFilters });
     setFilters(updatedFilters);
     filterJobs(updatedFilters);
   };
@@ -226,7 +230,13 @@ const Jobs = () => {
       <div className="filter-item">
         <div className="filter-label">Job Location (State / Major City)</div>
         <div className="filter-box mb-3">
-          <Select options={statesList} ref={(ref) => (selectRef.current["state" + (drawer ? "-d" : "")] = ref)} onChange={changeState} placeholder="Filter By State" />
+          <Select
+            options={statesList}
+            ref={(ref) => (selectRef.current["state" + (drawer ? "-d" : "")] = ref)}
+            onChange={(item, action) => {
+              addFilter(item, action, "state");
+              changeState(item, action);
+            }} placeholder="Filter By State" />
         </div>
         <div className="filter-box">
           <Select
@@ -387,7 +397,9 @@ const Jobs = () => {
                                   <a href="javascript:void(0)" onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
+                                    let allowNavigate = Object.keys(filters)?.length <= 1;
                                     removeFilter(item, key);
+                                    allowNavigate && navigate('/creative-jobs');
                                     return false;
                                   }}>
                                     <span className="close-value">x</span>
@@ -402,7 +414,9 @@ const Jobs = () => {
                                 <a href="javascript:void(0)" onClick={(e) => {
                                   e.preventDefault();
                                   e.stopPropagation();
+                                  let allowNavigate = Object.keys(filters)?.length <= 1;
                                   removeFilter(item);
+                                  allowNavigate && navigate('/creative-jobs');
                                   return false;
                                 }}>
                                   <span className="close-value">x</span>
@@ -420,6 +434,7 @@ const Jobs = () => {
                           e.stopPropagation();
                           setFilters({});
                           filterJobs({});
+                          navigate('/creative-jobs');
                           return false;
                         }}
                       >
@@ -428,7 +443,9 @@ const Jobs = () => {
                     </div>
                   </div>
                   <div className="jobs-alert-ordering-wrapper">
-                    <div className="results-count">Showing all {jobs.length} results</div>
+                    {!jobs_loading && (
+                      <div className="results-count">Showing all {jobs.length} results</div>
+                    )}
                     <div className="jobs-ordering-wrapper"></div>
                   </div>
                 </>
@@ -468,12 +485,14 @@ const Jobs = () => {
                     </div>
                   </div>
                 )}
-                {jobs?.length > 0 ? (
-                  <JobList data={jobs} />
-                ) : (<>
-                  <DelayedOutput delay={5000}>
-                    <p>No Jobs found</p>
-                  </DelayedOutput>
+                {jobs_loading ? (<CircularProgress size={30} />) : (<>
+                  {jobs?.length > 0 ? (
+                    <JobList data={jobs} />
+                  ) : (<>
+                    <DelayedOutput delay={5000}>
+                      <p>No Jobs found</p>
+                    </DelayedOutput>
+                  </>)}
                 </>)}
                 {meta && meta?.total > 9 && (
                   <div className="row mt-3">
