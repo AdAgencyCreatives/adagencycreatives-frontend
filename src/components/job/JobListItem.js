@@ -62,27 +62,41 @@ const JobListItem = ({
                                         <div className="category-job">
                                             <div className="job-category with-icon">
                                                 <IoBriefcaseOutline />
-                                                <Link
-                                                    to={
-                                                        "/job-category/" +
-                                                        item.category.toLowerCase().replace(/ /g, "-")
-                                                    }
-                                                >
-                                                    {item.category}
-                                                </Link>
+                                                {role?.length > 0 ? (
+                                                    <Link
+                                                        to={
+                                                            "/job-category/" +
+                                                            item.category.toLowerCase().replace(/ /g, "-")
+                                                        }
+                                                    >
+                                                        {item.category}
+                                                    </Link>
+                                                ) : (
+                                                    <span>
+                                                        {item.category}
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
                                     )}
                                     {item.location.state && (
                                         <div className="job-location location">
                                             {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
-                                            <Link to={`/job-location-state/${item.location.state}`}>
-                                                {item.location.state}
-                                            </Link>
+                                            {role?.length > 0 ? (
+                                                <Link to={`/job-location-state/${item.location.state}`}>
+                                                    {item.location.state}
+                                                </Link>
+                                            ) : (
+                                                <span>{item.location.state}</span>
+                                            )}
                                             {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                                            <Link to={`/job-location-city/${item.location.city}`}>
-                                                {item.location.city}
-                                            </Link>
+                                            {role?.length > 0 ? (
+                                                <Link to={`/job-location-city/${item.location.city}`}>
+                                                    {item.location.city}
+                                                </Link>
+                                            ) : (
+                                                <span>{item.location.city}</span>
+                                            )}
                                         </div>
                                     )}
                                     <div className="job-deadline with-icon">

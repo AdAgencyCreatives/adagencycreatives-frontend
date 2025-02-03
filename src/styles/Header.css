@@ -885,7 +885,8 @@ nav ul.dropdown-list .list-item-text.j-fix {
     margin-right: 10px;
 }
 
-.jobs-list-container .job-location.location a {
+.jobs-list-container .job-location.location a,
+.jobs-list-container .job-location.location span {
     font-size: 20px;
     font-weight: 400;
 }

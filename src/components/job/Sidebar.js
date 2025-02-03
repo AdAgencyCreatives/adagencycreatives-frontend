@@ -10,7 +10,7 @@ import { FaUserTie } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
-const Sidebar = ({ data }) => {
+const Sidebar = ({ data, role }) => {
   return (
     <div className="sidebar-item">
       <div className="content">
@@ -28,19 +28,21 @@ const Sidebar = ({ data }) => {
           <div className="details">
             <div className="text">Job Location</div>
             <div className="value">
-              <Link
-                className="text-dark"
-                to={`/job-location-state/${data.location.state}`}
-              >
-                {data.location.state}
-              </Link>
+              {role?.length > 0 ? (
+                <Link className="text-dark" to={`/job-location-state/${data.location.state}`}>
+                  {data.location.state}
+                </Link>
+              ) : (
+                <span>{data.location.state}</span>
+              )}
               {(data?.location?.state?.length && data?.location?.city?.length) && (<span>,&nbsp;</span>)}
-              <Link
-                className="text-dark"
-                to={`/job-location-city/${data.location.city}`}
-              >
-                {data.location.city}
-              </Link>
+              {role?.length > 0 ? (
+                <Link className="text-dark" to={`/job-location-city/${data.location.city}`}>
+                  {data.location.city}
+                </Link>
+              ) : (
+                <span>{data.location.city}</span>
+              )}
             </div>
           </div>
         </div>

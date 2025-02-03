@@ -95,7 +95,7 @@ const TabularJobApplications = (props) => {
             setInput={setSearchInput}
             onSearch={handleSearch}
             placeholder={"Search My Applicants"}
-            searchBoxClass="search-box-common"
+            searchBoxClass="search-box-common search-box-black-gold"
           />
           <br />
         </>
