@@ -8,6 +8,7 @@ import useAgencies from "../../hooks/useAgencies";
 import { Context as AuthContext } from "../../context/AuthContext";
 import SliderLoader from "../SliderLoader";
 import AgencyImageLoader from "../AgencyImageLoader";
+import usePermissions from "../../hooks/usePermissions";
 
 const AdAgencies = () => {
 
@@ -22,9 +23,14 @@ const AdAgencies = () => {
     },
   } = useContext(AuthContext);
 
-  const isAdmin = role == "admin";
-  const isAdvisor = role == "advisor";
-  const isAgency = role == "agency";
+  const {
+    isAdmin,
+    isAdvisor,
+    isAgency,
+    isCreative,
+    isRecruiter,
+    hasSubscription,
+  } = usePermissions();
 
   useEffect(() => {
     const params = {
@@ -103,15 +109,27 @@ const AdAgencies = () => {
                       <div className="job-location location">
                         {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
                         {item?.location?.state?.length && (
-                          <Link to={`/agencies/location/state/${item.location.state}`}>
-                            {item.location.state}
-                          </Link>
+                          <>
+                            {(isAdmin || (isAdvisor && hasSubscription)) ? (
+                              <Link to={`/agencies/location/state/${item.location.state}`}>
+                                {item.location.state}
+                              </Link>
+                            ) : (
+                              <span>{item.location.state}</span>
+                            )}
+                          </>
                         )}
                         {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
                         {item?.location?.city?.length && (
-                          <Link to={`/agencies/location/city/${item.location.city}`}>
-                            {item.location.city}
-                          </Link>
+                          <>
+                            {(isAdmin || (isAdvisor && hasSubscription)) ? (
+                              <Link to={`/agencies/location/city/${item.location.city}`}>
+                                {item.location.city}
+                              </Link>
+                            ) : (
+                              <span>{item.location.city}</span>
+                            )}
+                          </>
                         )}
                       </div>
                     ) : (

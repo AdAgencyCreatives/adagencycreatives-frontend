@@ -12,6 +12,7 @@ import Tooltip from "../components/Tooltip";
 import AuthModal from "../components/modals/AuthModal";
 import DelayedOutput from "../components/DelayedOutput";
 import AgencyImageLoader from "../components/AgencyImageLoader";
+import usePermissions from "../hooks/usePermissions";
 
 const Agencies = () => {
   const [input, setInput] = useHistoryState("input", "");
@@ -36,6 +37,15 @@ const Agencies = () => {
   const {
     state: { role, user, token },
   } = useContext(AuthContext);
+
+  const {
+    isAdmin,
+    isAdvisor,
+    isAgency,
+    isCreative,
+    isRecruiter,
+    hasSubscription,
+  } = usePermissions();
 
   useScrollLoader(loading, loadMore);
 
@@ -118,9 +128,17 @@ const Agencies = () => {
                       {item.location && (
                         <div className="job-location location">
                           {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
-                          <Link to={`/agencies/location/state/${item.location.state}`}>{item.location.state}</Link>
+                          {(isAdmin || (isAdvisor && hasSubscription)) ? (
+                            <Link to={`/agencies/location/state/${item.location.state}`}>{item.location.state}</Link>
+                          ) : (
+                            <span>{item.location.state}</span>
+                          )}
                           {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                          <Link to={`/agencies/location/city/${item.location.city}`}>{item.location.city}</Link>
+                          {(isAdmin || (isAdvisor && hasSubscription)) ? (
+                            <Link to={`/agencies/location/city/${item.location.city}`}>{item.location.city}</Link>
+                          ) : (
+                            <span>{item.location.city}</span>
+                          )}
                         </div>
                       )}
                       <div className="open-jobs-btn">

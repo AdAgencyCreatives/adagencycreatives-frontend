@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { Context as AuthContext } from "../../context/AuthContext";
 import SliderLoader from "../SliderLoader";
 import AgencyImageLoader from "../AgencyImageLoader";
+import usePermissions from "../../hooks/usePermissions";
 
 const CreativeJobs = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -22,9 +23,14 @@ const CreativeJobs = () => {
     },
   } = useContext(AuthContext);
 
-  const isAdmin = role == "admin";
-  const isAdvisor = role == "advisor";
-  const isAgency = role == "agency";
+  const {
+    isAdmin,
+    isAdvisor,
+    isAgency,
+    isCreative,
+    isRecruiter,
+    hasSubscription,
+  } = usePermissions();
 
   const {
     state: { jobs },
@@ -148,13 +154,21 @@ const CreativeJobs = () => {
                     {item.location && (
                       <div className="job-location location">
                         {(item?.location?.state?.length || item?.location?.city?.length) && (<IoLocationOutline />)}
-                        <Link to={`/job-location-state/${item.location.state}`}>
-                          {item.location.state}
-                        </Link>
+                        {(isAdmin || (isAdvisor && hasSubscription)) ? (
+                          <Link to={`/job-location-state/${item.location.state}`}>
+                            {item.location.state}
+                          </Link>
+                        ) : (
+                          <span>{item.location.state}</span>
+                        )}
                         {(item?.location?.state?.length && item?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                        <Link to={`/job-location-city/${item.location.city}`}>
-                          {item.location.city}
-                        </Link>
+                        {(isAdmin || (isAdvisor && hasSubscription)) ? (
+                          <Link to={`/job-location-city/${item.location.city}`}>
+                            {item.location.city}
+                          </Link>
+                        ) : (
+                          <span>{item.location.city}</span>
+                        )}
                       </div>
                     )}
                   </div>

@@ -11,6 +11,7 @@ import { VscTextSize } from "react-icons/vsc";
 import { MdHomeWork } from "react-icons/md";
 
 import useHelper from "../../../hooks/useHelper";
+import usePermissions from "../../../hooks/usePermissions";
 
 const Sidebar = ({ data, user }) => {
 
@@ -18,11 +19,15 @@ const Sidebar = ({ data, user }) => {
 
   const { formatPhone } = useHelper();
 
-  const isCreative = user?.role == "creative";
-  const isAdmin = user?.role == "admin";
-  const isAdvisor = user?.role == "advisor";
-  const isAgency = user?.role == "agency";
-  const isRecruiter = user?.role == "recruiter";
+  const {
+    isAdmin,
+    isAdvisor,
+    isAgency,
+    isCreative,
+    isRecruiter,
+    hasSubscription,
+  } = usePermissions();
+
   const isOwnProfile = user?.uuid == data.user_id;
 
   const workplacePreference = data.workplace_preference;
@@ -178,19 +183,21 @@ const Sidebar = ({ data, user }) => {
                 <div className="value">
                   {data.location && (
                     <div className="job-location location">
-                      <Link
-                        to={`/agencies/location/state/${data.location.state}`}
-                        className="mt-0 fw-normal"
-                      >
-                        {data.location.state}
-                      </Link>
+                      {(isAdmin || (isAdvisor && hasSubscription)) ? (
+                        <Link to={`/agencies/location/state/${data.location.state}`} className="mt-0 fw-normal">
+                          {data.location.state}
+                        </Link>
+                      ) : (
+                        <span>{data.location.state}</span>
+                      )}
                       {(data?.location?.state?.length && data?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                      <Link
-                        to={`/agencies/location/city/${data.location.city}`}
-                        className="mt-0 fw-normal"
-                      >
-                        {data.location.city}
-                      </Link>
+                      {(isAdmin || (isAdvisor && hasSubscription)) ? (
+                        <Link to={`/agencies/location/city/${data.location.city}`} className="mt-0 fw-normal">
+                          {data.location.city}
+                        </Link>
+                      ) : (
+                        <span>{data.location.city}</span>
+                      )}
                     </div>
                   )}
                 </div>

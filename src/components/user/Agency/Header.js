@@ -9,9 +9,19 @@ import "../../../styles/User/ProfileHeader.scss";
 import { Link } from "react-router-dom";
 import useShortlist from "../../../hooks/useShortlist";
 import AgencyImageLoader from "../../AgencyImageLoader";
+import usePermissions from "../../../hooks/usePermissions";
 
 const Header = ({ data, role, user }) => {
-  const isAgency = role == "agency";
+
+  const {
+    isAdmin,
+    isAdvisor,
+    isAgency,
+    isCreative,
+    isRecruiter,
+    hasSubscription,
+  } = usePermissions();
+
   const { isShortlisted, shortlistHandler } = useShortlist(
     user?.uuid,
     data.id,
@@ -52,13 +62,21 @@ const Header = ({ data, role, user }) => {
               {data.location.state && (
                 <div className="job-location location">
                   <IoLocationOutline />
-                  <Link to={`/agencies/location/state/${data.location.state}`}>
-                    {data.location.state}
-                  </Link>
+                  {(isAdmin || (isAdvisor && hasSubscription)) ? (
+                    <Link to={`/agencies/location/state/${data.location.state}`}>
+                      {data.location.state}
+                    </Link>
+                  ) : (
+                    <span>{data.location.state}</span>
+                  )}
                   {(data?.location?.state?.length && data?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                  <Link to={`/agencies/location/city/${data.location.city}`}>
-                    {data.location.city}
-                  </Link>
+                  {(isAdmin || (isAdvisor && hasSubscription)) ? (
+                    <Link to={`/agencies/location/city/${data.location.city}`}>
+                      {data.location.city}
+                    </Link>
+                  ) : (
+                    <span>{data.location.city}</span>
+                  )}
                 </div>
               )}
               <div className="open-jobs">Open Job - {data.open_jobs}</div>
