@@ -140,7 +140,7 @@ const getAgencyById = (dispatch) => {
       const response = await api.get("/agencies?filter[status]=1&filter[user_id]=" + user.uuid + "&filter[role]=" + role + (self ? "" : "&filter[is_visible]=1"));
       const data = response.data.data[0];
       const uid = data.user_id;
-      getOpenPositions(dispatch)(uid);
+      // getOpenPositions(dispatch)(uid);
       dispatch({
         type: "set_single_agency",
         payload: data,
