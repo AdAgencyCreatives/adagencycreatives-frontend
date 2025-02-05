@@ -69,7 +69,7 @@ const JobChat = ({ messageType }) => {
       setContact(item);
       setType(type);
     }
-    refreshContacts();
+    //refreshContacts();
   };
 
   const refreshContacts = async () => {
