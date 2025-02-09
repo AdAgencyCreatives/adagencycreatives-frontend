@@ -251,6 +251,8 @@ const logout = (dispatch) => {
   return (cb) => {
     Cookies.remove("token");
     Cookies.remove("role");
+    Cookies.remove("cookie_token");
+    localStorage.setItem("AD_AGENCY_CREATIVES_USER_TOKEN", "");
     dispatch({
       type: "set_token",
       payload: { token: null, role: null },
