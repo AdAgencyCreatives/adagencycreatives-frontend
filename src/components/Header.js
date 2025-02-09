@@ -96,7 +96,7 @@ function Header(props) {
     // console.log(state?.token);
     // console.log("check:" + (state?.token && state.token != cookie_token));
     if (state?.token && state.token != cookie_token) {
-      navigate("/logout");
+      window.location.href = "/";
     }
   };
 
