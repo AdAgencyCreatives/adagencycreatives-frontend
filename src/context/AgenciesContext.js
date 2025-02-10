@@ -14,6 +14,7 @@ const state = {
   request_package: null,
   video: null,
   creative_applications: [],
+  cache_searchOpenPositions: {}
 };
 
 const reducer = (state, action) => {
@@ -38,6 +39,8 @@ const reducer = (state, action) => {
       return { ...state, video: action.payload.data[0] };
     case "set_open_positions":
       return { ...state, open_positions: action.payload.data, meta: action.payload.meta };
+    case "set_cache_searchOpenPositions":
+      return { ...state, cache_searchOpenPositions: { ...state.cache_searchOpenPositions, [action.payload.url]: action.payload.data } };
     case "set_creative_applications":
       return { ...state, creative_applications: action.payload.data };
     case "delete_job":
@@ -187,16 +190,35 @@ const getOpenPositions = (dispatch) => {
   };
 };
 
-const searchOpenPositions = (dispatch) => {
+const searchOpenPositions = (dispatch, state) => {
   return async (searchText, uid, page = false, status = null, applications_count = 0, cb = () => { }) => {
-    setLoading(dispatch, true);
     try {
-      const response = await api.get("/jobs?skip_applications=yes&sort=-created_at&filter[user_id]=" + uid + (searchText?.length > 0 ? ("&jobSearch=" + searchText) : "") + (status != null && status != '' ? "&filter[status]=" + status : "") + ("&applications_count=" + applications_count) + (page ? "&page=" + page : ""));
+      const endpoint = "/jobs?skip_applications=yes&sort=-created_at&filter[user_id]=" + uid + (searchText?.length > 0 ? ("&jobSearch=" + searchText) : "") + (status != null && status != '' ? "&filter[status]=" + status : "") + ("&applications_count=" + applications_count) + (page ? "&page=" + page : "");
+
+      if (state.cache_searchOpenPositions[endpoint]) {
+        dispatch({
+          type: "set_open_positions",
+          payload: state.cache_searchOpenPositions[endpoint],
+        });
+        setLoading(dispatch, false);
+        cb();
+        return;
+      } else {
+        setLoading(dispatch, true);
+      }
+
+      const response = await api.get(endpoint);
       const data = response.data;
       dispatch({
         type: "set_open_positions",
         payload: data,
       });
+
+      dispatch({
+        type: "set_cache_searchOpenPositions",
+        payload: { url: endpoint, data: data },
+      });
+
       setLoading(dispatch, false);
       cb();
     } catch (error) {
