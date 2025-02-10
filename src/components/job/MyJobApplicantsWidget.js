@@ -3,7 +3,7 @@ import { Context as AlertContext } from "../../context/AlertContext";
 import { Context as JobsContext } from "../../context/JobsContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Button, Tooltip } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   IoCheckmarkCircle,
   IoCloseCircleSharp,
@@ -29,19 +29,35 @@ const MyJobApplicantsWidget = ({
   isJobDeleted,
   currentPage = 1
 }) => {
-  const [thisJob, setThisJob] = useState(job);
   const [showApplications, setShowApplications] = useState(false);
   const { showAlert } = useContext(AlertContext);
 
   const anchor = window.location.hash.slice(1);
 
+  // useEffect(() => {
+  //   if (window.location.pathname == "/applicant-jobs" && anchor?.length > 0) {
+  //     let parts = anchor.split("&");
+  //     let job_slug = parts?.length > 1 ? parts[1].replace("job=", "") : "";
+  //     if (job?.slug == job_slug) {
+  //       setShowApplications(true);
+  //     }
+  //   }
+  // }, [anchor]);
+
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if (window.location.pathname == "/applicant-jobs" && anchor?.length > 0) {
-      let parts = anchor.split("&");
-      let job_slug = parts?.length > 1 ? parts[1].replace("job=", "") : "";
-      if (job?.slug == job_slug) {
-        setShowApplications(true);
-      }
+    let params = new URLSearchParams(window.location.hash.replace("#", ""));
+
+    let job_slug = '';
+    if (params.get('job') && params.get('job')?.length > 0) {
+      job_slug = params.get('job');
+    }
+
+    if (job?.slug == job_slug) {
+      setShowApplications(true);
+    } else {
+      setShowApplications(false);
     }
   }, [anchor]);
 
@@ -49,51 +65,19 @@ const MyJobApplicantsWidget = ({
     state: { user },
   } = useContext(AuthContext);
 
-  const { markFilled } = useContext(JobsContext);
-
-  const handleMarkFilled = (e, job) => {
-    if (job?.status == "filled") {
-      showAlert("Job Vacancy Already Closed");
-      return;
-    }
-    (async () => {
-      let result = await markFilled(job.id, "filled");
-      if (result && result.status == "filled") {
-        showAlert("Job Marked Closed");
-        setThisJob({ ...job, status: result.status });
-      } else {
-        showAlert("Oops! Unable to close Job at the moment");
-      }
-    })();
-  };
-
-  const handleMarkApprove = (e, job) => {
-    if (job?.status == "approved") {
-      showAlert("Job Already Approved");
-      return;
-    }
-    (async () => {
-      let result = await markFilled(job.id, "approved");
-      if (result && result.status == "approved") {
-        showAlert("Job Approved Successfully");
-        setThisJob({ ...job, status: result.status });
-      } else {
-        showAlert("Oops! Unable to close Job at the moment");
-      }
-    })();
-  };
-
   const handleClose = () => {
-    window.location.hash = "page=" + currentPage;
+    let params = new URLSearchParams(window.location.hash.replace("#", ""));
+    params.delete('job');
+    navigate(`#${params.toString()}`);
     setShowApplications(false);
   };
 
   return (
     <>
-      <tr key={thisJob.id}>
+      <tr key={job.id}>
         {(user?.role == "advisor" || user?.role == "recruiter") && (
           <td style={{ minWidth: "100px" }} className="job-table-status">
-            <b>{thisJob.agency.name}</b>
+            <b>{job.agency.name}</b>
           </td>
         )}
 
@@ -101,7 +85,7 @@ const MyJobApplicantsWidget = ({
           <div className="job-table-info-content">
             <div className="title-wrapper" style={{ marginBottom: "0px" }}>
               <h3 className="job-table-info-content-title" style={{ flex: "1", display: 'flex' }}>
-                {(thisJob?.advisor_id && thisJob?.advisor_id != user.id) && (
+                {(job?.advisor_id && job?.advisor_id != user.id) && (
                   <Tooltip title={<div className="advisor-tooltip">This job was posted by an Advisor</div>} placement="top" arrow>
                     <Link className="link-svg-dark" onClick={(e) => { e.preventDefault(); return false; }}>
                       <FaHandsHelping style={{ marginRight: '5px' }} />
@@ -110,12 +94,12 @@ const MyJobApplicantsWidget = ({
                 )}
                 <Link
                   className="link link-black hover-gold link-bold"
-                  to={"/job/" + thisJob.slug}
+                  to={"/job/" + job.slug}
                 >
-                  <u>{thisJob.title}</u>
+                  <u>{job.title}</u>
                 </Link>
               </h3>
-              {/* {thisJob.priority.is_featured ? (
+              {/* {job.priority.is_featured ? (
                 <IoCheckmarkCircle color="#34A853" size={30} style={{ minWidth: "30px", minHeight: "30px" }} />
               ) : (
                 ""
@@ -128,9 +112,9 @@ const MyJobApplicantsWidget = ({
         <td className="job-table-applicants text-theme nowrap">
           {job?.applications?.length > 0 ? (
             <>
-              {/* <span className="number">{thisJob?.applications?.length}</span>{" "}
+              {/* <span className="number">{job?.applications?.length}</span>{" "}
               Applicant
-              {thisJob?.applications?.length > 1 ? "s" : ""} */}
+              {job?.applications?.length > 1 ? "s" : ""} */}
               {/* <br /> */}
               <Button
                 className="btn btn-dark btn-sm"
@@ -140,13 +124,15 @@ const MyJobApplicantsWidget = ({
                   width: "100px",
                 }}
                 onClick={(e) => setShowApplications((state) => {
-                  window.location.hash = "page=" + currentPage + (!state ? "&job=" + job?.slug : "");
+                  let params = new URLSearchParams(window.location.hash.replace("#", ""));
+                  params.set('job', job?.slug);
+                  navigate(`#${params.toString()}`);
                   return !state;
                 })}
               >
                 {showApplications ? "Hide" : "Show"}&nbsp;
-                <span className="number">{thisJob?.applications?.length}</span>
-                {/* &nbsp;Applicant{thisJob?.applications?.length > 1 ? "s" : ""} */}
+                <span className="number">{job?.applications?.length}</span>
+                {/* &nbsp;Applicant{job?.applications?.length > 1 ? "s" : ""} */}
               </Button>
             </>
           ) : (
@@ -158,24 +144,24 @@ const MyJobApplicantsWidget = ({
           <div className="job-table-info-content" style={{ minWidth: "100px" }}>
             <div className="job-metas">
               <div className="job-location location" style={{ display: "flex", justifyContent: "center" }}>
-                {(thisJob?.location?.state?.length ||
-                  thisJob?.location?.city?.length) && <IoLocationOutline />}
-                {thisJob.location?.state && (
+                {(job?.location?.state?.length ||
+                  job?.location?.city?.length) && <IoLocationOutline />}
+                {job.location?.state && (
                   <Link
                     className="link link-black hover-gold"
-                    to={`/job-location-state/${thisJob.location.state}`}
+                    to={`/job-location-state/${job.location.state}`}
                   >
-                    {thisJob.location.state}
+                    {job.location.state}
                   </Link>
                 )}
-                {thisJob?.location?.state?.length &&
-                  thisJob?.location?.city?.length && <span>,&nbsp;</span>}
-                {thisJob.location?.city && (
+                {job?.location?.state?.length &&
+                  job?.location?.city?.length && <span>,&nbsp;</span>}
+                {job.location?.city && (
                   <Link
                     className="link link-black hover-gold"
-                    to={`/job-location-city/${thisJob.location.city}`}
+                    to={`/job-location-city/${job.location.city}`}
                   >
-                    {thisJob.location.city}
+                    {job.location.city}
                   </Link>
                 )}
               </div>
@@ -186,11 +172,11 @@ const MyJobApplicantsWidget = ({
         <td>
           <div className="job-table-info-content-date-expiry">
             <div className="created">
-              {moment(thisJob.created_at).format("MMM D, YYYY")}
+              {moment(job.created_at).format("MMM D, YYYY")}
             </div>
             <div className="expiry-date">
               <span className="text-danger">
-                {moment(thisJob.expired_at).format("MMM D, YYYY")}
+                {moment(job.expired_at).format("MMM D, YYYY")}
               </span>
             </div>
           </div>
@@ -198,37 +184,37 @@ const MyJobApplicantsWidget = ({
 
         <td className="job-table-status nowrap">
           {!(
-            (thisJob?.expired_at &&
-              new Date(thisJob?.expired_at) <=
+            (job?.expired_at &&
+              new Date(job?.expired_at) <=
               Date.parse(new Date().toISOString())) ||
-            thisJob?.deleted_at
+            job?.deleted_at
           ) && (
               <>
-                {thisJob.status == "approved" && (
+                {job.status == "approved" && (
                   <span className="badge bg-primary">Active</span>
                 )}
-                {thisJob.status == "filled" && (
+                {job.status == "filled" && (
                   <span className="badge bg-danger">Closed</span>
                 )}
               </>
             )}
-          {thisJob?.deleted_at &&
-            new Date(thisJob?.deleted_at) <
+          {job?.deleted_at &&
+            new Date(job?.deleted_at) <
             Date.parse(new Date().toISOString()) ? (
             <div className="job-status-center">
               <span className="badge bg-danger">
                 Deleted
-              </span><TimeAgo datetime={thisJob?.deleted_at} />
+              </span><TimeAgo datetime={job?.deleted_at} />
             </div>
           ) : (
             <>
-              {thisJob?.expired_at &&
-                new Date(thisJob?.expired_at) <=
+              {job?.expired_at &&
+                new Date(job?.expired_at) <=
                 Date.parse(new Date().toISOString()) && (
                   <div className="job-status-center">
                     <span className="badge bg-danger">
                       Expired
-                    </span><TimeAgo datetime={thisJob?.expired_at} />
+                    </span><TimeAgo datetime={job?.expired_at} />
                   </div>
                 )}
             </>
@@ -236,7 +222,7 @@ const MyJobApplicantsWidget = ({
         </td>
       </tr>
       <Dialog
-        open={showApplications && thisJob?.applications?.length > 0}
+        open={showApplications && job?.applications?.length > 0}
         onClose={(e) => handleClose()}
         scroll="body"
         fullWidth={true}
@@ -247,20 +233,20 @@ const MyJobApplicantsWidget = ({
           <DialogContentText></DialogContentText>
           <div className="agency-page-myjobs tabular dialog">
             <IoCloseCircleSharp size={30} className="close-modal" onClick={(e) => handleClose()} />
-            {thisJob?.applications?.length > 0 ? (
+            {job?.applications?.length > 0 ? (
               <TabularJobApplications
-                job={thisJob}
+                job={job}
                 setApplicationStatus={setApplicationStatus}
                 setAppId={setAppId}
                 setOpen={setOpen}
                 isJobExpired={
-                  thisJob?.expired_at &&
-                  new Date(thisJob?.expired_at) <=
+                  job?.expired_at &&
+                  new Date(job?.expired_at) <=
                   Date.parse(new Date().toISOString())
                 }
                 isJobDeleted={
-                  thisJob?.deleted_at &&
-                  new Date(thisJob?.deleted_at) <
+                  job?.deleted_at &&
+                  new Date(job?.deleted_at) <
                   Date.parse(new Date().toISOString())
                 }
               />

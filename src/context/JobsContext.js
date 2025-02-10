@@ -1,5 +1,4 @@
-import { IoReturnUpForwardOutline } from "react-icons/io5";
-import { api, getAuthToken } from "../api/api";
+import { api } from "../api/api";
 import createDataContext from "./createDataContext";
 
 const state = {
@@ -27,7 +26,8 @@ const state = {
   notes: [],
   job_alerts: [],
   applicationsNextPage: null,
-  notesNextPage: null
+  notesNextPage: null,
+  cache_searchApplicationsAllStatus: {},
 };
 
 const reducer = (state, action) => {
@@ -40,6 +40,16 @@ const reducer = (state, action) => {
         applications: action.payload.data,
         applicationsNextPage: action.payload.links.next,
         applicationMeta: action.payload.meta
+      };
+    case "set_cache_searchApplicationsAllStatus":
+      return {
+        ...state,
+        cache_searchApplicationsAllStatus: { ...state.cache_searchApplicationsAllStatus, [action.payload.url]: action.payload.data },
+      };
+    case "modify_applications":
+      return {
+        ...state,
+        applications: action.payload.data,
       };
     case "set_nextpage_applications":
       return {
@@ -269,6 +279,14 @@ const getApplications = (dispatch) => {
   };
 };
 
+const modifyApplications = (dispatch) => {
+  return async (applications) => {
+    dispatch({
+      type: "modify_applications",
+      payload: applications,
+    });
+  };
+};
 
 const getApplicationsAllStatus = (dispatch) => {
   return async (uid, applications_count = 0, page = false, application_status = false, cb = () => { }) => {
@@ -289,22 +307,42 @@ const getApplicationsAllStatus = (dispatch) => {
   };
 };
 
-const searchApplicationsAllStatus = (dispatch) => {
+const searchApplicationsAllStatus = (dispatch, state) => {
   return async (searchText, uid, applications_count = 0, page = false, application_status = false, cb = () => { }) => {
-    let applications = [];
-    setLoadingApp(dispatch, true);
+
     try {
       const endpointUrl = "/jobs?sort=-created_at&filter[trashed]=with&filter[user_id]=" + uid + (searchText?.length > 0 ? ("&applicantSearch=" + searchText) : "") + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
       // const endpointUrl = "/jobs?sort=-created_at&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
-      console.log(endpointUrl);
+      //console.log(endpointUrl);
+
+      if (state.cache_searchApplicationsAllStatus[endpointUrl]) {
+        dispatch({
+          type: "set_applications",
+          payload: state.cache_searchApplicationsAllStatus[endpointUrl],
+        });
+        cb(state.cache_searchApplicationsAllStatus[endpointUrl].data);
+        setLoadingApp(dispatch, false);
+        return;
+      } else {
+        setLoadingApp(dispatch, true);
+      }
+
       const response = await api.get(endpointUrl);
       dispatch({
         type: "set_applications",
         payload: response.data,
       });
+
+      dispatch({
+        type: "set_cache_searchApplicationsAllStatus",
+        payload: { url: endpointUrl, data: response.data },
+      });
       cb(response.data.data);
-    } catch (error) { }
-    setLoadingApp(dispatch, false);
+      setLoadingApp(dispatch, false);
+    } catch (error) {
+      setLoadingApp(dispatch, false);
+    }
+
   };
 };
 
@@ -813,6 +851,7 @@ export const { Context, Provider } = createDataContext(
     getApplications,
     getApplicationsAllStatus,
     searchApplicationsAllStatus,
+    modifyApplications,
     getRecentApplications,
     updateApplication,
     deleteApplication,

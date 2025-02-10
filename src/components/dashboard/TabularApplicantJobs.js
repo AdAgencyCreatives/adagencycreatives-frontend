@@ -8,26 +8,28 @@ import Paginate from "../../components/Paginate";
 import { CircularProgress } from "@mui/material";
 import MyJobApplicantsWidget from "../job/MyJobApplicantsWidget";
 import SearchBarCommon from "../../components/SearchBarCommon";
+import { useNavigate } from "react-router-dom";
 
 const TabularApplicantJobs = () => {
 
+  const navigate = useNavigate();
+
   const [searchInput, setSearchInput] = useState("");
+  const [showLoading, setShowLoading] = useState(false);
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [appId, setAppId] = useState("");
-  const [data, setData] = useState([]);
   const [tab, setTab] = useState({});
   const [statusApplication, setStatusApplication] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const anchor = window.location.hash.slice(1);
 
   const {
     state: { applications, isLoadingApp, applicationMeta },
     searchApplicationsAllStatus,
     updateApplication,
-    deleteApplication,
+    modifyApplications,
   } = useContext(JobsContext);
 
   const {
@@ -37,28 +39,40 @@ const TabularApplicantJobs = () => {
   const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
-    let loadNormal = true;
+    let params = new URLSearchParams(window.location.hash.replace("#", ""));
 
-    if (window.location.pathname == "/applicant-jobs" && anchor?.length > 0) {
-      let parts = anchor.split("&");
-      let page = parts?.length > 0 ? parts[0].replace("page=", "") : 1;
-      if (page > 1 && currentPage != page) {
-        loadNormal = false;
-        paginate(page);
-      }
+    let search = '';
+    if (params.get('search') && params.get('search')?.length > 0) {
+      search = params.get('search');
     }
 
-    if (loadNormal) {
-      searchApplicationsAllStatus(searchInput, user.uuid, 0, 0, statusApplication, (foundJobs) => {
-        filterJobApplicants(foundJobs);
-      });
+    setSearchInput(search);
+
+    let page = 1;
+    if (params.get('page') && params.get('page')?.length > 0) {
+      page = params.get('page');
     }
+
+    searchApplicationsAllStatus(search, user.uuid, 0, page, statusApplication, (foundJobs) => {
+      filterJobApplicants(foundJobs);
+    });
   }, []);
 
-
   const handleSearch = (searchText) => {
-    searchApplicationsAllStatus(searchText, user.uuid, 0, 0, statusApplication, (foundJobs) => {
+    setShowLoading(true);
+
+    let params = new URLSearchParams(window.location.hash.replace("#", ""));
+    params.set('search', searchText);
+    navigate(`#${params.toString()}`);
+
+    let page = 1;
+    if (params.get('page') && params.get('page')?.length > 0) {
+      page = params.get('page');
+    }
+
+    searchApplicationsAllStatus(searchText, user.uuid, 0, page, statusApplication, (foundJobs) => {
       filterJobApplicants(foundJobs);
+      setShowLoading(false);
     });
   }
 
@@ -83,7 +97,7 @@ const TabularApplicantJobs = () => {
 
       return updatedJob;
     });
-    setData(filteredJobs);
+    //modifyApplications(filteredJobs);
   };
 
   // const switchTab = (id, tab) => {
@@ -95,42 +109,44 @@ const TabularApplicantJobs = () => {
   //   });
   //   let updatedApplications = [...data];
   //   updatedApplications[jobIndex] = updatedJob;
-  //   setData(updatedApplications);
+  //   modifyApplications(updatedApplications);
   //   setTab((prev) => ({ ...prev, [id]: tab }));
   // };
 
   const setApplicationStatus = (job_id, app_id, status, cb = () => { }) => {
     updateApplication(app_id, { status }, () => {
-      let jobIndex = data.findIndex((job) => job.id == job_id);
-      const updatedJob = { ...data[jobIndex] };
+      let jobIndex = applications.findIndex((job) => job.id == job_id);
+      const updatedJob = { ...applications[jobIndex] };
       let updatedApplications = updatedJob.applications;
       let appIndex = updatedApplications.findIndex((app) => app.id == app_id);
       let updatedApp = { ...updatedApplications[appIndex] };
       updatedApp.status = status;
       updatedApplications[appIndex] = updatedApp;
       updatedJob.applications = updatedApplications;
-      const updatedData = [...data];
+      const updatedData = [...applications];
       updatedData[jobIndex] = { ...updatedJob };
-      setData(updatedData);
+      //modifyApplications(updatedData);
       showAlert("Creative status change successful");
       cb();
     });
   };
 
   const paginate = (page) => {
-
+    setShowLoading(true);
     setCurrentPage(page);
 
-    // Create a URLSearchParams object
     let params = new URLSearchParams(window.location.hash.replace("#", ""));
-
-    // Set new query parameters
     params.set('page', page); // Replace 'key' with your parameter name and 'value' with your parameter value
+    navigate(`#${params.toString()}`);
 
-    window.location.hash = params.toString();
+    let search = '';
+    if (params.get('search') && params.get('search')?.length > 0) {
+      search = params.get('search');
+    }
 
-    searchApplicationsAllStatus(searchInput, user.uuid, 0, page, statusApplication, (foundJobs) => {
+    searchApplicationsAllStatus(search, user.uuid, 0, page, statusApplication, (foundJobs) => {
       filterJobApplicants(foundJobs);
+      setShowLoading(false);
     });
   };
 
@@ -144,7 +160,7 @@ const TabularApplicantJobs = () => {
         type="creatives"
       />
       <h3 className="page-title">All Applicants</h3>
-      {isLoadingApp ? (
+      {(showLoading || (!(applications?.length > 0) && isLoadingApp)) ? (
         <div className="center-page">
           <CircularProgress />
           <span>Loading ...</span>
@@ -159,7 +175,7 @@ const TabularApplicantJobs = () => {
             placeholder={"Search All Applicants"}
             searchBoxClass="search-box-common search-box-black-gold"
           />
-          {data?.length > 0 ? (<>
+          {applications?.length > 0 ? (<>
             {applicationMeta?.total > 9 ? <Paginate meta={applicationMeta} paginate={paginate} title={"jobs"} /> : <br />}
             <div className="table-responsive" style={{ transform: "rotateX(180deg)" }}>
               <table className="job-table" style={{ transform: "rotateX(180deg)" }}>
@@ -178,7 +194,7 @@ const TabularApplicantJobs = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((item) => (
+                  {applications.map((item) => (
                     <MyJobApplicantsWidget
                       job={item}
                       setApplicationStatus={setApplicationStatus}

@@ -159,7 +159,9 @@ const loadAgencies = (dispatch) => {
         payload: response.data,
       });
       setLoading(dispatch, false);
-    } catch (error) { }
+    } catch (error) {
+      setLoading(dispatch, false);
+    }
   };
 };
 
@@ -177,13 +179,16 @@ const getOpenPositions = (dispatch) => {
         type: "set_open_positions",
         payload: data,
       });
-    } catch (error) { }
-    setLoading(dispatch, false);
+      setLoading(dispatch, false);
+    } catch (error) {
+      setLoading(dispatch, false);
+    }
+
   };
 };
 
 const searchOpenPositions = (dispatch) => {
-  return async (searchText, uid, page = false, status = null, applications_count = 0) => {
+  return async (searchText, uid, page = false, status = null, applications_count = 0, cb = () => { }) => {
     setLoading(dispatch, true);
     try {
       const response = await api.get("/jobs?skip_applications=yes&sort=-created_at&filter[user_id]=" + uid + (searchText?.length > 0 ? ("&jobSearch=" + searchText) : "") + (status != null && status != '' ? "&filter[status]=" + status : "") + ("&applications_count=" + applications_count) + (page ? "&page=" + page : ""));
@@ -192,8 +197,12 @@ const searchOpenPositions = (dispatch) => {
         type: "set_open_positions",
         payload: data,
       });
-    } catch (error) { }
-    setLoading(dispatch, false);
+      setLoading(dispatch, false);
+      cb();
+    } catch (error) {
+      setLoading(dispatch, false);
+    }
+
   };
 };
 
@@ -207,8 +216,10 @@ const getOpenPositionsAll = (dispatch) => {
         type: "set_open_positions",
         payload: data,
       });
-    } catch (error) { }
-    setLoading(dispatch, false);
+      setLoading(dispatch, false);
+    } catch (error) {
+      setLoading(dispatch, false);
+    }
   };
 };
 
@@ -446,8 +457,11 @@ const getCreativeApplications = (dispatch) => {
         type: "set_creative_applications",
         payload: data,
       });
-    } catch (error) { }
-    setLoading(dispatch, false);
+      setLoading(dispatch, false);
+    } catch (error) {
+      setLoading(dispatch, false);
+    }
+
   };
 };
 

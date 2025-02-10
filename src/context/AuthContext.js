@@ -172,6 +172,9 @@ const signin = (dispatch) => {
     resetFormMessage(dispatch)();
     try {
       const response = await api.post("/login", data);
+
+      clearStorageData();
+
       setToken(dispatch)(response.data.token, response.data.user.role);
       setUserData(dispatch, response.data.user);
 
@@ -249,6 +252,7 @@ const reloadUserData = (dispatch) => {
 
 const logout = (dispatch) => {
   return (cb) => {
+    clearStorageData();
     Cookies.remove("token");
     Cookies.remove("role");
     Cookies.remove("cookie_token");
@@ -563,6 +567,11 @@ const updateEmailNotifications = (dispatch) => {
     }
     setFormSubmit(dispatch, false);
   };
+};
+
+const clearStorageData = () => {
+  sessionStorage.clear();
+  localStorage.clear();
 };
 
 export const { Context, Provider } = createDataContext(
