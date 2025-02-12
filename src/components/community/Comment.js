@@ -84,6 +84,7 @@ const Comment = (props) => {
                     <a href={"/creative/" + props.comment.user_slug}>
                         {props.comment.user}
                     </a>
+                    <span className="badge bg-primary" style={{ marginLeft: '10px' }}>{props.comment.edited_at ? "Edited" : ""}</span>
                 </p>
                 <div
                     className={`content ${!showMoreClicked && props.comment.content?.length > 500 ? " comment-preview" : ""}`}

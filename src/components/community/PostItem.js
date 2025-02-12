@@ -179,6 +179,7 @@ const PostItem = (props) => {
                         <a className="user-slug" href={"/creative/" + props.post.author_slug}>
                             {props.post.author}
                         </a>
+                        <span className="badge bg-primary" style={{ marginLeft: '10px' }}>{props.post.edited_at ? "Edited" : ""}</span>
                     </div>
                     <div className="post-time">
                         <IoTimeOutline />

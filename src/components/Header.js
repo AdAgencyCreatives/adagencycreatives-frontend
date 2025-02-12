@@ -25,7 +25,8 @@ import { useEffect, useState, useContext } from "react";
 import { navItems } from "../nav/NavItems";
 import AuthModal from "./modals/AuthModal";
 import { Context as AuthContext } from "../context/AuthContext";
-import { checkCookie } from "../helpers/functions";
+// import { checkCookie } from "../helpers/functions";
+import { readToken } from "../helpers/TokenUtility";
 import { Context as AlertContext } from "../context/AlertContext";
 import { Context as SubscriptionContext } from "../context/SubscriptionContext";
 import { agencyNav, creativeNav } from "../nav/DashboardNav";
@@ -90,8 +91,9 @@ function Header(props) {
   }, [state.token]);
 
   const cc = () => {
-    let cookie_token = checkCookie("cookie_token");
-    if (state?.token && state.token != cookie_token) {
+    // let cookie_token = checkCookie("cookie_token");
+    let stored_token = readToken();
+    if (state?.token && state.token != stored_token) {
       window.location.href = "/";
     }
   };

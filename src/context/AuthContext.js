@@ -1,7 +1,8 @@
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import { api, setAuthToken, baseUrl } from "../api/api";
 import createDataContext from "./createDataContext";
-import { setCookie, } from "../helpers/functions";
+// import { setCookie, } from "../helpers/functions";
+import { storeToken, readToken, clearToken } from "../helpers/TokenUtility";
 
 const state = {
   isLoading: false,
@@ -173,12 +174,11 @@ const signin = (dispatch) => {
     try {
       const response = await api.post("/login", data);
 
-      clearStorageData();
-
       setToken(dispatch)(response.data.token, response.data.user.role);
       setUserData(dispatch, response.data.user);
 
-      setCookie("cookie_token", response.data.token, 1000 * 60 * 60 * 24); // set for 24 hours
+      storeToken(response.data.token);
+      // setCookie("cookie_token", response.data.token, 1000 * 60 * 60 * 24); // set for 24 hours
 
       if (response.data.user.role == "creative") {
         let creative = await getCreativeById(response.data.user.uuid);
@@ -252,10 +252,10 @@ const reloadUserData = (dispatch) => {
 
 const logout = (dispatch) => {
   return (cb) => {
-    clearStorageData();
-    Cookies.remove("token");
-    Cookies.remove("role");
-    Cookies.remove("cookie_token");
+    clearToken();
+    // Cookies.remove("token");
+    // Cookies.remove("role");
+    // Cookies.remove("cookie_token");
     dispatch({
       type: "set_token",
       payload: { token: null, role: null },
@@ -359,7 +359,8 @@ const getActivitiesCount = (dispatch) => {
 
 const getToken = (dispatch) => {
   return () => {
-    const token = Cookies.get("token");
+    // const token = Cookies.get("token");
+    const token = readToken();
     if (token) {
       verifyToken(dispatch)(token);
     } else {
@@ -374,8 +375,8 @@ const getToken = (dispatch) => {
 const setToken = (dispatch) => {
   return (token, role) => {
     if (token) {
-      Cookies.set("token", token);
-      Cookies.set("role", role);
+      // Cookies.set("token", token);
+      // Cookies.set("role", role);
       setAuthToken(token);
       dispatch({
         type: "set_token",
@@ -403,7 +404,8 @@ const verifyToken = (dispatch) => async (token) => {
     setToken(dispatch)(response.data.token, response.data.user.role);
     setUserData(dispatch, response.data.user);
 
-    setCookie("cookie_token", response.data.token, 1000 * 60 * 60 * 24); // set for 24 hours
+    storeToken(response.data.token);
+    // setCookie("cookie_token", response.data.token, 1000 * 60 * 60 * 24); // set for 24 hours
 
     if (response.data.user.role == "creative") {
       let creative = await getCreativeById(response.data.user.uuid);
@@ -428,8 +430,8 @@ const verifyToken = (dispatch) => async (token) => {
     });
     return response;
   } catch (error) {
-    Cookies.remove("token");
-    Cookies.remove("role");
+    // Cookies.remove("token");
+    // Cookies.remove("role");
     setErrorMessage(dispatch, error.response.data.message);
     dispatch({
       type: "set_fetching_token",
@@ -567,11 +569,6 @@ const updateEmailNotifications = (dispatch) => {
     }
     setFormSubmit(dispatch, false);
   };
-};
-
-const clearStorageData = () => {
-  sessionStorage.clear();
-  localStorage.clear();
 };
 
 export const { Context, Provider } = createDataContext(

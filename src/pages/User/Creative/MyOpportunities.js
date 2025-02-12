@@ -53,7 +53,7 @@ const MyOpportunities = () => {
   }
 
   return (
-    <div className="agency-page-myjobs">
+    <div className="agency-page-myjobs my-opportunities">
       <h3 className="page-title">Applied Jobs</h3>
       <AddNotesModal
         open={open}
@@ -158,7 +158,8 @@ const MyOpportunities = () => {
 
                         <td className="job-table-status nowrap">
                           <div className="job-table-actions-inner" style={{ textTransform: 'capitalize' }}>
-                            {job?.apply_type.toLowerCase() != "external" ? (item.status == "rejected" ? "Not Aligned" : item.status) : "Interested"}
+                            {/* {job?.apply_type.toLowerCase() != "external" ? (item.status == "rejected" ? "Not Aligned" : item.status) : "Interested"} */}
+                            {["approved", "published"].includes(job.status.toLowerCase()) ? "Job Opened" : "Job Closed"}
                           </div>
                         </td>
 
