@@ -16,7 +16,7 @@ import CreateComment from "./CreateComment";
 import Comment from "./Comment";
 import useHelper from "../../hooks/useHelper";
 
-import { Link } from "@mui/material";
+import { capitalize, Link } from "@mui/material";
 import PostReaction from "./PostReaction";
 import ImageDialog from "../ImageDialog";
 
@@ -180,6 +180,9 @@ const PostItem = (props) => {
                             {props.post.author}
                         </a>
                         <span className="badge bg-primary" style={{ marginLeft: '10px' }}>{props.post.edited_at ? "Edited" : ""}</span>
+                    </div>
+                    <div className="post-username">
+                        {props.post.group_name?.toLowerCase() != "feed" && (<span>{props.post.group_name || ""} | {capitalize(props.post.group_type || "")}</span>)}
                     </div>
                     <div className="post-time">
                         <IoTimeOutline />
