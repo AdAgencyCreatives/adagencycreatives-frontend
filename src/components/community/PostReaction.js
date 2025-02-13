@@ -30,7 +30,7 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
     const [reactionByData, setReactionByData] = useState([]);
     const [postReactionStats, setPostReactionStats] = useState([]);
 
-    const setSingleRections = (data) => {
+    const setSingleReactions = (data) => {
         if (!data?.length) {
             setReactionByData(null);
             return;
@@ -51,6 +51,8 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
         if (uniqueUserReactionData?.length != reactionsCount) {
             setReactionsCount(uniqueUserReactionData.length);
         }
+
+        console.log('Unique User Reactions: ', uniqueUserReactionData?.length);
     };
 
     useEffect(() => {
@@ -59,7 +61,7 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
                 return;
             }
 
-            setSingleRections(post_reactions.data.data)
+            setSingleReactions(post_reactions.data.data)
             let user_reaction = post_reactions.data.data.filter(item => item.user_id == user.uuid);
             setReactionActive(user_reaction && user_reaction.length);
             setUserReaction(user_reaction);
