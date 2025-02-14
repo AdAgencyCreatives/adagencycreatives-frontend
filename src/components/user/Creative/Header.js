@@ -246,7 +246,7 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
                       {/* {isCreative ? "private" : "job"} */}
                     </>
                   )}
-                  {isCreative && <FriendshipWidget creative={data} />}
+                  {isCreative && <FriendshipWidget creative={data} header={true} />}
                   {!isCreative && (
                     <>
                       <button

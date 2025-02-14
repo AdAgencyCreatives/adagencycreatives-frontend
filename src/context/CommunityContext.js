@@ -31,6 +31,8 @@ const state = {
   reply_updated: null,
   reply_deleted: null,
   halt_refresh: false,
+  friends_count: 0,
+  friend_requests_count: 0,
 };
 
 const appendNewPosts = (state, oldPosts, newPosts) => {
@@ -228,7 +230,16 @@ const reducer = (state, action) => {
         ...state,
         reaction_action: action.payload,
       };
-
+    case "set_friends_count":
+      return {
+        ...state,
+        friends_count: action.payload,
+      };
+    case "set_friend_requests_count":
+      return {
+        ...state,
+        friend_requests_count: action.payload,
+      };
     default:
       return state;
   }
@@ -632,6 +643,30 @@ const deleteComment = (dispatch) => {
   };
 };
 
+const getFriendsCount = (dispatch) => {
+  return async () => {
+    try {
+      const response = await api.get("/get_friends_count");
+      dispatch({
+        type: "set_friends_count",
+        payload: response.data,
+      });
+    } catch (error) { }
+  };
+};
+
+const getFriendRequestsCount = (dispatch) => {
+  return async () => {
+    try {
+      const response = await api.get("/get_friend_requests_count");
+      dispatch({
+        type: "set_friend_requests_count",
+        payload: response.data,
+      });
+    } catch (error) { }
+  };
+};
+
 const setLoading = (dispatch, state) => {
   dispatch({
     type: "set_loading",
@@ -674,6 +709,8 @@ export const { Context, Provider } = createDataContext(
     updateComment,
     deleteComment,
     resetPosts,
+    getFriendsCount,
+    getFriendRequestsCount,
   },
   state
 );

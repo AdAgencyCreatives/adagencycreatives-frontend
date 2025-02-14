@@ -345,13 +345,22 @@ ul.dropdown-list:before {
     text-decoration: underline;
 }
 
-.menu-item {
-    position: relative;
+.sidebar-menu li.menu-item a .item-name {
+    flex: 1
 }
 
 .menu-item .count {
-    position: absolute;
-    right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 20px;
+    min-height: 20px;
+    transition: all 0.5s ease;
+}
+
+.menu-item a.active .count,
+.menu-item a:hover .count {
+    background-color: #000;
 }
 
 .center-page {

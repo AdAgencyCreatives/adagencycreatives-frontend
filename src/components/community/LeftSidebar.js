@@ -10,6 +10,7 @@ import {
 } from "react-icons/io5";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as CommunityContext } from "../../context/CommunityContext";
 
 import { NavLink } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
@@ -26,11 +27,17 @@ const LeftSidebar = (props) => {
     getMessagesCount, getNotificationsCount, getActivitiesCount
   } = useContext(AuthContext);
 
+  const {
+    state: { friends_count },
+    getFriendsCount
+  } = useContext(CommunityContext);
+
   useEffect(() => {
     if (user) {
       getMessagesCount(user.uuid, 'private');
       getNotificationsCount(user.uuid);
       // getActivitiesCount(user.uuid);
+      getFriendsCount();
     }
   }, [user, refreshCounts]);
 
@@ -81,6 +88,7 @@ const LeftSidebar = (props) => {
             <NavLink to="/friends">
               <IoPeopleOutline />
               <div className="item-name">Friends</div>
+              <span className="count">{friends_count ? friends_count : 0}</span>
             </NavLink>
           </li>
           <li className="menu-item">
