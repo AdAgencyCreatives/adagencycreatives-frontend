@@ -1,26 +1,15 @@
-// import Placeholder from "../../assets/images/placeholder.png";
-// import LoungePostIconLikeBlack from "../../assets/images/lounge-post-icon-like-black.png";
-// import LoungePostIconLikeGold from "../../assets/images/lounge-post-icon-like-gold.png";
-// import LoungePostIconLaughBlack from "../../assets/images/lounge-post-icon-laugh-black.png";
-// import LoungePostIconLaughGold from "../../assets/images/lounge-post-icon-laugh-gold.png";
-// import LoungePostIconLoveBlack from "../../assets/images/lounge-post-icon-love-black.png";
-// import LoungePostIconLoveGold from "../../assets/images/lounge-post-icon-love-gold.png";
 import LoungePostIconSmileyLike from "../../assets/images/smiley-like.png";
 import LoungePostIconSmileyLaugh from "../../assets/images/smiley-laugh.png";
 import LoungePostIconSmileyLove from "../../assets/images/smiley-heart.png";
-import LoungePostIconCommentBlack from "../../assets/images/lounge-post-icon-comment-black.png";
 import LoungePostIconCommentBlackWhite from "../../assets/images/lounge-post-icon-comment-black-white.png";
 import LoungePostIconCommentGold from "../../assets/images/lounge-post-icon-comment-gold.png";
 
 import NumUnit from "../NumUnit";
 import { useContext, useEffect, useRef, useState } from "react";
 import useLongPress from "../../hooks/useLongPress";
-import { hexToRgb } from "@mui/material";
-import { height, minWidth, padding } from "@mui/system";
 
 const PostReaction = ({ post, user, post_reactions, reaction_action, getReactions, toggleReaction, commentsCount, toggleShowComments, showComments }) => {
 
-    const showMaxReactionBy = 5;
     const reactionKey = "post-reactions-" + post.id;
     const reactionActionKey = "post-reactions-action-" + post.id;
 
@@ -51,8 +40,6 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
         if (uniqueUserReactionData?.length != reactionsCount) {
             setReactionsCount(uniqueUserReactionData.length);
         }
-
-        console.log('Unique User Reactions: ', uniqueUserReactionData?.length);
     };
 
     useEffect(() => {
@@ -63,12 +50,14 @@ const PostReaction = ({ post, user, post_reactions, reaction_action, getReaction
 
             setSingleReactions(post_reactions.data.data)
             let user_reaction = post_reactions.data.data.filter(item => item.user_id == user.uuid);
-            setReactionActive(user_reaction && user_reaction.length);
+            setReactionActive(user_reaction?.length > 0);
             setUserReaction(user_reaction);
         } else {
             setReactionsCount(post.reactions_count);
             getReactions({ "post_id": post.id });
         }
+
+        console.log('Post Reaction Updated: ', (new Date()).toISOString);
     }, [post.updated_at, post_reactions]);
 
 

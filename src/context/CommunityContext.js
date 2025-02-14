@@ -65,18 +65,23 @@ const appendNewPosts = (state, oldPosts, newPosts) => {
   return data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 };
 
-// const appendNewPosts = (state, oldPosts, newPosts) => {
-//   if (!oldPosts?.length > 0) {
-//     return newPosts;
-//   }
+const getPostsUpdated = (posts, new_post_reactions) => {
 
-//   let newPostIds = newPosts.map(newPost => newPost.id);
-//   let filteredOldPosts = oldPosts.filter(oldPost => (!oldPost.post_deleted || oldPost.id != state.post_deleted) && !newPostIds.includes(oldPost.id));
+  let new_posts = [...posts];
 
-//   let data = [...newPosts, ...filteredOldPosts];
+  for (let idx = 0; idx < new_posts.length; idx++) {
+    const post = new_posts[idx];
 
-//   return data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-// };
+    if (post.id != new_post_reactions.post_id) {
+      continue;
+    }
+
+    new_posts[idx].post_reactions = new_post_reactions.data;
+    console.log("Post Reactions Updated: " + (new Date()).toString());
+  }
+
+  return new_posts;
+};
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -212,9 +217,11 @@ const reducer = (state, action) => {
         love_action: action.payload,
       };
     case "set_post_reactions":
+      // let new_posts = getPostsUpdated(state.posts, action.payload);
       return {
         ...state,
         post_reactions: action.payload,
+        // posts: new_posts,
       };
     case "set_reaction_action":
       return {

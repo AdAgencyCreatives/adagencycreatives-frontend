@@ -16,7 +16,7 @@ import { Provider as CommunityProvider } from "./context/CommunityContext";
 import { Provider as SubscriptionProvider } from "./context/SubscriptionContext";
 import { Provider as ChatProvider } from "./context/ChatContext";
 import { Provider as AlertProvider } from "./context/AlertContext";
-import ChatListener from "./components/chat/ChatListener";
+import PusherListener from "./components/PusherListener";
 import { Provider as NotificationsProvider } from "./context/NotificationsContext";
 import Loader from "./components/Loader";
 import { useLocation } from 'react-router-dom';
@@ -73,7 +73,7 @@ function App() {
                           <NotificationsProvider>
                             {/* {!isLoading ? ( */}
                             <div className="App">
-                              <ChatListener />
+                              <PusherListener />
                               <ScrollRestoration />
                               {!skipHeaderFooter ? (<>
                                 <Header />

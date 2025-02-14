@@ -2038,3 +2038,9 @@ img.agency-image-loader {
     position: relative;
     z-index: 0;
 }
+
+.post-group-info {
+    color: rgb(125, 129, 132);
+    font-size: 10pt;
+    font-weight: 400;
+}

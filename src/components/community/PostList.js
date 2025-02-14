@@ -49,7 +49,7 @@ const PostList = (props) => {
           num: prevState.num + 1,
         };
       });
-      // Reload posts after 10 seconds
+      // Reload posts after 15 seconds
     }, 15 * 1000);
 
     (async () => {

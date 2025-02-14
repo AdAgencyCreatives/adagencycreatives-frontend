@@ -6,7 +6,7 @@ import { useContext, useEffect } from "react";
 const FeaturedCities = () => {
 
   const {
-    state:{ featured_cities }, 
+    state: { featured_cities },
     getFeaturedCities
   } = useContext(Context);
 
@@ -15,7 +15,7 @@ const FeaturedCities = () => {
   }, []);
 
   useEffect(() => {
-    console.log(featured_cities);
+    //console.log(featured_cities);
   }, [featured_cities]);
 
   return (
@@ -36,7 +36,7 @@ const FeaturedCities = () => {
               return <></>;
             }
             return (
-              <div className="col-12 col-md-4">
+              <div key={'featured_city_' + index} className="col-12 col-md-4">
                 <div className={`job-city-banner`}>
                   <Link to={`/job-location-city/${item.slug}`}>
                     <div className="city-banner-inner">
@@ -57,14 +57,14 @@ const FeaturedCities = () => {
               </div>
             )
           })}
-          <div className="col-12 col-md-8">
+          <div key={"featured_cities_right"} className="col-12 col-md-8">
             <div className="row">
               {featured_cities && featured_cities.map((item, index) => {
                 if (index === 0) {
                   return <></>;
                 }
                 return (
-                  <div className="col-12 col-md-6">
+                  <div key={'featured_city_2_' + index} className="col-12 col-md-6">
                     <div className={`job-city-banner job-banner-small`}>
                       <Link to={`/job-location-city/${item.slug}`}>
                         <div className="city-banner-inner">

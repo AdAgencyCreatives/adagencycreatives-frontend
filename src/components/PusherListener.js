@@ -1,17 +1,17 @@
 import { useContext } from "react";
 import { useEffect } from "react";
-import { Context as AuthContext } from "../../context/AuthContext";
-import { Context as ChatContext } from "../../context/ChatContext";
+import { Context as AuthContext } from "../context/AuthContext";
+import { Context as CommunityContext } from "../context/CommunityContext";
 import Pusher from "pusher-js";
 window.Pusher = Pusher;
 
-const ChatListener = () => {
+const PusherListener = () => {
   const {
     state: { token, user },
     notifyConversationUpdated,
   } = useContext(AuthContext);
 
-  const { addMessage } = useContext(ChatContext);
+  const { getReactions } = useContext(CommunityContext);
 
   useEffect(() => {
     if (token) {
@@ -29,13 +29,20 @@ const ChatListener = () => {
       var channel = pusher.subscribe(channelName);
       channel.bind("private_msg", function (data) {
         const messageType = data?.data?.message_type;
-        if(messageType == 'received') {
+        if (messageType == 'received') {
           // addMessage(data);
           notifyConversationUpdated(data.data);
-        } else if(messageType == 'conversation_updated') {
+        } else if (messageType == 'conversation_updated') {
           notifyConversationUpdated(data.data);
         }
-        
+
+      });
+
+      var channelName2 = "community";
+      var channel2 = pusher.subscribe(channelName2);
+      channel2.bind("post_reaction", function (data) {
+        console.log('post_reaction', data);
+        getReactions({ post_id: data.data.post_id });
       });
 
       return () => pusher.unsubscribe(channelName);
@@ -45,4 +52,4 @@ const ChatListener = () => {
   return <></>;
 };
 
-export default ChatListener;
+export default PusherListener;

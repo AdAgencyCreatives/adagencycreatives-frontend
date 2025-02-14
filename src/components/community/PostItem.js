@@ -181,7 +181,7 @@ const PostItem = (props) => {
                         </a>
                         <span className="badge bg-primary" style={{ marginLeft: '10px' }}>{props.post.edited_at ? "Edited" : ""}</span>
                     </div>
-                    <div className="post-username">
+                    <div className="post-group-info">
                         {props.post.group_name?.toLowerCase() != "feed" && (<span>{props.post.group_name || ""} | {capitalize(props.post.group_type || "")}</span>)}
                     </div>
                     <div className="post-time">
