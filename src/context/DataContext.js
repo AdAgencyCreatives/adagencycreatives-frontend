@@ -193,7 +193,7 @@ const getCities = (dispatch) => {
 const getFeaturedCities = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/featured_cities_job_count");
+      const response = await api.get("/featured_cities");
       dispatch({
         type: "set_featured_cities",
         payload: response.data,
