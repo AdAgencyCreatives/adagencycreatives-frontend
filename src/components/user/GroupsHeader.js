@@ -8,7 +8,7 @@ import { useContext, useEffect, useState } from "react";
 import CreateGroup from "../community/CreateGroup";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 
-const GroupsHeader = ({ currentView, setCurrentView }) => {
+const GroupsHeader = ({ currentView, onSave }) => {
 
     const {
         state: { role, user, token },
@@ -27,11 +27,11 @@ const GroupsHeader = ({ currentView, setCurrentView }) => {
     return (
         <div className="groups-header">
             <div className="post-form">
-                <CreateGroup />
-                <Link className={"btn btn-dark btn-outline" + (!currentView ? ' btn-selected' : '')} to="/groups" onClick={() => setCurrentView(null)}><HiOutlineUserGroup /> <span className="m-2">Public Groups</span></Link>
-                <Link className={"btn btn-dark btn-outline" + (currentView == 'private' ? ' btn-selected' : '')} to="/groups?view=private" onClick={() => setCurrentView('private')}><HiOutlineUserGroup /> <span className="m-2">Private Groups</span></Link>
-                <Link className={"btn btn-dark btn-outline" + (currentView == 'my' ? ' btn-selected' : '')} to="/groups?view=my" onClick={() => setCurrentView('my')}><HiOutlineUserGroup /> <span className="m-2">My Groups</span></Link>
-                <Link className={"btn btn-dark btn-outline" + (currentView == 'joined' ? ' btn-selected' : '')} to="/groups?view=joined" onClick={() => setCurrentView('joined')}><HiOutlineUserGroup /> <span className="m-2">Joined Groups</span></Link>
+                <CreateGroup onSave={onSave} />
+                <Link className={"btn btn-dark btn-outline" + (!currentView ? ' btn-selected' : '')} to="/groups"><HiOutlineUserGroup /> <span className="m-2">Public Groups</span></Link>
+                <Link className={"btn btn-dark btn-outline" + (currentView == 'private' ? ' btn-selected' : '')} to="/groups?view=private"><HiOutlineUserGroup /> <span className="m-2">Private Groups</span></Link>
+                <Link className={"btn btn-dark btn-outline" + (currentView == 'my' ? ' btn-selected' : '')} to="/groups?view=my"><HiOutlineUserGroup /> <span className="m-2">My Groups</span></Link>
+                <Link className={"btn btn-dark btn-outline" + (currentView == 'joined' ? ' btn-selected' : '')} to="/groups?view=joined"><HiOutlineUserGroup /> <span className="m-2">Joined Groups</span></Link>
             </div>
         </div>
     );

@@ -81,6 +81,8 @@ const EditGroup = (props) => {
             "file": uploadedFile,
             "status": groupStatuses[groupVisibility],
             "reflect": viewQueryParam && viewQueryParam == "my" ? true : groupVisibility == "0",
+        }, () => {
+            showAlert("Group Updated");
         });
     };
 
@@ -161,7 +163,6 @@ const EditGroup = (props) => {
 
         fileReader.readAsDataURL(fileUploaded)
     };
-
 
     return (
         <>
