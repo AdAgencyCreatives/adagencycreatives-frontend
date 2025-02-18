@@ -193,7 +193,7 @@ const getCities = (dispatch) => {
 const getFeaturedCities = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/featured_cities");
+      const response = await api.get("/featured_cities?per_page=5");
       dispatch({
         type: "set_featured_cities",
         payload: response.data,
