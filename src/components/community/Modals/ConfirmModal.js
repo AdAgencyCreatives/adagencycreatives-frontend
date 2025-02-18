@@ -64,7 +64,7 @@ export default function ConfirmModal(props) {
                 </DialogContent>
                 <DialogActions>
                     <Button className="btn btn-dark" onClick={handleConfirm}>Confirm</Button>
-                    <Button className="btn btn-secondary" onClick={handleClose}>Cancel</Button>
+                    <Button className="btn btn-silver" onClick={handleClose}>Cancel</Button>
                 </DialogActions>
             </Dialog>
         </React.Fragment>

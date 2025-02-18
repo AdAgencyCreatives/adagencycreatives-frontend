@@ -132,7 +132,7 @@ const GroupRequests = () => {
                                         ) : (
                                             <>
                                                 <div className="no_result">
-                                                    <p>Please try again. No exact results found.</p>
+                                                    <p>No group requests to show.</p>
                                                 </div>
                                             </>
                                         )}

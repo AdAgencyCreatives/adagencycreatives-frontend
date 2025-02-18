@@ -81,6 +81,8 @@ const CreateGroup = (props) => {
             "file": uploadedFile,
             "status": groupStatuses[groupVisibility],
             "reflect": viewQueryParam && viewQueryParam == "my" ? true : groupVisibility == "0",
+        }, () => {
+            props?.onSave && props.onSave();
         });
     };
 

@@ -71,7 +71,7 @@ const AdAgencies = () => {
   return (
     <div id="agencies">
       <div className="sectionHeader">
-        <h1 className="sectionTitle">Advertising Agencies</h1>
+        <h1 className="sectionTitle">Featured Agencies</h1>
         <div>
           <Link className="browseAll" to="agencies">
             browse all <MdKeyboardDoubleArrowRight />

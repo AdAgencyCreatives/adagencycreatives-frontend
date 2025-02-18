@@ -18,7 +18,7 @@ import useNotifications from "../hooks/useNotifications";
 import { useScrollLoader } from "../hooks/useScrollLoader";
 
 const Notifications = () => {
-  const { notifications, loading, loadMore, updateNotifications } = useNotifications('lounge');
+  const { notifications, loading, loadMore, updateNotifications, getLoungeNotifications } = useNotifications('lounge');
   useScrollLoader(loading, loadMore);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -48,6 +48,7 @@ const Notifications = () => {
     const remainingNotifications = notifications.filter((notif) => notif.uuid != notification.uuid);
     updateNotifications(remainingNotifications);
     getNotificationsCount(user.uuid);
+    getLoungeNotifications(user.uuid);
   };
 
   const onMarkRead = (notification) => {
@@ -58,6 +59,7 @@ const Notifications = () => {
     );
     updateNotifications(readNotifications);
     getNotificationsCount(user.uuid);
+    getLoungeNotifications(user.uuid);
   }
 
   return (
@@ -100,7 +102,7 @@ const Notifications = () => {
                       </div>
                     ) : (
                       <div className="no_result">
-                        <p>Please try again. No exact results found.</p>
+                        <p>No new notifications.</p>
                       </div>
                     )}
                   </>

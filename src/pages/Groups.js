@@ -22,13 +22,11 @@ const Groups = () => {
   const [groupsFound, setGroupsFound] = useState(null);
 
   const queryParams = new URLSearchParams(window.location.search);
-  const viewQueryParam = queryParams.get("view");
-
-  const [currentView, setCurrentView] = useState(viewQueryParam);
+  const currentView = queryParams.get("view") || '';
 
   const {
     state: { groups, nextPage, loading },
-    getGroups, loadGroups, searchGroups, getUserGroups, updateGroup, deleteGroup, getMembershipGroups,
+    getGroups, loadGroups, searchGroups, getUserGroups, deleteGroup, getMembershipGroups,
   } = useContext(GroupsContext);
 
   const {
@@ -39,17 +37,11 @@ const Groups = () => {
     showAlert,
   } = useContext(AlertContext);
 
-  useEffect(() => {
+  const loadGroupsByView = () => {
     // console.log(user);
     if (user) {
-      if (
-        !currentView ||
-        !(
-          currentView == "private" ||
-          currentView == "my" ||
-          currentView == "joined"
-        )
-      ) {
+      setInput("");
+      if (!currentView || !(currentView == "private" || currentView == "my" || currentView == "joined")) {
         setIsLoading(true);
         setGroupsFound(null);
         getGroups();
@@ -65,6 +57,10 @@ const Groups = () => {
         }
       }
     }
+  };
+
+  useEffect(() => {
+    loadGroupsByView();
   }, [user, currentView]);
 
   useEffect(() => {
@@ -82,21 +78,7 @@ const Groups = () => {
       setGroupsFound(groups);
       setIsLoading(false);
     }
-    // console.log("Groups Fetched: ");
-    // console.log(groups);
   }, [user, groups]);
-
-  const isCurrentPage = (relativeUrl) => {
-    return (window.location.pathname + (window.location.search && window.location.search.length > 1 ? window.location.search : '')) == relativeUrl;
-  }
-
-  const onUpdateGroup = (group, data) => {
-    console.log("Update Group:");
-    console.log(group);
-    console.log("Data:");
-    console.log(data);
-    alert("Updated");
-  }
 
   const onDeleteGroup = (group) => {
     (async () => {
@@ -119,7 +101,7 @@ const Groups = () => {
                 <LeftSidebar />
               </div>
               <div className="col-md-10 div_content-right">
-                <GroupsHeader currentView={currentView} setCurrentView={setCurrentView} />
+                <GroupsHeader currentView={currentView} onSave={loadGroupsByView} />
                 {isLoading ? (
                   <div className="center-page">
                     <CircularProgress />
@@ -144,7 +126,7 @@ const Groups = () => {
                               group.name == "Feed" || (currentView != "private" && currentView != "my" && currentView != "joined" && group.status != "public") ? (
                                 <></>
                               ) : (
-                                <GroupWidget key={group.uuid} group={group} onUpdateGroup={onUpdateGroup} onDeleteGroup={onDeleteGroup} />
+                                <GroupWidget key={group.uuid} group={group} onDeleteGroup={onDeleteGroup} />
                               )
                             );
                           })}
@@ -163,7 +145,9 @@ const Groups = () => {
                       </div>
                     ) : (
                       <div className="no_result">
-                        <p>Please try again. No exact results found.</p>
+                        <p>
+                          {input?.length > 0 ? "Please try again. No exact results found." : "No groups to show."}
+                        </p>
                       </div>
                     )}
                   </>

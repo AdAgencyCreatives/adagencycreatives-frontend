@@ -68,7 +68,7 @@ const AgencyCreatives = ({ validateAccess }) => {
   return (
     <div id="creatives">
       <div className="sectionHeader">
-        <h1 className="sectionTitle">Agency Creatives</h1>
+        <h1 className="sectionTitle">Featured Creatives</h1>
         <Link className="browseAll" to="/creatives">
           browse all <MdKeyboardDoubleArrowRight />
         </Link>

@@ -160,7 +160,7 @@ const setLoading = (dispatch, status) => {
 };
 
 const saveGroup = (dispatch) => {
-  return async (data) => {
+  return async (data, cb = () => { }) => {
     dispatch({
       type: "set_form_submit",
       payload: true,
@@ -177,6 +177,7 @@ const saveGroup = (dispatch) => {
         type: "save_group",
         payload: rdata,
       });
+      cb();
     } catch (error) {
       console.log(error);
     }
@@ -188,7 +189,7 @@ const saveGroup = (dispatch) => {
 };
 
 const updateGroup = (dispatch) => {
-  return async (id, data) => {
+  return async (id, data, cb = () => { }) => {
     dispatch({
       type: "set_form_submit",
       payload: true,
@@ -205,6 +206,7 @@ const updateGroup = (dispatch) => {
         type: "update_group",
         payload: rdata,
       });
+      cb();
     } catch (error) {
       console.log(error);
     }
