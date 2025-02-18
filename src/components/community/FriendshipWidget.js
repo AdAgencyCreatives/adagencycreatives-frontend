@@ -1,20 +1,16 @@
 import Placeholder from "../../assets/images/placeholder.png";
-import { IoEarth, IoBookmarkOutline, IoLocationOutline, IoMailOpen, IoPersonAdd, IoClose, IoCloseSharp, IoCheckmarkCircleSharp, IoBandageOutline, IoBanSharp, IoPersonRemove, IoPerson, IoChevronDown, IoChevronDownCircle, IoCloseOutline } from "react-icons/io5";
+import { IoPersonAdd, IoCloseSharp, IoPerson, IoCloseOutline, IoCheckmark } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { Context as AuthContext, logActivity } from "../../context/AuthContext";
 import { getSingleFriendship, requestFriendship, respondFriendship, unfriend } from "../../context/FriendsDataContext";
 import MessageModal from "../MessageModal";
 
-import SlidingMessage from "../../components/SlidingMessage";
 import { Dialog, Tooltip } from "@mui/material";
 import { CircularProgress } from "@mui/material";
 import { saveNotification } from "../../context/NotificationsDataContext";
 
 const FriendshipWidget = (props) => {
-
-    const queryParams = new URLSearchParams(window.location.search);
-    const friendshipsParam = queryParams.get("friendships");
 
     const [messageModalOptions, setMessageModalOptions] = useState({ "open": false, "type": "message", "title": "Message", "message": "Thanks.", "data": {}, "onClose": null });
     const [loadingFriendshipRecord, setLoadingFriendshipRecord] = useState(false);
@@ -58,9 +54,6 @@ const FriendshipWidget = (props) => {
         if (friendshipRequestResult && friendshipRequestResult.status) {
             if (friendshipRequestResult.status == "success") {
                 showMessageModal("success", "Thanks!", friendshipRequestResult.data.message, null);
-                // if(friendshipsParam && friendshipsParam == "requests" && props.setVisibleAfterProcess) {
-                //     props.setVisibleAfterProcess(false);
-                // }
             } else if (friendshipRequestResult.status == "error") {
                 if (friendshipRequestResult.data) {
                     showMessageModal("error", "Oops!", friendshipRequestResult.data.message, null);
@@ -160,7 +153,7 @@ const FriendshipWidget = (props) => {
         let result = await saveNotification({
             "user_id": creative.user_id,
             "type": "lounge_friends_activity",
-            "message": user.first_name + " " + user.last_name + " has sent friendship request.",
+            "message": "Friendship requested with " + user.first_name + " " + user.last_name + ".",
             "body": "{activity_key:'lounge_friendship_requested'}"
         });
     };
@@ -169,8 +162,8 @@ const FriendshipWidget = (props) => {
         let result = await saveNotification({
             "user_id": creative.user_id ? creative.user_id : creative.user.uuid,
             "type": "lounge_friends_activity",
-            "message": user.first_name + " " + user.last_name + " has " + status + (status == "cancelled" ? "" : " your") + " friendship request.",
-            "body": "{activity_key:'lounge_friendship_responded'}"
+            "message": "Friendship " + (status == "accepted" ? "accepted" : "removed") + " with " + user.first_name + " " + user.last_name + ".",
+            "body": "{activity_key:'lounge_friendship_responded',status:'" + status + "'}"
         });
     };
 
@@ -211,8 +204,8 @@ const FriendshipWidget = (props) => {
                                                 <IoCloseOutline size={30} />
                                             </button>
                                         </div>
-                                        <p>Once you click below, you will no longer have a friendship
-                                            permissions with this creative. Profile permissions will be limited,
+                                        <p>Once you click below, you will no longer have friendship
+                                            permissions with this creative. Profile permissions will be limited
                                             and if your profile status is hidden, they will no longer be able to
                                             see you.</p>
                                         <div className="d-flex align-items-center justify-content-between flex-wrap">
@@ -231,16 +224,18 @@ const FriendshipWidget = (props) => {
                     ) : (<>
                         {(hasFriendshipRecord && friendshipRecord?.status?.length > 0 && friendshipRecord?.status == "accepted") || (hasFriendRequestRecord && friendRequestRecord?.status?.length > 0 && friendRequestRecord.status == "accepted") ? (<>
                             {props?.header ? (<>
-                                <div style={{ position: 'relative', cursor: 'pointer' }} className="friendship-request-status" onClick={(e) => setStatusClicked(!statusClicked)}>
+                                <button style={{ position: 'relative' }} className="btn btn-dark no-border fs-5" onClick={(e) => setStatusClicked(!statusClicked)} onMouseEnter={(e) => setStatusClicked(true)} onMouseLeave={(e) => setStatusClicked(false)}>
                                     {friendship_statuses[(friendshipRecord ? friendshipRecord.status : (friendRequestRecord ? friendRequestRecord.status : ""))]}
-                                    &nbsp;<IoChevronDownCircle style={{ fill: statusClicked ? '#000' : '#fff' }} />
 
                                     {statusClicked && (
-                                        <button style={{ zIndex: 9999, position: 'absolute', width: '100%', height: '100%', left: '0px', top: '50px' }} className="btn btn-dark no-border" onClick={(e) => setIsOpenUnfriendDialog(true)}>
-                                            Unfriend
-                                        </button>
+                                        <Tooltip title="Remove Friendship">
+                                            <button style={{ zIndex: 9999, position: 'absolute', right: '0px', top: '45px' }} className="btn btn-dark no-border" onClick={(e) => setIsOpenUnfriendDialog(true)}>
+                                                <IoPerson />
+                                                <span style={{ position: 'absolute', top: '3px', right: '4px' }}><IoCloseSharp /></span>
+                                            </button>
+                                        </Tooltip>
                                     )}
-                                </div>
+                                </button>
                             </>) : (<>
                                 <Tooltip title="Friendship Status">
                                     <div className="friendship-request-status">
@@ -251,10 +246,10 @@ const FriendshipWidget = (props) => {
                         </>) : (<></>)}
 
                         {hasFriendshipRecord && friendshipRecord.status == "pending" ? (<>
-                            <Tooltip title="Cancel Friendship">
+                            <Tooltip title="Remove Friendship">
                                 <button style={{ position: 'relative' }} className="btn btn-dark no-border" onClick={(e) => handleCancelFriendship(e, friendshipRecord, props.creative)}>
                                     <IoPerson />
-                                    <span style={{ position: 'absolute', top: '6px', right: '4px' }}><IoCloseSharp /></span>
+                                    <span style={{ position: 'absolute', top: props?.header ? '6px' : '3px', right: '4px' }}><IoCloseSharp /></span>
                                 </button>
                             </Tooltip>
                         </>) : (<></>)}
@@ -268,22 +263,25 @@ const FriendshipWidget = (props) => {
                         </>) : (<></>)}
 
                         {hasFriendRequestRecord && !(friendRequestRecord.status == "accepted" || friendRequestRecord.status == "declined" || friendRequestRecord.status == "unfriended") ? (<>
-                            <Tooltip title="Add Friend">
-                                <button className="btn btn-dark no-border" onClick={(e) => handleRespondFriendship(e, props.creative, "accepted")}>
-                                    <IoPersonAdd />
+                            <Tooltip title="Accept Friendship">
+                                <button style={{ position: 'relative' }} className="btn btn-dark no-border" onClick={(e) => handleRespondFriendship(e, props.creative, "accepted")}>
+                                    <IoPerson />
+                                    <span style={{ position: 'absolute', top: props?.header ? '7px' : '4px', right: '3px' }}><IoCheckmark /></span>
                                 </button>
                             </Tooltip>
-                            <Tooltip title="Remove Friend">
-                                <button className="btn btn-dark no-border" onClick={(e) => handleRespondFriendship(e, props.creative, "declined")}>
-                                    <IoPersonRemove />
+                            <Tooltip title="Remove Friendship">
+                                <button style={{ position: 'relative' }} className="btn btn-dark no-border" onClick={(e) => setIsOpenUnfriendDialog(true)}>
+                                    <IoPerson />
+                                    <span style={{ position: 'absolute', top: props?.header ? '6px' : '3px', right: '4px' }}><IoCloseSharp /></span>
                                 </button>
                             </Tooltip>
                         </>) : (<></>)}
 
                         {!props?.header && ((hasFriendshipRecord && friendshipRecord.status == "accepted") || (hasFriendRequestRecord && friendRequestRecord.status == "accepted")) ? (<>
-                            <Tooltip title="Remove Friend">
-                                <button className="btn btn-dark no-border" onClick={(e) => handleUnfriend(e, props.creative)}>
-                                    <IoPersonRemove />
+                            <Tooltip title="Remove Friendship">
+                                <button style={{ position: 'relative' }} className="btn btn-dark no-border" onClick={(e) => handleUnfriend(e, props.creative)}>
+                                    <IoPerson />
+                                    <span style={{ position: 'absolute', top: '3px', right: '4px' }}><IoCloseSharp /></span>
                                 </button>
                             </Tooltip>
                         </>) : (<></>)}

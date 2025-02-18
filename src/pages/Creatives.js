@@ -307,7 +307,7 @@ const Creatives = () => {
       <div className="container p-md-0 px-5">
         <DelayedOutput>
           <h1 className="community-title text-white text-center mb-4">
-            {searchDone ? (inputClicked ? searchDone + " Creatives" : "Search Results") : "Creatives"}
+            {searchDone ? (inputClicked ? searchDone + " Creatives" : "Search Results") : "Creative Directory"}
           </h1>
         </DelayedOutput>
         {token && (
