@@ -205,13 +205,14 @@ const FriendshipWidget = (props) => {
                                             </button>
                                         </div>
                                         <p>Once you click below, you will no longer have friendship
-                                            permissions with this creative. Profile permissions will be limited
+                                            permissions with this creative.</p>
+                                        <p>Profile permissions will be limited
                                             and if your profile status is hidden, they will no longer be able to
                                             see you.</p>
                                         <div className="d-flex align-items-center justify-content-between flex-wrap">
                                             <span>{changingFriendshipStatus && <CircularProgress size={50} />}</span>
                                             <button disabled={changingFriendshipStatus} style={{ cursor: changingFriendshipStatus ? 'not-allowed' : 'pointer' }} className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" onClick={handleClickUnfriendDialog}>
-                                                Confirm Unfriend
+                                                Confirm Change
                                             </button>
                                         </div>
                                     </div>
