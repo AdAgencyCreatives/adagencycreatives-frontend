@@ -206,7 +206,7 @@ const FriendshipWidget = (props) => {
                                         </div>
                                         <p>Once you click below, you will no longer have friendship
                                             permissions with this creative.</p>
-                                        <p>Profile permissions will be limited
+                                        <p>Profile permissions will be limited,
                                             and if your profile status is hidden, they will no longer be able to
                                             see you.</p>
                                         <div className="d-flex align-items-center justify-content-between flex-wrap">
@@ -280,7 +280,7 @@ const FriendshipWidget = (props) => {
 
                         {!props?.header && ((hasFriendshipRecord && friendshipRecord.status == "accepted") || (hasFriendRequestRecord && friendRequestRecord.status == "accepted")) ? (<>
                             <Tooltip title="Remove Friendship">
-                                <button style={{ position: 'relative' }} className="btn btn-dark no-border" onClick={(e) => handleUnfriend(e, props.creative)}>
+                                <button style={{ position: 'relative' }} className="btn btn-dark no-border" onClick={(e) => setIsOpenUnfriendDialog(true)}>
                                     <IoPerson />
                                     <span style={{ position: 'absolute', top: '3px', right: '4px' }}><IoCloseSharp /></span>
                                 </button>
