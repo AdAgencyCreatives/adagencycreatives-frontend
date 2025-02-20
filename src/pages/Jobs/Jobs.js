@@ -68,8 +68,12 @@ const Jobs = () => {
           },
         };
         setFilters(filter);
-        if (field == "search") searchJobs(params[field], user);
-        else filterJobs(filter, user);
+        if (field == "search") {
+          searchJobs(params[field], user);
+        }
+        else {
+          filterJobs(filter, user);
+        }
       }
     } else {
       getJobs(user);
