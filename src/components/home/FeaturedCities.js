@@ -76,7 +76,7 @@ const FeaturedCities = () => {
                             <h4 className="title">{item.name}</h4>
 
                             <div className="number">
-                              <span>{item.count}</span> jobs
+                              <span>{`${item.count} job${item.count == 1 ? '' : 's'}`}</span>
                             </div>
                           </div>
                         </div>
