@@ -32,6 +32,11 @@
     .value {
         font-size: 20px;
         overflow-wrap: break-word;
+
+        span {
+            font-size: 20px;
+            font-weight: 400;
+        }
     }
 
     .title {
@@ -55,8 +60,8 @@
 }
 
 @media (max-width: 1024px) {
-    .profile-sidebar .value {
+    .profile-sidebar .value, .profile-sidebar .value span {
         font-size: 14px;
+        font-weight: 400;
     }
-
 }
