@@ -1,5 +1,5 @@
 import moment from "moment";
-import noPreview from "../../../assets/images/no-preview.png";
+import noPreview from "../../../assets/images/s-no-preview.png";
 import "../../../styles/User/ProfileContent.scss";
 import Reviews from "../Reviews";
 import RelatedCreatives from "./RelatedCreatives";
@@ -146,6 +146,7 @@ const Content = ({ user, role, data, education, experience }) => {
         <a href={portfolio_link} target="_blank">
           <img
             src={websitePreview || noPreview}
+            className={!websitePreview && 'no-preivew'}
             onError={(e) => {
               e.target.src = noPreview; // Set the backup image source
             }} />
