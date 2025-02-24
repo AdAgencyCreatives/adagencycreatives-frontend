@@ -699,6 +699,13 @@ nav ul.dropdown-list .list-item-text.j-fix {
     border-radius: 5px;
     overflow: hidden;
 }
+.icon-message .message-container .close-info {
+    color: #fff;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
 
 .icon-message .message {
     padding: 10px;
