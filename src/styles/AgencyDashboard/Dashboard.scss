@@ -11,6 +11,7 @@
     }
 
     .inner-header {
+        height: 100%;
         border: 1px solid #ECEDF2;
         background: #ffffff;
         padding: 20px 15px;
@@ -28,7 +29,7 @@
         column-gap: 8px;
         display: flex;
         align-items: center;
-
+        height: 100%;
 
         .icon {
             color: #D3A11F;
