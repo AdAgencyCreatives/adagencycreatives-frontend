@@ -16,8 +16,10 @@ const IconMessage = (props) => {
                 <img src={InfoIconImage} alt="Info" title="Click to expand/collapse information" width={20} height={20} />
             </div>
             <div className="message-container">
-                <IoClose className="close-info" onClick={(e) => setShow(state => !state)} />
-                <div className="message" dangerouslySetInnerHTML={{ __html: props?.message }}></div>
+                <div className="position-relative" style={{ width: '100%' }}>
+                    <IoClose className="close-info" onClick={(e) => setShow(state => !state)} />
+                    <div className="message" dangerouslySetInnerHTML={{ __html: props?.message }}></div>
+                </div>
             </div>
         </div>
     );

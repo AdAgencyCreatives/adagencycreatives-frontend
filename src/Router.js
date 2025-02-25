@@ -46,6 +46,7 @@ import FilmFestival1 from "./pages/FilmFestival1";
 import GroupRequests from "./pages/GroupRequests";
 import RouterErrorBoundary from "./components/RouterErrorBoundary";
 import SpotlightReels from "./pages/SpotlightReels";
+import SpotlightReel from "./pages/SpotlightReel";
 
 export const router = createBrowserRouter([
   {
@@ -110,6 +111,10 @@ export const router = createBrowserRouter([
       {
         path: "/spotlight-reels",
         element: <SpotlightReels />,
+      },
+      {
+        path: "/spotlight-reels/:slug",
+        element: <SpotlightReel />,
       },
       {
         path: "/mentoring-resources",
