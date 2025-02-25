@@ -1,7 +1,7 @@
 import { api } from "../api/api";
 import createDataContext from "./createDataContext";
 
-const state = { screatives: null, nextPage: null, loading: false };
+const state = { screatives: null, sreel: null, nextPage: null, loading: false };
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -9,6 +9,10 @@ const reducer = (state, action) => {
       return {
         screatives: action.payload.data,
         nextPage: action.payload.links.next,
+      };
+    case "set_spotlight_reel":
+      return {
+        sreel: action.payload.data,
       };
     case "load_screatives":
       return {
@@ -57,8 +61,25 @@ const loadSCreatives = (dispatch) => {
   };
 };
 
+const getSpotlight = (dispatch) => {
+  return async (slug) => {
+    try {
+      const response = await api.get(`/creative-spotlights/${slug}`);
+      dispatch({
+        type: "set_spotlight_reel",
+        payload: response.data,
+      });
+    } catch (error) { 
+      dispatch({
+        type: "set_spotlight_reel",
+        payload: { data: { error: true } }
+      });
+    }
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
-  { getSCreatives, loadSCreatives },
+  { getSCreatives, loadSCreatives, getSpotlight },
   state
 );

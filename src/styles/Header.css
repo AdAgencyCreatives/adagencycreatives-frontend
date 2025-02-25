@@ -705,6 +705,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
     right: 10px;
     top: 10px;
     cursor: pointer;
+    font-size: 22px;
 }
 
 .icon-message .message {

@@ -39,7 +39,7 @@ const Dashboard = () => {
                 <div className="number-count">
                   {stats && stats.number_of_posts}
                 </div>
-                <span>Posted Jobs</span>
+                <span>Active Jobs</span>
               </div>
             </div>
           </div>
@@ -56,7 +56,7 @@ const Dashboard = () => {
                 <div className="number-count">
                   {stats && stats.applications}
                 </div>
-                <span>Application</span>
+                <span>New Applicants</span>
               </div>
             </div>
           </div>
@@ -70,8 +70,8 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="inner">
-                <div className="number-count">{stats && stats.review}</div>
-                <span>Review</span>
+                <div className="number-count">{stats && stats.messages}</div>
+                <span>New Messages</span>
               </div>
             </div>
           </div>
@@ -86,7 +86,7 @@ const Dashboard = () => {
               </div>
               <div className="inner">
                 <div className="number-count">{stats && stats.shortlisted}</div>
-                <span>Shortlisted</span>
+                <span>Talent Shortlisted</span>
               </div>
             </div>
           </div>

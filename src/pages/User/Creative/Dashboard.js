@@ -98,7 +98,7 @@ const Dashboard = () => {
               </div>
               <div className="inner">
                 <div className="number-count">{stats && stats.review}</div>
-                <span>Messages</span>
+                <span>New Messages</span>
               </div>
             </div>
           </div>
@@ -113,7 +113,7 @@ const Dashboard = () => {
               </div>
               <div className="inner">
                 <div className="number-count">{stats && stats.views}</div>
-                <span>Views</span>
+                <span>Profile Viewed</span>
               </div>
             </div>
           </div>
@@ -127,8 +127,8 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="inner">
-                <div className="number-count">{stats && stats.shortlisted}</div>
-                <span>Shortlisted</span>
+                <div className="number-count">{stats && stats.friends}</div>
+                <span>Friends Connected</span>
               </div>
             </div>
           </div>

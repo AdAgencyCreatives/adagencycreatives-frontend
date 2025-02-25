@@ -22,7 +22,7 @@ const SpotlightReelSingle = ({ item, index }) => {
     }, []);
 
     return (<>
-        <Link to={item.url} className="spotlight-reel" key={`spotlight-reel-single-${index}`} style={{ fontSize: '16px', flexDirection: 'column' }}
+        <Link to={`/spotlight-reels/${item.slug}`} className="spotlight-reel" key={`spotlight-reel-single-${index}`} style={{ fontSize: '16px', flexDirection: 'column' }}
             onMouseEnter={(e) => setShowVideo(true)}
             onMouseLeave={(e) => setShowVideo(false)}
         >
