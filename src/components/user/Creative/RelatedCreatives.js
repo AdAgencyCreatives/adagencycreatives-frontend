@@ -80,7 +80,7 @@ const RelatedCreatives = ({ data }) => {
                       <div className="d-flex justify-content-md-start mt-3 mt-md-0">
                         <Link
                           to={"/creative/" + item.slug}
-                          className="btn btn-apply btn-apply-job-external m-0 mt-4"
+                          className="btn btn-apply btn-apply-job-external m-0 mt-3"
                         >
                           View Profile
                           <i className="next flaticon-right-arrow"></i>

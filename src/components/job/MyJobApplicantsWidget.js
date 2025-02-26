@@ -144,8 +144,8 @@ const MyJobApplicantsWidget = ({
           <div className="job-table-info-content" style={{ minWidth: "100px" }}>
             <div className="job-metas">
               <div className="job-location location" style={{ display: "flex", justifyContent: "start" }}>
-                {(job?.location?.state?.length ||
-                  job?.location?.city?.length) && <IoLocationOutline />}
+                {/* {(job?.location?.state?.length ||
+                  job?.location?.city?.length) && <IoLocationOutline />} */}
                 {job.location?.state && (
                   <Link
                     className="link link-black hover-gold"
