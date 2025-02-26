@@ -7,11 +7,13 @@ import { Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import { IoCheckmarkCircle, IoClose, IoLocationOutline, IoSyncOutline, IoLockOpen, IoPencil } from "react-icons/io5";
 import { FaHandsHelping } from "react-icons/fa";
+import ConfirmModal from "../../components/community/Modals/ConfirmModal";
 
 import moment from "moment";
 
 const MyJobWidget = (props) => {
     const [job, setJob] = useState(props.job);
+    const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
     const { showAlert } = useContext(AlertContext);
 
     const {
@@ -169,15 +171,22 @@ const MyJobWidget = (props) => {
                         <Tooltip title="Remove">
                             <Link
                                 className="btn p-0 border-0 btn-hover-primary"
-                                onClick={() => {
-                                    deleteJob(job.id, () => {
-                                        if (user) getOpenPositions(user.uuid);
-                                    });
-                                }}
+                                onClick={() => setOpenConfirmDeleteModal(true)}
                             >
                                 <IoClose className="icon-rounded" />
                             </Link>
                         </Tooltip>
+                        <ConfirmModal
+                            openModal={openConfirmDeleteModal}
+                            setOpenModal={setOpenConfirmDeleteModal}
+                            title="Remove Job"
+                            message="Are you sure you want to delete this job?"
+                            onConfirm={() => {
+                                deleteJob(job.id, () => {
+                                    if (user) getOpenPositions(user.uuid);
+                                });
+                            }}
+                        />
                     </div>
                 )}
             </td>

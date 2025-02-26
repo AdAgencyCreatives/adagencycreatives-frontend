@@ -84,7 +84,7 @@ const getAgencies = (dispatch) => {
 const getFeaturedAgencies = (dispatch) => {
   return async (page) => {
     try {
-      const response = await api.get("/agencies?filter[status]=1&filter[is_featured]=1&filter[is_visible]=1&per_page=30&sort=-featured_at");
+      const response = await api.get("/agencies?&filter[status]=1&filter[is_featured]=1&filter[is_visible]=1&sort=sort_order");
       dispatch({
         type: "set_agencies",
         payload: response.data,

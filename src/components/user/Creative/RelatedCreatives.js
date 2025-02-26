@@ -46,14 +46,14 @@ const RelatedCreatives = ({ data }) => {
           return (
             <div className="job-item" key={item.id}>
               <div className="d-flex align-items-center flex-md-nowrap flex-wrap gap-md-0 gap-3">
-                <div className="inner-left">
+                <div className="inner-left" style={{ alignItems: 'center' }}>
                   <div className="">
                     <Link to={"/job/" + item.slug}>
                       <CreativeImageLoader creative={item} />
                     </Link>
                   </div>
                   <div className="meta row w-100 align-items-center">
-                    <div className="job-list-content col-md-8">
+                    <div className="job-list-content col-md-12">
                       <div className="title-wrapper flex-middle-sm mb-1">
                         <h5 className="employer-name mb-1">
                           <Link
@@ -76,11 +76,11 @@ const RelatedCreatives = ({ data }) => {
                       </div>
                     </div>
 
-                    <div className="col-md-4">
-                      <div className="d-flex justify-content-md-end mt-3 mt-md-0">
+                    <div className="col-md-12">
+                      <div className="d-flex justify-content-md-start mt-3 mt-md-0">
                         <Link
                           to={"/creative/" + item.slug}
-                          className="btn btn-apply btn-apply-job-external "
+                          className="btn btn-apply btn-apply-job-external m-0 mt-4"
                         >
                           View Profile
                           <i className="next flaticon-right-arrow"></i>
