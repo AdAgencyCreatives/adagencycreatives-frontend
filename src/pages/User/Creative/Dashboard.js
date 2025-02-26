@@ -128,7 +128,7 @@ const Dashboard = () => {
               </div>
               <div className="inner">
                 <div className="number-count">{stats && stats.friends}</div>
-                <span>Friends Connected</span>
+                <span>Friends</span>
               </div>
             </div>
           </div>

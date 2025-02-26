@@ -256,6 +256,18 @@ ul.dropdown-list:before {
     background-color: var(--color-primary) !important;
 }
 
+.btn.btn-gray {
+    border: 2px solid #f6f6f6;
+    background-color: #f6f6f6 !important;
+    color: #000 !important;
+}
+
+.btn.btn-gray:hover {
+    border: 2px solid var(--color-primary);
+    background-color: var(--color-primary) !important;
+    color: #fff !important;
+}
+
 .btn.btn-white {
     border: 2px solid white;
     background-color: white !important;

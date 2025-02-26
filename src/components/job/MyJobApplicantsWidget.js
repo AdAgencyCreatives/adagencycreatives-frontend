@@ -117,7 +117,7 @@ const MyJobApplicantsWidget = ({
               {job?.applications?.length > 1 ? "s" : ""} */}
               {/* <br /> */}
               <Button
-                className="btn btn-dark btn-sm"
+                className="btn btn-gray btn-sm"
                 style={{
                   padding: "0px 6px",
                   margin: "0px",
@@ -143,7 +143,7 @@ const MyJobApplicantsWidget = ({
         <td className="job-table-info">
           <div className="job-table-info-content" style={{ minWidth: "100px" }}>
             <div className="job-metas">
-              <div className="job-location location" style={{ display: "flex", justifyContent: "center" }}>
+              <div className="job-location location" style={{ display: "flex", justifyContent: "start" }}>
                 {(job?.location?.state?.length ||
                   job?.location?.city?.length) && <IoLocationOutline />}
                 {job.location?.state && (
