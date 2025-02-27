@@ -117,7 +117,7 @@ const MyJobApplicantsWidget = ({
               {job?.applications?.length > 1 ? "s" : ""} */}
               {/* <br /> */}
               <Button
-                className="btn btn-gray btn-sm"
+                className="btn btn-dark btn-sm"
                 style={{
                   padding: "0px 6px",
                   margin: "0px",
