@@ -180,7 +180,7 @@ const MyJobWidget = (props) => {
                             openModal={openConfirmDeleteModal}
                             setOpenModal={setOpenConfirmDeleteModal}
                             title="Remove Job"
-                            message="Are you sure you want to delete this job?"
+                            message="Are you sure you want to delete this job? You can close the job by clicking the lock icon."
                             onConfirm={() => {
                                 deleteJob(job.id, () => {
                                     if (user) getOpenPositions(user.uuid);

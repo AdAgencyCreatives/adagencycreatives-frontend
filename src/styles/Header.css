@@ -1053,7 +1053,9 @@ nav ul.dropdown-list .list-item-text.j-fix {
     text-transform: capitalize;
     text-align: center;
 }
-
+.job-table tbody tr:nth-of-type(even) {
+    background-color: rgb(246, 246, 246);
+}
 .refresh-preview-container {
     display: flex;
     align-items: center;
