@@ -143,19 +143,20 @@ const MyJobApplicantsWidget = ({
         <td className="job-table-info">
           <div className="job-table-info-content" style={{ minWidth: "100px" }}>
             <div className="job-metas">
-              <div className="job-location location" style={{ display: "flex", justifyContent: "start" }}>
-                {/* {(job?.location?.state?.length ||
-                  job?.location?.city?.length) && <IoLocationOutline />} */}
-                {job.location?.state && (
+              <div className="job-location location m-0" style={{ display: "flex", justifyContent: "start", flexWrap: 'nowrap' }}>
+                <span>{(job?.location?.state?.length ||
+                  job?.location?.city?.length) && <IoLocationOutline />}
+                </span>
+                <span className="d-inline">{job.location?.state && (
                   <Link
                     className="link link-black hover-gold"
                     to={`/job-location-state/${job.location.state}`}
                   >
                     {job.location.state}
+                    {job?.location?.state?.length &&
+                      job?.location?.city?.length && <span>, </span>}
                   </Link>
                 )}
-                {job?.location?.state?.length &&
-                  job?.location?.city?.length && <span>,&nbsp;</span>}
                 {job.location?.city && (
                   <Link
                     className="link link-black hover-gold"
@@ -164,6 +165,7 @@ const MyJobApplicantsWidget = ({
                     {job.location.city}
                   </Link>
                 )}
+                </span>
               </div>
             </div>
           </div>
