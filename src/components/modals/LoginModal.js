@@ -144,10 +144,12 @@ const LoginModal = ({ open, handleClose, setModal }) => {
           <div className="job-apply-email-form-wrapper">
             <div className="inner">
               {loginLocked ? (
-                <>
+                <div style={{ textAlign: 'center' }}>
+                  <h3>Account Temporarily Locked</h3>
                   <CountdownTimer initialTime={lockedTime} setLoginLocked={setLoginLocked} />
-                  <p>You have been locked to login!</p>
-                </>
+                  <p>Sorry, your account has been locked for multiple failed login attemps.</p>
+                  <p></p>
+                </div>
               ) : (
                 <>
                   <div className="d-flex align-items-center justify-content-between mb-4">
@@ -162,7 +164,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                     </button>
                   </div>
                   {message && message?.status === 'reset' && (
-                    <div className={`alert alert-${message.class}`} onClick={() => setModal('reset') } style={{ cursor: 'pointer' }}>
+                    <div className={`alert alert-${message.class}`} onClick={() => setModal('reset')} style={{ cursor: 'pointer' }}>
                       {message.content}
                     </div>
                   )}

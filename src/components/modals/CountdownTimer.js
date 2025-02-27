@@ -25,7 +25,7 @@ const CountdownTimer = ({ initialTime, setLoginLocked }) => {
   return (
     <div>
       {/* <h2>Countdown Timer</h2> */}
-      <h2>{formatTime(timeLeft)}</h2>
+      <h2>Unlocks in {formatTime(timeLeft)} seconds</h2>
     </div>
   );
 };
