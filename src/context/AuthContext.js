@@ -111,10 +111,10 @@ const getLoginSuccessMessage = () => {
   return "Login Successful";
 };
 
-const setErrorMessage = (dispatch, message) => {
+const setErrorMessage = (dispatch, message, status = null, locked_end) => {
   dispatch({
     type: "set_form_message",
-    payload: { type: "error", message },
+    payload: { type: "error", message, status, locked_end },
   });
 };
 
@@ -199,7 +199,8 @@ const signin = (dispatch) => {
       logActivity(response.data.user.uuid, "signin", "You signed in as " + response.data.user.role + ", via email: " + response.data.user.email, "{user_id:" + response.data.user.uuid + "}");
       cb(response.data);
     } catch (error) {
-      setErrorMessage(dispatch, error.response.data.message);
+      const response = error.response.data;
+      setErrorMessage(dispatch, response.message, response?.status ?? null, response?.locked_end ?? null);
     }
   };
 };
