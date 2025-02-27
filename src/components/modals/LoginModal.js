@@ -7,10 +7,12 @@ import { CircularProgress } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import { requestFriendship } from "../../context/FriendsDataContext";
 import { saveNotification } from "../../context/NotificationsDataContext";
-
+import CountdownTimer from './CountdownTimer';
 
 const LoginModal = ({ open, handleClose, setModal }) => {
   const [show, setShow] = useState(false);
+  const [loginLocked, setLoginLocked] = useState(false);
+  const [lockedTime, setLockedTime] = useState(0);
   const { state, signin } = useContext(AuthContext);
   const { formMessage } = state;
   const [message, setMessage] = useState(null);
@@ -19,13 +21,55 @@ const LoginModal = ({ open, handleClose, setModal }) => {
 
   const navigate = useNavigate();
 
+  function getSecondsDifference(date1, date2) {
+    let diffMs = Math.abs(new Date(date1) - new Date(date2)); // Difference in milliseconds
+    return Math.floor(diffMs / 1000); // Convert to seconds
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem("locked_end") !== null) {
+      let lockedEnd = localStorage.getItem("locked_end");
+      setLocked(lockedEnd);
+    }
+  }, []);
+
+  const setLocked = (lockedEnd) => {
+    let nowUtc = new Date().toISOString(lockedEnd);
+
+    if (new Date(nowUtc) > new Date(lockedEnd)) {
+      setLoginLocked(false);
+      setLockedTime(0);
+    } else {
+      // console.log(new Date(nowUtc));
+      // console.log(new Date(lockedEnd));
+      let diffMs = Math.abs(new Date(nowUtc) - new Date(lockedEnd)); // Difference in milliseconds
+      const locked_remaining = Math.floor(diffMs / 1000); // Convert to seconds
+
+      console.log(locked_remaining);
+
+      setLoginLocked(true);
+      setLockedTime(locked_remaining);
+    }
+  }
+
   useEffect(() => {
     setShowLoading(false);
     if (formMessage) {
-      setMessage({
-        class: formMessage.type == "success" ? "info" : "warning",
-        content: formMessage.message,
-      });
+      if (formMessage?.status === 'reset') {
+        setMessage({
+          class: "warning",
+          content: formMessage.message,
+          status: 'reset'
+        });
+      } else if (formMessage?.status === 'locked') {
+        localStorage.setItem('locked_end', formMessage?.locked_end);
+        setLocked(formMessage?.locked_end);
+      } else {
+        setMessage({
+          class: formMessage.type == "success" ? "info" : "warning",
+          content: formMessage.message,
+        });
+      }
     } else {
       setMessage(null);
     }
@@ -99,103 +143,117 @@ const LoginModal = ({ open, handleClose, setModal }) => {
         <div className="auth-body">
           <div className="job-apply-email-form-wrapper">
             <div className="inner">
-              <div className="d-flex align-items-center justify-content-between mb-4">
-                <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
-                  Login
-                </h3>
-                <button
-                  className="border-0 bg-transparent text-primary"
-                  onClick={handleClose}
-                >
-                  <IoCloseOutline size={30} />
-                </button>
-              </div>
-              {message && (
-                <div className={`alert alert-${message.class}`}>
-                  {message.content}
-                </div>
-              )}
-              <form className="login-form" onSubmit={(e) => handleSubmit(e)}>
-                <div className="form-group">
-                  <label className="form-label">Email</label>
-                  <input
-                    className="form-control mb-4"
-                    name="email"
-                    placeholder="Email"
-                    required="required"
-                    onChange={(e) => handleChange("email", e.target.value)}
-                  />
-                </div>
-                <div className="form-group position-relative mb-4">
-                  <label htmlFor="oldPassword" className="form-label">
-                    Password
-                  </label>
-                  <input
-                    type={show ? "text" : "password"}
-                    className="form-control"
-                    placeholder="Password"
-                    onChange={(e) => handleChange("password", e.target.value)}
-                  />
-                  <div className="showToggle">
-                    {show ? (
-                      <IoEye onClick={() => setShow(false)} />
-                    ) : (
-                      <IoEyeOff onClick={() => setShow(true)} />
-                    )}
-                  </div>
-                </div>
-                <div className="d-flex align-items-center justify-content-between mb-2">
-                  <div className="d-flex">
-                    <input
-                      type="checkbox"
-                      className="me-2"
-                      name="remember"
-                      id="remember"
-                    />
-                    <label
-                      className="form-check-label"
-                      style={{ fontSize: 18 }}
-                      htmlFor="remember"
+              {loginLocked ? (
+                <>
+                  <CountdownTimer initialTime={lockedTime} setLoginLocked={setLoginLocked} />
+                  <p>You have been locked to login!</p>
+                </>
+              ) : (
+                <>
+                  <div className="d-flex align-items-center justify-content-between mb-4">
+                    <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
+                      Login
+                    </h3>
+                    <button
+                      className="border-0 bg-transparent text-primary"
+                      onClick={handleClose}
                     >
-                      Keep me signed in
-                    </label>
+                      <IoCloseOutline size={30} />
+                    </button>
                   </div>
-                  <a
-                    href="#"
-                    style={{ fontSize: 18, fontWeight: 300 }}
-                    onClick={() => setModal("reset")}
-                  >
-                    Forgotten password?
-                  </a>
-                </div>
-                <div
-                  style={{
-                    display: showLoading ? "flex" : "none",
-                    "justify-content": "center",
-                  }}
-                >
-                  <CircularProgress />
-                </div>
-                <button
-                  disabled={showLoading ? "disabled" : ""}
-                  className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3 fs-5"
-                >
-                  Login
-                </button>
-                <p
-                  className="text-center mt-4"
-                  style={{ fontSize: 20, fontWeight: 300 }}
-                >
-                  Do you need to create an account?&nbsp;
-                  <a
-                    href="#"
-                    style={{ fontWeight: "bold", color: "black" }}
-                    onClick={() => setModal("register")}
-                  >
-                    Register
-                  </a>
-                </p>
-              </form>
+                  {message && message?.status === 'reset' && (
+                    <div className={`alert alert-${message.class}`} onClick={() => setModal('reset') } style={{ cursor: 'pointer' }}>
+                      {message.content}
+                    </div>
+                  )}
+                  {message && !message?.status && (
+                    <div className={`alert alert-${message.class}`}>
+                      {message.content}
+                    </div>
+                  )}
+                  <form className="login-form" onSubmit={(e) => handleSubmit(e)}>
+                    <div className="form-group">
+                      <label className="form-label">Email</label>
+                      <input
+                        className="form-control mb-4"
+                        name="email"
+                        placeholder="Email"
+                        required="required"
+                        onChange={(e) => handleChange("email", e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group position-relative mb-4">
+                      <label htmlFor="oldPassword" className="form-label">
+                        Password
+                      </label>
+                      <input
+                        type={show ? "text" : "password"}
+                        className="form-control"
+                        placeholder="Password"
+                        onChange={(e) => handleChange("password", e.target.value)}
+                      />
+                      <div className="showToggle">
+                        {show ? (
+                          <IoEye onClick={() => setShow(false)} />
+                        ) : (
+                          <IoEyeOff onClick={() => setShow(true)} />
+                        )}
+                      </div>
+                    </div>
+                    <div className="d-flex align-items-center justify-content-between mb-2">
+                      <div className="d-flex">
+                        <input
+                          type="checkbox"
+                          className="me-2"
+                          name="remember"
+                          id="remember"
+                        />
+                        <label
+                          className="form-check-label"
+                          style={{ fontSize: 18 }}
+                          htmlFor="remember"
+                        >
+                          Keep me signed in
+                        </label>
+                      </div>
+                      <a
+                        href="#"
+                        style={{ fontSize: 18, fontWeight: 300 }}
+                        onClick={() => setModal("reset")}
+                      >
+                        Forgotten password?
+                      </a>
+                    </div>
+                    <div
+                      style={{
+                        display: showLoading ? "flex" : "none",
+                        "justify-content": "center",
+                      }}
+                    >
+                      <CircularProgress />
+                    </div>
+                    <button
+                      disabled={showLoading ? "disabled" : ""}
+                      className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3 fs-5"
+                    >
+                      Login
+                    </button>
+                    <p
+                      className="text-center mt-4"
+                      style={{ fontSize: 20, fontWeight: 300 }}
+                    >
+                      Do you need to create an account?&nbsp;
+                      <a
+                        href="#"
+                        style={{ fontWeight: "bold", color: "black" }}
+                        onClick={() => setModal("register")}
+                      >
+                        Register
+                      </a>
+                    </p>
+                  </form>
+                </>
+              )}
             </div>
           </div>
         </div>
