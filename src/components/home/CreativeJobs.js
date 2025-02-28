@@ -10,9 +10,11 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import SliderLoader from "../SliderLoader";
 import AgencyImageLoader from "../AgencyImageLoader";
 import usePermissions from "../../hooks/usePermissions";
+import { IoChevronBackOutline } from "react-icons/io5";
 
 const CreativeJobs = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [renderedJobs, setRenderedJobs] = useState(null);
 
   const swiperElRef = useRef(null);
   const jobSlides = 3;
@@ -42,6 +44,11 @@ const CreativeJobs = () => {
   }, []);
 
   useEffect(() => {
+    if(jobs && jobSlides < jobs?.length && jobSlides * 2 > jobs?.length) setRenderedJobs(jobs.concat(jobs));
+    else setRenderedJobs(jobs);
+  }, [jobs]);
+
+  useEffect(() => {
     const params = {
       injectStyles: [PaginationStyle],
       autoplay: {
@@ -56,6 +63,8 @@ const CreativeJobs = () => {
         768: {
           slidesPerView: 3,
           spaceBetween: 30,
+          loopAdditionalSlides: 2, // Helps Swiper duplicate slides properly
+          loopFillGroupWithBlank: true, // Fills empty spaces for smooth looping
         },
       },
       on: {
@@ -65,7 +74,6 @@ const CreativeJobs = () => {
       },
     };
     Object.assign(swiperElRef.current, params);
-
     swiperElRef.current.initialize();
   });
 
@@ -92,8 +100,8 @@ const CreativeJobs = () => {
           space-between="30"
           loop="true"
         >
-          {jobs &&
-            jobs.map((item, index) => {
+          {renderedJobs &&
+            renderedJobs.map((item, index) => {
               return (
                 <swiper-slide key={`home-creative-jobs-${index}`}>
                   <div className="sliderContent job-slider p-3 p-md-4">

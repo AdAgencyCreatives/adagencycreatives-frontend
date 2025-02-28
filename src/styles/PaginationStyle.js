@@ -9,7 +9,7 @@ export const PaginationStyle = `
         text-align: center;
         width: 50px;
         height: 50px;
-        background: #d9d9d9;
+        background: none;
         -webkit-transition: all .5s ease-in-out 0s;
         -o-transition: all .5s ease-in-out 0s;
         transition: all .5s ease-in-out 0s;
@@ -21,16 +21,22 @@ export const PaginationStyle = `
         -ms-border-radius: 8px;
         -o-border-radius: 8px;
       }
-
       .swiper-button-prev svg,.swiper-button-next svg{
-        // color: #fff;
         height: 20px;
+        overflow: visible;
+      }
+      .swiper-button-prev svg path,.swiper-button-next svg path{
+        stroke-width: 2px;
+        stroke: #000;
       }
 
       .swiper-button-next:hover,.swiper-button-prev:hover {
         background:black;
         opacity:1;
         --swiper-navigation-color:white;
+      }
+      .swiper-button-next:hover svg path,.swiper-button-prev:hover svg path {
+        stroke: white;
       }
 `;
 
@@ -92,6 +98,6 @@ export const BulletStyle = `
   }
 
 .swiper-pagination .swiper-pagination-bullet-active {
-    background-color: #202124;
+    background-color: #fff;
     width: 20px;
 }`;

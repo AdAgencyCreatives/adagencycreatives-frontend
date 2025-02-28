@@ -87,7 +87,7 @@ const MyJobWidget = (props) => {
                             ""
                         )} */}
                     </div>
-                    <div className="job-metas">
+                    {/* <div className="job-metas">
                         <div className="job-location location">
                             {(job?.location?.state?.length || job?.location?.city?.length) && (<IoLocationOutline />)}
                             {job.location?.state && (
@@ -101,6 +101,32 @@ const MyJobWidget = (props) => {
                                     {job.location.city}
                                 </Link>
                             )}
+                        </div>
+                    </div> */}
+                    <div className="job-metas">
+                        <div className="job-location location" style={{ display: "flex", justifyContent: "start", flexWrap: 'nowrap' }}>
+                            <span>{(job?.location?.state?.length ||
+                            job?.location?.city?.length) && <IoLocationOutline />}
+                            </span>
+                            <span className="d-inline">{job.location?.state && (
+                                <Link
+                                    className="link link-black hover-gold"
+                                    to={`/job-location-state/${job.location.state}`}
+                                >
+                                    {job.location.state}
+                                    {job?.location?.state?.length &&
+                                    job?.location?.city?.length && <span>, </span>}
+                                </Link>
+                                )}
+                                {job.location?.city && (
+                                <Link
+                                    className="link link-black hover-gold"
+                                    to={`/job-location-city/${job.location.city}`}
+                                >
+                                    {job.location.city}
+                                </Link>
+                                )}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -180,7 +206,7 @@ const MyJobWidget = (props) => {
                             openModal={openConfirmDeleteModal}
                             setOpenModal={setOpenConfirmDeleteModal}
                             title="Remove Job"
-                            message="Are you sure you want to delete this job? If you simply wish to close the job click on the lock icon."
+                            message="Are you sure you want to delete this job? If you simply want to close the job click on the lock icon."
                             onConfirm={() => {
                                 deleteJob(job.id, () => {
                                     if (user) getOpenPositions(user.uuid);

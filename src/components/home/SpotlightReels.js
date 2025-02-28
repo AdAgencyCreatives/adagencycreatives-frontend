@@ -3,7 +3,7 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { Context as SpotlightContext } from "../../context/SpotlightContext";
 import { useContext, useEffect, useRef } from "react";
-import { BulletStyle, ResourcePaginationStyle } from "../../styles/PaginationStyle";
+import { BulletStyle, ResourcePaginationStyle, PaginationStyle } from "../../styles/PaginationStyle";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { useState } from "react";
 import useHelper from "../../hooks/useHelper";
@@ -28,13 +28,11 @@ const SpotlightReels = () => {
 
     useEffect(() => {
         const params = {
-            injectStyles: [ResourcePaginationStyle + BulletStyle],
-
+            injectStyles: [ResourcePaginationStyle + BulletStyle + PaginationStyle],
             pagination: {
                 clickable: true,
-                renderBullet: function (index, className) {
-                    //   return '<span class="' + className + '">' + (index + 1) + "</span>";
-                    return '';
+                renderBullet: (index, className) => {
+                    return `<span class="${className}"></span>`;
                 },
             },
             breakpoints: {
@@ -76,14 +74,16 @@ const SpotlightReels = () => {
                     <swiper-container
                         ref={swiperElRef}
                         init="false"
-                        navigation="true"
+                        navigation="false"
+                        pagination-clickable="true"
+                        pagination="true"
                         slides-per-view="1"
                         space-between="10"
                         loop="true"
                     >
                         {screatives?.length > 0 && screatives.map((item, index) => {
                             return (
-                                <swiper-slide key={`home-spotlight-reel-${index}`}>
+                                <swiper-slide>
                                     <SpotlightReelSingle item={item} index={index} />
                                 </swiper-slide>
                             );

@@ -45,7 +45,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
       let diffMs = Math.abs(new Date(nowUtc) - new Date(lockedEnd)); // Difference in milliseconds
       const locked_remaining = Math.floor(diffMs / 1000); // Convert to seconds
 
-      console.log(locked_remaining);
+      // console.log(locked_remaining);
 
       setLoginLocked(true);
       setLockedTime(locked_remaining);
@@ -144,11 +144,19 @@ const LoginModal = ({ open, handleClose, setModal }) => {
           <div className="job-apply-email-form-wrapper">
             <div className="inner">
               {loginLocked ? (
-                <div style={{ textAlign: 'center' }}>
+                <div className="position-relative" style={{ textAlign: 'center' }}>
+                  <div className="text-end">
+                  <button
+                    className="border-0 bg-transparent text-primary p-0"
+                    onClick={handleClose}
+                    style={{ right: '0' }}
+                  >
+                    <IoCloseOutline size={30} />
+                  </button>
+                  </div>
                   <h3>Account Temporarily Locked</h3>
                   <CountdownTimer initialTime={lockedTime} setLoginLocked={setLoginLocked} />
                   <p>Sorry, your account has been locked for multiple failed login attemps.</p>
-                  <p></p>
                 </div>
               ) : (
                 <>
@@ -157,7 +165,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                       Login
                     </h3>
                     <button
-                      className="border-0 bg-transparent text-primary"
+                      className="border-0 bg-transparent text-primary p-0"
                       onClick={handleClose}
                     >
                       <IoCloseOutline size={30} />
@@ -240,6 +248,20 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                     >
                       Login
                     </button>
+                    {message && message?.status === 'reset' && (
+                      <button
+                        className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3 fs-5"
+                        onClick={() => setModal('reset') }
+                        type="button"
+                      >
+                        Click To Reset Your Password
+                      </button>
+                    )}
+                    {/* {message && !message?.status && (
+                      <div className={`alert alert-${message.class} mt-3`}>
+                        {message.content}
+                      </div>
+                    )} */}
                     <p
                       className="text-center mt-4"
                       style={{ fontSize: 20, fontWeight: 300 }}
