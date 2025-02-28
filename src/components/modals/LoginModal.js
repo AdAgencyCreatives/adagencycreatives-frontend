@@ -144,15 +144,19 @@ const LoginModal = ({ open, handleClose, setModal }) => {
           <div className="job-apply-email-form-wrapper">
             <div className="inner">
               {loginLocked ? (
-                <div className="position-relative">
-                  <CountdownTimer initialTime={lockedTime} setLoginLocked={setLoginLocked} />
+                <div className="position-relative" style={{ textAlign: 'center' }}>
+                  <div className="text-end">
                   <button
-                    className="border-0 bg-transparent text-primary position-absolute p-0"
+                    className="border-0 bg-transparent text-primary p-0"
                     onClick={handleClose}
-                    style={{ top: '0', right: '0' }}
+                    style={{ right: '0' }}
                   >
                     <IoCloseOutline size={30} />
                   </button>
+                  </div>
+                  <h3>Account Temporarily Locked</h3>
+                  <CountdownTimer initialTime={lockedTime} setLoginLocked={setLoginLocked} />
+                  <p>Sorry, your account has been locked for multiple failed login attemps.</p>
                 </div>
               ) : (
                 <>
@@ -167,6 +171,16 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                       <IoCloseOutline size={30} />
                     </button>
                   </div>
+                  {message && message?.status === 'reset' && (
+                    <div className={`alert alert-${message.class}`} onClick={() => setModal('reset')} style={{ cursor: 'pointer' }}>
+                      {message.content}
+                    </div>
+                  )}
+                  {message && !message?.status && (
+                    <div className={`alert alert-${message.class}`}>
+                      {message.content}
+                    </div>
+                  )}
                   <form className="login-form" onSubmit={(e) => handleSubmit(e)}>
                     <div className="form-group">
                       <label className="form-label">Email</label>
@@ -243,11 +257,11 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                         Click To Reset Your Password
                       </button>
                     )}
-                    {message && !message?.status && (
+                    {/* {message && !message?.status && (
                       <div className={`alert alert-${message.class} mt-3`}>
                         {message.content}
                       </div>
-                    )}
+                    )} */}
                     <p
                       className="text-center mt-4"
                       style={{ fontSize: 20, fontWeight: 300 }}
