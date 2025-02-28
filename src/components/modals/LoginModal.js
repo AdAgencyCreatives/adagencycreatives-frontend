@@ -45,7 +45,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
       let diffMs = Math.abs(new Date(nowUtc) - new Date(lockedEnd)); // Difference in milliseconds
       const locked_remaining = Math.floor(diffMs / 1000); // Convert to seconds
 
-      console.log(locked_remaining);
+      // console.log(locked_remaining);
 
       setLoginLocked(true);
       setLockedTime(locked_remaining);
@@ -144,10 +144,16 @@ const LoginModal = ({ open, handleClose, setModal }) => {
           <div className="job-apply-email-form-wrapper">
             <div className="inner">
               {loginLocked ? (
-                <>
+                <div className="position-relative">
                   <CountdownTimer initialTime={lockedTime} setLoginLocked={setLoginLocked} />
-                  <p>You have been locked to login!</p>
-                </>
+                  <button
+                    className="border-0 bg-transparent text-primary position-absolute p-0"
+                    onClick={handleClose}
+                    style={{ top: '0', right: '0' }}
+                  >
+                    <IoCloseOutline size={30} />
+                  </button>
+                </div>
               ) : (
                 <>
                   <div className="d-flex align-items-center justify-content-between mb-4">
@@ -155,22 +161,12 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                       Login
                     </h3>
                     <button
-                      className="border-0 bg-transparent text-primary"
+                      className="border-0 bg-transparent text-primary p-0"
                       onClick={handleClose}
                     >
                       <IoCloseOutline size={30} />
                     </button>
                   </div>
-                  {message && message?.status === 'reset' && (
-                    <div className={`alert alert-${message.class}`} onClick={() => setModal('reset') } style={{ cursor: 'pointer' }}>
-                      {message.content}
-                    </div>
-                  )}
-                  {message && !message?.status && (
-                    <div className={`alert alert-${message.class}`}>
-                      {message.content}
-                    </div>
-                  )}
                   <form className="login-form" onSubmit={(e) => handleSubmit(e)}>
                     <div className="form-group">
                       <label className="form-label">Email</label>
@@ -238,6 +234,20 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                     >
                       Login
                     </button>
+                    {message && message?.status === 'reset' && (
+                      <button
+                        className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3 fs-5"
+                        onClick={() => setModal('reset') }
+                        type="button"
+                      >
+                        Click To Reset Your Password
+                      </button>
+                    )}
+                    {message && !message?.status && (
+                      <div className={`alert alert-${message.class} mt-3`}>
+                        {message.content}
+                      </div>
+                    )}
                     <p
                       className="text-center mt-4"
                       style={{ fontSize: 20, fontWeight: 300 }}

@@ -23,9 +23,10 @@ const CountdownTimer = ({ initialTime, setLoginLocked }) => {
   };
 
   return (
-    <div>
-      {/* <h2>Countdown Timer</h2> */}
-      <h2>{formatTime(timeLeft)}</h2>
+    <div className="text-center">
+      <h2>Account Temporarily Locked</h2>
+      <h1>Unlocks in {formatTime(timeLeft)} seconds</h1>
+      <p>Sorry, your account has been locked for multiple failed login attempts.</p>
     </div>
   );
 };
