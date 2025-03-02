@@ -27,11 +27,13 @@ const state = {
   job_alerts: [],
   applicationsNextPage: null,
   notesNextPage: null,
-  cache_searchApplicationsAllStatus: {},
+  cache: {},
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "set_cache":
+      return { ...state, cache: { ...state.cache, [action.payload.url]: action.payload.data }, };
     case "set_jobs":
       return { ...state, jobs: action.payload.data, meta: action.payload.meta };
     case "set_applications":
@@ -40,11 +42,6 @@ const reducer = (state, action) => {
         applications: action.payload.data,
         applicationsNextPage: action.payload.links.next,
         applicationMeta: action.payload.meta
-      };
-    case "set_cache_searchApplicationsAllStatus":
-      return {
-        ...state,
-        cache_searchApplicationsAllStatus: { ...state.cache_searchApplicationsAllStatus, [action.payload.url]: action.payload.data },
       };
     case "modify_applications":
       return {
@@ -293,10 +290,10 @@ const getApplicationsAllStatus = (dispatch) => {
     let applications = [];
     setLoadingApp(dispatch, true);
     try {
-      const endpointUrl = "/jobs?sort=-created_at&filter[trashed]=with&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
-      // const endpointUrl = "/jobs?sort=-created_at&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
-      console.log(endpointUrl);
-      const response = await api.get(endpointUrl);
+      const endpoint = "/jobs?sort=-created_at&filter[trashed]=with&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
+      // const endpoint = "/jobs?sort=-created_at&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
+      console.log(endpoint);
+      const response = await api.get(endpoint);
       dispatch({
         type: "set_applications",
         payload: response.data,
@@ -309,40 +306,59 @@ const getApplicationsAllStatus = (dispatch) => {
 
 const searchApplicationsAllStatus = (dispatch, state) => {
   return async (searchText, uid, applications_count = 0, page = false, application_status = false, cb = () => { }) => {
-
     try {
-      const endpointUrl = "/jobs?sort=-created_at&filter[trashed]=with&filter[user_id]=" + uid + (searchText?.length > 0 ? ("&applicantSearch=" + searchText) : "") + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
-      // const endpointUrl = "/jobs?sort=-created_at&filter[user_id]=" + uid + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
-      //console.log(endpointUrl);
+      const endpoint = "/jobs?sort=-created_at&filter[trashed]=with&filter[user_id]=" + uid + (searchText?.length > 0 ? ("&applicantSearch=" + searchText) : "") + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
 
-      if (state.cache_searchApplicationsAllStatus[endpointUrl]) {
+      if (state.cache[endpoint]) {
         dispatch({
           type: "set_applications",
-          payload: state.cache_searchApplicationsAllStatus[endpointUrl],
+          payload: state.cache[endpoint],
         });
-        cb(state.cache_searchApplicationsAllStatus[endpointUrl].data);
+        cb(state.cache[endpoint].data);
         setLoadingApp(dispatch, false);
-        return;
       } else {
         setLoadingApp(dispatch, true);
       }
 
-      const response = await api.get(endpointUrl);
+      const response = await api.get(endpoint);
       dispatch({
-        type: "set_applications",
-        payload: response.data,
+        type: "set_cache",
+        payload: { url: endpoint, data: response.data },
       });
 
       dispatch({
-        type: "set_cache_searchApplicationsAllStatus",
-        payload: { url: endpointUrl, data: response.data },
+        type: "set_applications",
+        payload: response.data,
       });
       cb(response.data.data);
       setLoadingApp(dispatch, false);
     } catch (error) {
       setLoadingApp(dispatch, false);
     }
+  };
+};
 
+const searchApplicationsAllStatusCacheOnly = (dispatch, state) => {
+  return async (searchText, uid, applications_count = 0, page = false, application_status = false, cb = () => { }) => {
+    let meta = null;
+    try {
+      const endpoint = "/jobs?sort=-created_at&filter[trashed]=with&filter[user_id]=" + uid + (searchText?.length > 0 ? ("&applicantSearch=" + searchText) : "") + "&applications_count=" + applications_count + (page ? "&page=" + page : "") + (application_status ? "&application_status=" + application_status : "");
+      const response = await api.get(endpoint);
+      meta = response.data.meta;
+      dispatch({
+        type: "set_cache",
+        payload: { url: endpoint, data: response.data },
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      if ((page === false || page == 1) && meta != null) {
+        // load all pages for caching
+        for (let i = 2; i <= meta.last_page; i++) {
+          searchApplicationsAllStatusCacheOnly(dispatch, state)(searchText, uid, applications_count, i, application_status, () => { });
+        }
+      }
+    }
   };
 };
 
@@ -851,6 +867,7 @@ export const { Context, Provider } = createDataContext(
     getApplications,
     getApplicationsAllStatus,
     searchApplicationsAllStatus,
+    searchApplicationsAllStatusCacheOnly,
     modifyApplications,
     getRecentApplications,
     updateApplication,

@@ -19,12 +19,7 @@ const usePermissions = () => {
 
     const {
         state: { categories_creative_count, },
-        getCategoriesCreativeCount,
     } = useContext(DataContext);
-
-    useEffect(() => {
-        getCategoriesCreativeCount();
-    }, []);
 
     const isAdmin = role == "admin";
     const isAdvisor = role == "advisor";

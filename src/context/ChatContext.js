@@ -8,10 +8,13 @@ const state = {
   activeContact: null,
   attachments: [],
   loading: false,
+  cache: [],
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "set_cache":
+      return { ...state, cache: { ...state.cache, [action.payload.url]: action.payload.data } };
     case "set_messages":
       return { ...state, messages: action.payload.data };
     case "add_message":
@@ -61,16 +64,38 @@ const reducer = (state, action) => {
 
 const getMessages = (dispatch) => {
   return async (id, type) => {
-    setActiveContact(dispatch)(id);
-    setLoading(dispatch, true);
+
     try {
-      const response = await api.get("/messages/" + id + "?type=" + type);
+      const endpoint = "/messages/" + id + "?type=" + type;
+      setActiveContact(dispatch)(id);
+
+      if (state.cache[endpoint]) {
+        dispatch({
+          type: "set_messages",
+          payload: state.cache[endpoint],
+        });
+        setLoading(dispatch, false);
+      } else {
+        setLoading(dispatch, true);
+      }
+
+      const response = await api.get(endpoint);
+      const data = response.data;
+
       dispatch({
         type: "set_messages",
-        payload: response.data,
+        payload: data,
       });
-    } catch (error) { }
-    setLoading(dispatch, false);
+
+      dispatch({
+        type: "set_cache",
+        payload: { url: endpoint, data: data },
+      });
+
+      setLoading(dispatch, false);
+    } catch (error) {
+      setLoading(dispatch, false);
+    }
   };
 };
 

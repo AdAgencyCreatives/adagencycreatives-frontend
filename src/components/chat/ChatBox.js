@@ -15,6 +15,7 @@ import { CircularProgress, Dialog, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import CustomEditor from "../CustomEditor";
 import AvatarImageLoader from "../AvatarImageLoader";
+import DelayedOutput from "../DelayedOutput";
 
 const ChatBox = ({
   page,
@@ -38,6 +39,8 @@ const ChatBox = ({
   refreshContacts,
   userListLoading,
 }) => {
+
+  const [showLoading, setShowLoading] = useState(false);
 
   const {
     state: { messages, loading, contacts, attachments, activeContact },
@@ -79,7 +82,6 @@ const ChatBox = ({
 
   useEffect(() => {
     setMessageData(messages);
-    // setContent(draftMessages[contact.uuid] || "");
   }, [messages]);
 
   useEffect(() => {
@@ -262,7 +264,6 @@ const ChatBox = ({
     return result;
   }
 
-  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const loadMoreMessages = async () => {
       if (containerRef.current && containerRef.current.scrollTop === 0) {
@@ -371,11 +372,6 @@ const ChatBox = ({
 
   const scrollToLastMessage = () => {
     window.setTimeout(() => {
-      // if (messageData?.length > 0) {
-      //   if (document.getElementById('message' + messageData.length - 1)?.scrollIntoView) {
-      //     document.getElementById('message' + messageData.length - 1)?.scrollIntoView({ behavior: "smooth" });
-      //   }
-      // }
       scrollToBottom();
     }, 1000);
   };
@@ -397,7 +393,9 @@ const ChatBox = ({
             ) : (
               <div ref={containerRef} className="chat-area">
                 {loading ? (
-                  <Loader fullHeight={false} />
+                  <DelayedOutput delay={1000}>
+                    <Loader fullHeight={false} />
+                  </DelayedOutput>
                 ) : (
                   <>
                     {messageData && messageData.map((item, index) => {

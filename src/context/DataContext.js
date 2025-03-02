@@ -23,11 +23,14 @@ const state = {
   publicationsNextPage: null,
   resourcesNextPage: null,
   meta: null,
-  nextPage: null
+  nextPage: null,
+  cache: {},
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "set_cache":
+      return { ...state, cache: { ...state.cache, [action.payload.url]: action.payload.data } };
     case "set_agencies":
       return { ...state, agencies: action.payload.data };
     case "set_categories":
@@ -155,12 +158,43 @@ const getCategories = (dispatch) => {
 const getCategoriesCreativeCount = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/get_categories/creative_count");
+      const endpoint = "/get_categories/creative_count";
+      if (state.cache[endpoint]) {
+        dispatch({
+          type: "set_categories_creative_count",
+          payload: state.cache[endpoint],
+        });
+      }
+
+      const response = await api.get(endpoint);
+      dispatch({
+        type: "set_cache",
+        payload: { url: endpoint, data: response.data },
+      });
+
       dispatch({
         type: "set_categories_creative_count",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const getCategoriesCreativeCountCacheOnly = (dispatch) => {
+  return async () => {
+    try {
+      const endpoint = "/get_categories/creative_count";
+
+      const response = await api.get(endpoint);
+      dispatch({
+        type: "set_cache",
+        payload: { url: endpoint, data: response.data },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
@@ -274,19 +308,6 @@ const getIndustryExperiences = (dispatch) => {
   };
 };
 
-const getBookmarks = (dispatch) => {
-  return async (search, uuid, type, cb = () => { }) => {
-    try {
-      const response = await api.get("/bookmarks?filter[user_id]=" + uuid + "&resource_type=" + type + (search?.length > 0 ? ("&search=" + search) : ""));
-      dispatch({
-        type: "set_bookmarks",
-        payload: response.data,
-      });
-      cb();
-    } catch (error) { }
-  };
-};
-
 const getAllBookmarks = (dispatch) => {
   return async (uuid, type) => {
     try {
@@ -299,8 +320,8 @@ const getAllBookmarks = (dispatch) => {
   };
 };
 
-const loadBookmarks = (dispatch) => {
-  return async (search, uuid, type, page, cb = false) => {
+const getBookmarks = (dispatch) => {
+  return async (search, uuid, type, page = 1, cb = false) => {
     setLoading(dispatch, true);
     try {
       const response = await api.get("/bookmarks?filter[user_id]=" + uuid + "&resource_type=" + type + (page ? "&per_page=9&page=" + page : "") + (search?.length > 0 ? ("&search=" + search) : ""));
@@ -515,6 +536,7 @@ export const { Context, Provider } = createDataContext(
   {
     getCategories,
     getCategoriesCreativeCount,
+    getCategoriesCreativeCountCacheOnly,
     getStates,
     getCities,
     getFeaturedCities,
@@ -525,7 +547,6 @@ export const { Context, Provider } = createDataContext(
     getStrengths,
     getBookmarks,
     getAllBookmarks,
-    loadBookmarks,
     checkShortlist,
     createBookmark,
     removeBookmark,

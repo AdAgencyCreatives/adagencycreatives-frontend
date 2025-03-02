@@ -23,11 +23,17 @@ const state = {
   subscription_status: "",
   advance_search_capabilities: false,
   conversation_updated_notifications: [],
-  pageClass: ''
+  pageClass: '',
+  needsCaching: true,
 };
 
 const authReducer = (state, action) => {
   switch (action.type) {
+    case "set_caching_needed":
+      return {
+        ...state,
+        needsCaching: action.payload,
+      };
     case "set_token":
       return {
         ...state,
@@ -373,6 +379,15 @@ const getToken = (dispatch) => {
   };
 };
 
+const setCachingNeeded = (dispatch) => {
+  return (status = false) => {
+    dispatch({
+      type: "set_caching_needed",
+      payload: status,
+    });
+  };
+};
+
 const setToken = (dispatch) => {
   return (token, role) => {
     if (token) {
@@ -575,6 +590,7 @@ const updateEmailNotifications = (dispatch) => {
 export const { Context, Provider } = createDataContext(
   authReducer,
   {
+    setCachingNeeded,
     signup,
     signin,
     sendResetLink,

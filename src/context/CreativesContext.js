@@ -23,10 +23,13 @@ const state = {
   portfolio_items: [],
   video: null,
   notifications: [],
+  cache: {},
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "set_cache":
+      return { ...state, cache: { ...state.cache, [action.payload.url]: action.payload.data } };
     case "set_creatives":
       return {
         ...state,
@@ -506,15 +509,46 @@ const generateCroppedAttachment = (dispatch) => {
   };
 };
 
+
 const getStats = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/creative_stats");
+      const endpoint = "/creative_stats";
+      if (state.cache[endpoint]) {
+        dispatch({
+          type: "set_stats",
+          payload: state.cache[endpoint],
+        });
+      }
+
+      const response = await api.get(endpoint);
+      dispatch({
+        type: "set_cache",
+        payload: { url: endpoint, data: response.data },
+      });
+
       dispatch({
         type: "set_stats",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const getCreativeDashboardStatsCacheOnly = (dispatch) => {
+  return async () => {
+    try {
+      const endpoint = "/creative_stats";
+      const response = await api.get(endpoint);
+      dispatch({
+        type: "set_cache",
+        payload: { url: endpoint, data: response.data },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
@@ -561,19 +595,41 @@ const getAppliedJobs = (dispatch) => {
   };
 };
 
-const searchAppliedJobs = (dispatch) => {
-  return async (searchText = "", page = false) => {
-    setLoading(dispatch, true);
+const searchAppliedJobs = (dispatch, state) => {
+  return async (searchText = "", page = false, cb = () => { }) => {
+    const meta = null;
     try {
-      const response = await api.get("/applied_jobs" + (searchText?.length > 0 || page ? "?" : "") + (searchText?.length > 0 ? ("&searchText=") + searchText : "") + (page ? "&page=" + page : ""));
+      let endpoint = "/applied_jobs" + (searchText?.length > 0 || page ? "?" : "") + (searchText?.length > 0 ? ("&searchText=") + searchText : "") + (page ? "&page=" + page : "");
+
+      if (state.cache[endpoint]) {
+        dispatch({
+          type: "set_applied_jobs",
+          payload: state.cache[endpoint],
+        });
+        cb(state.cache[endpoint].data);
+        setLoading(dispatch, false);
+      } else {
+        setLoading(dispatch, true);
+      }
+
+      const response = await api.get(endpoint);
+      meta = response.data.meta;
+      dispatch({
+        type: "set_cache",
+        payload: { url: endpoint, data: response.data },
+      });
+
       dispatch({
         type: "set_applied_jobs",
         payload: response.data,
       });
+      setLoading(dispatch, false);
+      cb();
     } catch (error) {
       console.log(error);
+      setLoading(dispatch, false);
+      cb();
     }
-    setLoading(dispatch, false);
   };
 };
 
@@ -595,6 +651,7 @@ export const { Context, Provider } = createDataContext(
     getRelatedCreatives,
     getHomeCreatives,
     getStats,
+    getCreativeDashboardStatsCacheOnly,
     getApplications,
     loadCreatives,
     loadSearchCreatives,

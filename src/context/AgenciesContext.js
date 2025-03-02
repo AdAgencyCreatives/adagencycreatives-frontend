@@ -14,11 +14,13 @@ const state = {
   request_package: null,
   video: null,
   creative_applications: [],
-  cache_searchOpenPositions: {}
+  cache: {}
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "set_cache":
+      return { ...state, cache: { ...state.cache, [action.payload.url]: action.payload.data } };
     case "set_agencies":
       console.log(action.payload.data);
       return {
@@ -39,8 +41,6 @@ const reducer = (state, action) => {
       return { ...state, video: action.payload.data[0] };
     case "set_open_positions":
       return { ...state, open_positions: action.payload.data, meta: action.payload.meta };
-    case "set_cache_searchOpenPositions":
-      return { ...state, cache_searchOpenPositions: { ...state.cache_searchOpenPositions, [action.payload.url]: action.payload.data } };
     case "set_creative_applications":
       return { ...state, creative_applications: action.payload.data };
     case "delete_job":
@@ -138,17 +138,52 @@ const getRoleId = (role) => {
 
 const getAgencyById = (dispatch) => {
   return async (user, self = false) => {
-    let role = getRoleId(user?.role);
     try {
-      const response = await api.get("/agencies?filter[status]=1&filter[user_id]=" + user.uuid + "&filter[role]=" + role + (self ? "" : "&filter[is_visible]=1"));
+      let role = getRoleId(user?.role);
+      let endpoint = "/agencies?filter[status]=1&filter[user_id]=" + user.uuid + "&filter[role]=" + role + (self ? "" : "&filter[is_visible]=1");
+
+      if (state.cache[endpoint]) {
+        dispatch({
+          type: "set_single_agency",
+          payload: state.cache[endpoint].data,
+        });
+      }
+
+      const response = await api.get(endpoint);
       const data = response.data.data[0];
-      const uid = data.user_id;
-      // getOpenPositions(dispatch)(uid);
+
+      dispatch({
+        type: "set_cache",
+        payload: { url: endpoint, data: data },
+      });
+
       dispatch({
         type: "set_single_agency",
         payload: data,
       });
-    } catch (error) { }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const getAgencyByIdCacheOnly = (dispatch) => {
+  return async (user, self = false) => {
+    try {
+      let role = getRoleId(user?.role);
+      let endpoint = "/agencies?filter[status]=1&filter[user_id]=" + user.uuid + "&filter[role]=" + role + (self ? "" : "&filter[is_visible]=1");
+
+      const response = await api.get(endpoint);
+      const data = response.data.data[0];
+
+      dispatch({
+        type: "set_cache",
+        payload: { url: endpoint, data: data },
+      });
+
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
@@ -195,36 +230,59 @@ const searchOpenPositions = (dispatch, state) => {
     try {
       const endpoint = "/jobs?skip_applications=yes&sort=-created_at&filter[user_id]=" + uid + (searchText?.length > 0 ? ("&jobSearch=" + searchText) : "") + (status != null && status != '' ? "&filter[status]=" + status : "") + ("&applications_count=" + applications_count) + (page ? "&page=" + page : "");
 
-      if (state.cache_searchOpenPositions[endpoint]) {
+      if (state.cache[endpoint]) {
         dispatch({
           type: "set_open_positions",
-          payload: state.cache_searchOpenPositions[endpoint],
+          payload: state.cache[endpoint],
         });
         setLoading(dispatch, false);
         cb();
-        return;
       } else {
         setLoading(dispatch, true);
       }
 
       const response = await api.get(endpoint);
-      const data = response.data;
+      dispatch({
+        type: "set_cache",
+        payload: { url: endpoint, data: response.data },
+      });
+
       dispatch({
         type: "set_open_positions",
-        payload: data,
+        payload: response.data,
       });
-
-      dispatch({
-        type: "set_cache_searchOpenPositions",
-        payload: { url: endpoint, data: data },
-      });
-
       setLoading(dispatch, false);
       cb();
     } catch (error) {
       setLoading(dispatch, false);
     }
+  };
+};
 
+const searchOpenPositionsCacheOnly = (dispatch, state) => {
+  return async (searchText, uid, page = false, status = null, applications_count = 0, cb = () => { }) => {
+    let meta = null;
+    try {
+      const endpoint = "/jobs?skip_applications=yes&sort=-created_at&filter[user_id]=" + uid + (searchText?.length > 0 ? ("&jobSearch=" + searchText) : "") + (status != null && status != '' ? "&filter[status]=" + status : "") + ("&applications_count=" + applications_count) + (page ? "&page=" + page : "");
+
+      const response = await api.get(endpoint);
+      meta = response.data.meta;
+
+      dispatch({
+        type: "set_cache",
+        payload: { url: endpoint, data: response.data },
+      });
+
+    } catch (error) {
+      console.log(error);
+    } finally {
+      if ((page === false || page == 1) && meta != null) {
+        // load all pages for caching
+        for (let i = 2; i <= meta.last_page; i++) {
+          searchOpenPositionsCacheOnly(dispatch, state)(searchText, uid, i, status, applications_count, () => { });
+        }
+      }
+    }
   };
 };
 
@@ -260,12 +318,42 @@ const sendJobInvite = (dispatch) => {
 const getStats = (dispatch) => {
   return async () => {
     try {
-      const response = await api.get("/agency_stats");
+      const endpoint = "/agency_stats";
+      if (state.cache[endpoint]) {
+        dispatch({
+          type: "set_stats",
+          payload: state.cache[endpoint],
+        });
+      }
+
+      const response = await api.get(endpoint);
+      dispatch({
+        type: "set_cache",
+        payload: { url: endpoint, data: response.data },
+      });
+
       dispatch({
         type: "set_stats",
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const getAgencyDashboardStatsCacheOnly = (dispatch) => {
+  return async () => {
+    try {
+      const endpoint = "/agency_stats";
+      const response = await api.get(endpoint);
+      dispatch({
+        type: "set_cache",
+        payload: { url: endpoint, data: response.data },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
@@ -505,13 +593,16 @@ export const { Context, Provider } = createDataContext(
     loadAgencies,
     getAgency,
     getStats,
+    getAgencyDashboardStatsCacheOnly,
     getAgencyById,
+    getAgencyByIdCacheOnly,
     saveAgency,
     searchAgencies,
     agencySearch1,
     agencySearch2,
     getOpenPositions,
     searchOpenPositions,
+    searchOpenPositionsCacheOnly,
     getOpenPositionsAll,
     uploadAttachment,
     removeAttachment,

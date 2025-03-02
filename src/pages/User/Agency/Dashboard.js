@@ -12,13 +12,13 @@ import Views from "../../../components/dashboard/Views";
 import Notifications from "../../../components/dashboard/Notifications";
 import Applicants from "../../../components/dashboard/Applicants";
 import { useContext, useEffect } from "react";
-import { Context } from "../../../context/AgenciesContext";
+import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 
 const Dashboard = () => {
   const {
     state: { stats },
     getStats,
-  } = useContext(Context);
+  } = useContext(AgenciesContext);
 
   useEffect(() => {
     getStats();

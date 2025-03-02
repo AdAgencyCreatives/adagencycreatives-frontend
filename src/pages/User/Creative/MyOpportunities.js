@@ -12,7 +12,7 @@ import {
   IoBriefcaseOutline,
   IoEyeOutline,
 } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
 import moment from "moment";
 import { Context as AuthContext } from "../../../context/AuthContext";
@@ -25,10 +25,18 @@ import AgencyImageLoader from "../../../components/AgencyImageLoader";
 
 const MyOpportunities = () => {
 
+  const navigate = useNavigate();
+
   const [searchInput, setSearchInput] = useState("");
+  const [showLoading, setShowLoading] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const [appId, setAppId] = useState("");
+
+  const anchor = window.location.hash.slice(1);
+
   const {
     state: { applied_jobs, applied_jobsNextPage, applied_jobsMeta, loading },
     searchAppliedJobs,
@@ -41,15 +49,56 @@ const MyOpportunities = () => {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    if (token) searchAppliedJobs(searchInput);
+    let params = new URLSearchParams(window.location.hash.replace("#", ""));
+
+    let search = '';
+    if (params.get('search') && params.get('search')?.length > 0) {
+      search = params.get('search');
+    }
+
+    setSearchInput(search);
+
+    let page = 1;
+    if (params.get('page') && params.get('page')?.length > 0) {
+      page = params.get('page');
+    }
+
+    if (token) searchAppliedJobs(search, page, () => { setShowLoading(false); setShowResults(true); });
   }, [token]);
 
   const paginate = (page) => {
-    searchAppliedJobs(searchInput, page);
+    setShowLoading(true);
+
+    let params = new URLSearchParams(window.location.hash.replace("#", ""));
+    params.set('page', page); // Replace 'key' with your parameter name and 'value' with your parameter value
+    navigate(`#${params.toString()}`);
+
+    let search = '';
+    if (params.get('search') && params.get('search')?.length > 0) {
+      search = params.get('search');
+    }
+
+    searchAppliedJobs(searchInput, page, () => { setShowLoading(false); setShowResults(true); });
   };
 
   const handleSearch = (searchText) => {
-    searchAppliedJobs(searchText);
+    setShowLoading(true);
+
+    let params = new URLSearchParams(window.location.hash.replace("#", ""));
+    if (searchText?.length > 0) {
+      params.set('search', searchText);
+    } else {
+      params.delete('search');
+    }
+
+    navigate(`#${params.toString()}`);
+
+    let page = 1;
+    if (params.get('page') && params.get('page')?.length > 0) {
+      page = params.get('page');
+    }
+
+    searchAppliedJobs(searchText, page, () => { setShowLoading(false); setShowResults(true); });
   }
 
   return (
@@ -62,7 +111,7 @@ const MyOpportunities = () => {
         resource_id={appId}
         type="applications"
       />
-      {loading ? (
+      {showLoading ? (
         <Loader />
       ) : (
         <div className="card">
@@ -202,9 +251,15 @@ const MyOpportunities = () => {
             </div>
             {applied_jobsMeta?.total > 9 && <Paginate meta={applied_jobsMeta} paginate={paginate} title={"applied jobs"} />}
           </>) : (<>
-            <div className="no_result">
-              <p>Please try again. No exact results found.</p>
-            </div>
+            {showResults && (
+              <div className="no_result">
+                {searchInput.length > 0 ? (
+                  <p>Please try again. No exact results found.</p>
+                ) : (
+                  <p>No Jobs Applied.</p>
+                )}
+              </div>
+            )}
           </>)}
         </div>
       )}

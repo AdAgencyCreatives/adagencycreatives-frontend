@@ -18,9 +18,7 @@ import { Provider as ChatProvider } from "./context/ChatContext";
 import { Provider as AlertProvider } from "./context/AlertContext";
 import PusherListener from "./components/PusherListener";
 import { Provider as NotificationsProvider } from "./context/NotificationsContext";
-import Loader from "./components/Loader";
-import { useLocation } from 'react-router-dom';
-import useSeoHelper from "./hooks/useSeoHelper";
+import Caching from "./components/Caching";
 
 const theme = createTheme({
   typography: {
@@ -41,18 +39,10 @@ const theme = createTheme({
 
 function App() {
 
-  const { setDefaultSeo } = useSeoHelper();
-
   const [skipHeaderFooter, setSkipHeaderFooter] = useState(false);
 
-  const {
-    state: { token, user, isLoading, pageClass },
-    getToken,
-  } = useContext(AuthContext);
-
-  useMemo(() => {
-    getToken();
-  }, []);
+  const { getToken } = useContext(AuthContext);
+  useMemo(() => { getToken(); }, []);
 
   const isCurrentPage = (relativeUrl) => {
     return (window.location.pathname + (window.location.search && window.location.search.length > 1 ? window.location.search : '')) == relativeUrl;
@@ -75,6 +65,7 @@ function App() {
                             <div className="App">
                               <PusherListener />
                               <ScrollRestoration />
+                              <Caching />
                               {!skipHeaderFooter ? (<>
                                 <Header />
                               </>) : (<></>)}

@@ -2,16 +2,18 @@ import { useContext } from "react";
 import { useEffect } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
 import { Context as CommunityContext } from "../context/CommunityContext";
+import { Context as AgenciesContext } from "../context/AgenciesContext";
 import Pusher from "pusher-js";
 window.Pusher = Pusher;
 
 const PusherListener = () => {
   const {
     state: { token, user },
-    notifyConversationUpdated,
+    notifyConversationUpdated, setCachingNeeded,
   } = useContext(AuthContext);
 
   const { getReactions } = useContext(CommunityContext);
+  const { getStats } = useContext(AgenciesContext);
 
   useEffect(() => {
     if (token) {
@@ -35,7 +37,7 @@ const PusherListener = () => {
         } else if (messageType == 'conversation_updated') {
           notifyConversationUpdated(data.data);
         }
-
+        getStats();
       });
 
       var channelName2 = "community";

@@ -146,13 +146,13 @@ const LoginModal = ({ open, handleClose, setModal }) => {
               {loginLocked ? (
                 <div className="position-relative" style={{ textAlign: 'center' }}>
                   <div className="text-end">
-                  <button
-                    className="border-0 bg-transparent text-primary p-0"
-                    onClick={handleClose}
-                    style={{ right: '0' }}
-                  >
-                    <IoCloseOutline size={30} />
-                  </button>
+                    <button
+                      className="border-0 bg-transparent text-primary p-0"
+                      onClick={handleClose}
+                      style={{ right: '0' }}
+                    >
+                      <IoCloseOutline size={30} />
+                    </button>
                   </div>
                   <h3>Account Temporarily Locked</h3>
                   <CountdownTimer initialTime={lockedTime} setLoginLocked={setLoginLocked} />
@@ -251,7 +251,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                     {message && message?.status === 'reset' && (
                       <button
                         className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3 fs-5"
-                        onClick={() => setModal('reset') }
+                        onClick={() => setModal('reset')}
                         type="button"
                       >
                         Click To Reset Your Password

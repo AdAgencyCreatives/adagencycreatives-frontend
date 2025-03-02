@@ -29,7 +29,6 @@ const TabularApplicantJobs = () => {
     state: { applications, isLoadingApp, applicationMeta },
     searchApplicationsAllStatus,
     updateApplication,
-    modifyApplications,
   } = useContext(JobsContext);
 
   const {
@@ -53,9 +52,7 @@ const TabularApplicantJobs = () => {
       page = params.get('page');
     }
 
-    searchApplicationsAllStatus(search, user.uuid, 0, page, statusApplication, (foundJobs) => {
-      filterJobApplicants(foundJobs);
-    });
+    searchApplicationsAllStatus(search, user.uuid, 0, page, statusApplication, (foundJobs) => { });
   }, []);
 
   const handleSearch = (searchText) => {
@@ -71,47 +68,9 @@ const TabularApplicantJobs = () => {
     }
 
     searchApplicationsAllStatus(searchText, user.uuid, 0, page, statusApplication, (foundJobs) => {
-      filterJobApplicants(foundJobs);
       setShowLoading(false);
     });
   }
-
-  const filterJobApplicants = (foundJobs) => {
-    const filteredJobs = foundJobs.map((job) => {
-      var updatedJob = { ...job };
-
-      if (job.advisor_id != null && job.advisor_id != user.id) {
-        var recommendedApplicants = job.applications.filter((application) => application.status == "recommended");
-        updatedJob.applications = recommendedApplicants;
-      } else {
-        var sortedApplications = [];
-        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "hired").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
-        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "pending").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
-        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "accepted").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
-        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "recommended").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
-        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "shortlisted").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
-        sortedApplications = sortedApplications.concat(job.applications.filter((application) => application.status == "rejected").sort((a, b) => a.user_last_name.localeCompare(b.user_last_name)));
-
-        updatedJob.applications = sortedApplications;
-      }
-
-      return updatedJob;
-    });
-    //modifyApplications(filteredJobs);
-  };
-
-  // const switchTab = (id, tab) => {
-  //   let jobIndex = applications.findIndex((job) => job.id == id);
-  //   let updatedJob = { ...applications[jobIndex] };
-  //   updatedJob.applications = updatedJob.applications.filter((application) => {
-  //     if (tab == "pending") return true;
-  //     return application.status == tab;
-  //   });
-  //   let updatedApplications = [...data];
-  //   updatedApplications[jobIndex] = updatedJob;
-  //   modifyApplications(updatedApplications);
-  //   setTab((prev) => ({ ...prev, [id]: tab }));
-  // };
 
   const setApplicationStatus = (job_id, app_id, status, cb = () => { }) => {
     updateApplication(app_id, { status }, () => {
@@ -125,7 +84,6 @@ const TabularApplicantJobs = () => {
       updatedJob.applications = updatedApplications;
       const updatedData = [...applications];
       updatedData[jobIndex] = { ...updatedJob };
-      //modifyApplications(updatedData);
       showAlert("Creative status change successful");
       cb();
     });
@@ -145,7 +103,6 @@ const TabularApplicantJobs = () => {
     }
 
     searchApplicationsAllStatus(search, user.uuid, 0, page, statusApplication, (foundJobs) => {
-      filterJobApplicants(foundJobs);
       setShowLoading(false);
     });
   };

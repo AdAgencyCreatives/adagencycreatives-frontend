@@ -38,7 +38,7 @@ const CreativeShortlist = () => {
 
   const {
     state: { bookmarks, meta },
-    getBookmarks, loadBookmarks, removeBookmark,
+    getBookmarks, removeBookmark,
   } = useContext(DataContext);
 
   const {
@@ -49,16 +49,14 @@ const CreativeShortlist = () => {
 
   useEffect(() => {
     if (user) {
-      getBookmarks(searchInput, user.uuid, "creatives");
+      getBookmarks(searchInput, user.uuid, "creatives", 1, () => {
+        setIsLoading(false);
+      });
     }
   }, [user]);
 
-  useEffect(() => {
-    bookmarks && setIsLoading(false);
-  }, [bookmarks]);
-
   const paginate = (page) => {
-    loadBookmarks(searchInput, user.uuid, "creatives", page, () => {
+    getBookmarks(searchInput, user.uuid, "creatives", page, () => {
       setCurrentPage(page);
       window.setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -86,7 +84,7 @@ const CreativeShortlist = () => {
 
   const handleSearch = (searchText) => {
     setSearchPerformed(false);
-    getBookmarks(searchText, user.uuid, "creatives", () => {
+    getBookmarks(searchText, user.uuid, "creatives", 1, () => {
       setSearchPerformed(true);
     });
   }
