@@ -183,8 +183,8 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
                 </>)}
               </div>
               <CreativeLocation location={data?.location} />
-              <Link to={"/job-messages/#active=" + data.user_id} className="d-flex align-items-center gap-2" target="_blank">
-                  <IoMailOpen /> Conversation
+              <Link to={"/job-messages/#active=" + data.user_id} className="d-flex align-items-center gap-2">
+                <IoMailOpen /> Conversation
               </Link>
             </div>
             <div className="col-md-7">
