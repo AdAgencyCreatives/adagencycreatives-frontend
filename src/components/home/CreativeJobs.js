@@ -49,33 +49,35 @@ const CreativeJobs = () => {
   }, [jobs]);
 
   useEffect(() => {
-    const params = {
-      injectStyles: [PaginationStyle],
-      autoplay: {
-        delay: 2500,
-        disableOnInteraction: false,
-      },
-      breakpoints: {
-        500: {
-          slidesPerView: 2,
-          // spaceBetween: 20,
+    if (renderedJobs?.length > 0) {
+      const params = {
+        injectStyles: [PaginationStyle],
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false,
         },
-        768: {
-          slidesPerView: 3,
-          spaceBetween: 30,
-          loopAdditionalSlides: 2, // Helps Swiper duplicate slides properly
-          loopFillGroupWithBlank: true, // Fills empty spaces for smooth looping
+        breakpoints: {
+          500: {
+            slidesPerView: 2,
+            // spaceBetween: 20,
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 30,
+            loopAdditionalSlides: 2, // Helps Swiper duplicate slides properly
+            loopFillGroupWithBlank: true, // Fills empty spaces for smooth looping
+          },
         },
-      },
-      on: {
-        afterInit: function () {
-          window.setTimeout(() => { setIsLoading(false); }, 500);
+        on: {
+          afterInit: function () {
+            window.setTimeout(() => { setIsLoading(false); }, 500);
+          },
         },
-      },
-    };
-    Object.assign(swiperElRef.current, params);
-    swiperElRef.current.initialize();
-  });
+      };
+      Object.assign(swiperElRef.current, params);
+      swiperElRef.current.initialize();
+    }
+  }, [renderedJobs]);
 
   return (
     <div id="jobs">

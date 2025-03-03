@@ -46,10 +46,9 @@ const FeaturedCities = () => {
                       ></div>
                       <div className="inner">
                         <h4 className="title">{item.name}</h4>
-
-                        <div className="number">
+                        {/* <div className="number">
                           <span>{item.count}</span> jobs
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </Link>
@@ -74,10 +73,9 @@ const FeaturedCities = () => {
                           ></div>
                           <div className="inner">
                             <h4 className="title">{item.name}</h4>
-
-                            <div className="number">
+                            {/* <div className="number">
                               <span>{`${item.count} job${item.count == 1 ? '' : 's'}`}</span>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </Link>

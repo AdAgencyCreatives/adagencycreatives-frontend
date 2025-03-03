@@ -26,12 +26,12 @@ const LoginModal = ({ open, handleClose, setModal }) => {
     return Math.floor(diffMs / 1000); // Convert to seconds
   }
 
-  useEffect(() => {
-    if (localStorage.getItem("locked_end") !== null) {
-      let lockedEnd = localStorage.getItem("locked_end");
-      setLocked(lockedEnd);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("locked_end") !== null) {
+  //     let lockedEnd = localStorage.getItem("locked_end");
+  //     setLocked(lockedEnd);
+  //   }
+  // }, []);
 
   const setLocked = (lockedEnd) => {
     let nowUtc = new Date().toISOString(lockedEnd);
@@ -130,10 +130,15 @@ const LoginModal = ({ open, handleClose, setModal }) => {
     });
   };
 
+  const handleCounterClose = () => {
+    handleClose();
+    setLoginLocked(false);
+  }
+
   return (
     <Dialog
       open={open}
-      onClose={() => handleClose()}
+      onClose={() => handleCounterClose()}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       scroll="body"
@@ -148,7 +153,7 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                   <div className="text-end">
                     <button
                       className="border-0 bg-transparent text-primary p-0"
-                      onClick={handleClose}
+                      onClick={handleCounterClose}
                       style={{ right: '0' }}
                     >
                       <IoCloseOutline size={30} />
@@ -171,11 +176,11 @@ const LoginModal = ({ open, handleClose, setModal }) => {
                       <IoCloseOutline size={30} />
                     </button>
                   </div>
-                  {message && message?.status === 'reset' && (
+                  {/* {message && message?.status === 'reset' && (
                     <div className={`alert alert-${message.class}`} onClick={() => setModal('reset')} style={{ cursor: 'pointer' }}>
                       {message.content}
                     </div>
-                  )}
+                  )} */}
                   {message && !message?.status && (
                     <div className={`alert alert-${message.class}`}>
                       {message.content}

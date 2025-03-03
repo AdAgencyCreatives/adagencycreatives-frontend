@@ -12,6 +12,7 @@ import SpotlightReelSingle from "./SpotlightReelSingle";
 const SpotlightReels = () => {
 
     const [isLoading, setIsLoading] = useState(true);
+    const [screativesRender, setScreativesRender] = useState(true);
 
     const { decodeEntities } = useHelper();
     const {
@@ -27,36 +28,56 @@ const SpotlightReels = () => {
     const { height, width } = useWindowDimensions();
 
     useEffect(() => {
-        const params = {
-            injectStyles: [ResourcePaginationStyle + BulletStyle + PaginationStyle],
-            pagination: {
-                clickable: true,
-                renderBullet: (index, className) => {
-                    return `<span class="${className}"></span>`;
+        let slidesPerView = 5;
+        if (width <= 500) {
+            slidesPerView = 2;
+        } else if (width <= 768) {
+            slidesPerView = 3;
+        } else if (width <= 992) {
+            slidesPerView = 4;
+        }
+
+        if(screatives && slidesPerView < screatives?.length && slidesPerView * 2 > screatives?.length) {
+            let rendered = screatives.concat(screatives);
+            rendered = rendered.slice(0, (slidesPerView * 2) + 1);
+
+            setScreativesRender(rendered);
+        } else setScreativesRender(screatives);
+    }, [screatives]);
+
+    useEffect(() => {
+        if (screativesRender?.length > 0) {
+            const params = {
+                injectStyles: [ResourcePaginationStyle + BulletStyle],
+                pagination: {
+                    clickable: true,
+                    // renderBullet: (index, className) => {
+                    //     return `<span class="${className}"></span>`;
+                    // },
                 },
-            },
-            breakpoints: {
-                500: {
-                    slidesPerView: 2
-                    // spaceBetween: 20,
+                breakpoints: {
+                    500: {
+                        slidesPerView: 2
+                        // spaceBetween: 20,
+                    },
+                    768: {
+                        slidesPerView: 3,
+                        spaceBetween: 10,
+                    },
+                    992: {
+                        slidesPerView: 4,
+                        spaceBetween: 10,
+                    },
+                    1249: {
+                        slidesPerView: 5,
+                        spaceBetween: 10,
+                    }
                 },
-                768: {
-                    slidesPerView: 3,
-                    spaceBetween: 10,
-                },
-                992: {
-                    slidesPerView: 4,
-                    spaceBetween: 10,
-                },
-                1249: {
-                    slidesPerView: 5,
-                    spaceBetween: 10,
-                }
-            },
-        };
-        Object.assign(swiperElRef.current, params);
-        swiperElRef.current.initialize();
-    });
+            };
+            Object.assign(swiperElRef.current, params);
+            swiperElRef.current.initialize();
+        }
+    }, [screativesRender]);
 
     return (
         <div id="spotlight" className={'home-resources spotlight-reels'}>
@@ -75,19 +96,19 @@ const SpotlightReels = () => {
                         ref={swiperElRef}
                         init="false"
                         navigation="false"
-                        pagination-clickable="true"
                         pagination="true"
                         slides-per-view="1"
                         space-between="10"
                         loop="true"
                     >
-                        {screatives?.length > 0 && screatives.map((item, index) => {
+                        {screativesRender?.length > 0 && screativesRender.map((item, index) => {
                             return (
-                                <swiper-slide>
+                                <swiper-slide key={`spotlight-reels-${index}`}>
                                     <SpotlightReelSingle item={item} index={index} />
                                 </swiper-slide>
                             );
                         })}
+                        <div className="swiper-pagination" slot="pagination"></div>
                     </swiper-container>
                 </>
             </div>
