@@ -49,7 +49,7 @@ const Creatives = () => {
     useCreatives("creative");
 
   const {
-    state: { bookmarks, },
+    state: { bookmarks },
     createBookmark,
     getAllBookmarks,
     removeBookmark,

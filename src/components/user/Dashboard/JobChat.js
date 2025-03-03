@@ -10,7 +10,8 @@ import { Context as ChatContext } from "../../../context/ChatContext";
 import { CircularProgress, FormControlLabel, FormGroup, Switch } from "@mui/material";
 
 const JobChat = ({ messageType }) => {
-
+  const anchor = window.location.hash.slice(1);
+  
   const {
     state: { user, conversation_updated_notifications, formSubmit },
     updateEmailNotifications,
@@ -41,6 +42,20 @@ const JobChat = ({ messageType }) => {
   }, [contacts]);
 
   useEffect(() => {
+    if (anchor?.length > 0 && contacts.length > 0) {
+      let params = new URLSearchParams(window.location.hash.replace("#", ""));
+      let active = params.get("active")?.length > 0 ? params.get("active") : "";
+      console.log(active);
+
+      let filtered = contacts.filter(item => item.contact.uuid == active);
+      console.log(contacts);
+      if (filtered?.length > 0) {
+        handleItemClick(filtered[0].contact, type);
+      }
+    }
+  }, [anchor, contacts]);
+
+  useEffect(() => {
     setUserListLoading(contacts_loading);
   }, [contacts_loading]);
 
@@ -56,6 +71,8 @@ const JobChat = ({ messageType }) => {
   }, [conversation_updated_notifications]);
 
   const handleItemClick = (item, type) => {
+    // console.log(type);
+    // console.log(item);
     setChatBox("list");
     setUserListMobile("mobile-hide");
     setChatBoxMobile("");
@@ -63,7 +80,7 @@ const JobChat = ({ messageType }) => {
     setPaged(2);
     setHasMoreData(false);
     if (item.uuid != contact.uuid) {
-      console.log("item.uuid", item.uuid);
+      // console.log("item.uuid", item.uuid);
       setMessageData([]);
       getMessages(item.uuid, type);
       setContact(item);
