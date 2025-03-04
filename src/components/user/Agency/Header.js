@@ -45,7 +45,7 @@ const Header = ({ data, role, user }) => {
                   <IoBriefcaseOutline />
                   {data.industry_experience.map((item, index) => (
                     <span key={index}>
-                      <Link
+                      {/* <Link
                         to={
                           "/agency-category/" +
                           item.toLowerCase().replace(" ", "-").replace("|", "-")
@@ -53,7 +53,8 @@ const Header = ({ data, role, user }) => {
                         className="cat-link"
                       >
                         {item}
-                      </Link>
+                      </Link> */}
+                      {item}
                       {index < data.industry_experience.length - 1 && ","}
                     </span>
                   ))}
