@@ -711,6 +711,7 @@ nav ul.dropdown-list .list-item-text.j-fix {
     border-radius: 5px;
     overflow: hidden;
 }
+
 .icon-message .message-container .close-info {
     color: #fff;
     position: absolute;
@@ -1053,9 +1054,11 @@ nav ul.dropdown-list .list-item-text.j-fix {
     text-transform: capitalize;
     text-align: center;
 }
+
 .job-table tbody tr:nth-of-type(even) {
     background-color: rgb(246, 246, 246);
 }
+
 .refresh-preview-container {
     display: flex;
     align-items: center;
@@ -2074,4 +2077,16 @@ img.agency-image-loader {
     color: rgb(125, 129, 132);
     font-size: 10pt;
     font-weight: 400;
+}
+
+.spotlight-reel-slug {
+    display: block;
+    margin: auto;
+    width: 560px;
+}
+
+@media (max-width: 767px) {
+    .spotlight-reel-slug {
+        width: 100%;
+    }
 }

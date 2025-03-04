@@ -30,7 +30,7 @@ const SpotlightReel = () => {
                         {sreel && !sreel?.error && (
                             <>
                                 <h1 className="text-white text-center" style={{ fontSize: '20px' }} dangerouslySetInnerHTML={{ __html: sreel.title }}></h1>
-                                <video autoPlay muted controls style={{ width: '560px', display: 'block', margin: '0 auto' }} controlsList="nodownload" >
+                                <video className="spotlight-reel-slug" autoPlay muted controls controlsList="nodownload" >
                                     <source src={sreel.url} type="video/mp4" />
                                     Your browser does not support the video tag.
                                 </video>

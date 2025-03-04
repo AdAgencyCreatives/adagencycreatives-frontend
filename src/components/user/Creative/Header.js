@@ -29,9 +29,9 @@ import { CircularProgress, Tooltip } from "@mui/material";
 import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 import CreativeImageLoader from "../../../components/CreativeImageLoader";
 import ResizableDiv from "../../ResizableDiv";
-import { PDFDownloadLink } from '@react-pdf/renderer';
 import DownloadProfilePdfButton from "./DownloadProfilePdfButton";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
+import { Context as ChatContext } from "../../../context/ChatContext";
 
 const Header = React.memo(({ data, role, user, username, showButtons = true }) => {
 
@@ -65,6 +65,10 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
     state: { single_creative_for_pdf, },
     getCreativeForPdf,
   } = useContext(CreativesContext);
+
+  const {
+    state: { contacts, },
+  } = useContext(ChatContext);
 
   const isCreative = role == "creative";
   const isAdmin = role == "admin";
@@ -183,9 +187,6 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
                 </>)}
               </div>
               <CreativeLocation location={data?.location} />
-              <Link to={"/job-messages/#active=" + data.user_id} className="d-flex align-items-center gap-2">
-                <IoMailOpen /> Conversation
-              </Link>
             </div>
             <div className="col-md-7">
               {showButtons && (
