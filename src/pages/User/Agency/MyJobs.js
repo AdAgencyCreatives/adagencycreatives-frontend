@@ -39,6 +39,7 @@ const MyJobs = () => {
     }
 
     searchOpenPositions(search, user.uuid, page, null, 0, () => {
+      setSearchApplied(searchInput.length > 0);
       setShowLoading(false);
     });
   };
@@ -59,6 +60,7 @@ const MyJobs = () => {
     }
 
     if (user) searchOpenPositions(search, user.uuid, page, null, 0, () => {
+      setSearchApplied(searchInput.length > 0);
     });
   }, [user]);
 
@@ -75,13 +77,10 @@ const MyJobs = () => {
     }
 
     searchOpenPositions(searchText, user.uuid, false, null, 0, () => {
+      setSearchApplied(searchInput.length > 0);
       setShowLoading(false);
     });
   }
-
-  useEffect(() => {
-    setSearchApplied(searchInput.length > 0);
-  }, [searchInput]);
 
   return (
     <div className="agency-page-myjobs">
