@@ -193,7 +193,7 @@ const CreativeSearch = () => {
                     <>
                         {(isAdmin || (isAdvisor && hasSubscription)) && (
                             <div className="search-level2">
-                                <div className="search-title">Search within Results</div>
+                                {/* <div className="search-title">Search within Results</div> */}
                                 <SearchBar
                                     input={inputLevel2}
                                     setInput={setInputLevel2}
