@@ -47,7 +47,7 @@ const Header = ({ data, role, user }) => {
                     <span key={index}>
                       <Link
                         to={
-                          "agency-category/" +
+                          "/agency-category/" +
                           item.toLowerCase().replace(" ", "-").replace("|", "-")
                         }
                         className="cat-link"
