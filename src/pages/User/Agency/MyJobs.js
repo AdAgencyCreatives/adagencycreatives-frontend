@@ -15,6 +15,7 @@ const MyJobs = () => {
 
   const [searchInput, setSearchInput] = useState("");
   const [showLoading, setShowLoading] = useState(false);
+  const [searchApplied, setSearchApplied] = useState(false);
 
   const {
     state: { open_positions, loading, meta },
@@ -78,6 +79,10 @@ const MyJobs = () => {
     });
   }
 
+  useEffect(() => {
+    setSearchApplied(searchInput.length > 0);
+  }, [searchInput]);
+
   return (
     <div className="agency-page-myjobs">
       <h3 className="page-title">Manage Jobs</h3>
@@ -120,7 +125,11 @@ const MyJobs = () => {
               {open_positions && meta?.total > 9 && <Paginate meta={meta} paginate={paginate} title={"jobs"} />}
             </>) : (<>
               <div className="no_result">
-                <p>Please try again. No exact results found.</p>
+                {searchApplied && !(open_positions?.length > 0) ? (
+                  <p>Please try again. No exact results found.</p>
+                ) : (
+                  <p>You have not posted any jobs yet.</p>
+                )}
               </div>
             </>)}
           </div>
