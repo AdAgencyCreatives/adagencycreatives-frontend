@@ -49,7 +49,7 @@ const GroupPosts = () => {
             invite = await getGroupInvitationByUUID(invite);
         
             if (user.uuid == invite.invited_to.user_id && invite.status === 'pending') {
-                setInvite(invite.id);
+                setInvite(invite);
             }
         }
     };
