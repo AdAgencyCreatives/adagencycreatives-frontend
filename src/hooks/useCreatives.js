@@ -4,7 +4,15 @@ import { Context as AuthContext } from "../context/AuthContext";
 
 const useCreatives = (page) => {
   const {
-    state: { creatives, home_creatives, search_creatives, nextPage, loading, },
+    state: { 
+      creatives, 
+      home_creatives, 
+      search_creatives, 
+      group_invite_members,
+      group_invite_members_nextPage, 
+      nextPage, 
+      loading 
+    },
     getCreatives,
     getHomeCreatives,
     loadCreatives,
@@ -12,6 +20,9 @@ const useCreatives = (page) => {
     searchCreatives,
     searchCreativesAdvanced,
     searchCreativesFull,
+    getGroupInviteMembers,
+    searchGroupInviteMember,
+    loadGroupInviteMember
   } = useContext(CreativesContext);
 
   const {
@@ -32,13 +43,31 @@ const useCreatives = (page) => {
     if (nextPage) {
       if (page == "creatives-search") {
         loadSearchCreatives(nextPage);
-      } else {
+      }  else {
         loadCreatives(nextPage);
       }
     }
+
+    if (group_invite_members_nextPage && page == "invite-members") {
+      loadGroupInviteMember(group_invite_members_nextPage);
+    }
   };
 
-  return { creatives, home_creatives, search_creatives, getCreatives, getHomeCreatives, loading, loadMore, searchCreatives, searchCreativesAdvanced, searchCreativesFull };
+  return { 
+    creatives, 
+    home_creatives, 
+    search_creatives, 
+    getCreatives, 
+    getHomeCreatives, 
+    loading, 
+    loadMore, 
+    searchCreatives, 
+    searchCreativesAdvanced, 
+    searchCreativesFull,
+    group_invite_members,
+    getGroupInviteMembers,
+    searchGroupInviteMember
+  };
 };
 
 export default useCreatives;

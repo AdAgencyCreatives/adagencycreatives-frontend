@@ -24,6 +24,8 @@ const state = {
   video: null,
   notifications: [],
   cache: {},
+  group_invite_members: null,
+  group_invite_members_nextPage: null
 };
 
 const reducer = (state, action) => {
@@ -54,6 +56,12 @@ const reducer = (state, action) => {
         home_creatives: action.payload.data,
         nextPage: action.payload.links.next,
       };
+    case "set_group_invite_members":
+      return {
+        ...state,
+        group_invite_members: action.payload.data,
+        group_invite_members_nextPage: action.payload.links.next,
+      };
     case "set_single_creative":
       return { ...state, single_creative: action.payload };
     case "set_single_creative_for_pdf":
@@ -71,6 +79,12 @@ const reducer = (state, action) => {
         ...state,
         creatives: [...state.creatives, ...action.payload.data],
         nextPage: action.payload.links.next,
+      };
+    case "load_group_invite_member":
+      return {
+        ...state,
+        group_invite_members: [...state.group_invite_members, ...action.payload.data],
+        group_invite_members_nextPage: action.payload.links.next,
       };
     case "load_search_creatives":
       return {
@@ -112,6 +126,18 @@ const getCreatives = (dispatch) => {
       const response = await api.get("/creatives?filter[status]=1&filter[is_visible]=1");
       dispatch({
         type: "set_creatives",
+        payload: response.data,
+      });
+    } catch (error) { }
+  };
+};
+
+const getGroupInviteMembers = (dispatch) => {
+  return async (group) => {
+    try {
+      const response = await api.get(`/creatives?filter[status]=1&filter[is_visible]=1&filter[not_in_group]=${group}&filter[not_invited]=${group}`);
+      dispatch({
+        type: "set_group_invite_members",
         payload: response.data,
       });
     } catch (error) { }
@@ -249,6 +275,22 @@ const searchCreativesAdvanced = (dispatch) => {
   };
 };
 
+const searchGroupInviteMember = (dispatch) => {
+  return async (type, query, role, queryLevel2 = "", cb = () => { }) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get("/creatives/" + type + "?search=" + query + "&role=" + role + (queryLevel2?.length > 0 ? ("&search_level2=" + queryLevel2) : ""));
+
+      dispatch({
+        type: "set_group_invite_members",
+        payload: response.data,
+      });
+      cb(response.data?.data);
+    } catch (error) { }
+    setLoading(dispatch, false);
+  };
+};
+
 const searchCreativesFull = (dispatch) => {
   return async (field, search, searcLevel2 = "") => {
     setLoading(dispatch, true);
@@ -293,6 +335,20 @@ const getCreativeExperience = async (dispatch, uid) => {
       payload: response.data,
     });
   } catch (error) { }
+};
+
+const loadGroupInviteMember = (dispatch) => {
+  return async (page) => {
+    setLoading(dispatch, true);
+    try {
+      const response = await api.get(page);
+      dispatch({
+        type: "load_group_invite_member",
+        payload: response.data,
+      });
+    } catch (error) { }
+    setLoading(dispatch, false);
+  };
 };
 
 const loadCreatives = (dispatch) => {
@@ -597,7 +653,7 @@ const getAppliedJobs = (dispatch) => {
 
 const searchAppliedJobs = (dispatch, state) => {
   return async (searchText = "", page = false, cb = () => { }) => {
-    const meta = null;
+    let meta = null;
     try {
       let endpoint = "/applied_jobs" + (searchText?.length > 0 || page ? "?" : "") + (searchText?.length > 0 ? ("&searchText=") + searchText : "") + (page ? "&page=" + page : "");
 
@@ -680,6 +736,9 @@ export const { Context, Provider } = createDataContext(
     removePortfolioCaptureLog,
     generateThumbnailAttachment,
     generateCroppedAttachment,
+    getGroupInviteMembers,
+    searchGroupInviteMember,
+    loadGroupInviteMember
   },
   state
 );

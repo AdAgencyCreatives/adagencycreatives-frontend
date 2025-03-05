@@ -1,12 +1,10 @@
 import "../styles/CommunityMembers.css";
 import LeftSidebar from "../components/community/LeftSidebar";
-import MembersSearchBar from "../components/MembersSearchBar";
 
 import useCreatives from "../hooks/useCreatives";
 import { useContext, useEffect, useState } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
 import { useScrollLoader } from "../hooks/useScrollLoader";
-import CommunityMemberWidget from "../components/community/CommunityMemberWidget";
 
 import RestrictedLounge from "../components/RestrictedLounge";
 import { CircularProgress } from "@mui/material";
@@ -14,18 +12,15 @@ import SearchBar from "../components/SearchBar";
 
 import { Link, useParams } from "react-router-dom";
 import { Context as GroupsContext } from "../context/GroupsContext";
-import { getGroupMembership } from "../context/GroupMembersDataContext";
 import { HiOutlineUserGroup, HiOutlineUserPlus } from "react-icons/hi2";
+import { useHistoryState } from "../hooks/useHistoryState";
+import CommunityMemberWidget from "../components/community/CommunityMemberWidget";
 
-const GroupMembers = () => {
-    const { creatives, loading, loadMore, searchCreatives } = useCreatives();
+const InviteMembers = () => {
+    const [input, setInput] = useHistoryState("input", "");
+
+    const { group_invite_members, loading, loadMore, getGroupInviteMembers, searchGroupInviteMember } = useCreatives('invite-members');
     const [isLoading, setIsLoading] = useState(true);
-    const [isGroupMember, setIsGroupMember] = useState(false);
-
-    const {
-        state: { single_group, group_members },
-        getGroup, getGroupMembers,
-    } = useContext(GroupsContext);
 
     const { group_uuid } = useParams();
 
@@ -35,15 +30,10 @@ const GroupMembers = () => {
 
     useScrollLoader(loading, loadMore);
 
-    const searchUser = (value) => {
-        console.log("searching");
-        setIsLoading(true);
-        searchCreatives(value);
-    };
-
-    useEffect(() => {
-        setIsLoading(false);
-    }, [group_members]);
+    const {
+        state: { single_group },
+        getGroup
+    } = useContext(GroupsContext);
 
     useEffect(() => {
         if (token) {
@@ -52,32 +42,34 @@ const GroupMembers = () => {
         }
     }, [token, group_uuid]);
 
-    useEffect(() => {
-        if (token && user && single_group && single_group.uuid == group_uuid) {
-            (async () => {
-                let result = await getGroupMembership(group_uuid, user.uuid)
-                if (result && result.creative.user_id == user.uuid) {
-                    getGroupMembers(group_uuid, (response) => {
-                        setIsLoading(false);
-                    });
-                    setIsGroupMember(true);
-                } else {
-                    setIsGroupMember(false);
-                    setIsLoading(false);
-                }
-            })();
-        }
-    }, [token, single_group]);
-
-    // useEffect(() => {
-    //     if (token && group_members) {
-    //         setIsLoading(false);
-    //     }
-    // }, [token, group_members]);
-
     const isCurrentPage = (relativeUrl) => {
         return (window.location.pathname + (window.location.search && window.location.search.length > 1 ? window.location.search : '')) == relativeUrl;
     }
+
+    const searchUser = (value) => {
+
+        if (!value || value.length == 0) {
+            getGroupInviteMembers(single_group?.id);
+        return;
+        }
+        
+        setIsLoading(true);
+        let terms = value.split(',');
+        let search = terms && terms.length && terms.length > 1 ? terms[0] : value;
+        searchGroupInviteMember("search2", search, role);
+    };
+
+    useEffect(() => {
+        if (group_invite_members?.length >= 0) setIsLoading(false);
+    }, [group_invite_members]);
+
+    useEffect(() => {
+        if (role && input?.length > 0) {
+            searchUser(input);
+        } else {
+            if (single_group?.id) getGroupInviteMembers(single_group?.id);
+        }
+    }, [role, single_group]);
 
     return (
         <>
@@ -117,41 +109,38 @@ const GroupMembers = () => {
                                     </div>
                                 ) : (
                                     <>
-                                        {isGroupMember && group_members?.length > 0 ? (
-                                            <div className="row g-4 px-1">
-                                                {group_members &&
-                                                    group_members.map((group_member, index) => {
-                                                        return (
-                                                            <CommunityMemberWidget
-                                                                key={"community-member-creative-" + group_member.creative.id}
-                                                                creative={group_member.creative}
-                                                            />
-                                                        );
-                                                    })}
-                                                <div className="load-more text-center">
-                                                    {loading && (
-                                                        <div
-                                                            className="spinner-border text-light"
-                                                            role="status"
-                                                        >
-                                                            <span className="visually-hidden">
-                                                                Loading...
-                                                            </span>
-                                                        </div>
-                                                    )}
-                                                </div>
+                                    <SearchBar input={input} setInput={setInput} onSearch={searchUser} placeholder="Search by member name" />
+
+                                    {group_invite_members?.length > 0 ? (
+                                    <div className="row g-4 px-1">
+                                        {group_invite_members && single_group &&
+                                        group_invite_members.map((creative, index) => {
+                                            return (
+                                            <CommunityMemberWidget
+                                                key={"invite-member" + creative.id}
+                                                creative={creative}
+                                                group={single_group}
+                                            />
+                                            );
+                                        })}
+                                        <div className="load-more text-center">
+                                        {loading && (
+                                            <div
+                                            className="spinner-border text-light"
+                                            role="status"
+                                            >
+                                            <span className="visually-hidden">
+                                                Loading...
+                                            </span>
                                             </div>
-                                        ) : (
-                                            <>
-                                                {!isGroupMember ? (<>
-                                                    <div className="center-page">Sorry, your are not a member of this group.</div>
-                                                </>) : (<>
-                                                    <div className="no_result">
-                                                        <p>Please try again. No exact results found.</p>
-                                                    </div>
-                                                </>)}
-                                            </>
                                         )}
+                                        </div>
+                                    </div>
+                                    ) : (
+                                    <div className="no_result">
+                                        <p>Please try again. No exact results found.</p>
+                                    </div>
+                                    )}
                                     </>
                                 )}
                             </div>
@@ -165,4 +154,4 @@ const GroupMembers = () => {
     );
 };
 
-export default GroupMembers;
+export default InviteMembers;

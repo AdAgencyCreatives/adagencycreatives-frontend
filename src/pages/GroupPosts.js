@@ -8,15 +8,17 @@ import { useContext, useEffect, useState, } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Context as AuthContext } from "../context/AuthContext";
 import { Context as GroupsContext } from "../context/GroupsContext";
-import { getGroupMembership } from "../context/GroupMembersDataContext";
+import { getGroupMembership, getGroupInvitationByUUID } from "../context/GroupMembersDataContext";
+import InviteMemberActionWidget from '../components/community/InviteMemberActionWidget';
 
 import RestrictedLounge from "../components/RestrictedLounge";
 import { CircularProgress } from "@mui/material";
 import { HiOutlineUserGroup } from "react-icons/hi2";
+import { HiOutlineUserPlus } from "react-icons/hi2";
 
 const GroupPosts = () => {
-
     const [isLoading, setIsLoading] = useState(true);
+    const [invite, setInvite] = useState(null);
     const [isGroupMember, setIsGroupMember] = useState(false);
 
     const {
@@ -36,8 +38,21 @@ const GroupPosts = () => {
             (async () => {
                 await getGroup(group_uuid);
             })();
+            handleSetInvite();
         }
     }, [token, group_uuid]);
+
+    const handleSetInvite = async () => {
+        let params = new URLSearchParams(window.location.hash.replace("#", ""));
+        let invite = params.get("invite")?.length > 0 ? params.get("invite") : null;
+        if (invite) {
+            invite = await getGroupInvitationByUUID(invite);
+        
+            if (user.uuid == invite.invited_to.user_id && invite.status === 'pending') {
+                setInvite(invite.id);
+            }
+        }
+    };
 
     useEffect(() => {
         if (token && single_group && single_group.uuid == group_uuid) {
@@ -80,8 +95,11 @@ const GroupPosts = () => {
                                             <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/groups/' + group_uuid) ? ' btn-selected' : '')} to={'/groups/' + group_uuid}><HiOutlineUserGroup /> Group Posts</Link>
                                             <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/group-members/' + group_uuid) ? ' btn-selected' : '')} to={'/group-members/' + group_uuid}><HiOutlineUserGroup /> Group Members</Link>
                                             {user && single_group.user && single_group.user.id == user.id && single_group?.status == 'private' && (
-                                            <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/group-requests/' + group_uuid) ? ' btn-selected' : '')} to={'/group-requests/' + group_uuid}><HiOutlineUserGroup /> Group Requests</Link>
-                                        )}
+                                                <>
+                                                    <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/invite-members/' + group_uuid) ? ' btn-selected' : '')} to={'/invite-members/' + group_uuid}><HiOutlineUserPlus /> Invite Members</Link>
+                                                    <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/group-requests/' + group_uuid) ? ' btn-selected' : '')} to={'/group-requests/' + group_uuid}><HiOutlineUserGroup /> Group Requests</Link>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
                                     {isLoading ? (<>
@@ -93,9 +111,12 @@ const GroupPosts = () => {
                                             <CreatePost feed_group={single_group.uuid} />
                                             <PostList feed_group={single_group.uuid} />
                                         </>) : (<>
-                                            <div className="center-page">Sorry, your are not a member of this group.</div>
-                                        </>)}
-
+                                            {invite && single_group ? (
+                                                <InviteMemberActionWidget invite={invite} creative={user} group={single_group} />
+                                            ) : (
+                                                <div className="center-page">Sorry, your are not a member of this group.</div>
+                                            )}
+                                        </>)}                                            
                                     </>)}
                                 </div>
                                 <div className="col-md-3 order-md-3 order-2 sidebar_right">
