@@ -1,5 +1,5 @@
 import Placeholder from "../../assets/images/placeholder.png";
-import { IoEarth, IoBookmarkOutline, IoLocationOutline, IoMailOpen, IoPersonAdd, IoClose, IoCloseSharp, IoCheckmarkCircleSharp, IoBandageOutline, IoBanSharp } from "react-icons/io5";
+import { IoMailOpen, IoPersonAdd } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { Context as AuthContext } from "../../context/AuthContext";
@@ -8,6 +8,7 @@ import { Tooltip } from "@mui/material";
 
 import FriendshipWidget from "./FriendshipWidget";
 import GroupRequestWidget from "./GroupRequestWidget";
+import InviteMemberWidget from "./InviteMemberWidget";
 import UserLocation from "../UserLocation";
 import CreativeImageLoader from "../CreativeImageLoader";
 
@@ -33,6 +34,7 @@ const CommunityMemberWidget = (props) => {
 
     const isOwnProfile = user?.uuid == props.creative?.user_id;
     const isGroupRequestsPage = window.location.href.indexOf("/group-requests/") > 0;
+    const isInviteMemberPage = window.location.href.indexOf("/invite-members/") > 0;
 
     return (
         <>
@@ -49,17 +51,24 @@ const CommunityMemberWidget = (props) => {
                             <UserLocation location={props.creative?.location} />
                         </div>
                         <div className="user-actions">
-                            {isGroupRequestsPage ? (
-                                <GroupRequestWidget creative={props.creative} visibleAfterProcess={visibleAfterProcess} setVisibleAfterProcess={setVisibleAfterProcess} />
+                            {isInviteMemberPage ? (
+                                <InviteMemberWidget creative={props.creative} group={props.group} visibleAfterProcess={visibleAfterProcess} setVisibleAfterProcess={setVisibleAfterProcess} />
                             ) : (
-                                <FriendshipWidget creative={props.creative} visibleAfterProcess={visibleAfterProcess} setVisibleAfterProcess={setVisibleAfterProcess} />
-                            )}
-                            {!isOwnProfile && (
-                                <Tooltip title="View Messages">
-                                    <Link className="btn btn-dark no-border" to={"/messages/" + props.creative.user_id}>
-                                        <IoMailOpen />
-                                    </Link>
-                                </Tooltip>
+                                <>
+                                    {isGroupRequestsPage ? (
+                                        <GroupRequestWidget creative={props.creative} visibleAfterProcess={visibleAfterProcess} setVisibleAfterProcess={setVisibleAfterProcess} />
+                                    ) : (
+                                        <FriendshipWidget creative={props.creative} visibleAfterProcess={visibleAfterProcess} setVisibleAfterProcess={setVisibleAfterProcess} />
+                                    )}
+
+                                    {!isOwnProfile && (
+                                        <Tooltip title="View Messages">
+                                            <Link className="btn btn-dark no-border" to={"/messages/" + props.creative.user_id}>
+                                                <IoMailOpen />
+                                            </Link>
+                                        </Tooltip>
+                                    )}
+                                </>    
                             )}
 
                             {isOwnProfile && (

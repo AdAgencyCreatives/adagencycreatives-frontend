@@ -15,7 +15,7 @@ import SearchBar from "../components/SearchBar";
 import { Link, useParams } from "react-router-dom";
 import { Context as GroupsContext } from "../context/GroupsContext";
 import { getGroupRequests } from "../context/GroupMembersDataContext";
-import { HiOutlineUserGroup } from "react-icons/hi2";
+import { HiOutlineUserGroup, HiOutlineUserPlus } from "react-icons/hi2";
 import GroupRequestWidget from "../components/community/GroupRequestWidget";
 
 const GroupRequests = () => {
@@ -94,6 +94,9 @@ const GroupRequests = () => {
                                     <div className="post-form">
                                         <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/groups/' + group_uuid) ? ' btn-selected' : '')} to={'/groups/' + group_uuid}><HiOutlineUserGroup /> Group Posts</Link>
                                         <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/group-members/' + group_uuid) ? ' btn-selected' : '')} to={'/group-members/' + group_uuid}><HiOutlineUserGroup /> Group Members</Link>
+                                        <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/invite-members/' + group_uuid) ? ' btn-selected' : '')} to={'/invite-members/' + group_uuid}>
+                                            <HiOutlineUserPlus /> Invite Members
+                                        </Link>
                                         {user && single_group.user && single_group.user.id == user.id && single_group?.status == 'private' && (
                                             <Link className={"btn btn-dark btn-outline" + (isCurrentPage('/group-requests/' + group_uuid) ? ' btn-selected' : '')} to={'/group-requests/' + group_uuid}><HiOutlineUserGroup /> Group Requests</Link>
                                         )}
