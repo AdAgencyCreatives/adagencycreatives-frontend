@@ -40,11 +40,11 @@ const InviteMemberActionWidget = (props) => {
 
     const handleRespondGroupRequest = (evt, creative, status) => {
         respondGroupRequestAsync(creative, status);
-        // sendGroupRequestRespondedNotificationAsync(creative, status);
+        sendGroupRequestRespondedNotificationAsync(creative, status);
     };
 
     const respondGroupRequestAsync = async (creative, status) => {
-        let result = await respondGroupRequest(props.invite, {
+        let result = await respondGroupRequest(props.invite.id, {
             "status": status
         });
         if (result) {
@@ -52,7 +52,7 @@ const InviteMemberActionWidget = (props) => {
             setGroupRequestRecord(result);
             // getGroupRequestRecordAsync();
 
-            navigate(window.location.pathname.split('#')[0]);
+            window.location.reload();
         }
     };
 
@@ -60,20 +60,20 @@ const InviteMemberActionWidget = (props) => {
         // let result = await saveNotification({
         //     "user_id": creative.user_id ? creative.user_id : creative.user.uuid,
         //     "type": "lounge_group_request_responded",
-        //     "message": user.first_name + " " + user.last_name + " has " + status + (status == "cancelled" ? "" : " your") + " your request to join group: " + single_group.name + ".",
+        //     "message": user.first_name + " " + user.last_name + " has " + status + (status == "cancelled" ? "" : " your") + " your request to join group: " + props.group.name + ".",
         //     "body": "{}"
         // });
         let result1 = await saveNotification({
-            "user_id": creative.user_id ? creative.user_id : creative.user.uuid,
+            "user_id": user.uuid,
             "type": "lounge_group_activity",
-            "message": "Your request to join " + single_group.status + " " + single_group.name + " has been " + status + ".",
+            "message": "Your " + props.group.status + " the request to join  " + props.group.name + ".",
             "body": "{activity_key:'lounge_group_request_responded'}"
         });
 
         let result2 = await saveNotification({
-            "user_id": user.uuid,
+            "user_id": props.invite.invited_by.user_id,
             "type": "lounge_group_activity",
-            "message": "Your request to join " + status + " the " + creative.name + "'s request to join your " + single_group.status + " group: " + single_group.name + ".",
+            "message": "Your request to join " + status + " the " + creative.name + "'s request to join your " + props.group.status + " group: " + props.group.name + ".",
             "body": "{activity_key:'lounge_group_request_responded'}"
         });
     };
