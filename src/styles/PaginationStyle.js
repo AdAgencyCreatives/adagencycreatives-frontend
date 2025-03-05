@@ -51,7 +51,7 @@ export const ResourcePaginationStyle = `
         text-align: center;
         width: 50px;
         height: 50px;
-        background: #d9d9d9;
+        background: transparent;
         -webkit-transition: all .5s ease-in-out 0s;
         -o-transition: all .5s ease-in-out 0s;
         transition: all .5s ease-in-out 0s;
@@ -65,7 +65,7 @@ export const ResourcePaginationStyle = `
       }
 
       .swiper-button-prev svg,.swiper-button-next svg{
-        // color: #fff;
+        color: #fff;
         height: 20px;
       }
 
@@ -73,6 +73,11 @@ export const ResourcePaginationStyle = `
         background:black;
         opacity:1;
         --swiper-navigation-color:white;
+      }
+
+      .swiper-button-prev svg path,.swiper-button-next svg path{
+        stroke-width: 2px;
+        stroke: #fff;
       }
 `;
 

@@ -2090,3 +2090,9 @@ img.agency-image-loader {
         width: 100%;
     }
 }
+
+.cat-span {
+    color: rgb(105, 105, 105);
+    font-size: 20px;
+    margin-left: 10px;
+}

@@ -44,7 +44,7 @@ const Header = ({ data, role, user }) => {
                 <div className="position">
                   <IoBriefcaseOutline />
                   {data.industry_experience.map((item, index) => (
-                    <span key={index}>
+                    <span key={index} className="cat-span">
                       {/* <Link
                         to={
                           "/agency-category/" +
