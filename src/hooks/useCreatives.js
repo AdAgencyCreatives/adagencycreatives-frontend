@@ -4,14 +4,14 @@ import { Context as AuthContext } from "../context/AuthContext";
 
 const useCreatives = (page) => {
   const {
-    state: { 
-      creatives, 
-      home_creatives, 
-      search_creatives, 
+    state: {
+      creatives,
+      home_creatives,
+      search_creatives,
       group_invite_members,
-      group_invite_members_nextPage, 
-      nextPage, 
-      loading 
+      group_invite_members_nextPage,
+      nextPage,
+      loading
     },
     getCreatives,
     getHomeCreatives,
@@ -40,29 +40,27 @@ const useCreatives = (page) => {
   }, []);
 
   const loadMore = () => {
-    if (nextPage) {
+    if (group_invite_members_nextPage && page == "invite-members") {
+      loadGroupInviteMember(group_invite_members_nextPage);
+    } else if (nextPage) {
       if (page == "creatives-search") {
         loadSearchCreatives(nextPage);
-      }  else {
+      } else {
         loadCreatives(nextPage);
       }
     }
-
-    if (group_invite_members_nextPage && page == "invite-members") {
-      loadGroupInviteMember(group_invite_members_nextPage);
-    }
   };
 
-  return { 
-    creatives, 
-    home_creatives, 
-    search_creatives, 
-    getCreatives, 
-    getHomeCreatives, 
-    loading, 
-    loadMore, 
-    searchCreatives, 
-    searchCreativesAdvanced, 
+  return {
+    creatives,
+    home_creatives,
+    search_creatives,
+    getCreatives,
+    getHomeCreatives,
+    loading,
+    loadMore,
+    searchCreatives,
+    searchCreativesAdvanced,
     searchCreativesFull,
     group_invite_members,
     getGroupInviteMembers,
