@@ -55,7 +55,7 @@ const InviteMemberWidget = (props) => {
                 showAlert(result.message);
                 return;
             }
-            showAlert(`Succssfullty Invited to ${props.creative.name}`);
+            showAlert(`Invite successfully sent to ${props.creative.name}`);
             logActivity(user.uuid, "lounge_group_request_responded", "Group Request with Creative: " + props.creative.name, "{user_id:'" + user.uuid + "', creative_id:'" + props.creative.id + "'}");
             setGroupInviteRecord(result);
             setIsInvited(true);
