@@ -140,7 +140,10 @@ const AdAgencies = () => {
                       </div>
                     )}
                     <div className="open-jobs-btn">
-                      <Link to={`/agency/${item.slug}`}>Open Jobs - {item.open_jobs}</Link>
+                      <Link to={`/agency/${item.slug}`}>
+                        Open Jobs
+                        {/* - {item.open_jobs} */}
+                      </Link>
                     </div>
                   </div>
                 </swiper-slide>

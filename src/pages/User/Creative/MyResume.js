@@ -748,8 +748,8 @@ const MyResume = () => {
         let item = { ...updated[index] };
         if (name == "portfolio_item") {
           const total = item?.items?.length + files.length;
-          if (files.length > 5 || item?.items?.length > 5 || total > 5) {
-            showAlert("Up to 5 images can be uploaded");
+          if (files.length > 3 || item?.items?.length > 3 || total > 3) {
+            showAlert("Up to 3 images can be uploaded");
             return;
           }
           // Upload File Attachment
@@ -778,7 +778,7 @@ const MyResume = () => {
         item.items = [{ name: filename }];
       } else if (name == "portfolio_item") {
         if (item?.items?.length >= 5) {
-          showAlert("Up to 5 images can be uploaded");
+          showAlert("Up to 3 images can be uploaded");
           return;
         }
         item.items.push({ url: URL.createObjectURL(file) });
@@ -819,7 +819,7 @@ const MyResume = () => {
 
   const [portfolio, setPortfolio] = useState([
     {
-      label: "Upload up to 5 image samples of your best work. A sneak peek.",
+      label: "Upload up to 3 image samples of your best work. A sneak peek.",
       required: false,
       type: "upload",
       name: "portfolio_item",
