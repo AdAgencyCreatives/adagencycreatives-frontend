@@ -287,3 +287,10 @@
     overflow: hidden !important;
     margin-bottom: 10px !important;
 }
+
+@media (min-width: 1440px) {
+    .post-images {
+        max-width: 560px;
+        margin: 0 auto;
+    }
+}
