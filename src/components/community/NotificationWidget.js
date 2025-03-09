@@ -8,6 +8,8 @@ import TimeAgo from "../TimeAgo";
 import MessageModal from "../MessageModal";
 import AvatarImageLoader from "../AvatarImageLoader";
 
+import defaultAvatar from "../../assets/images/AdAgency.png";
+
 const NotificationWidget = (props) => {
 
     const [isMounted, setIsMounted] = useState(false);
@@ -76,10 +78,10 @@ const NotificationWidget = (props) => {
                     <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} size="xs" />
                     <div className="notif-item">
                         <div className="user-avatar">
-                            <AvatarImageLoader user={props.notification.user} height={50} width={50} />
+                            <AvatarImageLoader user={props.notification?.sender} height={50} width={50} defaultAvatar={defaultAvatar} />
                         </div>
                         <div className="notif-details">
-                            <div className="username">{props.creative ? props.creative.name : ""}</div>
+                            <div className="username">{props.notification?.sender?.name || "Notification"}</div>
                             <div className="notif-time">
                                 <IoTimeOutline />
                                 <TimeAgo datetime={props.notification.created_at} />
