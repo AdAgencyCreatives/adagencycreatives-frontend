@@ -39,43 +39,42 @@ const InviteMemberActionWidget = (props) => {
     const isOwnProfile = user?.uuid == props.creative?.user_id;
 
     const handleRespondGroupRequest = (evt, creative, status) => {
-        respondGroupRequestAsync(creative, status);
-        sendGroupRequestRespondedNotificationAsync(creative, status);
+        respondGroupRequestAsync(creative, status, () => {
+            sendGroupRequestRespondedNotificationAsync(creative, status, () => {
+                window.location.reload();
+            });
+        });
     };
 
-    const respondGroupRequestAsync = async (creative, status) => {
+    const respondGroupRequestAsync = async (creative, status, cb = () => { }) => {
         let result = await respondGroupRequest(props.invite.id, {
             "status": status
         });
         if (result) {
             logActivity(user.uuid, "lounge_group_request_responded", "Group Request " + status + " with Creative: " + creative.name, "{user_id:'" + user.uuid + "', creative_id:'" + creative.id + "', status:'" + status + "'}");
             setGroupRequestRecord(result);
-            // getGroupRequestRecordAsync();
-
-            window.location.reload();
+            cb();
         }
     };
 
-    const sendGroupRequestRespondedNotificationAsync = async (creative, status) => {
-        // let result = await saveNotification({
-        //     "user_id": creative.user_id ? creative.user_id : creative.user.uuid,
-        //     "type": "lounge_group_request_responded",
-        //     "message": user.first_name + " " + user.last_name + " has " + status + (status == "cancelled" ? "" : " your") + " your request to join group: " + props.group.name + ".",
-        //     "body": "{}"
-        // });
+    const sendGroupRequestRespondedNotificationAsync = async (creative, status, cb = () => { }) => {
         let result1 = await saveNotification({
-            "user_id": user.uuid,
+            "user_id": props.invite.invited_by.user_id,
             "type": "lounge_group_activity",
-            "message": "Your " + props.group.status + " the request to join  " + props.group.name + ".",
-            "body": "{activity_key:'lounge_group_request_responded'}"
+            "message": props.invite.invited_to.name + " " + status + " your invitation request to join your " + props.group.status + " group: " + props.group.name + ".",
+            "body": "{activity_key:'lounge_group_request_responded'}",
+            "sender_id": props.invite.invited_to.user_id,
         });
 
         let result2 = await saveNotification({
-            "user_id": props.invite.invited_by.user_id,
+            "user_id": props.invite.invited_to.user_id,
             "type": "lounge_group_activity",
-            "message": "Your request to join " + status + " the " + creative.name + "'s request to join your " + props.group.status + " group: " + props.group.name + ".",
-            "body": "{activity_key:'lounge_group_request_responded'}"
+            "message": "You " + status + " " + props.invite.invited_by.name + "'s invitation request to join " + props.group.status + " group: " + props.group.name + ".",
+            "body": "{activity_key:'lounge_group_request_responded'}",
+            "sender_id": props.invite.invited_to.user_id,
         });
+
+        cb();
     };
 
     return (
@@ -83,7 +82,7 @@ const InviteMemberActionWidget = (props) => {
             {!isOwnProfile ? (
                 <>
                     <MessageModal options={messageModalOptions} setOptions={setMessageModalOptions} />
-                    
+
                     <div className="center-page">
                         <p>You're invited to join {props.group.name} group.</p>
                         <div className="d-flex gap-2">

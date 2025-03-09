@@ -153,8 +153,10 @@ const FriendshipWidget = (props) => {
         let result = await saveNotification({
             "user_id": creative.user_id,
             "type": "lounge_friends_activity",
-            "message": "Friendship requested with " + user.first_name + " " + user.last_name + ".",
-            "body": "{activity_key:'lounge_friendship_requested'}"
+            "message": "Friendship requested by " + user.first_name + " " + user.last_name + ".",
+            "body": "{activity_key:'lounge_friendship_requested'}",
+            "sender_id": user.uuid,
+
         });
     };
 
@@ -162,8 +164,9 @@ const FriendshipWidget = (props) => {
         let result = await saveNotification({
             "user_id": creative.user_id ? creative.user_id : creative.user.uuid,
             "type": "lounge_friends_activity",
-            "message": "Friendship " + (status == "accepted" ? "accepted" : "removed") + " with " + user.first_name + " " + user.last_name + ".",
-            "body": "{activity_key:'lounge_friendship_responded',status:'" + status + "'}"
+            "message": "Friendship " + (status == "accepted" ? "accepted" : "removed") + " by " + user.first_name + " " + user.last_name + ".",
+            "body": "{activity_key:'lounge_friendship_responded',status:'" + status + "'}",
+            "sender_id": user.uuid,
         });
     };
 

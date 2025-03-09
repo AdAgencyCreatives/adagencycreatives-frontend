@@ -21,7 +21,7 @@ const InviteMemberWidget = (props) => {
     const {
         state: { message },
         showAlert,
-      } = useContext(AlertContext);
+    } = useContext(AlertContext);
 
     const group_request_statuses = {
         "pending": "Pending",
@@ -63,24 +63,20 @@ const InviteMemberWidget = (props) => {
     };
 
     const sendGroupInviteRespondedNotificationAsync = async (creative) => {
-        // let result = await saveNotification({
-        //     "user_id": creative.user_id ? creative.user_id : creative.user.uuid,
-        //     "type": "lounge_group_request_responded",
-        //     "message": user.first_name + " " + user.last_name + " has " + status + (status == "cancelled" ? "" : " your") + " your request to join group: " + single_group.name + ".",
-        //     "body": "{}"
-        // });
         let result1 = await saveNotification({
             "user_id": creative.user_id ? creative.user_id : creative.user.uuid,
             "type": "lounge_group_activity",
             "message": "Your are requested to join the group " + props.group.name,
-            "body": "{activity_key:'lounge_group_request_responded'}"
+            "body": "{activity_key:'lounge_group_request_responded'}",
+            "sender_id": user.uuid,
         });
 
         let result2 = await saveNotification({
             "user_id": user.uuid,
             "type": "lounge_group_activity",
-            "message": "You have requested the " + creative.name + " to join your group: " + props.group.name + ".",
-            "body": "{activity_key:'lounge_group_request_responded'}"
+            "message": "You have requested " + creative.name + " to join your group: " + props.group.name + ".",
+            "body": "{activity_key:'lounge_group_request_responded'}",
+            "sender_id": user.uuid,
         });
     };
 

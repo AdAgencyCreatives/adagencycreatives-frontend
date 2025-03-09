@@ -40,8 +40,10 @@ const useCreatives = (page) => {
   }, []);
 
   const loadMore = () => {
-    if (group_invite_members_nextPage && page == "invite-members") {
-      loadGroupInviteMember(group_invite_members_nextPage);
+    if (page == "invite-members") {
+      if (group_invite_members_nextPage) {
+        loadGroupInviteMember(group_invite_members_nextPage);
+      }
     } else if (nextPage) {
       if (page == "creatives-search") {
         loadSearchCreatives(nextPage);

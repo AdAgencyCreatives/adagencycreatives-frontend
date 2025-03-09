@@ -89,7 +89,11 @@ const LoginModal = ({ open, handleClose, setModal }) => {
 
       if (result1?.status == "success") {
         let result2 = await saveNotification({
-          "user_id": data.user.uuid, "type": "lounge_friends_activity", "message": "Ad Agency Creatives has sent friendship request.", "body": "{activity_key:'lounge_friendship_requested'}"
+          "user_id": data.user.uuid,
+          "type": "lounge_friends_activity",
+          "message": "Ad Agency Creatives has sent friendship request.",
+          "body": "{activity_key:'lounge_friendship_requested'}",
+          "sender_id": admin_uuid,
         });
       }
 

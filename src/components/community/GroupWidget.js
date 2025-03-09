@@ -78,14 +78,16 @@ const GroupWidget = (props) => {
             "user_id": user.uuid,
             "type": "lounge_group_activity",
             "message": " You have requested to join the " + group.status + " group named: " + group.name + ".",
-            "body": "{activity_key:'lounge_group_join_requested'}"
+            "body": "{activity_key:'lounge_group_join_requested'}",
+            "sender_id": user.uuid,
         });
 
         let result2 = await saveNotification({
             "user_id": group.user.uuid,
             "type": "lounge_group_activity",
             "message": user.first_name + " " + user.last_name + " has requested to join your " + group.status + " group named: " + group.name + ".",
-            "body": "{activity_key:'lounge_group_join_requested'}"
+            "body": "{activity_key:'lounge_group_join_requested'}",
+            "sender_id": user.uuid,
         });
     };
 
@@ -93,15 +95,17 @@ const GroupWidget = (props) => {
         let result1 = await saveNotification({
             "user_id": user.uuid,
             "type": "lounge_group_activity",
-            "message": " You have successfully joined the " + group.status + " group named: " + group.name + ".",
-            "body": "{activity_key:'lounge_group_joined'}"
+            "message": "You have successfully joined the " + group.status + " group named: " + group.name + ".",
+            "body": "{activity_key:'lounge_group_joined'}",
+            "sender_id": user.uuid,
         });
 
         let result2 = await saveNotification({
             "user_id": group.user.uuid,
             "type": "lounge_group_activity",
             "message": user.first_name + " " + user.last_name + " has joined your " + group.status + " group named: " + group.name + ".",
-            "body": "{activity_key:'lounge_group_joined'}"
+            "body": "{activity_key:'lounge_group_joined'}",
+            "sender_id": user.uuid,
         });
     };
 
@@ -154,15 +158,17 @@ const GroupWidget = (props) => {
         let result1 = await saveNotification({
             "user_id": user.uuid,
             "type": "lounge_group_activity",
-            "message": " You have successfully withrawn your request to join the " + group.status + " group named: " + group.name + ".",
-            "body": "{activity_key:'lounge_group_left'}"
+            "message": "You have successfully withrawn your request to join the " + group.status + " group named: " + group.name + ".",
+            "body": "{activity_key:'lounge_group_left'}",
+            "sender_id": user.uuid,
         });
 
         let result2 = await saveNotification({
             "user_id": group.user.uuid,
             "type": "lounge_group_activity",
             "message": user.first_name + " " + user.last_name + " has withdrawn request to join your " + group.status + " group named: " + group.name + ".",
-            "body": "{activity_key:'lounge_group_left'}"
+            "body": "{activity_key:'lounge_group_left'}",
+            "sender_id": user.uuid,
         });
     };
 
@@ -171,14 +177,16 @@ const GroupWidget = (props) => {
             "user_id": user.uuid,
             "type": "lounge_group_activity",
             "message": " You have successfully left the " + group.status + " group named: " + group.name + ".",
-            "body": "{activity_key:'lounge_group_left'}"
+            "body": "{activity_key:'lounge_group_left'}",
+            "sender_id": user.uuid,
         });
 
         let result2 = await saveNotification({
             "user_id": group.user.uuid,
             "type": "lounge_group_activity",
             "message": user.first_name + " " + user.last_name + " has left your " + group.status + " group named: " + group.name + ".",
-            "body": "{activity_key:'lounge_group_left'}"
+            "body": "{activity_key:'lounge_group_left'}",
+            "sender_id": user.uuid,
         });
     };
 
