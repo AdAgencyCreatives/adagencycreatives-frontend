@@ -145,7 +145,7 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
         // const extension = url.lastIndexOf(".") > 0 ? url.substring(url.lastIndexOf(".")) : '';
         // const fileName = getDownloadFilename() + extension;
         setDownloading(false);
-        window.open(url);
+        window.open(`/creative/resume/#url=${url}`);
         // fetch(url)
         //   .then(res => res.blob())
         //   .then(blob => {
