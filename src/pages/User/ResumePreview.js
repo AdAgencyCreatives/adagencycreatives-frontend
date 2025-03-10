@@ -5,10 +5,7 @@ import "react-pdf/dist/esm/Page/TextLayer.css";
 import { pdfjs } from 'react-pdf';
 import { IoAdd, IoRemove, IoChevronBack, IoChevronForward } from "react-icons/io5";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
-).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 export default function ResumePreview() {
   const [numPages, setNumPages] = useState(null);
