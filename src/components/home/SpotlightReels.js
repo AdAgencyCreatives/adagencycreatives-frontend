@@ -3,7 +3,7 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { Context as SpotlightContext } from "../../context/SpotlightContext";
 import { useContext, useEffect, useRef } from "react";
-import { BulletStyle, ResourcePaginationStyle, PaginationStyle } from "../../styles/PaginationStyle";
+import { BulletStyle, ResourcePaginationStyle, SpotlightNavigationStyle } from "../../styles/PaginationStyle";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { useState } from "react";
 import useHelper from "../../hooks/useHelper";
@@ -48,7 +48,7 @@ const SpotlightReels = () => {
     useEffect(() => {
         if (screativesRender?.length > 0) {
             const params = {
-                injectStyles: [ResourcePaginationStyle + BulletStyle],
+                injectStyles: [ResourcePaginationStyle + BulletStyle + SpotlightNavigationStyle],
                 pagination: {
                     clickable: true,
                     // renderBullet: (index, className) => {
@@ -80,7 +80,7 @@ const SpotlightReels = () => {
     }, [screativesRender]);
 
     return (
-        <div id="spotlight" className={'home-resources spotlight-reels'}>
+        <div id="spotlight" className={'home-resources spotlight-reels mb-3'}>
             <div className="sectionHeader">
                 <h1 className="sectionTitle">Spotlight Reels</h1>
                 <div>
@@ -95,7 +95,7 @@ const SpotlightReels = () => {
                     <swiper-container
                         ref={swiperElRef}
                         init="false"
-                        navigation="false"
+                        navigation="true"
                         pagination="true"
                         slides-per-view="1"
                         space-between="10"
