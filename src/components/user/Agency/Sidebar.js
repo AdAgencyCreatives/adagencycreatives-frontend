@@ -57,17 +57,18 @@ const Sidebar = ({ data, user }) => {
 
   const renderLinkList = (item, lastIndex) => {
     return (
-      <Link
-        to={
-          "/agency-category/" +
-          item.toLowerCase().replace(" ", "-").replace("|", "-")
-        }
-        className="text-dark"
-        key={item}
-      >
-        {item}
-        {!lastIndex && ", "}
-      </Link>
+      // <Link
+      //   to={
+      //     "/agency-category/" +
+      //     item.toLowerCase().replace(" ", "-").replace("|", "-")
+      //   }
+      //   className="text-dark"
+      //   key={item}
+      // >
+      //   {item}
+      //   {!lastIndex && ", "}
+      // </Link>
+      <>{item}{!lastIndex && ", "}</>
     );
   };
 

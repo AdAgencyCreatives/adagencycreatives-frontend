@@ -143,7 +143,7 @@ const AgencyShortlist = () => {
                                 {resource?.industry_experience.map(
                                   (item, index) => (
                                     <React.Fragment key={"i_" + index}>
-                                      <Link
+                                      {/* <Link
                                         to={
                                           "/agency-category/" +
                                           item
@@ -154,7 +154,8 @@ const AgencyShortlist = () => {
                                         className="link-gray"
                                       >
                                         {item}{index < resource?.industry_experience.length - 1 && ","}
-                                      </Link>
+                                      </Link> */}
+                                      {item}{index < resource?.industry_experience.length - 1 && ","}
                                     </React.Fragment>
                                   )
                                 )}
