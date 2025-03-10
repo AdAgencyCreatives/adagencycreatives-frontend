@@ -179,7 +179,7 @@ const PostItem = (props) => {
                         <a className="user-slug" href={"/creative/" + props.post.author_slug}>
                             {props.post.author}
                         </a>
-                        <span className="badge bg-primary" style={{ marginLeft: '10px' }}>{props.post.edited_at ? "Edited" : ""}</span>
+                        <span className="badge" style={{ marginLeft: '10px', backgroundColor: '#f9f6f6', color: '#7d8184' }}>{props.post.edited_at ? "Edited" : ""}</span>
                     </div>
                     <div className="post-group-info">
                         {props.post.group_name?.toLowerCase() != "feed" && (<span>{props.post.group_name || ""} | {capitalize(props.post.group_type || "")}</span>)}

@@ -106,3 +106,14 @@ export const BulletStyle = `
     background-color: #fff;
     width: 20px;
 }`;
+
+export const SpotlightNavigationStyle = `
+.swiper-button-prev, .swiper-button-next {
+  bottom: var(--swiper-pagination-bottom, 8px);
+  top: var(--swiper-pagination-top, auto);
+  z-index: 999;
+}
+.swiper-button-next:hover, .swiper-button-prev:hover {
+  background: none;
+}
+`;
