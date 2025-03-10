@@ -834,7 +834,7 @@ const MyResume = () => {
       required: false,
       type: "upload",
       name: "resume",
-      accept: ".doc, .docx, .pdf, .txt",
+      accept: ".pdf",
       multiple: false,
       items: [],
       ref: resumeRef,

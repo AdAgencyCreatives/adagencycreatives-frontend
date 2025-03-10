@@ -142,8 +142,10 @@ const Jobs = () => {
   useEffect(() => {
     let data = employment_type;
     if (employment_type.length) {
-      data = employment_type.map((item) => {
-        return { label: item, value: item };
+      data = employment_type
+        .filter(item => !['Willing to Relocate', 'Open & Booking', 'Currently Booked'].includes(item))
+        .map((item) => {
+          return { label: item, value: item };
       });
     }
     setEmployment(data);

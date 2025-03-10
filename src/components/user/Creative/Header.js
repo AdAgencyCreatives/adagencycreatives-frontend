@@ -142,19 +142,21 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
         setDownloading(false);
         window.open(newUrl);
       } else {
-        const extension = url.lastIndexOf(".") > 0 ? url.substring(url.lastIndexOf(".")) : '';
-        const fileName = getDownloadFilename() + extension;
-        fetch(url)
-          .then(res => res.blob())
-          .then(blob => {
-            setDownloading(false);
-            saveAs(blob, fileName);
-          })
-          .catch((error) => {
-            setDownloading(false);
-            console.log(error);
-            showAlert(error?.message || "Sorry, an error occurred");
-          });
+        // const extension = url.lastIndexOf(".") > 0 ? url.substring(url.lastIndexOf(".")) : '';
+        // const fileName = getDownloadFilename() + extension;
+        setDownloading(false);
+        window.open(`/creative/resume/#url=${url}`);
+        // fetch(url)
+        //   .then(res => res.blob())
+        //   .then(blob => {
+        //     setDownloading(false);
+        //     saveAs(blob, fileName);
+        //   })
+        //   .catch((error) => {
+        //     setDownloading(false);
+        //     console.log(error);
+        //     showAlert(error?.message || "Sorry, an error occurred");
+        //   });
       }
     } catch (error) {
       setDownloading(false);
