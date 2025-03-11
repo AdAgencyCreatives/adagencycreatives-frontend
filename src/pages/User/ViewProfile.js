@@ -181,7 +181,7 @@ const Profile = () => {
         ) : (
           <>
             {isResume ? (
-              <ResumePreview user={user} file="https://ad-agency-creatives.s3.amazonaws.com/resume/6582f448-fa59-4dc0-acfe-f20ff4603b0b/MAAQHpw552hPmZvpK97KwXWwUUikiiu6ksQIVPsD.pdf" />
+              <ResumePreview creative={single_creative} />
             ) : (
               <>
                 <div className="profile-header">

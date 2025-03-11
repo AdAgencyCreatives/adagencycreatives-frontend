@@ -10,13 +10,17 @@ import moment from "moment";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-export default function ResumePreview({file, user}) {
+export default function ResumePreview({creative}) {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [scale, setScale] = useState(1.0);
   const [isDownloading, setDownloading] = useState(false);
 
   const { showAlert } = useContext(AlertContext);
+
+  if (!creative) {
+    return <></>;
+  }
 
   const nextPage = () => setPageNumber(prev => Math.min(prev + 1, numPages));
   const prevPage = () => setPageNumber(prev => Math.max(prev - 1, 1));
@@ -25,9 +29,9 @@ export default function ResumePreview({file, user}) {
 
   const downloadResume = () => {
     setDownloading(true);
-    const extension = file.lastIndexOf(".") > 0 ? file.substring(file.lastIndexOf(".")) : '';
+    const extension = creative.resume.lastIndexOf(".") > 0 ? creative.resume.substring(creative.resume.lastIndexOf(".")) : '';
     const fileName = getDownloadFilename() + extension;
-    fetch(file)
+    fetch(creative.resume)
       .then(res => res.blob())
       .then(blob => {
         setDownloading(false);
@@ -41,7 +45,7 @@ export default function ResumePreview({file, user}) {
   }
 
   const getDownloadFilename = () => {
-    return (user.name).replace(" ", "_") + "_AdAgencyCreatives_" + getClientDateTime();
+    return (creative.name).replace(" ", "_") + "_AdAgencyCreatives_" + getClientDateTime();
   }
 
   const getClientDateTime = () => {
@@ -49,7 +53,7 @@ export default function ResumePreview({file, user}) {
   };
 
   return (
-    <div className="d-flex flex-column align-items-center py-4" style={{ background: '#282828' }}>
+    <div className="d-flex flex-column align-items-center pt-4" style={{ background: '#282828' }}>
       <div className="d-flex justify-content-end p-2 bg-black w-100 px-4">
         <button className="btn btn-dark d-flex align-items-center gap-1" onClick={downloadResume}>
           <IoDownloadOutline /> Donwload
@@ -84,9 +88,9 @@ export default function ResumePreview({file, user}) {
       </div> */}
 
       {/* PDF Viewer Centered */}
-      <div className="">
+      <div className="text-white py-4">
         <Document
-          file={file}
+          file={creative.resume}
           onLoadSuccess={({ numPages }) => setNumPages(numPages)}
         >
           {Array.from(new Array(numPages), (el, index) => (
