@@ -24,14 +24,19 @@ import useSeoHelper from "../../hooks/useSeoHelper";
 import RestrictedAgency from '../../components/RestrictedAgency';
 import DelayedOutput from '../../components/DelayedOutput';
 
+import { useLocation } from "react-router-dom";
+import ResumePreview from './ResumePreview';
+
 const Profile = () => {
 
   const { changeSeo } = useSeoHelper();
+  const location = useLocation();
 
   const { username, type, role_name } = useParams();
   const page = type;
 
   const [roleName, setRoleName] = useState(null);
+  const [isResume] = useState(location.pathname.includes("resume"));
 
   const [isLoading, setLoading] = useState(true);
   const [recordError, setRecordError] = useState(null);
@@ -139,8 +144,6 @@ const Profile = () => {
         if (single_agency?.seo?.title?.length > 0) changeSeo('title', single_agency.seo.title);
       }
     }
-
-
   }, [user, single_creative]);
 
   const isCreative = user?.role == "creative";
@@ -177,61 +180,67 @@ const Profile = () => {
           <RestrictedAgency role={roleName ? roleName : page} delay={0} />
         ) : (
           <>
-            <div className="profile-header">
-              {page === "creative" ? (
-                <CreativeHeader data={data} role={role} user={user} username={username} />
-              ) : (
-                <AgencyHeader data={data} role={role} user={user} />
-              )}
-            </div>
-            <div className="profile-content mt-5">
-              <div className="container">
-                <div className="row">
-                  <div className="col-lg-8 col-md-6 col-12">
-                    {page == "creative" && <Portfolio isOwnProfile={isOwnProfile} portfolio_items={data.portfolio_items} />}
-                    {(isOwnProfile ? true : (!(data?.role == 'advisor' || data?.role == 'recruiter') && data?.about?.length > 0)) && (
-                      <>
-                        {data?.about?.length > 0 && (
-                          <div className="content-section">
-                            <h1 className="content-title mt-0">About</h1>
-                            <p className="content">
-                              <div dangerouslySetInnerHTML={{ __html: data.about }} />
-                            </p>
-                          </div>
+            {isResume ? (
+              <ResumePreview user={user} file="https://ad-agency-creatives.s3.amazonaws.com/resume/6582f448-fa59-4dc0-acfe-f20ff4603b0b/MAAQHpw552hPmZvpK97KwXWwUUikiiu6ksQIVPsD.pdf" />
+            ) : (
+              <>
+                <div className="profile-header">
+                  {page === "creative" ? (
+                    <CreativeHeader data={data} role={role} user={user} username={username} />
+                  ) : (
+                    <AgencyHeader data={data} role={role} user={user} />
+                  )}
+                </div>
+                <div className="profile-content mt-5">
+                  <div className="container">
+                    <div className="row">
+                      <div className="col-lg-8 col-md-6 col-12">
+                        {page == "creative" && <Portfolio isOwnProfile={isOwnProfile} portfolio_items={data.portfolio_items} />}
+                        {(isOwnProfile ? true : (!(data?.role == 'advisor' || data?.role == 'recruiter') && data?.about?.length > 0)) && (
+                          <>
+                            {data?.about?.length > 0 && (
+                              <div className="content-section">
+                                <h1 className="content-title mt-0">About</h1>
+                                <p className="content">
+                                  <div dangerouslySetInnerHTML={{ __html: data.about }} />
+                                </p>
+                              </div>
+                            )}
+                          </>
                         )}
-                      </>
-                    )}
-                    <div className="profile-sidebar d-md-none">
-                      {page === "creative" ? (
-                        <CreativeSidebar data={data} role={role} user={user} />
-                      ) : (
-                        <AgencySidebar data={data} />
-                      )}
-                    </div>
-                    {page === "creative" ? (
-                      <CreativeContent
-                        user={user}
-                        data={data}
-                        role={role}
-                        education={creative_education}
-                        experience={creative_experience}
-                      />
-                    ) : (
-                      <AgencyContent user={user} role={role} data={data} jobs={open_positions} />
-                    )}
-                  </div>
-                  <div className="col-lg-4 col-md-6 col-12 d-none d-md-block">
-                    <div className="profile-sidebar">
-                      {page === "creative" ? (
-                        <CreativeSidebar data={data} role={role} user={user} />
-                      ) : (
-                        <AgencySidebar data={data} user={user} role={role} />
-                      )}
+                        <div className="profile-sidebar d-md-none">
+                          {page === "creative" ? (
+                            <CreativeSidebar data={data} role={role} user={user} />
+                          ) : (
+                            <AgencySidebar data={data} />
+                          )}
+                        </div>
+                        {page === "creative" ? (
+                          <CreativeContent
+                            user={user}
+                            data={data}
+                            role={role}
+                            education={creative_education}
+                            experience={creative_experience}
+                          />
+                        ) : (
+                          <AgencyContent user={user} role={role} data={data} jobs={open_positions} />
+                        )}
+                      </div>
+                      <div className="col-lg-4 col-md-6 col-12 d-none d-md-block">
+                        <div className="profile-sidebar">
+                          {page === "creative" ? (
+                            <CreativeSidebar data={data} role={role} user={user} />
+                          ) : (
+                            <AgencySidebar data={data} user={user} role={role} />
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </>
+            )}
           </>
         )}
       </>
