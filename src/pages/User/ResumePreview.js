@@ -10,7 +10,7 @@ import moment from "moment";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-export default function ResumePreview({creative}) {
+export default function ResumePreview({ creative }) {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [scale, setScale] = useState(1.0);
@@ -55,7 +55,7 @@ export default function ResumePreview({creative}) {
   return (
     <div className="d-flex flex-column align-items-center pt-4" style={{ background: '#282828' }}>
       <div className="d-flex justify-content-end p-2 bg-black w-100 px-4">
-        <button className="btn btn-dark d-flex align-items-center gap-1" onClick={downloadResume}>
+        <button className="btn btn-silver hover-black d-flex align-items-center gap-1" onClick={downloadResume}>
           <IoDownloadOutline /> Donwload
         </button>
       </div>
