@@ -138,6 +138,7 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
     }
     setOpenDialogNewWindow(false);
   };
+
   const downloadResume = async (url) => {
     setDownloading(true);
     setOpenResumeInNewWindow(true);
