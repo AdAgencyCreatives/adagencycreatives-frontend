@@ -36,7 +36,7 @@ const Profile = () => {
   const page = type;
 
   const [roleName, setRoleName] = useState(null);
-  const [isResume] = useState(location.pathname.includes("resume"));
+  const isResume = location.pathname.includes("resume");
 
   const [isLoading, setLoading] = useState(true);
   const [recordError, setRecordError] = useState(null);

@@ -2096,3 +2096,23 @@ img.agency-image-loader {
     font-size: 20px;
     margin-left: 10px;
 }
+
+.dialog-content.open-resume-new-window {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 300px;
+    margin: auto auto;
+}
+
+.dialog-content.open-resume-new-window div {
+    display: flex;
+    gap: 5px;
+    align-items: baseline;
+}
+
+.dialog-content.open-resume-new-window label,
+.dialog-content.open-resume-new-window input[type="radio"] {
+    line-height: 1em;
+    cursor: pointer;
+}

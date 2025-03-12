@@ -1,20 +1,14 @@
 import React from 'react';
 import {
   IoBookmarkOutline,
-  IoLocationOutline,
-  IoPersonAdd,
-  IoMailOpen
 } from "react-icons/io5";
 import {
   TfiNotepad
 } from "react-icons/tfi";
-import Placeholder from "../../../assets/images/placeholder.png";
 import "../../../styles/User/ProfileHeader.scss";
-import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { Context as AuthContext } from "../../../context/AuthContext";
-import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 import FriendshipWidget from "../../../components/community/FriendshipWidget";
 import Message from "../../dashboard/Modals/Message";
@@ -24,8 +18,7 @@ import { getMyFriends } from "../../../context/FriendsDataContext";
 import useHelper from "../../../hooks/useHelper";
 import CreativeLocation from "../../../components/CreativeLocation";
 import moment from "moment";
-import { saveAs } from 'file-saver';
-import { CircularProgress, Tooltip } from "@mui/material";
+import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Tooltip } from "@mui/material";
 import AddNotesModal from "../../../components/dashboard/Modals/AddNotesModal";
 import CreativeImageLoader from "../../../components/CreativeImageLoader";
 import ResizableDiv from "../../ResizableDiv";
@@ -36,6 +29,7 @@ import { Context as ChatContext } from "../../../context/ChatContext";
 const Header = React.memo(({ data, role, user, username, showButtons = true }) => {
 
   const anchor = window.location.hash.slice(1);
+  const navigate = useNavigate();
 
   const { encodeSpecial, decodeSpecial } = useHelper();
 
@@ -46,6 +40,9 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
   const [downloadProfilePdfAllowed, setDownloadProfilePdfAllowed] = useState(false);
   const [loadingDownloadProfile, setLoadingDownloadProfile] = useState(true);
   const [appIdNotes, setAppIdNotes] = useState("");
+  const [openResumUrlInNewWindow, setOpenResumeInNewWindow] = useState(true);
+  const [openDialogNewWindow, setOpenDialogNewWindow] = useState(false);
+  const [resumeUrl, setResumeUrl] = useState("");
 
   const handleClose = () => setOpen(false);
   const handleCloseNotes = () => setOpenNotes(false);
@@ -133,19 +130,28 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
     return (data.name).replace(" ", "_") + "_AdAgencyCreatives_" + getClientDateTime();
   }
 
+  const handleOpenResume = (e) => {
+    if (openResumUrlInNewWindow) {
+      window.open(resumeUrl);
+    } else {
+      navigate(resumeUrl);
+    }
+    setOpenDialogNewWindow(false);
+  };
   const downloadResume = async (url) => {
     setDownloading(true);
+    setOpenResumeInNewWindow(true);
     try {
       if (url.indexOf("/download/resume?name=") > 0) {
         const resume_name = (new URLSearchParams(url.substring(url.indexOf("?")))).get('name');
         let newUrl = url.replace(resume_name, getDownloadFilename());
         setDownloading(false);
-        window.open(newUrl);
+        setResumeUrl(newUrl);
       } else {
         // const extension = url.lastIndexOf(".") > 0 ? url.substring(url.lastIndexOf(".")) : '';
         // const fileName = getDownloadFilename() + extension;
         setDownloading(false);
-        window.open(`/creative/resume/${username}`);
+        setResumeUrl(`/creative/resume/${username}`);
         // fetch(url)
         //   .then(res => res.blob())
         //   .then(blob => {
@@ -158,6 +164,7 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
         //     showAlert(error?.message || "Sorry, an error occurred");
         //   });
       }
+      setOpenDialogNewWindow(true);
     } catch (error) {
       setDownloading(false);
       console.log(error);
@@ -167,6 +174,29 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
 
   return (
     <div className="container">
+      <Dialog
+        open={openDialogNewWindow}
+        onClose={e => setOpenDialogNewWindow(false)}
+      >
+        <DialogTitle>Confirmation</DialogTitle>
+        <DialogContent>
+          <div className="dialog-content open-resume-new-window">
+            <strong>Open Resume in:</strong>
+            <div>
+              <input type='radio' id='open-resume-new-window-yes' checked={openResumUrlInNewWindow} onClick={e => setOpenResumeInNewWindow(true)} />
+              <label for="open-resume-new-window-yes">New Window</label>
+            </div>
+            <div>
+              <input type='radio' id='open-resume-new-window-no' checked={!openResumUrlInNewWindow} onClick={e => setOpenResumeInNewWindow(false)} />
+              <label for="open-resume-new-window-no">Same Window</label>
+            </div>
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <button className='btn btn-dark hover-gold' onClick={e => handleOpenResume(e)}>Confirm</button>
+          <button className='btn btn-silver hover-gold' onClick={e => setOpenDialogNewWindow(false)}>Cancel</button>
+        </DialogActions>
+      </Dialog>
       <div className="row align-items-center justify-content-between">
         <div className="col-12 d-flex align-items-top header">
           <div className="avatar rounded">
