@@ -40,9 +40,6 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
   const [downloadProfilePdfAllowed, setDownloadProfilePdfAllowed] = useState(false);
   const [loadingDownloadProfile, setLoadingDownloadProfile] = useState(true);
   const [appIdNotes, setAppIdNotes] = useState("");
-  const [openResumUrlInNewWindow, setOpenResumeInNewWindow] = useState(true);
-  const [openDialogNewWindow, setOpenDialogNewWindow] = useState(false);
-  const [resumeUrl, setResumeUrl] = useState("");
 
   const handleClose = () => setOpen(false);
   const handleCloseNotes = () => setOpenNotes(false);
@@ -130,29 +127,19 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
     return (data.name).replace(" ", "_") + "_AdAgencyCreatives_" + getClientDateTime();
   }
 
-  const handleOpenResume = (e) => {
-    if (openResumUrlInNewWindow) {
-      window.open(resumeUrl);
-    } else {
-      navigate(resumeUrl);
-    }
-    setOpenDialogNewWindow(false);
-  };
-
   const downloadResume = async (url) => {
     setDownloading(true);
-    setOpenResumeInNewWindow(true);
     try {
+      setDownloading(false);
       if (url.indexOf("/download/resume?name=") > 0) {
         const resume_name = (new URLSearchParams(url.substring(url.indexOf("?")))).get('name');
         let newUrl = url.replace(resume_name, getDownloadFilename());
-        setDownloading(false);
-        setResumeUrl(newUrl);
+        window.open(newUrl);
       } else {
         // const extension = url.lastIndexOf(".") > 0 ? url.substring(url.lastIndexOf(".")) : '';
         // const fileName = getDownloadFilename() + extension;
         setDownloading(false);
-        setResumeUrl(`/creative/resume/${username}`);
+        window.open(`/creative/resume/${username}`);
         // fetch(url)
         //   .then(res => res.blob())
         //   .then(blob => {
@@ -165,7 +152,6 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
         //     showAlert(error?.message || "Sorry, an error occurred");
         //   });
       }
-      setOpenDialogNewWindow(true);
     } catch (error) {
       setDownloading(false);
       console.log(error);
@@ -175,29 +161,6 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
 
   return (
     <div className="container">
-      <Dialog
-        open={openDialogNewWindow}
-        onClose={e => setOpenDialogNewWindow(false)}
-      >
-        <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>
-          <div className="dialog-content open-resume-new-window">
-            <strong>Open Resume in:</strong>
-            <div>
-              <input type='radio' id='open-resume-new-window-yes' checked={openResumUrlInNewWindow} onClick={e => setOpenResumeInNewWindow(true)} />
-              <label for="open-resume-new-window-yes">New Window</label>
-            </div>
-            <div>
-              <input type='radio' id='open-resume-new-window-no' checked={!openResumUrlInNewWindow} onClick={e => setOpenResumeInNewWindow(false)} />
-              <label for="open-resume-new-window-no">Same Window</label>
-            </div>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <button className='btn btn-dark hover-gold' onClick={e => handleOpenResume(e)}>Confirm</button>
-          <button className='btn btn-silver hover-gold' onClick={e => setOpenDialogNewWindow(false)}>Cancel</button>
-        </DialogActions>
-      </Dialog>
       <div className="row align-items-center justify-content-between">
         <div className="col-12 d-flex align-items-top header">
           <div className="avatar rounded">

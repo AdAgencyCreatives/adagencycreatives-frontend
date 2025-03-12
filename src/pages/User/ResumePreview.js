@@ -54,9 +54,9 @@ export default function ResumePreview({ creative }) {
 
   return (
     <div className="d-flex flex-column align-items-center pt-4" style={{ background: '#282828' }}>
-      <div className="d-flex justify-content-end p-2 bg-black w-100 px-4">
-        <button className="btn btn-silver hover-black d-flex align-items-center gap-1" onClick={downloadResume}>
-          <IoDownloadOutline /> Donwload
+      <div className="d-flex justify-content-end p-2 bg-white w-100 px-4">
+        <button className="btn btn-dark hover-gold d-flex align-items-center gap-1" onClick={downloadResume}>
+          <IoDownloadOutline /> Download
         </button>
       </div>
       {/* Navigation & Zoom Controls */}
