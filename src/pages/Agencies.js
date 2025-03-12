@@ -143,7 +143,7 @@ const Agencies = () => {
                       )}
                       <div className="open-jobs-btn">
                         <Link to={`/agency/${item.slug}`}>
-                          Open Jobs - {item.open_jobs}
+                          Open Jobs {item.open_jobs > 0 ? '- ' + item.open_jobs : ''}
                         </Link>
                       </div>
                     </div>

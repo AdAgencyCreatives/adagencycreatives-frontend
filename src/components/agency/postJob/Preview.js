@@ -28,7 +28,7 @@ const Preview = ({ single_job, setJobStatus }) => {
       <div className="job-actions mt-3 mb-3 justify-content-center d-flex gap-3">
         {single_job?.status === 'draft' && (
           <button
-            className="btn btn-gray btn-hover-primary text-uppercase ls-3 p-3 px-4"
+            className="btn btn-silver hover-gold text-uppercase ls-3 p-3 px-4"
             onClick={submitJob}
           >
             Submit Job {formSubmit && <CircularProgress size={20} />}
@@ -37,13 +37,13 @@ const Preview = ({ single_job, setJobStatus }) => {
         <Link
           to={"/job/edit/" + single_job.id}
           reloadDocument={true}
-          className="btn btn-gray btn-hover-primary text-uppercase ls-3 p-3 px-4"
+          className="btn btn-silver hover-gold text-uppercase ls-3 p-3 px-4"
         >
           Edit Job
         </Link>
         <Link
           to={"/my-jobs"}
-          className="btn btn-gray btn-hover-primary text-uppercase ls-3 p-3 px-4"
+          className="btn btn-silver hover-gold text-uppercase ls-3 p-3 px-4"
         >
           My Jobs
         </Link>
