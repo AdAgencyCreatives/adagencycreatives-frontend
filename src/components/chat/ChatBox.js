@@ -460,7 +460,7 @@ const ChatBox = ({
                                       Are you sure you want to delete this message ?
                                     </p>
                                     <div className="d-flex align-items-center justify-content-end">
-                                      <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={formDelete} onClick={handleDelete}>
+                                      <button className="btn btn-silver hover-gold p-3 px-5 ls-3 text-uppercase" disabled={formDelete} onClick={handleDelete}>
                                         Delete {formDelete && <CircularProgress size={20} />}
                                       </button>
                                     </div>
@@ -499,7 +499,7 @@ const ChatBox = ({
                                       />
                                     </p>
                                     <div className="d-flex align-items-center justify-content-end">
-                                      <button className="btn btn-gray btn-hover-primary p-3 px-5 ls-3 text-uppercase" disabled={formEdit} onClick={handleEdit}>
+                                      <button className="btn btn-silver hover-gold p-3 px-5 ls-3 text-uppercase" disabled={formEdit} onClick={handleEdit}>
                                         Update {formEdit && <CircularProgress size={20} />}
                                       </button>
                                     </div>
