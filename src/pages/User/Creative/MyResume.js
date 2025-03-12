@@ -26,6 +26,8 @@ import useHelper from "../../../hooks/useHelper";
 
 const MyResume = () => {
 
+  const SNEAK_PEEK_LIMIT = 3;
+
   const { getNumericString } = useHelper();
 
   const titleFieldRef = useRef();
@@ -748,8 +750,8 @@ const MyResume = () => {
         let item = { ...updated[index] };
         if (name == "portfolio_item") {
           const total = item?.items?.length + files.length;
-          if (files.length > 3 || item?.items?.length > 3 || total > 3) {
-            showAlert("Up to 3 images can be uploaded");
+          if (files.length > SNEAK_PEEK_LIMIT || item?.items?.length > SNEAK_PEEK_LIMIT || total > SNEAK_PEEK_LIMIT) {
+            showAlert(`Up to ${SNEAK_PEEK_LIMIT} images can be uploaded`);
             return;
           }
           // Upload File Attachment
@@ -777,8 +779,8 @@ const MyResume = () => {
       if (name == "resume") {
         item.items = [{ name: filename }];
       } else if (name == "portfolio_item") {
-        if (item?.items?.length >= 5) {
-          showAlert("Up to 3 images can be uploaded");
+        if (item?.items?.length >= SNEAK_PEEK_LIMIT) {
+          showAlert(`Up to ${SNEAK_PEEK_LIMIT} images can be uploaded`);
           return;
         }
         item.items.push({ url: URL.createObjectURL(file) });
@@ -819,7 +821,7 @@ const MyResume = () => {
 
   const [portfolio, setPortfolio] = useState([
     {
-      label: "Upload up to 3 image samples of your best work. A sneak peek.",
+      label: `Upload up to ${SNEAK_PEEK_LIMIT} image samples of your best work. A sneak peek.`,
       required: false,
       type: "upload",
       name: "portfolio_item",
