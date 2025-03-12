@@ -4,9 +4,9 @@ import { useState } from "react";
 
 const useAgencies = (page, role) => {
   const {
-    state: { agencies, nextPage, loading },
+    state: { agencies, home_agencies, nextPage, loading },
     getAgencies,
-    getFeaturedAgencies,
+    getHomeAgencies,
     loadAgencies,
     searchAgencies,
     agencySearch1,
@@ -24,7 +24,7 @@ const useAgencies = (page, role) => {
     if (role) {
       getAgencyRoles(page, role);
     } else if (page == "home") {
-      getFeaturedAgencies();
+      getHomeAgencies();
     }
   }, [role]);
 
@@ -33,7 +33,7 @@ const useAgencies = (page, role) => {
     else setLoadedAll(true)
   };
 
-  return { agencies, getAgencies, loading, loadMore, loadedAll, searchAgencies, agencySearch1, agencySearch2 };
+  return { agencies, home_agencies, getAgencies, loading, loadMore, loadedAll, searchAgencies, agencySearch1, agencySearch2 };
 };
 
 export default useAgencies;

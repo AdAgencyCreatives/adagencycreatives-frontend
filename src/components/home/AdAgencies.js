@@ -15,7 +15,7 @@ const AdAgencies = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const swiperElRef = useRef(null);
-  const { agencies } = useAgencies("home");
+  const { home_agencies } = useAgencies("home");
 
   const {
     state: {
@@ -33,7 +33,7 @@ const AdAgencies = () => {
   } = usePermissions();
 
   useEffect(() => {
-    if (agencies?.length > 0) {
+    if (home_agencies?.length > 0) {
       const params = {
         injectStyles: [PaginationStyle],
         autoplay: {
@@ -59,7 +59,7 @@ const AdAgencies = () => {
       Object.assign(swiperElRef.current, params);
       swiperElRef.current.initialize();
     }
-  }, [agencies]);
+  }, [home_agencies]);
 
   const handleMouseEnter = () => {
     swiperElRef?.current?.swiper?.autoplay?.stop()
@@ -93,8 +93,8 @@ const AdAgencies = () => {
           loop="true"
           autop
         >
-          {agencies && agencies.length &&
-            agencies.map((item, index) => {
+          {home_agencies && home_agencies.length &&
+            home_agencies.map((item, index) => {
               return (
                 <swiper-slide key={`home-ad-agencies-${index}`}>
                   <div className="sliderContent adagencies-slider" style={{ height: '350px' }}>

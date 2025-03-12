@@ -3,6 +3,7 @@ import createDataContext from "./createDataContext";
 
 const state = {
   agencies: null,
+  home_agencies: null,
   meta: {},
   nextPage: null,
   loading: false,
@@ -22,11 +23,15 @@ const reducer = (state, action) => {
     case "set_cache":
       return { ...state, cache: { ...state.cache, [action.payload.url]: action.payload.data } };
     case "set_agencies":
-      console.log(action.payload.data);
       return {
         ...state,
         agencies: action.payload.data,
         nextPage: action.payload.links.next,
+      };
+    case "set_home_agencies":
+      return {
+        ...state,
+        home_agencies: action.payload.data,
       };
     case "set_agencie_roles":
       console.log(action.payload.data);
@@ -81,12 +86,12 @@ const getAgencies = (dispatch) => {
   };
 };
 
-const getFeaturedAgencies = (dispatch) => {
+const getHomeAgencies = (dispatch) => {
   return async (page) => {
     try {
       const response = await api.get("/agencies?&filter[status]=1&filter[is_featured]=1&filter[is_visible]=1&sort=sort_order");
       dispatch({
-        type: "set_agencies",
+        type: "set_home_agencies",
         payload: response.data,
       });
     } catch (error) { }
@@ -589,7 +594,7 @@ export const { Context, Provider } = createDataContext(
   reducer,
   {
     getAgencies,
-    getFeaturedAgencies,
+    getHomeAgencies,
     loadAgencies,
     getAgency,
     getStats,
