@@ -92,7 +92,7 @@ const Sidebar = ({ data, role }) => {
             <div className="details">
               <div className="text">This Opportunity Pays</div>
               <div className="value">
-                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.salary_range)}
+                {data.salary_range}
               </div>
             </div>
           </div>
