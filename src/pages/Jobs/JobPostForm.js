@@ -278,7 +278,8 @@ const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
           column: "6",
         },
         {
-          label: "Salary Range",
+          // label: "Salary Range",
+          label: "This Opportunity Pays",
           required: false,
           type: "text",
           name: "salary_range",
