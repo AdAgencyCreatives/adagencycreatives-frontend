@@ -74,7 +74,7 @@ const InviteMemberWidget = (props) => {
         let result2 = await saveNotification({
             "user_id": user.uuid,
             "type": "lounge_group_activity",
-            "message": "You have requested " + creative.name + " to join your group: " + props.group.name + ".",
+            "message": "You have requested " + creative.name + " join your group: " + props.group.name + ".",
             "body": "{activity_key:'lounge_group_request_responded'}",
             "sender_id": user.uuid,
         });
