@@ -143,7 +143,7 @@ const Creatives = () => {
     setInputClicked(clicked);
     setAdvanceSearchHasData(false);
     setInputLevel2("");
-    setSearchDone("")
+    setSearchDone("");
 
     if (!value || value.length == 0) {
       setParams((prev) => ({ ...prev, search: '' }));
@@ -301,34 +301,32 @@ const Creatives = () => {
   }, [creatives]);
 
   useEffect(() => {
-    if (role && input?.length > 0 && inputLevel2?.length === 0) {
-      searchUser(input);
-    } else if (role && inputLevel2?.length > 0) {
+    let params = getHashParams();
+    params = Object.fromEntries(
+      Object.entries(params).filter(([_, value]) => value !== "" && value !== null && value !== undefined)
+    );
+    
+    if (role && params?.search && !params?.advance) {
+      setInput(params.search);
+      searchUser(params.search);
+    } else if (role && params?.advance) {
+      setInputLevel2(params?.advance)
       setAdvanceSearchHasData(true);
-      searchUserLevel2(inputLevel2);
-    } else if (!location.hash?.includes('search=')) {
+      searchUserLevel2(params?.advance);
+    } else {
       getCreatives();
-    }
+    } 
   }, [role, subscription_status]);
 
   useEffect(() => {
-    if (params && creatives?.length > 0 && (isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription))) {
-      if (params?.search) {
-        setInput(params.search)
-      }
-
-      if (params?.advance) {
-        setInputLevel2(params.advance)
-      }
-
+    if (role && params && creatives?.length > 0 && (isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription))) {
       let index = getPreviewIndex();
       if (index >= 0 && index < creatives?.length) {
         setPreviewCreative(creatives[index]);
         setOpenCreativeProfileDialog(true);
       }
     }
-  }, [params, token, subscription_status]);
-
+  }, [params, token, subscription_status, role]);
 
   const getPreviewIndex = () => {
     // let params = new URLSearchParams(window.location.hash.replace("#", ""));
