@@ -6,7 +6,7 @@ import {
 import "../../styles/User/ProfileSidebar.scss";
 import bullseye from "../../assets/images/icons/bulleyes.png";
 import adicon from "../../assets/images/icons/adicon.png";
-import { FaUserTie } from "react-icons/fa6";
+import { FaUserTie, FaDollarSign } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
@@ -88,7 +88,7 @@ const Sidebar = ({ data, role }) => {
         )}
         {data.salary_range?.length > 0 && (
           <div className="item">
-            <img src={adicon} height={22} width={22} />
+            <FaDollarSign size={22} />
             <div className="details">
               <div className="text">This Opportunity Pays</div>
               <div className="value">
