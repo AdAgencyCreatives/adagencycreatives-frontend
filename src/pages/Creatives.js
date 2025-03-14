@@ -1,6 +1,6 @@
 import { IoBookmarkOutline, IoLocationOutline } from "react-icons/io5";
 import SearchBar from "../components/SearchBar";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import useCreatives from "../hooks/useCreatives";
 import { useContext, useEffect, useState } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
@@ -43,7 +43,59 @@ const Creatives = () => {
   const [previewCreative, setPreviewCreative] = useState(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
   const anchor = window.location.hash.slice(1);
+
+  // Parse the initial state from the URL hash
+  const getHashParams = () => {
+    const hashParams = new URLSearchParams(location.hash.replace("#", "?"));
+    return {
+      search: hashParams.get("search") || "",
+      advance: hashParams.get("advance") || "",
+      preview: hashParams.get("preview") || "",
+    };
+  };
+
+  // Initialize state from URL parameters
+  const [params, setParams] = useState(getHashParams);
+
+  // Update state when URL hash changes (only if different)
+  useEffect(() => {
+    const newParams = getHashParams();
+    if (
+      newParams.search !== params.search ||
+      newParams.advance !== params.advance ||
+      newParams.preview !== params.preview
+    ) {
+      // Remove empty values
+      const cleanedParams = Object.fromEntries(
+        Object.entries(newParams).filter(([_, value]) => value !== "" && value !== null && value !== undefined)
+      );
+
+      setParams(cleanedParams);
+    }
+  }, [location.hash]); // Run only when the hash changes
+
+  // Update the URL when state changes, but only if it's actually different
+  useEffect(() => {
+    // Remove empty values
+    const cleanedParams = Object.fromEntries(
+      Object.entries(params).filter(([_, value]) => value !== "" && value !== null && value !== undefined)
+    );
+
+    if (Object.keys(cleanedParams).length === 0) {
+      return;
+    }
+
+    // Convert object to URL query string
+    let queryString = new URLSearchParams(cleanedParams).toString();
+    queryString = `#${queryString}`;
+
+    if (location.hash !== queryString) {
+      navigate(queryString, { replace: true }); // Avoid history stack pollution
+    }
+  }, [params, navigate, location.hash]);
 
   const { creatives, getCreatives, loading, loadMore, searchCreativesAdvanced } =
     useCreatives("creative");
@@ -94,6 +146,7 @@ const Creatives = () => {
     setSearchDone("")
 
     if (!value || value.length == 0) {
+      setParams((prev) => ({ ...prev, search: '' }));
       getCreatives();
       return;
     }
@@ -125,15 +178,19 @@ const Creatives = () => {
         setAdvanceSearchHasData(data?.length > 0);
       });
       if (user) await getAllBookmarks(user.uuid, "creatives");
+
+      setParams((prev) => ({ ...prev, search: query_search_string }));
     } else {
       //await getCreatives();
     }
+    
     setIsCreativeLoading(false);
   };
 
   const searchUserLevel2 = async (value) => {
 
     if (!value || value.length == 0) {
+      setParams((prev) => ({ ...prev, advance: '' }));
       searchUser(input);
       return;
     }
@@ -172,6 +229,9 @@ const Creatives = () => {
       searchTermsLevel2,
       permissionLevel2.terms_allowed
     );
+
+    // navigate(`#search=${encodeURIComponent(query_search_string_level1)}&advnace=${encodeURIComponent(query_search_string_level2)}`);
+    setParams((prev) => ({ ...prev, advance: query_search_string_level2 }));
 
     await searchCreativesAdvanced(which_search(), query_search_string_level1, role, query_search_string_level2);
     if (user) await getAllBookmarks(user.uuid, "creatives");
@@ -241,27 +301,38 @@ const Creatives = () => {
   }, [creatives]);
 
   useEffect(() => {
-    if (role && input?.length > 0) {
+    if (role && input?.length > 0 && inputLevel2?.length === 0) {
       searchUser(input);
-    } else {
+    } else if (role && inputLevel2?.length > 0) {
+      setAdvanceSearchHasData(true);
+      searchUserLevel2(inputLevel2);
+    } else if (!location.hash?.includes('search=')) {
       getCreatives();
     }
   }, [role, subscription_status]);
 
   useEffect(() => {
-    if (anchor?.length > 0 && creatives?.length > 0 && (isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription))) {
+    if (params && creatives?.length > 0 && (isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription))) {
+      if (params?.search) {
+        setInput(params.search)
+      }
+
+      if (params?.advance) {
+        setInputLevel2(params.advance)
+      }
+
       let index = getPreviewIndex();
       if (index >= 0 && index < creatives?.length) {
         setPreviewCreative(creatives[index]);
         setOpenCreativeProfileDialog(true);
       }
     }
-  }, [anchor, creatives, token, subscription_status]);
+  }, [params, token, subscription_status]);
 
 
   const getPreviewIndex = () => {
-    let params = new URLSearchParams(window.location.hash.replace("#", ""));
-    let slug = params.get("preview")?.length > 0 ? params.get("preview") : "";
+    // let params = new URLSearchParams(window.location.hash.replace("#", ""));
+    let slug = params.preview ?? '';
     let index = -1;
     if (slug?.length > 0) {
       index = creatives.findIndex(item => item.slug === slug);
@@ -272,18 +343,20 @@ const Creatives = () => {
   const handleViewPrev = () => {
     let index = getPreviewIndex();
     if (index > 0) {
-      let params = new URLSearchParams(window.location.hash.replace("#", ""));
-      params.set('preview', creatives[index - 1].slug);
-      window.location.hash = params.toString();
+      // let params = new URLSearchParams(window.location.hash.replace("#", ""));
+      // params.set('preview', creatives[index - 1].slug);
+      // window.location.hash = params.toString();
+      setParams((prev) => ({ ...prev, preview: creatives[index - 1].slug }));
     }
   };
 
   const handleViewNext = () => {
     let index = getPreviewIndex();
     if (index >= 0 && index < creatives.length - 1) {
-      let params = new URLSearchParams(window.location.hash.replace("#", ""));
-      params.set('preview', creatives[index + 1].slug);
-      window.location.hash = params.toString();
+      // let params = new URLSearchParams(window.location.hash.replace("#", ""));
+      // params.set('preview', creatives[index + 1].slug);
+      // window.location.hash = params.toString();
+      setParams((prev) => ({ ...prev, preview: creatives[index + 1].slug }));
     }
   };
 
@@ -348,7 +421,8 @@ const Creatives = () => {
             open={openCreativeProfileDialog}
             setOpen={setOpenCreativeProfileDialog}
             onClose={() => {
-              navigate(window.location.pathname);
+              // navigate(window.location.pathname);
+              setParams((prev) => ({ ...prev, preview: '' }))
             }}
             actions={creatives?.length > 1 ? [
               {
@@ -449,11 +523,16 @@ const Creatives = () => {
                         <CreativeLocation location={item?.location} />
                         <div className="profileLink">
                           <Link
-                            to={token ? ((isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription)) ? "#preview=" + item.slug : `/creative/${item.slug}`) : "#"}
                             onClick={(e) => {
                               if (!token) {
                                 e.preventDefault();
                                 showAlert("Please login to access");
+                              } else {
+                                const to = token ? 
+                                  ((isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription)) 
+                                    ? setParams((prev) => ({ ...prev, preview: item.slug }))
+                                    : navigate(`/creative/${item.slug}`))
+                                  : "#";
                               }
                               return false;
                             }}
