@@ -6,6 +6,8 @@ import time from "../../../assets/images/icons/duration-icon.png";
 import sample from "../../../assets/images/sample.mp4";
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../../context/AgenciesContext";
+import { Context as AlertContext } from "../../../context/AlertContext";
+import { Context as AuthContext } from "../../../context/AuthContext";
 import { IoAdd, IoCallOutline, IoLocationOutline, IoMailOutline } from "react-icons/io5";
 import { VscTextSize } from "react-icons/vsc";
 import { MdHomeWork } from "react-icons/md";
@@ -18,6 +20,11 @@ const Sidebar = ({ data, user }) => {
   const agencyType = (data?.role == 'advisor' ? 'Advisor' : (data?.role == 'recruiter' ? 'Recruiter' : 'Agency'));
 
   const { encodeSpecial, decodeSpecial, formatPhone } = useHelper();
+  const { showAlert } = useContext(AlertContext);
+
+  const {
+    state: { token, subscription_status },
+  } = useContext(AuthContext);
 
   const {
     isAdmin,
