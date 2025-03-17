@@ -6,11 +6,17 @@ import { Context as AlertContext } from "../../../context/AlertContext";
 import { useState, useRef } from "react";
 import CustomEditor from "../../../components/CustomEditor";
 import { IoCloseCircleSharp } from "react-icons/io5";
+import usePermissions from "../../../hooks/usePermissions";
+import JobMessages from "../../../pages/User/JobMessages";
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Message = ({ open, setOpen = false, handleClose = false, item, type }) => {
 
   const [subjectData, setSubjectData] = useState("");
   const [messageData, setMessageData] = useState("");
+  
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const {
     state: { loading, },
@@ -22,13 +28,26 @@ const Message = ({ open, setOpen = false, handleClose = false, item, type }) => 
   } = useContext(AuthContext);
 
   const {
+    isAdmin,
+    isAdvisor,
+    hasSubscription,
+  } = usePermissions();
+
+  const {
     state: { message },
     showAlert,
   } = useContext(AlertContext);
 
-  // useEffect(() => {
-  //   showAlert(false)
-  // },[open])
+  const isChatBox = open && (isAdmin || (isAdvisor && hasSubscription));
+
+  useEffect(() => {
+    if (isChatBox) {
+      const newPath = location.hash 
+        ? `${location.pathname}${location.hash}&active=${item.user_id}`
+        : `${location.pathname}#active=${item.user_id}`;
+      navigate(newPath);
+    }
+  },[open])
 
   const handleSubmit = () => {
     sendMessage(user.uuid, item.user_id, messageData, type, () => {
@@ -58,53 +77,64 @@ const Message = ({ open, setOpen = false, handleClose = false, item, type }) => 
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       scroll="body"
+      maxWidth={isChatBox ? 'lg' : 'md'}
+      fullWidth={isChatBox}
     >
-      {item && (
-        <div className="add-note-modal">
-          <div className="close-modal"><IoCloseCircleSharp size={30} onClick={(e) => closeMessageDialog()} /></div>
-          <div className="addnote-header"></div>
-          <div className="addnote-body">
-            <div className="job-apply-email-form-wrapper">
-              <div className="inner">
-                <p
-                  className="text-center"
-                  style={{ fontSize: 20, marginBottom: 30, fontWeight: 400 }}
-                >
-                  Send Message to "{item.name}"
-                </p>
-                {/* {message && (
-                  <div className={`alert alert-info`}>
-                    Sent message successful.
+      {isAdmin || (isAdvisor && hasSubscription) ? (
+        <div className="m-4 position-relative chat-box">
+          <div className="close-modal position-absolute end-0" style={{ cursor: 'pointer' }}><IoCloseCircleSharp size={30} onClick={(e) => closeMessageDialog()} /></div>
+          <JobMessages />
+        </div>
+      ) : (
+        <>
+          {item && (
+            <div className="add-note-modal">
+              <div className="close-modal"><IoCloseCircleSharp size={30} onClick={(e) => closeMessageDialog()} /></div>
+              <div className="addnote-header"></div>
+              <div className="addnote-body">
+                <div className="job-apply-email-form-wrapper">
+                  <div className="inner">
+                    <p
+                      className="text-center"
+                      style={{ fontSize: 20, marginBottom: 30, fontWeight: 400 }}
+                    >
+                      Send Message to "{item.name}"
+                    </p>
+                    {/* {message && (
+                      <div className={`alert alert-info`}>
+                        Sent message successful.
+                      </div>
+                    )} */}
+                    <div className="form-group" style={{ display: "none" }}>
+                      <input
+                        className="form-control mb-4"
+                        name="subject"
+                        placeholder="Subject"
+                        required="required"
+                        value={subjectData}
+                        onChange={(e) => setSubjectData(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <CustomEditor
+                        value={messageData}
+                        setValue={setMessageData}
+                        enableAdvanceEditor={true}
+                        placeholder="Message"
+                      />
+                    </div>
+                    <button
+                      className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3"
+                      onClick={handleSubmit}
+                    >
+                      Send Message {loading && <CircularProgress size={20} />}
+                    </button>
                   </div>
-                )} */}
-                <div className="form-group" style={{ display: "none" }}>
-                  <input
-                    className="form-control mb-4"
-                    name="subject"
-                    placeholder="Subject"
-                    required="required"
-                    value={subjectData}
-                    onChange={(e) => setSubjectData(e.target.value)}
-                  />
                 </div>
-                <div className="form-group">
-                  <CustomEditor
-                    value={messageData}
-                    setValue={setMessageData}
-                    enableAdvanceEditor={true}
-                    placeholder="Message"
-                  />
-                </div>
-                <button
-                  className="btn btn-gray btn-hover-primary text-uppercase ls-3 w-100 mt-3 p-3"
-                  onClick={handleSubmit}
-                >
-                  Send Message {loading && <CircularProgress size={20} />}
-                </button>
               </div>
             </div>
-          </div>
-        </div>
+          )}
+        </>
       )}
     </Dialog>
   );
