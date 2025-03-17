@@ -531,13 +531,16 @@ swiper-slide {
 
 .location>* {
     font-size: 20px;
-    color: rgb(105, 105, 105);
     font-weight: 300;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 12px;
     text-decoration: none;
+}
+
+.location>*:not(.sidebar-item .job-location > a) {
+    color: rgb(105, 105, 105);
 }
 
 .sidebar-item .location span {
@@ -552,7 +555,7 @@ swiper-slide {
     display: inline-block;
 }
 
-.job-location>* {
+.job-location > *:not(.sidebar-item .job-location > a) {
     color: inherit !important;
 }
 
