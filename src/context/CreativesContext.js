@@ -4,6 +4,7 @@ import createDataContext from "./createDataContext";
 const state = {
   creatives: null,
   related_creatives: null,
+  related_creatives_nextPage: null,
   search_creatives: null,
   home_creatives: null,
   nextPage: null,
@@ -17,7 +18,6 @@ const state = {
   formSubmit: false,
   applied_jobs: [],
   applied_jobsNextPage: null,
-  applied_jobsNextPage: {},
   resume: [],
   profile_resume: null,
   portfolio_items: [],
@@ -42,7 +42,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         related_creatives: action.payload.data,
-        nextPage: action.payload.links.next,
+        related_creatives_nextPage: action.payload.links.next,
       };
     case "set_search_creatives":
       return {
@@ -54,7 +54,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         home_creatives: action.payload.data,
-        nextPage: action.payload.links.next,
+        // nextPage: action.payload.links.next,
       };
     case "set_group_invite_members":
       return {

@@ -8,6 +8,7 @@ import CreativeImageLoader from "../CreativeImageLoader";
 
 const NewChat = ({ setContact, contacts, userSelected, setUserSelected }) => {
 
+  const anchor = window.location.hash.slice(1);
   const { contact_uuid } = useParams();
 
   const [search, setSearch] = useState();
@@ -20,6 +21,18 @@ const NewChat = ({ setContact, contacts, userSelected, setUserSelected }) => {
     state: { creatives, loading },
     searchCreatives, getCreativeById
   } = useContext(CreativesContext);
+
+  useEffect(() => {
+    if (anchor?.length > 0) {
+      let params = new URLSearchParams(window.location.hash.replace("#", ""));
+      let active = params.get("active")?.length > 0 ? params.get("active") : "";
+      (async () => {
+        await getCreativeById(active, (data) => {
+          selectUser(data);
+        });
+      })();
+    }
+  }, [anchor]);
 
   const handleOnChange = (e) => {
     let value = e.target.value;

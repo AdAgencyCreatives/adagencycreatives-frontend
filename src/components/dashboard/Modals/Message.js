@@ -14,7 +14,7 @@ const Message = ({ open, setOpen = false, handleClose = false, item, type }) => 
 
   const [subjectData, setSubjectData] = useState("");
   const [messageData, setMessageData] = useState("");
-  
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -42,12 +42,15 @@ const Message = ({ open, setOpen = false, handleClose = false, item, type }) => 
 
   useEffect(() => {
     if (isChatBox) {
-      const newPath = location.hash 
-        ? `${location.pathname}${location.hash}&active=${item.user_id}`
-        : `${location.pathname}#active=${item.user_id}`;
-      navigate(newPath);
+      const params = new URLSearchParams(location.hash.replace("#", ""));
+      params.set("active", item.user_id);
+      navigate(`#${params.toString()}`);
+      // const newPath = location.hash
+      //   ? `${location.pathname}${location.hash}&active=${item.user_id}`
+      //   : `${location.pathname}#active=${item.user_id}`;
+      // navigate(newPath);
     }
-  },[open])
+  }, [open])
 
   const handleSubmit = () => {
     sendMessage(user.uuid, item.user_id, messageData, type, () => {

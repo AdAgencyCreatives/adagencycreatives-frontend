@@ -11,7 +11,7 @@ import { CircularProgress, FormControlLabel, FormGroup, Switch } from "@mui/mate
 
 const JobChat = ({ messageType }) => {
   const anchor = window.location.hash.slice(1);
-  
+
   const {
     state: { user, conversation_updated_notifications, formSubmit },
     updateEmailNotifications,
@@ -31,6 +31,7 @@ const JobChat = ({ messageType }) => {
   const [type, setType] = useState(messageType);
   const [contactsList, setContactsList] = useState([]);
   const [checkClick, setCheckClick] = useState(false);
+  const [userSelected, setUserSelected] = useState(null);
   const [paged, setPaged] = useState(2);
   const [hasMoreData, setHasMoreData] = useState(false);
   const [messageData, setMessageData] = useState([]);
@@ -45,13 +46,16 @@ const JobChat = ({ messageType }) => {
     if (anchor?.length > 0 && contacts.length > 0) {
       let params = new URLSearchParams(window.location.hash.replace("#", ""));
       let active = params.get("active")?.length > 0 ? params.get("active") : "";
-      console.log(active);
-
+      // console.log(active);
       let filtered = contacts.filter(item => item.contact.uuid == active);
-      console.log(contacts);
+      //console.log(contacts);
       if (filtered?.length > 0) {
         handleItemClick(filtered[0].contact, type);
+      } else {
+        setChatBox("new");
       }
+    } else {
+      setChatBox("new");
     }
   }, [anchor, contacts]);
 
@@ -130,6 +134,8 @@ const JobChat = ({ messageType }) => {
     handleBackButton,
     setContact,
     getMessages,
+    userSelected,
+    setUserSelected,
     setPaged,
     paged,
     setHasMoreData,

@@ -183,7 +183,7 @@ const Creatives = () => {
     } else {
       //await getCreatives();
     }
-    
+
     setIsCreativeLoading(false);
   };
 
@@ -311,7 +311,7 @@ const Creatives = () => {
     const newParams = Object.fromEntries(
       Object.entries(params).filter(([_, value]) => value !== "" && value !== null && value !== undefined)
     );
-    
+
     if (role && newParams?.search && !newParams?.advance) {
       setInput(newParams.search);
       searchUser(newParams.search);
@@ -523,8 +523,8 @@ const Creatives = () => {
                                 e.preventDefault();
                                 showAlert("Please login to access");
                               } else {
-                                const to = token ? 
-                                  ((isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription)) 
+                                const to = token ?
+                                  ((isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription))
                                     ? setParams((prev) => ({ ...prev, preview: item.slug }))
                                     : navigate(`/creative/${item.slug}`))
                                   : "#";
