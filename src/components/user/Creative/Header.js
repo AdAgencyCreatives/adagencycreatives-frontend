@@ -187,11 +187,11 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
             <div className="col-md-7">
               {showButtons && (
                 <ResizableDiv uid="view-profile-actions" className="actions d-flex justify-content-md-end mt-3 mt-md-0 flex-md-nowrap flex-wrap">
-                  {anchor?.length > 0 && anchor.indexOf("preview=") === 0 ? (<>
+                  {anchor?.includes("preview=") ? (
                     <Link className="btn btn-dark fs-5" to={"/creative/" + data?.slug}>
                       Visit Profile
                     </Link>
-                  </>) : (<>
+                  ) : (<>
                     {loadingDownloadProfile ? (<>
                       {downloadProfilePdfAllowed && (
                         <button className={"btn btn-silver fs-5"} style={{ cursor: 'wait' }}>Download Profile</button>
