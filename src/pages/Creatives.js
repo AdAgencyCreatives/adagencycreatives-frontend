@@ -179,7 +179,7 @@ const Creatives = () => {
       });
       if (user) await getAllBookmarks(user.uuid, "creatives");
 
-      setParams((prev) => ({ ...prev, search: query_search_string }));
+      if (params.search !== query_search_string) setParams((prev) => ({ ...prev, search: query_search_string }));
     } else {
       //await getCreatives();
     }
@@ -230,8 +230,7 @@ const Creatives = () => {
       permissionLevel2.terms_allowed
     );
 
-    // navigate(`#search=${encodeURIComponent(query_search_string_level1)}&advnace=${encodeURIComponent(query_search_string_level2)}`);
-    setParams((prev) => ({ ...prev, advance: query_search_string_level2 }));
+    if (params.advance !== query_search_string_level2) setParams((prev) => ({ ...prev, advance: query_search_string_level2 }));
 
     await searchCreativesAdvanced(which_search(), query_search_string_level1, role, query_search_string_level2);
     if (user) await getAllBookmarks(user.uuid, "creatives");
@@ -301,30 +300,28 @@ const Creatives = () => {
   }, [creatives]);
 
   useEffect(() => {
-    let params = getHashParams();
-    params = Object.fromEntries(
-      Object.entries(params).filter(([_, value]) => value !== "" && value !== null && value !== undefined)
-    );
-    
-    if (role && params?.search && !params?.advance) {
-      setInput(params.search);
-      searchUser(params.search);
-    } else if (role && params?.advance) {
-      setInputLevel2(params?.advance)
-      setAdvanceSearchHasData(true);
-      searchUserLevel2(params?.advance);
-    } else {
-      getCreatives();
-    } 
-  }, [role, subscription_status]);
-
-  useEffect(() => {
     if (role && params && creatives?.length > 0 && (isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription))) {
       let index = getPreviewIndex();
       if (index >= 0 && index < creatives?.length) {
         setPreviewCreative(creatives[index]);
         setOpenCreativeProfileDialog(true);
       }
+    }
+
+    const newParams = Object.fromEntries(
+      Object.entries(params).filter(([_, value]) => value !== "" && value !== null && value !== undefined)
+    );
+    
+    if (role && newParams?.search && !newParams?.advance) {
+      setInput(newParams.search);
+      searchUser(newParams.search);
+    } else if (role && newParams?.advance) {
+      setInput(newParams?.search ?? '');
+      setInputLevel2(newParams.advance)
+      setAdvanceSearchHasData(true);
+      searchUserLevel2(newParams.advance);
+    } else {
+      getCreatives();
     }
   }, [params, token, subscription_status, role]);
 

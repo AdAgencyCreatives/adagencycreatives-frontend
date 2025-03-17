@@ -21,7 +21,7 @@ const CommonModal = (
         actionsClassName = "common-modal-actions",
         closeButtonText = "CLOSE",
         closeButtonClass = "btn btn-dark",
-        sx = false,
+        sx = {},
         closeIconClass = "close-modal"
     }) => {
 

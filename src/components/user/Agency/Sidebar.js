@@ -17,7 +17,7 @@ const Sidebar = ({ data, user }) => {
 
   const agencyType = (data?.role == 'advisor' ? 'Advisor' : (data?.role == 'recruiter' ? 'Recruiter' : 'Agency'));
 
-  const { formatPhone } = useHelper();
+  const { encodeSpecial, decodeSpecial, formatPhone } = useHelper();
 
   const {
     isAdmin,
@@ -135,7 +135,37 @@ const Sidebar = ({ data, user }) => {
               <MdHomeWork />
               <div className="details">
                 <div className="text">Workplace Preference</div>
-                <div className="value">{preferences.join(",")}</div>
+                <div className="value">
+                  {isAdmin || isAdvisor ? (<>
+                    {preferences.map((item, index) => {
+                      const workplace = item === 'Onsite' ? 'on site' : item.toLowerCase();
+                      return (
+                        <span>
+                        <Link to={"/agencies/search/workplace-preference/" + encodeSpecial(encodeURI(workplace))}
+                          onClick={(e) => {
+                            if (!token) {
+                              e.preventDefault();
+                              showAlert("Please login to access");
+                              return false;
+                            }
+                            if (isAdvisor && subscription_status != "active") {
+                              e.preventDefault();
+                              showAlert("Post a Job for advance search capabilities");
+                              return false;
+                            }
+                            return true;
+                          }}
+                        >
+                          {item}
+                        </Link>
+                        {index < preferences.length - 1 && ', '}
+                        </span>
+                      )
+                    })}
+                  </>) : (<>
+                    {preferences.join(", ")}
+                  </>)}
+                </div>
               </div>
             </div>
           ) : (
@@ -147,7 +177,34 @@ const Sidebar = ({ data, user }) => {
               <div className="details">
                 <div className="text">Industry Specialty</div>
                 <div className="value">
-                  {renderListData(data.industry_experience, "i")}
+                  {isAdmin || isAdvisor ? (<>
+                    {data.industry_experience.map((item, index) => {
+                      return (
+                        <span>
+                        <Link to={"/agencies/search/industry-experience/" + encodeSpecial(encodeURI(item))}
+                          onClick={(e) => {
+                            if (!token) {
+                              e.preventDefault();
+                              showAlert("Please login to access");
+                              return false;
+                            }
+                            if (isAdvisor && subscription_status != "active") {
+                              e.preventDefault();
+                              showAlert("Post a Job for advance search capabilities");
+                              return false;
+                            }
+                            return true;
+                          }}
+                        >
+                          {item}
+                        </Link>
+                        {index < data.industry_experience.length - 1 && ', '}
+                        </span>
+                      )
+                    })}
+                  </>) : (<>
+                    {renderListData(data.industry_experience, "i")}
+                  </>)}
                 </div>
               </div>
             </div>
@@ -160,7 +217,34 @@ const Sidebar = ({ data, user }) => {
               <div className="details">
                 <div className="text">Media Specialty</div>
                 <div className="value">
-                  {renderListData(data.media_experience, "m")}
+                  {isAdmin || isAdvisor ? (<>
+                    {data.media_experience.map((item, index) => {
+                      return (
+                        <span>
+                        <Link to={"/agencies/search/media-experience/" + encodeSpecial(encodeURI(item))}
+                          onClick={(e) => {
+                            if (!token) {
+                              e.preventDefault();
+                              showAlert("Please login to access");
+                              return false;
+                            }
+                            if (isAdvisor && subscription_status != "active") {
+                              e.preventDefault();
+                              showAlert("Post a Job for advance search capabilities");
+                              return false;
+                            }
+                            return true;
+                          }}
+                        >
+                          {item}
+                        </Link>
+                        {index < data.media_experience.length - 1 && ', '}
+                        </span>
+                      )
+                    })}
+                  </>) : (<>
+                    {renderListData(data.media_experience, "m")}
+                  </>)}
                 </div>
               </div>
             </div>
@@ -172,7 +256,29 @@ const Sidebar = ({ data, user }) => {
               <VscTextSize />
               <div className="details">
                 <div className="text">Company Size</div>
-                <div className="value">{data.size}</div>
+                <div className="value">
+                  {isAdmin || isAdvisor ? (<>
+                    <Link to={"/agencies/search/company-size/" + encodeSpecial(encodeURI(data.size))}
+                      onClick={(e) => {
+                        if (!token) {
+                          e.preventDefault();
+                          showAlert("Please login to access");
+                          return false;
+                        }
+                        if (isAdvisor && subscription_status != "active") {
+                          e.preventDefault();
+                          showAlert("Post a Job for advance search capabilities");
+                          return false;
+                        }
+                        return true;
+                      }}
+                    >
+                      {data.size}
+                    </Link>
+                  </>) : (<>
+                    {data.size}
+                  </>)}
+                </div>
               </div>
             </div>
           )}
@@ -184,16 +290,48 @@ const Sidebar = ({ data, user }) => {
                 <div className="value">
                   {data.location && (
                     <div className="job-location location">
-                      {(isAdmin || (isAdvisor && hasSubscription)) ? (
-                        <Link to={`/agencies/location/state/${data.location.state}`} className="mt-0 fw-normal">
+                      {isAdmin || isAdvisor ? (
+                        <Link 
+                          to={`/agencies/location/state/${data.location.state}`} 
+                          className="mt-0 fw-normal"
+                          onClick={(e) => {
+                            if (!token) {
+                              e.preventDefault();
+                              showAlert("Please login to access");
+                              return false;
+                            }
+                            if (isAdvisor && subscription_status != "active") {
+                              e.preventDefault();
+                              showAlert("Post a Job for advance search capabilities");
+                              return false;
+                            }
+                            return true;
+                          }}
+                        >
                           {data.location.state}
                         </Link>
                       ) : (
                         <span>{data.location.state}</span>
                       )}
                       {(data?.location?.state?.length && data?.location?.city?.length) && (<span>,&nbsp;</span>)}
-                      {(isAdmin || (isAdvisor && hasSubscription)) ? (
-                        <Link to={`/agencies/location/city/${data.location.city}`} className="mt-0 fw-normal">
+                      {isAdmin || isAdvisor ? (
+                        <Link 
+                          to={`/agencies/location/city/${data.location.city}`} 
+                          className="mt-0 fw-normal"
+                          onClick={(e) => {
+                            if (!token) {
+                              e.preventDefault();
+                              showAlert("Please login to access");
+                              return false;
+                            }
+                            if (isAdvisor && subscription_status != "active") {
+                              e.preventDefault();
+                              showAlert("Post a Job for advance search capabilities");
+                              return false;
+                            }
+                            return true;
+                          }}
+                        >
                           {data.location.city}
                         </Link>
                       ) : (

@@ -84,7 +84,10 @@ export const router = createBrowserRouter([
         element: <AgencySearch />,
 
       },
-
+      {
+        path: "/agencies/search/:field/:search",
+        element: <AgencySearch />,
+      },
       {
         path: "/community",
         element: <Community />,
