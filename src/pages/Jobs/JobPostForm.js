@@ -31,6 +31,7 @@ const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
     useUploadHelper();
   const imageUploadGuide = getUploadGuide("image", "job-post-form");
   const imageUploadGuideMessage = getUploadGuideMessage(imageUploadGuide);
+  const [filteredEmploymentType, setFilteredEmploymentType] = useState([]);
 
   const {
     state: { user, token },
@@ -146,6 +147,15 @@ const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
     { label: "Internal", value: "Internal" },
     { label: "External URL", value: "External" },
   ];
+
+  useEffect(() => {
+    let data = employment;
+    if (employment.length) {
+      data = employment
+        .filter(item => !['Willing to Relocate', 'Open & Booking', 'Currently Booked'].includes(item.label))
+    }
+    setFilteredEmploymentType(data);
+  }, [employment]);
 
   // Set initial fields
   useEffect(() => {
@@ -267,7 +277,7 @@ const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
           label: "Employment Type",
           required: true,
           type: "dropdown",
-          data: employment,
+          data: filteredEmploymentType,
           isMulti: true,
           name: "employment_type",
           callback: (item) => handleMultiChange(item, "employment_type"),
