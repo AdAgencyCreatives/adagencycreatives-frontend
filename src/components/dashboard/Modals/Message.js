@@ -30,6 +30,9 @@ const Message = ({ open, setOpen = false, handleClose = false, item, type }) => 
   const {
     isAdmin,
     isAdvisor,
+    isAgency,
+    isRecruiter,
+    isCreative,
     hasSubscription,
   } = usePermissions();
 
@@ -38,7 +41,7 @@ const Message = ({ open, setOpen = false, handleClose = false, item, type }) => 
     showAlert,
   } = useContext(AlertContext);
 
-  const isChatBox = open && (isAdmin || (isAdvisor && hasSubscription));
+  const isChatBox = open && (isAdmin || ((isAgency || isRecruiter || isAdvisor) && hasSubscription) || isCreative);
 
   useEffect(() => {
     if (isChatBox) {
@@ -83,7 +86,7 @@ const Message = ({ open, setOpen = false, handleClose = false, item, type }) => 
       maxWidth={isChatBox ? 'lg' : 'md'}
       fullWidth={isChatBox}
     >
-      {isAdmin || (isAdvisor && hasSubscription) ? (
+      {isChatBox ? (
         <div className="m-4 position-relative chat-box">
           <div className="close-modal position-absolute end-0" style={{ cursor: 'pointer' }}><IoCloseCircleSharp size={30} onClick={(e) => closeMessageDialog()} /></div>
           <JobMessages />
