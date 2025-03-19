@@ -54,11 +54,12 @@ const Creatives = () => {
       search: hashParams.get("search") || "",
       advance: hashParams.get("advance") || "",
       preview: hashParams.get("preview") || "",
+      messages: hashParams.get("messages") || "",
     };
   };
 
   // Initialize state from URL parameters
-  const [params, setParams] = useState(getHashParams);
+  const [params, setParams] = useState(getHashParams());
 
   // Update state when URL hash changes (only if different)
   useEffect(() => {
@@ -66,7 +67,8 @@ const Creatives = () => {
     if (
       newParams.search !== params.search ||
       newParams.advance !== params.advance ||
-      newParams.preview !== params.preview
+      newParams.preview !== params.preview ||
+      newParams.messages !== params.messages
     ) {
       // Remove empty values
       const cleanedParams = Object.fromEntries(
@@ -86,6 +88,14 @@ const Creatives = () => {
 
     if (Object.keys(cleanedParams).length === 0) {
       return;
+    }
+
+    const hashParams = new URLSearchParams(location.hash.replace("#", "?"));
+    const messages = hashParams.get("messages") || "";
+    if (messages?.length > 0) {
+      cleanedParams.messages = messages;
+    } else {
+      delete cleanedParams.messages;
     }
 
     // Convert object to URL query string
@@ -416,8 +426,11 @@ const Creatives = () => {
             open={openCreativeProfileDialog}
             setOpen={setOpenCreativeProfileDialog}
             onClose={() => {
-              // navigate(window.location.pathname);
-              setParams((prev) => ({ ...prev, preview: '' }))
+              setParams((prev) => ({ ...prev, preview: '' }));
+              const hashParams = new URLSearchParams(location.hash.replace("#", "?"));
+              hashParams.delete('preview');
+              const queryString = hashParams.toString();
+              navigate(`#${queryString}`, { replace: true });
             }}
             actions={creatives?.length > 1 ? [
               {
