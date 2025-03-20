@@ -92,8 +92,12 @@ export const parseHashToObject = (hash) => {
 };
   
 export const updateSingleHashParam = (key, value) => {
-    const params = new URLSearchParams(location.hash.replace('#', ''));
-    params.set(key, value);
+    const params = new URLSearchParams(window.location.hash.replace('#', ''));
+    
+    if (!value)
+        params.delete(key);
+    else 
+        params.set(key, value);
 
     return `#${params.toString()}`;
 }
