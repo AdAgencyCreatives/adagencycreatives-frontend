@@ -75,3 +75,30 @@ export function checkCookie(cookiename) {
     }
     return false;
 }
+
+export const parseHashToObject = (hash) => {
+    // Remove the leading '#' if it exists
+    const cleanedHash = hash.startsWith('#') ? hash.substring(1) : hash;
+  
+    // Parse the hash params
+    const params = new URLSearchParams(cleanedHash);
+    const obj = {};
+  
+    for (const [key, value] of params.entries()) {
+      obj[key] = value;
+    }
+  
+    return obj;
+};
+  
+export const updateSingleHashParam = (key, value) => {
+    const params = new URLSearchParams(window.location.hash.replace('#', ''));
+    
+    if (!value)
+        params.delete(key);
+    else 
+        params.set(key, value);
+
+    return `#${params.toString()}`;
+}
+  
