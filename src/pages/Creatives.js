@@ -16,6 +16,7 @@ import usePermissions from "../hooks/usePermissions";
 import ViewSearchCreative from "./User/ViewSearchCreative";
 import CommonModal from "../components/modals/CommonModal";
 import eventEmitter from "../components/EventEmitter";
+import { parseHashToObject, updateSingleHashParam } from "../helpers/functions";
 
 const Creatives = () => {
 
@@ -45,57 +46,7 @@ const Creatives = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const anchor = window.location.hash.slice(1);
-
-  // Parse the initial state from the URL hash
-  const getHashParams = () => {
-    const hashParams = new URLSearchParams(location.hash.replace("#", "?"));
-    return {
-      search: hashParams.get("search") || "",
-      advance: hashParams.get("advance") || "",
-      preview: hashParams.get("preview") || "",
-    };
-  };
-
-  // Initialize state from URL parameters
-  const [params, setParams] = useState(getHashParams);
-
-  // Update state when URL hash changes (only if different)
-  useEffect(() => {
-    const newParams = getHashParams();
-    if (
-      newParams.search !== params.search ||
-      newParams.advance !== params.advance ||
-      newParams.preview !== params.preview
-    ) {
-      // Remove empty values
-      const cleanedParams = Object.fromEntries(
-        Object.entries(newParams).filter(([_, value]) => value !== "" && value !== null && value !== undefined)
-      );
-
-      setParams(cleanedParams);
-    }
-  }, [location.hash]); // Run only when the hash changes
-
-  // Update the URL when state changes, but only if it's actually different
-  useEffect(() => {
-    // Remove empty values
-    const cleanedParams = Object.fromEntries(
-      Object.entries(params).filter(([_, value]) => value !== "" && value !== null && value !== undefined)
-    );
-
-    if (Object.keys(cleanedParams).length === 0) {
-      return;
-    }
-
-    // Convert object to URL query string
-    let queryString = new URLSearchParams(cleanedParams).toString();
-    queryString = `#${queryString}`;
-
-    if (location.hash !== queryString) {
-      navigate(queryString, { replace: true }); // Avoid history stack pollution
-    }
-  }, [params, navigate, location.hash]);
+  const params = parseHashToObject(location.hash);
 
   const { creatives, getCreatives, loading, loadMore, searchCreativesAdvanced } =
     useCreatives("creative");
@@ -138,15 +89,14 @@ const Creatives = () => {
 
   useScrollLoader(loading, loadMore);
 
-  const searchUser = async (value, clicked = false) => {
-
+  const searchUser = async (value, clicked = false) => {    
     setInputClicked(clicked);
     setAdvanceSearchHasData(false);
     setInputLevel2("");
     setSearchDone("");
 
     if (!value || value.length == 0) {
-      setParams((prev) => ({ ...prev, search: '' }));
+      navigate(updateSingleHashParam('search', ''));
       getCreatives();
       return;
     }
@@ -179,7 +129,7 @@ const Creatives = () => {
       });
       if (user) await getAllBookmarks(user.uuid, "creatives");
 
-      if (params.search !== query_search_string) setParams((prev) => ({ ...prev, search: query_search_string }));
+      if (params?.search !== query_search_string) navigate(updateSingleHashParam('search', query_search_string));
     } else {
       //await getCreatives();
     }
@@ -187,17 +137,19 @@ const Creatives = () => {
     setIsCreativeLoading(false);
   };
 
-  const searchUserLevel2 = async (value) => {
+  const searchUserLevel2 = async (value, clicked = false, level1Input = null) => {
 
     if (!value || value.length == 0) {
-      setParams((prev) => ({ ...prev, advance: '' }));
+      navigate(updateSingleHashParam('advance', ''));
       searchUser(input);
       return;
     }
 
+    let searchStringLevel1 = level1Input ? level1Input : input;
+
     setIsCreativeLoading(true);
 
-    let searchStringLevel1 = "" + (input ? input : "");
+    searchStringLevel1 = "" + (searchStringLevel1 ? searchStringLevel1 : "");
     let searchTermsLevel1 =
       searchStringLevel1.indexOf(",") >= 0 ? searchStringLevel1.split(",") : [searchStringLevel1];
 
@@ -230,7 +182,7 @@ const Creatives = () => {
       permissionLevel2.terms_allowed
     );
 
-    if (params.advance !== query_search_string_level2) setParams((prev) => ({ ...prev, advance: query_search_string_level2 }));
+    if (params?.advance !== query_search_string_level2) navigate(updateSingleHashParam('advance', query_search_string_level2));
 
     await searchCreativesAdvanced(which_search(), query_search_string_level1, role, query_search_string_level2);
     if (user) await getAllBookmarks(user.uuid, "creatives");
@@ -300,6 +252,24 @@ const Creatives = () => {
   }, [creatives]);
 
   useEffect(() => {
+    process_creatives();
+  }, [role, subscription_status]);
+
+  const process_creatives = async () => {
+    if (role && subscription_status && params?.search && !params?.advance) {
+      setInput(params.search);
+      searchUser(params.search);
+    } else if (role && subscription_status && params?.advance) {
+      setInput(params.search);
+      setAdvanceSearchHasData(true);
+      setInputLevel2(params.advance);
+      searchUserLevel2(params.advance, false, params.search ?? '');
+    } else {
+      getCreatives();
+    }
+  }
+
+  useEffect(() => {
     if (role && params && creatives?.length > 0 && (isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription))) {
       let index = getPreviewIndex();
       if (index >= 0 && index < creatives?.length) {
@@ -307,26 +277,9 @@ const Creatives = () => {
         setOpenCreativeProfileDialog(true);
       }
     }
-
-    const newParams = Object.fromEntries(
-      Object.entries(params).filter(([_, value]) => value !== "" && value !== null && value !== undefined)
-    );
-
-    if (role && newParams?.search && !newParams?.advance) {
-      setInput(newParams.search);
-      searchUser(newParams.search);
-    } else if (role && newParams?.advance) {
-      setInput(newParams?.search ?? '');
-      setInputLevel2(newParams.advance)
-      setAdvanceSearchHasData(true);
-      searchUserLevel2(newParams.advance);
-    } else {
-      getCreatives();
-    }
   }, [params, token, subscription_status, role]);
 
   const getPreviewIndex = () => {
-    // let params = new URLSearchParams(window.location.hash.replace("#", ""));
     let slug = params.preview ?? '';
     let index = -1;
     if (slug?.length > 0) {
@@ -338,20 +291,14 @@ const Creatives = () => {
   const handleViewPrev = () => {
     let index = getPreviewIndex();
     if (index > 0) {
-      // let params = new URLSearchParams(window.location.hash.replace("#", ""));
-      // params.set('preview', creatives[index - 1].slug);
-      // window.location.hash = params.toString();
-      setParams((prev) => ({ ...prev, preview: creatives[index - 1].slug }));
+      navigate(updateSingleHashParam('preview', creatives[index - 1].slug))
     }
   };
 
   const handleViewNext = () => {
     let index = getPreviewIndex();
     if (index >= 0 && index < creatives.length - 1) {
-      // let params = new URLSearchParams(window.location.hash.replace("#", ""));
-      // params.set('preview', creatives[index + 1].slug);
-      // window.location.hash = params.toString();
-      setParams((prev) => ({ ...prev, preview: creatives[index + 1].slug }));
+      navigate(updateSingleHashParam('preview', creatives[index + 1].slug))
     }
   };
 
@@ -416,8 +363,7 @@ const Creatives = () => {
             open={openCreativeProfileDialog}
             setOpen={setOpenCreativeProfileDialog}
             onClose={() => {
-              // navigate(window.location.pathname);
-              setParams((prev) => ({ ...prev, preview: '' }))
+              navigate(updateSingleHashParam('preview', ''))
             }}
             actions={creatives?.length > 1 ? [
               {
@@ -525,7 +471,7 @@ const Creatives = () => {
                               } else {
                                 const to = token ?
                                   ((isAdmin || ((isAdvisor || isAgency || isRecruiter) && hasSubscription))
-                                    ? setParams((prev) => ({ ...prev, preview: item.slug }))
+                                    ? navigate(updateSingleHashParam('preview', item.slug))
                                     : navigate(`/creative/${item.slug}`))
                                   : "#";
                               }
