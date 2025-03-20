@@ -67,6 +67,41 @@ const ChatBox = ({
   const uploadRef = useRef();
   const logoRef = useRef();
 
+  const [topHeight, setTopHeight] = useState(300); // initial height
+  const [isDragging, setIsDragging] = useState(false);
+  const [startY, setStartY] = useState(0);
+  const [startHeight, setStartHeight] = useState(0);
+
+  const MIN_HEIGHT = 50;
+  const MAX_HEIGHT = window.innerHeight - 100;
+
+  const startDrag = (e) => {
+    setIsDragging(true);
+    setStartY(e.clientY);
+    setStartHeight(topHeight);
+  };
+
+  const stopDrag = () => setIsDragging(false);
+
+  const onDrag = (e) => {
+    if (!isDragging) return;
+    const deltaY = e.clientY - startY;
+    let newHeight = startHeight + deltaY;
+    if (newHeight >= MIN_HEIGHT && newHeight <= MAX_HEIGHT) {
+      setTopHeight(newHeight);
+    }
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      document.body.style.userSelect = 'none';
+      document.body.style.cursor = 'row-resize';
+    } else {
+      document.body.style.userSelect = 'auto';
+      document.body.style.cursor = 'default';
+    }
+  }, [isDragging]);
+
   useEffect(() => {
     if (!Object.keys(contact).length && contacts.length) {
       // let item = contacts[0].contact;
@@ -379,7 +414,7 @@ const ChatBox = ({
   return (
     <>
       {activeContact || chatBox == "new" ? (
-        <div className={`chat-box ${chatBoxMobile}`}>
+        <div className={`chat-box ${chatBoxMobile}`} onMouseMove={onDrag} onMouseUp={stopDrag} style={{ overflow: 'hidden' }}>
           <div className="chat-mobile-top d-md-none d-flex">
             <IoArrowBack size={20} onClick={handleBackButton} />
 
@@ -387,7 +422,13 @@ const ChatBox = ({
               {chatBox != "new" ? (contact.first_name + " " + contact.last_name) : "Back"}
             </div>
           </div>
-          <div className="chat-top">
+          <div 
+            className="chat-top"
+            style={{
+              height: `${topHeight}px`,
+              transition: isDragging ? 'none' : 'height 0.3s ease',
+            }}
+          >
             {chatBox == "new" ? (
               <NewChat setContact={setContact} contacts={contacts} userSelected={userSelected} setUserSelected={setUserSelected} />
             ) : (
@@ -496,6 +537,7 @@ const ChatBox = ({
                                         setValue={setMessageTmp}
                                         enableAdvanceEditor={true}
                                         placeholder="Message"
+                                        height={550 - topHeight}
                                       />
                                     </p>
                                     <div className="d-flex align-items-center justify-content-end">
@@ -603,7 +645,24 @@ const ChatBox = ({
               </div>
             )}
           </div>
-          <div className="chat-footer">
+          {/* Separator */}
+          <div
+            onMouseDown={startDrag}
+            style={{
+              height: '4px',
+              cursor: 'row-resize',
+              background: '#ccc',
+              userSelect: 'none',
+            }}
+          ></div>
+          <div
+            className="chat-footer"
+            style={{
+              height: `${650 - topHeight}px`,
+              transition: isDragging ? 'none' : 'height 0.3s ease',
+              background: '#fff'
+            }}
+          >
             <div className="message-box">
               <div className="message-input">
                 <CustomEditor
@@ -612,6 +671,7 @@ const ChatBox = ({
                   onValueChange={handleMessageChange}
                   enableAdvanceEditor={true}
                   placeholder="Message"
+                  height={550 - topHeight}
                 />
               </div>
             </div>
