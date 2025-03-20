@@ -25,9 +25,9 @@ const NewChat = ({ setContact, contacts, userSelected, setUserSelected }) => {
   useEffect(() => {
     if (anchor?.length > 0) {
       let params = new URLSearchParams(window.location.hash.replace("#", ""));
-      let active = params.get("active")?.length > 0 ? params.get("active") : "";
+      let user_id = params.get("messages")?.length > 0 ? params.get("messages") : "";
       (async () => {
-        await getCreativeById(active, (data) => {
+        await getCreativeById(user_id, (data) => {
           selectUser(data);
         });
       })();

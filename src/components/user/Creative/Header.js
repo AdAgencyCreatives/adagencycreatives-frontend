@@ -159,6 +159,15 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
     }
   };
 
+  const handleMessageOpen = () => {
+    const params = new URLSearchParams(window.location.hash.replace("#", ""));
+    params.set("messages", data?.user_id);
+    const newPath = `#${params.toString()}`;
+    if (window.location.hash !== newPath) {
+      navigate(newPath);
+    }
+  };
+
   return (
     <div className="container">
       <div className="row align-items-center justify-content-between">
@@ -232,7 +241,7 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
                             e,
                             [!hasSubscription, !isCreative],
                             "Post a Job for private message capabilities"
-                          ) && setOpen(true)
+                          ) && handleMessageOpen()
                         }
                       >
                         Private Message

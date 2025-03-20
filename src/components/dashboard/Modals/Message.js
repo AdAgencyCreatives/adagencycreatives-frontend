@@ -43,17 +43,27 @@ const Message = ({ open, setOpen = false, handleClose = false, item, type }) => 
 
   const isChatBox = open && (isAdmin || ((isAgency || isRecruiter || isAdvisor) && hasSubscription) || isCreative);
 
+  // useEffect(() => {
+  //   if (isChatBox) {
+  //     const params = new URLSearchParams(location.hash.replace("#", ""));
+  //     params.set("messages", item.user_id);
+  //     const newPath = `#${params.toString()}`;
+  //     if (location.hash !== newPath) {
+  //       navigate(newPath);
+  //     }
+  //     // const newPath = location.hash
+  //     //   ? `${location.pathname}${location.hash}&messages=${item.user_id}`
+  //     //   : `${location.pathname}#messages=${item.user_id}`;
+  //     // navigate(newPath);
+  //   }
+  // }, [isChatBox]);
+
   useEffect(() => {
-    if (isChatBox) {
-      const params = new URLSearchParams(location.hash.replace("#", ""));
-      params.set("active", item.user_id);
-      navigate(`#${params.toString()}`);
-      // const newPath = location.hash
-      //   ? `${location.pathname}${location.hash}&active=${item.user_id}`
-      //   : `${location.pathname}#active=${item.user_id}`;
-      // navigate(newPath);
+    const params = new URLSearchParams(location.hash.replace("#", ""));
+    if (params.get("messages")?.length > 0) {
+      setOpen && setOpen(true);
     }
-  }, [open])
+  }, [location.hash]);
 
   const handleSubmit = () => {
     sendMessage(user.uuid, item.user_id, messageData, type, () => {
@@ -74,6 +84,9 @@ const Message = ({ open, setOpen = false, handleClose = false, item, type }) => 
     handleClose && handleClose();
     setSubjectData("");
     setMessageData("");
+    const params = new URLSearchParams(location.hash.replace("#", ""));
+    params.delete("messages");
+    navigate(`#${params.toString()}`);
   };
 
   return (

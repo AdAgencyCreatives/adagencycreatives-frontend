@@ -45,9 +45,9 @@ const JobChat = ({ messageType }) => {
   useEffect(() => {
     if (anchor?.length > 0 && contacts.length > 0) {
       let params = new URLSearchParams(window.location.hash.replace("#", ""));
-      let active = params.get("active")?.length > 0 ? params.get("active") : "";
-      // console.log(active);
-      let filtered = contacts.filter(item => item.contact.uuid == active);
+      let messages = params.get("messages")?.length > 0 ? params.get("messages") : "";
+      // console.log(messages);
+      let filtered = contacts.filter(item => item.contact.uuid == messages);
       //console.log(contacts);
       if (filtered?.length > 0) {
         handleItemClick(filtered[0].contact, type);
