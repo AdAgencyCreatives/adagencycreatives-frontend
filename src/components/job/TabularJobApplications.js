@@ -64,6 +64,7 @@ const TabularJobApplications = (props) => {
   const sortApplications = (applicationsToSort) => {
     var sortedApplications = [];
     var status_filters = ["hired", "pending", "accepted", "recommended", "shortlisted", "rejected"];
+
     for (let index = 0; index < status_filters.length; index++) {
       const status = status_filters[index];
       const filtered_applications = applicationsToSort.filter((application) => application.status == status);

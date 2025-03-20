@@ -260,7 +260,7 @@ const useFormData = (props = {}) => {
       let newFormData = {
         ...formData,
         'repost_job_id': isRepost ? single_job.id : '',
-        'apply_type': 'internal',
+        'apply_type': 'Internal',
         'employment_type': (formData['employment_type'] && formData['employment_type']?.length > 0 ? (Array.isArray(formData['employment_type']) ? formData['employment_type'].join(',') : formData['employment_type']) : "")
       };
       console.log(isRepost);
