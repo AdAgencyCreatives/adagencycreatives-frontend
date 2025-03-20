@@ -60,18 +60,18 @@
     }
 
     .username {
-        font-size: 26px;
+        font-size: 18px;
     }
 
     .job-location.location>* {
         margin-top: 5px;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 400;
     }
 
-    .job-location.location span, .job-location.location a {
-        color: rgb(105, 105, 105) !important;
-    }
+    // .job-location.location span, .job-location.location a {
+    //     color: rgb(105, 105, 105) !important;
+    // }
 
     span.featured-text {
         font-size: 13px;
