@@ -55,7 +55,7 @@ const JobChat = ({ messageType }) => {
         setChatBox("new");
       }
     } else {
-      setChatBox("new");
+      setChatBox("list");
     }
   }, [anchor, contacts]);
 
