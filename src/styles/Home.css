@@ -530,12 +530,12 @@ swiper-slide {
 }
 
 .location>* {
-    font-size: 20px;
-    font-weight: 300;
+    font-size: 18px;
+    font-weight: 400;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 12px;
+    margin-top: 0px;
     text-decoration: none;
 }
 

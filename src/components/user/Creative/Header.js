@@ -176,7 +176,7 @@ const Header = React.memo(({ data, role, user, username, showButtons = true }) =
             <CreativeImageLoader creative={data} />
           </div>
           <div className="meta row w-100 align-items-center">
-            <div className="col-md-5">
+            <div className="col-md-5 creative-details">
               <div className="username">
                 {data.name}
                 {/* <span class="featured-text">
