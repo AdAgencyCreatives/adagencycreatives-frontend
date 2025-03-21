@@ -93,6 +93,7 @@ const Creatives = () => {
     setInputClicked(clicked);
     setAdvanceSearchHasData(false);
     setInputLevel2("");
+    navigate(updateSingleHashParam('advance', ''));
     setSearchDone("");
 
     if (!value || value.length == 0) {
