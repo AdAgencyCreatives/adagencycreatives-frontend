@@ -530,7 +530,7 @@ swiper-slide {
 }
 
 .location>* {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
     display: flex;
     justify-content: center;
@@ -542,12 +542,14 @@ swiper-slide {
 .location>*:not(.sidebar-item .job-location > a) {
     color: rgb(105, 105, 105);
 }
+
 .creative-details {
     display: flex;
     flex-direction: column;
     align-items: center;
     line-height: 28.5px;
 }
+
 .sidebar-item .location span {
     margin: 0;
 }
@@ -560,7 +562,7 @@ swiper-slide {
     display: inline-block;
 }
 
-.job-location > *:not(.sidebar-item .job-location > a) {
+.job-location>*:not(.sidebar-item .job-location > a) {
     color: inherit !important;
 }
 
