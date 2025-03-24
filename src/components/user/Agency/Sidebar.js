@@ -17,6 +17,8 @@ import usePermissions from "../../../hooks/usePermissions";
 
 const Sidebar = ({ data, user }) => {
 
+  const { rectify_url } = useHelper();
+
   const agencyType = (data?.role == 'advisor' ? 'Advisor' : (data?.role == 'recruiter' ? 'Recruiter' : 'Agency'));
 
   const { encodeSpecial, decodeSpecial, formatPhone } = useHelper();
@@ -148,24 +150,24 @@ const Sidebar = ({ data, user }) => {
                       const workplace = item === 'Onsite' ? 'on site' : item.toLowerCase();
                       return (
                         <span>
-                        <Link to={"/agencies/search/workplace-preference/" + encodeSpecial(encodeURI(workplace))}
-                          onClick={(e) => {
-                            if (!token) {
-                              e.preventDefault();
-                              showAlert("Please login to access");
-                              return false;
-                            }
-                            if (isAdvisor && subscription_status != "active") {
-                              e.preventDefault();
-                              showAlert("Post a Job for advance search capabilities");
-                              return false;
-                            }
-                            return true;
-                          }}
-                        >
-                          {item}
-                        </Link>
-                        {index < preferences.length - 1 && ', '}
+                          <Link to={"/agencies/search/workplace-preference/" + encodeSpecial(encodeURI(workplace))}
+                            onClick={(e) => {
+                              if (!token) {
+                                e.preventDefault();
+                                showAlert("Please login to access");
+                                return false;
+                              }
+                              if (isAdvisor && subscription_status != "active") {
+                                e.preventDefault();
+                                showAlert("Post a Job for advance search capabilities");
+                                return false;
+                              }
+                              return true;
+                            }}
+                          >
+                            {item}
+                          </Link>
+                          {index < preferences.length - 1 && ', '}
                         </span>
                       )
                     })}
@@ -188,24 +190,24 @@ const Sidebar = ({ data, user }) => {
                     {data.industry_experience.map((item, index) => {
                       return (
                         <span>
-                        <Link to={"/agencies/search/industry-experience/" + encodeSpecial(encodeURI(item))}
-                          onClick={(e) => {
-                            if (!token) {
-                              e.preventDefault();
-                              showAlert("Please login to access");
-                              return false;
-                            }
-                            if (isAdvisor && subscription_status != "active") {
-                              e.preventDefault();
-                              showAlert("Post a Job for advance search capabilities");
-                              return false;
-                            }
-                            return true;
-                          }}
-                        >
-                          {item}
-                        </Link>
-                        {index < data.industry_experience.length - 1 && ', '}
+                          <Link to={"/agencies/search/industry-experience/" + encodeSpecial(encodeURI(item))}
+                            onClick={(e) => {
+                              if (!token) {
+                                e.preventDefault();
+                                showAlert("Please login to access");
+                                return false;
+                              }
+                              if (isAdvisor && subscription_status != "active") {
+                                e.preventDefault();
+                                showAlert("Post a Job for advance search capabilities");
+                                return false;
+                              }
+                              return true;
+                            }}
+                          >
+                            {item}
+                          </Link>
+                          {index < data.industry_experience.length - 1 && ', '}
                         </span>
                       )
                     })}
@@ -228,24 +230,24 @@ const Sidebar = ({ data, user }) => {
                     {data.media_experience.map((item, index) => {
                       return (
                         <span>
-                        <Link to={"/agencies/search/media-experience/" + encodeSpecial(encodeURI(item))}
-                          onClick={(e) => {
-                            if (!token) {
-                              e.preventDefault();
-                              showAlert("Please login to access");
-                              return false;
-                            }
-                            if (isAdvisor && subscription_status != "active") {
-                              e.preventDefault();
-                              showAlert("Post a Job for advance search capabilities");
-                              return false;
-                            }
-                            return true;
-                          }}
-                        >
-                          {item}
-                        </Link>
-                        {index < data.media_experience.length - 1 && ', '}
+                          <Link to={"/agencies/search/media-experience/" + encodeSpecial(encodeURI(item))}
+                            onClick={(e) => {
+                              if (!token) {
+                                e.preventDefault();
+                                showAlert("Please login to access");
+                                return false;
+                              }
+                              if (isAdvisor && subscription_status != "active") {
+                                e.preventDefault();
+                                showAlert("Post a Job for advance search capabilities");
+                                return false;
+                              }
+                              return true;
+                            }}
+                          >
+                            {item}
+                          </Link>
+                          {index < data.media_experience.length - 1 && ', '}
                         </span>
                       )
                     })}
@@ -298,8 +300,8 @@ const Sidebar = ({ data, user }) => {
                   {data.location && (
                     <div className="job-location location">
                       {isAdmin || isAdvisor ? (
-                        <Link 
-                          to={`/agencies/location/state/${data.location.state}`} 
+                        <Link
+                          to={`/agencies/location/state/${data.location.state}`}
                           className="mt-0 fw-normal"
                           onClick={(e) => {
                             if (!token) {
@@ -322,8 +324,8 @@ const Sidebar = ({ data, user }) => {
                       )}
                       {(data?.location?.state?.length && data?.location?.city?.length) && (<span>,&nbsp;</span>)}
                       {isAdmin || isAdvisor ? (
-                        <Link 
-                          to={`/agencies/location/city/${data.location.city}`} 
+                        <Link
+                          to={`/agencies/location/city/${data.location.city}`}
                           className="mt-0 fw-normal"
                           onClick={(e) => {
                             if (!token) {
@@ -350,24 +352,24 @@ const Sidebar = ({ data, user }) => {
               </div>
             </div>
           )}
-          {linkedin || website ? (
+          {linkedin?.length > 0 || website?.length > 0 ? (
             <div className="mt-4">
               <div className="details">
                 <div className="text mb-3">{agencyType}</div>
                 <div className="value d-flex flex-wrap gap-3">
-                  {linkedin && (
+                  {linkedin?.length > 0 && (
                     <Link
                       className="text-light fs-5 btn btn-dark w-100 py-3"
-                      to={linkedin}
+                      to={rectify_url(linkedin)}
                       target="_blank"
                     >
                       LinkedIn
                     </Link>
                   )}
-                  {website && (
+                  {website?.length > 0 && (
                     <Link
                       className="text-light fs-5 btn btn-dark w-100 py-3"
-                      to={website}
+                      to={rectify_url(website)}
                       target="_blank"
                     >
                       Website
