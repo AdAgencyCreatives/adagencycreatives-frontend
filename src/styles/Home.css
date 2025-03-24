@@ -542,7 +542,12 @@ swiper-slide {
 .location>*:not(.sidebar-item .job-location > a) {
     color: rgb(105, 105, 105);
 }
-
+.creative-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 28.5px;
+}
 .sidebar-item .location span {
     margin: 0;
 }

@@ -419,50 +419,52 @@ const Creatives = () => {
                             </Tooltip>
                           )}
                         <CreativeImageLoader creative={item} />
-                        <div className="agencyName">
-                          <Link
-                            className="text-dark"
-                            to={token ? `/creative/${item.slug}` : "#"}
-                            onClick={(e) => {
-                              if (!token) {
-                                e.preventDefault();
-                                showAlert("Please login to access");
-                                return false;
-                              }
-
-                              return true;
-                            }}
-                          >
-                            {item.name}
-                          </Link>
-                        </div>
-                        <div className="position">
-                          {isAdmin || (isAdvisor && hasSubscription) ? (<>
+                        <div className="creative-details">
+                          <div className="agencyName">
                             <Link
-                              className=""
-                              to={`/creatives/search/industry-title/${item.category}`}
+                              className="text-dark"
+                              to={token ? `/creative/${item.slug}` : "#"}
                               onClick={(e) => {
                                 if (!token) {
                                   e.preventDefault();
                                   showAlert("Please login to access");
                                   return false;
                                 }
-                                if (isAdvisor && subscription_status != "active") {
-                                  e.preventDefault();
-                                  showAlert("Post a Job for advance search capabilities");
-                                  return false;
-                                }
+
                                 return true;
                               }}
                             >
-                              {item.category || ""}
+                              {item.name}
                             </Link>
-                          </>
-                          ) : (
-                            <>{item.category || ""}</>
-                          )}
+                          </div>
+                          <div className="position">
+                            {isAdmin || (isAdvisor && hasSubscription) ? (<>
+                              <Link
+                                className=""
+                                to={`/creatives/search/industry-title/${item.category}`}
+                                onClick={(e) => {
+                                  if (!token) {
+                                    e.preventDefault();
+                                    showAlert("Please login to access");
+                                    return false;
+                                  }
+                                  if (isAdvisor && subscription_status != "active") {
+                                    e.preventDefault();
+                                    showAlert("Post a Job for advance search capabilities");
+                                    return false;
+                                  }
+                                  return true;
+                                }}
+                              >
+                                {item.category || ""}
+                              </Link>
+                            </>
+                            ) : (
+                              <>{item.category || ""}</>
+                            )}
+                          </div>
+                          <CreativeLocation location={item?.location} />
                         </div>
-                        <CreativeLocation location={item?.location} />
                         <div className="profileLink">
                           <Link
                             onClick={(e) => {

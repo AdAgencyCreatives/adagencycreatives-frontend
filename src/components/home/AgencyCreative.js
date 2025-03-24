@@ -90,17 +90,19 @@ const AgencyCreatives = ({ validateAccess }) => {
               <swiper-slide key={`home-agency-creatives-${index}`}>
                 <div className="sliderContent agencies-slider">
                   <CreativeImageLoader creative={item} />
-                  <div className="agencyName">{item.name}</div>
-                  <div className="position">
-                    {isAdmin || isAdvisor ? (<>
-                      <Link to={"/creatives/search/industry-title/" + encodeSpecial(encodeURI(item.category))}>
+                  <div className="creative-details">
+                    <div className="agencyName">{item.name}</div>
+                    <div className="position">
+                      {isAdmin || isAdvisor ? (<>
+                        <Link to={"/creatives/search/industry-title/" + encodeSpecial(encodeURI(item.category))}>
+                          {item.category}
+                        </Link>
+                      </>) : (<>
                         {item.category}
-                      </Link>
-                    </>) : (<>
-                      {item.category}
-                    </>)}
+                      </>)}
+                    </div>
+                    <CreativeLocation location={item?.location} />
                   </div>
-                  <CreativeLocation location={item?.location} />
                   <div className="profileLink">
                     <Link
                       to={token ? `/creative/${item.slug}` : "#"}

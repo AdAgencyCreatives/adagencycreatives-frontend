@@ -4,9 +4,7 @@
     padding: 68px 0;
 
     .creative-details {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
+        align-items: start;
     }
 
     .cat-link {
