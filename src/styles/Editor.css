@@ -1,0 +1,17 @@
+.ql-editor {
+    font-family: "JOST", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; 
+    font-size: 14pt;
+}
+.ql-editor a {
+    color: #d3a11f; 
+    cursor: pointer;
+} 
+.ql-editor a:hover {
+    color: #000;
+}
+.ql-toolbar.ql-snow {
+    border-radius: 10px 10px 0 0;
+}
+.ql-container.ql-snow {
+    border-radius:  0 0 10px 10px;
+}

@@ -4,7 +4,7 @@ import { Context as AuthContext, logActivity } from "../../../context/AuthContex
 import { Context as ChatContext } from "../../../context/ChatContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 import { useState, useRef } from "react";
-import CustomEditor from "../../../components/CustomEditor";
+import CustomEditor from "../../../components/CustomEditor4";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import usePermissions from "../../../hooks/usePermissions";
 import JobMessages from "../../../pages/User/JobMessages";

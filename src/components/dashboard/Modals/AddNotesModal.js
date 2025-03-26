@@ -11,7 +11,7 @@ import TimeAgo from "../../TimeAgo";
 import { convertUTCDateToLocalDate } from "../../UtcToLocalDateTime";
 import DelayedOutput from "../../DelayedOutput";
 import { IoClose, IoCloseCircleSharp, IoCloseSharp, IoPencil } from "react-icons/io5";
-import CustomEditor from "../../../components/CustomEditor";
+import CustomEditor from "../../../components/CustomEditor4";
 import CommonDeleteModal from "../../../components/modals/CommonDeleteModal";
 
 const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJob }) => {

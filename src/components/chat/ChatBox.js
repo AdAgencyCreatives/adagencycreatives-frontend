@@ -13,7 +13,7 @@ import EmojiPicker, { Emoji } from "emoji-picker-react";
 import { api } from "../../api/api";
 import { CircularProgress, Dialog, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
-import CustomEditor from "../CustomEditor";
+import CustomEditor from "../CustomEditor4";
 import AvatarImageLoader from "../AvatarImageLoader";
 import DelayedOutput from "../DelayedOutput";
 
@@ -342,7 +342,11 @@ const ChatBox = ({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpenEdit, setIsDialogOpenEdit] = useState(false);
   const [isId, setIsId] = useState(false);
-  const [messageTmp, setMessageTmp] = useState();
+  const [messageTmp, setMessageTmp] = useState("");
+
+  useEffect(() => {
+    console.log(messageTmp);
+  }, [messageTmp]);
 
   const deleteMessage = (item) => {
     if ((item.sender_id == user.uuid)) {
@@ -360,11 +364,10 @@ const ChatBox = ({
     setIsId(0);
   };
   const editMessage = (item) => {
-    console.log(item, 'item');
     if (item.sender_id == user.uuid) {
-      setIsDialogOpenEdit(true);
       setIsId(item.id);
       setMessageTmp(item.message);
+      setTimeout(() => setIsDialogOpenEdit(true), 500); // Delay opening to ensure state update
     }
   };
 
@@ -414,7 +417,7 @@ const ChatBox = ({
   return (
     <>
       {activeContact || chatBox == "new" ? (
-        <div className={`chat-box ${chatBoxMobile}`} onMouseMove={onDrag} onMouseUp={stopDrag} style={{ overflow: 'hidden' }}>
+        <div className={`chat-box ${chatBoxMobile}`} onMouseMove={onDrag} onMouseUp={stopDrag}>
           <div className="chat-mobile-top d-md-none d-flex">
             <IoArrowBack size={20} onClick={handleBackButton} />
 
@@ -476,80 +479,6 @@ const ChatBox = ({
 
                       return (
                         <div className="chat-item" key={"message" + index}>
-                          <Dialog
-                            open={isDialogOpen} onClose={closeDeleteMessage}
-                            aria-labelledby="modal-modal-title"
-                            aria-describedby="modal-modal-description"
-                            scroll="body"
-                          >
-                            <div className="auth-modal">
-                              <div className="auth-header"></div>
-                              <div className="auth-body">
-                                <div className="job-apply-email-form-wrapper">
-                                  <div className="inner">
-                                    <div className="d-flex align-items-center justify-content-between mb-4">
-                                      <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
-                                        Delete message?
-                                      </h3>
-                                      <button
-                                        className="border-0 bg-transparent text-primary"
-                                        onClick={() => closeDeleteMessage()}>
-                                        <IoCloseOutline size={30} />
-                                      </button>
-                                    </div>
-                                    <p className="text-center">
-                                      Are you sure you want to delete this message ?
-                                    </p>
-                                    <div className="d-flex align-items-center justify-content-end">
-                                      <button className="btn btn-silver hover-gold p-3 px-5 ls-3 text-uppercase" disabled={formDelete} onClick={handleDelete}>
-                                        Delete {formDelete && <CircularProgress size={20} />}
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </Dialog>
-                          <Dialog
-                            open={isDialogOpenEdit} onClose={closeEditMessage}
-                            aria-labelledby="modal-modal-title"
-                            aria-describedby="modal-modal-description"
-                            scroll="body"
-                          >
-                            <div className="auth-modal">
-                              <div className="auth-header"></div>
-                              <div className="auth-body">
-                                <div className="job-apply-email-form-wrapper">
-                                  <div className="inner">
-                                    <div className="d-flex align-items-center justify-content-between mb-4">
-                                      <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
-                                        Edit message
-                                      </h3>
-                                      <button
-                                        className="border-0 bg-transparent text-primary"
-                                        onClick={() => closeEditMessage()}>
-                                        <IoCloseOutline size={30} />
-                                      </button>
-                                    </div>
-                                    <p className="text-center">
-                                      <CustomEditor
-                                        value={messageTmp}
-                                        setValue={setMessageTmp}
-                                        enableAdvanceEditor={true}
-                                        placeholder="Message"
-                                        height={550 - topHeight}
-                                      />
-                                    </p>
-                                    <div className="d-flex align-items-center justify-content-end">
-                                      <button className="btn btn-silver hover-gold p-3 px-5 ls-3 text-uppercase" disabled={formEdit} onClick={handleEdit}>
-                                        Update {formEdit && <CircularProgress size={20} />}
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </Dialog>
                           <AvatarImageLoader user={sender} height={40} width={40} className="chat-avatar" />
                           <div className="details">
                             <div className="sender">
@@ -658,7 +587,7 @@ const ChatBox = ({
           <div
             className="chat-footer"
             style={{
-              height: `${650 - topHeight}px`,
+              // height: `${650 - topHeight}px`,
               transition: isDragging ? 'none' : 'height 0.3s ease',
               background: '#fff'
             }}
@@ -744,6 +673,83 @@ const ChatBox = ({
               </div>
             </div>
           </div>
+
+          <Dialog
+            open={isDialogOpen} onClose={closeDeleteMessage}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            scroll="body"
+          >
+            <div className="auth-modal">
+              <div className="auth-header"></div>
+              <div className="auth-body">
+                <div className="job-apply-email-form-wrapper">
+                  <div className="inner">
+                    <div className="d-flex align-items-center justify-content-between mb-4">
+                      <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
+                        Delete message?
+                      </h3>
+                      <button
+                        className="border-0 bg-transparent text-primary"
+                        onClick={() => closeDeleteMessage()}>
+                        <IoCloseOutline size={30} />
+                      </button>
+                    </div>
+                    <p className="text-center">
+                      Are you sure you want to delete this message ?
+                    </p>
+                    <div className="d-flex align-items-center justify-content-end">
+                      <button className="btn btn-silver hover-gold p-3 px-5 ls-3 text-uppercase" disabled={formDelete} onClick={handleDelete}>
+                        Delete {formDelete && <CircularProgress size={20} />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Dialog>
+          <Dialog
+            open={isDialogOpenEdit} onClose={closeEditMessage}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            aria-hidden="false"
+            scroll="body"
+          >
+            <div className="auth-modal">
+              <div className="auth-header"></div>
+              <div className="auth-body">
+                <div className="job-apply-email-form-wrapper">
+                  <div className="inner">
+                    <div className="d-flex align-items-center justify-content-between mb-4">
+                      <h3 style={{ fontSize: 24, marginBottom: 0, fontWeight: 400 }}>
+                        Edit message
+                      </h3>
+                      <button
+                        className="border-0 bg-transparent text-primary"
+                        onClick={() => closeEditMessage()}>
+                        <IoCloseOutline size={30} />
+                      </button>
+                    </div>
+                    <div className="mb-4">
+                      <CustomEditor
+                        editorId={`edit-message-${isId}`}  // Unique ID for each message
+                        value={messageTmp}
+                        setValue={setMessageTmp}
+                        enableAdvanceEditor={true}
+                        placeholder="Message"
+                        height={550 - topHeight}
+                      />
+                    </div>
+                    <div className="d-flex align-items-center justify-content-end">
+                      <button className="btn btn-silver hover-gold p-3 px-5 ls-3 text-uppercase" disabled={formEdit} onClick={handleEdit}>
+                        Update {formEdit && <CircularProgress size={20} />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Dialog>
         </div>
       ) : (
         <>
