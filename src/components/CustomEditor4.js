@@ -41,7 +41,7 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
         <>
             {enableAdvanceEditor ? (
                 <div className='custom-editor-container' style={{ height: height }}>
-                    <div id={editorId} style={{ height: height - 50 }}></div>
+                    <div id={editorId} style={{ height: 'calc( 100% - 50px)' }}></div>
                     <div className={"circular-progress d-" + (loading ? 'show' : 'none')}>
                         <CircularProgress />
                     </div>
