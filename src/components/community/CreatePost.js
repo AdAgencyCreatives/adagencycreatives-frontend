@@ -19,6 +19,7 @@ import { Context as CreativesContext } from "../../context/CreativesContext";
 import { saveAttachment } from "../../context/AttachmentsDataContext";
 import { sendLoungeMentionNotifications } from "../../context/NotificationsDataContext";
 import AvatarImageLoader from "../AvatarImageLoader";
+import CustomEditor from '../CustomEditor5';
 
 const CreatePost = (props) => {
 
@@ -43,7 +44,7 @@ const CreatePost = (props) => {
   } = useContext(CreativesContext);
 
   const [open, setOpen] = useState(false);
-  const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
+  const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(false);
   const [hasOffensiveWords, setHasOffensiveWords] = useState(false);
   const [useTinyMCE, setUseTinyMCE] = useState(true);
   const handleOpen = () => setOpen(true);
@@ -145,7 +146,7 @@ const CreatePost = (props) => {
         setTaggerPosTop(top);
 
         let bookmark = editorRefTinyMCE?.current?.selection?.getBookmark();
-        console.log(bookmark);
+        // console.log(bookmark);
 
         setTaggerOpened(true);
         setTaggerSearchText("");
@@ -372,7 +373,14 @@ const CreatePost = (props) => {
           <div className="postmodal-body">
             {useTinyMCE ? (
               <>
-                <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
+                <CustomEditor
+                  value={content}
+                  setValue={setContent}
+                  enableAdvanceEditor={true}
+                  placeholder="What do you want to talk about?"
+                  height={300}
+                />
+                {/* <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
                   <CircularProgress />
                 </div>
                 <EditorTinyMCE
@@ -407,7 +415,7 @@ const CreatePost = (props) => {
                   onEditorChange={(e) => setContent(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "")}
                   onFocus={(e) => setRequireContent(false)}
                   onKeyDown={(e) => handleKeyDown(e)}
-                />
+                /> */}
               </>
             ) : (
               <>

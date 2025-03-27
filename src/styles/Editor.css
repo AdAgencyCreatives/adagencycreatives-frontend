@@ -2,7 +2,7 @@
     font-family: "JOST", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; 
     font-size: 14pt;
 }
-.ql-editor a {
+.ql-editor a, .ql-mention-denotation-char {
     color: #d3a11f; 
     cursor: pointer;
 } 
@@ -14,4 +14,18 @@
 }
 .ql-container.ql-snow {
     border-radius:  0 0 10px 10px;
+}
+.ql-mention-list-container {
+    background: #000;
+    color: #fff;
+    padding: 10px 15px;
+    font-family: 'Jost';
+    font-size: 14pt;
+    border-radius: 4px;
+}
+.ql-mention-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+    cursor: pointer;
 }
