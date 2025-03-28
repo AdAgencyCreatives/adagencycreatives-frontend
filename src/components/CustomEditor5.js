@@ -10,8 +10,8 @@ import {Mention, MentionBlot} from "quill-mention";
 class StyledMentionBlot extends MentionBlot {
   static render(data) {
     const element = document.createElement("a");
-    element.innerText = data.value;
-    element.setAttribute('href', data.link);
+    element.href = data.link;
+    element.innerHTML = `<span>${data.value}</span>`;
     return element;
   }
 }
@@ -71,11 +71,13 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
                         allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
                         mentionDenotationChars: ["@", "#"],
                         linkTarget: "_blank",
-                        dataAttributes: ['id', 'value', 'link', 'thumbnail'],
+                        dataAttributes: ['id', 'value', 'link', 'thumbnail', 'disabled'],
                         blotName: 'styled-mention',
                         source: async function(searchTerm, renderList) {
-                          const matchedPeople = await suggestPeople(searchTerm);
-                          renderList(matchedPeople);
+                            // Show "Loading..." initially
+                            renderList([{ id: "loading", value: "Loading...", link: "", thumbnail: "", disabled: true }]);
+                            const matchedPeople = await suggestPeople(searchTerm);
+                            renderList(matchedPeople);
                         },
                         renderItem: (item, searchTerm) => {
                             // Create mention item container
@@ -102,7 +104,9 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
                             text.textContent = item.value;
 
                             // Append elements to container
-                            container.appendChild(thumbnail);
+                            if (item.value !== 'Loading...') 
+                                container.appendChild(thumbnail);
+
                             container.appendChild(text);
 
                             return container;

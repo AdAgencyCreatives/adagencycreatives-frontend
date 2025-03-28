@@ -266,6 +266,10 @@ const useHelper = () => {
         return value?.constructor?.toString()?.indexOf("Object") > -1;
     };
 
+    const getTextLength = (html) => {
+        return html.replace(/<[^>]*>/g, "")?.length ?? 0;
+    }
+
     return {
         validateAccess,
         rectify_url,
@@ -281,6 +285,7 @@ const useHelper = () => {
         getAorAn,
         hasPasswordError,
         isObject,
+        getTextLength
     };
 }
 

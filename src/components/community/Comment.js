@@ -17,7 +17,7 @@ import CommentImageLoader from "../CommentImageLoader";
 
 const Comment = (props) => {
 
-    const { injectHyperlinks } = useHelper();
+    const { injectHyperlinks, getTextLength } = useHelper();
     const [showMoreClicked, setShowMoreClicked] = useState(false);
 
     const {
@@ -87,14 +87,14 @@ const Comment = (props) => {
                     <span className="badge bg-primary" style={{ marginLeft: '10px' }}>{props.comment.edited_at ? "Edited" : ""}</span>
                 </p>
                 <div
-                    className={`content ${!showMoreClicked && props.comment.content?.length > 500 ? " comment-preview" : ""}`}
+                    className={`content ${!showMoreClicked && getTextLength(props.comment.content) > 500 ? " comment-preview" : ""}`}
                     dangerouslySetInnerHTML={{ __html: processCommentContent(props.comment.content) }}
                 />
                 {/* <div className="reply-section">
                     <IoArrowRedoSharp />
                     Reply Comment
                 </div> */}
-                {props.comment.content?.length > 200 && (
+                {getTextLength(props.comment.content) > 200 && (
                     <div className="show-more-container">
                         <Link className="show-more" onClick={(e) => {
                             setShowMoreClicked(value => !value);

@@ -51,16 +51,17 @@ const PostItem = (props) => {
     const [imageSliderOpen, setImageSliderOpen] = useState(false);
     const [imageSliderIndex, setImageSliderIndex] = useState(0);
 
+    const { injectHyperlinks, getTextLength } = useHelper();
+
     useEffect(() => {
         if (postContent?.length > 0 && postContent.indexOf('class="welcome-lounge"') >= 0) {
             return;
         }
-        if (dimensions && postContent?.length > 500 && !showMoreClicked) {
+
+        if (dimensions && getTextLength(postContent) > 500 && !showMoreClicked) {
             setDisplayShowMore(true);
         }
     }, [dimensions]);
-
-    const { injectHyperlinks } = useHelper();
 
     const {
         state: { user },
