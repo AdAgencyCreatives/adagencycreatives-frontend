@@ -9,6 +9,7 @@ import htmlToDraft from "html-to-draftjs";
 import draftToHtml from "draftjs-to-html";
 import { FiPaperclip, FiTrash2 } from "react-icons/fi";
 import Loader from "../../components/Loader";
+import CustomEditor from "../../components/CustomEditor3";
 import { CircularProgress } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -423,6 +424,12 @@ const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
     experience,
     strengthsList,
   ]);
+
+  useEffect(() => {
+    if ("description" in formData) {
+      setIsLoadingTinyMCE(false);
+    }
+  }, [formData]);
 
   //Set initial form data
   useEffect(() => {
@@ -858,11 +865,20 @@ const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
                             <span className="required">*</span>
                           )}
                         </label>
-                        {isMounted && (
+                        {isMounted && !isLoadingTinyMCE && (
                           <>
                             {useTinyMCE ? (
                               <>
-                                <div
+                                <CustomEditor
+                                  value={formData[field.name]}
+                                  setValue={(content) => {
+                                    setFormData((prev) => ({ ...prev, [field.name]: content }));
+                                  }}
+                                  enableAdvanceEditor={true}
+                                  placeholder=""
+                                  height="400px"
+                                />
+                                {/* <div
                                   className={
                                     "d-" + (isLoadingTinyMCE ? "show" : "none")
                                   }
@@ -913,7 +929,7 @@ const JobPostForm = ({ id, setJobStatus, isRepost = false }) => {
                                         : "",
                                     }));
                                   }}
-                                />
+                                /> */}
                               </>
                             ) : (
                               <Editor

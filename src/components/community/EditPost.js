@@ -19,6 +19,7 @@ import { Editor as EditorTinyMCE } from '@tinymce/tinymce-react';
 import { CircularProgress } from "@mui/material";
 import ContentEditable from 'react-contenteditable'
 import AvatarImageLoader from "../AvatarImageLoader";
+import CustomEditor from '../CustomEditor5';
 
 const EditPost = (props) => {
 
@@ -45,7 +46,7 @@ const EditPost = (props) => {
     const [requireContent, setRequireContent] = useState(false);
 
     const [open, setOpen] = useState(false);
-    const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
+    const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(false);
     const [hasOffensiveWords, setHasOffensiveWords] = useState(false);
     const [useTinyMCE, setUseTinyMCE] = useState(true);
     const handleOpen = () => setOpen(true);
@@ -315,7 +316,14 @@ const EditPost = (props) => {
                     <div className="postmodal-body">
                         {useTinyMCE ? (
                             <>
-                                <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
+                                <CustomEditor
+                                    value={content}
+                                    setValue={setContent}
+                                    enableAdvanceEditor={true}
+                                    placeholder="What do you want to talk about?"
+                                    height="100%"
+                                />
+                                {/* <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
                                     <CircularProgress />
                                 </div>
                                 <EditorTinyMCE
@@ -350,7 +358,7 @@ const EditPost = (props) => {
                                     onEditorChange={(e) => setContent(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "")}
                                     onFocus={(e) => setRequireContent(false)}
                                     onKeyDown={(e) => handleKeyDown(e)}
-                                />
+                                /> */}
                             </>
                         ) : (
                             <>

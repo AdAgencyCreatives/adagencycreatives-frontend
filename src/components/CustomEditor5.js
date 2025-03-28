@@ -19,7 +19,7 @@ StyledMentionBlot.blotName = "styled-mention";
 Quill.register(StyledMentionBlot);
 Quill.register({ "modules/mention": Mention });
 
-const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEditor = true, placeholder = "", height = 250, editorId = 'editor-container' }) => {
+const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEditor = true, placeholder = "", height = '250px', editorId = 'editor-container' }) => {
     const [loading, setLoading] = useState(true);
     const editorRef = useRef(null);
 
@@ -34,7 +34,8 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
             return {
                 id: item.uuid,
                 value: item.name !== '' ? item.name : item.username,
-                link: `/creative/${item.username}`
+                link: `/creative/${item.username}`,
+                thumbnail: item.user_thumbnail
             }
         });
     }
@@ -70,12 +71,42 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
                         allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
                         mentionDenotationChars: ["@", "#"],
                         linkTarget: "_blank",
-                        dataAttributes: ['id', 'value', 'link'],
+                        dataAttributes: ['id', 'value', 'link', 'thumbnail'],
                         blotName: 'styled-mention',
                         source: async function(searchTerm, renderList) {
                           const matchedPeople = await suggestPeople(searchTerm);
                           renderList(matchedPeople);
-                        }
+                        },
+                        renderItem: (item, searchTerm) => {
+                            // Create mention item container
+                            const container = document.createElement('div');
+                            container.classList.add('mention-item');
+
+                            let thumbnail = '';
+
+                            if (item.thumbnail !== '') {
+                                // Create thumbnail image
+                                thumbnail = document.createElement('img');
+                                thumbnail.src = item.thumbnail || '/default-thumbnail.png'; // Default thumbnail
+                                thumbnail.alt = item.value;
+                                thumbnail.classList.add('mention-thumbnail');
+                            } else {
+                                // Create thumbnail image
+                                thumbnail = document.createElement('div');
+                                thumbnail.textContent = item.value ? item.value.charAt(0).toUpperCase() : '';
+                                thumbnail.classList.add('mention-thumbnail');
+                            }
+
+                            // Create text span
+                            const text = document.createElement('span');
+                            text.textContent = item.value;
+
+                            // Append elements to container
+                            container.appendChild(thumbnail);
+                            container.appendChild(text);
+
+                            return container;
+                        },
                     }
                 }
             });
@@ -97,7 +128,7 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
         <>
             {enableAdvanceEditor ? (
                 <div className='custom-editor-container' style={{ height: height }}>
-                    <div id={editorId} style={{ height: 'calc( 100% - 50px)' }}></div>
+                    <div id={editorId} className="ql-editor-container"></div>
                     <div className={"circular-progress d-" + (loading ? 'show' : 'none')}>
                         <CircularProgress />
                     </div>

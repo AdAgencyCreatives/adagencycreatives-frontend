@@ -14,6 +14,7 @@ import { Context as AuthContext } from "../../../context/AuthContext";
 import { Context as CreativesContext } from "../../../context/CreativesContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
+import CustomEditor from "../../../components/CustomEditor3";
 import { CircularProgress } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -235,9 +236,9 @@ const MyResume = () => {
       experience.length
     ) {
       setIsloading(false);
-      if (single_creative.about) {
-        setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(single_creative.about).contentBlocks)));
-      }
+      // if (single_creative.about) {
+      //   setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(single_creative.about).contentBlocks)));
+      // }
       setFields([
         {
           label: "Your Title",
@@ -600,7 +601,7 @@ const MyResume = () => {
   };
 
   useEffect(() => {
-    // console.log(formData);
+    if ("about" in formData) setIsLoadingTinyMCE(false);
   }, [formData]);
 
   useEffect(() => {
@@ -1230,10 +1231,19 @@ const MyResume = () => {
               {field.label}
               {field.required && <span className="required">*</span>}
             </label>
-            {isMounted && (<>
+            {isMounted && !isLoadingTinyMCE && (<>
               {useTinyMCE ? (
                 <>
-                  <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
+                  <CustomEditor
+                    value={formData[field.name]}
+                    setValue={(content) => {
+                      setFormData((prev) => ({ ...prev, [field.name]: content }));
+                    }}
+                    enableAdvanceEditor={true}
+                    placeholder=""
+                    height="400px"
+                  />
+                  {/* <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
                     <CircularProgress />
                   </div>
                   <EditorTinyMCE
@@ -1266,7 +1276,7 @@ const MyResume = () => {
                       setFormData((prev) => ({ ...prev, [field.name]: (editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "") }));
                     }
                     }
-                  />
+                  /> */}
                 </>
               ) : (
                 <Editor

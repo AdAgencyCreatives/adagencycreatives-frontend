@@ -14,6 +14,7 @@ import ContentEditable from 'react-contenteditable'
 import { Context as CreativesContext } from "../../context/CreativesContext";
 import { sendLoungeMentionNotifications } from "../../context/NotificationsDataContext";
 import AvatarImageLoader from "../AvatarImageLoader";
+import CustomEditor from '../CustomEditor5';
 
 const CreateComment = (props) => {
 
@@ -138,7 +139,7 @@ const CreateComment = (props) => {
   } = useContext(CreativesContext);
 
   const [open, setOpen] = useState(false);
-  const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(true);
+  const [isLoadingTinyMCE, setIsLoadingTinyMCE] = useState(false);
   const [hasOffensiveWords, setHasOffensiveWords] = useState(false);
   const [useTinyMCE, setUseTinyMCE] = useState(true);
   const handleOpen = () => setOpen(true);
@@ -280,7 +281,14 @@ const CreateComment = (props) => {
           <div className="postmodal-body">
             {useTinyMCE ? (
               <>
-                <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
+                <CustomEditor
+                  value={content}
+                  setValue={setContent}
+                  enableAdvanceEditor={true}
+                  placeholder="What do you want to talk about?"
+                  height="100%"
+                />
+                {/* <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
                   <CircularProgress />
                 </div>
                 <EditorTinyMCE
@@ -314,7 +322,7 @@ const CreateComment = (props) => {
                   onEditorChange={(e) => setContent(editorRefTinyMCE.current ? editorRefTinyMCE.current.getContent() : "")}
                   onFocus={(e) => setRequireContent(false)}
                   onKeyDown={(e) => handleKeyDown(e)}
-                />
+                /> */}
               </>
             ) : (
               <ContentEditable

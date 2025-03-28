@@ -12,6 +12,7 @@ import { Context as AgenciesContext } from "../../../context/AgenciesContext";
 import { Context as AuthContext } from "../../../context/AuthContext";
 import { Context as AlertContext } from "../../../context/AlertContext";
 import Loader from "../../../components/Loader";
+import CustomEditor from "../../../components/CustomEditor3";
 import { CircularProgress, filledInputClasses } from "@mui/material";
 import ImageCropperModal from "../../../components/ImageCropperModal";
 
@@ -146,8 +147,8 @@ const AdvisorRecruiterProfile = () => {
   useEffect(() => {
     if (Object.keys(single_agency).length > 0 && industry.length && media.length && statesList.length && (single_agency.location?.city_id ? citiesList.length : true)) {
       setIsloading(false);
-      setEditorState(EditorState.createWithContent(ContentState.createFromText(single_agency.about ? single_agency.about : "")));
-      console.log("single_agency", single_agency);
+      // setEditorState(EditorState.createWithContent(ContentState.createFromText(single_agency.about ? single_agency.about : "")));
+      // console.log("single_agency", single_agency);
       setFields([
         {
           label: "Your Logo",
@@ -401,7 +402,7 @@ const AdvisorRecruiterProfile = () => {
   }, [fields]);
 
   useEffect(() => {
-    console.log("formData", formData);
+    if ("about" in formData) setIsLoadingTinyMCE(false);
   }, [formData]);
 
   useEffect(() => {
@@ -814,10 +815,20 @@ const AdvisorRecruiterProfile = () => {
                           {field.label}
                           {field.required && <span className="required">*</span>}
                         </label>
-                        {isMounted && (<>
+                        {isMounted && !isLoadingTinyMCE && (<>
                           {useTinyMCE ? (
                             <>
-                              <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
+                              <CustomEditor
+                                value={formData[field.name]}
+                                setValue={(content) => {
+                                  setFormData((prev) => ({ ...prev, [field.name]: content }));
+                                  updateFieldValue(field.name, content);
+                                }}
+                                enableAdvanceEditor={true}
+                                placeholder=""
+                                height="400px"
+                              />
+                              {/* <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
                                 <CircularProgress />
                               </div>
                               <EditorTinyMCE
@@ -852,7 +863,7 @@ const AdvisorRecruiterProfile = () => {
                                   updateFieldValue(field.name, data);
                                 }
                                 }
-                              />
+                              /> */}
                             </>
                           ) : (
                             <Editor

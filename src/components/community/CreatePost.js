@@ -378,7 +378,7 @@ const CreatePost = (props) => {
                   setValue={setContent}
                   enableAdvanceEditor={true}
                   placeholder="What do you want to talk about?"
-                  height={300}
+                  height="100%"
                 />
                 {/* <div className={"d-" + (isLoadingTinyMCE ? 'show' : 'none')}>
                   <CircularProgress />
