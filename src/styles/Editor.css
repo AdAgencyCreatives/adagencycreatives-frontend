@@ -18,14 +18,51 @@
 .ql-mention-list-container {
     background: #000;
     color: #fff;
-    padding: 10px 15px;
     font-family: 'Jost';
     font-size: 14pt;
     border-radius: 4px;
+    border: 1px solid #000;
+    overflow: hidden;
 }
 .ql-mention-list {
     list-style: none;
     padding-left: 0;
     margin-bottom: 0;
     cursor: pointer;
+}
+.ql-mention-list-item {
+    padding: 5px 15px;
+}
+.ql-mention-list-item.selected {
+    background: #fff;
+    color: #000;
+}
+.ql-editor-container {
+    height: calc( 100% - 50px);
+}
+.mention-thumbnail {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    text-align: center;
+    border-radius: 50%;
+    color: #000;
+    font-weight: 500;
+    margin-right: 5px;
+}
+.ql-mention-list-item.selected .mention-thumbnail {
+    background: #000;
+    color: #fff;
+}
+.mention-item {
+    display: flex;
+    align-items: center;
+}
+@media (max-width: 550px) {
+    .ql-editor-container {
+        height: calc( 100% - 95px);
+    }
 }
