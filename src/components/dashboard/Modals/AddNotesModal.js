@@ -21,6 +21,7 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
   const [message, setMessage] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
+  const [editing, setEditing] = useState(false);
 
   const {
     state: { notes, notesNextPage, isLoading },
@@ -49,6 +50,7 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
         setSelectedNote(null);
         showAlert('Note successfully updated');
         handleClose();
+        setEditing(false);
       });
     } else {
       await addNote({
@@ -66,14 +68,16 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
   };
 
   const onEditNote = async (item) => {
-    setSelectedNote(item);
     setNote(item.body);
+    setSelectedNote(item);
+    setEditing(true);
   };
 
   const onCancelEditNote = async () => {
     setSelectedNote(null);
     setNote('');
     setMessage(false);
+    setEditing(false);
   };
 
   const onDeleteNote = async (item) => {
@@ -134,12 +138,22 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
 
               <div className="form-group">
                 <label>Message</label>
-                <CustomEditor
-                  value={note}
-                  setValue={setNote}
-                  enableAdvanceEditor={true}
-                  placeholder=""
-                />
+                {editing && (
+                  <CustomEditor
+                    value={note}
+                    setValue={setNote}
+                    enableAdvanceEditor={true}
+                    placeholder=""
+                  />
+                )}
+                {!editing && (
+                  <CustomEditor
+                    value={note}
+                    setValue={setNote}
+                    enableAdvanceEditor={true}
+                    placeholder=""
+                  />
+                )}
               </div>
               <input type="hidden" name="action" />
               <input type="hidden" name="application_id" />
