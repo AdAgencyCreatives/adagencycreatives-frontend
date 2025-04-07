@@ -118,6 +118,8 @@ const AddNotesModal = ({ resource_id, type, open, setOpen, handleClose, statusJo
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       scroll="body"
+      maxWidth="md"
+      fullWidth
     >
       <div className="add-note-modal">
         <div className="close-modal"><IoCloseCircleSharp size={30} onClick={(e) => setOpen(false)} /></div>
