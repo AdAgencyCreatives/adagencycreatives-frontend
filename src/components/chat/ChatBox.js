@@ -60,6 +60,7 @@ const ChatBox = ({
 
   const [showPicker, setShowPicker] = useState(false);
   const [content, setContent] = useState("");
+  const [messageSent, setMessageSent] = useState(0);
   const [draftMessages, setDraftMessages] = useState({});
   const [draftAttachments, setDraftAttachments] = useState({});
   const [chatBoxAttachments, setChatBoxAttachments] = useState([]);
@@ -204,6 +205,7 @@ const ChatBox = ({
     //showAlert("Message sent");
 
     setContent("");
+    setMessageSent(prev => prev + 1);
     setChatBoxAttachments([]);
     updateDraftMessage("");
     updateDraftAttachment("reset", []);
@@ -390,7 +392,7 @@ const ChatBox = ({
     setFormEdit(true);
 
     const data = { id: isId, message: messageTmp, edited: true };
-    console.log(data, 'data');
+    // console.log(data, 'data');
     try {
       const response = await api.patch("/messages/" + isId, data);
       showAlert("Message updated")
@@ -595,6 +597,8 @@ const ChatBox = ({
             <div className="message-box">
               <div className="message-input">
                 <CustomEditor
+                  key={messageSent}
+                  editorId="message-sent"  // Unique ID for each message
                   value={content}
                   setValue={setContent}
                   onValueChange={handleMessageChange}
