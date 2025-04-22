@@ -2116,3 +2116,7 @@ img.agency-image-loader {
     line-height: 1em;
     cursor: pointer;
 }
+
+p.ql-align-justify {
+    overflow-wrap: break-word !important;
+}
