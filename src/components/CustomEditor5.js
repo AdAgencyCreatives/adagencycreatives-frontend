@@ -7,6 +7,19 @@ import { Context as CreativesContext } from "../context/CreativesContext";
 
 import {Mention, MentionBlot} from "quill-mention";
 
+const Embed = Quill.import('blots/embed');
+
+class BrBlot extends Embed {
+  static create() {
+    return super.create();
+  }
+}
+
+BrBlot.blotName = 'break';
+BrBlot.tagName = 'br';
+
+Quill.register(BrBlot);
+
 class StyledMentionBlot extends MentionBlot {
   static render(data) {
     const element = document.createElement("a");
@@ -42,7 +55,20 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
 
     useEffect(() => {
         if (enableAdvanceEditor && !editorRef.current) {
-            
+            const bindings = {
+                ENTER: {
+                    key: "Enter",
+                    shiftKey: true,
+                    handler: function (range, context) {
+                        const quill = editorRef.current;
+                        quill.insertEmbed(range.index, 'break', true); // insert <br>
+                        quill.setSelection(range.index + 1);
+
+                        console.log('working!');
+                        // return false;
+                    }
+                }
+            };
             editorRef.current = new Quill(`#${editorId}`, {
                 theme: 'snow',
                 placeholder,
@@ -67,6 +93,9 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
                         [{ indent: '-1' }, { indent: '+1' }], // Indent / Outdent
                         ['clean'], // Remove formatting
                     ],
+                    keyboard: {
+                        bindings: bindings
+                    },
                     mention: {
                         allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
                         mentionDenotationChars: ["@", "#"],

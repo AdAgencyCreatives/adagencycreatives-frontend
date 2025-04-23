@@ -4,13 +4,40 @@ import 'quill/dist/quill.snow.css';
 import { CircularProgress } from '@mui/material';
 import "../styles/Editor.css";
 
+const Embed = Quill.import('blots/embed');
+
+class BrBlot extends Embed {
+  static create() {
+    return super.create();
+  }
+}
+
+BrBlot.blotName = 'break';
+BrBlot.tagName = 'br';
+
+Quill.register(BrBlot);
+
 const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEditor = true, placeholder = "", height = 250, editorId = 'editor-container' }) => {
     const [loading, setLoading] = useState(true);
     const editorRef = useRef(null);
 
     useEffect(() => {
         if (enableAdvanceEditor && !editorRef.current) {
-            
+            const bindings = {
+                ENTER: {
+                    key: "Enter",
+                    shiftKey: true,
+                    handler: function (range, context) {
+                        const quill = editorRef.current;
+                        quill.insertEmbed(range.index, 'break', true); // insert <br>
+                        quill.setSelection(range.index + 1);
+
+                        console.log('working!');
+                        // return false;
+                    }
+                }
+            };
+
             editorRef.current = new Quill(`#${editorId}`, {
                 theme: 'snow',
                 placeholder,
@@ -33,7 +60,10 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
                         [{ align: [] }], // Text alignment
                         [{ indent: '-1' }, { indent: '+1' }], // Indent / Outdent
                         ['clean'], // Remove formatting
-                    ]
+                    ],
+                    keyboard: {
+                        bindings: bindings
+                    },
                 }
             });
 
