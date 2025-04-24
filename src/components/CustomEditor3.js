@@ -4,19 +4,6 @@ import 'quill/dist/quill.snow.css';
 import { CircularProgress } from '@mui/material';
 import "../styles/Editor.css";
 
-const Embed = Quill.import('blots/embed');
-
-class BrBlot extends Embed {
-  static create() {
-    return super.create();
-  }
-}
-
-BrBlot.blotName = 'break';
-BrBlot.tagName = 'br';
-
-Quill.register(BrBlot);
-
 const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEditor = true, placeholder = "", height = 250, editorId = 'editor-container' }) => {
     const [loading, setLoading] = useState(true);
     const editorRef = useRef(null);
@@ -29,11 +16,21 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
                     shiftKey: true,
                     handler: function (range, context) {
                         const quill = editorRef.current;
-                        quill.insertEmbed(range.index, 'break', true); // insert <br>
-                        quill.setSelection(range.index + 1);
+                        if (!quill) return true;
 
-                        console.log('working!');
-                        // return false;
+                        // Use Delta to insert a soft line break
+                        quill.updateContents(
+                            new Quill.import('delta')()
+                            .retain(range.index)
+                            .delete(range.length)
+                            .insert('\n'),
+                            'user'
+                        );
+
+                        // Move cursor after the inserted newline
+                        quill.setSelection(range.index + 1, Quill.sources.SILENT);
+
+                        return false;
                     }
                 }
             };
@@ -63,16 +60,15 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
                     ],
                     keyboard: {
                         bindings: bindings
-                    },
+                    }
                 }
             });
-
-            console.log(value);
 
             editorRef.current.clipboard.dangerouslyPasteHTML(0, value);
 
             editorRef.current.on('text-change', () => {
-                const content = editorRef.current.root.innerHTML;
+                let content = editorRef.current.root.innerHTML;
+                content = content.replace(/\n/g, "<br>");
                 setValue(content);
                 if (onValueChange) {
                     onValueChange(content);
