@@ -44,10 +44,7 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
                         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                         ['link'],
                         ['clean']
-                    ],
-                    keyboard: {
-                        bindings: bindings
-                    }
+                    ]
                 }
             });
     
@@ -55,7 +52,8 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
     
             editorRef.current.on('text-change', () => {
                 let content = editorRef.current.root.innerHTML;
-                content = content.replace(/\n/g, "<br>");
+                // content = content.replace(/\n/g, "<br>");
+                content = content.replace("</p><p>", "<br>");
                 setValue(content);
                 if (onValueChange) {
                     onValueChange(content);
