@@ -10,31 +10,6 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
 
     useEffect(() => {
         if (enableAdvanceEditor && !editorRef.current) {
-            const bindings = {
-                ENTER: {
-                    key: "Enter",
-                    shiftKey: true,
-                    handler: function (range, context) {
-                        const quill = editorRef.current;
-                        if (!quill) return true;
-
-                        // Use Delta to insert a soft line break
-                        quill.updateContents(
-                            new Quill.import('delta')()
-                            .retain(range.index)
-                            .delete(range.length)
-                            .insert('\n'),
-                            'user'
-                        );
-
-                        // Move cursor after the inserted newline
-                        quill.setSelection(range.index + 1, Quill.sources.SILENT);
-
-                        return false;
-                    }
-                }
-            };
-
             editorRef.current = new Quill(`#${editorId}`, {
                 theme: 'snow',
                 placeholder,
@@ -45,17 +20,13 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
                         ['link'],
                         ['clean']
                     ],
-                    keyboard: {
-                        bindings: bindings
-                    }
                 }
             });
-    
+
             editorRef.current.clipboard.dangerouslyPasteHTML(0, value);
-    
+
             editorRef.current.on('text-change', () => {
                 let content = editorRef.current.root.innerHTML;
-                content = content.replace(/\n/g, "<br>");
                 setValue(content);
                 if (onValueChange) {
                     onValueChange(content);
@@ -63,7 +34,7 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
             });
         }
         setLoading(false);
-    }, [enableAdvanceEditor, editorId]);    
+    }, [enableAdvanceEditor, editorId]);
 
     return (
         <>
