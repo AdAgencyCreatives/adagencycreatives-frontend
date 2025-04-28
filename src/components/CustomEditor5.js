@@ -5,15 +5,15 @@ import { CircularProgress } from '@mui/material';
 import "../styles/Editor.css";
 import { Context as CreativesContext } from "../context/CreativesContext";
 
-import {Mention, MentionBlot} from "quill-mention";
+import { Mention, MentionBlot } from "quill-mention";
 
 class StyledMentionBlot extends MentionBlot {
-  static render(data) {
-    const element = document.createElement("a");
-    element.href = data.link;
-    element.innerHTML = `<span>${data.value}</span>`;
-    return element;
-  }
+    static render(data) {
+        const element = document.createElement("a");
+        element.href = data.link;
+        element.innerHTML = `<span>${data.value}</span>`;
+        return element;
+    }
 }
 StyledMentionBlot.blotName = "styled-mention";
 Quill.register(StyledMentionBlot);
@@ -42,31 +42,6 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
 
     useEffect(() => {
         if (enableAdvanceEditor && !editorRef.current) {
-            const bindings = {
-                ENTER: {
-                    key: "Enter",
-                    shiftKey: true,
-                    handler: function (range, context) {
-                        const quill = editorRef.current;
-                        if (!quill) return true;
-
-                        // Use Delta to insert a soft line break
-                        quill.updateContents(
-                            new Quill.import('delta')()
-                            .retain(range.index)
-                            .delete(range.length)
-                            .insert('\n'),
-                            'user'
-                        );
-
-                        // Move cursor after the inserted newline
-                        quill.setSelection(range.index + 1, Quill.sources.SILENT);
-
-                        return false;
-                    }
-                }
-            };
-
             editorRef.current = new Quill(`#${editorId}`, {
                 theme: 'snow',
                 placeholder,
@@ -97,7 +72,7 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
                         linkTarget: "_blank",
                         dataAttributes: ['id', 'value', 'link', 'thumbnail', 'disabled'],
                         blotName: 'styled-mention',
-                        source: async function(searchTerm, renderList) {
+                        source: async function (searchTerm, renderList) {
                             // Show "Loading..." initially
                             renderList([{ id: "loading", value: "Loading...", link: "", thumbnail: "", disabled: true }]);
                             const matchedPeople = await suggestPeople(searchTerm);
@@ -128,7 +103,7 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
                             text.textContent = item.value;
 
                             // Append elements to container
-                            if (item.value !== 'Loading...') 
+                            if (item.value !== 'Loading...')
                                 container.appendChild(thumbnail);
 
                             container.appendChild(text);
@@ -143,8 +118,9 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
 
             editorRef.current.on('text-change', () => {
                 let content = editorRef.current.root.innerHTML;
-                // content = content.replace(/\n/g, "<br>");
-                content = content.replace("</p><p>", "<br>");
+                content = content.replace(/<\/p>\s*<br>\s*<p>/g, '<br>');
+                content = content.replace(/<\/p>\s*<p>/g, '');
+
                 setValue(content);
                 if (onValueChange) {
                     onValueChange(content);
