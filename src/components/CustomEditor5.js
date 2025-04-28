@@ -118,6 +118,9 @@ const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEdi
 
             editorRef.current.on('text-change', () => {
                 let content = editorRef.current.root.innerHTML;
+                content = content.replace(/<\/p>\s*<br>\s*<p>/g, '<br>');
+                content = content.replace(/<\/p>\s*<p>/g, '');
+
                 setValue(content);
                 if (onValueChange) {
                     onValueChange(content);
