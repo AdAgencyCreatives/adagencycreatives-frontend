@@ -2,10 +2,6 @@ import TipTapEditor from './TipTapEditor';
 
 const CustomEditor = ({ value, setValue, onValueChange = false, enableAdvanceEditor = true, placeholder = "", height = 250, editorId = 'editor-container' }) => {
 
-    const handleEditorChange = (e) => {
-        setValue(e.target.value);
-    };
-
     return (
         <>
             {enableAdvanceEditor ? (
