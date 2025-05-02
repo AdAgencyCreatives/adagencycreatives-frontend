@@ -47,6 +47,7 @@
     min-height: 200px;
     outline: none;
     flex: 1;
+    overflow: auto;
 }
 
 .tiptap-editor-statusbar {
