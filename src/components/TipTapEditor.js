@@ -28,13 +28,13 @@ const TipTapEditor = ({ label, name, value, onChange, style }) => {
                 Bold,
                 Italic,
                 Underline,
-                Heading.configure({
-                    levels: [1, 2, 3, 4, 5, 6],
-                }),
                 BulletList,
                 OrderedList,
                 Link.configure({
                     openOnClick: false,
+                }),
+                Heading.configure({
+                    levels: [1, 2, 3, 4, 5, 6],
                 }),
             ],
             content: value.replaceAll("<p>", "").replaceAll("</p>", "<br>").replace(/(<br>)+$/g, ""),
@@ -123,6 +123,46 @@ const TipTapEditor = ({ label, name, value, onChange, style }) => {
                 active: () => editor.isActive('underline'),
             },
             {
+                icon: 'ri-list-unordered',
+                title: 'Bullet List',
+                action: () => editor.chain().focus().toggleBulletList().run(),
+                active: () => editor.isActive('bulletList'),
+            },
+            {
+                icon: 'ri-list-ordered',
+                title: 'Numbered List',
+                action: () => editor.chain().focus().toggleOrderedList().run(),
+                active: () => editor.isActive('orderedList'),
+            },
+            {
+                icon: 'ri-link',
+                title: 'Link',
+                action: () => {
+                    const previousUrl = editor.getAttributes('link').href;
+                    const url = window.prompt('URL', previousUrl);
+
+                    if (url === null) return;
+
+                    if (url === '') {
+                        editor
+                            .chain()
+                            .focus()
+                            .extendMarkRange('link')
+                            .unsetLink()
+                            .run();
+                        return;
+                    }
+
+                    editor
+                        .chain()
+                        .focus()
+                        .extendMarkRange('link')
+                        .setLink({ href: url })
+                        .run();
+                },
+                active: () => editor.isActive('link'),
+            },
+            {
                 icon: 'ri-h-1',
                 title: 'Heading 1',
                 action: () =>
@@ -163,46 +203,6 @@ const TipTapEditor = ({ label, name, value, onChange, style }) => {
                 action: () =>
                     editor.chain().focus().toggleHeading({ level: 6 }).run(),
                 active: () => editor.isActive('heading', { level: 6 }),
-            },
-            {
-                icon: 'ri-list-unordered',
-                title: 'Bullet List',
-                action: () => editor.chain().focus().toggleBulletList().run(),
-                active: () => editor.isActive('bulletList'),
-            },
-            {
-                icon: 'ri-list-ordered',
-                title: 'Numbered List',
-                action: () => editor.chain().focus().toggleOrderedList().run(),
-                active: () => editor.isActive('orderedList'),
-            },
-            {
-                icon: 'ri-link',
-                title: 'Link',
-                action: () => {
-                    const previousUrl = editor.getAttributes('link').href;
-                    const url = window.prompt('URL', previousUrl);
-
-                    if (url === null) return;
-
-                    if (url === '') {
-                        editor
-                            .chain()
-                            .focus()
-                            .extendMarkRange('link')
-                            .unsetLink()
-                            .run();
-                        return;
-                    }
-
-                    editor
-                        .chain()
-                        .focus()
-                        .extendMarkRange('link')
-                        .setLink({ href: url })
-                        .run();
-                },
-                active: () => editor.isActive('link'),
             },
             {
                 icon: 'ri-format-clear',
