@@ -12,7 +12,7 @@ import Link from '@tiptap/extension-link';
 import 'remixicon/fonts/remixicon.css';
 import '../styles/TipTapEditor.css';
 
-const TipTapEditor = ({ label, name, value, onChange }) => {
+const TipTapEditor = ({ label, name, value, onChange, style }) => {
     const editorRef = useRef(null);
     const editorInstance = useRef(null);
     const hiddenTextareaRef = useRef(null);
@@ -240,7 +240,7 @@ const TipTapEditor = ({ label, name, value, onChange }) => {
                 defaultValue={value}
                 style={{ display: 'none' }}
             />
-            <div ref={editorRef} className="tiptap-editor-container">
+            <div ref={editorRef} className="tiptap-editor-container" style={style}>
                 <div className="tiptap-editor-header"></div>
                 <div className="tiptap-editor-content"></div>
                 <div className="tiptap-editor-statusbar">
