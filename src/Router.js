@@ -1,4 +1,4 @@
-import { createBrowserRouter, useRouteError } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import Home from "./pages/Home";
 import Creatives from "./pages/Creatives";
@@ -31,8 +31,6 @@ import CopyWriting from "./pages/Mentor/CopyWriting";
 import LoginAs from "./pages/LoginAs";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
-import { useContext, useEffect } from "react";
-import { Context as AuthContext } from "./context/AuthContext";
 import Logout from "./pages/Logout";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -43,11 +41,11 @@ import Portfolio from "./pages/Mentor/Portfolio";
 import Business from "./pages/Mentor/Business";
 import Tech from "./pages/Mentor/Tech";
 import ResetPassword from "./pages/ResetPassword";
-import FilmFestival1 from "./pages/FilmFestival1";
 import GroupRequests from "./pages/GroupRequests";
 import RouterErrorBoundary from "./components/RouterErrorBoundary";
 import SpotlightReels from "./pages/SpotlightReels";
 import SpotlightReel from "./pages/SpotlightReel";
+import TipTapEditorTest from "./pages/TipTapEditorTest";
 
 export const router = createBrowserRouter([
   {
@@ -58,7 +56,10 @@ export const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
-
+      {
+        path: "/TipTapEditorTest",
+        element: <TipTapEditorTest />,
+      },
       {
         path: "/demo-error",
         element: <DemoError />,
