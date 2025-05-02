@@ -116,9 +116,10 @@
     padding: 0 1.5em;
 }
 
-.ProseMirror ul li p,
-.ProseMirror ol li p {
+.ProseMirror p,
+.ProseMirror p {
     margin: 0;
+    padding: 0;
     line-height: 1em;
 }
 

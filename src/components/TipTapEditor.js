@@ -37,9 +37,9 @@ const TipTapEditor = ({ label, name, value, onChange, style }) => {
                     openOnClick: false,
                 }),
             ],
-            content: value.replaceAll("<li><p>", "<li>").replaceAll("</p></li>", "</li>"),
+            content: value.replaceAll("<p></p>", "").replaceAll("<p>", "").replaceAll("</p>", "<br>"),
             onUpdate: ({ editor }) => {
-                const html = editor.getHTML().replaceAll("<li><p>", "<li>").replaceAll("</p></li>", "</li>");
+                const html = editor.getHTML().replaceAll("<p></p>", "").replaceAll("<p>", "").replaceAll("</p>", "<br>");
                 if (hiddenTextareaRef.current) {
                     hiddenTextareaRef.current.value = html;
                 }
