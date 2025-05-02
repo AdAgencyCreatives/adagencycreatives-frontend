@@ -245,9 +245,6 @@ const TipTapEditor = ({ label, name, value, onChange, style }) => {
                 <div className="tiptap-editor-content"></div>
                 <div className="tiptap-editor-statusbar">
                     <span className="status-hierarchy">Paragraph</span>
-                    <a href="https://tiptap.dev/" target="_blank" rel="noreferrer">
-                        Powered by Tiptap
-                    </a>
                 </div>
             </div>
         </div>
