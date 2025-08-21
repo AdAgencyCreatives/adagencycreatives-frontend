@@ -1,5 +1,6 @@
 import {
     IoEllipsisVertical,
+    IoPinSharp,
     IoTimeOutline,
 } from "react-icons/io5";
 
@@ -22,6 +23,7 @@ import ImageDialog from "../ImageDialog";
 
 import ImageSlider from "./Modals/ImageSlider";
 import PostImageLoader from "../PostImageLoader";
+import { FiMapPin } from "react-icons/fi";
 
 const useRefDimensions = (ref) => {
     const [dimensions, setDimensions] = useState({ width: 1, height: 2 })
@@ -181,6 +183,7 @@ const PostItem = (props) => {
                             {props.post.author}
                         </a>
                         <span className="badge edited" style={{ marginLeft: '10px' }}>{props.post.edited_at ? "Edited" : ""}</span>
+                        <span className="badge edited" style={{ marginLeft: '10px' }}>{props.pinned ? "Pinned" : ""}</span>
                     </div>
                     <div className="post-group-info">
                         {props.post.group_name?.toLowerCase() != "feed" && (<span>{props.post.group_name || ""} | {capitalize(props.post.group_type || "")}</span>)}

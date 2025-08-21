@@ -14,7 +14,7 @@ const PostList = (props) => {
   } = useContext(AuthContext);
 
   const {
-    state: { posts, post_added, post_updated, post_deleted, halt_refresh, nextPage, loading, },
+    state: { pinned_post, posts, post_added, post_updated, post_deleted, halt_refresh, nextPage, loading, },
     getPosts, loadPosts, resetPosts,
   } = useContext(CommunityContext);
 
@@ -126,6 +126,9 @@ const PostList = (props) => {
   return (
     <>
       <div className="postlist">
+        {pinned_post && (
+          <PostItem key={pinned_post.id} post={pinned_post} refreshPosts={refreshPosts} pinned={true} />
+        )}
         {posts &&
           posts.map((post, index) => (
             <PostItem key={post.id} post={post} refreshPosts={refreshPosts} />
