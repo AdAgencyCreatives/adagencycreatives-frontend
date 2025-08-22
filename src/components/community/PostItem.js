@@ -183,7 +183,7 @@ const PostItem = (props) => {
                             {props.post.author}
                         </a>
                         <span className="badge edited" style={{ marginLeft: '10px' }}>{props.post.edited_at ? "Edited" : ""}</span>
-                        <span className="badge edited" style={{ marginLeft: '10px' }}>{props.pinned ? "Pinned" : ""}</span>
+                        <span className="badge edited d-none" style={{ marginLeft: '10px' }}>{props.pinned ? "Pinned" : ""}</span>
                     </div>
                     <div className="post-group-info">
                         {props.post.group_name?.toLowerCase() != "feed" && (<span>{props.post.group_name || ""} | {capitalize(props.post.group_type || "")}</span>)}

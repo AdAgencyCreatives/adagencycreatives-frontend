@@ -5,7 +5,7 @@ const default_feed_group = "715bfe90-833e-3459-9700-036ac28d3fd4";
 
 const state = {
   posts: [],
-  pinned_post: null,
+  pinned_posts: [],
   trending_posts: [],
   nextPage: null,
   loading: false,
@@ -95,10 +95,10 @@ const reducer = (state, action) => {
         // posts: action.payload.data,
         nextPage: action.payload.links.next,
       };
-    case "set_pinned_post":
+    case "set_pinned_posts":
       return {
         ...state,
-        pinned_post: action.payload?.data?.[0] || null,
+        pinned_posts: action.payload.data || [],
       };
     case "set_trending_posts":
       return {
@@ -255,18 +255,18 @@ const getPosts = (dispatch) => {
   return async (group_id) => {
     try {
       let apiEndPoint = "/lounge/main_feed/?sort=-created_at&filter[status]=1"; // default will be main feed
-      let get_pinned_post = true;
+      let get_pinned_posts = true;
       if (group_id != default_feed_group) {
         apiEndPoint = "/posts?filter[group_id]=" + group_id + "&sort=-created_at&filter[status]=1";
-        get_pinned_post = false;
+        get_pinned_posts = false;
       }
       // filter[status]=1, i.e., only published posts in Feeds
 
-      if (get_pinned_post) {
+      if (get_pinned_posts) {
         try {
-          const response = await api.get("/lounge/main_feed_pinned_post/?sort=-created_at&filter[status]=1");
+          const response = await api.get("/lounge/main_feed_pinned_posts/?sort=-created_at&filter[status]=1");
           dispatch({
-            type: "set_pinned_post",
+            type: "set_pinned_posts",
             payload: response.data,
           });
         } catch (error) { }
