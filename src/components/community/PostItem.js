@@ -79,7 +79,7 @@ const PostItem = (props) => {
     const [commentsData, setCommentsData] = useState([]);
     const [showComments, setShowComments] = useState(false);
     const [commentsCount, setCommentsCount] = useState(0);
-    const [showMaxComments, setShowMaxComments] = useState(1);
+    const [showMaxComments, setShowMaxComments] = useState(5); // max 5 comments
     const [viewAllCommentsClicked, setViewAllCommentsClicked] = useState(false);
 
     const toggleShowComments = () => {
